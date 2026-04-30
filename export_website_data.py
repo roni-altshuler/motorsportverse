@@ -179,6 +179,26 @@ def _safe_load_json(path):
         return None
 
 
+def _lookup_round_entry(rounds, round_num):
+    """Return a round entry from dict or list-shaped tracker data."""
+    if isinstance(rounds, dict):
+        rk = str(round_num)
+        return rounds.get(rk) or rounds.get(round_num)
+
+    if isinstance(rounds, list):
+        for entry in rounds:
+            if not isinstance(entry, dict):
+                continue
+            entry_round = entry.get("round")
+            try:
+                if int(entry_round) == int(round_num):
+                    return entry
+            except (TypeError, ValueError):
+                continue
+
+    return None
+
+
 def _json_safe(value):
     """Recursively replace non-finite floats with None for valid JSON output."""
     if isinstance(value, float):
@@ -382,11 +402,8 @@ def _get_round_preserved_fields(round_num, existing_round):
     # Fill missing post-race fields from tracker source-of-truth.
     tracker = _safe_load_json(TRACKER_FILE) or _safe_load_json(TRACKER_EXPORT_FILE)
     if isinstance(tracker, dict):
-        rk = str(round_num)
-
         if "actualResults" not in preserved:
-            rounds = tracker.get("rounds", {})
-            round_entry = rounds.get(rk) or rounds.get(round_num)
+            round_entry = _lookup_round_entry(tracker.get("rounds", {}), round_num)
             if isinstance(round_entry, dict):
                 normalized_actuals = _normalize_actual_results(round_entry.get("actual"))
                 if normalized_actuals:
@@ -394,7 +411,7 @@ def _get_round_preserved_fields(round_num, existing_round):
 
         if "accuracy" not in preserved:
             accuracy_map = tracker.get("accuracy", {})
-            round_accuracy = accuracy_map.get(rk) or accuracy_map.get(round_num)
+            round_accuracy = _lookup_round_entry(accuracy_map, round_num)
             if isinstance(round_accuracy, dict) and round_accuracy:
                 preserved["accuracy"] = round_accuracy
 
