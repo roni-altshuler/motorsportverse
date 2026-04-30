@@ -63,7 +63,7 @@ jobs:
         run: |
           # ── Detect round ──
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.round }}" = "next" ]; then
-            ROUND=$(python3 -c "
+            ROUND=$(python -c "
           import sys
           sys.path.insert(0, '.')
           from gp_weekend import detect_target_round
@@ -98,7 +98,7 @@ jobs:
         id: check
         if: github.event_name == 'schedule'
         run: |
-          IS_RACE_WEEKEND=$(python3 -c "
+          IS_RACE_WEEKEND=$(python -c "
           import sys
           sys.path.insert(0, '.')
           from gp_weekend import is_race_weekend
