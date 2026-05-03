@@ -2506,17 +2506,17 @@
       },
       {
         "round": 4,
-        "hasActual": false,
-        "meanError": null,
-        "exactMatches": null,
-        "within3": null,
-        "accuracyPct": null
+        "hasActual": true,
+        "meanError": 4.36,
+        "exactMatches": 1,
+        "within3": 14,
+        "accuracyPct": 63.6
       }
     ],
     "overallAccuracy": {
-      "seasonMeanError": 4.45,
-      "seasonAccuracyPct": 56.1,
-      "roundsWithActual": 3
+      "seasonMeanError": 4.43,
+      "seasonAccuracyPct": 58.0,
+      "roundsWithActual": 4
     },
     "gpReports": [
       {
@@ -2851,8 +2851,263 @@
             "drivers": 2
           }
         ]
+      },
+      {
+        "round": 4,
+        "name": "Miami Grand Prix",
+        "comparedDrivers": 22,
+        "meanError": 4.36,
+        "medianError": 3.0,
+        "exactMatches": 1,
+        "within3": 14,
+        "within5": 18,
+        "winnerHit": false,
+        "podiumHits": 0,
+        "biggestMisses": [
+          {
+            "driver": "HAD",
+            "team": "Red Bull Racing",
+            "predicted": 8,
+            "actual": 22,
+            "delta": -14,
+            "absDelta": 14
+          },
+          {
+            "driver": "GAS",
+            "team": "Alpine",
+            "predicted": 9,
+            "actual": 21,
+            "delta": -12,
+            "absDelta": 12
+          },
+          {
+            "driver": "BOR",
+            "team": "Audi",
+            "predicted": 22,
+            "actual": 12,
+            "delta": 10,
+            "absDelta": 10
+          },
+          {
+            "driver": "LAW",
+            "team": "Racing Bulls",
+            "predicted": 10,
+            "actual": 20,
+            "delta": -10,
+            "absDelta": 10
+          },
+          {
+            "driver": "ANT",
+            "team": "Mercedes",
+            "predicted": 5,
+            "actual": 1,
+            "delta": 4,
+            "absDelta": 4
+          }
+        ],
+        "teamMeanError": [
+          {
+            "team": "Ferrari",
+            "meanError": 1.5,
+            "drivers": 2
+          },
+          {
+            "team": "Williams",
+            "meanError": 2.5,
+            "drivers": 2
+          },
+          {
+            "team": "Aston Martin",
+            "meanError": 2.5,
+            "drivers": 2
+          },
+          {
+            "team": "Haas",
+            "meanError": 2.5,
+            "drivers": 2
+          },
+          {
+            "team": "McLaren",
+            "meanError": 2.5,
+            "drivers": 2
+          },
+          {
+            "team": "Mercedes",
+            "meanError": 3.0,
+            "drivers": 2
+          },
+          {
+            "team": "Cadillac",
+            "meanError": 3.5,
+            "drivers": 2
+          },
+          {
+            "team": "Audi",
+            "meanError": 6.5,
+            "drivers": 2
+          },
+          {
+            "team": "Racing Bulls",
+            "meanError": 6.5,
+            "drivers": 2
+          },
+          {
+            "team": "Alpine",
+            "meanError": 8.0,
+            "drivers": 2
+          },
+          {
+            "team": "Red Bull Racing",
+            "meanError": 9.0,
+            "drivers": 2
+          }
+        ]
       }
     ],
-    "generatedAt": "2026-05-03T18:42:09.828830Z"
+    "generatedAt": "2026-05-03T21:31:45.899904Z"
+  },
+  "actualResults": {
+    "ANT": 1,
+    "NOR": 2,
+    "PIA": 3,
+    "RUS": 4,
+    "VER": 5,
+    "LEC": 6,
+    "HAM": 7,
+    "COL": 8,
+    "SAI": 9,
+    "ALB": 10,
+    "BEA": 11,
+    "BOR": 12,
+    "OCO": 13,
+    "LIN": 14,
+    "ALO": 15,
+    "PER": 16,
+    "STR": 17,
+    "BOT": 18,
+    "HUL": 19,
+    "LAW": 20,
+    "GAS": 21,
+    "HAD": 22
+  },
+  "accuracy": {
+    "mean_position_error": 4.36,
+    "median_position_error": 3.0,
+    "exact_matches": 1,
+    "within_3_positions": 14,
+    "within_5_positions": 18,
+    "total_drivers": 22,
+    "accuracy_pct": 63.6
+  },
+  "gpReport": {
+    "round": 4,
+    "name": "Miami Grand Prix",
+    "comparedDrivers": 22,
+    "meanError": 4.36,
+    "medianError": 3.0,
+    "exactMatches": 1,
+    "within3": 14,
+    "within5": 18,
+    "winnerHit": false,
+    "podiumHits": 0,
+    "biggestMisses": [
+      {
+        "driver": "HAD",
+        "team": "Red Bull Racing",
+        "predicted": 8,
+        "actual": 22,
+        "delta": -14,
+        "absDelta": 14
+      },
+      {
+        "driver": "GAS",
+        "team": "Alpine",
+        "predicted": 9,
+        "actual": 21,
+        "delta": -12,
+        "absDelta": 12
+      },
+      {
+        "driver": "BOR",
+        "team": "Audi",
+        "predicted": 22,
+        "actual": 12,
+        "delta": 10,
+        "absDelta": 10
+      },
+      {
+        "driver": "LAW",
+        "team": "Racing Bulls",
+        "predicted": 10,
+        "actual": 20,
+        "delta": -10,
+        "absDelta": 10
+      },
+      {
+        "driver": "ANT",
+        "team": "Mercedes",
+        "predicted": 5,
+        "actual": 1,
+        "delta": 4,
+        "absDelta": 4
+      }
+    ],
+    "teamMeanError": [
+      {
+        "team": "Ferrari",
+        "meanError": 1.5,
+        "drivers": 2
+      },
+      {
+        "team": "Williams",
+        "meanError": 2.5,
+        "drivers": 2
+      },
+      {
+        "team": "Aston Martin",
+        "meanError": 2.5,
+        "drivers": 2
+      },
+      {
+        "team": "Haas",
+        "meanError": 2.5,
+        "drivers": 2
+      },
+      {
+        "team": "McLaren",
+        "meanError": 2.5,
+        "drivers": 2
+      },
+      {
+        "team": "Mercedes",
+        "meanError": 3.0,
+        "drivers": 2
+      },
+      {
+        "team": "Cadillac",
+        "meanError": 3.5,
+        "drivers": 2
+      },
+      {
+        "team": "Audi",
+        "meanError": 6.5,
+        "drivers": 2
+      },
+      {
+        "team": "Racing Bulls",
+        "meanError": 6.5,
+        "drivers": 2
+      },
+      {
+        "team": "Alpine",
+        "meanError": 8.0,
+        "drivers": 2
+      },
+      {
+        "team": "Red Bull Racing",
+        "meanError": 9.0,
+        "drivers": 2
+      }
+    ]
   }
 }
