@@ -20,16 +20,16 @@
 
 :root,
 [data-theme="dark"] {
-  --bg: #15151E;
-  --bg-card: rgba(31, 31, 43, 0.8);
-  --bg-card-solid: #1F1F2B;
-  --bg-card-hover: rgba(39, 39, 58, 0.9);
-  --bg-surface: #1A1A28;
-  --text: #F5F5F5;
+  --bg: #0D1117;
+  --bg-card: rgba(18, 24, 34, 0.86);
+  --bg-card-solid: #121822;
+  --bg-card-hover: rgba(30, 39, 52, 0.92);
+  --bg-surface: #151C27;
+  --text: #F4F7FB;
   --text-secondary: #D1D5DB;
-  --text-muted: #9CA3AF;
-  --border: rgba(45, 45, 63, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.06);
+  --text-muted: #9FB0C8;
+  --border: rgba(77, 91, 112, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.08);
   --glass-bg: rgba(255, 255, 255, 0.03);
 }
 
@@ -57,7 +57,9 @@ html {
 
 body {
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, rgba(14, 20, 30, 0.92), rgba(8, 11, 16, 1)),
+    var(--bg);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
@@ -94,8 +96,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 6, 0, 0.08), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(225, 6, 0, 0.04), transparent);
+    linear-gradient(115deg, rgba(225, 6, 0, 0.10), transparent 32%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 18px);
   pointer-events: none;
 }
 
@@ -105,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  border-radius: 18px;
+  border-radius: 8px;
   transition: all 0.2s ease;
 }
 .card:hover { border-color: rgba(225, 6, 0, 0.12); }
@@ -152,7 +154,7 @@ h1, h2, h3, h4, h5, h6 {
 .weekend-spotlight {
   position: relative;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 12px;
   border: 1px solid rgba(225, 6, 0, 0.14);
   background:
     linear-gradient(135deg, rgba(225, 6, 0, 0.12), transparent 42%),
@@ -177,8 +179,42 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
+.data-freshness-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(159, 176, 200, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(46, 196, 182, 0.08), rgba(225, 6, 0, 0.05)),
+    var(--bg-card);
+  padding: 1rem 1.15rem;
+}
+
+.data-freshness-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 220px;
+}
+
+.data-freshness-meta span {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.38rem 0.7rem;
+}
+
 .report-shell {
-  border-radius: 24px;
+  border-radius: 12px;
   border: 1px solid rgba(225, 6, 0, 0.16);
   background:
     linear-gradient(135deg, rgba(225, 6, 0, 0.07), transparent 38%),
@@ -187,14 +223,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .report-panel {
-  border-radius: 18px;
+  border-radius: 8px;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.02);
   padding: 1rem;
 }
 
 .report-panel-muted {
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px dashed var(--border);
   padding: 1rem;
   color: var(--text-muted);
@@ -207,7 +243,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 0.95rem;
-  border-radius: 14px;
+  border-radius: 8px;
   background: var(--bg-surface);
 }
 
@@ -257,7 +293,7 @@ h1, h2, h3, h4, h5, h6 {
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--glass-border);
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 16px;
   transition: border-color 0.2s ease;
 }
@@ -290,7 +326,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Visualization images */
 .viz-image {
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid var(--glass-border);
   transition: all 0.3s ease;
   background: var(--bg-surface);
@@ -302,7 +338,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-command-center {
-  border-radius: 22px;
+  border-radius: 10px;
   border: 1px solid rgba(225, 6, 0, 0.2);
   background:
     radial-gradient(circle at 0% 0%, rgba(225, 6, 0, 0.14), transparent 34%),
@@ -320,7 +356,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-metric-tile {
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.03);
   padding: 12px 14px;
@@ -373,7 +409,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-insight-item {
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px dashed var(--border);
   background: rgba(255, 255, 255, 0.02);
   padding: 0.55rem 0.75rem;
@@ -383,16 +419,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-card-pro {
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px solid var(--glass-border);
   background: var(--bg-card);
   padding: 0.7rem;
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .viz-card-pro:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   border-color: rgba(225, 6, 0, 0.24);
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
 }
@@ -406,19 +442,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .viz-card-media-wrap {
   position: relative;
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .viz-card-media {
   width: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  background: var(--bg-surface);
 }
 
 .viz-card-featured .viz-card-media {
-  min-height: 240px;
-  max-height: 340px;
+  min-height: 280px;
+  max-height: 520px;
 }
 
 .viz-card-body {
@@ -519,7 +556,7 @@ h1, h2, h3, h4, h5, h6 {
 .news-card {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px;
   transition: all 0.2s ease;
   display: flex;
@@ -536,7 +573,7 @@ h1, h2, h3, h4, h5, h6 {
 .video-card {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   transition: all 0.2s ease;
 }
@@ -555,4 +592,16 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid rgba(225, 6, 0, 0.5);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .data-freshness-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .data-freshness-meta {
+    justify-content: flex-start;
+    min-width: 0;
+  }
 }

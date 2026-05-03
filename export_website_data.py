@@ -23,6 +23,7 @@ Outputs:
 """
 
 import argparse, json, os, sys, math, unicodedata
+from datetime import datetime, timezone
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 import numpy as np
@@ -39,6 +40,8 @@ VIZ_DIR    = os.path.join(WEBSITE_DIR, "public", "visualizations")
 ROUNDS_DIR = os.path.join(DATA_DIR, "rounds")
 TRACKER_FILE = os.path.join(PROJECT_ROOT, f"season_tracker_{SEASON_YEAR}.json")
 TRACKER_EXPORT_FILE = os.path.join(DATA_DIR, "season_tracker.json")
+
+F1_CALENDAR_SOURCE_URL = "https://www.formula1.com/en/racing/2026"
 
 VIZ_METADATA = {
     "predicted_laptimes.png": {
@@ -163,7 +166,7 @@ def ensure_track_map_asset(round_num, gp_key, fallback_year=2025):
     try:
         from generate_fastf1_viz import plot_track_map, enable_cache
         enable_cache()
-        return bool(plot_track_map(fallback_year, gp_key, round_viz_dir))
+        return bool(plot_track_map(fallback_year, resolve_historical_gp_key(gp_key), round_viz_dir))
     except Exception as e:
         print(f"  ℹ️  Track map generation skipped for {gp_key}: {e}")
         return False
@@ -208,6 +211,10 @@ def _json_safe(value):
     if isinstance(value, list):
         return [_json_safe(v) for v in value]
     return value
+
+
+def _utc_now_iso():
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def _dedupe_preserve_order(values):
@@ -460,12 +467,10 @@ GP_WEATHER = {
     "Australia":      {"rain": 0.10, "temp": 24},
     "China":          {"rain": 0.15, "temp": 18},
     "Japan":          {"rain": 0.20, "temp": 16},
-    "Bahrain":        {"rain": 0.02, "temp": 32},
-    "Saudi Arabia":   {"rain": 0.02, "temp": 28},
     "Miami":          {"rain": 0.15, "temp": 30},
-    "Emilia Romagna": {"rain": 0.20, "temp": 22},
     "Monaco":         {"rain": 0.10, "temp": 22},
     "Spain":          {"rain": 0.05, "temp": 28},
+    "Madrid":         {"rain": 0.08, "temp": 27},
     "Canada":         {"rain": 0.25, "temp": 20},
     "Austria":        {"rain": 0.30, "temp": 22},
     "Great Britain":  {"rain": 0.35, "temp": 18},
@@ -485,7 +490,7 @@ GP_WEATHER = {
 
 GP_DATA_YEARS = {k: [2023, 2024, 2025] for k in GP_WEATHER}
 GP_DATA_YEARS["China"] = [2024, 2025]
-GP_DATA_YEARS["Emilia Romagna"] = [2024, 2025]
+GP_DATA_YEARS["Madrid"] = [2023, 2024, 2025]
 
 
 # ═════════════════════════════════════════════════════════════════════════
@@ -552,7 +557,14 @@ def export_season_metadata():
     for rnd in range(1, len(CALENDAR) + 1):
         path = os.path.join(ROUNDS_DIR, f"round_{rnd:02d}.json")
         if os.path.exists(path):
-            completed.append(rnd)
+            data = _safe_load_json(path)
+            expected = CALENDAR.get(rnd, {})
+            if (
+                isinstance(data, dict)
+                and data.get("round") == rnd
+                and data.get("gpKey") == expected.get("gp_key")
+            ):
+                completed.append(rnd)
 
     season = {
         "season":          SEASON_YEAR,
@@ -561,6 +573,9 @@ def export_season_metadata():
         "drivers":         drivers,
         "teams":           teams,
         "completedRounds": completed,
+        "lastUpdated":     _utc_now_iso(),
+        "source":          "Formula1.com official calendar + local model metadata",
+        "sourceUrl":       F1_CALENDAR_SOURCE_URL,
     }
 
     path = os.path.join(DATA_DIR, "season.json")
@@ -709,13 +724,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     for pos, row in classification.iterrows():
         gap_val = float(row["Gap"])
         gap_str = "LEADER" if pos == 1 else f"{gap_val:.3f}"
+        display_time = row.get("RaceProjectionTime", row.get("PredictedLapTime"))
         classification_data.append({
             "position":      int(pos),
             "driver":        row["Driver"],
             "driverFullName": row["DriverName"],
             "team":          row["Team"],
             "teamColor":     TEAM_COLOURS.get(row["Team"], "#888"),
-            "predictedTime": round(float(row["PredictedLapTime"]), 3),
+            "predictedTime": round(float(display_time), 3),
             "gap":           gap_str,
             "points":        int(row["Points"]),
             "confidence":    row.get("PredictionConfidence", "Medium"),
@@ -824,6 +840,13 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         "modelConfig": {
             "lstmEnabled": bool(use_lstm),
             "gameTheoryEnhancements": _json_safe(game_theory_diag),
+        },
+        "generatedAt": _utc_now_iso(),
+        "dataFreshness": {
+            "weatherSource": weather_full.get("source", "static") if weather_full else "static",
+            "qualifyingSource": "FastF1" if quali is not quali_estimates else "model estimate",
+            "standingsSource": "website/public/data/standings.json",
+            "officialResultsSource": "Jolpica Ergast-compatible API",
         },
     }
 
@@ -1666,6 +1689,10 @@ def _fetch_live_standings_from_jolpica(season_year=SEASON_YEAR):
 
     standings = {
         "lastUpdatedRound": int(last_round),
+        "lastUpdated": _utc_now_iso(),
+        "source": "Jolpica Ergast-compatible API",
+        "sourceUrl": JOLPICA_BASE_URL,
+        "statusNote": "Official standings snapshot from the latest available API standings list.",
         "drivers": driver_list,
         "constructors": constructor_list,
         "wdcPossibility": wdc_possibility,
@@ -1845,6 +1872,10 @@ def export_standings():
 
     standings = {
         "lastUpdatedRound": last_round,
+        "lastUpdated": _utc_now_iso(),
+        "source": "Local round-file reconstruction",
+        "sourceUrl": None,
+        "statusNote": "Fallback standings reconstructed from generated round files.",
         "drivers":          driver_list,
         "constructors":     constructor_list,
         "wdcPossibility":   wdc_possibility,
@@ -1867,7 +1898,7 @@ def _generate_fastf1_viz(round_num, gp_key, year=2024):
     extra = []
     try:
         from generate_fastf1_viz import generate_all_for_circuit
-        results = generate_all_for_circuit(gp_key, year, round_num)
+        results = generate_all_for_circuit(resolve_historical_gp_key(gp_key), year, round_num)
         if results.get("track_map"):
             extra.append("track_map.png")
         if results.get("laptime_dist"):

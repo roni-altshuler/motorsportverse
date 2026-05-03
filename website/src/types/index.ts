@@ -47,6 +47,9 @@ export interface SeasonData {
   drivers: DriverInfo[];
   teams: TeamInfo[];
   completedRounds: number[];
+  lastUpdated?: string;
+  source?: string;
+  sourceUrl?: string;
 }
 
 export interface ClassificationEntry {
@@ -185,6 +188,13 @@ export interface RoundData {
     accuracy_pct?: number;
   };
   gpReport?: GrandPrixPerformanceReport;
+  generatedAt?: string;
+  dataFreshness?: {
+    weatherSource?: string;
+    qualifyingSource?: string;
+    standingsSource?: string;
+    officialResultsSource?: string;
+  };
 }
 
 export interface SpeedTrapEntry {
@@ -335,6 +345,10 @@ export interface ConstructorStanding {
 
 export interface StandingsData {
   lastUpdatedRound: number;
+  lastUpdated?: string;
+  source?: string;
+  sourceUrl?: string | null;
+  statusNote?: string;
   drivers: DriverStanding[];
   constructors: ConstructorStanding[];
   wdcPossibility: WDCPossibility[];

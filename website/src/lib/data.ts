@@ -39,7 +39,7 @@ export function getVisualizationPath(round: number, filename: string): string {
  * Check which rounds have data available by trying to fetch each one.
  * Returns an array of available round numbers.
  */
-export async function getAvailableRounds(totalRounds: number = 24): Promise<number[]> {
+export async function getAvailableRounds(totalRounds: number = 22): Promise<number[]> {
   const checks = Array.from({ length: totalRounds }, (_, i) => i + 1).map(async (r) => {
     try {
       const pad = r.toString().padStart(2, "0");
@@ -70,6 +70,20 @@ export function formatDate(dateStr: string): string {
     day: "numeric",
     month: "short",
     year: "numeric",
+  });
+}
+
+export function formatDateTime(dateStr?: string): string {
+  if (!dateStr) return "Not published";
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  return d.toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
   });
 }
 

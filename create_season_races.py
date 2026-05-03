@@ -11,7 +11,7 @@ Creates:
     races/round_01_australian_gp.py
     races/round_02_chinese_gp.py
     ...
-    races/round_24_abu_dhabi_gp.py
+    races/round_22_abu_dhabi_gp.py
 """
 
 import os
@@ -30,12 +30,10 @@ GP_WEATHER = {
     "Australia":      {"rain": 0.10, "temp": 24},
     "China":          {"rain": 0.15, "temp": 18},
     "Japan":          {"rain": 0.20, "temp": 16},
-    "Bahrain":        {"rain": 0.02, "temp": 32},
-    "Saudi Arabia":   {"rain": 0.02, "temp": 28},
     "Miami":          {"rain": 0.15, "temp": 30},
-    "Emilia Romagna": {"rain": 0.20, "temp": 22},
     "Monaco":         {"rain": 0.10, "temp": 22},
     "Spain":          {"rain": 0.05, "temp": 28},
+    "Madrid":         {"rain": 0.08, "temp": 27},
     "Canada":         {"rain": 0.25, "temp": 20},
     "Austria":        {"rain": 0.30, "temp": 22},
     "Great Britain":  {"rain": 0.35, "temp": 18},
@@ -59,12 +57,10 @@ GP_DATA_YEARS = {
     "Australia":      [2023, 2024, 2025],
     "China":          [2024, 2025],
     "Japan":          [2023, 2024, 2025],
-    "Bahrain":        [2023, 2024, 2025],
-    "Saudi Arabia":   [2023, 2024, 2025],
     "Miami":          [2023, 2024, 2025],
-    "Emilia Romagna": [2024, 2025],
     "Monaco":         [2023, 2024, 2025],
     "Spain":          [2023, 2024, 2025],
+    "Madrid":         [2023, 2024, 2025],
     "Canada":         [2023, 2024, 2025],
     "Austria":        [2023, 2024, 2025],
     "Great Britain":  [2023, 2024, 2025],

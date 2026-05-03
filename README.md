@@ -4,9 +4,9 @@ A **modular, scalable** machine-learning framework that predicts Formula 1 Grand
 race results using historical telemetry from the [FastF1](https://docs.fastf1.dev/) API,
 an ensemble regression approach, and an interactive **Next.js website** for visualisation.
 
-> **Current season:** All 24 rounds of the 2026 calendar — prediction scripts ready for every Grand Prix.
+> **Current season:** Official 22-round 2026 calendar, updated through the Miami Grand Prix weekend.
 >
-> **Live data sync:** Official standings and completed-round classified results are pulled from Jolpica/Ergast-compatible APIs with local fallback.
+> **Live data sync:** Official standings and completed-round classified results are pulled from Jolpica/Ergast-compatible APIs with local fallback and freshness metadata.
 
 ---
 
@@ -30,17 +30,17 @@ f1_predictions/
 ├── optimize_game_theory_postprocessing.py ← Scale search for postprocessing calibration
 ├── generate_fastf1_viz.py           ← FastF1 historical visualisations (track map, etc.)
 ├── report_results.py                ← Detailed race report + HTML generator
-├── create_season_races.py           ← Script that generates all 24 race files
+├── create_season_races.py           ← Script that generates configured-season race files
 ├── F1PredictionFramework.ipynb      ← Interactive Jupyter notebook
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
 │
-├── races/                           ← 24 round-specific prediction scripts
+├── races/                           ← round-specific prediction scripts
 │   ├── round_01_australia_gp.py
 │   ├── round_02_china_gp.py
-│   ├── ... (all 24 rounds)
-│   └── round_24_abu_dhabi_gp.py
+│   ├── ... (configured calendar)
+│   └── round_22_abu_dhabi_gp.py
 │
 ├── website/                         ← Next.js interactive dashboard
 │   ├── src/
@@ -63,10 +63,9 @@ f1_predictions/
 
 ### Website Dashboard
 - **Next.js 16** + React 19 + Tailwind CSS v4 + Recharts
-- Dark-themed F1 aesthetic with team colours, flag emojis, responsive layout
-- Pages: Home, Calendar (24 races), Race Detail, Standings (Drivers / Constructors / WDC), About
-- Visualization gallery with lightbox for all generated plots
-- Race-detail visualizations upgraded into an analytics command-center layout with featured chart focus, KPI tiles, category chips, and analyst-ready sections
+- Sleek race-control aesthetic with team colours, responsive layout, and source/freshness chips
+- Pages: Home, Calendar, Race Detail, Standings (Drivers / Constructors / WDC), Accuracy, About
+- Race-detail visualizations display inline with analyst notes, featured charts, KPI tiles, category chips, and source labels
 
 ### Advanced Models (`advanced_models.py`)
 - **Pit Strategy Simulator** — Monte-Carlo simulation of 1/2/3-stop strategies with compound modelling
@@ -80,6 +79,8 @@ f1_predictions/
 - Generates `season.json`, `standings.json`, `round_XX.json`, and all PNG visualisations
 - `standings.json` now defaults to official Jolpica standings (`F1_USE_LIVE_STANDINGS=1`)
 - Completed round files can now refresh `actualResults` directly from official classified race results (`F1_USE_LIVE_ROUND_RESULTS=1`)
+- `season.json`, `standings.json`, and round files include freshness/source fields for website transparency
+- Round metadata validates stored files against the current calendar so stale generated artifacts do not masquerade as current rounds
 
 ### Calibration & Benchmarking
 - `benchmark_game_theory_upgrades.py` compares baseline vs enhanced game-theory variants across completed rounds
@@ -107,7 +108,7 @@ f1_predictions/
 | Reports | Console only | HTML report | **Interactive website** |
 | LSTM | None | None | **Lap-by-lap sequence model** |
 | Visualisations | 5 per GP | 5 per GP | **10+ per GP** (ML + FastF1 + advanced) |
-| Races covered | 1 | 24 scripts | **24 scripts + website pipeline** |
+| Races covered | 1 | Static scripts | **Configured-season pipeline + website** |
 
 ---
 
@@ -186,7 +187,7 @@ conda activate f1_predictions
 # Export Round 1 with all visualisations + advanced models
 python export_website_data.py --round 1 --fastf1 --advanced
 
-# Export all 24 rounds
+# Export the configured official calendar
 python export_website_data.py --all --fastf1 --advanced
 
 # Metadata only (season.json + standings.json)
@@ -298,8 +299,8 @@ The ML model incorporates detailed circuit characteristics that vary per track:
 | Feature | Description |
 |---------|-------------|
 | **Expected pit stops** | 1-stop (Monaco, Monza, Zandvoort) vs 2-stop (most circuits) |
-| **Tyre degradation** | Circuit-scaled wear factor (0.30 Monaco → 0.70 Bahrain/Qatar) |
-| **Overtaking difficulty** | Track-specific overtaking rating (0.1 Monaco → 0.8 Bahrain/Monza) |
+| **Tyre degradation** | Circuit-scaled wear factor (0.30 Monaco → 0.70 Qatar/Barcelona) |
+| **Overtaking difficulty** | Track-specific overtaking rating (0.1 Monaco → 0.8 Monza) |
 | **DRS zones** | Number of DRS activation zones (1–3 per circuit) |
 | **Safety car likelihood** | Historical probability of safety car deployment |
 | **Altitude** | Track elevation in metres (affects engine performance — e.g. Mexico at 2240m) |

@@ -22,6 +22,7 @@ import {
   fetchSeasonData,
   getVisualizationPath,
   formatDate,
+  formatDateTime,
   formatGap,
   getRoundLifecycle,
   getRoundStatusMeta,
@@ -94,8 +95,30 @@ export default function RaceDetailPage({ round }: Props) {
   }, []);
 
   useEffect(() => {
-    fetchRoundData(round).then(setData).catch(() => setData(null));
-    fetchSeasonData().then(setSeason).catch(() => {});
+    let active = true;
+    fetchSeasonData()
+      .then((seasonData) => {
+        if (!active) return;
+        setSeason(seasonData);
+        const expectedRace = seasonData.calendar.find((race) => race.round === round);
+        fetchRoundData(round)
+          .then((roundData) => {
+            if (!active) return;
+            const matchesCalendar =
+              !expectedRace ||
+              (roundData.round === expectedRace.round && roundData.gpKey === expectedRace.gpKey);
+            setData(matchesCalendar ? roundData : null);
+          })
+          .catch(() => active && setData(null));
+      })
+      .catch(() => {
+        if (!active) return;
+        setSeason(null);
+        fetchRoundData(round).then(setData).catch(() => setData(null));
+      });
+    return () => {
+      active = false;
+    };
   }, [round]);
 
   if (!season && !data) {
@@ -111,12 +134,12 @@ export default function RaceDetailPage({ round }: Props) {
 
   const seasonRace = season?.calendar.find((r) => r.round === round) || null;
   const seasonYear = season?.season ?? DEFAULT_SEASON_YEAR;
+  const totalRounds = season?.totalRounds ?? 22;
   const liveMeta = seasonRace
     ? getRoundStatusMeta(getRoundLifecycle(seasonRace, !!data, !!data?.actualResults))
     : null;
 
   if (!data && seasonRace) {
-    const previewTrackMapSrc = failedImages.has("track_map.png") ? null : getVisualizationPath(round, "track_map.png");
     const raceName = seasonRace.name;
     const isPostponed = !!seasonRace.postponed;
 
@@ -150,25 +173,6 @@ export default function RaceDetailPage({ round }: Props) {
                 : "This Grand Prix page is available now, but the model has not published predictions yet. Once the workflow runs for this round, predicted classification, real outcome comparison, accuracy metrics, and strategy visualizations will automatically appear here."}
             </p>
           </div>
-
-          {previewTrackMapSrc && (
-            <div className="card p-4 mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="section-heading mb-0">Circuit Plot</h3>
-                <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Corners Labeled</span>
-              </div>
-              <Image
-                src={previewTrackMapSrc}
-                alt={`${raceName} circuit plot`}
-                className="viz-image w-full"
-                width={1600}
-                height={900}
-                style={{ width: "100%", height: "auto" }}
-                onError={() => handleImageError("track_map.png")}
-                unoptimized
-              />
-            </div>
-          )}
 
           <div className="card p-6 mb-8">
             <h3 className="section-heading">Circuit Profile</h3>
@@ -483,6 +487,18 @@ export default function RaceDetailPage({ round }: Props) {
             </div>
           </div>
         )}
+        <div className="data-freshness-card mt-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: "#9FB0C8" }}>Freshness & Sources</p>
+            <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
+              Generated {formatDateTime(data.generatedAt)} with qualifying from {data.dataFreshness?.qualifyingSource || "the model pipeline"} and weather from {data.dataFreshness?.weatherSource || data.weatherData?.source || "static estimates"}.
+            </p>
+          </div>
+          <div className="data-freshness-meta">
+            <span>{actualRows.length > 0 ? "Official result loaded" : liveMeta?.shortLabel || "Prediction"}</span>
+            <span>{data.metrics.trainingYears.join(", ")} training data</span>
+          </div>
+        </div>
       </motion.div>
 
       {trackMapSrc && (
@@ -1388,7 +1404,6 @@ export default function RaceDetailPage({ round }: Props) {
             <div
               key={detail.filename}
               className={`viz-card-pro ${isFeatured ? "viz-card-featured" : ""}`}
-              onClick={() => setLightboxImg(src)}
             >
               <div className="viz-card-media-wrap">
                 <Image
@@ -1420,7 +1435,6 @@ export default function RaceDetailPage({ round }: Props) {
                   )}
                 </div>
                 <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{detail.description}</p>
-                <p className="text-[11px] mt-1.5" style={{ color: "#E10600" }}>Click to enlarge</p>
               </div>
             </div>
           );
@@ -1569,7 +1583,7 @@ export default function RaceDetailPage({ round }: Props) {
             <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span> Calendar
           </Link>
         )}
-        {round < 24 && (
+        {round < totalRounds && (
           <Link href={`/race/${round + 1}`} className="group text-f1-red font-bold transition-colors inline-flex items-center gap-1 hover:underline">
             Next Round <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
           </Link>

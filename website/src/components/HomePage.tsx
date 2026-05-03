@@ -11,6 +11,7 @@ import {
   fetchRoundData,
   fetchSeasonTrackerData,
   formatDate,
+  formatDateTime,
   getCurrentRaceContext,
   getRoundLifecycle,
   getRoundStatusMeta,
@@ -110,7 +111,7 @@ export default function HomePage() {
             <span className="gradient-text">Predictions</span>
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            AI-powered race predictions for every Grand Prix. XGBoost + GradientBoosting + LSTM ensemble trained on 3 years of FastF1 telemetry data.
+            AI-powered race forecasts with official standings, weekend context, weather risk, team form, and model confidence shown in one race-control view.
           </motion.p>
           <motion.div variants={fadeUp} className="max-w-4xl mx-auto mb-10">
             <div className="weekend-spotlight p-6 sm:p-7 text-left">
@@ -159,6 +160,24 @@ export default function HomePage() {
           </motion.div>
         </motion.section>
 
+        {standings && (
+          <motion.section className="data-freshness-card mb-12" initial="hidden" animate="visible" variants={fadeUp}>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: "#9FB0C8" }}>Official Data Snapshot</p>
+              <h2 className="text-xl sm:text-2xl font-black mt-1" style={{ color: "var(--text)" }}>
+                Standings synced through Round {standings.lastUpdatedRound}
+              </h2>
+              <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
+                {standings.statusNote || "Championship tables are shown with source and freshness metadata so stale data is easy to spot."}
+              </p>
+            </div>
+            <div className="data-freshness-meta">
+              <span>{standings.source || "Official standings source"}</span>
+              <span>{formatDateTime(standings.lastUpdated)}</span>
+            </div>
+          </motion.section>
+        )}
+
         {/* ━━━ STATS BAR ━━━ */}
         <motion.section className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-20" initial="hidden" animate="visible" variants={stagger}>
           {[
@@ -196,7 +215,7 @@ export default function HomePage() {
               {/* Race header */}
               <div className="p-6 sm:p-8 border-b" style={{ borderColor: "var(--border)" }}>
                 <div className="flex items-center gap-3">
-                  <CountryFlag country={latestRace.gpKey} size={36} />
+                  <CountryFlag country={latestRace.gpKey || latestRace.name} size={36} />
                   <div>
                     <h3 className="text-xl sm:text-2xl font-black" style={{ color: "var(--text)" }}>{latestRace.name}</h3>
                     <p className="text-sm" style={{ color: "var(--text-muted)" }}>Round {latestRace.round} • {latestRace.circuit} • {formatDate(latestRace.date)}</p>

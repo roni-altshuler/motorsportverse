@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { StandingsData, SeasonData } from "@/types";
-import { fetchStandingsData, fetchSeasonData } from "@/lib/data";
+import { fetchStandingsData, fetchSeasonData, formatDateTime } from "@/lib/data";
 import { getSeasonYear } from "@/lib/season";
 import StandingsChart from "@/components/charts/StandingsChart";
 
@@ -58,7 +58,7 @@ export default function StandingsPage() {
 
   const completedRounds = season?.completedRounds || [];
   const seasonYear = getSeasonYear(season);
-  const totalRounds = season?.totalRounds ?? 24;
+  const totalRounds = season?.totalRounds ?? 22;
   const handleTabChange = (tab: Tab) => {
     const params = new URLSearchParams(searchParams.toString());
     if (tab === "drivers") {
@@ -87,7 +87,7 @@ export default function StandingsPage() {
           {seasonYear} Standings
         </h1>
         <p style={{ color: "var(--text-muted)" }}>
-          After Round {data.lastUpdatedRound} of {totalRounds}
+          Updated through Round {data.lastUpdatedRound} of {totalRounds}
         </p>
         <div className="progress-bar w-48 mx-auto mt-3 h-2">
           <div
@@ -97,6 +97,19 @@ export default function StandingsPage() {
               background: "#E10600",
             }}
           />
+        </div>
+      </div>
+
+      <div className="data-freshness-card mb-8">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: "#9FB0C8" }}>Data Freshness</p>
+          <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
+            {data.statusNote || "Standings are refreshed from the configured official data pipeline when the export workflow runs."}
+          </p>
+        </div>
+        <div className="data-freshness-meta">
+          <span>{data.source || "Standings data"}</span>
+          <span>{formatDateTime(data.lastUpdated)}</span>
         </div>
       </div>
 
@@ -406,7 +419,7 @@ export default function StandingsPage() {
             </h2>
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>
               Based on maximum possible points with{" "}
-              {24 - data.lastUpdatedRound} rounds remaining
+              {Math.max(totalRounds - data.lastUpdatedRound, 0)} rounds remaining
             </p>
           </div>
 

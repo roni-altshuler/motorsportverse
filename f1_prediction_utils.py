@@ -133,32 +133,30 @@ TEAM_COLOURS: dict[str, str] = {
 # ---- F1 points system (top 10) ------------------------------------------
 F1_POINTS = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
 
-# ---- Complete 2026 Calendar (24 rounds) ----------------------------------
+# ---- Official 2026 Calendar (22 rounds) ----------------------------------
 CALENDAR_2026 = {
     1:  {"name": "Australian Grand Prix",     "gp_key": "Australia",      "circuit": "Albert Park",            "date": "2026-03-08", "laps": 58, "circuit_km": 5.278, "sprint": False},
     2:  {"name": "Chinese Grand Prix",        "gp_key": "China",          "circuit": "Shanghai International", "date": "2026-03-15", "laps": 56, "circuit_km": 5.451, "sprint": True,  "sprint_laps": 21},
     3:  {"name": "Japanese Grand Prix",       "gp_key": "Japan",          "circuit": "Suzuka",                 "date": "2026-03-29", "laps": 53, "circuit_km": 5.807, "sprint": False},
-    4:  {"name": "Bahrain Grand Prix",        "gp_key": "Bahrain",        "circuit": "Sakhir",                 "date": "2026-04-12", "laps": 57, "circuit_km": 5.412, "sprint": False, "postponed": True, "status_note": "Postponed - rescheduled date TBC"},
-    5:  {"name": "Saudi Arabian Grand Prix",  "gp_key": "Saudi Arabia",   "circuit": "Jeddah Corniche",        "date": "2026-04-19", "laps": 50, "circuit_km": 6.174, "sprint": False, "postponed": True, "status_note": "Postponed - rescheduled date TBC"},
-    6:  {"name": "Miami Grand Prix",          "gp_key": "Miami",          "circuit": "Miami International",    "date": "2026-05-03", "laps": 57, "circuit_km": 5.412, "sprint": True,  "sprint_laps": 21},
-    7:  {"name": "Emilia Romagna Grand Prix", "gp_key": "Emilia Romagna", "circuit": "Imola",                  "date": "2026-05-31", "laps": 63, "circuit_km": 4.909, "sprint": False},
-    8:  {"name": "Monaco Grand Prix",         "gp_key": "Monaco",         "circuit": "Monaco",                 "date": "2026-06-07", "laps": 78, "circuit_km": 3.337, "sprint": False},
-    9:  {"name": "Spanish Grand Prix",        "gp_key": "Spain",          "circuit": "Barcelona-Catalunya",    "date": "2026-06-21", "laps": 66, "circuit_km": 4.657, "sprint": False},
-    10: {"name": "Canadian Grand Prix",       "gp_key": "Canada",         "circuit": "Circuit Gilles Villeneuve", "date": "2026-06-28", "laps": 70, "circuit_km": 4.361, "sprint": False},
-    11: {"name": "Austrian Grand Prix",       "gp_key": "Austria",        "circuit": "Red Bull Ring",          "date": "2026-07-05", "laps": 71, "circuit_km": 4.318, "sprint": True,  "sprint_laps": 24},
-    12: {"name": "British Grand Prix",        "gp_key": "Great Britain",  "circuit": "Silverstone",            "date": "2026-07-19", "laps": 52, "circuit_km": 5.891, "sprint": False},
-    13: {"name": "Belgian Grand Prix",        "gp_key": "Belgium",        "circuit": "Spa-Francorchamps",      "date": "2026-07-26", "laps": 44, "circuit_km": 7.004, "sprint": True,  "sprint_laps": 15},
-    14: {"name": "Hungarian Grand Prix",      "gp_key": "Hungary",        "circuit": "Hungaroring",            "date": "2026-08-02", "laps": 70, "circuit_km": 4.381, "sprint": False},
-    15: {"name": "Dutch Grand Prix",          "gp_key": "Netherlands",    "circuit": "Zandvoort",              "date": "2026-08-30", "laps": 72, "circuit_km": 4.259, "sprint": False},
-    16: {"name": "Italian Grand Prix",        "gp_key": "Italy",          "circuit": "Monza",                  "date": "2026-09-06", "laps": 53, "circuit_km": 5.793, "sprint": False},
-    17: {"name": "Azerbaijan Grand Prix",     "gp_key": "Azerbaijan",     "circuit": "Baku City Circuit",      "date": "2026-09-20", "laps": 51, "circuit_km": 6.003, "sprint": False},
-    18: {"name": "Singapore Grand Prix",      "gp_key": "Singapore",      "circuit": "Marina Bay",             "date": "2026-10-04", "laps": 62, "circuit_km": 4.940, "sprint": False},
-    19: {"name": "United States Grand Prix",  "gp_key": "United States",  "circuit": "COTA",                   "date": "2026-10-18", "laps": 56, "circuit_km": 5.513, "sprint": True,  "sprint_laps": 19},
-    20: {"name": "Mexico City Grand Prix",    "gp_key": "Mexico",         "circuit": "Autódromo Hermanos Rodríguez", "date": "2026-10-25", "laps": 71, "circuit_km": 4.304, "sprint": False},
-    21: {"name": "São Paulo Grand Prix",      "gp_key": "Brazil",         "circuit": "Interlagos",             "date": "2026-11-08", "laps": 71, "circuit_km": 4.309, "sprint": True,  "sprint_laps": 24},
-    22: {"name": "Las Vegas Grand Prix",      "gp_key": "Las Vegas",      "circuit": "Las Vegas Strip",        "date": "2026-11-22", "laps": 50, "circuit_km": 6.201, "sprint": False},
-    23: {"name": "Qatar Grand Prix",          "gp_key": "Qatar",          "circuit": "Lusail",                 "date": "2026-11-29", "laps": 57, "circuit_km": 5.419, "sprint": False},
-    24: {"name": "Abu Dhabi Grand Prix",      "gp_key": "Abu Dhabi",      "circuit": "Yas Marina",             "date": "2026-12-06", "laps": 58, "circuit_km": 5.281, "sprint": False},
+    4:  {"name": "Miami Grand Prix",          "gp_key": "Miami",          "circuit": "Miami International",    "date": "2026-05-03", "laps": 57, "circuit_km": 5.412, "sprint": True,  "sprint_laps": 21},
+    5:  {"name": "Canadian Grand Prix",       "gp_key": "Canada",         "circuit": "Circuit Gilles Villeneuve", "date": "2026-05-24", "laps": 70, "circuit_km": 4.361, "sprint": False},
+    6:  {"name": "Monaco Grand Prix",         "gp_key": "Monaco",         "circuit": "Monaco",                 "date": "2026-06-07", "laps": 78, "circuit_km": 3.337, "sprint": False},
+    7:  {"name": "Barcelona-Catalunya Grand Prix", "gp_key": "Spain",     "circuit": "Barcelona-Catalunya",    "date": "2026-06-14", "laps": 66, "circuit_km": 4.657, "sprint": False},
+    8:  {"name": "Austrian Grand Prix",       "gp_key": "Austria",        "circuit": "Red Bull Ring",          "date": "2026-06-28", "laps": 71, "circuit_km": 4.318, "sprint": True,  "sprint_laps": 24},
+    9:  {"name": "British Grand Prix",        "gp_key": "Great Britain",  "circuit": "Silverstone",            "date": "2026-07-05", "laps": 52, "circuit_km": 5.891, "sprint": False},
+    10: {"name": "Belgian Grand Prix",        "gp_key": "Belgium",        "circuit": "Spa-Francorchamps",      "date": "2026-07-19", "laps": 44, "circuit_km": 7.004, "sprint": True,  "sprint_laps": 15},
+    11: {"name": "Hungarian Grand Prix",      "gp_key": "Hungary",        "circuit": "Hungaroring",            "date": "2026-07-26", "laps": 70, "circuit_km": 4.381, "sprint": False},
+    12: {"name": "Dutch Grand Prix",          "gp_key": "Netherlands",    "circuit": "Zandvoort",              "date": "2026-08-23", "laps": 72, "circuit_km": 4.259, "sprint": False},
+    13: {"name": "Italian Grand Prix",        "gp_key": "Italy",          "circuit": "Monza",                  "date": "2026-09-06", "laps": 53, "circuit_km": 5.793, "sprint": False},
+    14: {"name": "Spanish Grand Prix",        "gp_key": "Madrid",         "circuit": "Madring",                "date": "2026-09-13", "laps": 57, "circuit_km": 5.474, "sprint": False},
+    15: {"name": "Azerbaijan Grand Prix",     "gp_key": "Azerbaijan",     "circuit": "Baku City Circuit",      "date": "2026-09-27", "laps": 51, "circuit_km": 6.003, "sprint": False},
+    16: {"name": "Singapore Grand Prix",      "gp_key": "Singapore",      "circuit": "Marina Bay",             "date": "2026-10-11", "laps": 62, "circuit_km": 4.940, "sprint": False},
+    17: {"name": "United States Grand Prix",  "gp_key": "United States",  "circuit": "COTA",                   "date": "2026-10-25", "laps": 56, "circuit_km": 5.513, "sprint": True,  "sprint_laps": 19},
+    18: {"name": "Mexico City Grand Prix",    "gp_key": "Mexico",         "circuit": "Autódromo Hermanos Rodríguez", "date": "2026-11-01", "laps": 71, "circuit_km": 4.304, "sprint": False},
+    19: {"name": "São Paulo Grand Prix",      "gp_key": "Brazil",         "circuit": "Interlagos",             "date": "2026-11-08", "laps": 71, "circuit_km": 4.309, "sprint": True,  "sprint_laps": 24},
+    20: {"name": "Las Vegas Grand Prix",      "gp_key": "Las Vegas",      "circuit": "Las Vegas Strip",        "date": "2026-11-21", "laps": 50, "circuit_km": 6.201, "sprint": False},
+    21: {"name": "Qatar Grand Prix",          "gp_key": "Qatar",          "circuit": "Lusail",                 "date": "2026-11-29", "laps": 57, "circuit_km": 5.419, "sprint": False},
+    22: {"name": "Abu Dhabi Grand Prix",      "gp_key": "Abu Dhabi",      "circuit": "Yas Marina",             "date": "2026-12-06", "laps": 58, "circuit_km": 5.281, "sprint": False},
 }
 
 # ---- Circuit characteristics (for pit / tyre / weather modelling) --------
@@ -179,6 +177,7 @@ CIRCUIT_CHARACTERISTICS: dict[str, dict] = {
     "Hungary":        {"type": "permanent",    "base_quali_s": 76.0,  "expected_stops": 2, "pit_loss_s": 22.0, "tyre_deg": 0.60, "overtaking": 0.3, "drs_zones": 1, "safety_car_likelihood": 0.30, "altitude_m": 264},
     "Netherlands":    {"type": "permanent",    "base_quali_s": 70.0,  "expected_stops": 1, "pit_loss_s": 22.0, "tyre_deg": 0.45, "overtaking": 0.3, "drs_zones": 1, "safety_car_likelihood": 0.35, "altitude_m": 0},
     "Italy":          {"type": "permanent",    "base_quali_s": 79.5,  "expected_stops": 1, "pit_loss_s": 23.0, "tyre_deg": 0.40, "overtaking": 0.8, "drs_zones": 2, "safety_car_likelihood": 0.25, "altitude_m": 162},
+    "Madrid":         {"type": "street",       "base_quali_s": 82.0,  "expected_stops": 2, "pit_loss_s": 23.0, "tyre_deg": 0.55, "overtaking": 0.5, "drs_zones": 2, "safety_car_likelihood": 0.55, "altitude_m": 650},
     "Azerbaijan":     {"type": "street",       "base_quali_s": 101.0, "expected_stops": 2, "pit_loss_s": 23.0, "tyre_deg": 0.45, "overtaking": 0.6, "drs_zones": 2, "safety_car_likelihood": 0.75, "altitude_m": -28},
     "Singapore":      {"type": "street",       "base_quali_s": 96.0,  "expected_stops": 2, "pit_loss_s": 23.5, "tyre_deg": 0.50, "overtaking": 0.4, "drs_zones": 3, "safety_car_likelihood": 0.80, "altitude_m": 15},
     "United States":  {"type": "permanent",    "base_quali_s": 94.0,  "expected_stops": 2, "pit_loss_s": 23.0, "tyre_deg": 0.60, "overtaking": 0.6, "drs_zones": 2, "safety_car_likelihood": 0.35, "altitude_m": 228},
@@ -288,6 +287,16 @@ CALENDAR_2026 = CALENDAR
 DRIVER_TEAM_2026 = DRIVER_TEAM
 DRIVER_NUMBERS_2026 = DRIVER_NUMBERS
 TEAM_CHANGES_2026 = TEAM_CHANGES
+
+HISTORICAL_GP_ALIASES: dict[str, str] = {
+    # Madrid joins the calendar before same-circuit historical telemetry exists.
+    # Use Spain/Barcelona as a conservative proxy for baseline race-lap data.
+    "Madrid": "Spain",
+}
+
+
+def resolve_historical_gp_key(grand_prix: str) -> str:
+    return HISTORICAL_GP_ALIASES.get(str(grand_prix), str(grand_prix))
 
 # ---- Driver qualifying offset from pole (fraction, smaller = faster) -----
 # Used to auto-generate qualifying estimates for any circuit.
@@ -576,8 +585,10 @@ def enable_cache(cache_dir: str = "f1_cache") -> None:
 
 def load_race_session(year, grand_prix, session_type="R"):
     """Load a single FastF1 session → DataFrame of lap/sector times."""
-    print(f"  ⏳ Loading {year} {grand_prix} GP ({session_type}) …")
-    session = fastf1.get_session(year, grand_prix, session_type)
+    historical_gp = resolve_historical_gp_key(grand_prix)
+    alias_note = f" via {historical_gp}" if historical_gp != grand_prix else ""
+    print(f"  ⏳ Loading {year} {grand_prix} GP ({session_type}){alias_note} …")
+    session = fastf1.get_session(year, historical_gp, session_type)
     session.load(laps=True, telemetry=False, weather=False, messages=False)
     cols = ["Driver", "LapTime", "Sector1Time", "Sector2Time", "Sector3Time"]
     laps = session.laps[cols].copy()
@@ -905,10 +916,12 @@ def fetch_qualifying_data(year, grand_prix):
             break
 
     try:
-        print(f"🔍 Attempting to fetch {year} {grand_prix} qualifying …")
+        historical_gp = resolve_historical_gp_key(grand_prix)
+        alias_note = f" via {historical_gp}" if historical_gp != grand_prix else ""
+        print(f"🔍 Attempting to fetch {year} {grand_prix} qualifying{alias_note} …")
         import concurrent.futures
         def _load():
-            s = fastf1.get_session(year, grand_prix, "Q")
+            s = fastf1.get_session(year, historical_gp, "Q")
             s.load(laps=True, telemetry=False, weather=False, messages=False)
             return s
         with concurrent.futures.ThreadPoolExecutor(1) as ex:
@@ -1479,6 +1492,13 @@ def save_predicted_result(round_num, classification):
         'Driver' column and positional index.
     """
     data = _normalize_round_results(_read_json_file(PREDICTED_RESULTS_FILE))
+    # A freshly generated round invalidates older future forecasts, especially
+    # after calendar changes or late-weekend data refreshes.
+    data = {
+        rnd: positions
+        for rnd, positions in data.items()
+        if int(rnd) < int(round_num)
+    }
 
     rnd = {row["Driver"]: int(pos) for pos, row in classification.iterrows()}
     data[str(round_num)] = rnd

@@ -1549,6 +1549,7 @@ class SeasonTracker:
         """Rebuild tracker rows from round JSON files for full consistency."""
         if not os.path.isdir(rounds_dir):
             return
+        self.data = {"rounds": {}, "accuracy": {}}
 
         for fname in sorted(os.listdir(rounds_dir)):
             if not (fname.startswith("round_") and fname.endswith(".json")):
@@ -1563,6 +1564,9 @@ class SeasonTracker:
             try:
                 round_num = int(str(data.get("round", "")))
             except (TypeError, ValueError):
+                continue
+            expected = CALENDAR.get(round_num, {})
+            if expected and data.get("gpKey") != expected.get("gp_key"):
                 continue
             self.sync_from_round_file(round_num, data)
 
