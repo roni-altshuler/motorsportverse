@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Azerbaijan Grand Prix — Prediction
-# **Round 17** | Circuit: Baku City Circuit | Date: 2026-09-20
+# # 🏁 Austrian Grand Prix — Prediction
+# **Round 8** | Circuit: Red Bull Ring | Date: 2026-06-28
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Azerbaijan"
-GP_ROUND    = 17
+GP_NAME     = "Austria"
+GP_ROUND    = 8
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.05
+RAIN_PROB   = 0.3
 TEMPERATURE = 22
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 102.11,
-    "ALO": 102.62,
-    "ANT": 101.71,
-    "BEA": 102.62,
-    "BOR": 103.42,
-    "BOT": 103.12,
-    "COL": 103.12,
-    "GAS": 102.31,
-    "HAD": 102.21,
-    "HAM": 101.5,
-    "HUL": 102.92,
-    "LAW": 101.71,
-    "LEC": 101.3,
-    "LIN": 103.32,
-    "NOR": 101.2,
-    "OCO": 102.72,
-    "PER": 101.81,
-    "PIA": 101.1,
-    "RUS": 101.4,
-    "SAI": 101.91,
-    "STR": 103.02,
-    "VER": 101.0,
+    "ALB": 65.21,
+    "ALO": 65.53,
+    "ANT": 64.95,
+    "BEA": 65.53,
+    "BOR": 66.05,
+    "BOT": 65.85,
+    "COL": 65.85,
+    "GAS": 65.34,
+    "HAD": 65.27,
+    "HAM": 64.82,
+    "HUL": 65.73,
+    "LAW": 64.95,
+    "LEC": 64.69,
+    "LIN": 65.98,
+    "NOR": 64.63,
+    "OCO": 65.6,
+    "PER": 65.02,
+    "PIA": 64.56,
+    "RUS": 64.76,
+    "SAI": 65.08,
+    "STR": 65.79,
+    "VER": 64.5,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Azerbaijan Grand Prix")
+classification = predicted_classification(merged, gp_name="Austrian Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Azerbaijan Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Austrian Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Azerbaijan Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Austrian Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Azerbaijan Grand Prix prediction complete!")
+print("\n✅ Austrian Grand Prix prediction complete!")

@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 São Paulo Grand Prix — Prediction
-# **Round 21** | Circuit: Interlagos | Date: 2026-11-08
+# # 🏁 British Grand Prix — Prediction
+# **Round 9** | Circuit: Silverstone | Date: 2026-07-05
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Brazil"
-GP_ROUND    = 21
+GP_NAME     = "Great Britain"
+GP_ROUND    = 9
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.3
-TEMPERATURE = 24
+RAIN_PROB   = 0.35
+TEMPERATURE = 18
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 71.28,
-    "ALO": 71.63,
-    "ANT": 70.99,
-    "BEA": 71.63,
-    "BOR": 72.19,
-    "BOT": 71.98,
-    "COL": 71.98,
-    "GAS": 71.42,
-    "HAD": 71.35,
-    "HAM": 70.85,
-    "HUL": 71.84,
-    "LAW": 70.99,
-    "LEC": 70.71,
-    "LIN": 72.12,
-    "NOR": 70.64,
-    "OCO": 71.7,
-    "PER": 71.06,
-    "PIA": 70.57,
-    "RUS": 70.78,
-    "SAI": 71.13,
-    "STR": 71.91,
-    "VER": 70.5,
+    "ALB": 87.45,
+    "ALO": 87.88,
+    "ANT": 87.11,
+    "BEA": 87.88,
+    "BOR": 88.58,
+    "BOT": 88.32,
+    "COL": 88.32,
+    "GAS": 87.62,
+    "HAD": 87.54,
+    "HAM": 86.93,
+    "HUL": 88.14,
+    "LAW": 87.11,
+    "LEC": 86.76,
+    "LIN": 88.49,
+    "NOR": 86.67,
+    "OCO": 87.97,
+    "PER": 87.19,
+    "PIA": 86.59,
+    "RUS": 86.85,
+    "SAI": 87.28,
+    "STR": 88.23,
+    "VER": 86.5,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="São Paulo Grand Prix")
+classification = predicted_classification(merged, gp_name="British Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="São Paulo Grand Prix")
+generate_all_visualisations(results, merged, gp_name="British Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="São Paulo Grand Prix", circuit_key=GP_NAME,
+                     gp_name="British Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ São Paulo Grand Prix prediction complete!")
+print("\n✅ British Grand Prix prediction complete!")

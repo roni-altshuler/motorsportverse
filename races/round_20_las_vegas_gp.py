@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Singapore Grand Prix — Prediction
-# **Round 18** | Circuit: Marina Bay | Date: 2026-10-04
+# # 🏁 Las Vegas Grand Prix — Prediction
+# **Round 20** | Circuit: Las Vegas Strip | Date: 2026-11-21
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Singapore"
-GP_ROUND    = 18
+GP_NAME     = "Las Vegas"
+GP_ROUND    = 20
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.2
-TEMPERATURE = 30
+RAIN_PROB   = 0.02
+TEMPERATURE = 14
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 97.06,
-    "ALO": 97.54,
-    "ANT": 96.67,
-    "BEA": 97.54,
-    "BOR": 98.3,
-    "BOT": 98.02,
-    "COL": 98.02,
-    "GAS": 97.25,
-    "HAD": 97.15,
-    "HAM": 96.48,
-    "HUL": 97.82,
-    "LAW": 96.67,
-    "LEC": 96.29,
-    "LIN": 98.21,
-    "NOR": 96.19,
-    "OCO": 97.63,
-    "PER": 96.77,
-    "PIA": 96.1,
-    "RUS": 96.38,
-    "SAI": 96.86,
-    "STR": 97.92,
-    "VER": 96.0,
+    "ALB": 94.02,
+    "ALO": 94.49,
+    "ANT": 93.65,
+    "BEA": 94.49,
+    "BOR": 95.23,
+    "BOT": 94.95,
+    "COL": 94.95,
+    "GAS": 94.21,
+    "HAD": 94.12,
+    "HAM": 93.46,
+    "HUL": 94.77,
+    "LAW": 93.65,
+    "LEC": 93.28,
+    "LIN": 95.14,
+    "NOR": 93.19,
+    "OCO": 94.58,
+    "PER": 93.74,
+    "PIA": 93.09,
+    "RUS": 93.37,
+    "SAI": 93.84,
+    "STR": 94.86,
+    "VER": 93.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Singapore Grand Prix")
+classification = predicted_classification(merged, gp_name="Las Vegas Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Singapore Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Las Vegas Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Singapore Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Las Vegas Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Singapore Grand Prix prediction complete!")
+print("\n✅ Las Vegas Grand Prix prediction complete!")

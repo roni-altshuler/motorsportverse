@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 British Grand Prix — Prediction
-# **Round 12** | Circuit: Silverstone | Date: 2026-07-19
+# # 🏁 Canadian Grand Prix — Prediction
+# **Round 5** | Circuit: Circuit Gilles Villeneuve | Date: 2026-05-24
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Great Britain"
-GP_ROUND    = 12
+GP_NAME     = "Canada"
+GP_ROUND    = 5
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.35
-TEMPERATURE = 18
+RAIN_PROB   = 0.25
+TEMPERATURE = 20
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 87.45,
-    "ALO": 87.88,
-    "ANT": 87.11,
-    "BEA": 87.88,
-    "BOR": 88.58,
-    "BOT": 88.32,
-    "COL": 88.32,
-    "GAS": 87.62,
-    "HAD": 87.54,
-    "HAM": 86.93,
-    "HUL": 88.14,
-    "LAW": 87.11,
-    "LEC": 86.76,
-    "LIN": 88.49,
-    "NOR": 86.67,
-    "OCO": 87.97,
-    "PER": 87.19,
-    "PIA": 86.59,
-    "RUS": 86.85,
-    "SAI": 87.28,
-    "STR": 88.23,
-    "VER": 86.5,
+    "ALB": 72.79,
+    "ALO": 73.15,
+    "ANT": 72.5,
+    "BEA": 73.15,
+    "BOR": 73.73,
+    "BOT": 73.51,
+    "COL": 73.51,
+    "GAS": 72.94,
+    "HAD": 72.86,
+    "HAM": 72.36,
+    "HUL": 73.37,
+    "LAW": 72.5,
+    "LEC": 72.22,
+    "LIN": 73.66,
+    "NOR": 72.14,
+    "OCO": 73.22,
+    "PER": 72.58,
+    "PIA": 72.07,
+    "RUS": 72.29,
+    "SAI": 72.65,
+    "STR": 73.44,
+    "VER": 72.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="British Grand Prix")
+classification = predicted_classification(merged, gp_name="Canadian Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="British Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Canadian Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="British Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Canadian Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ British Grand Prix prediction complete!")
+print("\n✅ Canadian Grand Prix prediction complete!")

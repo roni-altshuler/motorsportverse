@@ -233,7 +233,7 @@ npm run build        # Production build
 
 ```bash
 python races/round_01_australia_gp.py
-python races/round_08_monaco_gp.py
+python races/round_06_monaco_gp.py
 ```
 
 ### Generate FastF1 visualisations separately

@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Italian Grand Prix — Prediction
-# **Round 16** | Circuit: Monza | Date: 2026-09-06
+# # 🏁 Abu Dhabi Grand Prix — Prediction
+# **Round 22** | Circuit: Yas Marina | Date: 2026-12-06
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Italy"
-GP_ROUND    = 16
+GP_NAME     = "Abu Dhabi"
+GP_ROUND    = 22
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.1
-TEMPERATURE = 26
+RAIN_PROB   = 0.02
+TEMPERATURE = 28
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 80.37,
-    "ALO": 80.77,
-    "ANT": 80.06,
-    "BEA": 80.77,
-    "BOR": 81.41,
-    "BOT": 81.17,
-    "COL": 81.17,
-    "GAS": 80.53,
-    "HAD": 80.45,
-    "HAM": 79.9,
-    "HUL": 81.01,
-    "LAW": 80.06,
-    "LEC": 79.74,
-    "LIN": 81.33,
-    "NOR": 79.66,
-    "OCO": 80.85,
-    "PER": 80.14,
-    "PIA": 79.58,
-    "RUS": 79.82,
-    "SAI": 80.22,
-    "STR": 81.09,
-    "VER": 79.5,
+    "ALB": 84.92,
+    "ALO": 85.34,
+    "ANT": 84.59,
+    "BEA": 85.34,
+    "BOR": 86.02,
+    "BOT": 85.76,
+    "COL": 85.76,
+    "GAS": 85.09,
+    "HAD": 85.01,
+    "HAM": 84.42,
+    "HUL": 85.6,
+    "LAW": 84.59,
+    "LEC": 84.25,
+    "LIN": 85.93,
+    "NOR": 84.17,
+    "OCO": 85.43,
+    "PER": 84.67,
+    "PIA": 84.08,
+    "RUS": 84.34,
+    "SAI": 84.76,
+    "STR": 85.68,
+    "VER": 84.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Italian Grand Prix")
+classification = predicted_classification(merged, gp_name="Abu Dhabi Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Italian Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Abu Dhabi Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Italian Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Abu Dhabi Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Italian Grand Prix prediction complete!")
+print("\n✅ Abu Dhabi Grand Prix prediction complete!")

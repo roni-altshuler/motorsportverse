@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Dutch Grand Prix — Prediction
-# **Round 15** | Circuit: Zandvoort | Date: 2026-08-30
+# # 🏁 Italian Grand Prix — Prediction
+# **Round 13** | Circuit: Monza | Date: 2026-09-06
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Netherlands"
-GP_ROUND    = 15
+GP_NAME     = "Italy"
+GP_ROUND    = 13
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.3
-TEMPERATURE = 18
+RAIN_PROB   = 0.1
+TEMPERATURE = 26
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 70.77,
-    "ALO": 71.12,
-    "ANT": 70.49,
-    "BEA": 71.12,
-    "BOR": 71.68,
-    "BOT": 71.47,
-    "COL": 71.47,
-    "GAS": 70.91,
-    "HAD": 70.84,
-    "HAM": 70.35,
-    "HUL": 71.33,
-    "LAW": 70.49,
-    "LEC": 70.21,
-    "LIN": 71.61,
-    "NOR": 70.14,
-    "OCO": 71.19,
-    "PER": 70.56,
-    "PIA": 70.07,
-    "RUS": 70.28,
-    "SAI": 70.63,
-    "STR": 71.4,
-    "VER": 70.0,
+    "ALB": 80.37,
+    "ALO": 80.77,
+    "ANT": 80.06,
+    "BEA": 80.77,
+    "BOR": 81.41,
+    "BOT": 81.17,
+    "COL": 81.17,
+    "GAS": 80.53,
+    "HAD": 80.45,
+    "HAM": 79.9,
+    "HUL": 81.01,
+    "LAW": 80.06,
+    "LEC": 79.74,
+    "LIN": 81.33,
+    "NOR": 79.66,
+    "OCO": 80.85,
+    "PER": 80.14,
+    "PIA": 79.58,
+    "RUS": 79.82,
+    "SAI": 80.22,
+    "STR": 81.09,
+    "VER": 79.5,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Dutch Grand Prix")
+classification = predicted_classification(merged, gp_name="Italian Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Dutch Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Italian Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Dutch Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Italian Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Dutch Grand Prix prediction complete!")
+print("\n✅ Italian Grand Prix prediction complete!")

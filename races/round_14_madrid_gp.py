@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Austrian Grand Prix — Prediction
-# **Round 11** | Circuit: Red Bull Ring | Date: 2026-07-05
+# # 🏁 Spanish Grand Prix — Prediction
+# **Round 14** | Circuit: Madring | Date: 2026-09-13
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Austria"
-GP_ROUND    = 11
+GP_NAME     = "Madrid"
+GP_ROUND    = 14
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.3
-TEMPERATURE = 22
+RAIN_PROB   = 0.08
+TEMPERATURE = 27
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 65.21,
-    "ALO": 65.53,
-    "ANT": 64.95,
-    "BEA": 65.53,
-    "BOR": 66.05,
-    "BOT": 65.85,
-    "COL": 65.85,
-    "GAS": 65.34,
-    "HAD": 65.27,
-    "HAM": 64.82,
-    "HUL": 65.73,
-    "LAW": 64.95,
-    "LEC": 64.69,
-    "LIN": 65.98,
-    "NOR": 64.63,
-    "OCO": 65.6,
-    "PER": 65.02,
-    "PIA": 64.56,
-    "RUS": 64.76,
-    "SAI": 65.08,
-    "STR": 65.79,
-    "VER": 64.5,
+    "ALB": 82.9,
+    "ALO": 83.31,
+    "ANT": 82.57,
+    "BEA": 83.31,
+    "BOR": 83.97,
+    "BOT": 83.72,
+    "COL": 83.72,
+    "GAS": 83.07,
+    "HAD": 82.98,
+    "HAM": 82.41,
+    "HUL": 83.56,
+    "LAW": 82.57,
+    "LEC": 82.25,
+    "LIN": 83.89,
+    "NOR": 82.16,
+    "OCO": 83.39,
+    "PER": 82.66,
+    "PIA": 82.08,
+    "RUS": 82.33,
+    "SAI": 82.74,
+    "STR": 83.64,
+    "VER": 82.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Austrian Grand Prix")
+classification = predicted_classification(merged, gp_name="Spanish Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Austrian Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Spanish Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Austrian Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Spanish Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Austrian Grand Prix prediction complete!")
+print("\n✅ Spanish Grand Prix prediction complete!")

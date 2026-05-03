@@ -1,6 +1,6 @@
 # %% [markdown]
 # # 🏁 United States Grand Prix — Prediction
-# **Round 19** | Circuit: COTA | Date: 2026-10-18
+# **Round 17** | Circuit: COTA | Date: 2026-10-25
 
 # %% — Setup
 import sys, os
@@ -11,7 +11,7 @@ enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
 GP_NAME     = "United States"
-GP_ROUND    = 19
+GP_ROUND    = 17
 GP_YEARS    = [2023, 2024, 2025]
 RAIN_PROB   = 0.1
 TEMPERATURE = 24

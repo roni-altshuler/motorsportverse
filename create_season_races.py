@@ -163,6 +163,15 @@ def main():
     os.makedirs("races", exist_ok=True)
     print(f"🏗️  Generating {SEASON_YEAR} season prediction scripts …\n")
 
+    expected_files = {
+        f"round_{rnd:02d}_{_safe(info['gp_key']).lower()}_gp.py"
+        for rnd, info in sorted(CALENDAR.items())
+    }
+    for fname in os.listdir("races"):
+        if fname.startswith("round_") and fname.endswith("_gp.py") and fname not in expected_files:
+            os.remove(os.path.join("races", fname))
+            print(f"  🧹 Removed stale generated script: races/{fname}")
+
     for rnd, info in sorted(CALENDAR.items()):
         fname = f"round_{rnd:02d}_{_safe(info['gp_key']).lower()}_gp.py"
         path  = os.path.join("races", fname)

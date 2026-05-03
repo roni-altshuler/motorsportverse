@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Saudi Arabian Grand Prix — Prediction
-# **Round 5** | Circuit: Jeddah Corniche | Date: 2026-04-19
+# # 🏁 Barcelona-Catalunya Grand Prix — Prediction
+# **Round 7** | Circuit: Barcelona-Catalunya | Date: 2026-06-14
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Saudi Arabia"
-GP_ROUND    = 5
+GP_NAME     = "Spain"
+GP_ROUND    = 7
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.02
+RAIN_PROB   = 0.05
 TEMPERATURE = 28
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 88.46,
-    "ALO": 88.9,
-    "ANT": 88.11,
-    "BEA": 88.9,
-    "BOR": 89.6,
-    "BOT": 89.34,
-    "COL": 89.34,
-    "GAS": 88.64,
-    "HAD": 88.55,
-    "HAM": 87.94,
-    "HUL": 89.16,
-    "LAW": 88.11,
-    "LEC": 87.76,
-    "LIN": 89.51,
-    "NOR": 87.67,
-    "OCO": 88.99,
-    "PER": 88.2,
-    "PIA": 87.59,
-    "RUS": 87.85,
-    "SAI": 88.29,
-    "STR": 89.25,
-    "VER": 87.5,
+    "ALB": 76.84,
+    "ALO": 77.22,
+    "ANT": 76.53,
+    "BEA": 77.22,
+    "BOR": 77.82,
+    "BOT": 77.6,
+    "COL": 77.6,
+    "GAS": 76.99,
+    "HAD": 76.91,
+    "HAM": 76.38,
+    "HUL": 77.44,
+    "LAW": 76.53,
+    "LEC": 76.23,
+    "LIN": 77.75,
+    "NOR": 76.15,
+    "OCO": 77.29,
+    "PER": 76.61,
+    "PIA": 76.08,
+    "RUS": 76.3,
+    "SAI": 76.68,
+    "STR": 77.52,
+    "VER": 76.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Saudi Arabian Grand Prix")
+classification = predicted_classification(merged, gp_name="Barcelona-Catalunya Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Saudi Arabian Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Barcelona-Catalunya Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Saudi Arabian Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Barcelona-Catalunya Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Saudi Arabian Grand Prix prediction complete!")
+print("\n✅ Barcelona-Catalunya Grand Prix prediction complete!")

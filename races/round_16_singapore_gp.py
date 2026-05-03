@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Qatar Grand Prix — Prediction
-# **Round 23** | Circuit: Lusail | Date: 2026-11-29
+# # 🏁 Singapore Grand Prix — Prediction
+# **Round 16** | Circuit: Marina Bay | Date: 2026-10-11
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Qatar"
-GP_ROUND    = 23
+GP_NAME     = "Singapore"
+GP_ROUND    = 16
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.02
-TEMPERATURE = 28
+RAIN_PROB   = 0.2
+TEMPERATURE = 30
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 82.9,
-    "ALO": 83.31,
-    "ANT": 82.57,
-    "BEA": 83.31,
-    "BOR": 83.97,
-    "BOT": 83.72,
-    "COL": 83.72,
-    "GAS": 83.07,
-    "HAD": 82.98,
-    "HAM": 82.41,
-    "HUL": 83.56,
-    "LAW": 82.57,
-    "LEC": 82.25,
-    "LIN": 83.89,
-    "NOR": 82.16,
-    "OCO": 83.39,
-    "PER": 82.66,
-    "PIA": 82.08,
-    "RUS": 82.33,
-    "SAI": 82.74,
-    "STR": 83.64,
-    "VER": 82.0,
+    "ALB": 97.06,
+    "ALO": 97.54,
+    "ANT": 96.67,
+    "BEA": 97.54,
+    "BOR": 98.3,
+    "BOT": 98.02,
+    "COL": 98.02,
+    "GAS": 97.25,
+    "HAD": 97.15,
+    "HAM": 96.48,
+    "HUL": 97.82,
+    "LAW": 96.67,
+    "LEC": 96.29,
+    "LIN": 98.21,
+    "NOR": 96.19,
+    "OCO": 97.63,
+    "PER": 96.77,
+    "PIA": 96.1,
+    "RUS": 96.38,
+    "SAI": 96.86,
+    "STR": 97.92,
+    "VER": 96.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Qatar Grand Prix")
+classification = predicted_classification(merged, gp_name="Singapore Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Qatar Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Singapore Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Qatar Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Singapore Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Qatar Grand Prix prediction complete!")
+print("\n✅ Singapore Grand Prix prediction complete!")

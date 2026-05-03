@@ -1,6 +1,6 @@
 # %% [markdown]
 # # 🏁 Miami Grand Prix — Prediction
-# **Round 6** | Circuit: Miami International | Date: 2026-05-03
+# **Round 4** | Circuit: Miami International | Date: 2026-05-03
 
 # %% — Setup
 import sys, os
@@ -11,7 +11,7 @@ enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
 GP_NAME     = "Miami"
-GP_ROUND    = 6
+GP_ROUND    = 4
 GP_YEARS    = [2023, 2024, 2025]
 RAIN_PROB   = 0.15
 TEMPERATURE = 30

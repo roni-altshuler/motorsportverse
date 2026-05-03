@@ -1,6 +1,6 @@
 # %% [markdown]
 # # 🏁 Monaco Grand Prix — Prediction
-# **Round 8** | Circuit: Monaco | Date: 2026-06-07
+# **Round 6** | Circuit: Monaco | Date: 2026-06-07
 
 # %% — Setup
 import sys, os
@@ -11,7 +11,7 @@ enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
 GP_NAME     = "Monaco"
-GP_ROUND    = 8
+GP_ROUND    = 6
 GP_YEARS    = [2023, 2024, 2025]
 RAIN_PROB   = 0.1
 TEMPERATURE = 22

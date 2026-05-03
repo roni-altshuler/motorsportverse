@@ -1,6 +1,6 @@
 # %% [markdown]
-# # 🏁 Bahrain Grand Prix — Prediction
-# **Round 4** | Circuit: Sakhir | Date: 2026-04-12
+# # 🏁 Hungarian Grand Prix — Prediction
+# **Round 11** | Circuit: Hungaroring | Date: 2026-07-26
 
 # %% — Setup
 import sys, os
@@ -10,36 +10,36 @@ from f1_prediction_utils import *
 enable_cache(os.path.join(os.path.dirname(__file__), "..", "f1_cache"))
 
 # %% — Configuration
-GP_NAME     = "Bahrain"
-GP_ROUND    = 4
+GP_NAME     = "Hungary"
+GP_ROUND    = 11
 GP_YEARS    = [2023, 2024, 2025]
-RAIN_PROB   = 0.02
-TEMPERATURE = 32
+RAIN_PROB   = 0.15
+TEMPERATURE = 30
 
 # %% — Qualifying Estimates (auto-generated; update with real data when available)
 QUALIFYING_ESTIMATES = {
-    "ALB": 87.96,
-    "ALO": 88.39,
-    "ANT": 87.61,
-    "BEA": 88.39,
-    "BOR": 89.09,
-    "BOT": 88.83,
-    "COL": 88.83,
-    "GAS": 88.13,
-    "HAD": 88.04,
-    "HAM": 87.43,
-    "HUL": 88.65,
-    "LAW": 87.61,
-    "LEC": 87.26,
-    "LIN": 89.0,
-    "NOR": 87.17,
-    "OCO": 88.48,
-    "PER": 87.7,
-    "PIA": 87.09,
-    "RUS": 87.35,
-    "SAI": 87.78,
-    "STR": 88.74,
-    "VER": 87.0,
+    "ALB": 76.84,
+    "ALO": 77.22,
+    "ANT": 76.53,
+    "BEA": 77.22,
+    "BOR": 77.82,
+    "BOT": 77.6,
+    "COL": 77.6,
+    "GAS": 76.99,
+    "HAD": 76.91,
+    "HAM": 76.38,
+    "HUL": 77.44,
+    "LAW": 76.53,
+    "LEC": 76.23,
+    "LIN": 77.75,
+    "NOR": 76.15,
+    "OCO": 77.29,
+    "PER": 76.61,
+    "PIA": 76.08,
+    "RUS": 76.3,
+    "SAI": 76.68,
+    "STR": 77.52,
+    "VER": 76.0,
 }
 
 # %% — Load historical data
@@ -68,14 +68,14 @@ metrics = evaluate_models(results)
 merged  = results["merged"]
 
 # %% — Classification
-classification = predicted_classification(merged, gp_name="Bahrain Grand Prix")
+classification = predicted_classification(merged, gp_name="Hungarian Grand Prix")
 
 # %% — Visualisations
-generate_all_visualisations(results, merged, gp_name="Bahrain Grand Prix")
+generate_all_visualisations(results, merged, gp_name="Hungarian Grand Prix")
 
 # %% — HTML Report
 generate_html_report(classification, metrics, results, merged,
-                     gp_name="Bahrain Grand Prix", circuit_key=GP_NAME,
+                     gp_name="Hungarian Grand Prix", circuit_key=GP_NAME,
                      gp_round=GP_ROUND)
 
-print("\n✅ Bahrain Grand Prix prediction complete!")
+print("\n✅ Hungarian Grand Prix prediction complete!")
