@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-03T21:31:45.899904Z",
+  "generatedAt": "2026-05-04T02:45:42.802245Z",
   "overallAccuracy": {
-    "seasonMeanError": 4.43,
-    "seasonAccuracyPct": 58.0,
+    "seasonMeanError": 4.48,
+    "seasonAccuracyPct": 56.8,
     "roundsWithActual": 4
   },
   "gpReports": [
@@ -343,10 +343,10 @@
       "round": 4,
       "name": "Miami Grand Prix",
       "comparedDrivers": 22,
-      "meanError": 4.36,
+      "meanError": 4.55,
       "medianError": 3.0,
-      "exactMatches": 1,
-      "within3": 14,
+      "exactMatches": 0,
+      "within3": 13,
       "within5": 18,
       "winnerHit": false,
       "podiumHits": 0,
@@ -384,20 +384,15 @@
           "absDelta": 10
         },
         {
-          "driver": "ANT",
-          "team": "Mercedes",
-          "predicted": 5,
-          "actual": 1,
-          "delta": 4,
-          "absDelta": 4
+          "driver": "COL",
+          "team": "Alpine",
+          "predicted": 12,
+          "actual": 7,
+          "delta": 5,
+          "absDelta": 5
         }
       ],
       "teamMeanError": [
-        {
-          "team": "Ferrari",
-          "meanError": 1.5,
-          "drivers": 2
-        },
         {
           "team": "Williams",
           "meanError": 2.5,
@@ -424,6 +419,11 @@
           "drivers": 2
         },
         {
+          "team": "Ferrari",
+          "meanError": 3.0,
+          "drivers": 2
+        },
+        {
           "team": "Cadillac",
           "meanError": 3.5,
           "drivers": 2
@@ -440,7 +440,7 @@
         },
         {
           "team": "Alpine",
-          "meanError": 8.0,
+          "meanError": 8.5,
           "drivers": 2
         },
         {
