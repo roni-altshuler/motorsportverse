@@ -29,7 +29,7 @@ import {
 } from "@/lib/data";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
-type Tab = "classification" | "analysis" | "strategy" | "visualizations";
+type Tab = "weekend" | "classification" | "analysis" | "strategy" | "visualizations";
 
 interface Props {
   round: number;
@@ -83,10 +83,30 @@ function getYouTubeSearchUrl(raceName: string, type: string, seasonYear: number)
   return `https://www.youtube.com/results?search_query=${q}`;
 }
 
+function formatSessionStatus(status: string): string {
+  if (status === "official") return "Official";
+  if (status === "timing") return "Timing-Derived";
+  if (status === "pending") return "Awaiting Data";
+  return status || "Unavailable";
+}
+
+function sessionStatusTone(status: string): "green" | "amber" | "slate" | "red" {
+  if (status === "official") return "green";
+  if (status === "timing") return "amber";
+  if (status === "pending") return "slate";
+  return "red";
+}
+
+function bestQualifyingTime(row: { q1?: string | null; q2?: string | null; q3?: string | null; time?: string | null }): string {
+  return row.q3 || row.q2 || row.q1 || row.time || "—";
+}
+
 export default function RaceDetailPage({ round }: Props) {
   const [data, setData] = useState<RoundData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>("classification");
+  const [activeTab, setActiveTab] = useState<Tab>("weekend");
+  const [activeWeekendSession, setActiveWeekendSession] = useState<string | null>(null);
+  const [selectedVizFilename, setSelectedVizFilename] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
@@ -217,12 +237,17 @@ export default function RaceDetailPage({ round }: Props) {
   }
 
   const tabs: { key: Tab; label: string }[] = [
-    { key: "classification", label: "Classification" },
+    { key: "weekend", label: "Weekend Results" },
+    { key: "classification", label: "Model Forecast" },
     { key: "analysis", label: "Circuit & Model" },
     { key: "strategy", label: "Strategy" },
-    { key: "visualizations", label: "Visualizations" },
+    { key: "visualizations", label: "Visual Lab" },
   ];
 
+  const weekendSessions = data.weekendResults?.sessions || [];
+  const defaultWeekendSession = weekendSessions.find((session) => session.rows.length > 0) || weekendSessions[0] || null;
+  const activeSession = weekendSessions.find((session) => session.key === activeWeekendSession) || defaultWeekendSession;
+  const loadedWeekendSessions = weekendSessions.filter((session) => session.rows.length > 0);
   const vizFiles = [...new Set([...(data.visualizations || [])])];
   const inferVizCategory = (filename: string): "ml" | "fastf1" | "advanced" | "bettor" | "other" => {
     if (["predicted_laptimes.png", "feature_importance.png", "team_vs_pace.png", "pace_vs_predicted.png", "laptime_distribution.png", "prediction_confidence.png"].includes(filename)) {
@@ -604,6 +629,144 @@ export default function RaceDetailPage({ round }: Props) {
           </button>
         ))}
       </div>
+
+      {/* ═══ Weekend Results Tab ═══ */}
+      {activeTab === "weekend" && (
+        <motion.div className="space-y-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+          <div className="weekend-results-shell p-6 sm:p-7">
+            <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+              <div>
+                <p className="viz-kicker">Race Weekend Control Room</p>
+                <h3 className="text-2xl font-black" style={{ color: "var(--text)" }}>Session Results Explorer</h3>
+                <p className="text-sm mt-1 max-w-3xl" style={{ color: "var(--text-muted)" }}>
+                  Review the full Grand Prix weekend timeline: sprint qualifying, sprint race, Grand Prix qualifying, and the race result as soon as official or timing-backed data is available.
+                </p>
+              </div>
+              <div className="data-freshness-meta">
+                <span>{loadedWeekendSessions.length}/{weekendSessions.length || (data.sprint ? 4 : 2)} sessions loaded</span>
+                <span>{data.weekendResults?.source || "Weekend data pipeline"}</span>
+              </div>
+            </div>
+
+            {weekendSessions.length > 0 ? (
+              <>
+                <div className="session-tab-grid mb-5">
+                  {weekendSessions.map((session) => (
+                    <button
+                      key={session.key}
+                      onClick={() => setActiveWeekendSession(session.key)}
+                      className={`session-tab ${activeSession?.key === session.key ? "active" : ""}`}
+                    >
+                      <span className="session-tab-short">{session.shortLabel}</span>
+                      <span className="session-tab-main">{session.label}</span>
+                      <span className={`status-pill status-pill-${sessionStatusTone(session.status)}`}>
+                        {formatSessionStatus(session.status)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {activeSession && (
+                  <div className="session-detail-card">
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                      <div>
+                        <h4 className="text-lg font-black" style={{ color: "var(--text)" }}>{activeSession.label}</h4>
+                        <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
+                          Source: {activeSession.source}
+                          {activeSession.note ? ` • ${activeSession.note}` : ""}
+                        </p>
+                      </div>
+                      <span className={`status-pill status-pill-${sessionStatusTone(activeSession.status)}`}>
+                        {activeSession.rows.length ? `${activeSession.rows.length} classified` : formatSessionStatus(activeSession.status)}
+                      </span>
+                    </div>
+
+                    {activeSession.rows.length > 0 ? (
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+                          {activeSession.rows.slice(0, 3).map((row) => (
+                            <div key={`session-podium-${activeSession.key}-${row.driver}`} className="session-podium-card">
+                              <span className={`position-badge ${row.position === 1 ? "p1" : row.position === 2 ? "p2" : row.position === 3 ? "p3" : "points"}`}>
+                                P{row.position}
+                              </span>
+                              <div className="team-color-bar h-10" style={{ backgroundColor: row.teamColor }} />
+                              <div>
+                                <p className="font-black" style={{ color: "var(--text)" }}>{row.driver}</p>
+                                <p className="text-xs" style={{ color: "var(--text-muted)" }}>{row.team}</p>
+                              </div>
+                              <p className="ml-auto text-sm font-mono" style={{ color: "var(--text-muted)" }}>
+                                {activeSession.kind === "qualifying" ? bestQualifyingTime(row) : row.position === 1 ? row.time || "Winner" : row.gap || row.status || "—"}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="overflow-x-auto">
+                          <table className="session-results-table">
+                            <thead>
+                              <tr>
+                                {(activeSession.kind === "qualifying"
+                                  ? ["POS", "DRIVER", "TEAM", "Q1", "Q2", "Q3", "BEST"]
+                                  : ["POS", "DRIVER", "TEAM", "GRID", "TIME / GAP", "LAPS", "STATUS", "PTS"]
+                                ).map((header) => (
+                                  <th key={header}>{header}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {activeSession.rows.map((row) => (
+                                <tr key={`${activeSession.key}-${row.driver}`}>
+                                  <td><span className={`position-badge ${row.position <= 3 ? `p${row.position}` : row.position <= 10 ? "points" : "no-points"}`}>P{row.position}</span></td>
+                                  <td>
+                                    <span className="font-bold" style={{ color: "var(--text)" }}>{row.driver}</span>
+                                    <span className="ml-2 text-xs" style={{ color: "var(--text-muted)" }}>{row.driverFullName}</span>
+                                  </td>
+                                  <td>
+                                    <span className="inline-flex items-center gap-2">
+                                      <span className="team-color-bar h-5" style={{ backgroundColor: row.teamColor }} />
+                                      <span style={{ color: "var(--text-muted)" }}>{row.team}</span>
+                                    </span>
+                                  </td>
+                                  {activeSession.kind === "qualifying" ? (
+                                    <>
+                                      <td className="font-mono">{row.q1 || "—"}</td>
+                                      <td className="font-mono">{row.q2 || "—"}</td>
+                                      <td className="font-mono">{row.q3 || "—"}</td>
+                                      <td className="font-mono font-bold" style={{ color: row.position === 1 ? "#00D2BE" : "var(--text)" }}>{bestQualifyingTime(row)}</td>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <td className="font-mono">{row.grid ?? "—"}</td>
+                                      <td className="font-mono font-bold" style={{ color: row.position === 1 ? "#00D2BE" : "var(--text)" }}>
+                                        {row.position === 1 ? row.time || "Winner" : row.gap || row.time || "—"}
+                                      </td>
+                                      <td className="font-mono">{row.laps ?? "—"}</td>
+                                      <td>{row.status || row.positionText || "—"}</td>
+                                      <td className="font-mono font-bold" style={{ color: Number(row.points || 0) > 0 ? "#E10600" : "var(--text-muted)" }}>{row.points ?? 0}</td>
+                                    </>
+                                  )}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="report-panel-muted">
+                        {activeSession.note || "This session has not been published yet. The automated data pipeline will populate this tab once the result appears upstream."}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="report-panel-muted">
+                Weekend session tabs will appear after the export pipeline refreshes this round with live qualifying, sprint, and race result metadata.
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
 
       {/* ═══ Classification Tab ═══ */}
       {activeTab === "classification" && (
@@ -1327,25 +1490,32 @@ export default function RaceDetailPage({ round }: Props) {
           { id: "other", label: "Additional", count: loadableOther.length, color: "#9CA3AF" },
         ].filter((entry) => entry.count > 0);
 
-        const featuredPriority = [
-          "predicted_laptimes.png",
+        const selectedViz =
+          loadableViz.find((viz) => viz.filename === selectedVizFilename) ||
+          loadableViz.find((viz) => viz.filename === "win_probability_board.png") ||
+          loadableViz[0];
+
+        const recommendedViz = [
+          "win_probability_board.png",
           "finish_probability_heatmap.png",
           "risk_reward_matrix.png",
-          "win_probability_board.png",
+          "predicted_laptimes.png",
+          "pace_vs_predicted.png",
           "feature_importance.png",
+        ]
+          .map((filename) => loadableViz.find((viz) => viz.filename === filename))
+          .filter((viz): viz is (typeof loadableViz)[number] => viz != null);
+
+        const railViz = [
+          ...recommendedViz,
+          ...loadableViz.filter((viz) => !recommendedViz.some((recommended) => recommended.filename === viz.filename)),
         ];
 
-        const featuredViz = featuredPriority
-          .map((filename) => loadableViz.find((viz) => viz.filename === filename))
-          .filter((viz): viz is (typeof loadableViz)[number] => viz != null)
-          .slice(0, 2);
-
-        const featuredSet = new Set(featuredViz.map((v) => v.filename));
-        const sectionMl = loadableMl.filter((v) => !featuredSet.has(v.filename));
-        const sectionFastf1 = loadableFastf1.filter((v) => !featuredSet.has(v.filename));
-        const sectionAdvanced = loadableAdvanced.filter((v) => !featuredSet.has(v.filename));
-        const sectionBettor = loadableBettor.filter((v) => !featuredSet.has(v.filename));
-        const sectionOther = loadableOther.filter((v) => !featuredSet.has(v.filename));
+        const sectionMl = loadableMl;
+        const sectionFastf1 = loadableFastf1;
+        const sectionAdvanced = loadableAdvanced;
+        const sectionBettor = loadableBettor;
+        const sectionOther = loadableOther;
 
         const highConfidenceCalls =
           data.predictionInsights?.highConfidenceCount ??
@@ -1513,14 +1683,45 @@ export default function RaceDetailPage({ round }: Props) {
                   )}
                 </div>
 
-                {featuredViz.length > 0 && (
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="section-heading mb-0">Featured Visuals</h3>
-                      <span className="viz-count-pill">Most actionable views</span>
+                {selectedViz && (
+                  <div className="viz-workbench">
+                    <div className="viz-stage">
+                      <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                        <div>
+                          <p className="viz-kicker">Selected View</p>
+                          <h3 className="text-xl font-black" style={{ color: "var(--text)" }}>{selectedViz.title}</h3>
+                          <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>{selectedViz.description}</p>
+                        </div>
+                        <span className="viz-count-pill">{selectedViz.source}</span>
+                      </div>
+                      <Image
+                        src={getVisualizationPath(round, selectedViz.filename)}
+                        alt={selectedViz.title}
+                        className="viz-stage-image"
+                        width={1800}
+                        height={1050}
+                        onError={() => handleImageError(selectedViz.filename)}
+                        unoptimized
+                      />
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                      {featuredViz.map((detail, idx) => renderVizCard(detail, { featured: true, rank: idx + 1 }))}
+
+                    <div className="viz-rail">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: "var(--text-muted)" }}>Switch View</p>
+                        <span className="text-xs font-mono" style={{ color: "var(--text-muted)" }}>{railViz.length}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {railViz.map((detail) => (
+                          <button
+                            key={`rail-${detail.filename}`}
+                            onClick={() => setSelectedVizFilename(detail.filename)}
+                            className={`viz-rail-button ${selectedViz.filename === detail.filename ? "active" : ""}`}
+                          >
+                            <span className="viz-rail-title">{detail.title}</span>
+                            <span className="viz-rail-source">{detail.source}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}

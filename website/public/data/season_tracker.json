@@ -27,15 +27,15 @@
     {
       "round": 4,
       "hasActual": true,
-      "meanError": 4.55,
-      "exactMatches": 0,
-      "within3": 13,
-      "accuracyPct": 59.1
+      "meanError": 4.82,
+      "exactMatches": 1,
+      "within3": 10,
+      "accuracyPct": 45.5
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 4.48,
-    "seasonAccuracyPct": 56.8,
+    "seasonMeanError": 4.54,
+    "seasonAccuracyPct": 53.4,
     "roundsWithActual": 4
   },
   "gpReports": [
@@ -376,29 +376,37 @@
       "round": 4,
       "name": "Miami Grand Prix",
       "comparedDrivers": 22,
-      "meanError": 4.55,
-      "medianError": 3.0,
-      "exactMatches": 0,
-      "within3": 13,
+      "meanError": 4.82,
+      "medianError": 4.0,
+      "exactMatches": 1,
+      "within3": 10,
       "within5": 18,
       "winnerHit": false,
       "podiumHits": 0,
       "biggestMisses": [
         {
-          "driver": "HAD",
-          "team": "Red Bull Racing",
-          "predicted": 8,
-          "actual": 22,
-          "delta": -14,
-          "absDelta": 14
-        },
-        {
           "driver": "GAS",
           "team": "Alpine",
-          "predicted": 9,
+          "predicted": 8,
           "actual": 21,
+          "delta": -13,
+          "absDelta": 13
+        },
+        {
+          "driver": "HAD",
+          "team": "Red Bull Racing",
+          "predicted": 10,
+          "actual": 22,
           "delta": -12,
           "absDelta": 12
+        },
+        {
+          "driver": "LAW",
+          "team": "Racing Bulls",
+          "predicted": 9,
+          "actual": 20,
+          "delta": -11,
+          "absDelta": 11
         },
         {
           "driver": "BOR",
@@ -409,80 +417,72 @@
           "absDelta": 10
         },
         {
-          "driver": "LAW",
-          "team": "Racing Bulls",
-          "predicted": 10,
-          "actual": 20,
-          "delta": -10,
-          "absDelta": 10
-        },
-        {
-          "driver": "COL",
-          "team": "Alpine",
-          "predicted": 12,
-          "actual": 7,
+          "driver": "BEA",
+          "team": "Haas",
+          "predicted": 16,
+          "actual": 11,
           "delta": 5,
           "absDelta": 5
         }
       ],
       "teamMeanError": [
         {
-          "team": "Williams",
+          "team": "Mercedes",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
           "meanError": 2.5,
           "drivers": 2
         },
         {
           "team": "Aston Martin",
-          "meanError": 2.5,
-          "drivers": 2
-        },
-        {
-          "team": "Haas",
-          "meanError": 2.5,
-          "drivers": 2
-        },
-        {
-          "team": "McLaren",
-          "meanError": 2.5,
-          "drivers": 2
-        },
-        {
-          "team": "Mercedes",
-          "meanError": 3.0,
-          "drivers": 2
-        },
-        {
-          "team": "Ferrari",
           "meanError": 3.0,
           "drivers": 2
         },
         {
           "team": "Cadillac",
+          "meanError": 3.0,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
           "meanError": 3.5,
           "drivers": 2
         },
         {
+          "team": "McLaren",
+          "meanError": 3.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
           "team": "Audi",
-          "meanError": 6.5,
+          "meanError": 7.0,
           "drivers": 2
         },
         {
           "team": "Racing Bulls",
-          "meanError": 6.5,
-          "drivers": 2
-        },
-        {
-          "team": "Alpine",
-          "meanError": 8.5,
+          "meanError": 7.0,
           "drivers": 2
         },
         {
           "team": "Red Bull Racing",
+          "meanError": 8.0,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
           "meanError": 9.0,
           "drivers": 2
         }
       ]
     }
   ],
-  "generatedAt": "2026-05-04T13:58:11.863339Z"
+  "generatedAt": "2026-05-04T18:18:17.871034Z"
 }

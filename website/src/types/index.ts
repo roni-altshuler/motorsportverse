@@ -118,6 +118,56 @@ export interface GrandPrixPerformanceReport {
   teamMeanError: GrandPrixTeamError[];
 }
 
+export type WeekendSessionKey = "sprintQualifying" | "sprint" | "qualifying" | "grandPrix" | string;
+export type WeekendSessionKind = "qualifying" | "race" | "sprint" | string;
+export type WeekendSessionStatus = "official" | "timing" | "pending" | "unavailable" | string;
+
+export interface WeekendFastestLap {
+  rank?: number | null;
+  lap?: number | null;
+  time?: string | null;
+  averageSpeedKph?: number | null;
+}
+
+export interface WeekendResultRow {
+  position: number;
+  positionText?: string;
+  driver: string;
+  driverFullName: string;
+  team: string;
+  teamColor: string;
+  time?: string | null;
+  gap?: string | null;
+  q1?: string | null;
+  q2?: string | null;
+  q3?: string | null;
+  points?: number;
+  grid?: number | null;
+  laps?: number | null;
+  status?: string | null;
+  fastestLap?: WeekendFastestLap;
+}
+
+export interface WeekendSessionResult {
+  key: WeekendSessionKey;
+  label: string;
+  shortLabel: string;
+  kind: WeekendSessionKind;
+  status: WeekendSessionStatus;
+  source: string;
+  sourceUrl?: string | null;
+  rows: WeekendResultRow[];
+  note?: string | null;
+}
+
+export interface WeekendResultsData {
+  generatedAt: string;
+  source: string;
+  sourceUrl?: string | null;
+  loadedSessions: number;
+  sessions: WeekendSessionResult[];
+}
+
 export interface RoundData {
   round: number;
   name: string;
@@ -166,6 +216,7 @@ export interface RoundData {
   };
   actualResults?: Record<string, number>;
   actualStatus?: Record<string, string>;
+  weekendResults?: WeekendResultsData;
   predictionInsights?: {
     poleToWinBias: number;
     highConfidenceCount: number;
@@ -194,6 +245,7 @@ export interface RoundData {
     qualifyingSource?: string;
     standingsSource?: string;
     officialResultsSource?: string;
+    weekendResultsSource?: string;
   };
 }
 

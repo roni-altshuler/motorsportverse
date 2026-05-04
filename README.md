@@ -79,6 +79,7 @@ f1_predictions/
 - Generates `season.json`, `standings.json`, `round_XX.json`, and all PNG visualisations
 - `standings.json` now defaults to official Jolpica standings (`F1_USE_LIVE_STANDINGS=1`)
 - Completed round files can now refresh `actualResults` directly from official classified race results (`F1_USE_LIVE_ROUND_RESULTS=1`)
+- Round files include `weekendResults` session tabs for sprint qualifying, sprint race, Grand Prix qualifying, and race classification when upstream data is available
 - `season.json`, `standings.json`, and round files include freshness/source fields for website transparency
 - Round metadata validates stored files against the current calendar so stale generated artifacts do not masquerade as current rounds
 
@@ -331,6 +332,8 @@ Each round generates up to **10+ visualisations**:
 | **Advanced Models** | Pit strategy comparison, tyre degradation curves |
 | **FastF1 Historical** | Track map (speed-coloured), historical lap-time distributions, tyre strategy waterfall |
 
+The website now presents these as a visual lab: one large selected chart, a quick-switch rail, and compact category galleries so users can compare views without opening image modals.
+
 ---
 
 ## 📌 Roadmap
@@ -343,6 +346,7 @@ Each round generates up to **10+ visualisations**:
 - [x] Circuit-specific features (DRS zones, safety car, altitude, pit stops)
 - [x] Add telemetry-based features (speed traps, sector times) via optional `--telemetry`
 - [x] Official standings + completed-round classified results sync (Jolpica + fallback)
+- [x] Weekend session result tabs for sprint and Grand Prix formats
 - [x] Benchmark + tuning harness for game-theory postprocessing
 - [ ] Multi-season accuracy tracking dashboard
 

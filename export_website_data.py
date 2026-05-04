@@ -847,10 +847,26 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             "qualifyingSource": "FastF1" if quali is not quali_estimates else "model estimate",
             "standingsSource": "website/public/data/standings.json",
             "officialResultsSource": "Jolpica Ergast-compatible API",
+            "weekendResultsSource": "Jolpica Ergast-compatible API + FastF1 timing",
         },
     }
 
     round_data.update(_get_round_preserved_fields(round_num, existing_round))
+
+    round_data["weekendResults"] = _fetch_weekend_results(round_num, info, SEASON_YEAR)
+    gp_session = next(
+        (
+            session for session in round_data["weekendResults"].get("sessions", [])
+            if session.get("key") == "grandPrix" and session.get("rows")
+        ),
+        None,
+    )
+    if gp_session:
+        round_data["actualStatus"] = {
+            row["driver"]: row.get("positionText") or f"P{row.get('position')}"
+            for row in gp_session.get("rows", [])
+            if row.get("driver")
+        }
 
     # Keep round-level actual outcomes aligned with the official standings source.
     live_round_results_flag = str(os.getenv("F1_USE_LIVE_ROUND_RESULTS", "1")).strip().lower()
@@ -1736,6 +1752,253 @@ def _fetch_live_round_actual_results(round_num, season_year=SEASON_YEAR):
         f"({len(actual_results)} drivers)."
     )
     return actual_results
+
+
+def _format_duration_value(value):
+    """Return a compact F1-style time string from API or pandas duration values."""
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+
+    if isinstance(value, dict):
+        return value.get("time") or value.get("Time") or value.get("millis")
+
+    if isinstance(value, str):
+        return value or None
+
+    try:
+        total_seconds = float(pd.to_timedelta(value).total_seconds())
+    except (TypeError, ValueError):
+        return str(value)
+
+    if total_seconds <= 0 or math.isnan(total_seconds):
+        return None
+    minutes = int(total_seconds // 60)
+    seconds = total_seconds - minutes * 60
+    return f"{minutes}:{seconds:06.3f}" if minutes else f"{seconds:.3f}"
+
+
+def _optional_int(value):
+    try:
+        return int(float(value))
+    except (TypeError, ValueError):
+        return None
+
+
+def _optional_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _build_weekend_result_row(row, idx, by_full, by_last, by_id, session_kind):
+    """Normalize Jolpica race/sprint/qualifying rows for the website."""
+    driver_obj = row.get("Driver", {}) if isinstance(row, dict) else {}
+    constructor_obj = row.get("Constructor", {}) if isinstance(row, dict) else {}
+    code = _resolve_driver_code(driver_obj, by_full, by_last, by_id)
+    if not code:
+        return None
+
+    raw_team = constructor_obj.get("name") if isinstance(constructor_obj, dict) else ""
+    team = _normalize_team_name(raw_team) or DRIVER_TEAM.get(code, "Unknown")
+    full_name = DRIVER_FULL_NAMES.get(code) or " ".join(
+        x for x in [driver_obj.get("givenName", ""), driver_obj.get("familyName", "")] if x
+    ).strip() or code
+
+    position = _as_int(row.get("position"), idx)
+    entry = {
+        "position": position,
+        "positionText": str(row.get("positionText") or position),
+        "driver": code,
+        "driverFullName": full_name,
+        "team": team,
+        "teamColor": TEAM_COLOURS.get(team, "#888"),
+        "points": _as_points(row.get("points"), 0.0),
+    }
+
+    if session_kind == "qualifying":
+        q1 = _format_duration_value(row.get("Q1"))
+        q2 = _format_duration_value(row.get("Q2"))
+        q3 = _format_duration_value(row.get("Q3"))
+        entry.update({
+            "q1": q1,
+            "q2": q2,
+            "q3": q3,
+            "time": q3 or q2 or q1,
+        })
+        return entry
+
+    time_obj = row.get("Time") or {}
+    time_value = _format_duration_value(time_obj)
+    status = str(row.get("status") or "").strip() or None
+    fastest = row.get("FastestLap") if isinstance(row.get("FastestLap"), dict) else None
+    entry.update({
+        "grid": _optional_int(row.get("grid")),
+        "laps": _optional_int(row.get("laps")),
+        "status": status,
+        "time": time_value if idx == 1 else None,
+        "gap": None if idx == 1 else time_value,
+    })
+    if fastest:
+        speed = fastest.get("AverageSpeed") if isinstance(fastest.get("AverageSpeed"), dict) else {}
+        entry["fastestLap"] = {
+            "rank": _optional_int(fastest.get("rank")),
+            "lap": _optional_int(fastest.get("lap")),
+            "time": (fastest.get("Time") or {}).get("time") if isinstance(fastest.get("Time"), dict) else None,
+            "averageSpeedKph": _optional_float(speed.get("speed")),
+        }
+    return entry
+
+
+def _fetch_jolpica_weekend_session(round_num, season_year, endpoint, session_key, label, short_label, kind):
+    by_full, by_last, by_id = _build_driver_code_lookups()
+    result_key = {
+        "qualifying": "QualifyingResults",
+        "sprint": "SprintResults",
+        "results": "Results",
+    }[endpoint]
+    try:
+        payload = _fetch_jolpica_json(f"{season_year}/{int(round_num)}/{endpoint}.json")
+    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as e:
+        return {
+            "key": session_key,
+            "label": label,
+            "shortLabel": short_label,
+            "kind": kind,
+            "status": "pending",
+            "source": "Jolpica Ergast-compatible API",
+            "sourceUrl": JOLPICA_BASE_URL,
+            "rows": [],
+            "note": f"Session data is not available yet ({e}).",
+        }
+
+    races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
+    rows = races[0].get(result_key, []) if races else []
+    normalized_rows = []
+    for idx, row in enumerate(rows, start=1):
+        normalized = _build_weekend_result_row(row, idx, by_full, by_last, by_id, kind)
+        if normalized:
+            normalized_rows.append(normalized)
+
+    return {
+        "key": session_key,
+        "label": label,
+        "shortLabel": short_label,
+        "kind": kind,
+        "status": "official" if normalized_rows else "pending",
+        "source": "Jolpica Ergast-compatible API",
+        "sourceUrl": JOLPICA_BASE_URL,
+        "rows": normalized_rows,
+        "note": None if normalized_rows else "Official session data is not published yet.",
+    }
+
+
+def _fetch_fastf1_sprint_qualifying(round_num, gp_key, season_year):
+    """Build sprint qualifying order from FastF1 timing because Jolpica has no SQ endpoint."""
+    try:
+        import fastf1
+        fastf1.Cache.enable_cache(os.path.join(PROJECT_ROOT, "f1_cache"))
+        session = fastf1.get_session(season_year, resolve_historical_gp_key(gp_key), "Sprint Qualifying")
+        session.load(laps=True, telemetry=False, weather=False, messages=False)
+    except Exception as e:
+        return {
+            "key": "sprintQualifying",
+            "label": "Sprint Qualifying",
+            "shortLabel": "SQ",
+            "kind": "qualifying",
+            "status": "pending",
+            "source": "FastF1 timing",
+            "rows": [],
+            "note": f"Sprint qualifying timing is not available yet ({e}).",
+        }
+
+    rows = []
+    driver_meta = {}
+    try:
+        if session.results is not None and not session.results.empty:
+            for _, row in session.results.iterrows():
+                code = str(row.get("Abbreviation") or "").upper()
+                if code:
+                    team = _normalize_team_name(row.get("TeamName")) or DRIVER_TEAM.get(code, "Unknown")
+                    driver_meta[code] = {
+                        "driverFullName": DRIVER_FULL_NAMES.get(code) or str(row.get("FullName") or code),
+                        "team": team,
+                        "teamColor": TEAM_COLOURS.get(team, f"#{str(row.get('TeamColor') or '888888').lstrip('#')}" if row.get("TeamColor") else "#888"),
+                    }
+    except Exception:
+        driver_meta = {}
+
+    try:
+        laps = session.laps
+        if laps is not None and not laps.empty and "LapTime" in laps:
+            timed_laps = laps.dropna(subset=["LapTime"])
+            if "Deleted" in timed_laps:
+                timed_laps = timed_laps[timed_laps["Deleted"].fillna(False) == False]  # noqa: E712
+            best = timed_laps.groupby("Driver")["LapTime"].min().sort_values()
+            leader_time = best.iloc[0] if len(best) else None
+            for pos, (driver, lap_time) in enumerate(best.items(), start=1):
+                code = str(driver).upper()
+                meta = driver_meta.get(code, {})
+                gap = None
+                if leader_time is not None and pos > 1:
+                    gap_seconds = (lap_time - leader_time).total_seconds()
+                    gap = f"+{gap_seconds:.3f}"
+                rows.append({
+                    "position": pos,
+                    "positionText": str(pos),
+                    "driver": code,
+                    "driverFullName": meta.get("driverFullName", DRIVER_FULL_NAMES.get(code, code)),
+                    "team": meta.get("team", DRIVER_TEAM.get(code, "Unknown")),
+                    "teamColor": meta.get("teamColor", TEAM_COLOURS.get(DRIVER_TEAM.get(code, ""), "#888")),
+                    "time": _format_duration_value(lap_time),
+                    "gap": gap,
+                    "points": 0,
+                })
+    except Exception:
+        rows = []
+
+    return {
+        "key": "sprintQualifying",
+        "label": "Sprint Qualifying",
+        "shortLabel": "SQ",
+        "kind": "qualifying",
+        "status": "timing" if rows else "pending",
+        "source": "FastF1 timing",
+        "rows": rows,
+        "note": "Derived from FastF1 best timing laps because Jolpica/Ergast does not expose sprint qualifying as a first-class endpoint."
+        if rows else "Sprint qualifying timing is not published yet.",
+    }
+
+
+def _fetch_weekend_results(round_num, info, season_year=SEASON_YEAR):
+    """Fetch every session result needed for the weekend report tabs."""
+    sessions = []
+    if info.get("sprint", False):
+        sessions.append(_fetch_fastf1_sprint_qualifying(round_num, info["gp_key"], season_year))
+        sessions.append(_fetch_jolpica_weekend_session(
+            round_num, season_year, "sprint", "sprint", "Sprint Race", "Sprint", "race"
+        ))
+
+    sessions.append(_fetch_jolpica_weekend_session(
+        round_num, season_year, "qualifying", "qualifying", "Grand Prix Qualifying", "Qualifying", "qualifying"
+    ))
+    sessions.append(_fetch_jolpica_weekend_session(
+        round_num, season_year, "results", "grandPrix", "Grand Prix Result", "Race", "race"
+    ))
+
+    loaded = sum(1 for session in sessions if session.get("rows"))
+    return {
+        "generatedAt": _utc_now_iso(),
+        "source": "Jolpica Ergast-compatible API + FastF1 timing",
+        "sourceUrl": JOLPICA_BASE_URL,
+        "loadedSessions": loaded,
+        "sessions": sessions,
+    }
 
 
 # ═════════════════════════════════════════════════════════════════════════
