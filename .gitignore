@@ -75,8 +75,10 @@ venv/
 # Betting / odds (gitignored — contains API responses, snapshots, DBs)
 # ========================
 odds_cache/
-odds_inbox/   # manual CSV drops for odds_ingest_unified.py
-data/
+# manual CSV drops for odds_ingest_unified.py
+odds_inbox/
+# anchored: only top-level DuckDB dir; doesn't capture website/public/data/
+/data/
 
 # ========================
 # Misc

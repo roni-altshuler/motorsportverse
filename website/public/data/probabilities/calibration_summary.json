@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-05-19T18:08:37Z",
+  "trainingSeasons": [],
+  "dataLimitation": "Only Round 4 of 2026 has actual results; no multi-season historical (predicted, observed) pairs are available in-repo. Isotonic calibration requires materially more data (target: 2023+2024+2025 backfilled) before calibration.applied can be set to true. Until then, exported probabilities are raw Plackett-Luce Monte Carlo outputs.",
+  "perMarket": {
+    "win": {
+      "brierScore": 0.071395,
+      "logLoss": 1.449808,
+      "reliability": [
+        {
+          "meanPred": 0.0006437367303609343,
+          "empirical": 0.04883227176220807,
+          "count": 471
+        },
+        {
+          "meanPred": 0.13935999999999998,
+          "empirical": 0.2,
+          "count": 5
+        },
+        {
+          "meanPred": 1.0,
+          "empirical": 0.08333333333333333,
+          "count": 12
+        }
+      ],
+      "sampleCount": 488
+    },
+    "podium": {
+      "brierScore": 0.205174,
+      "logLoss": 4.174472,
+      "reliability": [
+        {
+          "meanPred": 0.0009797297297297297,
+          "empirical": 0.15090090090090091,
+          "count": 444
+        },
+        {
+          "meanPred": 0.1465,
+          "empirical": 0.5,
+          "count": 2
+        },
+        {
+          "meanPred": 0.2618,
+          "empirical": 0.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.3278,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.4206,
+          "empirical": 0.25,
+          "count": 4
+        },
+        {
+          "meanPred": 1.0,
+          "empirical": 0.1388888888888889,
+          "count": 36
+        }
+      ],
+      "sampleCount": 488
+    },
+    "top6": {
+      "brierScore": 0.333173,
+      "logLoss": 6.848395,
+      "reliability": [
+        {
+          "meanPred": 0.000826,
+          "empirical": 0.2875,
+          "count": 400
+        },
+        {
+          "meanPred": 0.12863333333333335,
+          "empirical": 0.0,
+          "count": 6
+        },
+        {
+          "meanPred": 0.2602,
+          "empirical": 0.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.4232,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.5386,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.6534,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.7556,
+          "empirical": 0.75,
+          "count": 4
+        },
+        {
+          "meanPred": 1.0,
+          "empirical": 0.3783783783783784,
+          "count": 74
+        }
+      ],
+      "sampleCount": 488
+    },
+    "top10": {
+      "brierScore": 0.378044,
+      "logLoss": 7.744106,
+      "reliability": [
+        {
+          "meanPred": 0.0007152866242038216,
+          "empirical": 0.42038216560509556,
+          "count": 314
+        },
+        {
+          "meanPred": 0.25188,
+          "empirical": 0.4,
+          "count": 5
+        },
+        {
+          "meanPred": 0.34299999999999997,
+          "empirical": 0.3333333333333333,
+          "count": 3
+        },
+        {
+          "meanPred": 0.4126,
+          "empirical": 0.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.583,
+          "empirical": 0.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.7852,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.8852,
+          "empirical": 1.0,
+          "count": 1
+        },
+        {
+          "meanPred": 0.998895061728395,
+          "empirical": 0.691358024691358,
+          "count": 162
+        }
+      ],
+      "sampleCount": 488
+    }
+  }
+}

@@ -490,6 +490,33 @@ export interface ValueRoundData {
   disclaimer: string;
 }
 
+// =========================================================================
+// Calibration Types
+// =========================================================================
+
+export interface ReliabilityBin {
+  meanPred: number;
+  empirical: number;
+  count: number;
+}
+
+export interface MarketCalibrationStats {
+  brierScore: number | null;
+  logLoss: number | null;
+  reliability: ReliabilityBin[];
+  // optional fields the summary may carry — be permissive:
+  uniformBaselineLogLoss?: number | null;
+  nSamples?: number;
+  sampleCount?: number;
+}
+
+export interface CalibrationSummary {
+  generatedAt: string;
+  trainingSeasons: number[];
+  dataLimitation?: string;
+  perMarket: Record<string, MarketCalibrationStats>;
+}
+
 // Team colors for CSS usage
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",
