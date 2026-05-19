@@ -49,6 +49,30 @@ export default function Navbar() {
     </Link>
   );
 
+  const navLinkWithBadge = (href: string, label: string, badge: string) => (
+    <Link
+      href={href}
+      className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg inline-flex items-center gap-2 ${
+        isActive(href)
+          ? "text-f1-red"
+          : "text-[var(--text-muted)] hover:text-[var(--text)]"
+      }`}
+    >
+      {label}
+      <span
+        className="px-1.5 py-0.5 rounded-full text-[9px] font-black tracking-wider"
+        style={{
+          background: "rgba(225, 6, 0, 0.18)",
+          color: "#E10600",
+          border: "1px solid rgba(225, 6, 0, 0.35)",
+          letterSpacing: "0.08em",
+        }}
+      >
+        {badge}
+      </span>
+    </Link>
+  );
+
   const actualSet = new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round));
 
   return (
@@ -131,6 +155,7 @@ export default function Navbar() {
               )}
             </div>
 
+            {navLinkWithBadge("/value", "Value Finder", "NEW")}
             {navLink("/standings", "Standings")}
             {navLink("/accuracy", "Accuracy")}
             {navLink("/about", "About")}
@@ -176,6 +201,7 @@ export default function Navbar() {
               {[
                 { href: "/", label: "Home" },
                 { href: "/calendar", label: "Season Calendar" },
+                { href: "/value", label: "Value Finder", badge: "NEW" },
                 { href: "/standings", label: "Standings" },
                 { href: "/accuracy", label: "Accuracy" },
                 { href: "/about", label: "About" },
@@ -183,11 +209,24 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-3 text-sm font-semibold rounded-lg transition-colors ${
+                  className={`px-4 py-3 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2 ${
                     isActive(item.href) ? "text-f1-red bg-[rgba(225,6,0,0.08)]" : "text-[var(--text-muted)]"
                   }`}
                 >
                   {item.label}
+                  {item.badge && (
+                    <span
+                      className="px-1.5 py-0.5 rounded-full text-[9px] font-black tracking-wider"
+                      style={{
+                        background: "rgba(225, 6, 0, 0.18)",
+                        color: "#E10600",
+                        border: "1px solid rgba(225, 6, 0, 0.35)",
+                        letterSpacing: "0.08em",
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               ))}
               {/* Completed races in mobile */}

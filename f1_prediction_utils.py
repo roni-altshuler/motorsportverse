@@ -30,6 +30,8 @@ import numpy as np
 import pandas as pd
 import fastf1
 
+from leakage import assert_prior_only, LeakageError  # noqa: F401
+
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -464,6 +466,11 @@ def _load_season_position_maps(current_round=None):
             for rnd, data in combined.items()
             if int(rnd) < current_round
         }
+        # Defence in depth: ensure the filter actually held.  If a future
+        # refactor breaks the filter above this assertion catches it.
+        assert_prior_only(predicted, current_round, "predicted_results")
+        assert_prior_only(actual, current_round, "actual_results")
+        assert_prior_only(combined, current_round, "combined_results")
 
     return predicted, actual, combined
 
@@ -852,6 +859,12 @@ def build_training_dataset(grid, driver_stats, circuit_key="Australia",
       - current-season form (from predicted + actual results)
       - race-to-race features: PreviousPosition, SeasonMomentum, PositionTrend
     """
+    if not isinstance(current_round, int) or current_round < 1:
+        raise LeakageError(
+            f"build_training_dataset requires a positive integer current_round; "
+            f"got {current_round!r}. Without it, history filtering is bypassed "
+            f"and the model can train on its own future."
+        )
     merged = grid.merge(driver_stats, on="Driver", how="left")
 
     # Impute missing historical data (rookies / new drivers)

@@ -131,6 +131,18 @@ jobs:
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           python generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
 
+      - name: Install test dependencies
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: pip install pytest pydantic
+
+      - name: Validate generated outputs
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: |
+          # Schema + sanity tests must pass against the freshly-generated JSON
+          # *before* we commit it.  This gates degenerate pushes (all-NaN, missing
+          # drivers, duplicate positions) from reaching GitHub Pages.
+          pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py -v --tb=short
+
       - name: Commit updated data
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         env:

@@ -428,6 +428,68 @@ export const COUNTRY_FLAGS: Record<string, string> = {
   "Las Vegas": "🇺🇸", "Qatar": "🇶🇦", "Abu Dhabi": "🇦🇪",
 };
 
+// =========================================================================
+// Betting / Value Finder Types
+// =========================================================================
+
+export interface ProbabilityMarketEntry {
+  driver: string;
+  probability: number;
+  rawProbability?: number;
+}
+
+export interface ProbabilityRoundData {
+  round: number;
+  season: number;
+  generatedAt: string;
+  method: string;
+  monteCarloSamples?: number;
+  temperature?: number;
+  calibration: {
+    method: string;
+    trainingSeasons: number[];
+    applied: boolean;
+  };
+  markets: {
+    win: ProbabilityMarketEntry[];
+    podium: ProbabilityMarketEntry[];
+    top6: ProbabilityMarketEntry[];
+    top10: ProbabilityMarketEntry[];
+  };
+  h2h: Record<string, Record<string, number>>;
+}
+
+export interface ValueOpportunity {
+  market: string;
+  driver: string;
+  driverFullName: string;
+  team: string;
+  teamColor: string;
+  modelProbability: number;
+  marketProbability: number;
+  marketOdds: number;
+  edgePct: number;
+  kellyFraction: number;
+  kellyStake: number;
+  expectedValue: number;
+}
+
+export interface ValueRoundData {
+  round: number;
+  season: number;
+  generatedAt: string;
+  bookmaker: string;
+  oddsTimestamp: string;
+  bankrollRef: number;
+  opportunities: ValueOpportunity[];
+  summary: {
+    totalOpportunities: number;
+    positiveEdgeCount: number;
+    totalKellyExposure: number;
+  };
+  disclaimer: string;
+}
+
 // Team colors for CSS usage
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",

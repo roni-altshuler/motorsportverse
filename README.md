@@ -212,6 +212,9 @@ python optimize_game_theory_postprocessing.py --rounds 1 2 3 \
 ### Runtime environment toggles
 
 ```bash
+# Season selection (defaults to DEFAULT_SEASON_YEAR; CI falls back to `date +%Y`)
+export F1_SEASON_YEAR=2026
+
 # Official data source toggles
 export F1_USE_LIVE_STANDINGS=1
 export F1_USE_LIVE_ROUND_RESULTS=1
@@ -220,7 +223,125 @@ export F1_USE_LIVE_ROUND_RESULTS=1
 export ENABLE_GAME_THEORY_ENHANCEMENTS=1
 export F1_GAME_THEORY_POSTPROCESS_SCALE=1.2
 export F1_GAME_THEORY_UNCERTAINTY_SCALE=1.2
+
+# Live betting / value-finder integration (free key at https://the-odds-api.com/)
+# Used by odds_ingest.py and export_value_data.py. Note: The Odds API does not
+# currently include Formula 1 in its catalog (verified 2026-05) — the key works
+# but no live F1 outrights data is available there at the moment. See
+# docs/ENV_VARS.md for the full reference and the alternative-source roadmap.
+export ODDS_API_KEY=...
 ```
+
+Full reference for every variable the project reads: **[`docs/ENV_VARS.md`](docs/ENV_VARS.md)**.
+
+### Local development setup
+
+The project uses a `.env` file at the project root for local credentials.
+`python-dotenv` is included in `requirements-dev.txt` (optional); when it is
+not installed the code falls back to plain `os.environ`, so production / CI
+runs that inject env vars directly continue to work unchanged.
+
+```bash
+# 1. Copy the template and fill in your real key(s).
+cp .env.example .env
+# 2. Edit .env — at minimum, set ODDS_API_KEY if you want the /value page.
+# 3. (Optional) install dev deps so dotenv loads .env automatically.
+pip install -r requirements-dev.txt
+```
+
+`.env` is gitignored — never commit your real key.
+
+### Live `/value` page
+
+The `/value` page surfaces positive-edge betting opportunities by comparing
+the model's calibrated probabilities to current bookmaker odds. Data flow:
+
+```
+export_probabilities.py  ──►  website/public/data/probabilities/round_NN.json
+                                                                            \
+                                                                             ─►  export_value_data.py  ──►  website/public/data/value/round_NN.json  ──►  /value page
+                                                                            /
+odds_ingest.py           ──►  odds_cache/round_NN_<timestamp>.json
+```
+
+1. `export_probabilities.py` runs the Plackett–Luce Monte Carlo over predicted
+   lap times and writes per-round market probabilities (`win`, `podium`,
+   `top6`, `top10`, plus an H2H matrix). Calibration is honestly gated to
+   `applied=false` until 3+ completed historical races are available.
+2. **Odds source** — write a timestamped cache file under `odds_cache/`. The
+   Odds API does *not* cover F1 (verified 2026-05); two free working paths,
+   plus a unified wrapper that does both at once:
+
+   **Unified (recommended): one command, auto-selects + merges available sources:**
+   ```bash
+   # Auto: uses Betfair if BETFAIR_* env vars set, CSV if odds_inbox/round_NN.csv
+   # exists, best-back merge if both are available.
+   python odds_ingest_unified.py --round 6 --season 2026
+
+   # Force a strategy:
+   python odds_ingest_unified.py --round 6 --season 2026 --merge best-back
+   python odds_ingest_unified.py --round 6 --season 2026 --merge average
+   python odds_ingest_unified.py --round 6 --season 2026 --merge prefer-csv
+   ```
+   The unified ingester looks for a CSV at `odds_inbox/round_NN.csv` by
+   default; override with `--csv path/to.csv`. Both sources can be used
+   together — `best-back` takes the higher decimal odds per driver
+   (best price for the bettor), `average` averages implied probabilities.
+
+   **Multi-bookmaker scraper + bulk CSV ingester (`odds_scraper.py`):**
+   ```bash
+   # Drop CSVs named round_NN_<bookmaker>.csv into odds_inbox/, then:
+   python odds_scraper.py --round 6 --season 2026 --ingest-only
+
+   # Scrape Oddschecker (best-effort; HTML scraping can break) + ingest:
+   python odds_scraper.py --round 6 --season 2026 --scrape oddschecker
+
+   # All registered scrapers + every inbox CSV → one multi-bookmaker snapshot:
+   python odds_scraper.py --round 6 --season 2026 --scrape all
+   ```
+   The scraper writes one snapshot listing **every** bookmaker found, and
+   `select_bookmaker` in `export_value_data.py` automatically picks the
+   sharpest available book (Pinnacle > Betfair > … > lowest overround).
+   Filename → bookmaker key: `round_06_pinnacle.csv` → `pinnacle`,
+   `round_06_betfair_ex_eu.csv` → `betfair_ex_eu`, plain `round_06.csv` →
+   `oddschecker_manual`. Web scraping is best-effort with `robots.txt`
+   checks, a polite User-Agent, and 1-second pacing between sources; if
+   any source fails (403, schema change, etc.) the scraper logs and falls
+   back to whatever CSVs are already in the inbox.
+
+   **a) Manual CSV from Oddschecker (fastest, no credentials):**
+   ```bash
+   # 1. Print a template with all 22 drivers, save to odds_inbox/:
+   mkdir -p odds_inbox
+   python odds_import_csv.py --print-template > odds_inbox/round_06.csv
+   # 2. Open https://www.oddschecker.com/motorsport/formula-1/monaco-grand-prix/winner
+   # 3. Paste the odds into the second column of the CSV.
+   # 4. Run odds_ingest_unified.py (above) — it auto-discovers the inbox file.
+   #    Or import directly via the single-source ingester:
+   python odds_import_csv.py --round 6 --season 2026 \
+       --bookmaker oddschecker_manual --csv odds_inbox/round_06.csv
+   ```
+   Driver names can be 3-letter codes (`VER`), last names (`Verstappen`), or
+   full names. Fractional odds (`5/2`) and decimal (`3.50`) both accepted.
+
+   **b) Betfair Exchange API (one-time setup, then unattended):**
+   ```bash
+   pip install betfairlightweight        # not in requirements-dev.txt by default
+   # Add BETFAIR_USERNAME, BETFAIR_PASSWORD, BETFAIR_APP_KEY to .env
+   python odds_ingest_betfair.py --round 6 --season 2026
+   ```
+   Requires a KYC'd Betfair account (UK/IE/AU/GR/ES/IT/DE) and a free dev
+   app key from https://developer.betfair.com/.
+
+3. `export_value_data.py` joins the two, de-vigs the bookmaker prices,
+   computes per-driver `edgePct = (modelP − marketP) / marketP`, applies
+   fractional-Kelly sizing (default 0.25× with a 5% per-bet cap and 30%
+   portfolio cap), and writes the JSON consumed by the page.
+4. The page renders a sortable edge table with a 360px-viewport card view,
+   and surfaces the calibration disclaimer when `calibration.applied=false`.
+
+See [`MODEL_CARD.md`](MODEL_CARD.md) for the ethical-use framing,
+fractional-Kelly choice rationale, and known limitations of this pipeline.
 
 ### Start the website
 
@@ -338,16 +459,33 @@ The website now presents these as a visual lab: one large selected chart, a quic
 
 ## 📌 Roadmap
 
-- [x] Live qualifying data integration (auto-fetch on race weekends)
-- [x] Weather API integration for real-time forecasts (optional `--weather`)
-- [x] Sprint race predictions
-- [x] Deploy website to GitHub Pages
-- [x] Automated prediction pipeline via GitHub Actions
-- [x] Circuit-specific features (DRS zones, safety car, altitude, pit stops)
-- [x] Add telemetry-based features (speed traps, sector times) via optional `--telemetry`
-- [x] Official standings + completed-round classified results sync (Jolpica + fallback)
-- [x] Weekend session result tabs for sprint and Grand Prix formats
-- [x] Benchmark + tuning harness for game-theory postprocessing
+The full audit-driven ladder lives in the project plan; below is the
+condensed public-facing version. See [`MODEL_CARD.md`](MODEL_CARD.md) for the
+honest disclosure of which Tier-1 items are gated on additional data.
+
+**Tier 0 — foundation (done)**
+
+- [x] Leakage guards (`leakage.py`) + machine-checked assertions in feature build
+- [x] Full pytest suite (118+ tests) with schema + golden-file checks in CI
+- [x] Pinned requirements; archived `_v1.py` legacy
+- [x] Live qualifying / weather / standings sync; Jolpica + FastF1 fallback
+- [x] Sprint race + circuit-specific features (DRS, safety car, altitude, pit)
+- [x] Game-theory postprocess benchmark + tuning harness
+
+**Tier 1 — betting tool**
+
+- [x] Calibrated probability layer (Plackett–Luce + isotonic, honest `applied=false` gate)
+- [x] Fractional-Kelly sizing + DuckDB-backed backtest scaffold
+- [x] `/value` page with sortable edge table and 360px-viewport card view
+- [x] OddsAPI client + cache + de-vig (`odds_ingest.py`, `export_value_data.py`)
+- [ ] Live odds source — **blocked**: The Odds API has no F1 coverage (2026-05). Alternatives tracked in [`docs/ENV_VARS.md`](docs/ENV_VARS.md): Pinnacle direct, Betfair Exchange, manual CSV.
+- [ ] Multi-season historical backfill (2023+2024+2025) — flips `calibration.applied` to `true`
+
+**Tier 2+ — modeling depth, UX polish, long-term ambition**
+
+- [ ] Optuna hyperparameter search with time-series CV
+- [ ] Conformal prediction intervals (MAPIE)
+- [ ] Per-race OG images, sitemap, structured data
 - [ ] Multi-season accuracy tracking dashboard
 
 ---
