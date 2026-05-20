@@ -1,0 +1,130 @@
+name: Backfill History DB
+
+# Populates ``data/history.duckdb`` so the probability calibrator has training
+# data.  Two tiers run sequentially:
+#
+#   1. Ergast (Jolpica) — fast: pulls full F1 history from 1950 in O(seasons)
+#      HTTP calls.  Idempotent; skips seasons already populated.
+#   2. FastF1 — slow: rate-limited at ~500 req/h.  We process a small slice
+#      (default 6 seasons × up to 4 rounds = 24 requests) per nightly run to
+#      stay well under the rate limit.  Re-runs progressively fill the gaps.
+#
+# The DB is gitignored (``/data/``); commits use ``git add -f``.  Downstream
+# workflows (update_predictions.yml) read it after checkout.
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # Daily 03:00 UTC — far from race-weekend traffic
+  workflow_dispatch:
+    inputs:
+      ergast_seasons:
+        description: "Ergast season range (e.g. '1950-2025' or '2010-2020')"
+        required: false
+        default: "1950-2025"
+      fastf1_seasons:
+        description: "FastF1 seasons to top up (comma-separated, e.g. '2023,2024,2025')"
+        required: false
+        default: "2023,2024,2025"
+      fastf1_max_rounds:
+        description: "Max FastF1 rounds to fetch in a single run (rate-limit governor)"
+        required: false
+        default: "24"
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    concurrency:
+      group: history-backfill
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+          # backfill_history.py uses DuckDB; not currently in requirements.txt
+          # because the prediction pipeline doesn't import it.  Install here.
+          pip install duckdb
+
+      - name: Restore FastF1 cache
+        uses: actions/cache@v4
+        with:
+          path: f1_cache
+          key: fastf1-backfill-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            fastf1-backfill-${{ runner.os }}-
+            fastf1-${{ runner.os }}-
+
+      - name: Ergast (Tier 2) backfill
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          SEASONS="${{ github.event.inputs.ergast_seasons }}"
+          SEASONS="${SEASONS:-1950-2025}"
+          python ergast_backfill.py --seasons "$SEASONS" --quiet
+        continue-on-error: true
+
+      - name: FastF1 (Tier 1) backfill — rate-limited slice
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          SEASONS="${{ github.event.inputs.fastf1_seasons }}"
+          SEASONS="${SEASONS:-2023,2024,2025}"
+          MAX_ROUNDS="${{ github.event.inputs.fastf1_max_rounds }}"
+          MAX_ROUNDS="${MAX_ROUNDS:-24}"
+          # Compute the slice of rounds to process this run.  The exact slice
+          # logic is owned by backfill_history.py (it skips rounds already
+          # present, so progressive runs converge on a complete DB).
+          python backfill_history.py --seasons "$SEASONS" --rounds "1-$MAX_ROUNDS" --quiet
+        continue-on-error: true
+
+      - name: Sanity-check the DB
+        run: |
+          python -c "
+          from pathlib import Path
+          import duckdb
+          db = Path('data/history.duckdb')
+          if not db.exists():
+              raise SystemExit('history DB not produced')
+          conn = duckdb.connect(str(db), read_only=True)
+          (n_rows,) = conn.execute('SELECT COUNT(*) FROM historical_predictions').fetchone()
+          (n_pairs,) = conn.execute('SELECT COUNT(DISTINCT (season, round)) FROM historical_predictions').fetchone()
+          by_source = dict(conn.execute('SELECT source, COUNT(*) FROM historical_predictions GROUP BY source').fetchall())
+          conn.close()
+          print(f'rows={n_rows}  distinct(season,round)={n_pairs}  by_source={by_source}')
+          if n_rows == 0:
+              raise SystemExit('DB is empty — every backfill step failed')
+          "
+
+      - name: Commit DB if changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # /data/ is gitignored on purpose; force-add the DB.
+          git add -f data/history.duckdb
+          if git diff --cached --quiet; then
+            echo "No DB changes to commit"
+          else
+            ROWS=$(python -c "
+          import duckdb
+          c = duckdb.connect('data/history.duckdb', read_only=True)
+          (n,) = c.execute('SELECT COUNT(DISTINCT (season, round)) FROM historical_predictions').fetchone()
+          print(n)
+          ")
+            git commit -m "[backfill] Refresh history.duckdb ($ROWS distinct rounds)"
+            git push origin HEAD:main
+          fi
