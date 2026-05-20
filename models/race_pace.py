@@ -201,17 +201,32 @@ def load_race_laps(
         warnings.warn(f"[race_pace] {season} R{round_num}: session load failed ({exc})")
         return []
 
-    laps_df = getattr(session, "laps", None)
+    # FastF1's session.laps and session.weather_data are properties that
+    # raise DataNotLoadedError (NOT AttributeError) when load() failed
+    # silently mid-way — getattr's default-fallback doesn't catch that.
+    # Wrap the access to swallow the failure as "no laps available".
+    try:
+        laps_df = session.laps
+    except Exception as exc:  # noqa: BLE001
+        warnings.warn(f"[race_pace] {season} R{round_num}: laps access failed ({exc})")
+        return []
     if laps_df is None or len(laps_df) == 0:
         return []
 
-    weather_df = getattr(session, "weather_data", None)
+    try:
+        weather_df = session.weather_data
+    except Exception:  # noqa: BLE001 — weather is optional; carry on without it
+        weather_df = None
+
     total_laps = int(laps_df["LapNumber"].max()) if "LapNumber" in laps_df.columns else 0
     if total_laps <= 0:
         return []
 
     if circuit_key is None:
-        event = getattr(session, "event", None)
+        try:
+            event = session.event
+        except Exception:  # noqa: BLE001
+            event = None
         # FastF1's ``Event`` is a pandas Series and doesn't support the
         # ``event or {}`` truthiness trick — that raises "ambiguous truth
         # value".  Probe ``get`` directly with a None check instead.
