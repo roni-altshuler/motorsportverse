@@ -131,6 +131,20 @@ jobs:
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           python generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
 
+      - name: Forward-eval — score predictions vs actuals (A-P0.2)
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          mkdir -p website/public/data/forward_eval reports
+          # --allow-empty makes pre-race / pre-actuals runs a no-op exit 0.
+          # The per-round JSONs get committed by the existing "Commit updated
+          # data" step below since /website/public/data is force-added.
+          python forward_eval.py \
+            --season "$SEASON_YEAR" \
+            --per-round-dir website/public/data/forward_eval \
+            --output "reports/forward_eval_${SEASON_YEAR}.json" \
+            --allow-empty
+
       - name: Install test dependencies
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         run: pip install pytest pydantic

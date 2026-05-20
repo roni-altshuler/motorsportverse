@@ -2,14 +2,15 @@
 
 Scores predictions against actual finishing positions, race-by-race, with a
 strict prior-data-only contract.  This is the evaluation metric a betting tool
-actually cares about — per-driver position error, podium hit-rate, and log-loss
-against a uniform-prior baseline — *not* in-sample lap-time MAE.
+actually cares about — per-driver position error, podium hit-rate, log-loss
+against baselines, NDCG / Spearman ranking metrics — *not* in-sample lap-time
+MAE.
 
 Two operating modes:
 
 1. **Score existing predictions** (default).  Reads predicted_results_<season>.json
    and season_results_<season>.json from the project root, computes per-round
-   metrics, and writes a JSON report.  No model retraining; useful in CI.
+   metrics, and writes a JSON report.  No model retraining; safe for CI.
 
 2. **Backtest (planned)**.  Walk forward through completed rounds, retraining
    on rounds <R for each target R.  This requires a callable that fetches
@@ -17,23 +18,40 @@ Two operating modes:
    architecture does not expose that callable, so this mode is stubbed and
    will be implemented when models/lap_time.py is split out.
 
+Per-round website output
+------------------------
+When ``--per-round-dir`` is given, each round's evaluation is also written as
+``<dir>/round_NN.json`` so the website can render a per-round accuracy panel
+without parsing the season-level report.  This is what
+``.github/workflows/update_predictions.yml`` consumes — the post-race step
+runs forward_eval and commits the per-round files alongside the existing
+prediction JSON.
+
+Baseline leaderboard
+--------------------
+A model that only beats "predict the same order as last race" isn't doing real
+work.  Each round records a ``baselines`` block with the same metrics computed
+against the **last-race-winner baseline** (use the *previous* round's actual
+finishing order as this round's prediction).  Future baselines (pole-sitter,
+championship-leader) will slot into the same dict — keep additive.
+
 Usage::
 
     python forward_eval.py --season 2026
     python forward_eval.py --season 2026 --rounds 1-10
     python forward_eval.py --season 2026 --output reports/forward_eval_2026.json
+    python forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval
 """
 from __future__ import annotations
 
 import argparse
 import json
 import math
-import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
-from leakage import LeakageError, assert_prior_only
+from leakage import LeakageError
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "reports" / "forward_eval.json"
@@ -58,7 +76,15 @@ class RoundEvaluation:
     winner_hit: bool
     podium_hits: int  # 0..3, how many of predicted top-3 were in actual top-3
     log_loss_uniform_baseline: float | None
+    spearman_correlation: float | None  # rank correlation, [-1, 1]; None if too few drivers
+    ndcg_at_5: float | None             # ranking quality of predicted top-5 vs actual, [0, 1]
     biggest_misses: list[dict] = field(default_factory=list)
+    # Baselines: same scoring against trivial / market predictors.  Keys are
+    # baseline names; missing keys mean "not enough data to compute this round".
+    # Schema per entry:
+    #   {"mean_position_error": float, "winner_hit": bool, "podium_hits": int,
+    #    "spearman_correlation": float | None}
+    baselines: dict[str, dict] = field(default_factory=dict)
 
 
 @dataclass
@@ -110,8 +136,17 @@ def score_round(
     rnd: int,
     predicted: dict[str, int],
     actual: dict[str, int],
+    prior_round_actual: dict[str, int] | None = None,
 ) -> RoundEvaluation:
     """Compute one round's evaluation metrics.
+
+    Parameters
+    ----------
+    predicted, actual
+        Driver-code → finishing-position maps.
+    prior_round_actual
+        Previous round's actual finishing order, used to score the
+        "last race winner" baseline.  ``None`` skips the baseline.
 
     Notes
     -----
@@ -134,6 +169,9 @@ def score_round(
             winner_hit=False,
             podium_hits=0,
             log_loss_uniform_baseline=None,
+            spearman_correlation=None,
+            ndcg_at_5=None,
+            baselines={},
         )
 
     errors = [abs(predicted[d] - actual[d]) for d in common]
@@ -165,6 +203,19 @@ def score_round(
     n_drivers = len(actual)
     uniform_log_loss = math.log(n_drivers) if n_drivers > 1 else None
 
+    # Rank-quality metrics.  Skip when only 1-2 drivers overlap (correlation
+    # is undefined / always 1).
+    spearman = _spearman_correlation(
+        [predicted[d] for d in common],
+        [actual[d] for d in common],
+    )
+    ndcg = _ndcg_at_k(predicted=predicted, actual=actual, k=5)
+
+    # Baselines: score the same metrics against a trivial predictor.
+    baselines: dict[str, dict] = {}
+    if prior_round_actual:
+        baselines["last_race_winner"] = _baseline_score(prior_round_actual, actual)
+
     return RoundEvaluation(
         season=season,
         round=rnd,
@@ -178,8 +229,127 @@ def score_round(
         winner_hit=(pred_winner is not None and pred_winner == act_winner),
         podium_hits=len(pred_top3 & act_top3),
         log_loss_uniform_baseline=uniform_log_loss,
+        spearman_correlation=spearman,
+        ndcg_at_5=ndcg,
         biggest_misses=biggest,
+        baselines=baselines,
     )
+
+
+def _spearman_correlation(predicted: list[int], actual: list[int]) -> float | None:
+    """Spearman rank correlation between two integer rank vectors.
+
+    Formula (no-ties): ρ = 1 - 6 Σ d² / (n(n²-1))  where d_i = pred_i - act_i.
+
+    Ties are present whenever multiple drivers share a position (rare but
+    possible in the predicted output — e.g. two drivers with identical lap
+    times before tie-break).  We use the **average-rank** convention to
+    handle ties, computing Pearson on the resulting rank columns.  For the
+    common no-tie case this reduces to the standard formula.
+
+    Returns ``None`` when n < 3 (correlation collapses to ±1 trivially).
+    """
+    n = len(predicted)
+    if n < 3:
+        return None
+    pred_ranks = _average_ranks(predicted)
+    act_ranks = _average_ranks(actual)
+    mean_p = sum(pred_ranks) / n
+    mean_a = sum(act_ranks) / n
+    cov = sum((p - mean_p) * (a - mean_a) for p, a in zip(pred_ranks, act_ranks))
+    var_p = sum((p - mean_p) ** 2 for p in pred_ranks)
+    var_a = sum((a - mean_a) ** 2 for a in act_ranks)
+    denom = math.sqrt(var_p * var_a)
+    if denom <= 0:
+        return None
+    return cov / denom
+
+
+def _average_ranks(values: list[int]) -> list[float]:
+    """Convert raw positions to average ranks (ties get the mean rank)."""
+    # sorted indices, lowest value first
+    indexed = sorted(enumerate(values), key=lambda iv: iv[1])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(indexed):
+        j = i
+        # Group ties
+        while j + 1 < len(indexed) and indexed[j + 1][1] == indexed[i][1]:
+            j += 1
+        avg_rank = (i + j) / 2 + 1  # +1 for 1-indexed rank
+        for k in range(i, j + 1):
+            ranks[indexed[k][0]] = avg_rank
+        i = j + 1
+    return ranks
+
+
+def _ndcg_at_k(
+    predicted: dict[str, int],
+    actual: dict[str, int],
+    k: int = 5,
+) -> float | None:
+    """Normalised Discounted Cumulative Gain over the predicted top-K.
+
+    Each driver's relevance is ``n - actual_position`` (so P1 = highest gain,
+    P-last = 0).  NDCG@K compares the gain accumulated by the *predicted*
+    top-K to the ideal gain (sort by actual position).  Result ∈ [0, 1];
+    1.0 = predicted top-K exactly matches the actual top-K.
+
+    Returns ``None`` when fewer than K drivers are shared between maps.
+    """
+    common = sorted(set(predicted.keys()) & set(actual.keys()))
+    if len(common) < k or k < 1:
+        return None
+    n = len(common)
+    relevance = {d: float(n - actual[d]) for d in common}
+
+    pred_topk = sorted(common, key=lambda d: predicted[d])[:k]
+    ideal_topk = sorted(common, key=lambda d: actual[d])[:k]
+
+    def dcg(order: list[str]) -> float:
+        total = 0.0
+        for rank, d in enumerate(order, start=1):
+            total += relevance[d] / math.log2(rank + 1)
+        return total
+
+    actual_dcg = dcg(pred_topk)
+    ideal_dcg = dcg(ideal_topk)
+    if ideal_dcg <= 0:
+        return None
+    return actual_dcg / ideal_dcg
+
+
+def _baseline_score(
+    baseline_predicted: dict[str, int],
+    actual: dict[str, int],
+) -> dict[str, float | bool | int | None]:
+    """Score a baseline predictor against actuals.  Lightweight subset of
+    the full RoundEvaluation — just the metrics worth comparing."""
+    common = sorted(set(baseline_predicted.keys()) & set(actual.keys()))
+    if not common:
+        return {
+            "mean_position_error": None,
+            "winner_hit": False,
+            "podium_hits": 0,
+            "spearman_correlation": None,
+        }
+    errors = [abs(baseline_predicted[d] - actual[d]) for d in common]
+    pred_sorted = sorted(baseline_predicted.items(), key=lambda kv: kv[1])
+    act_sorted = sorted(actual.items(), key=lambda kv: kv[1])
+    pred_winner = pred_sorted[0][0] if pred_sorted else None
+    act_winner = act_sorted[0][0] if act_sorted else None
+    pred_top3 = {drv for drv, _ in pred_sorted[:3]}
+    act_top3 = {drv for drv, _ in act_sorted[:3]}
+    spearman = _spearman_correlation(
+        [baseline_predicted[d] for d in common],
+        [actual[d] for d in common],
+    )
+    return {
+        "mean_position_error": round(sum(errors) / len(errors), 3),
+        "winner_hit": bool(pred_winner is not None and pred_winner == act_winner),
+        "podium_hits": len(pred_top3 & act_top3),
+        "spearman_correlation": spearman,
+    }
 
 
 def _median(xs: list[float]) -> float:
@@ -220,7 +390,17 @@ def evaluate_season(
         act_round = actual.get(rnd)
         if not pred_round or not act_round:
             continue
-        evaluated.append(score_round(season, rnd, pred_round, act_round))
+        # last-race-winner baseline: previous *completed* round's actuals.
+        # Walk backward in case round R-1 was a DNQ / skipped slot.
+        prior_actual: dict[str, int] | None = None
+        for prior_rnd in range(rnd - 1, 0, -1):
+            candidate = actual.get(prior_rnd)
+            if candidate:
+                prior_actual = candidate
+                break
+        evaluated.append(
+            score_round(season, rnd, pred_round, act_round, prior_round_actual=prior_actual)
+        )
 
     return ForwardEvalReport(
         season=season,
@@ -239,6 +419,9 @@ def _summarize(rounds: list[RoundEvaluation]) -> dict:
             "podium_hit_rate": None,
             "exact_match_rate": None,
             "within_3_rate": None,
+            "mean_spearman": None,
+            "mean_ndcg_at_5": None,
+            "baselines": {},
         }
     n_rounds = len(rounds)
     total_drivers = sum(r.drivers_compared for r in rounds) or 1
@@ -248,6 +431,36 @@ def _summarize(rounds: list[RoundEvaluation]) -> dict:
     podium_hits = sum(r.podium_hits for r in rounds) / (3 * n_rounds)
     exact_matches = sum(r.exact_matches for r in rounds) / total_drivers
     within_3 = sum(r.within_3 for r in rounds) / total_drivers
+
+    spearmans = [r.spearman_correlation for r in rounds if r.spearman_correlation is not None]
+    ndcgs = [r.ndcg_at_5 for r in rounds if r.ndcg_at_5 is not None]
+    mean_spearman = round(sum(spearmans) / len(spearmans), 3) if spearmans else None
+    mean_ndcg = round(sum(ndcgs) / len(ndcgs), 3) if ndcgs else None
+
+    # Aggregate baseline metrics so the "is the model beating the trivial
+    # predictor?" comparison is a single read.  Keys = baseline names that
+    # appeared in *any* round; we average across the rounds where they did.
+    baseline_summary: dict[str, dict] = {}
+    baseline_names: set[str] = set()
+    for r in rounds:
+        baseline_names.update(r.baselines.keys())
+    for name in sorted(baseline_names):
+        present = [r.baselines.get(name) for r in rounds if name in r.baselines]
+        present = [p for p in present if p is not None]
+        if not present:
+            continue
+        errs = [p.get("mean_position_error") for p in present if isinstance(p.get("mean_position_error"), (int, float))]
+        winners = sum(1 for p in present if p.get("winner_hit"))
+        podiums = [int(p.get("podium_hits", 0)) for p in present]
+        spear = [p.get("spearman_correlation") for p in present if isinstance(p.get("spearman_correlation"), (int, float))]
+        baseline_summary[name] = {
+            "rounds_compared": len(present),
+            "mean_position_error": round(sum(errs) / len(errs), 3) if errs else None,
+            "winner_hit_rate": round(winners / len(present), 3),
+            "podium_hit_rate": round(sum(podiums) / (3 * len(present)), 3),
+            "mean_spearman": round(sum(spear) / len(spear), 3) if spear else None,
+        }
+
     return {
         "rounds_evaluated": n_rounds,
         "season_mean_error": round(mean_err, 3),
@@ -256,6 +469,9 @@ def _summarize(rounds: list[RoundEvaluation]) -> dict:
         "podium_hit_rate": round(podium_hits, 3),
         "exact_match_rate": round(exact_matches, 3),
         "within_3_rate": round(within_3, 3),
+        "mean_spearman": mean_spearman,
+        "mean_ndcg_at_5": mean_ndcg,
+        "baselines": baseline_summary,
     }
 
 
@@ -286,6 +502,24 @@ def _report_to_jsonable(report: ForwardEvalReport) -> dict:
     }
 
 
+def write_per_round_files(report: ForwardEvalReport, output_dir: Path) -> list[Path]:
+    """Write one JSON file per evaluated round.
+
+    Each file is named ``round_NN.json`` and contains a single
+    ``RoundEvaluation`` plus a ``season`` field — schema the website
+    accuracy page can consume one round at a time.
+    """
+    output_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for r in report.rounds:
+        target = output_dir / f"round_{r.round:02d}.json"
+        payload = asdict(r)
+        with target.open("w") as fh:
+            json.dump(payload, fh, indent=2)
+        written.append(target)
+    return written
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--season", type=int, required=True)
@@ -293,7 +527,15 @@ def main() -> int:
                         help="Round filter (e.g. '1-10' or '3,5,7'). Default: all completed.")
     parser.add_argument("--predicted-file", type=Path, default=None)
     parser.add_argument("--actual-file", type=Path, default=None)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT,
+                        help="Season-level JSON report path.")
+    parser.add_argument("--per-round-dir", type=Path, default=None,
+                        help="Optional directory for per-round JSON output "
+                        "(consumed by website/public/data/forward_eval/round_NN.json).")
+    parser.add_argument("--allow-empty", action="store_true",
+                        help="When set, exit 0 (with a message) if no actuals "
+                        "exist yet.  CI uses this on pre-race phases where the "
+                        "forward-eval has nothing to score.")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
@@ -303,8 +545,9 @@ def main() -> int:
     predicted = _load_results_json(predicted_path)
     actual = _load_results_json(actual_path)
     if not actual:
-        print(f"⚠️  No actual results found at {actual_path}; nothing to score.")
-        return 1
+        msg = f"⚠️  No actual results found at {actual_path}; nothing to score."
+        print(msg)
+        return 0 if args.allow_empty else 1
 
     report = evaluate_season(
         season=args.season,
@@ -313,20 +556,39 @@ def main() -> int:
         rounds=_parse_rounds(args.rounds),
     )
 
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w") as f:
+    output_path = args.output if args.output.is_absolute() else (PROJECT_ROOT / args.output)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w") as f:
         json.dump(_report_to_jsonable(report), f, indent=2)
+
+    per_round_written: list[Path] = []
+    if args.per_round_dir is not None:
+        per_round_dir = (
+            args.per_round_dir
+            if args.per_round_dir.is_absolute()
+            else PROJECT_ROOT / args.per_round_dir
+        )
+        per_round_written = write_per_round_files(report, per_round_dir)
 
     if not args.quiet:
         print(f"📊 Forward-eval {args.season} — {report.summary['rounds_evaluated']} rounds")
         for r in report.rounds:
             wh = "✓" if r.winner_hit else "✗"
+            spear = f"{r.spearman_correlation:.2f}" if r.spearman_correlation is not None else "—"
+            ndcg = f"{r.ndcg_at_5:.2f}" if r.ndcg_at_5 is not None else "—"
             print(
                 f"  R{r.round:02d}  meanErr={r.mean_position_error:5.2f}  "
-                f"median={r.median_position_error:4.1f}  winner={wh}  "
-                f"podiumHits={r.podium_hits}/3  exact={r.exact_matches}"
+                f"winner={wh}  podiumHits={r.podium_hits}/3  "
+                f"ρ={spear}  NDCG@5={ndcg}"
             )
-        print(f"📝 Written {args.output.relative_to(PROJECT_ROOT)}")
+        try:
+            display_path = output_path.relative_to(PROJECT_ROOT)
+        except ValueError:
+            display_path = output_path
+        print(f"📝 Written {display_path}")
+        if per_round_written:
+            print(f"📝 Wrote {len(per_round_written)} per-round file(s) to "
+                  f"{args.per_round_dir}")
     return 0
 
 
