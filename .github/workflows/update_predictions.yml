@@ -157,6 +157,19 @@ jobs:
             --output website/public/data/model_health.json \
             --allow-empty
 
+      - name: Promotion decision — production vs candidate (A-P1.3)
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          # --allow-empty so the step is a no-op until a candidate model
+          # has been scored.  When forward_eval_candidate/ starts producing
+          # files, this auto-promotes via the guarded rule in
+          # models/promotion.py.
+          python promotion_decision.py \
+            --season "$SEASON_YEAR" \
+            --output website/public/data/promotion_status.json \
+            --allow-empty
+
       - name: Install test dependencies
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         run: pip install pytest pydantic
