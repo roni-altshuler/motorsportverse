@@ -96,7 +96,6 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ThemeProvider>
-          <div className="racing-stripe" aria-hidden="true" />
           <Navbar />
           <LiveContextBand />
           <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>

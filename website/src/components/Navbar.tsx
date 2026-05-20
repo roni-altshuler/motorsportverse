@@ -10,6 +10,30 @@ import { Badge } from "@/components/ui/Badge";
 import { fetchSeasonData, fetchSeasonTrackerData, getRoundLifecycle, getRoundStatusMeta } from "@/lib/data";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+interface AccuracySummary {
+  accuracyPct: number;
+  roundsWithActual: number;
+}
+
+function useAccuracySummary(): AccuracySummary | null {
+  const [summary, setSummary] = useState<AccuracySummary | null>(null);
+  useEffect(() => {
+    fetch(`${BASE_PATH}/data/gp_accuracy_report.json`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!d?.overallAccuracy) return;
+        setSummary({
+          accuracyPct: d.overallAccuracy.seasonAccuracyPct ?? 0,
+          roundsWithActual: d.overallAccuracy.roundsWithActual ?? 0,
+        });
+      })
+      .catch(() => {});
+  }, []);
+  return summary;
+}
+
 // Shared with HomePage — keep the legacy status-pill tone → Badge variant
 // mapping centralised so the rest of the codebase can migrate piecewise.
 const TONE_TO_BADGE_VARIANT = {
@@ -80,12 +104,18 @@ export default function Navbar() {
 
   const actualSet = new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round));
 
+  // Compact accuracy chip — fetches gp_accuracy_report.json once and
+  // surfaces "Accuracy 53.4% · N rounds" so visitors always know how the
+  // model has been performing.  Replaces the standalone /accuracy nav
+  // link per the 2026-05 redesign.
+  const accuracySummary = useAccuracySummary();
+
   return (
     <nav
-      className="sticky top-[3px] z-50 backdrop-blur-xl border-b"
+      className="sticky top-0 z-50 border-b"
       style={{
-        background: theme === "dark" ? "rgba(21,21,30,0.88)" : "rgba(255,255,255,0.88)",
-        borderColor: "var(--glass-border)",
+        background: "var(--bg)",
+        borderColor: "var(--border)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -170,8 +200,23 @@ export default function Navbar() {
 
             {navLinkWithBadge("/value", "Value Finder", "NEW")}
             {navLink("/standings", "Standings")}
-            {navLink("/accuracy", "Accuracy")}
             {navLink("/about", "About")}
+
+            {/* Accuracy chip — replaces the standalone /accuracy nav link */}
+            {accuracySummary && accuracySummary.roundsWithActual > 0 && (
+              <Link
+                href="/about#methodology"
+                className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-mono font-tabular transition-colors"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--text-muted)",
+                }}
+                title={`Season accuracy ${accuracySummary.accuracyPct.toFixed(1)}% across ${accuracySummary.roundsWithActual} completed round(s)`}
+              >
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent-positive)]" aria-hidden />
+                {accuracySummary.accuracyPct.toFixed(0)}% · {accuracySummary.roundsWithActual}R
+              </Link>
+            )}
 
             {/* Theme toggle */}
             <button
@@ -216,7 +261,6 @@ export default function Navbar() {
                 { href: "/calendar", label: "Season Calendar" },
                 { href: "/value", label: "Value Finder", badge: "NEW" },
                 { href: "/standings", label: "Standings" },
-                { href: "/accuracy", label: "Accuracy" },
                 { href: "/about", label: "About" },
               ].map((item) => (
                 <Link

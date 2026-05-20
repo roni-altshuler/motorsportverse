@@ -98,9 +98,9 @@ export default function LiveContextBand() {
 
   return (
     <div
-      className="sticky top-[64px] z-40 border-b backdrop-blur-xl"
+      className="sticky top-[64px] z-40 border-b"
       style={{
-        background: "color-mix(in srgb, var(--surface) 78%, transparent)",
+        background: "var(--surface)",
         borderColor: "var(--border)",
       }}
       aria-label="Race-weekend live context"

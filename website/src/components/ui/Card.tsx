@@ -13,8 +13,10 @@ export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
     <div
       ref={ref}
       className={cn(
-        "rounded-[12px] border bg-[color:var(--surface)] text-[color:var(--text-primary)] shadow-[var(--shadow-sm)]",
-        "border-[color:var(--border)] transition-[border-color,box-shadow] duration-200",
+        // Flat opaque surface — no backdrop-blur, no shadow trail.
+        // Border + small radius do the visual lift work.
+        "rounded-[12px] border bg-[color:var(--surface)] text-[color:var(--text-primary)]",
+        "border-[color:var(--border)] transition-[border-color] duration-150",
         className,
       )}
       {...props}

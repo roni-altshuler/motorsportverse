@@ -89,43 +89,21 @@ h1, h2, h3, h4, h5, h6 {
   background: color-mix(in srgb, var(--accent-live) 54%, transparent);
 }
 
-/* Racing stripe */
-.racing-stripe {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #E10600, #FF1801, #E10600);
-  z-index: 100;
-}
-
-/* Hero gradient */
+/* Hero — flat surface, no decorative overlays (redesign 2026-05) */
 .hero-gradient {
   position: relative;
   background: var(--bg);
 }
-.hero-gradient::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(115deg, rgba(225, 6, 0, 0.10), transparent 32%),
-    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 18px);
-  pointer-events: none;
-}
 
-/* Cards */
+/* Cards — flat surface, no backdrop-blur (redesign 2026-05) */
 .card {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
 }
-.card:hover { border-color: rgba(225, 6, 0, 0.12); }
-.card-glow:hover { box-shadow: 0 0 20px rgba(225, 6, 0, 0.06); }
+.card:hover { border-color: var(--border-strong); }
+.card-glow:hover { border-color: var(--accent-live); }
 
 .status-pill {
   display: inline-flex;
@@ -167,30 +145,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .weekend-spotlight {
   position: relative;
-  overflow: hidden;
   border-radius: 12px;
-  border: 1px solid rgba(225, 6, 0, 0.14);
-  background:
-    linear-gradient(135deg, rgba(225, 6, 0, 0.12), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 60%),
-    var(--bg-card);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
-}
-
-.weekend-spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 30%),
-    repeating-linear-gradient(
-      120deg,
-      transparent 0,
-      transparent 18px,
-      rgba(255, 255, 255, 0.02) 18px,
-      rgba(255, 255, 255, 0.02) 19px
-    );
-  pointer-events: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .data-freshness-card {
@@ -728,12 +685,11 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: -200% 0; }
 }
 
-/* Gradient text */
+/* Gradient text — retired in 2026-05 redesign.  Class kept as a flat
+ * passthrough so any lingering JSX using `className="gradient-text"`
+ * continues to render in the primary text colour during migration. */
 .gradient-text {
-  background: linear-gradient(135deg, #E10600, #FF4444);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .stat-number {
