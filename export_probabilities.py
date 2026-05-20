@@ -48,6 +48,7 @@ from models.calibration import (
     plackett_luce_probabilities,
     reliability_diagram,
 )
+from models.registry import ModelRegistry, registry_enabled
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 ROUNDS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "rounds"
@@ -340,6 +341,32 @@ def run(
 
     calibrator = ProbabilityCalibrator()
     calibrator.fit_from_history(history)
+
+    # Persist the fitted calibrator to the registry (A-P0.3).  Keyed by the
+    # season + latest completed round so `registry.latest(season)` recovers
+    # the most-recent calibrator without callers having to know which round.
+    # Non-fatal: registry failures never block the export.
+    if registry_enabled():
+        try:
+            latest_round = max(
+                (int(r) for r in actuals if int(r) in {int(rnd) for rnd in raw_round_payloads}),
+                default=None,
+            )
+            if latest_round is not None:
+                ModelRegistry().save(
+                    season=2026,
+                    round_num=latest_round,
+                    models={"calibrator": calibrator},
+                    metadata={
+                        "fittedMarkets": [m for m in MARKETS if calibrator.is_fitted(m)],
+                        "sampleCounts": calibrator.sample_counts(),
+                        "historyRecords": len(history),
+                        "dbHistoryRounds": db_rounds_count,
+                        "kind": "probability-calibrator",
+                    },
+                )
+        except Exception as e:
+            print(f"  ⚠️  Could not persist calibrator to model registry: {e}")
 
     # Honest gate: a single completed round trivially satisfies the calibrator's
     # in-class `_min_samples`, but isotonic on ~22 binary observations per

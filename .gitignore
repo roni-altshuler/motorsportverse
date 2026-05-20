@@ -48,6 +48,14 @@ season_tracker_2026.json
 *_v1.py
 
 # ========================
+# Model registry binaries (metadata.json IS committed)
+# ========================
+models/registry/**/*.joblib
+models/registry/**/*.pt
+# Keep staging-dir leftovers out (tempfile.TemporaryDirectory with prefix=".")
+models/registry/.*_*/
+
+# ========================
 # OS files
 # ========================
 .DS_Store

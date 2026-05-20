@@ -32,6 +32,8 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(__file__))
 from f1_prediction_utils import *
 
+from models.registry import ModelRegistry, registry_enabled
+
 # ── Paths ────────────────────────────────────────────────────────────────
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 WEBSITE_DIR = os.path.join(PROJECT_ROOT, "website")
@@ -690,6 +692,34 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     results["merged"] = merged
     metrics_df      = evaluate_models(results)
     classification  = predicted_classification(merged, gp_name)
+
+    # ── Persist trained ensemble to model registry (A-P0.3) ──
+    # Non-fatal: a registry failure must never block prediction publishing.
+    if registry_enabled():
+        try:
+            artifacts = {
+                "gbr": results["gb_model"],
+                "xgb": results["xgb_model"],
+                "scaler": results["scaler"],
+            }
+            metadata = {
+                "feature_cols": list(results.get("feature_cols", [])),
+                "ensemble_weights": results.get("ensemble_weights", {}),
+                "lstm_used": bool(results.get("lstm_used", False)),
+                "max_spread_s": 3.5,
+                "gpName": gp_name,
+                "circuitKey": gp_key,
+                "metrics": metrics_df.to_dict(orient="records")
+                if hasattr(metrics_df, "to_dict") else None,
+            }
+            ModelRegistry().save(
+                season=SEASON_YEAR,
+                round_num=round_num,
+                models=artifacts,
+                metadata=metadata,
+            )
+        except Exception as e:
+            print(f"  ⚠️  Could not persist to model registry: {e}")
 
     # ── Auto-save predicted result for race-to-race scaling (v3 NEW) ──
     try:
