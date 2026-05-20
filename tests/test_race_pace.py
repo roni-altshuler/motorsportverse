@@ -209,6 +209,25 @@ class TestLoadRaceLaps:
         records = load_race_laps(2024, 8, circuit_key="X")
         assert records[0].tyre_compound == "UNKNOWN"
 
+    def test_handles_pandas_event_series_without_truthiness_crash(
+        self, monkeypatch: pytest.MonkeyPatch,
+    ):
+        """Regression: FastF1 returns ``session.event`` as a pandas Series
+        which raises on ``event or {}``.  Caller must accept either shape."""
+        laps_df = _synthetic_laps_dataframe(n_drivers=2, n_laps=2)
+        # Simulate FastF1's pandas-Series event
+        event_series = pd.Series({"Location": "FakeCircuitFromSeries", "EventName": "X"})
+
+        def fake_load(season: int, round_num: int):  # noqa: ARG001
+            return SimpleNamespace(
+                laps=laps_df, weather_data=None, event=event_series,
+            )
+
+        monkeypatch.setattr(race_pace, "_load_race_session", fake_load)
+        records = load_race_laps(2024, 8)  # no circuit_key → derived from event
+        assert records, "loader should not crash on a pandas-Series event"
+        assert records[0].circuit_key == "FakeCircuitFromSeries"
+
 
 # --------------------------------------------------------------------------- #
 # Feature engineering

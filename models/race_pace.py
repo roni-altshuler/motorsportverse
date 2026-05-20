@@ -212,7 +212,14 @@ def load_race_laps(
 
     if circuit_key is None:
         event = getattr(session, "event", None)
-        circuit_key = (event or {}).get("Location", f"unknown_R{round_num}")
+        # FastF1's ``Event`` is a pandas Series and doesn't support the
+        # ``event or {}`` truthiness trick — that raises "ambiguous truth
+        # value".  Probe ``get`` directly with a None check instead.
+        circuit_key = (
+            event.get("Location", f"unknown_R{round_num}")
+            if event is not None
+            else f"unknown_R{round_num}"
+        )
 
     records: list[LapRecord] = []
     for _, lap in laps_df.iterrows():
