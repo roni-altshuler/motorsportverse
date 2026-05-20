@@ -6,7 +6,6 @@ Replays the real workflow the user runs at the CLI without going through
 from __future__ import annotations
 
 import json
-import shutil
 from pathlib import Path
 
 import pytest

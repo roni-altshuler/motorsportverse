@@ -2,13 +2,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import pytest
 
 import odds_ingest_unified as uni
 from odds_ingest_unified import (
-    MIN_DRIVERS_MATCHED,
     VALID_STRATEGIES,
     _apply_strategy,
     _merge_average,
@@ -127,7 +125,6 @@ class TestApplyStrategy:
 
     @pytest.fixture
     def csv(self):
-        from odds_import_csv import parse_csv  # parse from string via tmp file
 
         return {
             "NOR": 3.5, "PIA": 4.0, "VER": 5.5, "RUS": 7.0, "LEC": 9.0,

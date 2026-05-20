@@ -1,7 +1,6 @@
 """Tests for the multi-source scraper + bulk-CSV ingester."""
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from unittest.mock import patch
 
@@ -9,7 +8,6 @@ import pytest
 
 import odds_scraper as sc
 from odds_scraper import (
-    IngestedBook,
     OddscheckerScraper,
     ScrapeError,
     discover_inbox_csvs,

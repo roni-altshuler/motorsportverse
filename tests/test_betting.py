@@ -315,7 +315,7 @@ class _ValueOutputModel:
 
     @staticmethod
     def get_model():
-        from pydantic import BaseModel, ConfigDict, Field
+        from pydantic import BaseModel, ConfigDict
 
         class Op(BaseModel):
             model_config = ConfigDict(extra="ignore")
