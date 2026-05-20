@@ -1,6 +1,36 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
+/*
+ * Tailwind v4 theme inline — expose the design tokens to Tailwind utilities.
+ * Add `bg-surface`, `text-text-primary`, `border-border`, etc. as classes that
+ * pick up the CSS variables we define in styles/tokens.css.  Legacy `f1-*`
+ * aliases are kept so existing components keep rendering until they migrate.
+ */
 @theme inline {
+  /* Semantic tokens — preferred surface for new code */
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-live: var(--accent-live);
+  --color-accent-live-fg: var(--accent-live-fg);
+  --color-accent-positive: var(--accent-positive);
+  --color-accent-negative: var(--accent-negative);
+  --color-accent-info: var(--accent-info);
+  --color-accent-podium-1: var(--accent-podium-1);
+  --color-accent-podium-2: var(--accent-podium-2);
+  --color-accent-podium-3: var(--accent-podium-3);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Legacy f1-* aliases — preserved so existing class references keep
+   * working through the migration.  Do not add new uses. */
   --color-f1-bg: #15151E;
   --color-f1-card: #1F1F2B;
   --color-f1-card-hover: #27273A;
@@ -18,34 +48,6 @@
   --color-f1-input: #242436;
 }
 
-:root,
-[data-theme="dark"] {
-  --bg: #0D1117;
-  --bg-card: rgba(18, 24, 34, 0.86);
-  --bg-card-solid: #121822;
-  --bg-card-hover: rgba(30, 39, 52, 0.92);
-  --bg-surface: #151C27;
-  --text: #F4F7FB;
-  --text-secondary: #D1D5DB;
-  --text-muted: #9FB0C8;
-  --border: rgba(77, 91, 112, 0.42);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-}
-
-[data-theme="light"] {
-  --bg: #F8F8FA;
-  --bg-card: rgba(255, 255, 255, 0.9);
-  --bg-card-solid: #FFFFFF;
-  --bg-card-hover: rgba(243, 244, 246, 0.9);
-  --bg-surface: #F1F3F5;
-  --text: #111827;
-  --text-secondary: #374151;
-  --text-muted: #6B7280;
-  --border: rgba(209, 213, 219, 0.5);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-bg: rgba(0, 0, 0, 0.02);
-}
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -56,24 +58,36 @@ html {
 }
 
 body {
-  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-  background:
-    linear-gradient(180deg, rgba(14, 20, 30, 0.92), rgba(8, 11, 16, 1)),
-    var(--bg);
+  font-family: var(--font-sans);
+  background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
-  letter-spacing: -0.03em;
+[data-theme="dark"] body {
+  /* Subtle top-down vignette on dark theme only — gives depth without a
+   * full hero gradient that fights the design-system surfaces. */
+  background:
+    linear-gradient(180deg, rgba(14, 17, 22, 0.0), rgba(8, 11, 16, 0.55)),
+    var(--bg);
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(225, 6, 0, 0.25); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(225, 6, 0, 0.5); }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent-live) 28%, transparent);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent-live) 54%, transparent);
+}
 
 /* Racing stripe */
 .racing-stripe {
@@ -775,7 +789,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 :focus-visible {
-  outline: 2px solid rgba(225, 6, 0, 0.5);
+  outline: 2px solid var(--accent-live);
   outline-offset: 2px;
   border-radius: 4px;
 }

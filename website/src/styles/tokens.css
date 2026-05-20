@@ -1,0 +1,212 @@
+/*
+ * Design tokens — racing-inspired, light + dark, single source of truth.
+ *
+ * Why this exists
+ * ---------------
+ * The previous palette used F1's brand red (#E10600) as a near-omnipresent
+ * accent.  That makes the site read as a fan-page clone of F1.com.  We want a
+ * distinct visual identity: still automotive/motorsport, but recognisably its
+ * own product.  Two design moves:
+ *
+ *   1. Demote brand red to a **status-only** colour (penalty / urgent / live).
+ *   2. Promote **telemetry orange** (#F76B15) to the primary accent — the
+ *      cockpit-instrument hue.  Pair with **hot-lap green** (#22C55E) for
+ *      positive deltas and graphite surfaces for chrome.
+ *
+ * Token taxonomy
+ * --------------
+ *   --bg-*           : page / card / surface fills
+ *   --text-*         : foreground text scale
+ *   --border-*       : strokes
+ *   --accent-*       : semantic accents (live, positive, negative, info)
+ *   --shadow-*       : elevation
+ *   --radius-*       : corner radius scale
+ *   --font-*         : font-family bindings (filled in by next/font)
+ *
+ * shadcn aliases (--primary, --foreground, --muted, etc.) are mapped to the
+ * semantic tokens at the bottom so future shadcn primitives Just Work.
+ *
+ * Compatibility
+ * -------------
+ * The existing `--bg`, `--bg-card`, `--bg-card-solid`, `--bg-surface`, `--text`,
+ * `--text-secondary`, `--text-muted`, `--border`, `--glass-border`, `--glass-bg`
+ * variables in globals.css are kept and re-exported below.  Every existing
+ * page continues to render until callers opt into the new tokens.
+ */
+
+:root,
+[data-theme="dark"] {
+  /* ── Surfaces (graphite) ───────────────────────────────────────── */
+  --bg:                 #0E1116;         /* page background */
+  --bg-elevated:        #131822;         /* slight lift above page */
+  --surface:            #161B26;         /* card body */
+  --surface-elevated:   #1B2330;         /* card hover / panel */
+  --surface-overlay:    rgba(22, 27, 38, 0.78); /* glass overlay */
+
+  /* ── Strokes ──────────────────────────────────────────────────── */
+  --border:             rgba(255, 255, 255, 0.07);
+  --border-strong:      rgba(255, 255, 255, 0.14);
+  --border-accent:      rgba(247, 107, 21, 0.32);   /* telemetry orange */
+
+  /* ── Text ─────────────────────────────────────────────────────── */
+  --text-primary:       #F4F7FB;
+  --text-secondary:     #BCC4CF;
+  --text-muted:         #8A95A4;
+  --text-inverse:       #0E1116;
+
+  /* ── Accents (semantic) ───────────────────────────────────────── */
+  --accent-live:        #F76B15;   /* telemetry orange — primary CTA / live */
+  --accent-live-fg:     #0E1116;
+  --accent-live-hover:  #FF8033;
+  --accent-positive:    #22C55E;   /* hot-lap green */
+  --accent-positive-fg: #06140C;
+  --accent-negative:    #EF4444;   /* penalty red */
+  --accent-negative-fg: #FFFFFF;
+  --accent-info:        #38BDF8;   /* timing-screen cyan */
+  --accent-info-fg:     #061826;
+  --accent-podium-1:    #FFD166;   /* champagne gold */
+  --accent-podium-2:    #C5CCD3;   /* silver */
+  --accent-podium-3:    #CD7F32;   /* bronze */
+
+  /* ── Elevation ─────────────────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow:     0 8px 24px rgba(0, 0, 0, 0.32);
+  --shadow-lg:  0 24px 64px rgba(0, 0, 0, 0.40);
+
+  /* ── Radius ────────────────────────────────────────────────────── */
+  --radius-sm:  4px;
+  --radius:     8px;
+  --radius-lg:  12px;
+  --radius-xl:  18px;
+  --radius-full: 9999px;
+
+  /* ── Spacing aliases (used sparingly; prefer Tailwind utilities) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* ── Font bindings (resolved by next/font in layout.tsx) ───────── */
+  --font-sans: var(--font-geist-sans, "Geist", "Inter", system-ui, sans-serif);
+  --font-mono: var(--font-jetbrains-mono, "JetBrains Mono", ui-monospace, monospace);
+
+  /* ── shadcn aliases — point at our semantic tokens ─────────────── */
+  --background:         var(--bg);
+  --foreground:         var(--text-primary);
+  --card:               var(--surface);
+  --card-foreground:    var(--text-primary);
+  --popover:            var(--surface-elevated);
+  --popover-foreground: var(--text-primary);
+  --primary:            var(--accent-live);
+  --primary-foreground: var(--accent-live-fg);
+  --secondary:          var(--surface-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted:              var(--surface-elevated);
+  --muted-foreground:   var(--text-muted);
+  --accent:             var(--surface-elevated);
+  --accent-foreground:  var(--text-primary);
+  --destructive:        var(--accent-negative);
+  --destructive-foreground: var(--accent-negative-fg);
+  --input:              var(--border);
+  --ring:               var(--accent-live);
+}
+
+[data-theme="light"] {
+  /* ── Surfaces (paper) ──────────────────────────────────────────── */
+  --bg:                 #F5F6F8;
+  --bg-elevated:        #FFFFFF;
+  --surface:            #FFFFFF;
+  --surface-elevated:   #F0F2F5;
+  --surface-overlay:    rgba(255, 255, 255, 0.78);
+
+  /* ── Strokes ──────────────────────────────────────────────────── */
+  --border:             rgba(15, 23, 42, 0.10);
+  --border-strong:      rgba(15, 23, 42, 0.18);
+  --border-accent:      rgba(202, 78, 4, 0.34);
+
+  /* ── Text ─────────────────────────────────────────────────────── */
+  --text-primary:       #0F172A;
+  --text-secondary:     #334155;
+  --text-muted:         #64748B;
+  --text-inverse:       #F5F6F8;
+
+  /* ── Accents — slightly muted for light backgrounds ───────────── */
+  --accent-live:        #CA4E04;
+  --accent-live-fg:     #FFFFFF;
+  --accent-live-hover:  #B14304;
+  --accent-positive:    #047857;
+  --accent-positive-fg: #FFFFFF;
+  --accent-negative:    #B91C1C;
+  --accent-negative-fg: #FFFFFF;
+  --accent-info:        #0369A1;
+  --accent-info-fg:     #FFFFFF;
+  --accent-podium-1:    #B8862F;
+  --accent-podium-2:    #6B7280;
+  --accent-podium-3:    #92400E;
+
+  /* ── Elevation ─────────────────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow:     0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg:  0 24px 64px rgba(15, 23, 42, 0.12);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Backwards-compat: keep the legacy --bg-card / --text / etc. variables
+ * that the existing CSS classes (.card, .status-pill, .weekend-spotlight…)
+ * depend on.  These are re-derived from the new semantic tokens so a single
+ * palette change cascades everywhere.  Once components migrate to the
+ * shadcn-style primitives in src/components/ui/, these aliases can retire.
+ * ───────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="dark"] {
+  --bg-card:        var(--surface-overlay);
+  --bg-card-solid:  var(--surface);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-elevated);
+  --text:           var(--text-primary);
+  --glass-border:   var(--border);
+  --glass-bg:       rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="light"] {
+  --bg-card:        var(--surface-overlay);
+  --bg-card-solid:  var(--surface);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-elevated);
+  --text:           var(--text-primary);
+  --glass-border:   var(--border);
+  --glass-bg:       rgba(15, 23, 42, 0.03);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Tabular-figure utility for numeric / timing displays.
+ * Apply via `.font-tabular` or as the default for `font-mono`.
+ * ───────────────────────────────────────────────────────────────────── */
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Carbon-weave subtle texture — opt-in via class `.surface-carbon`. */
+.surface-carbon {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}

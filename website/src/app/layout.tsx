@@ -1,9 +1,25 @@
 import type { Metadata } from "next";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
+
+// Self-host both fonts via next/font for zero-CLS loading and correct
+// font-display: swap. Geist is the UI workhorse; JetBrains Mono provides
+// tabular figures for timing / lap-delta displays.
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 const ACTIVE_SEASON_YEAR = String(DEFAULT_SEASON_YEAR);
 
@@ -56,7 +72,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html
+      lang="en"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -64,7 +85,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen w-full flex flex-col antialiased" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+      <body className="min-h-screen w-full flex flex-col antialiased" style={{ background: 'var(--bg)', color: 'var(--text-primary)' }}>
         <ThemeProvider>
           <div className="racing-stripe" />
           <Navbar />
