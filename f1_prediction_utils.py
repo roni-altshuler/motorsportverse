@@ -1356,6 +1356,36 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
     pbar.update(1)
     pbar.close()
 
+    # A-P2.3: bootstrap-based 90% prediction intervals on the quali-time
+    # ensemble.  Best-effort; failures are non-fatal so the legacy point
+    # estimate keeps shipping.  After bootstrap we clip the band to the
+    # final ensemble's spread so the interval can't be wider than the
+    # post-calibration display range.
+    try:
+        from models.intervals import bootstrap_prediction_intervals
+        low_pred, high_pred = bootstrap_prediction_intervals(
+            X_train.to_numpy(), y_train,
+            X_scaled.to_numpy(),
+            n_replicas=20, n_estimators=80, random_state=random_state,
+        )
+        # Re-anchor the interval to the post-calibration ensemble so it
+        # tracks the rendered times.  Median of replicas ≈ ensemble; any
+        # post-cal compression is then proportional.
+        if calibrate:
+            ensemble_min = ensemble.min()
+            ensemble_max = ensemble.max()
+            ensemble_spread = max(ensemble_max - ensemble_min, 1e-6)
+            replica_median_spread = max(
+                np.median(high_pred - low_pred), 1e-6
+            )
+            shrink = min(1.0, ensemble_spread / replica_median_spread)
+            low_pred = ensemble - (ensemble - low_pred) * shrink
+            high_pred = ensemble + (high_pred - ensemble) * shrink
+        merged["PredictedLapTimeLow"] = low_pred
+        merged["PredictedLapTimeHigh"] = high_pred
+    except Exception as exc:  # noqa: BLE001 — never block the pipeline on intervals
+        print(f"⚠️  Bootstrap prediction intervals skipped: {exc}")
+
     ensemble_desc = "GBR+XGB+LSTM" if use_lstm else "GBR+XGB"
     print(f"⚖️  Dynamic ensemble weights: GBR={w_gb:.0%}, XGB={w_xgb:.0%}"
           + (f", LSTM={w_lstm:.0%}" if use_lstm else ""))

@@ -836,6 +836,15 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         ):
             if sim_col in row and pd.notna(row[sim_col]):
                 entry[payload_key] = round(float(row[sim_col]), 4)
+        # A-P2.3: bootstrap 90% prediction intervals on the lap-time
+        # ensemble.  When the bootstrap step succeeded these are filled
+        # for every driver; the website can render them as error bars.
+        for src_col, payload_key in (
+            ("PredictedLapTimeLow", "predictionIntervalLow"),
+            ("PredictedLapTimeHigh", "predictionIntervalHigh"),
+        ):
+            if src_col in row and pd.notna(row[src_col]):
+                entry[payload_key] = round(float(row[src_col]), 3)
         classification_data.append(entry)
 
     # ── Metrics → ModelMetrics ──

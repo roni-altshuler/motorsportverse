@@ -308,6 +308,114 @@ class ProbabilityCalibrator:
 
 
 # --------------------------------------------------------------------------- #
+# Stratified calibrator — A-P2.2
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class StratifiedProbabilityCalibrator:
+    """Isotonic per (market, stratum) — falls back to global when sparse.
+
+    Each input record may carry an optional ``stratum`` field (e.g. a
+    circuit-type label).  The calibrator fits one isotonic per
+    (market, stratum) pair when enough samples exist for that bucket;
+    otherwise rows go into a *global* isotonic that's always trained.
+
+    At transform time, ``stratum=None`` or an unseen stratum routes the
+    request to the global model.
+
+    This is the v1 implementation called out in the audit's A-P2.2 item.
+    The bucketing scheme (driver-tier, circuit-type, …) is the caller's
+    choice — this class just keeps the per-stratum books.
+    """
+
+    _stratum_models: dict[str, dict[str, IsotonicRegression]] = field(default_factory=dict)
+    _global: ProbabilityCalibrator = field(default_factory=ProbabilityCalibrator)
+    _min_samples_per_stratum: int = 8  # higher than global; smaller buckets need protection
+
+    def fit_from_history(
+        self, history: Sequence[Mapping[str, object]]
+    ) -> "StratifiedProbabilityCalibrator":
+        """Fit one isotonic per (market, stratum) where data permits.
+
+        Records without a stratum field still feed the global calibrator,
+        so the cross-track baseline is always available as a safety net.
+        """
+        # Always fit a global model on every record (we strip the stratum
+        # before passing to the base class).
+        self._global.fit_from_history(history)
+
+        # Bucket by (stratum, market) for the stratified fits.
+        by_bucket: dict[tuple[str, str], list[tuple[float, int]]] = {}
+        for rec in history:
+            stratum = rec.get("stratum")
+            market = rec.get("market")
+            if stratum is None or market not in MARKETS:
+                continue
+            try:
+                p = float(rec["predicted"])
+                y = int(rec["observed"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not (0.0 <= p <= 1.0) or y not in (0, 1):
+                continue
+            by_bucket.setdefault((str(stratum), market), []).append((p, y))
+
+        for (stratum, market), pairs in by_bucket.items():
+            if len(pairs) < self._min_samples_per_stratum:
+                continue
+            preds = np.array([p for p, _ in pairs], dtype=np.float64)
+            obs = np.array([y for _, y in pairs], dtype=np.float64)
+            if len(np.unique(preds)) < 2:
+                continue
+            model = IsotonicRegression(out_of_bounds="clip", y_min=0.0, y_max=1.0)
+            model.fit(preds, obs)
+            self._stratum_models.setdefault(stratum, {})[market] = model
+        return self
+
+    def is_fitted(self, market: str | None = None, stratum: str | None = None) -> bool:
+        """True if a stratum-specific OR global isotonic exists.
+
+        - ``market=None``: any stratum or global model present.
+        - ``market`` set, ``stratum=None``: returns global is_fitted(market).
+        - both set: returns True if the (stratum, market) model exists.
+        """
+        if market is None:
+            return bool(self._stratum_models) or self._global.is_fitted()
+        if stratum is not None and stratum in self._stratum_models:
+            if market in self._stratum_models[stratum]:
+                return True
+        return self._global.is_fitted(market)
+
+    def transform(
+        self,
+        market: str,
+        predicted: Sequence[float] | np.ndarray,
+        stratum: str | None = None,
+    ) -> np.ndarray:
+        """Apply per-(market, stratum) calibration, falling back to global."""
+        arr = np.asarray(list(predicted), dtype=np.float64)
+        if stratum is not None and stratum in self._stratum_models:
+            stratum_model = self._stratum_models[stratum].get(market)
+            if stratum_model is not None:
+                return np.clip(stratum_model.transform(arr), 0.0, 1.0)
+        return self._global.transform(market, arr)
+
+    def sample_counts(self) -> dict[str, int | dict[str, int]]:
+        """Bucket sample sizes for diagnostic display."""
+        out: dict[str, int | dict[str, int]] = {
+            "global": dict(self._global.sample_counts()),
+        }
+        for stratum, models in self._stratum_models.items():
+            out[stratum] = {m: -1 for m in models}  # exact count not tracked in v1
+        return out
+
+    def strata_with_models(self) -> dict[str, list[str]]:
+        """Map stratum → list of market names with fitted models."""
+        return {s: sorted(models.keys()) for s, models in self._stratum_models.items()}
+
+
+# --------------------------------------------------------------------------- #
 # Reliability diagram + metrics
 # --------------------------------------------------------------------------- #
 
