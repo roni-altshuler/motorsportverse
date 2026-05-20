@@ -6,8 +6,19 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "./ThemeProvider";
 import { SeasonData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
+import { Badge } from "@/components/ui/Badge";
 import { fetchSeasonData, fetchSeasonTrackerData, getRoundLifecycle, getRoundStatusMeta } from "@/lib/data";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
+
+// Shared with HomePage — keep the legacy status-pill tone → Badge variant
+// mapping centralised so the rest of the codebase can migrate piecewise.
+const TONE_TO_BADGE_VARIANT = {
+  red: "negative",
+  green: "positive",
+  amber: "live",
+  slate: "muted",
+} as const;
+type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -41,8 +52,8 @@ export default function Navbar() {
       href={href}
       className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg ${
         isActive(href)
-          ? "text-f1-red"
-          : "text-[var(--text-muted)] hover:text-[var(--text)]"
+          ? "text-[color:var(--accent-live)]"
+          : "text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)]"
       }`}
     >
       {label}
@@ -54,22 +65,14 @@ export default function Navbar() {
       href={href}
       className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg inline-flex items-center gap-2 ${
         isActive(href)
-          ? "text-f1-red"
-          : "text-[var(--text-muted)] hover:text-[var(--text)]"
+          ? "text-[color:var(--accent-live)]"
+          : "text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)]"
       }`}
     >
       {label}
-      <span
-        className="px-1.5 py-0.5 rounded-full text-[9px] font-black tracking-wider"
-        style={{
-          background: "rgba(225, 6, 0, 0.18)",
-          color: "#E10600",
-          border: "1px solid rgba(225, 6, 0, 0.35)",
-          letterSpacing: "0.08em",
-        }}
-      >
+      <Badge variant="live" className="px-1.5 py-0 text-[9px] leading-tight">
         {badge}
-      </span>
+      </Badge>
     </Link>
   );
 
@@ -87,7 +90,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-f1-red rounded-lg flex items-center justify-center font-black text-white text-sm tracking-tighter group-hover:scale-105 transition-transform shadow-lg shadow-f1-red/20">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-sm tracking-tighter group-hover:scale-105 transition-transform shadow-lg"
+              style={{
+                background: "var(--accent-live)",
+                color: "var(--accent-live-fg)",
+                boxShadow: "0 8px 24px color-mix(in srgb, var(--accent-live) 22%, transparent)",
+              }}
+            >
               F1
             </div>
             <div className="hidden sm:block">
@@ -146,7 +155,9 @@ export default function Navbar() {
                           <CountryFlag country={race.country} size={20} />
                           <span className="flex-1 truncate">{race.name}</span>
                           <span className="text-xs shrink-0" style={{ color: "var(--text-muted)" }}>R{race.round}</span>
-                          <span className={`status-pill status-pill-${statusMeta.tone}`}>{statusMeta.shortLabel}</span>
+                          <Badge variant={TONE_TO_BADGE_VARIANT[statusMeta.tone as StatusTone] ?? "default"}>
+                            {statusMeta.shortLabel}
+                          </Badge>
                         </Link>
                       );
                     })}
@@ -247,9 +258,9 @@ export default function Navbar() {
                           <CountryFlag country={race.country} size={18} />
                           {race.name}
                         </span>
-                        <span className={`status-pill status-pill-${getRoundStatusMeta(getRoundLifecycle(race, season.completedRounds.includes(race.round), actualSet.has(race.round))).tone}`}>
+                        <Badge variant={TONE_TO_BADGE_VARIANT[getRoundStatusMeta(getRoundLifecycle(race, season.completedRounds.includes(race.round), actualSet.has(race.round))).tone as StatusTone] ?? "default"}>
                           {getRoundStatusMeta(getRoundLifecycle(race, season.completedRounds.includes(race.round), actualSet.has(race.round))).shortLabel}
-                        </span>
+                        </Badge>
                       </Link>
                     ))}
                 </>

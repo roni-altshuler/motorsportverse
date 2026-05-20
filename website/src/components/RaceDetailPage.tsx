@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import { RoundData, SeasonData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
+import { Badge } from "@/components/ui/Badge";
 import {
   fetchRoundData,
   fetchSeasonData,
@@ -28,6 +29,19 @@ import {
   getRoundStatusMeta,
 } from "@/lib/data";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
+
+// Centralised legacy status-pill tone → Badge variant map.  Same as the
+// HomePage / Navbar table so the rest of the codebase can migrate
+// piecemeal using this single mapping.
+const TONE_TO_BADGE_VARIANT = {
+  red: "negative",
+  green: "positive",
+  amber: "live",
+  slate: "muted",
+} as const;
+type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
+const toneVariant = (tone: string | undefined) =>
+  TONE_TO_BADGE_VARIANT[(tone || "slate") as StatusTone] ?? "default";
 
 type Tab = "weekend" | "classification" | "analysis" | "strategy" | "visualizations";
 
@@ -170,12 +184,10 @@ export default function RaceDetailPage({ round }: Props) {
             <CountryFlag country={seasonRace.country} size={44} />
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: "rgba(225,6,0,0.1)", color: "#E10600", border: "1px solid rgba(225,6,0,0.2)" }}>
-                  Round {seasonRace.round}
-                </span>
-                <span className={`status-pill status-pill-${liveMeta?.tone || "slate"}`}>
+                <Badge variant="live">Round {seasonRace.round}</Badge>
+                <Badge variant={toneVariant(liveMeta?.tone)}>
                   {liveMeta?.label || "Preview Scheduled"}
-                </span>
+                </Badge>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black" style={{ color: "var(--text)" }}>{seasonRace.name}</h1>
             </div>
@@ -386,15 +398,9 @@ export default function RaceDetailPage({ round }: Props) {
           <CountryFlag country={data.gpKey} size={44} />
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: "rgba(225,6,0,0.1)", color: "#E10600", border: "1px solid rgba(225,6,0,0.2)" }}>
-                Round {data.round}
-              </span>
-              {data.sprint && (
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: "rgba(255,128,0,0.1)", color: "#FF8000", border: "1px solid rgba(255,128,0,0.2)" }}>
-                  Sprint Weekend
-                </span>
-              )}
-              {liveMeta && <span className={`status-pill status-pill-${liveMeta.tone}`}>{liveMeta.label}</span>}
+              <Badge variant="live">Round {data.round}</Badge>
+              {data.sprint && <Badge variant="info">Sprint Weekend</Badge>}
+              {liveMeta && <Badge variant={toneVariant(liveMeta.tone)}>{liveMeta.label}</Badge>}
             </div>
             <h1 className="text-2xl sm:text-3xl font-black" style={{ color: "var(--text)" }}>{data.name}</h1>
           </div>
@@ -422,9 +428,9 @@ export default function RaceDetailPage({ round }: Props) {
                 : "This page is configured for the live Grand Prix weekend flow: predictions are front-and-center now, and the official result will replace the headline state once the race is complete."}
             </p>
           </div>
-          <div className={`status-pill status-pill-${actualRows.length > 0 ? "green" : liveMeta?.tone || "slate"}`}>
+          <Badge variant={actualRows.length > 0 ? "positive" : toneVariant(liveMeta?.tone)}>
             {actualRows.length > 0 ? "Official Result Loaded" : liveMeta?.label || "Prediction Published"}
-          </div>
+          </Badge>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="report-panel">
@@ -659,9 +665,9 @@ export default function RaceDetailPage({ round }: Props) {
                     >
                       <span className="session-tab-short">{session.shortLabel}</span>
                       <span className="session-tab-main">{session.label}</span>
-                      <span className={`status-pill status-pill-${sessionStatusTone(session.status)}`}>
+                      <Badge variant={toneVariant(sessionStatusTone(session.status))}>
                         {formatSessionStatus(session.status)}
-                      </span>
+                      </Badge>
                     </button>
                   ))}
                 </div>
@@ -676,9 +682,9 @@ export default function RaceDetailPage({ round }: Props) {
                           {activeSession.note ? ` • ${activeSession.note}` : ""}
                         </p>
                       </div>
-                      <span className={`status-pill status-pill-${sessionStatusTone(activeSession.status)}`}>
+                      <Badge variant={toneVariant(sessionStatusTone(activeSession.status))}>
                         {activeSession.rows.length ? `${activeSession.rows.length} classified` : formatSessionStatus(activeSession.status)}
-                      </span>
+                      </Badge>
                     </div>
 
                     {activeSession.rows.length > 0 ? (
@@ -1640,7 +1646,7 @@ export default function RaceDetailPage({ round }: Props) {
                         Curated visuals and statistical narratives for race pace, strategy, and finish-probability analysis.
                       </p>
                     </div>
-                    <span className="status-pill status-pill-red">{loadableViz.length} Charts Ready</span>
+                    <Badge variant="live">{loadableViz.length} Charts Ready</Badge>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
