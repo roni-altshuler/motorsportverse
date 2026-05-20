@@ -87,11 +87,19 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen w-full flex flex-col antialiased" style={{ background: 'var(--bg)', color: 'var(--text-primary)' }}>
+        {/* B-P2.3: skip-to-content link.  Visible only on keyboard focus
+            so it stays out of the visual layout for mouse users. */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-[color:var(--accent-live)] focus:px-3 focus:py-2 focus:font-semibold focus:text-[color:var(--accent-live-fg)] focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <ThemeProvider>
-          <div className="racing-stripe" />
+          <div className="racing-stripe" aria-hidden="true" />
           <Navbar />
           <LiveContextBand />
-          <main className="flex-1 w-full">{children}</main>
+          <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

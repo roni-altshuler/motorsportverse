@@ -50,6 +50,7 @@ export default function Navbar() {
   const navLink = (href: string, label: string) => (
     <Link
       href={href}
+      aria-current={isActive(href) ? "page" : undefined}
       className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg ${
         isActive(href)
           ? "text-[color:var(--accent-live)]"
@@ -63,6 +64,7 @@ export default function Navbar() {
   const navLinkWithBadge = (href: string, label: string, badge: string) => (
     <Link
       href={href}
+      aria-current={isActive(href) ? "page" : undefined}
       className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg inline-flex items-center gap-2 ${
         isActive(href)
           ? "text-[color:var(--accent-live)]"
