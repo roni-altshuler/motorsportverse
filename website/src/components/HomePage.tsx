@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SeasonData, StandingsData, RoundData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
+import { Badge } from "@/components/ui/Badge";
+import { buttonVariants } from "@/components/ui/Button";
+import { Stat } from "@/components/ui/Stat";
 import {
   fetchSeasonData,
   fetchStandingsData,
@@ -16,6 +19,16 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
+
+// Map the legacy status-pill tone tokens to the new Badge variant API so
+// pages can migrate page-by-page without redefining colour semantics.
+const TONE_TO_BADGE_VARIANT = {
+  red: "negative",
+  green: "positive",
+  amber: "live",
+  slate: "muted",
+} as const;
+type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -101,9 +114,11 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* ━━━ HERO ━━━ */}
         <motion.section className="text-center mb-20" initial="hidden" animate="visible" variants={stagger}>
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold mb-8" style={{ background: "rgba(225,6,0,0.1)", color: "#E10600", border: "1px solid rgba(225,6,0,0.2)" }}>
-            <span className="w-2 h-2 bg-f1-red rounded-full animate-pulse" />
-            {season.season} SEASON
+          <motion.div variants={fadeUp} className="mb-8 inline-block">
+            <Badge variant="live" className="px-4 py-1.5 text-xs">
+              <span className="w-2 h-2 rounded-full bg-[color:var(--accent-live)] animate-pulse" />
+              {season.season} SEASON
+            </Badge>
           </motion.div>
           <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 tracking-tight leading-[0.95]">
             <span style={{ color: "var(--text)" }}>F1 Race</span>
@@ -121,40 +136,59 @@ export default function HomePage() {
                   <div className="flex flex-wrap items-center gap-3 mb-3">
                     <CountryFlag country={featuredRace.country} size={28} />
                     <h2 className="text-2xl sm:text-3xl font-black" style={{ color: "var(--text)" }}>{featuredRace.name}</h2>
-                    <span className={`status-pill status-pill-${featuredRaceStatus.tone}`}>{featuredRaceStatus.label}</span>
+                    <Badge variant={TONE_TO_BADGE_VARIANT[featuredRaceStatus.tone as StatusTone] ?? "default"}>
+                      {featuredRaceStatus.label}
+                    </Badge>
                   </div>
                   <p className="text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
                     {featuredRace.circuit} • {formatDate(featuredRace.date)} • {featuredRaceStatus.description}
                   </p>
                 </div>
-                <Link href={`/race/${featuredRace.round}`} className="px-5 py-3 rounded-xl font-bold text-white bg-f1-red hover:bg-f1-red-dark transition-colors">
+                <Link
+                  href={`/race/${featuredRace.round}`}
+                  className={buttonVariants({ variant: "primary" })}
+                >
                   Open Race Report
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-                <div className="metric-card">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>Forecasts Published</p>
-                  <p className="text-2xl font-black mt-2" style={{ color: "var(--text)" }}>{season.completedRounds.length}</p>
-                </div>
-                <div className="metric-card">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>Official Results</p>
-                  <p className="text-2xl font-black mt-2" style={{ color: "#00D2BE" }}>{roundsWithActual.length}</p>
-                </div>
-                <div className="metric-card">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>Current Focus</p>
-                  <p className="text-2xl font-black mt-2" style={{ color: featuredRaceStatus.tone === "green" ? "#00D2BE" : featuredRaceStatus.tone === "red" ? "#E10600" : featuredRaceStatus.tone === "amber" ? "#FF8000" : "var(--text)" }}>
-                    {featuredRaceStatus.shortLabel}
-                  </p>
-                </div>
+                <Stat
+                  label="Forecasts Published"
+                  value={season.completedRounds.length}
+                />
+                <Stat
+                  label="Official Results"
+                  value={roundsWithActual.length}
+                  tone="positive"
+                />
+                <Stat
+                  label="Current Focus"
+                  value={featuredRaceStatus.shortLabel}
+                  tone={
+                    featuredRaceStatus.tone === "green"
+                      ? "positive"
+                      : featuredRaceStatus.tone === "red"
+                        ? "negative"
+                        : featuredRaceStatus.tone === "amber"
+                          ? "live"
+                          : "default"
+                  }
+                />
               </div>
             </div>
           </motion.div>
           <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
-            <Link href="/calendar" className="group px-8 py-3.5 bg-f1-red hover:bg-f1-red-dark text-white font-bold rounded-xl transition-all hover:scale-[1.03] active:scale-95 shadow-lg shadow-f1-red/25">
+            <Link
+              href="/calendar"
+              className={`${buttonVariants({ size: "lg" })} group`}
+            >
               Explore All Races
-              <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">→</span>
+              <span className="ml-1 inline-block transition-transform group-hover:translate-x-1">→</span>
             </Link>
-            <Link href="/standings" className="px-8 py-3.5 font-bold rounded-xl transition-all hover:scale-[1.03] active:scale-95" style={{ background: "var(--bg-card)", color: "var(--text)", border: "1px solid var(--glass-border)" }}>
+            <Link
+              href="/standings"
+              className={buttonVariants({ size: "lg", variant: "secondary" })}
+            >
               Championship Standings
             </Link>
           </motion.div>
@@ -181,14 +215,13 @@ export default function HomePage() {
         {/* ━━━ STATS BAR ━━━ */}
         <motion.section className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-20" initial="hidden" animate="visible" variants={stagger}>
           {[
-            { value: season.totalRounds, label: "Grand Prix", accent: "#E10600" },
-            { value: season.drivers.length, label: "Drivers", accent: "#00D2BE" },
-            { value: season.teams.length, label: "Teams", accent: "#FF8000" },
-            { value: roundsWithActual.length, label: "Official", accent: "#FFD700" },
+            { value: season.totalRounds, label: "Grand Prix", tone: "default" as const },
+            { value: season.drivers.length, label: "Drivers", tone: "live" as const },
+            { value: season.teams.length, label: "Teams", tone: "default" as const },
+            { value: roundsWithActual.length, label: "Official", tone: "positive" as const },
           ].map((s) => (
-            <motion.div key={s.label} variants={scaleIn} className="card p-6 text-center">
-              <p className="text-4xl font-black stat-number" style={{ color: s.accent }}>{s.value}</p>
-              <p className="text-xs mt-2 uppercase tracking-widest font-semibold" style={{ color: "var(--text-muted)" }}>{s.label}</p>
+            <motion.div key={s.label} variants={scaleIn}>
+              <Stat label={s.label} value={s.value} tone={s.tone} size="lg" />
             </motion.div>
           ))}
         </motion.section>
