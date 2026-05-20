@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
+import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 // Self-host both fonts via next/font for zero-CLS loading and correct
@@ -89,6 +90,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="racing-stripe" />
           <Navbar />
+          <LiveContextBand />
           <main className="flex-1 w-full">{children}</main>
           <Footer />
         </ThemeProvider>
