@@ -18,6 +18,8 @@ import {
 import { RoundData, SeasonData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
+import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
+import WinProbabilityChart from "@/components/charts/WinProbabilityChart";
 import {
   fetchRoundData,
   fetchSeasonData,
@@ -409,6 +411,14 @@ export default function RaceDetailPage({ round }: Props) {
       <p className="mb-6 text-sm" style={{ color: "var(--text-muted)" }}>
         {data.circuit} • {formatDate(data.date)}
       </p>
+
+      {/* B-P1.3: auto-generated race narrative card */}
+      <RaceNarrativeCard round={data} />
+
+      {/* B-P1.2: interactive win-probability chart */}
+      <div className="mb-6">
+        <WinProbabilityChart classification={data.classification ?? []} />
+      </div>
 
       <motion.div
         className="report-shell p-6 sm:p-7 mb-8"
