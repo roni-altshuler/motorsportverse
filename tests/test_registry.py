@@ -194,12 +194,23 @@ def test_save_rejects_out_of_range_season(
         registry.save(season, 1, {"gbr": trained_gbr}, {})
 
 
-@pytest.mark.parametrize("round_num", [0, 31, -1, 100])
+@pytest.mark.parametrize("round_num", [0, 100, -1, 9999])
 def test_save_rejects_out_of_range_round(
     registry: ModelRegistry, trained_gbr: GradientBoostingRegressor, round_num: int
 ) -> None:
+    """Valid range is 1..99 — 1..30 covers real F1 calendars, 31..99 is
+    reserved for sentinel entries (e.g. the race-pace ensemble at round=99
+    trained on multi-season data)."""
     with pytest.raises(ValueError):
         registry.save(2026, round_num, {"gbr": trained_gbr}, {})
+
+
+def test_save_accepts_sentinel_round_99(
+    registry: ModelRegistry, trained_gbr: GradientBoostingRegressor
+) -> None:
+    """Sentinel round numbers (31..99) are valid for non-weekend entries."""
+    registry.save(2026, 99, {"gbr": trained_gbr}, {"kind": "race-pace"})
+    assert registry.exists(2026, 99)
 
 
 def test_load_missing_round_raises(registry: ModelRegistry) -> None:

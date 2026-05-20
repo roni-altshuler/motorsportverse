@@ -208,7 +208,11 @@ class ModelRegistry:
     def _round_dir(self, season: int, round_num: int) -> Path:
         if season < 1950 or season > 2100:
             raise ValueError(f"season out of expected range: {season!r}")
-        if round_num < 1 or round_num > 30:
+        # 1..30 covers any real F1 calendar; 31..99 is reserved for sentinel
+        # entries that aren't tied to a specific weekend (e.g. the race-pace
+        # ensemble trained on multi-season data under round=99, see
+        # train_race_pace.py::RACE_PACE_REGISTRY_ROUND).
+        if round_num < 1 or round_num > 99:
             raise ValueError(f"round_num out of expected range: {round_num!r}")
         return self.root / f"{season:04d}_round_{round_num:02d}"
 

@@ -596,13 +596,18 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                       game_theory_field_sims=700,
                       game_theory_neighbors=2,
                       persist_output=True,
-                      generate_visualizations=True):
+                      generate_visualizations=True,
+                      use_race_simulator=False):
     """Run prediction pipeline for one round; export JSON + visualisations.
     If return_merged=True, returns (round_data, merged_df) for advanced models.
     If use_lstm=True, computes LSTM grid predictions and feeds them into
     the ensemble as a true 3rd model (v3 architecture).
     If use_weather_api=True, fetches real-time weather from Open-Meteo API.
-    If use_telemetry=True, extracts speed trap and sector time data from FastF1."""
+    If use_telemetry=True, extracts speed trap and sector time data from FastF1.
+    If use_race_simulator=True, runs the per-lap MC race simulator (A-P1.1)
+    and splices its market probabilities into the classification.  Requires
+    that train_race_pace.py has been run at least once to populate the
+    registry — otherwise the simulator is silently skipped."""
     _ensure_dirs()
     info    = CALENDAR[round_num]
     gp_key  = info["gp_key"]
@@ -693,6 +698,55 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     metrics_df      = evaluate_models(results)
     classification  = predicted_classification(merged, gp_name)
 
+    # ── Optional: race simulator augmentation (A-P1.1 Step 3) ──
+    # Opt-in via use_race_simulator=True.  Silently no-ops when no race-pace
+    # model is registered (run train_race_pace.py to populate).  Adds
+    # simulator-derived market probabilities to each classification entry
+    # plus a top-level "simulator" block in the round JSON.
+    simulator_block = None
+    if use_race_simulator:
+        try:
+            from models.race_simulator_runner import run_simulator_for_round
+            simulator_block = run_simulator_for_round(
+                season=SEASON_YEAR,
+                round_num=round_num,
+                gp_key=gp_key,
+                merged=merged,
+                weather={
+                    "rain_probability": weather.get("rain", 0.0),
+                    "temperature_c": weather.get("temp", 25.0),
+                },
+                total_laps=int(info.get("laps", 50)),
+                circuit_characteristics=CIRCUIT_CHARACTERISTICS,
+            )
+            if simulator_block is not None:
+                # Splice per-driver simulator probabilities into the
+                # classification DataFrame so the downstream payload builder
+                # picks them up automatically.
+                classification["simulatorWinProbability"] = (
+                    classification["Driver"].map(simulator_block["p_win"]).astype(float)
+                )
+                classification["simulatorPodiumProbability"] = (
+                    classification["Driver"].map(simulator_block["p_podium"]).astype(float)
+                )
+                classification["simulatorTop6Probability"] = (
+                    classification["Driver"].map(simulator_block["p_top6"]).astype(float)
+                )
+                classification["simulatorTop10Probability"] = (
+                    classification["Driver"].map(simulator_block["p_top10"]).astype(float)
+                )
+                classification["simulatorMeanFinish"] = (
+                    classification["Driver"].map(simulator_block["mean_finish"]).astype(float)
+                )
+                print(
+                    f"  🏎️  Race simulator applied "
+                    f"({simulator_block['n_samples']} MC samples × "
+                    f"{simulator_block['n_laps']} laps)"
+                )
+        except Exception as e:
+            print(f"  ⚠️  Race simulator failed: {e}")
+            simulator_block = None
+
     # ── Persist trained ensemble to model registry (A-P0.3) ──
     # Non-fatal: a registry failure must never block prediction publishing.
     if registry_enabled():
@@ -703,6 +757,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                 "scaler": results["scaler"],
             }
             metadata = {
+                "kind": "qualifying-time",
                 "feature_cols": list(results.get("feature_cols", [])),
                 "ensemble_weights": results.get("ensemble_weights", {}),
                 "lstm_used": bool(results.get("lstm_used", False)),
@@ -755,7 +810,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         gap_val = float(row["Gap"])
         gap_str = "LEADER" if pos == 1 else f"{gap_val:.3f}"
         display_time = row.get("RaceProjectionTime", row.get("PredictedLapTime"))
-        classification_data.append({
+        entry = {
             "position":      int(pos),
             "driver":        row["Driver"],
             "driverFullName": row["DriverName"],
@@ -768,7 +823,20 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             "finishRangeLow": int(row.get("FinishRangeLow", pos)),
             "finishRangeHigh": int(row.get("FinishRangeHigh", pos)),
             "winProbability": round(float(row.get("WinProbability", 0.0)), 1),
-        })
+        }
+        # A-P1.1 Step 3: surface race-simulator probabilities when present
+        # so the website can compare them side-by-side with the legacy
+        # quali-time-driven projection.
+        for sim_col, payload_key in (
+            ("simulatorWinProbability", "simulatorWinProbability"),
+            ("simulatorPodiumProbability", "simulatorPodiumProbability"),
+            ("simulatorTop6Probability", "simulatorTop6Probability"),
+            ("simulatorTop10Probability", "simulatorTop10Probability"),
+            ("simulatorMeanFinish", "simulatorMeanFinish"),
+        ):
+            if sim_col in row and pd.notna(row[sim_col]):
+                entry[payload_key] = round(float(row[sim_col]), 4)
+        classification_data.append(entry)
 
     # ── Metrics → ModelMetrics ──
     mae_vals = metrics_df["MAE (s)"].values
@@ -870,6 +938,20 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         "modelConfig": {
             "lstmEnabled": bool(use_lstm),
             "gameTheoryEnhancements": _json_safe(game_theory_diag),
+            "raceSimulator": (
+                {
+                    "applied": True,
+                    "nSamples": simulator_block["n_samples"],
+                    "nLaps": simulator_block["n_laps"],
+                    "trainedSeason": simulator_block["trained_season"],
+                    "trainedRound": simulator_block["trained_round"],
+                    "trainingMetrics": _json_safe(
+                        simulator_block.get("training_metrics", {})
+                    ),
+                }
+                if simulator_block
+                else {"applied": False}
+            ),
         },
         "generatedAt": _utc_now_iso(),
         "dataFreshness": {
@@ -2264,6 +2346,11 @@ def main():
                         help="Field simulation count for game-theory features (default 700)")
     parser.add_argument("--game-theory-neighbors", type=int, default=2,
                         help="Nearest competitors considered in local battle simulation (default 2)")
+    parser.add_argument("--use-race-simulator", action="store_true",
+                        help="Run the per-lap Monte Carlo race simulator (A-P1.1) "
+                             "and splice its market probabilities into the classification. "
+                             "Silently no-ops when no race-pace model has been registered "
+                             "(run train_race_pace.py first).")
     args = parser.parse_args()
 
     if args.round:
@@ -2274,7 +2361,8 @@ def main():
                                                 use_telemetry=args.telemetry,
                                                 enable_game_theory=not args.disable_game_theory,
                                                 game_theory_field_sims=args.game_theory_sims,
-                                                game_theory_neighbors=args.game_theory_neighbors)
+                                                game_theory_neighbors=args.game_theory_neighbors,
+                                                use_race_simulator=args.use_race_simulator)
         if args.fastf1:
             gp_key = CALENDAR[args.round]["gp_key"]
             extra = _generate_fastf1_viz(args.round, gp_key, args.fastf1_year)
