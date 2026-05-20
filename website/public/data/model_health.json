@@ -1,0 +1,55 @@
+{
+  "season": 2026,
+  "lastEvaluatedRound": 6,
+  "featureDrift": [
+    {
+      "feature": "predictedTime",
+      "psi": 3.9719,
+      "severity": "alarm",
+      "baseline_n": 88,
+      "current_n": 22
+    },
+    {
+      "feature": "winProbability",
+      "psi": 0.4352,
+      "severity": "alarm",
+      "baseline_n": 88,
+      "current_n": 22
+    },
+    {
+      "feature": "finishRangeLow",
+      "psi": 0.2093,
+      "severity": "warn",
+      "baseline_n": 88,
+      "current_n": 22
+    },
+    {
+      "feature": "finishRangeHigh",
+      "psi": 0.7767,
+      "severity": "alarm",
+      "baseline_n": 88,
+      "current_n": 22
+    }
+  ],
+  "outputDrift": {
+    "rolling_brier_recent": 5.8775381364525865,
+    "rolling_brier_baseline": null,
+    "relative_change": null,
+    "severity": "ok",
+    "rounds_compared": 1
+  },
+  "warnings": [
+    "finishRangeLow: PSI 0.209 (moderate drift vs baseline)"
+  ],
+  "alarms": [
+    "predictedTime: PSI 3.972 (significant drift vs baseline)",
+    "winProbability: PSI 0.435 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.777 (significant drift vs baseline)"
+  ],
+  "brierByRound": [
+    {
+      "round": 4,
+      "brier": 5.8775381364525865
+    }
+  ]
+}

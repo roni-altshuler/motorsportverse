@@ -145,6 +145,18 @@ jobs:
             --output "reports/forward_eval_${SEASON_YEAR}.json" \
             --allow-empty
 
+      - name: Drift report — feature PSI + rolling-Brier (A-P1.2)
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          # --allow-empty so pre-race runs with no forward-eval data exit 0.
+          # model_health.json lands under website/public/data/ alongside
+          # the round + forward-eval JSONs; force-added by the commit step.
+          python drift_report.py \
+            --season "$SEASON_YEAR" \
+            --output website/public/data/model_health.json \
+            --allow-empty
+
       - name: Install test dependencies
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         run: pip install pytest pydantic
