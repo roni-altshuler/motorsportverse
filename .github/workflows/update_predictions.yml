@@ -210,4 +210,9 @@ jobs:
 
   deploy:
     needs: predict
-    uses: ./.github/workflows/deploy.yml
+    # Absolute form keeps the GitHub Actions VS Code extension happy
+    # (relative `./.github/workflows/deploy.yml` paths trigger a false-
+    # positive "Unable to find reusable workflow" diagnostic).  GitHub
+    # Actions itself accepts both forms; deploy.yml declares
+    # `workflow_call:` so this is a valid reusable workflow.
+    uses: roni-altshuler/f1_predictions/.github/workflows/deploy.yml@main
