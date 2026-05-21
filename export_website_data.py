@@ -45,6 +45,14 @@ TRACKER_EXPORT_FILE = os.path.join(DATA_DIR, "season_tracker.json")
 
 F1_CALENDAR_SOURCE_URL = "https://www.formula1.com/en/racing/2026"
 
+# Curated chart set (2026-05-21 UX refinement).  Cut from 17 charts to 6
+# — the most informative + eye-catching ones.  Dropped: feature_importance,
+# team_vs_pace, pace_vs_predicted, prediction_confidence, win_probability_board
+# (replaced by the interactive recharts WinProbabilityChart), risk_reward_matrix,
+# laptime_distribution_historical, tyre_strategy, pit_strategy_comparison,
+# tyre_degradation_curves, lstm_pace_prediction.  Their _export_visualizations
+# code blocks are also stripped — they're code-generated assets, no migration
+# tail to manage.
 VIZ_METADATA = {
     "predicted_laptimes.png": {
         "title": "Predicted Race Pace",
@@ -52,40 +60,10 @@ VIZ_METADATA = {
         "description": "Model-projected race pace and finishing spread across the full grid.",
         "source": "model",
     },
-    "feature_importance.png": {
-        "title": "Feature Importance",
-        "category": "ml",
-        "description": "Relative impact of each input feature for Gradient Boosting and XGBoost.",
-        "source": "model",
-    },
-    "team_vs_pace.png": {
-        "title": "Team Strength vs Pace",
-        "category": "ml",
-        "description": "Relationship between constructor strength and projected race pace.",
-        "source": "model",
-    },
-    "pace_vs_predicted.png": {
-        "title": "Clean-Air Pace vs Prediction",
-        "category": "ml",
-        "description": "How baseline clean-air pace translates to projected race performance.",
-        "source": "model",
-    },
     "laptime_distribution.png": {
         "title": "Predicted Lap-Time Distribution",
         "category": "ml",
         "description": "Team-level distribution of projected race lap times.",
-        "source": "model",
-    },
-    "prediction_confidence.png": {
-        "title": "Prediction Confidence",
-        "category": "ml",
-        "description": "Confidence bands by driver based on model uncertainty and volatility signals.",
-        "source": "model",
-    },
-    "win_probability_board.png": {
-        "title": "Win Probability Board",
-        "category": "bettor",
-        "description": "Model win probabilities with implied fair decimal odds for market benchmarking.",
         "source": "model",
     },
     "podium_probability_board.png": {
@@ -106,47 +84,11 @@ VIZ_METADATA = {
         "description": "Pairwise probability that one driver finishes ahead of another.",
         "source": "model",
     },
-    "risk_reward_matrix.png": {
-        "title": "Risk-Reward Matrix",
-        "category": "bettor",
-        "description": "Driver risk-versus-upside profile using uncertainty, win chance, and expected points.",
-        "source": "model",
-    },
     "track_map.png": {
         "title": "Circuit Speed Map",
         "category": "fastf1",
         "description": "FastF1-derived circuit map with corner labels and speed profile.",
         "source": "fastf1",
-    },
-    "laptime_distribution_historical.png": {
-        "title": "Historical Lap-Time Distribution",
-        "category": "fastf1",
-        "description": "Historical lap-time spread from prior seasons at this circuit.",
-        "source": "fastf1",
-    },
-    "tyre_strategy.png": {
-        "title": "Historical Tyre Strategy",
-        "category": "fastf1",
-        "description": "Compound usage and stint tendencies from historical race data.",
-        "source": "fastf1",
-    },
-    "pit_strategy_comparison.png": {
-        "title": "Pit Strategy Comparison",
-        "category": "advanced",
-        "description": "Monte-Carlo race-time simulation across strategic pit-stop options.",
-        "source": "advanced",
-    },
-    "tyre_degradation_curves.png": {
-        "title": "Tyre Degradation Curves",
-        "category": "advanced",
-        "description": "Projected soft/medium/hard degradation behavior and cliff laps.",
-        "source": "advanced",
-    },
-    "lstm_pace_prediction.png": {
-        "title": "LSTM Pace Projection",
-        "category": "advanced",
-        "description": "Neural-network pace projection for race evolution over stint length.",
-        "source": "advanced",
     },
 }
 
@@ -1144,64 +1086,9 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
     plt.tight_layout()
     _save_figure(fig, "predicted_laptimes.png")
 
-    # 2. Feature Importance (side-by-side)
-    feat_cols = results["feature_cols"]
-    fig, axes = plt.subplots(1, 2, figsize=(16, 6), facecolor=theme["bg"])
-    model_colors = [theme["accent"], theme["accent3"]]
-    for ax, model, title, bar_color in zip(
-        axes, [results["gb_model"], results["xgb_model"]],
-        ["Gradient Boosting", "XGBoost"], model_colors,
-    ):
-        imp = model.feature_importances_
-        idx = np.argsort(imp)
-        ax.barh(np.array(feat_cols)[idx], imp[idx], color=bar_color, edgecolor=theme["bg"], linewidth=0.4)
-        _style_axis(ax, title, xlabel="Relative importance")
-    plt.tight_layout()
-    _save_figure(fig, "feature_importance.png")
-
-    # 3. Team vs Pace scatter
-    fig, ax = plt.subplots(figsize=(14, 9), facecolor=theme["bg"])
-    sc = ax.scatter(merged["TeamPerformanceScore"], merged["PredictedLapTime"],
-                    c=merged["QualifyingTime"], cmap="viridis_r",
-                    s=160, edgecolors=theme["bg"], linewidths=0.7)
-    for _, r in merged.iterrows():
-        ax.annotate(r["Driver"],
-                    (r["TeamPerformanceScore"], r["PredictedLapTime"]),
-                    xytext=(8, 5), textcoords="offset points", fontsize=10,
-                    color=theme["text"])
-    cbar = plt.colorbar(sc, ax=ax, label="Qualifying Time (s)")
-    cbar.ax.yaxis.label.set_color(theme["text"])
-    cbar.ax.tick_params(colors=theme["muted"])
-    _style_axis(
-        ax,
-        f"Team Strength vs Projected Pace",
-        xlabel="Team performance score",
-        ylabel="Predicted average lap time (s)",
-    )
-    plt.tight_layout()
-    _save_figure(fig, "team_vs_pace.png")
-
-    # 4. Pace vs Predicted scatter
-    fig, ax = plt.subplots(figsize=(14, 9), facecolor=theme["bg"])
-    sc = ax.scatter(merged["CleanAirPace"], merged["PredictedLapTime"],
-                    c=merged["TeamPerformanceScore"], cmap="plasma",
-                    s=160, edgecolors=theme["bg"], linewidths=0.7)
-    for _, r in merged.iterrows():
-        ax.annotate(r["Driver"],
-                    (r["CleanAirPace"], r["PredictedLapTime"]),
-                    xytext=(8, 5), textcoords="offset points", fontsize=10,
-                    color=theme["text"])
-    cbar = plt.colorbar(sc, ax=ax, label="Team Perf. Score")
-    cbar.ax.yaxis.label.set_color(theme["text"])
-    cbar.ax.tick_params(colors=theme["muted"])
-    _style_axis(
-        ax,
-        "Clean-Air Pace vs Final Projection",
-        xlabel="Clean-air pace (s)",
-        ylabel="Predicted average lap time (s)",
-    )
-    plt.tight_layout()
-    _save_figure(fig, "pace_vs_predicted.png")
+    # Charts #2 (feature_importance), #3 (team_vs_pace), and #4 (pace_vs_
+    # predicted) were dropped in the 2026-05-21 viz cull — too technical /
+    # too niche / redundant with the headline pace chart.
 
     # 5. Lap-time distribution (box plot by team)
     fig, ax = plt.subplots(figsize=(14, 8), facecolor=theme["bg"])
@@ -1230,91 +1117,11 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
     plt.tight_layout()
     _save_figure(fig, "laptime_distribution.png")
 
-    # 6. Prediction confidence / expected finish range
-    if {"PredictionUncertainty", "PredictionConfidence"}.issubset(merged.columns):
-        fig, ax = plt.subplots(figsize=(14, 9), facecolor=theme["bg"])
-        conf_colors = {"High": "#00D2BE", "Medium": "#FF8000", "Low": "#E10600"}
-        conf_df = classification.copy().reset_index()
-        conf_df["Confidence"] = conf_df["Driver"].map(
-            merged.set_index("Driver")["PredictionConfidence"].to_dict()
-        )
-        conf_df["RangeLow"] = conf_df["Driver"].map(
-            merged.set_index("Driver")["PredictionUncertainty"].to_dict()
-        )
-        colors = [conf_colors.get(c, "#9CA3AF") for c in conf_df["Confidence"]]
-        bars = ax.barh(conf_df["Driver"], conf_df["Gap"], color=colors, edgecolor="white", linewidth=0.5)
-        ax.invert_yaxis()
-        _style_axis(
-            ax,
-            "Prediction Confidence and Gap to Leader",
-            xlabel="Projected gap to winner (s)",
-            ylabel="Driver",
-        )
-        for bar, confidence in zip(bars, conf_df["Confidence"]):
-            ax.text(
-                bar.get_width() + 0.03,
-                bar.get_y() + bar.get_height() / 2,
-                str(confidence).upper(),
-                va="center",
-                fontsize=9,
-                color=theme["text"],
-                fontweight="bold",
-            )
-        legend_patches = [
-            plt.Rectangle((0, 0), 1, 1, color=color, label=label)
-            for label, color in conf_colors.items()
-        ]
-        ax.legend(
-            handles=legend_patches,
-            loc="lower right",
-            facecolor=theme["panel"],
-            edgecolor=theme["grid"],
-            labelcolor=theme["text"],
-            fontsize=10,
-        )
-        plt.tight_layout()
-        _save_figure(fig, "prediction_confidence.png")
-
-    # 7. Bettor board — win probability + fair odds
-    win_df = classification.copy().reset_index()[["Driver", "Team", "WinProbability"]]
-    win_df["WinProbability"] = pd.to_numeric(win_df["WinProbability"], errors="coerce").fillna(0.0)
-    if float(win_df["WinProbability"].sum()) <= 0:
-        fallback = merged.sort_values("PredictedLapTime").reset_index(drop=True)
-        fallback_scores = np.exp(-(fallback.index.to_numpy(dtype=float)) / 2.8)
-        fallback_probs = fallback_scores / fallback_scores.sum() * 100.0
-        win_df = fallback[["Driver", "Team"]].copy()
-        win_df["WinProbability"] = fallback_probs
-
-    win_df = win_df.sort_values("WinProbability", ascending=False).head(12)
-    if not win_df.empty:
-        fig, ax = plt.subplots(figsize=(14, 8), facecolor=theme["bg"])
-        bars = ax.barh(
-            win_df["Driver"],
-            win_df["WinProbability"],
-            color=[TEAM_COLOURS.get(team, theme["accent3"]) for team in win_df["Team"]],
-            edgecolor=theme["bg"],
-            linewidth=0.5,
-        )
-        ax.invert_yaxis()
-        _style_axis(
-            ax,
-            "Win Probability Board (Top 12)",
-            xlabel="Model win probability (%)",
-            ylabel="Driver",
-        )
-        for bar, p in zip(bars, win_df["WinProbability"]):
-            fair_odds = (100.0 / p) if p > 0 else np.inf
-            odds_label = f"{fair_odds:.2f}x" if np.isfinite(fair_odds) else "N/A"
-            ax.text(
-                bar.get_width() + 0.25,
-                bar.get_y() + bar.get_height() / 2,
-                f"{p:.1f}% ({odds_label})",
-                va="center",
-                fontsize=9,
-                color=theme["text"],
-            )
-        plt.tight_layout()
-        _save_figure(fig, "win_probability_board.png")
+    # Charts #6 (prediction_confidence) and #7 (win_probability_board)
+    # were dropped in the 2026-05-21 viz cull.  Prediction-confidence is
+    # surfaced inline on the win-prob chart via bootstrap intervals
+    # (A-P2.3); the win_probability_board PNG is replaced by the
+    # interactive recharts WinProbabilityChart on the race page.
 
     # Monte-Carlo bettor/analyst visuals.
     if sim is not None:
@@ -1421,44 +1228,8 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
         plt.tight_layout()
         _save_figure(fig, "head_to_head_edges.png")
 
-        # 11. Risk vs reward matrix
-        expected_points = []
-        for mean_finish in mean_pos:
-            rounded_pos = int(round(mean_finish))
-            expected_points.append(float(F1_POINTS.get(rounded_pos, 0)))
-
-        fig, ax = plt.subplots(figsize=(14, 8), facecolor=theme["bg"])
-        for drv, team, x_unc, y_win, exp_pts in zip(
-            drivers,
-            merged.set_index("Driver").reindex(drivers)["Team"].fillna("Unknown").tolist(),
-            unc,
-            win_prob_mc,
-            expected_points,
-        ):
-            color = TEAM_COLOURS.get(team, theme["accent3"])
-            size = 80 + exp_pts * 18
-            ax.scatter(x_unc, y_win, s=size, color=color, edgecolor=theme["bg"], linewidth=0.7, alpha=0.92)
-            if y_win >= 2.5 or exp_pts >= 8:
-                ax.annotate(drv, (x_unc, y_win), xytext=(6, 4), textcoords="offset points", fontsize=9, color=theme["text"])
-
-        _style_axis(
-            ax,
-            "Risk-Reward Matrix",
-            xlabel="Prediction uncertainty (seconds)",
-            ylabel="Monte-Carlo win probability (%)",
-        )
-        ax.text(
-            0.98,
-            0.02,
-            "Bubble size = expected points",
-            transform=ax.transAxes,
-            ha="right",
-            va="bottom",
-            fontsize=9,
-            color=theme["muted"],
-        )
-        plt.tight_layout()
-        _save_figure(fig, "risk_reward_matrix.png")
+        # Chart #11 (risk_reward_matrix) was dropped in the 2026-05-21
+        # viz cull — bettor-focused, will revive if Value Finder returns.
 
     print(f"  📊 {len(filenames)} visualisations → {out_dir}/")
     return filenames

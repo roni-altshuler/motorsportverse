@@ -51,45 +51,35 @@ interface Props {
   round: number;
 }
 
+// Curated chart set — 6 keepers (2026-05-21 UX refinement).  Dropped:
+// feature_importance, team_vs_pace, pace_vs_predicted, prediction_confidence,
+// win_probability_board (replaced by the interactive WinProbabilityChart),
+// risk_reward_matrix, laptime_distribution_historical, tyre_strategy,
+// pit_strategy, tyre_degradation.  See VIZ_METADATA in export_website_data.py
+// for the matching Python-side drop.
 const VIZ_CATEGORIES = [
   {
-    id: "ml",
-    title: "Model Predictions",
+    id: "pace",
+    title: "Pace & Probability",
     items: [
-      { key: "predicted_laptimes", label: "Predicted Lap Times", desc: "ML-predicted qualifying times for all drivers" },
-      { key: "feature_importance", label: "Feature Importance", desc: "Which features most influence the model" },
-      { key: "team_vs_pace", label: "Team vs Pace", desc: "Team performance comparison" },
-      { key: "pace_vs_predicted", label: "Pace vs Predicted", desc: "Correlation between raw pace and prediction" },
-      { key: "laptime_distribution", label: "Lap Time Distribution", desc: "Statistical distribution of predicted times" },
-      { key: "prediction_confidence", label: "Prediction Confidence", desc: "Projected confidence bands for the finishing order" },
+      { key: "predicted_laptimes", label: "Predicted Race Pace", desc: "Model-projected lap time and finishing spread across the grid." },
+      { key: "laptime_distribution", label: "Lap-Time Distribution", desc: "Team-level distribution of projected race lap times." },
+      { key: "podium_probability_board", label: "Podium Probability", desc: "Chance each driver finishes inside the top 3." },
     ],
   },
   {
-    id: "fastf1",
-    title: "FastF1 Historical Data",
+    id: "matchups",
+    title: "Matchups & Outcomes",
     items: [
-      { key: "track_map", label: "Track Map", desc: "Circuit layout colored by speed" },
-      { key: "laptime_distribution_historical", label: "Historical Lap Times", desc: "Previous season distributions" },
-      { key: "tyre_strategy", label: "Tyre Strategy", desc: "Historical compound usage" },
+      { key: "finish_probability_heatmap", label: "Finish Probability Heatmap", desc: "Driver-by-position probability matrix for the top 10 slots." },
+      { key: "head_to_head_edges", label: "Head-to-Head Edges", desc: "Pairwise probability that one driver finishes ahead of another." },
     ],
   },
   {
-    id: "advanced",
-    title: "Strategy Analysis",
+    id: "circuit",
+    title: "Circuit",
     items: [
-      { key: "pit_strategy", label: "Pit Strategy", desc: "Monte-Carlo pit simulation" },
-      { key: "tyre_degradation", label: "Tyre Degradation", desc: "Compound degradation curves" },
-    ],
-  },
-  {
-    id: "bettor",
-    title: "Bettor Analytics",
-    items: [
-      { key: "win_probability_board", label: "Win Probability Board", desc: "Model win probabilities and fair-odds view" },
-      { key: "podium_probability_board", label: "Podium Probability", desc: "Chance each driver finishes inside the top 3" },
-      { key: "finish_probability_heatmap", label: "Finish Probability Heatmap", desc: "Driver-by-position distribution for top finish slots" },
-      { key: "head_to_head_edges", label: "Head-to-Head Edges", desc: "Pairwise finish-ahead probabilities for top contenders" },
-      { key: "risk_reward_matrix", label: "Risk-Reward Matrix", desc: "Uncertainty versus upside profile by driver" },
+      { key: "track_map", label: "Circuit Speed Map", desc: "Circuit layout coloured by speed at the fastest lap." },
     ],
   },
 ];

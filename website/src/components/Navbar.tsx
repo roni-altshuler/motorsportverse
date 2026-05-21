@@ -199,7 +199,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {navLinkWithBadge("/value", "Value Finder", "NEW")}
             {navLink("/standings", "Standings")}
             {navLink("/about", "About")}
 
@@ -260,31 +259,20 @@ export default function Navbar() {
               {[
                 { href: "/", label: "Home" },
                 { href: "/calendar", label: "Season Calendar" },
-                { href: "/value", label: "Value Finder", badge: "NEW" },
                 { href: "/standings", label: "Standings" },
                 { href: "/about", label: "About" },
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
                   className={`px-4 py-3 text-sm font-semibold rounded-lg transition-colors flex items-center gap-2 ${
-                    isActive(item.href) ? "text-f1-red bg-[rgba(225,6,0,0.08)]" : "text-[var(--text-muted)]"
+                    isActive(item.href)
+                      ? "text-[color:var(--accent-live)]"
+                      : "text-[color:var(--text-muted)]"
                   }`}
                 >
                   {item.label}
-                  {item.badge && (
-                    <span
-                      className="px-1.5 py-0.5 rounded-full text-[9px] font-black tracking-wider"
-                      style={{
-                        background: "rgba(225, 6, 0, 0.18)",
-                        color: "#E10600",
-                        border: "1px solid rgba(225, 6, 0, 0.35)",
-                        letterSpacing: "0.08em",
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               ))}
               {/* Completed races in mobile */}
