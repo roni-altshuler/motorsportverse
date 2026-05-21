@@ -89,6 +89,54 @@ h1, h2, h3, h4, h5, h6 {
   background: color-mix(in srgb, var(--accent-live) 54%, transparent);
 }
 
+/* Deep Dive accordion section (2026-05-21 redesign).  Native
+ * <details>/<summary> primitive styled to match the rest of the
+ * design system — no JS, no library, no aria gymnastics. */
+.deep-dive-section {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.deep-dive-section > summary.deep-dive-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+.deep-dive-section > summary.deep-dive-summary::-webkit-details-marker {
+  display: none;
+}
+.deep-dive-section > summary.deep-dive-summary::after {
+  content: "+";
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 1rem;
+  transition: transform 0.15s ease;
+}
+.deep-dive-section[open] > summary.deep-dive-summary::after {
+  content: "−";
+}
+.deep-dive-section > summary.deep-dive-summary:hover {
+  background: var(--surface-elevated);
+}
+.deep-dive-section[open] > summary.deep-dive-summary {
+  border-bottom: 1px solid var(--border);
+}
+.deep-dive-section-body {
+  padding: 1.25rem;
+}
+
 /* Hero — flat surface, no decorative overlays (redesign 2026-05) */
 .hero-gradient {
   position: relative;

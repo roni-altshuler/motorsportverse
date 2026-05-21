@@ -45,7 +45,13 @@ type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
 const toneVariant = (tone: string | undefined) =>
   TONE_TO_BADGE_VARIANT[(tone || "slate") as StatusTone] ?? "default";
 
-type Tab = "weekend" | "classification" | "analysis" | "strategy" | "visualizations";
+// 2026-05-21 redesign: the page collapses from 5 tabs to 2 — "weekend"
+// (FP/Quali/Sprint/Race session tables) and "deepdive" (everything else,
+// rendered as accordion sections so visitors can pop just what they want).
+// The legacy "classification" / "analysis" / "strategy" / "visualizations"
+// types stay in the union for type-safety on existing render guards,
+// but the actual UI only routes through "weekend" + "deepdive".
+type Tab = "weekend" | "deepdive" | "classification" | "analysis" | "strategy" | "visualizations";
 
 interface Props {
   round: number;
@@ -240,12 +246,12 @@ export default function RaceDetailPage({ round }: Props) {
     );
   }
 
+  // Two-tab structure (2026-05-21 redesign).  Deep Dive folds the
+  // legacy Model Forecast + Analysis + Strategy + Visualisations tabs
+  // into a single tab body with collapsed-by-default accordions.
   const tabs: { key: Tab; label: string }[] = [
-    { key: "weekend", label: "Weekend Results" },
-    { key: "classification", label: "Model Forecast" },
-    { key: "analysis", label: "Circuit & Model" },
-    { key: "strategy", label: "Strategy" },
-    { key: "visualizations", label: "Visual Lab" },
+    { key: "weekend", label: "Weekend Sessions" },
+    { key: "deepdive", label: "Deep Dive" },
   ];
 
   const weekendSessions = data.weekendResults?.sessions || [];
@@ -778,8 +784,12 @@ export default function RaceDetailPage({ round }: Props) {
         </motion.div>
       )}
 
-      {/* ═══ Classification Tab ═══ */}
-      {activeTab === "classification" && (
+      {/* ═══ Deep Dive ═══ — folds Classification + Analysis + Strategy +
+           Visualizations into accordion sections, all closed by default. */}
+      {activeTab === "deepdive" && (
+      <details className="deep-dive-section">
+        <summary className="deep-dive-summary">Model Forecast</summary>
+        <div className="deep-dive-section-body">
         <motion.div className="space-y-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {actualRows.length > 0 && (
             <div className="card p-6">
@@ -984,10 +994,15 @@ export default function RaceDetailPage({ round }: Props) {
             </div>
           </div>
         </motion.div>
+        </div>
+      </details>
       )}
 
-      {/* ═══ Analysis Tab ═══ */}
-      {activeTab === "analysis" && (
+      {/* ═══ Deep Dive: Circuit & Telemetry ═══ */}
+      {activeTab === "deepdive" && (
+      <details className="deep-dive-section">
+        <summary className="deep-dive-summary">Circuit & Telemetry</summary>
+        <div className="deep-dive-section-body">
         <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {trackMapSrc && (
             <div className="card p-6">
@@ -1404,10 +1419,15 @@ export default function RaceDetailPage({ round }: Props) {
             </div>
           </div>
         </motion.div>
+        </div>
+      </details>
       )}
 
-      {/* ═══ Strategy Tab ═══ */}
-      {activeTab === "strategy" && (
+      {/* ═══ Deep Dive: Strategy ═══ */}
+      {activeTab === "deepdive" && (
+      <details className="deep-dive-section">
+        <summary className="deep-dive-summary">Strategy</summary>
+        <div className="deep-dive-section-body">
         <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {strategyData ? (
             <div className="card p-6 sm:p-8">
@@ -1473,10 +1493,16 @@ export default function RaceDetailPage({ round }: Props) {
 
           {/* Intentionally keep image galleries in one place (Visualizations tab) to avoid duplicates. */}
         </motion.div>
+        </div>
+      </details>
       )}
 
-      {/* ═══ Visualizations Tab ═══ */}
-      {activeTab === "visualizations" && (() => {
+      {/* ═══ Deep Dive: Visualisations ═══ */}
+      {activeTab === "deepdive" && (
+      <details className="deep-dive-section">
+        <summary className="deep-dive-summary">Visualisations</summary>
+        <div className="deep-dive-section-body">
+      {(() => {
         const loadableViz = vizDetails.filter(v => !failedImages.has(v.filename));
         const allFailed = vizFiles.length > 0 && loadableViz.length === 0;
         const hasViz = loadableViz.length > 0;
@@ -1795,6 +1821,9 @@ export default function RaceDetailPage({ round }: Props) {
           </motion.div>
         );
       })()}
+        </div>
+      </details>
+      )}
 
       {/* ━━━ NAVIGATION ━━━ */}
       <div className="flex items-center justify-between mt-16 pt-8" style={{ borderTop: "1px solid var(--border)" }}>
