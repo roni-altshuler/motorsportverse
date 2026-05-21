@@ -4,52 +4,52 @@
   "featureDrift": [
     {
       "feature": "predictedTime",
-      "psi": 4.3047,
+      "psi": 4.6295,
       "severity": "alarm",
       "baseline_n": 110,
       "current_n": 22
     },
     {
       "feature": "winProbability",
-      "psi": 0.4333,
+      "psi": 3.1617,
       "severity": "alarm",
       "baseline_n": 110,
       "current_n": 22
     },
     {
       "feature": "finishRangeLow",
-      "psi": 0.2083,
+      "psi": 0.184,
       "severity": "warn",
       "baseline_n": 110,
       "current_n": 22
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.6315,
-      "severity": "alarm",
+      "psi": 0.1154,
+      "severity": "warn",
       "baseline_n": 110,
       "current_n": 22
     }
   ],
   "outputDrift": {
-    "rolling_brier_recent": 5.8775381364525865,
+    "rolling_brier_recent": 5.535012523595917,
     "rolling_brier_baseline": null,
     "relative_change": null,
     "severity": "ok",
     "rounds_compared": 1
   },
   "warnings": [
-    "finishRangeLow: PSI 0.208 (moderate drift vs baseline)"
+    "finishRangeLow: PSI 0.184 (moderate drift vs baseline)",
+    "finishRangeHigh: PSI 0.115 (moderate drift vs baseline)"
   ],
   "alarms": [
-    "predictedTime: PSI 4.305 (significant drift vs baseline)",
-    "winProbability: PSI 0.433 (significant drift vs baseline)",
-    "finishRangeHigh: PSI 0.631 (significant drift vs baseline)"
+    "predictedTime: PSI 4.630 (significant drift vs baseline)",
+    "winProbability: PSI 3.162 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
       "round": 4,
-      "brier": 5.8775381364525865
+      "brier": 5.535012523595917
     }
   ]
 }
