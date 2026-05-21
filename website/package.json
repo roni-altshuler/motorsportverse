@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/generate-og.tsx",
+    "prebuild": "tsx scripts/generate-og.tsx && tsx scripts/convert-viz-to-webp.ts",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "og": "tsx scripts/generate-og.tsx"
+    "og": "tsx scripts/generate-og.tsx",
+    "webp": "tsx scripts/convert-viz-to-webp.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

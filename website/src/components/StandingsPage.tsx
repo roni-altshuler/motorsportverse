@@ -147,20 +147,33 @@ export default function StandingsPage() {
 
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table
+                className="w-full text-sm"
+                aria-label="Driver championship standings"
+              >
                 <thead>
                   <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                    {["POS", "", "DRIVER", "TEAM", "PTS", "WINS", "PODIUMS"].map(
-                      (h) => (
-                        <th
-                          key={h}
-                          className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
-                          style={{ color: "var(--text-muted)" }}
-                        >
-                          {h}
-                        </th>
-                      )
-                    )}
+                    {[
+                      { label: "POS", sort: "ascending" as const },
+                      { label: "", sort: undefined },
+                      { label: "DRIVER", sort: undefined },
+                      { label: "TEAM", sort: undefined },
+                      // The table is pre-sorted by points descending — surface
+                      // that via aria-sort so screen-reader users know.
+                      { label: "PTS", sort: "descending" as const },
+                      { label: "WINS", sort: undefined },
+                      { label: "PODIUMS", sort: undefined },
+                    ].map((h) => (
+                      <th
+                        key={h.label}
+                        scope="col"
+                        aria-sort={h.sort}
+                        className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        {h.label}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
@@ -326,16 +339,28 @@ export default function StandingsPage() {
 
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table
+                className="w-full text-sm"
+                aria-label="Constructor championship standings"
+              >
                 <thead>
                   <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                    {["POS", "", "TEAM", "DRIVERS", "PTS", "WINS"].map((h) => (
+                    {[
+                      { label: "POS", sort: "ascending" as const },
+                      { label: "", sort: undefined },
+                      { label: "TEAM", sort: undefined },
+                      { label: "DRIVERS", sort: undefined },
+                      { label: "PTS", sort: "descending" as const },
+                      { label: "WINS", sort: undefined },
+                    ].map((h) => (
                       <th
-                        key={h}
+                        key={h.label}
+                        scope="col"
+                        aria-sort={h.sort}
                         className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
                         style={{ color: "var(--text-muted)" }}
                       >
-                        {h}
+                        {h.label}
                       </th>
                     ))}
                   </tr>

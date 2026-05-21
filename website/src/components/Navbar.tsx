@@ -113,6 +113,7 @@ export default function Navbar() {
   return (
     <nav
       className="sticky top-0 z-50 border-b"
+      aria-label="Primary"
       style={{
         background: "var(--bg)",
         borderColor: "var(--border)",

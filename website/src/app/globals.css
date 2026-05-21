@@ -184,19 +184,19 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0.38rem 0.7rem;
 }
 
+/* Race report outer container — flat surface, no drop-shadow, no
+ * gradient overlay (redesign 2026-05).  Border is the single visual
+ * boundary. */
 .report-shell {
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--accent-live) 16%, transparent);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-live) 7%, transparent), transparent 38%),
-    var(--bg-card);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .report-panel {
   border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
   padding: 1rem;
 }
 
@@ -270,15 +270,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 .metric-card:hover { border-color: color-mix(in srgb, var(--accent-live) 15%, transparent); }
 
-/* Section heading */
+/* Section heading — flat type, no vertical accent bar (the bar was a
+ * Linear-style decoration we no longer use; section breaks now lean
+ * on whitespace + bold weight). */
 .section-heading {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--text);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
   margin-bottom: 20px;
-  padding-left: 14px;
-  border-left: 3px solid var(--accent-live);
 }
 
 /* Progress bar */
@@ -439,14 +439,12 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, #ffd166, #ff9f1c);
 }
 
+/* Weekend results container — flat surface, no radial gradients, no
+ * drop shadow (redesign 2026-05). */
 .weekend-results-shell {
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--accent-live) 18%, transparent);
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--accent-live) 12%, transparent), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(0, 210, 190, 0.10), transparent 34%),
-    var(--bg-card);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .session-tab-grid {
@@ -455,31 +453,45 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.75rem;
 }
 
+/* Session tab — flat surface, single border, subtle hover.  No
+ * translateY lift; active state uses a stronger border + accent
+ * underline instead of a gradient overlay. */
 .session-tab {
   display: flex;
-  min-height: 106px;
+  min-height: 96px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.55rem;
   border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
   padding: 0.9rem;
   text-align: left;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  position: relative;
+  transition: border-color 0.15s ease;
 }
 
 .session-tab:hover {
-  transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--accent-live) 22%, transparent);
+  border-color: var(--border-strong);
 }
 
 .session-tab.active {
-  border-color: color-mix(in srgb, var(--accent-live) 42%, transparent);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-live) 10%, transparent), transparent 54%),
-    rgba(255, 255, 255, 0.04);
+  border-color: var(--accent-live);
+}
+
+.session-tab.active::after {
+  /* 2px accent underline along the bottom edge of the active tab —
+   * replaces the gradient overlay with a precise, low-noise
+   * affordance. */
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent-live);
+  border-radius: 2px;
 }
 
 .session-tab-short {
@@ -492,21 +504,22 @@ h1, h2, h3, h4, h5, h6 {
   background: color-mix(in srgb, var(--accent-live) 12%, transparent);
   color: var(--accent-live);
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: 0.08em;
+  font-feature-settings: "tnum";
 }
 
 .session-tab-main {
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
 }
 
 .session-detail-card {
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
   padding: 1rem;
 }
 
@@ -514,9 +527,9 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: var(--bg-surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
   padding: 0.9rem;
 }
 
