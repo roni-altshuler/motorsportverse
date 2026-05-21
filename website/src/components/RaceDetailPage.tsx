@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -15,14 +15,17 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { RoundData, SeasonData } from "@/types";
+import { RoundData, SeasonData, DriverStanding } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
 import WinProbabilityChart from "@/components/charts/WinProbabilityChart";
+import DriverDetailSheet from "@/components/DriverDetailSheet";
+import StrategyExplorer from "@/components/StrategyExplorer";
 import {
   fetchRoundData,
   fetchSeasonData,
+  fetchStandingsData,
   getVisualizationPath,
   formatDate,
   formatDateTime,
@@ -121,9 +124,28 @@ export default function RaceDetailPage({ round }: Props) {
   const [selectedVizFilename, setSelectedVizFilename] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  // B-P1.3b: which classification row is expanded (driver code).
+  const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
+  // B-P1.3b: per-driver standings used by the detail sheet (sparkline +
+  // season stats).  Fetched once on mount.
+  const [standings, setStandings] = useState<DriverStanding[] | null>(null);
 
   const handleImageError = useCallback((filename: string) => {
     setFailedImages(prev => new Set(prev).add(filename));
+  }, []);
+
+  // B-P1.3b: fetch standings once for the driver-detail sheet.  Independent
+  // of the season/round-data fetch so it can run in parallel.
+  useEffect(() => {
+    let active = true;
+    fetchStandingsData()
+      .then((s) => {
+        if (active) setStandings(s.drivers ?? null);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -959,36 +981,68 @@ export default function RaceDetailPage({ round }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.classification.map((entry) => (
-                    <tr key={entry.driver} className="transition-colors hover:bg-[var(--bg-card-hover)]" style={{ borderBottom: "1px solid var(--border)" }}>
-                      <td className="px-4 py-3">
-                        <span className={`position-badge ${entry.position === 1 ? "p1" : entry.position === 2 ? "p2" : entry.position === 3 ? "p3" : entry.position <= 10 ? "points" : "no-points"}`}>{entry.position}</span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driver}</span>
-                        <span className="ml-2 text-xs" style={{ color: "var(--text-muted)" }}>{entry.driverFullName}</span>
-                      </td>
-                      <td className="px-1 py-3"><div className="w-1 h-6 rounded" style={{ backgroundColor: entry.teamColor }} /></td>
-                      <td className="px-4 py-3" style={{ color: "var(--text-muted)" }}>{entry.team}</td>
-                      <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text)" }}>{entry.predictedTime}s</td>
-                      <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
-                        {entry.finishRangeLow && entry.finishRangeHigh
-                          ? `P${entry.finishRangeLow}-P${entry.finishRangeHigh}`
-                          : formatGap(entry.gap)}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
-                        {entry.winProbability != null ? `${entry.winProbability.toFixed(1)}%` : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: confidenceTone(entry.confidence) }}>
-                          {entry.confidence || "Medium"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        {entry.points > 0 ? <span className="font-bold text-f1-red">{entry.points}</span> : <span style={{ color: "var(--text-muted)" }}>—</span>}
-                      </td>
-                    </tr>
-                  ))}
+                  {data.classification.map((entry) => {
+                    const isExpanded = expandedDriver === entry.driver;
+                    return (
+                      <React.Fragment key={entry.driver}>
+                        <tr
+                          className="transition-colors hover:bg-[var(--bg-card-hover)] cursor-pointer"
+                          style={{ borderBottom: "1px solid var(--border)" }}
+                          onClick={() =>
+                            setExpandedDriver(isExpanded ? null : entry.driver)
+                          }
+                          aria-expanded={isExpanded}
+                          title={`${isExpanded ? "Hide" : "Show"} season form for ${entry.driver}`}
+                        >
+                          <td className="px-4 py-3">
+                            <span className={`position-badge ${entry.position === 1 ? "p1" : entry.position === 2 ? "p2" : entry.position === 3 ? "p3" : entry.position <= 10 ? "points" : "no-points"}`}>{entry.position}</span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driver}</span>
+                            <span className="ml-2 text-xs" style={{ color: "var(--text-muted)" }}>{entry.driverFullName}</span>
+                            <span
+                              className="ml-2 text-xs font-mono select-none"
+                              style={{ color: "var(--text-muted)" }}
+                              aria-hidden
+                            >
+                              {isExpanded ? "−" : "+"}
+                            </span>
+                          </td>
+                          <td className="px-1 py-3"><div className="w-1 h-6 rounded" style={{ backgroundColor: entry.teamColor }} /></td>
+                          <td className="px-4 py-3" style={{ color: "var(--text-muted)" }}>{entry.team}</td>
+                          <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text)" }}>{entry.predictedTime}s</td>
+                          <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
+                            {entry.finishRangeLow && entry.finishRangeHigh
+                              ? `P${entry.finishRangeLow}-P${entry.finishRangeHigh}`
+                              : formatGap(entry.gap)}
+                          </td>
+                          <td className="px-4 py-3 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
+                            {entry.winProbability != null ? `${entry.winProbability.toFixed(1)}%` : "—"}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="text-xs font-bold uppercase tracking-wider" style={{ color: confidenceTone(entry.confidence) }}>
+                              {entry.confidence || "Medium"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            {entry.points > 0 ? <span className="font-bold text-f1-red">{entry.points}</span> : <span style={{ color: "var(--text-muted)" }}>—</span>}
+                          </td>
+                        </tr>
+                        {/* B-P1.3b: inline driver-detail expansion */}
+                        {isExpanded && (
+                          <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                            <td colSpan={9} className="px-4 py-1">
+                              <DriverDetailSheet
+                                driver={entry.driver}
+                                standings={standings ?? []}
+                                fullName={entry.driverFullName}
+                              />
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -1429,6 +1483,13 @@ export default function RaceDetailPage({ round }: Props) {
         <summary className="deep-dive-summary">Strategy</summary>
         <div className="deep-dive-section-body">
         <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+          {/* B-P2.1: Interactive strategy comparison (recharts).  Leads
+              with the explorer so the existing 4-up grid below acts as
+              the "more detail" view. */}
+          <StrategyExplorer
+            strategyData={strategyData ?? null}
+            totalLaps={data.circuitInfo?.laps}
+          />
           {strategyData ? (
             <div className="card p-6 sm:p-8">
               <h3 className="section-heading">Pit Strategy Comparison</h3>
