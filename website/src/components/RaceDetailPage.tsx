@@ -381,7 +381,11 @@ export default function RaceDetailPage({ round }: Props) {
 
       {/* ━━━ HEADER ━━━ */}
       <motion.div
-        className="mb-2"
+        className="mb-2 hero-circuit-bg -mx-4 px-4 py-6 sm:-mx-6 sm:px-6 sm:py-8"
+        style={{
+          // Track A: ghost THIS round's track map behind the header.
+          ["--hero-image" as string]: `url("${getVisualizationPath(data.round, "track_map.png")}")`,
+        }}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}

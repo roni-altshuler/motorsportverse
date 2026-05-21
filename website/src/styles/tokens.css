@@ -37,11 +37,15 @@
 :root,
 [data-theme="dark"] {
   /* ── Surfaces (graphite) ───────────────────────────────────────── */
-  --bg:                 #0E1116;         /* page background */
-  --bg-elevated:        #131822;         /* slight lift above page */
-  --surface:            #161B26;         /* card body */
-  --surface-elevated:   #1B2330;         /* card hover / panel */
-  --surface-overlay:    rgba(22, 27, 38, 0.78); /* glass overlay */
+  /* Slightly warmed in the 2026-05-21 refinement so the hero circuit
+   * photography reads cleaner against a non-pure-black backdrop.
+   * Was: #0E1116 (near-black SaaS) → #141820 (a stop warmer, still
+   * unmistakably "dark"). */
+  --bg:                 #141820;         /* page background */
+  --bg-elevated:        #1A1F2A;         /* slight lift above page */
+  --surface:            #1C2230;         /* card body */
+  --surface-elevated:   #232A38;         /* card hover / panel */
+  --surface-overlay:    rgba(28, 34, 48, 0.78); /* glass overlay */
 
   /* ── Strokes ──────────────────────────────────────────────────── */
   --border:             rgba(255, 255, 255, 0.07);
@@ -112,6 +116,44 @@
   --destructive-foreground: var(--accent-negative-fg);
   --input:              var(--border);
   --ring:               var(--accent-live);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Hero circuit photography — Track A of the 2026-05-21 UX refinement.
+ * A section with class `.hero-circuit-bg` accepts a `--hero-image: url(...)`
+ * inline style and renders the image behind a dark gradient overlay so
+ * the typography above stays readable.  No backdrop-blur (the new
+ * design language is flat surfaces); the image itself is the only
+ * non-flat element on the page.
+ * ───────────────────────────────────────────────────────────────────── */
+.hero-circuit-bg {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-circuit-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-image, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Mute the image: low base opacity + a heavy gradient lays over it.
+   * 0.18 lets the circuit silhouette read without competing with the
+   * headline text. */
+  opacity: 0.18;
+  z-index: -2;
+}
+
+.hero-circuit-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0%, var(--bg) 95%),
+    linear-gradient(90deg, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
+  z-index: -1;
 }
 
 [data-theme="light"] {

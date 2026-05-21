@@ -30,6 +30,7 @@ import {
   getCurrentRaceContext,
   getRoundLifecycle,
   getRoundStatusMeta,
+  getVisualizationPath,
 } from "@/lib/data";
 
 const TONE_TO_BADGE_VARIANT = {
@@ -116,10 +117,17 @@ export default function HomePage() {
     TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default";
   const isPredictionView = featuredRound?.round === featuredRace.round;
 
+  // Track A: ghost the featured race's track map behind the hero so the
+  // landing page instantly reads as F1 without a literal car/red overlay.
+  const heroImage = getVisualizationPath(featuredRace.round, "track_map.png");
+
   return (
     <div className="mx-auto max-w-6xl px-6 lg:px-10">
       {/* ━━━ HERO ━━━ */}
-      <section className="pt-12 pb-12 lg:pt-20 lg:pb-16">
+      <section
+        className="pt-12 pb-12 lg:pt-20 lg:pb-16 hero-circuit-bg -mx-6 lg:-mx-10 px-6 lg:px-10"
+        style={{ ["--hero-image" as string]: `url("${heroImage}")` }}
+      >
         <div className="flex flex-wrap items-center gap-2 mb-4">
           <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
           <span className="text-sm text-[color:var(--text-muted)]">
