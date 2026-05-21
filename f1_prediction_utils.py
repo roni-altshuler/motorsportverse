@@ -42,11 +42,17 @@ from xgboost import XGBRegressor
 import matplotlib
 matplotlib.use("Agg")          # non-interactive backend for scripts
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sns  # noqa: F401 — kept for downstream callers
 from tqdm import tqdm
 
-sns.set_theme(style="whitegrid", palette="muted")
-plt.rcParams.update({"figure.dpi": 120, "figure.figsize": (12, 6)})
+# Design-system rcParams (graphite + telemetry orange) — replaces the
+# old sns.set_theme("whitegrid", palette="muted") vanilla look.  See
+# viz_style.py for the palette + per-axis conventions.
+import viz_style  # noqa: F401 — applies on import
+
+# Ensure rcParams.dpi gets a sane default in case the viz_style module
+# was imported earlier and the user overrode it.
+plt.rcParams.update({"figure.figsize": (12, 6)})
 
 
 # ==========================================================================

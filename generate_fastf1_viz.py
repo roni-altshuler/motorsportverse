@@ -25,7 +25,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.collections import LineCollection
-import seaborn as sns
+import seaborn as sns  # noqa: F401 — used implicitly by some sub-plotters
 import fastf1
 import fastf1.plotting
 
@@ -33,10 +33,19 @@ sys.path.insert(0, os.path.dirname(__file__))
 from f1_prediction_utils import (
     CALENDAR, TEAM_COLOURS, SEASON_YEAR,
 )
+# Design-system rcParams + palette.  Imported AFTER fastf1.plotting so
+# our colour conventions win over FastF1's default styling.
+import viz_style
+from viz_style import VIZ_COLORS
 
 VIZ_DIR = os.path.join("website", "public", "visualizations")
 
 fastf1.plotting.setup_mpl(misc_mpl_mods=False)
+# Re-apply design-system rcParams after fastf1.plotting.setup_mpl overrides them.
+viz_style.apply_viz_style(force=True)
+
+# Background used across this file's figures — match the website surface.
+_BG = VIZ_COLORS["bg"]
 
 
 def enable_cache():
@@ -75,8 +84,8 @@ def plot_track_map(year, gp_key, out_dir):
         circuit_info = session.get_circuit_info()
         corners = circuit_info.corners
 
-        fig, ax = plt.subplots(figsize=(12, 10), facecolor="#1a1a2e")
-        ax.set_facecolor("#1a1a2e")
+        fig, ax = plt.subplots(figsize=(12, 10), facecolor=_BG)
+        ax.set_facecolor(_BG)
 
         # Plot track as colored line based on speed
         points = np.array([x, y]).T.reshape(-1, 1, 2)
@@ -102,17 +111,17 @@ def plot_track_map(year, gp_key, out_dir):
                 xy=(offset_x, offset_y),
                 fontsize=10,
                 fontweight="bold",
-                color="white",
+                color=VIZ_COLORS["text"],
                 ha="center", va="center",
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="#E8002D",
-                          edgecolor="white", alpha=0.9),
+                bbox=dict(boxstyle="round,pad=0.3", facecolor=VIZ_COLORS["accent"],
+                          edgecolor=VIZ_COLORS["text"], alpha=0.9),
             )
 
         cbar = plt.colorbar(lc, ax=ax, label="Speed (km/h)", shrink=0.7)
-        cbar.ax.yaxis.label.set_color("white")
-        cbar.ax.tick_params(colors="white")
+        cbar.ax.yaxis.label.set_color(VIZ_COLORS["text"])
+        cbar.ax.tick_params(colors=VIZ_COLORS["text"])
 
-        ax.set_title(f"{gp_key} — Circuit Map", fontsize=18, fontweight="bold", color="white")
+        ax.set_title(f"{gp_key} — Circuit Map", fontsize=18, fontweight="bold", color=VIZ_COLORS["text"])
         ax.set_aspect("equal")
         ax.axis("off")
         plt.tight_layout()
@@ -150,8 +159,8 @@ def plot_laptime_distribution(year, gp_key, out_dir):
         driver_order = (laps.groupby("Driver")["LapTimeSec"].median()
                         .sort_values().index.tolist())
 
-        fig, ax = plt.subplots(figsize=(16, 10), facecolor="#1a1a2e")
-        ax.set_facecolor("#1a1a2e")
+        fig, ax = plt.subplots(figsize=(16, 10), facecolor=_BG)
+        ax.set_facecolor(_BG)
 
         # Get team colors for each driver
         driver_colors = []
@@ -174,21 +183,21 @@ def plot_laptime_distribution(year, gp_key, out_dir):
             patch.set_linewidth(2)
         for element in ["whiskers", "caps"]:
             for line in bp[element]:
-                line.set_color("white")
+                line.set_color(VIZ_COLORS["text"])
                 line.set_linewidth(1.5)
         for median in bp["medians"]:
-            median.set_color("white")
+            median.set_color(VIZ_COLORS["text"])
             median.set_linewidth(2)
 
-        ax.set_ylabel("Lap Time (s)", fontsize=14, color="white")
+        ax.set_ylabel("Lap Time (s)", fontsize=14, color=VIZ_COLORS["text"])
         ax.set_title(f"{year} {gp_key} — Driver Lap Time Distribution",
-                     fontsize=18, fontweight="bold", color="white")
-        ax.tick_params(colors="white", labelsize=11)
-        ax.spines["bottom"].set_color("white")
-        ax.spines["left"].set_color("white")
+                     fontsize=18, fontweight="bold", color=VIZ_COLORS["text"])
+        ax.tick_params(colors=VIZ_COLORS["text"], labelsize=11)
+        ax.spines["bottom"].set_color(VIZ_COLORS["text"])
+        ax.spines["left"].set_color(VIZ_COLORS["text"])
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-        ax.grid(axis="y", alpha=0.2, color="white")
+        ax.grid(axis="y", alpha=0.2, color=VIZ_COLORS["text"])
         plt.xticks(rotation=45)
         plt.tight_layout()
         _save(fig, os.path.join(out_dir, "laptime_distribution_historical.png"))
@@ -223,8 +232,8 @@ def plot_tyre_strategy(year, gp_key, out_dir):
             "INTERMEDIATE": "#39B54A", "WET": "#0067AD",
         }
 
-        fig, ax = plt.subplots(figsize=(16, 10), facecolor="#1a1a2e")
-        ax.set_facecolor("#1a1a2e")
+        fig, ax = plt.subplots(figsize=(16, 10), facecolor=_BG)
+        ax.set_facecolor(_BG)
 
         for i, drv in enumerate(drivers):
             drv_laps = laps[laps["Driver"] == drv].sort_values("LapNumber")
@@ -240,7 +249,7 @@ def plot_tyre_strategy(year, gp_key, out_dir):
                 if compound != prev_compound and prev_compound is not None:
                     color = compound_colors.get(prev_compound, "#888")
                     ax.barh(i, lap_num - stint_start, left=stint_start,
-                            color=color, edgecolor="#1a1a2e", height=0.8)
+                            color=color, edgecolor=_BG, height=0.8)
                     stint_start = lap_num
                 prev_compound = compound
 
@@ -249,24 +258,24 @@ def plot_tyre_strategy(year, gp_key, out_dir):
                 color = compound_colors.get(prev_compound, "#888")
                 last_lap = int(drv_laps["LapNumber"].max())
                 ax.barh(i, last_lap - stint_start + 1, left=stint_start,
-                        color=color, edgecolor="#1a1a2e", height=0.8)
+                        color=color, edgecolor=_BG, height=0.8)
 
         ax.set_yticks(range(len(drivers)))
-        ax.set_yticklabels(drivers, fontsize=10, color="white")
-        ax.set_xlabel("Lap Number", fontsize=13, color="white")
+        ax.set_yticklabels(drivers, fontsize=10, color=VIZ_COLORS["text"])
+        ax.set_xlabel("Lap Number", fontsize=13, color=VIZ_COLORS["text"])
         ax.set_title(f"{year} {gp_key} — Tyre Strategy", fontsize=18,
-                     fontweight="bold", color="white")
-        ax.tick_params(colors="white")
+                     fontweight="bold", color=VIZ_COLORS["text"])
+        ax.tick_params(colors=VIZ_COLORS["text"])
         ax.invert_yaxis()
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-        ax.spines["bottom"].set_color("white")
-        ax.spines["left"].set_color("white")
+        ax.spines["bottom"].set_color(VIZ_COLORS["text"])
+        ax.spines["left"].set_color(VIZ_COLORS["text"])
 
         legend_patches = [mpatches.Patch(color=c, label=l)
                          for l, c in compound_colors.items()]
         ax.legend(handles=legend_patches, loc="lower right", fontsize=10,
-                 facecolor="#1a1a2e", edgecolor="white", labelcolor="white")
+                 facecolor=_BG, edgecolor=VIZ_COLORS["text"], labelcolor=VIZ_COLORS["text"])
 
         plt.tight_layout()
         _save(fig, os.path.join(out_dir, "tyre_strategy.png"))

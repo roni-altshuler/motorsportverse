@@ -35,7 +35,7 @@
   --color-f1-card: #1F1F2B;
   --color-f1-card-hover: #27273A;
   --color-f1-border: #2D2D3F;
-  --color-f1-red: #E10600;
+  --color-f1-red: var(--accent-live);
   --color-f1-red-dark: #B80500;
   --color-f1-text: #F5F5F5;
   --color-f1-text-muted: #9CA3AF;
@@ -120,9 +120,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .status-pill-red {
-  background: rgba(225, 6, 0, 0.12);
-  color: #E10600;
-  border-color: rgba(225, 6, 0, 0.28);
+  background: color-mix(in srgb, var(--accent-live) 12%, transparent);
+  color: var(--accent-live);
+  border-color: color-mix(in srgb, var(--accent-live) 28%, transparent);
 }
 
 .status-pill-green {
@@ -158,7 +158,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid rgba(159, 176, 200, 0.18);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(46, 196, 182, 0.08), rgba(225, 6, 0, 0.05)),
+    linear-gradient(90deg, rgba(46, 196, 182, 0.08), color-mix(in srgb, var(--accent-live) 5%, transparent)),
     var(--bg-card);
   padding: 1rem 1.15rem;
 }
@@ -186,9 +186,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .report-shell {
   border-radius: 12px;
-  border: 1px solid rgba(225, 6, 0, 0.16);
+  border: 1px solid color-mix(in srgb, var(--accent-live) 16%, transparent);
   background:
-    linear-gradient(135deg, rgba(225, 6, 0, 0.07), transparent 38%),
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-live) 7%, transparent), transparent 38%),
     var(--bg-card);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
 }
@@ -233,7 +233,7 @@ h1, h2, h3, h4, h5, h6 {
 .position-badge.p1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #1A1A28; }
 .position-badge.p2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #1A1A28; }
 .position-badge.p3 { background: linear-gradient(135deg, #CD7F32, #B06820); color: #1A1A28; }
-.position-badge.points { background: rgba(225, 6, 0, 0.12); color: #E10600; }
+.position-badge.points { background: color-mix(in srgb, var(--accent-live) 12%, transparent); color: var(--accent-live); }
 .position-badge.no-points { background: var(--glass-bg); color: var(--text-muted); }
 
 .podium-1 { color: #FFD700; }
@@ -255,9 +255,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 .tab-button:hover { color: var(--text); background: var(--glass-bg); }
 .tab-button.active {
-  color: #E10600;
-  background: rgba(225, 6, 0, 0.08);
-  border-color: rgba(225, 6, 0, 0.2);
+  color: var(--accent-live);
+  background: color-mix(in srgb, var(--accent-live) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
 }
 
 /* Metric card */
@@ -268,7 +268,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 16px;
   transition: border-color 0.2s ease;
 }
-.metric-card:hover { border-color: rgba(225, 6, 0, 0.15); }
+.metric-card:hover { border-color: color-mix(in srgb, var(--accent-live) 15%, transparent); }
 
 /* Section heading */
 .section-heading {
@@ -278,7 +278,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text);
   margin-bottom: 20px;
   padding-left: 14px;
-  border-left: 3px solid #E10600;
+  border-left: 3px solid var(--accent-live);
 }
 
 /* Progress bar */
@@ -295,34 +295,31 @@ h1, h2, h3, h4, h5, h6 {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Visualization images */
+/* Visualization images — flat surface, no scale-on-hover, no shadow trail */
 .viz-image {
-  border-radius: 6px;
-  border: 1px solid var(--glass-border);
-  transition: all 0.3s ease;
-  background: var(--bg-surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease;
+  background: var(--surface);
 }
 .viz-image:hover {
-  transform: scale(1.01);
-  border-color: rgba(225, 6, 0, 0.2);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border-color: var(--border-strong);
 }
 
+/* Visualization command-center — minimal flat surface (was a multi-layer
+ * radial-gradient with brand-red + blue glow halos.  Redesign 2026-05.) */
 .viz-command-center {
-  border-radius: 10px;
-  border: 1px solid rgba(225, 6, 0, 0.2);
-  background:
-    radial-gradient(circle at 0% 0%, rgba(225, 6, 0, 0.14), transparent 34%),
-    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.12), transparent 38%),
-    var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .viz-kicker {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #e10600;
+  color: var(--accent-live);
   margin-bottom: 0.35rem;
 }
 
@@ -390,25 +387,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-card-pro {
-  border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: var(--bg-card);
-  padding: 0.7rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0.85rem;
   cursor: default;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease;
 }
 
 .viz-card-pro:hover {
-  transform: translateY(-1px);
-  border-color: rgba(225, 6, 0, 0.24);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
+  border-color: var(--border-strong);
 }
 
 .viz-card-featured {
-  border-color: rgba(225, 6, 0, 0.28);
-  background:
-    linear-gradient(135deg, rgba(225, 6, 0, 0.08), transparent 42%),
-    var(--bg-card);
+  border-color: var(--border-accent);
+  background: var(--surface);
 }
 
 .viz-card-media-wrap {
@@ -448,9 +441,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .weekend-results-shell {
   border-radius: 12px;
-  border: 1px solid rgba(225, 6, 0, 0.18);
+  border: 1px solid color-mix(in srgb, var(--accent-live) 18%, transparent);
   background:
-    radial-gradient(circle at top left, rgba(225, 6, 0, 0.12), transparent 32%),
+    radial-gradient(circle at top left, color-mix(in srgb, var(--accent-live) 12%, transparent), transparent 32%),
     radial-gradient(circle at bottom right, rgba(0, 210, 190, 0.10), transparent 34%),
     var(--bg-card);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
@@ -479,13 +472,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .session-tab:hover {
   transform: translateY(-1px);
-  border-color: rgba(225, 6, 0, 0.22);
+  border-color: color-mix(in srgb, var(--accent-live) 22%, transparent);
 }
 
 .session-tab.active {
-  border-color: rgba(225, 6, 0, 0.42);
+  border-color: color-mix(in srgb, var(--accent-live) 42%, transparent);
   background:
-    linear-gradient(135deg, rgba(225, 6, 0, 0.10), transparent 54%),
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-live) 10%, transparent), transparent 54%),
     rgba(255, 255, 255, 0.04);
 }
 
@@ -496,8 +489,8 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 2rem;
   height: 1.55rem;
   border-radius: 999px;
-  background: rgba(225, 6, 0, 0.12);
-  color: #e10600;
+  background: color-mix(in srgb, var(--accent-live) 12%, transparent);
+  color: var(--accent-live);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -560,7 +553,7 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: minmax(0, 1fr) 280px;
   gap: 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(225, 6, 0, 0.18);
+  border: 1px solid color-mix(in srgb, var(--accent-live) 18%, transparent);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 44%),
     var(--bg-card);
@@ -612,8 +605,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .viz-rail-button.active {
-  border-color: rgba(225, 6, 0, 0.28);
-  background: rgba(225, 6, 0, 0.08);
+  border-color: color-mix(in srgb, var(--accent-live) 28%, transparent);
+  background: color-mix(in srgb, var(--accent-live) 8%, transparent);
 }
 
 .viz-rail-title {
@@ -706,7 +699,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   transition: border-color 0.2s ease;
 }
-.viz-placeholder:hover { border-color: rgba(225, 6, 0, 0.2); }
+.viz-placeholder:hover { border-color: color-mix(in srgb, var(--accent-live) 20%, transparent); }
 
 /* News card */
 .news-card {
@@ -720,7 +713,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 8px;
 }
 .news-card:hover {
-  border-color: rgba(225, 6, 0, 0.2);
+  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
@@ -734,7 +727,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s ease;
 }
 .video-card:hover {
-  border-color: rgba(225, 6, 0, 0.2);
+  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }

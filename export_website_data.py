@@ -1042,18 +1042,23 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
     import matplotlib.pyplot as plt
     from matplotlib.colors import LinearSegmentedColormap
 
+    # Design-system palette — single source of truth across every
+    # generated PNG.  Names map 1:1 to website/src/styles/tokens.css so
+    # the charts visually match the rest of the site.
+    from viz_style import VIZ_COLORS
+
     filenames = []
     theme = {
-        "bg": "#0B1220",
-        "panel": "#111A2E",
-        "grid": "#25324A",
-        "text": "#E6EDF7",
-        "muted": "#9FB0C8",
-        "accent": "#FF5A36",
-        "accent2": "#2EC4B6",
-        "accent3": "#4EA8DE",
-        "warn": "#FFB020",
-        "danger": "#FF6B6B",
+        "bg": VIZ_COLORS["bg"],
+        "panel": VIZ_COLORS["surface"],
+        "grid": VIZ_COLORS["grid"],
+        "text": VIZ_COLORS["text"],
+        "muted": VIZ_COLORS["text_muted"],
+        "accent": VIZ_COLORS["accent"],
+        "accent2": VIZ_COLORS["info"],
+        "accent3": VIZ_COLORS["positive"],
+        "warn": VIZ_COLORS["podium_1"],
+        "danger": VIZ_COLORS["negative"],
     }
 
     def _style_axis(ax, title, xlabel=None, ylabel=None):
