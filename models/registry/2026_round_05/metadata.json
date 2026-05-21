@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Canada",
+  "ensemble_weights": {
+    "gb": 0.6450021994688689,
+    "lstm": 0.0,
+    "xgb": 0.354997800531131
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "fbb04425dfa81bfe3a16df5a7826c8b2ec20f250",
+  "gpName": "Canadian Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.09477516865577229,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.11112523567266225,
+      "R\u00b2": 0.9590480394128063
+    },
+    {
+      "MAE (s)": 0.17219879150390796,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.18415354546069174,
+      "R\u00b2": 0.8875370483055768
+    },
+    {
+      "MAE (s)": 0.09086632972495182,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.11489231478892559,
+      "R\u00b2": 0.9562244846604223
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 5,
+  "savedAt": "2026-05-21T08:19:26+00:00",
+  "season": 2026
+}

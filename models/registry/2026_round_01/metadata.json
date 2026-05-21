@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Australia",
+  "ensemble_weights": {
+    "gb": 0.5139397002198925,
+    "lstm": 0.0,
+    "xgb": 0.4860602997801074
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "fbb04425dfa81bfe3a16df5a7826c8b2ec20f250",
+  "gpName": "Australian Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 5.18734549239629,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 9.528386586648239,
+      "R\u00b2": -0.03226319675842171
+    },
+    {
+      "MAE (s)": 5.484880761718751,
+      "Model": "XGBoost",
+      "RMSE (s)": 9.781567960618291,
+      "R\u00b2": -0.08784910542292046
+    },
+    {
+      "MAE (s)": 5.331966868278755,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 9.648920240718397,
+      "R\u00b2": -0.05854454525510988
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 1,
+  "savedAt": "2026-05-21T08:21:33+00:00",
+  "season": 2026
+}

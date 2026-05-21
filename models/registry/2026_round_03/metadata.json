@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Japan",
+  "ensemble_weights": {
+    "gb": 0.48612371549756433,
+    "lstm": 0.0,
+    "xgb": 0.5138762845024357
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "fbb04425dfa81bfe3a16df5a7826c8b2ec20f250",
+  "gpName": "Japanese Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.2530933612532692,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.2891110334220164,
+      "R\u00b2": 0.9140995739669734
+    },
+    {
+      "MAE (s)": 0.23942471923828065,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.2751619474269535,
+      "R\u00b2": 0.9221886886503774
+    },
+    {
+      "MAE (s)": 0.19863418701543764,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.2334688313683884,
+      "R\u00b2": 0.9439824894657544
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 3,
+  "savedAt": "2026-05-21T08:23:01+00:00",
+  "season": 2026
+}
