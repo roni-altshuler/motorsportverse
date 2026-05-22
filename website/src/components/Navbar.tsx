@@ -52,6 +52,7 @@ export default function Navbar() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const racesRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetchSeasonData().then(setSeason).catch(() => {});
@@ -66,6 +67,24 @@ export default function Navbar() {
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Close-on-hover-out uses a small grace timeout so the cursor can travel
+  // between the trigger button and the dropdown body without the menu
+  // collapsing under it.
+  const openRacesMenu = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setRacesOpen(true);
+  };
+  const scheduleRacesClose = () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => setRacesOpen(false), 140);
+  };
+  useEffect(() => () => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
   }, []);
 
   const isActive = (href: string) =>
@@ -135,13 +154,24 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-1">
             {navLink("/", "Home")}
 
-            {/* Races Dropdown */}
-            <div ref={racesRef} className="relative">
+            {/* Races dropdown — opens on hover, closes on hover-out (with
+                a small grace window), and collapses immediately when the
+                user picks a race. Click on the trigger still toggles for
+                keyboard/touch users. */}
+            <div
+              ref={racesRef}
+              className="relative"
+              onMouseEnter={openRacesMenu}
+              onMouseLeave={scheduleRacesClose}
+            >
               <button
-                onClick={() => setRacesOpen(!racesOpen)}
+                onClick={() => setRacesOpen((open) => !open)}
+                onFocus={openRacesMenu}
+                aria-haspopup="menu"
+                aria-expanded={racesOpen}
                 className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg inline-flex items-center gap-1.5 ${
                   isActive("/race") || isActive("/calendar")
-                    ? "text-f1-red"
+                    ? "text-[color:var(--accent-live)]"
                     : "text-[var(--text-muted)] hover:text-[var(--text)]"
                 }`}
               >
@@ -151,14 +181,19 @@ export default function Navbar() {
                 </svg>
               </button>
               {racesOpen && season && (
-                <div className="dropdown-menu absolute top-full left-0 mt-2 w-80 max-h-[70vh] overflow-y-auto">
+                <div
+                  role="menu"
+                  className="dropdown-menu absolute top-full left-0 mt-2 w-80 max-h-[70vh] overflow-y-auto overscroll-contain"
+                  style={{ scrollbarGutter: "stable" }}
+                >
                   <div className="p-2">
                     <Link
                       href="/calendar"
+                      onClick={() => setRacesOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors hover:bg-[var(--bg-card-hover)]"
                       style={{ color: "var(--text)" }}
                     >
-                      <span className="text-f1-red text-base">📅</span>
+                      <span className="text-[color:var(--accent-live)] text-base">📅</span>
                       Full Season Calendar
                     </Link>
                     <div className="h-px my-1" style={{ background: "var(--border)" }} />
@@ -171,12 +206,14 @@ export default function Navbar() {
                         <Link
                           key={race.round}
                           href={`/race/${race.round}`}
+                          onClick={() => setRacesOpen(false)}
+                          role="menuitem"
                           className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors hover:bg-[var(--bg-card-hover)]"
                           style={{ color: "var(--text)" }}
                         >
                           <CountryFlag country={race.country} size={20} />
                           <span className="flex-1 truncate">{race.name}</span>
-                          <span className="text-xs shrink-0" style={{ color: "var(--text-muted)" }}>R{race.round}</span>
+                          <span className="text-xs shrink-0 font-mono" style={{ color: "var(--text-muted)" }}>R{race.round}</span>
                           <Badge variant={TONE_TO_BADGE_VARIANT[statusMeta.tone as StatusTone] ?? "default"}>
                             {statusMeta.shortLabel}
                           </Badge>

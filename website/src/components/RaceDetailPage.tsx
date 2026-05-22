@@ -24,6 +24,7 @@ import DriverDetailSheet from "@/components/DriverDetailSheet";
 import StrategyExplorer from "@/components/StrategyExplorer";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
+import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
 import HUDPanel from "@/components/ui/HUDPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import ChartContainer from "@/components/charts/ChartContainer";
@@ -99,6 +100,7 @@ export default function RaceDetailPage({ round }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("weekend");
   const [activeWeekendSession, setActiveWeekendSession] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   // B-P1.3b: which classification row is expanded (driver code).
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   // B-P1.3b: per-driver standings used by the detail sheet (sparkline +
@@ -566,6 +568,18 @@ export default function RaceDetailPage({ round }: Props) {
           </ChartContainer>
         </HUDPanel>
       </div>
+
+      {/* ━━━ CIRCUIT FIGURE ━━━ */}
+      {!failedImages.has("track_map.png") && (
+        <TrackMapWithOverlay
+          src={getVisualizationPath(round, "track_map.png")}
+          alt={`${data.name} circuit layout`}
+          kicker="Circuit"
+          title={`${data.circuit}`}
+          onLightbox={() => setLightboxImg(getVisualizationPath(round, "track_map.png"))}
+          onError={() => setFailedImages((prev) => new Set(prev).add("track_map.png"))}
+        />
+      )}
 
       {/* ━━━ TAB NAVIGATION ━━━ */}
       <div className="flex gap-2 mb-10 overflow-x-auto pb-2">
