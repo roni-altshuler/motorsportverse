@@ -74,7 +74,7 @@ ruff check leakage.py forward_eval.py tests/   # what CI runs
 
 ```bash
 cd website
-npm install
+npm install           # honours website/.npmrc (legacy-peer-deps=true)
 npm run dev           # http://localhost:3000
 npm run build         # runs prebuild (OG images + PNG→WebP) then `next build`
 npm run lint          # eslint
@@ -82,6 +82,8 @@ npm run webp          # one-shot: regenerate .webp siblings under public/visuali
 ```
 
 The website is **static export only** (`output: "export"` in [`next.config.ts`](website/next.config.ts)). No server components, no API routes, no runtime fetches against secrets. All data flows in as JSON at build time from `website/public/data/`.
+
+**[`website/.npmrc`](website/.npmrc) pins `legacy-peer-deps=true`** so `npm ci` succeeds on CI. `@visx/*` declares its React peer as `^16–18` but the project runs on React 19; the npmrc lets the install resolve. Do **not** delete it.
 
 ## Architecture
 
@@ -130,7 +132,7 @@ If you add a new feature that aggregates prior data, **plumb `current_round` thr
 
 [`viz_style.py`](viz_style.py) is the central matplotlib design system — `apply_viz_style()` is called automatically on import and sets graphite surfaces (`VIZ_COLORS["bg"]` = `#0E1116`) + telemetry orange (`#F76B15`) as the single accent. Every PNG generator (`export_website_data.py::_export_visualizations`, `generate_fastf1_viz.py`, `f1_prediction_utils.py`) imports from `viz_style` so the entire chart catalogue stays in sync. Per-axis conventions live in `style_axis(ax, ...)`.
 
-**Curated chart set** (2026-05-21 cull, from 17 → 6): `predicted_laptimes`, `laptime_distribution`, `podium_probability_board`, `finish_probability_heatmap`, `head_to_head_edges`, `track_map`. The dropped chart generators have been removed from `_export_visualizations`; if you add a new chart, also add it to `VIZ_METADATA` (Python) and `VIZ_CATEGORIES` (TS at [`RaceDetailPage.tsx`](website/src/components/RaceDetailPage.tsx)).
+**Curated chart set** (2026-05-21 cull, from 17 → 6): `predicted_laptimes`, `laptime_distribution`, `podium_probability_board`, `finish_probability_heatmap`, `head_to_head_edges`, `track_map`. The Python PNG generators still run (used for the lightbox-able circuit figure, social-share OG assets, and as fallback inside `<ChartContainer>`). **The website's primary chart surface is now interactive React (recharts + visx)** — see [`website/src/components/charts/`](website/src/components/charts/). When you add a new chart, add the React component there; only add a matplotlib generator if you also need a static export (OG, lightbox, etc.).
 
 ### Odds ingestion: 5 paths because The Odds API has no F1
 
@@ -158,15 +160,20 @@ Key data files under `website/public/data/`:
 - `promotion_status.json` — shadow/A-B promotion decision (A-P1.3).
 - `gp_accuracy_report.json` — season-rolling accuracy (used by the navbar accuracy chip).
 
-### Website design system
+### Website design system (cinematic overhaul, supersedes 2026-05 flat redesign)
 
-The site went through a complete redesign in 2026-05. Aesthetic direction: dark theme with low-opacity track-map photography behind hero sections, telemetry-orange (`#F76B15`) as the sole accent, no glass-blur, no gradients.
+Aesthetic direction: broadcast-HUD + paddock-badge-wall vocabulary blending F1 TV timing graphics, F1 24 game UI, modern F1.com, and pit-wall analyst console. Dark theme is primary; light theme inherits structure but skips the lighting effects.
 
-- **Tokens** in [`website/src/styles/tokens.css`](website/src/styles/tokens.css). Includes `.hero-circuit-bg` which accepts inline `--hero-image: url(...)` and ghosts a circuit photo at opacity 0.18 behind any section.
-- **shadcn-style primitives** under [`website/src/components/ui/`](website/src/components/ui/) — `Card`, `Badge`, `Button`, `Stat` (numeric tile with tabular figures), `cn()` helper. There is no real `@radix-ui/react-slot` install; do NOT use `<Button asChild>`. Use `buttonVariants({...})` as a className on `<Link>` instead.
+- **Tokens** in [`website/src/styles/tokens.css`](website/src/styles/tokens.css): HUD palette (`--hud-purple/yellow/red-light/cyan/champagne`), glow stack (`--glow-accent/podium/team/elevated/hud`), gradient stops (`--gradient-paddock/hud-frame/scanline`), motion tokens (`--dur-*`, `--ease-*`), and an 11-team palette resolved via `[data-team="..."]` attribute or inline `style={{ "--team-color": ... }}`. The cinematic styles **supersede** the 2026-05 flat design — gradients, glow, shadows, and parallax are intentional now.
+- **Motion lib** in [`website/src/lib/motion.ts`](website/src/lib/motion.ts) (durations + easings + framer-motion variants), [`useReducedMotion.ts`](website/src/lib/useReducedMotion.ts), [`motionGuard.ts`](website/src/lib/motionGuard.ts), [`useGSAPScrollTrigger.ts`](website/src/lib/useGSAPScrollTrigger.ts) (lazy GSAP import gated on `prefers-reduced-motion`). Every effect has a reduced-motion equivalent — there's a global `@media (prefers-reduced-motion: reduce)` block in [`globals.css`](website/src/app/globals.css) that short-circuits animations and a hook-based JS path. **Don't ship an effect without a reduced-motion fallback.**
+- **Primitives** under [`website/src/components/ui/`](website/src/components/ui/): `Card` (with `surface: flat | glow | hud | paddock` variants), `Badge`, `Button`, `Stat`, `AnimatedNumber` (spring counter), `TeamColorBar`, `HUDPanel` (telemetry frame with optional `scanlines` + `cornerNotch`), `SectorBadge`, `RaceLightsGrid` (lights-out reveal state machine), `LoadingTire` (SVG tire spinner). `cn()` helper for class merging. There is no real `@radix-ui/react-slot` install; do NOT use `<Button asChild>`. Use `buttonVariants({...})` as a className on `<Link>` instead.
+- **New deps**: `gsap` + `gsap/ScrollTrigger`, `lenis` (smooth scroll, wired via [`SmoothScrollProvider`](website/src/components/SmoothScrollProvider.tsx) in `layout.tsx`), `lottie-react` (reserved for future Lottie assets), `@visx/*` (custom charts beyond recharts). All four are lazy-loaded — never top-level-import `gsap` in a page module or static export breaks.
 - **`/design-system`** route showcases every primitive — internal QA surface, not in the nav.
-- **Race detail page** has exactly **2 tabs**: "Weekend Sessions" + "Deep Dive". Deep Dive uses native `<details>`/`<summary>` (no JS, styled via `.deep-dive-section` in [`globals.css`](website/src/app/globals.css)) for Model Forecast / Circuit & Telemetry / Strategy / Visualisations. The legacy `Tab` union still carries the old values for type-safety; the UI only routes through "weekend" and "deepdive".
-- **Visualizations are PNGs with WebP siblings.** `npm run prebuild` runs `convert-viz-to-webp.ts` (sharp-based, idempotent). Both files ship via the static export; `<picture>` tags prefer WebP. ~62% size reduction over PNG.
+- **Race detail page** has exactly **2 tabs**: "Weekend Sessions" + "Deep Dive". Deep Dive uses native `<details>`/`<summary>` (styled via `.deep-dive-section`) for Model Forecast / Circuit & Telemetry / Strategy / Visualisations. The legacy `Tab` union still carries the old values for type-safety; the UI only routes through "weekend" and "deepdive". **Inside Deep Dive > Visualisations, only the new interactive React charts render** — `FinishProbabilityHeatmap`, `HeadToHeadMatrix`, `LapTimeDistributionChart` from [`website/src/components/charts/`](website/src/components/charts/). The legacy PNG `viz-command-center` + `viz-workbench` + per-category grids were removed; do not re-introduce mixed-style PNG galleries.
+- **Track-map figure** is mounted via [`TrackMapWithOverlay`](website/src/components/race-detail/TrackMapWithOverlay.tsx) (HUDPanel frame, vignette, scanline, scroll-tied orange sweep, image filter for contrast). The raw `<Image src={track_map.png}>` is **not** acceptable on its own — it reads as a matplotlib export. Always frame circuit figures through HUDPanel or a similarly-styled wrapper.
+- **Navbar Races dropdown** opens on hover (mouseenter on the wrapper div), closes on mouseleave with a ~140ms grace timeout (so the cursor can travel from the trigger button to the menu body). Click still toggles for touch/keyboard, and clicking any race link closes the menu immediately. Don't revert to click-only — it was an explicit UX ask.
+- **PNG visualizations still ship** as `<picture>` WebP+PNG siblings. `npm run prebuild` runs `convert-viz-to-webp.ts` (sharp-based, idempotent). The PNGs are still used for: (1) social-share OG images, (2) the lightbox modal, (3) the framed circuit figure on race detail. They are **not** the canonical chart surface anymore.
+- **Tech-stack scrub policy**: user-facing pages must not name implementation details (Plackett-Luce, Monte-Carlo, XGBoost, isotonic regression, gradient boosting, etc.). Talk about what the model says, not how it's built. Implementation details belong in [`README.md`](README.md). The About page is product-focused.
 
 ### CI gates
 
@@ -196,3 +203,6 @@ If the worktree-isolation mode is enforced by the harness and the user's working
 - **`requirements-dev.txt` defers `mapie`, `mlflow`, `optuna`** — they're commented out because `mapie 0.9.2` pulls `scikit-learn<1.6` which conflicts with the `scikit-learn~=1.8.0` runtime pin. Re-enable per package when the consuming feature lands and pick a sklearn-1.8-compatible version.
 - **The `pre-existing` ruff F401 warnings in unused test imports** are not lint errors any more — they were cleaned up in the redesign sprint. New unused imports DO fail CI now.
 - **Long roadmap context** lives in [`/home/ronaltshuler/.claude/plans/f1-predictions-is-a-github-logical-snowflake.md`](../.claude/plans/f1-predictions-is-a-github-logical-snowflake.md). The top of that file is the *current* sprint plan; everything below `> Earlier sprint plan archived below for historical context.` is historical reference.
+- **Animation orchestration discipline.** GSAP and framer-motion can collide on the same DOM node. Rule: framer-motion owns entrance/exit (mount, route change, accordion open). GSAP owns scroll-tied effects (path-draw, parallax, the track-map orange sweep). Never bind both to the same node; if a node needs both, GSAP wins and framer-motion stays opacity-only there.
+- **Hero parallax**: the home page's [`HeroParallax`](website/src/components/home/HeroParallax.tsx) uses a CSS-only radial-gradient backdrop by default. Earlier iterations ghosted the matplotlib track map at low opacity behind the hero — that was explicitly rejected as looking too "vanilla and matplotlib". Don't pass `trackImage` to `HeroParallax` from the home page; leave it off so the gradient takes over.
+- **`<ChartContainer>`** ([`website/src/components/charts/ChartContainer.tsx`](website/src/components/charts/ChartContainer.tsx)) is the lazy hydration boundary for visx-heavy charts: it shows the PNG/WebP fallback until an IntersectionObserver fires, then crossfades to the React chart. Reuse it for any new chart that ships a PNG fallback — it eliminates CLS during hydration.
