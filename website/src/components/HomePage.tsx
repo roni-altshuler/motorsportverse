@@ -32,7 +32,6 @@ import {
   getCurrentRaceContext,
   getRoundLifecycle,
   getRoundStatusMeta,
-  getVisualizationPath,
 } from "@/lib/data";
 
 const TONE_TO_BADGE_VARIANT = {
@@ -116,14 +115,12 @@ export default function HomePage() {
     TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default";
   const isPredictionView = featuredRound?.round === featuredRace.round;
   const favourite = featuredRound?.classification?.[0];
-  const heroImage = getVisualizationPath(featuredRace.round, "track_map.png");
   const heroTeamColor = favourite?.teamColor ?? "var(--accent-live)";
 
   return (
     <div>
       {/* ━━━ CINEMATIC HERO ━━━ */}
       <HeroParallax
-        trackImage={heroImage}
         teamColor={heroTeamColor}
         className="pt-10 pb-16 lg:pt-16 lg:pb-20"
       >
@@ -195,11 +192,7 @@ export default function HomePage() {
                   Predicted Podium
                 </h2>
                 <p className="mt-1 text-sm text-[color:var(--text-muted)] max-w-xl">
-                  Plackett-Luce probabilities from the qualifying-time ensemble
-                  {featuredRound.classification[0] &&
-                  "simulatorWinProbability" in (featuredRound.classification[0] as object)
-                    ? ", plus the Monte-Carlo race simulator."
-                    : "."}
+                  Projected race winner and the two drivers most likely to share the rostrum.
                 </p>
               </div>
               <Link
@@ -337,25 +330,6 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* ━━━ METHODOLOGY ━━━ */}
-        <section className="pb-20 pt-4 border-t border-[color:var(--border)]">
-          <p className="hud-kicker mb-2">Methodology</p>
-          <h2 className="text-2xl font-black tracking-tight mb-3">
-            How the predictions are made
-          </h2>
-          <p className="text-sm text-[color:var(--text-muted)] max-w-2xl mb-4">
-            A per-driver lap-time ensemble (gradient boosting + XGBoost) feeds a
-            Monte-Carlo race simulator that handles pit stops, safety cars, and
-            tyre degradation. Output is calibrated against historical
-            (predicted, observed) pairs via isotonic regression.
-          </p>
-          <Link
-            href="/about"
-            className="text-sm font-semibold text-[color:var(--accent-live)] hover:underline"
-          >
-            Read the methodology →
-          </Link>
-        </section>
       </div>
     </div>
   );

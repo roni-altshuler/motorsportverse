@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -24,7 +24,6 @@ import DriverDetailSheet from "@/components/DriverDetailSheet";
 import StrategyExplorer from "@/components/StrategyExplorer";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
-import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
 import HUDPanel from "@/components/ui/HUDPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import ChartContainer from "@/components/charts/ChartContainer";
@@ -33,7 +32,6 @@ import PodiumProbabilityChart from "@/components/charts/PodiumProbabilityChart";
 import FinishProbabilityHeatmap from "@/components/charts/FinishProbabilityHeatmap";
 import HeadToHeadMatrix from "@/components/charts/HeadToHeadMatrix";
 import LapTimeDistributionChart from "@/components/charts/LapTimeDistributionChart";
-import CircuitSpeedMap from "@/components/charts/CircuitSpeedMap";
 import {
   fetchRoundData,
   fetchSeasonData,
@@ -72,39 +70,6 @@ interface Props {
   round: number;
 }
 
-// Curated chart set — 6 keepers (2026-05-21 UX refinement).  Dropped:
-// feature_importance, team_vs_pace, pace_vs_predicted, prediction_confidence,
-// win_probability_board (replaced by the interactive WinProbabilityChart),
-// risk_reward_matrix, laptime_distribution_historical, tyre_strategy,
-// pit_strategy, tyre_degradation.  See VIZ_METADATA in export_website_data.py
-// for the matching Python-side drop.
-const VIZ_CATEGORIES = [
-  {
-    id: "pace",
-    title: "Pace & Probability",
-    items: [
-      { key: "predicted_laptimes", label: "Predicted Race Pace", desc: "Model-projected lap time and finishing spread across the grid." },
-      { key: "laptime_distribution", label: "Lap-Time Distribution", desc: "Team-level distribution of projected race lap times." },
-      { key: "podium_probability_board", label: "Podium Probability", desc: "Chance each driver finishes inside the top 3." },
-    ],
-  },
-  {
-    id: "matchups",
-    title: "Matchups & Outcomes",
-    items: [
-      { key: "finish_probability_heatmap", label: "Finish Probability Heatmap", desc: "Driver-by-position probability matrix for the top 10 slots." },
-      { key: "head_to_head_edges", label: "Head-to-Head Edges", desc: "Pairwise probability that one driver finishes ahead of another." },
-    ],
-  },
-  {
-    id: "circuit",
-    title: "Circuit",
-    items: [
-      { key: "track_map", label: "Circuit Speed Map", desc: "Circuit layout coloured by speed at the fastest lap." },
-    ],
-  },
-];
-
 function getYouTubeSearchUrl(raceName: string, type: string, seasonYear: number): string {
   const q = encodeURIComponent(`Formula 1 ${seasonYear} ${raceName} ${type} highlights`);
   return `https://www.youtube.com/results?search_query=${q}`;
@@ -133,18 +98,12 @@ export default function RaceDetailPage({ round }: Props) {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("weekend");
   const [activeWeekendSession, setActiveWeekendSession] = useState<string | null>(null);
-  const [selectedVizFilename, setSelectedVizFilename] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
-  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   // B-P1.3b: which classification row is expanded (driver code).
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   // B-P1.3b: per-driver standings used by the detail sheet (sparkline +
   // season stats).  Fetched once on mount.
   const [standings, setStandings] = useState<DriverStanding[] | null>(null);
-
-  const handleImageError = useCallback((filename: string) => {
-    setFailedImages(prev => new Set(prev).add(filename));
-  }, []);
 
   // B-P1.3b: fetch standings once for the driver-detail sheet.  Independent
   // of the season/round-data fetch so it can run in parallel.
@@ -289,41 +248,6 @@ export default function RaceDetailPage({ round }: Props) {
   const defaultWeekendSession = weekendSessions.find((session) => session.rows.length > 0) || weekendSessions[0] || null;
   const activeSession = weekendSessions.find((session) => session.key === activeWeekendSession) || defaultWeekendSession;
   const loadedWeekendSessions = weekendSessions.filter((session) => session.rows.length > 0);
-  const vizFiles = [...new Set([...(data.visualizations || [])])];
-  const inferVizCategory = (filename: string): "ml" | "fastf1" | "advanced" | "bettor" | "other" => {
-    if (["predicted_laptimes.png", "feature_importance.png", "team_vs_pace.png", "pace_vs_predicted.png", "laptime_distribution.png", "prediction_confidence.png"].includes(filename)) {
-      return "ml";
-    }
-    if (["track_map.png", "laptime_distribution_historical.png", "tyre_strategy.png"].includes(filename)) {
-      return "fastf1";
-    }
-    if (["pit_strategy_comparison.png", "tyre_degradation_curves.png", "lstm_pace_prediction.png"].includes(filename)) {
-      return "advanced";
-    }
-    if (["win_probability_board.png", "podium_probability_board.png", "finish_probability_heatmap.png", "head_to_head_edges.png", "risk_reward_matrix.png"].includes(filename)) {
-      return "bettor";
-    }
-    return "other";
-  };
-  const vizDetails = (data.visualizationDetails && data.visualizationDetails.length > 0
-    ? data.visualizationDetails
-    : vizFiles.map((filename) => ({
-        filename,
-        title: filename.replace(/_/g, " ").replace(".png", ""),
-        category: inferVizCategory(filename),
-        description: "Generated race analysis visualization.",
-        source: inferVizCategory(filename) === "fastf1" ? "fastf1" : inferVizCategory(filename) === "advanced" ? "advanced" : "model",
-      }))
-  ).map((item) => ({
-    ...item,
-    category: (item.category || inferVizCategory(item.filename)) as "ml" | "fastf1" | "advanced" | "bettor" | "other",
-  }));
-  const mlViz = vizDetails.filter((v) => v.category === "ml");
-  const fastf1Viz = vizDetails.filter((v) => v.category === "fastf1" && v.filename !== "track_map.png");
-  const advancedViz = vizDetails.filter((v) => v.category === "advanced");
-  const bettorViz = vizDetails.filter((v) => v.category === "bettor");
-  const otherViz = vizDetails.filter((v) => !["ml", "fastf1", "advanced", "bettor"].includes(v.category));
-  const trackMapSrc = failedImages.has("track_map.png") ? null : getVisualizationPath(round, "track_map.png");
   const actualRows = data.actualResults ? Object.entries(data.actualResults).sort((a, b) => a[1] - b[1]) : [];
   const gpReport = data.gpReport || null;
   const actualStatus = data.actualStatus || {};
@@ -566,14 +490,6 @@ export default function RaceDetailPage({ round }: Props) {
         </div>
       </motion.div>
 
-      {trackMapSrc && (
-        <TrackMapWithOverlay
-          src={trackMapSrc}
-          alt={`${data.name} circuit plot`}
-          onLightbox={() => setLightboxImg(trackMapSrc)}
-          onError={() => handleImageError("track_map.png")}
-        />
-      )}
 
       {/* ━━━ YouTube Highlight Links ━━━ */}
       <motion.div
@@ -1054,23 +970,6 @@ export default function RaceDetailPage({ round }: Props) {
         <summary className="deep-dive-summary">Circuit & Telemetry</summary>
         <div className="deep-dive-section-body">
         <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-          {trackMapSrc && (
-            <div className="card p-6">
-              <h3 className="section-heading">Circuit Plot</h3>
-              <Image
-                src={trackMapSrc}
-                alt={`${data.name} track map`}
-                className="viz-image w-full cursor-pointer"
-                width={1600}
-                height={900}
-                style={{ width: "100%", height: "auto" }}
-                onClick={() => setLightboxImg(trackMapSrc)}
-                onError={() => handleImageError("track_map.png")}
-                unoptimized
-              />
-            </div>
-          )}
-
           {/* Circuit Info */}
           <div className="card p-6 sm:p-8">
             <h3 className="section-heading">Circuit Information</h3>
@@ -1489,7 +1388,7 @@ export default function RaceDetailPage({ round }: Props) {
           {strategyData ? (
             <div className="card p-6 sm:p-8">
               <h3 className="section-heading">Pit Strategy Comparison</h3>
-              <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>Monte-Carlo simulation of {data.circuitInfo.laps} laps</p>
+              <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>Projected race time over {data.circuitInfo.laps} laps</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {Object.entries(strategyData).map(([name, d]: [string, any]) => {
@@ -1559,386 +1458,50 @@ export default function RaceDetailPage({ round }: Props) {
       <details className="deep-dive-section">
         <summary className="deep-dive-summary">Visualisations</summary>
         <div className="deep-dive-section-body">
-      {(() => {
-        const loadableViz = vizDetails.filter(v => !failedImages.has(v.filename));
-        const allFailed = vizFiles.length > 0 && loadableViz.length === 0;
-        const hasViz = loadableViz.length > 0;
-        const loadableMl = mlViz.filter(v => !failedImages.has(v.filename));
-        const loadableFastf1 = fastf1Viz.filter(v => !failedImages.has(v.filename));
-        const loadableAdvanced = advancedViz.filter(v => !failedImages.has(v.filename));
-        const loadableBettor = bettorViz.filter(v => !failedImages.has(v.filename));
-        const loadableOther = otherViz.filter(v => !failedImages.has(v.filename));
-
-        const sourceCounts = loadableViz.reduce<Record<string, number>>((acc, detail) => {
-          const source = detail.source || "model";
-          acc[source] = (acc[source] || 0) + 1;
-          return acc;
-        }, {});
-
-        const categoryTotals = [
-          { id: "ml", label: "Model", count: loadableMl.length, color: "var(--accent-live)" },
-          { id: "bettor", label: "Probabilities", count: loadableBettor.length, color: "var(--accent-info)" },
-          { id: "advanced", label: "Strategy", count: loadableAdvanced.length, color: "#14B8A6" },
-          { id: "fastf1", label: "Historical", count: loadableFastf1.length, color: "var(--accent-info)" },
-          { id: "other", label: "Additional", count: loadableOther.length, color: "#9CA3AF" },
-        ].filter((entry) => entry.count > 0);
-
-        const selectedViz =
-          loadableViz.find((viz) => viz.filename === selectedVizFilename) ||
-          loadableViz.find((viz) => viz.filename === "win_probability_board.png") ||
-          loadableViz[0];
-
-        const recommendedViz = [
-          "win_probability_board.png",
-          "finish_probability_heatmap.png",
-          "risk_reward_matrix.png",
-          "predicted_laptimes.png",
-          "pace_vs_predicted.png",
-          "feature_importance.png",
-        ]
-          .map((filename) => loadableViz.find((viz) => viz.filename === filename))
-          .filter((viz): viz is (typeof loadableViz)[number] => viz != null);
-
-        const railViz = [
-          ...recommendedViz,
-          ...loadableViz.filter((viz) => !recommendedViz.some((recommended) => recommended.filename === viz.filename)),
-        ];
-
-        const sectionMl = loadableMl;
-        const sectionFastf1 = loadableFastf1;
-        const sectionAdvanced = loadableAdvanced;
-        const sectionBettor = loadableBettor;
-        const sectionOther = loadableOther;
-
-        const highConfidenceCalls =
-          data.predictionInsights?.highConfidenceCount ??
-          data.classification.filter((entry) => entry.confidence === "High").length;
-        const lowConfidenceCalls =
-          data.predictionInsights?.lowConfidenceCount ??
-          data.classification.filter((entry) => entry.confidence === "Low").length;
-
-        const widestBand = data.classification
-          .filter((entry) => entry.finishRangeLow != null && entry.finishRangeHigh != null)
-          .sort(
-            (a, b) =>
-              (b.finishRangeHigh! - b.finishRangeLow!) -
-              (a.finishRangeHigh! - a.finishRangeLow!)
-          )[0];
-
-        const analystNotes = [
-          data.predictionInsights
-            ? `Most likely winner: ${data.predictionInsights.mostLikelyWinner} (${data.predictionInsights.winnerProbability?.toFixed(1) ?? "—"}% win probability).`
-            : null,
-          data.predictionInsights
-            ? `Closest projected battle: ${data.predictionInsights.closestBattle.drivers.join(" vs ")} at ${data.predictionInsights.closestBattle.gap.toFixed(3)}s.`
-            : null,
-          widestBand
-            ? `${widestBand.driver} has the widest finish range (${`P${widestBand.finishRangeLow}-P${widestBand.finishRangeHigh}`}).`
-            : null,
-          data.weatherData
-            ? `Weather risk: ${Math.round(data.weatherData.rainProbability * 100)}% rain probability with ${Math.round(data.weatherData.temperatureC)}°C ambient.`
-            : null,
-          `Circuit profile: ${Math.round(data.circuitInfo.overtaking * 100)}% overtaking index, ${Math.round((data.circuitInfo.safetyCarLikelihood || 0.4) * 100)}% safety-car likelihood.`,
-        ].filter((note): note is string => Boolean(note));
-
-        const sourceStyle = (source?: string) => {
-          if (source === "fastf1") {
-            return { background: "rgba(59,130,246,0.14)", color: "#60A5FA" };
-          }
-          if (source === "advanced") {
-            return { background: "rgba(20,184,166,0.14)", color: "#14B8A6" };
-          }
-          if (source === "bettor") {
-            return { background: "rgba(245,158,11,0.16)", color: "#F59E0B" };
-          }
-          return { background: "rgba(225,6,0,0.14)", color: "var(--accent-live)" };
-        };
-
-        const renderVizCard = (detail: {
-          filename: string;
-          title: string;
-          description: string;
-          source?: string;
-        }, options?: { featured?: boolean; rank?: number }) => {
-          const src = getVisualizationPath(round, detail.filename);
-          const isFeatured = options?.featured ?? false;
-          const tone = sourceStyle(detail.source);
-          return (
-            <div
-              key={detail.filename}
-              className={`viz-card-pro ${isFeatured ? "viz-card-featured" : ""}`}
+          <motion.div className="grid grid-cols-1 xl:grid-cols-2 gap-4" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <HUDPanel
+              kicker="Probability"
+              title="Finish Probability Heatmap"
+              rightSlot={<Badge variant="live">Interactive</Badge>}
+              bodyClassName="p-4 sm:p-5"
             >
-              <div className="viz-card-media-wrap">
-                {/* B-P0.3: <picture> prefers WebP (~38% of PNG size) but
-                    falls back to the PNG when the browser can't decode
-                    WebP.  Both files ship via the static export. */}
-                <picture>
-                  <source srcSet={src.replace(/\.png$/i, ".webp")} type="image/webp" />
-                  <Image
-                    src={src}
-                    alt={detail.title}
-                    className="viz-image viz-card-media"
-                    width={1400}
-                    height={850}
-                    style={{ width: "100%", height: "auto" }}
-                    onError={() => handleImageError(detail.filename)}
-                    unoptimized
-                  />
-                </picture>
-              </div>
-              <div className="viz-card-body">
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <p className="text-xs font-bold uppercase tracking-[0.12em]" style={{ color: "var(--text)" }}>
-                    {detail.title}
-                  </p>
-                  {isFeatured && options?.rank != null && (
-                    <span className="viz-rank-chip">#{options.rank}</span>
-                  )}
-                  {detail.source && (
-                    <span
-                      className="text-[10px] font-bold uppercase tracking-[0.12em] px-2 py-0.5 rounded-full"
-                      style={tone}
-                    >
-                      {detail.source}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>{detail.description}</p>
-              </div>
-            </div>
-          );
-        };
-
-        const renderCategorySection = (title: string, items: typeof loadableViz) => {
-          if (!items.length) return null;
-          return (
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="section-heading mb-0">{title}</h3>
-                <span className="viz-count-pill">{items.length} charts</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {items.map((detail) => renderVizCard(detail))}
-              </div>
-            </div>
-          );
-        };
-
-        return (
-          <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-            {/* ━━━ INTERACTIVE CHART GALLERY (cinematic overhaul) ━━━ */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <HUDPanel
-                kicker="Probability"
-                title="Finish Probability Heatmap"
-                rightSlot={<Badge variant="live">Interactive</Badge>}
-                bodyClassName="p-4 sm:p-5"
+              <ChartContainer
+                fallbackSrc={null}
+                fallbackAlt="Finish probability heatmap"
+                height={420}
               >
-                <ChartContainer
-                  fallbackSrc={getVisualizationPath(round, "finish_probability_heatmap.png")}
-                  fallbackAlt="Finish probability heatmap"
-                  height={420}
-                >
-                  <FinishProbabilityHeatmap classification={data.classification} />
-                </ChartContainer>
-              </HUDPanel>
-              <HUDPanel
-                kicker="Pairwise"
-                title="Head-to-Head Edges"
-                rightSlot={<Badge variant="live">Interactive</Badge>}
-                bodyClassName="p-4 sm:p-5"
+                <FinishProbabilityHeatmap classification={data.classification} />
+              </ChartContainer>
+            </HUDPanel>
+            <HUDPanel
+              kicker="Pairwise"
+              title="Head-to-Head Edges"
+              rightSlot={<Badge variant="live">Interactive</Badge>}
+              bodyClassName="p-4 sm:p-5"
+            >
+              <ChartContainer
+                fallbackSrc={null}
+                fallbackAlt="Head-to-head edges"
+                height={420}
               >
-                <ChartContainer
-                  fallbackSrc={getVisualizationPath(round, "head_to_head_edges.png")}
-                  fallbackAlt="Head-to-head edges"
-                  height={420}
-                >
-                  <HeadToHeadMatrix classification={data.classification} />
-                </ChartContainer>
-              </HUDPanel>
-              <HUDPanel
-                kicker="Distribution"
-                title="Lap-Time Distribution"
-                rightSlot={<Badge variant="muted">Approximation</Badge>}
-                bodyClassName="p-4 sm:p-5"
+                <HeadToHeadMatrix classification={data.classification} />
+              </ChartContainer>
+            </HUDPanel>
+            <HUDPanel
+              kicker="Distribution"
+              title="Lap-Time Distribution"
+              rightSlot={<Badge variant="muted">Approximation</Badge>}
+              bodyClassName="p-4 sm:p-5"
+            >
+              <ChartContainer
+                fallbackSrc={null}
+                fallbackAlt="Lap-time distribution"
+                height={380}
               >
-                <ChartContainer
-                  fallbackSrc={getVisualizationPath(round, "laptime_distribution.png")}
-                  fallbackAlt="Lap-time distribution"
-                  height={380}
-                >
-                  <LapTimeDistributionChart classification={data.classification} metrics={data.metrics} />
-                </ChartContainer>
-              </HUDPanel>
-              {trackMapSrc && (
-                <HUDPanel
-                  kicker="Circuit"
-                  title="Circuit Speed Map"
-                  rightSlot={<Badge variant="info">Pan / Zoom</Badge>}
-                  bodyClassName="p-4 sm:p-5"
-                >
-                  <CircuitSpeedMap
-                    src={trackMapSrc}
-                    alt={`${data.name} speed map`}
-                    onLightbox={() => setLightboxImg(trackMapSrc)}
-                    onError={() => handleImageError("track_map.png")}
-                  />
-                </HUDPanel>
-              )}
-            </div>
-
-            {hasViz ? (
-              <>
-                <div className="viz-command-center p-6 sm:p-7">
-                  <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-                    <div>
-                      <p className="viz-kicker">Grand Prix Analytics Studio</p>
-                      <h3 className="text-2xl font-black" style={{ color: "var(--text)" }}>
-                        Visual Intelligence Board
-                      </h3>
-                      <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
-                        Curated visuals and statistical narratives for race pace, strategy, and finish-probability analysis.
-                      </p>
-                    </div>
-                    <Badge variant="live">{loadableViz.length} Charts Ready</Badge>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-                    <div className="viz-metric-tile">
-                      <p className="viz-metric-label">High Confidence Calls</p>
-                      <p className="viz-metric-value">{highConfidenceCalls}</p>
-                    </div>
-                    <div className="viz-metric-tile">
-                      <p className="viz-metric-label">Low Confidence Calls</p>
-                      <p className="viz-metric-value">{lowConfidenceCalls}</p>
-                    </div>
-                    <div className="viz-metric-tile">
-                      <p className="viz-metric-label">Avg Uncertainty</p>
-                      <p className="viz-metric-value">{data.metrics.avgUncertainty?.toFixed(2) ?? "—"}s</p>
-                    </div>
-                    <div className="viz-metric-tile">
-                      <p className="viz-metric-label">Data Sources</p>
-                      <p className="viz-metric-value">{Object.keys(sourceCounts).length}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {categoryTotals.map((entry) => (
-                      <span
-                        key={entry.id}
-                        className="viz-category-chip"
-                        style={{ borderColor: `${entry.color}55`, color: entry.color }}
-                      >
-                        {entry.label}: {entry.count}
-                      </span>
-                    ))}
-                  </div>
-
-                  {analystNotes.length > 0 && (
-                    <ul className="viz-insight-list">
-                      {analystNotes.slice(0, 4).map((note, idx) => (
-                        <li key={`note-${idx}`} className="viz-insight-item">{note}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                {selectedViz && (
-                  <div className="viz-workbench">
-                    <div className="viz-stage">
-                      <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                        <div>
-                          <p className="viz-kicker">Selected View</p>
-                          <h3 className="text-xl font-black" style={{ color: "var(--text)" }}>{selectedViz.title}</h3>
-                          <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>{selectedViz.description}</p>
-                        </div>
-                        <span className="viz-count-pill">{selectedViz.source}</span>
-                      </div>
-                      {/* B-P0.3: WebP preferred, PNG fallback */}
-                      <picture>
-                        <source
-                          srcSet={getVisualizationPath(round, selectedViz.filename).replace(/\.png$/i, ".webp")}
-                          type="image/webp"
-                        />
-                        <Image
-                          src={getVisualizationPath(round, selectedViz.filename)}
-                          alt={selectedViz.title}
-                          className="viz-stage-image"
-                          width={1800}
-                          height={1050}
-                          onError={() => handleImageError(selectedViz.filename)}
-                          unoptimized
-                        />
-                      </picture>
-                    </div>
-
-                    <div className="viz-rail">
-                      <div className="flex items-center justify-between mb-3">
-                        <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: "var(--text-muted)" }}>Switch View</p>
-                        <span className="text-xs font-mono" style={{ color: "var(--text-muted)" }}>{railViz.length}</span>
-                      </div>
-                      <div className="space-y-2">
-                        {railViz.map((detail) => (
-                          <button
-                            key={`rail-${detail.filename}`}
-                            onClick={() => setSelectedVizFilename(detail.filename)}
-                            className={`viz-rail-button ${selectedViz.filename === detail.filename ? "active" : ""}`}
-                          >
-                            <span className="viz-rail-title">{detail.title}</span>
-                            <span className="viz-rail-source">{detail.source}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {renderCategorySection("Model Predictions", sectionMl)}
-                {renderCategorySection("FastF1 Historical Data", sectionFastf1)}
-                {renderCategorySection("Strategy Analysis", sectionAdvanced)}
-                {renderCategorySection("Probability & Market Views", sectionBettor)}
-                {renderCategorySection("Additional Visualizations", sectionOther)}
-              </>
-            ) : (
-              <div>
-                <div className="card p-8 text-center mb-8">
-                  <div className="text-5xl mb-4">📈</div>
-                  <h3 className="text-xl font-bold mb-2" style={{ color: "var(--text)" }}>
-                    {allFailed ? "Visualization Images Not Found" : "Visualizations Not Yet Generated"}
-                  </h3>
-                  <p className="text-sm max-w-lg mx-auto mb-4" style={{ color: "var(--text-muted)" }}>
-                    {allFailed
-                      ? "The chart image assets for this round were not found in public/visualizations."
-                      : "Run the pipeline to generate the full analytics package for this Grand Prix."
-                    }
-                  </p>
-                  <div className="inline-block px-4 py-2 rounded-lg text-sm font-mono" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
-                    python export_website_data.py --round {round} --fastf1 --advanced
-                  </div>
-                </div>
-                {VIZ_CATEGORIES.map((cat) => (
-                  <div key={cat.id} className="mb-8">
-                    <h3 className="section-heading">{cat.title}</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {cat.items.map((item) => (
-                        <div key={item.key} className="viz-placeholder">
-                          <div className="w-full h-32 rounded-lg mb-3 flex items-center justify-center" style={{ background: "var(--bg-surface)" }}>
-                            <svg className="w-12 h-12 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "var(--text-muted)" }}>
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                            </svg>
-                          </div>
-                          <p className="font-semibold text-sm mb-1" style={{ color: "var(--text)" }}>{item.label}</p>
-                          <p className="text-xs" style={{ color: "var(--text-muted)" }}>{item.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                <LapTimeDistributionChart classification={data.classification} metrics={data.metrics} />
+              </ChartContainer>
+            </HUDPanel>
           </motion.div>
-        );
-      })()}
         </div>
       </details>
       )}

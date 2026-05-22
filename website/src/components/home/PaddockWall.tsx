@@ -21,6 +21,11 @@ interface PaddockWallProps {
   limit?: number;
 }
 
+/**
+ * Compact paddock-style standings wall.  Cards stack content vertically
+ * so the big points number always sits inside the card on every
+ * breakpoint.
+ */
 export default function PaddockWall({ title, entries, href, limit = 5 }: PaddockWallProps) {
   return (
     <div>
@@ -35,7 +40,7 @@ export default function PaddockWall({ title, entries, href, limit = 5 }: Paddock
           </a>
         )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {entries.slice(0, limit).map((entry, i) => (
           <motion.div
             key={entry.name}
@@ -49,30 +54,36 @@ export default function PaddockWall({ title, entries, href, limit = 5 }: Paddock
               surface="paddock"
               team={entry.team}
               teamColor={entry.teamColor}
-              className="p-4 flex items-center gap-3 h-full"
+              className="p-3 h-full flex flex-col gap-2 min-w-0"
             >
-              <span className="font-mono font-tabular text-sm text-[color:var(--text-muted)] w-6">
-                {i + 1}
-              </span>
-              <TeamColorBar
-                teamColor={entry.teamColor}
-                team={entry.team}
-                variant="gradient"
-                size="md"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="font-bold truncate">{entry.name}</p>
+              <div className="flex items-center justify-between">
+                <span className="font-mono font-tabular text-2xl font-black text-[color:var(--text-muted)]">
+                  {i + 1}
+                </span>
+                <TeamColorBar
+                  teamColor={entry.teamColor}
+                  team={entry.team}
+                  variant="gradient"
+                  size="sm"
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold truncate">{entry.name}</p>
                 {entry.subtitle && (
-                  <p className="text-xs text-[color:var(--text-muted)] truncate">{entry.subtitle}</p>
+                  <p className="text-[11px] text-[color:var(--text-muted)] truncate">
+                    {entry.subtitle}
+                  </p>
                 )}
               </div>
-              <AnimatedNumber
-                value={entry.points}
-                decimals={0}
-                suffix="pt"
-                variant="compact"
-                className="text-[color:var(--text-primary)]"
-              />
+              <div className="mt-auto pt-2 border-t border-[color:var(--border)] flex items-baseline justify-between gap-2">
+                <span className="hud-kicker text-[9px]">Pts</span>
+                <AnimatedNumber
+                  value={entry.points}
+                  decimals={0}
+                  variant="default"
+                  className="text-lg sm:text-xl"
+                />
+              </div>
             </Card>
           </motion.div>
         ))}

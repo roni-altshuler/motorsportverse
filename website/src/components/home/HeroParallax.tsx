@@ -4,7 +4,8 @@ import { useRef } from "react";
 import { useGSAPScrollTrigger } from "@/lib/useGSAPScrollTrigger";
 
 interface HeroParallaxProps {
-  trackImage: string;
+  /** Optional ghost backdrop image.  Omit for the cinematic gradient-only look. */
+  trackImage?: string | null;
   teamColor?: string;
   children: React.ReactNode;
   className?: string;
@@ -17,7 +18,7 @@ interface HeroParallaxProps {
  * entirely under reduced motion.
  */
 export default function HeroParallax({
-  trackImage,
+  trackImage = null,
   teamColor = "var(--accent-live)",
   children,
   className,
@@ -79,17 +80,17 @@ export default function HeroParallax({
       className={`relative overflow-hidden ${className ?? ""}`}
       style={{ ["--team-color" as string]: teamColor } as React.CSSProperties}
     >
+      {/* Abstract gradient backdrop — no track imagery, all CSS */}
       <div
         ref={layer1Ref}
         aria-hidden
         className="absolute inset-0 -z-30 will-change-transform"
         style={{
-          backgroundImage: `url("${trackImage}")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.22,
-          filter: "grayscale(0.4) contrast(1.05)",
+          background: `
+            radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in srgb, ${teamColor} 22%, transparent) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 80% at 90% 100%, color-mix(in srgb, ${teamColor} 14%, transparent) 0%, transparent 55%),
+            var(--bg)
+          `,
         }}
       />
       <div
@@ -97,7 +98,7 @@ export default function HeroParallax({
         aria-hidden
         className="absolute inset-0 -z-20 will-change-transform"
         style={{
-          background: `linear-gradient(135deg, color-mix(in srgb, ${teamColor} 30%, transparent) 0%, transparent 50%), linear-gradient(180deg, transparent 0%, var(--bg) 95%)`,
+          background: "linear-gradient(180deg, transparent 0%, var(--bg) 95%)",
         }}
       />
       <div
@@ -107,9 +108,24 @@ export default function HeroParallax({
         style={{
           background: "var(--gradient-scanline)",
           mixBlendMode: "overlay",
-          opacity: 0.5,
+          opacity: 0.35,
         }}
       />
+      {/* Optional ghost imagery — present only if explicitly passed in.  Off by default. */}
+      {trackImage && (
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-25"
+          style={{
+            backgroundImage: `url("${trackImage}")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.12,
+            filter: "grayscale(0.6) contrast(1.05)",
+          }}
+        />
+      )}
       {children}
       <div className="telemetry-strip mt-12" aria-hidden />
     </section>
