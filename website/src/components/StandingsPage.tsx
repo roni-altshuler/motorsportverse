@@ -6,6 +6,10 @@ import { StandingsData, SeasonData } from "@/types";
 import { fetchStandingsData, fetchSeasonData, formatDateTime } from "@/lib/data";
 import { getSeasonYear } from "@/lib/season";
 import StandingsChart from "@/components/charts/StandingsChart";
+import DriverBadge from "@/components/standings/DriverBadge";
+import ChampionshipKPIs from "@/components/standings/ChampionshipKPIs";
+import LoadingTire from "@/components/ui/LoadingTire";
+import { motion } from "framer-motion";
 
 type Tab = "drivers" | "constructors" | "wdc";
 
@@ -46,12 +50,7 @@ export default function StandingsPage() {
   if (!data) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-3 border-f1-red border-t-transparent rounded-full animate-spin" />
-          <div className="text-lg" style={{ color: "var(--text-muted)" }}>
-            Loading standings...
-          </div>
-        </div>
+        <LoadingTire label="Loading standings" />
       </div>
     );
   }
@@ -73,20 +72,12 @@ export default function StandingsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
       {/* Header */}
-      <div className="mb-10 text-center">
-        <p
-          className="text-xs font-bold tracking-[0.3em] uppercase mb-2"
-          style={{ color: "#E10600" }}
-        >
-          Championship
-        </p>
-        <h1
-          className="text-3xl sm:text-4xl font-black tracking-tight mb-2"
-          style={{ color: "var(--text)" }}
-        >
+      <div className="mb-8 text-center">
+        <p className="hud-kicker mb-2">Championship</p>
+        <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2">
           {seasonYear} Standings
         </h1>
-        <p style={{ color: "var(--text-muted)" }}>
+        <p className="text-[color:var(--text-muted)]">
           Updated through Round {data.lastUpdatedRound} of {totalRounds}
         </p>
         <div className="progress-bar w-48 mx-auto mt-3 h-2">
@@ -94,11 +85,15 @@ export default function StandingsPage() {
             className="progress-bar-fill"
             style={{
               width: `${(data.lastUpdatedRound / totalRounds) * 100}%`,
-              background: "#E10600",
+              background: "var(--accent-live)",
+              boxShadow: "0 0 12px var(--accent-live)",
             }}
           />
         </div>
       </div>
+
+      {/* ━━━ Cinematic championship KPI strip ━━━ */}
+      <ChampionshipKPIs drivers={data.drivers} />
 
       <div className="data-freshness-card mb-8">
         <div>
@@ -113,8 +108,8 @@ export default function StandingsPage() {
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex justify-center gap-2 mb-10">
+      {/* Tab Navigation with sliding active underline */}
+      <div className="flex justify-center gap-2 mb-10 relative">
         {(
           [
             { key: "drivers" as Tab, label: "Drivers" },
@@ -125,9 +120,19 @@ export default function StandingsPage() {
           <button
             key={tab.key}
             onClick={() => handleTabChange(tab.key)}
-            className={`tab-button ${activeTab === tab.key ? "active" : ""}`}
+            className={`tab-button relative ${activeTab === tab.key ? "active" : ""}`}
           >
             {tab.label}
+            {activeTab === tab.key && (
+              <motion.span
+                layoutId="standings-underline"
+                className="absolute left-3 right-3 -bottom-1 h-0.5 rounded-full"
+                style={{
+                  background: "var(--accent-live)",
+                  boxShadow: "0 0 10px var(--accent-live)",
+                }}
+              />
+            )}
           </button>
         ))}
       </div>
@@ -135,6 +140,24 @@ export default function StandingsPage() {
       {/* Drivers Tab */}
       {activeTab === "drivers" && (
         <div className="space-y-8">
+          {/* ━━━ PADDOCK BADGE WALL — top 8 drivers as cinematic cards ━━━ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {data.drivers.slice(0, 8).map((d, i) => (
+              <DriverBadge
+                key={d.driver}
+                index={i}
+                position={d.position}
+                driver={d.driver}
+                driverFullName={d.driverFullName}
+                team={d.team}
+                teamColor={d.teamColor || "var(--accent-live)"}
+                points={d.points}
+                wins={d.wins}
+                podiums={d.podiums}
+              />
+            ))}
+          </div>
+
           {completedRounds.length > 0 && (
             <div className="card p-6">
               <h3 className="section-heading">Points Progression</h3>

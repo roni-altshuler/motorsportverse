@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 // Self-host both fonts via next/font for zero-CLS loading and correct
@@ -96,10 +97,12 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ThemeProvider>
-          <Navbar />
-          <LiveContextBand />
-          <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
-          <Footer />
+          <SmoothScrollProvider>
+            <Navbar />
+            <LiveContextBand />
+            <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
+            <Footer />
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

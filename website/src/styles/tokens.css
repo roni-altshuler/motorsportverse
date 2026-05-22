@@ -93,6 +93,64 @@
   --space-8: 32px;
   --space-12: 48px;
 
+  /* ── Broadcast HUD palette (cinematic overhaul) ───────────────────
+   * Telemetry-channel hues lifted from live race-broadcast graphics.
+   * Use as semantic accents — fastest-lap purple, yellow flag, race
+   * lights red — not as decoration. */
+  --hud-purple:        #B45CFF;
+  --hud-purple-soft:   rgba(180, 92, 255, 0.18);
+  --hud-yellow:        #FACC15;
+  --hud-yellow-soft:   rgba(250, 204, 21, 0.18);
+  --hud-red-light:     #FF1801;
+  --hud-red-soft:      rgba(255, 24, 1, 0.20);
+  --hud-green:         var(--accent-positive);
+  --hud-cyan:          var(--accent-info);
+  --hud-champagne:     var(--accent-podium-1);
+
+  /* ── Glow / shadow stack ──────────────────────────────────────────
+   * Drop-in box-shadow tokens. The --glow-team variant resolves
+   * against an upstream --team-color custom property (set per node
+   * via `data-team="..."` or inline style). */
+  --glow-accent:       0 0 24px rgba(247, 107, 21, 0.45),
+                       0 0 48px rgba(247, 107, 21, 0.20);
+  --glow-purple:       0 0 20px rgba(180, 92, 255, 0.50);
+  --glow-podium:       0 0 32px rgba(255, 209, 102, 0.55),
+                       0 12px 32px rgba(0, 0, 0, 0.45);
+  --glow-team:         0 0 24px color-mix(in srgb, var(--team-color, var(--accent-live)) 45%, transparent),
+                       0 0 48px color-mix(in srgb, var(--team-color, var(--accent-live)) 18%, transparent);
+  --shadow-elevated:   0 16px 48px rgba(0, 0, 0, 0.55),
+                       0 4px 12px rgba(0, 0, 0, 0.35),
+                       inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-hud:        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+                       0 24px 64px rgba(0, 0, 0, 0.48);
+
+  /* ── Gradient stops ──────────────────────────────────────────────── */
+  --gradient-paddock:  linear-gradient(135deg,
+                         color-mix(in srgb, var(--team-color, var(--accent-live)) 22%, var(--surface)) 0%,
+                         var(--surface) 60%,
+                         color-mix(in srgb, var(--team-color, var(--accent-live)) 8%, var(--surface)) 100%);
+  --gradient-hud-frame: linear-gradient(180deg,
+                         rgba(255, 255, 255, 0.05) 0%,
+                         rgba(255, 255, 255, 0.00) 30%,
+                         rgba(255, 255, 255, 0.00) 70%,
+                         rgba(255, 255, 255, 0.05) 100%);
+  --gradient-scanline:  repeating-linear-gradient(
+                         0deg,
+                         rgba(255, 255, 255, 0.03) 0px,
+                         rgba(255, 255, 255, 0.03) 1px,
+                         transparent 1px,
+                         transparent 3px);
+
+  /* ── Motion tokens (mirrored in src/lib/motion.ts) ─────────────── */
+  --dur-instant: 80ms;
+  --dur-snap:    180ms;
+  --dur-base:    320ms;
+  --dur-glide:   520ms;
+  --dur-cinema:  900ms;
+  --ease-pit:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
+
   /* ── Font bindings (resolved by next/font in layout.tsx) ───────── */
   --font-sans: var(--font-geist-sans, "Geist", "Inter", system-ui, sans-serif);
   --font-mono: var(--font-jetbrains-mono, "JetBrains Mono", ui-monospace, monospace);
@@ -117,6 +175,39 @@
   --input:              var(--border);
   --ring:               var(--accent-live);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Team-color palette — 11 constructors.  Set via `data-team="..."` on
+ * any wrapper element, or inline `style={{ "--team-color": entry.teamColor }}`
+ * for data-driven cases (mid-season constructor swaps).  Downstream
+ * utilities (.team-glow, .team-gradient, .team-tint-bg) resolve
+ * against `var(--team-color)`.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --team-ferrari:        #E8002D;
+  --team-mclaren:        #FF8000;
+  --team-redbull:        #3671C6;
+  --team-mercedes:       #27F4D2;
+  --team-aston:          #229971;
+  --team-alpine:         #FF87BC;
+  --team-williams:       #64C4FF;
+  --team-rb:             #6692FF;
+  --team-haas:           #B6BABD;
+  --team-audi:           #1E1E1E;
+  --team-cadillac:       #C0C0C0;
+}
+
+[data-team="Ferrari"]            { --team-color: var(--team-ferrari); }
+[data-team="McLaren"]            { --team-color: var(--team-mclaren); }
+[data-team="Red Bull Racing"]    { --team-color: var(--team-redbull); }
+[data-team="Mercedes"]           { --team-color: var(--team-mercedes); }
+[data-team="Aston Martin"]       { --team-color: var(--team-aston); }
+[data-team="Alpine"]             { --team-color: var(--team-alpine); }
+[data-team="Williams"]           { --team-color: var(--team-williams); }
+[data-team="Racing Bulls"]       { --team-color: var(--team-rb); }
+[data-team="Haas"]               { --team-color: var(--team-haas); }
+[data-team="Audi"]               { --team-color: var(--team-audi); }
+[data-team="Cadillac"]           { --team-color: var(--team-cadillac); }
 
 /* ─────────────────────────────────────────────────────────────────────
  * Hero circuit photography — Track A of the 2026-05-21 UX refinement.

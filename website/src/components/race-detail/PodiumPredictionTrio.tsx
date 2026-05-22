@@ -1,0 +1,150 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/Card";
+import AnimatedNumber from "@/components/ui/AnimatedNumber";
+import TeamColorBar from "@/components/ui/TeamColorBar";
+import { Badge } from "@/components/ui/Badge";
+import { useReducedMotion } from "@/lib/useReducedMotion";
+import { podiumReveal } from "@/lib/motion";
+import type { ClassificationEntry } from "@/types";
+
+interface PodiumPredictionTrioProps {
+  classification: ClassificationEntry[];
+  /** When official actual results exist, render the actual top-3 here and label "Official"; else label "Predicted". */
+  actualPodium?: Array<{ driver: string; team?: string; teamColor?: string; position: number }>;
+}
+
+export default function PodiumPredictionTrio({
+  classification,
+  actualPodium,
+}: PodiumPredictionTrioProps) {
+  const reduced = useReducedMotion();
+  const isOfficial = !!actualPodium && actualPodium.length >= 3;
+
+  const items = isOfficial
+    ? actualPodium!.slice(0, 3).map((a) => {
+        const pred = classification.find((c) => c.driver === a.driver);
+        return {
+          driver: a.driver,
+          driverFullName: pred?.driverFullName ?? a.driver,
+          team: a.team || pred?.team || "—",
+          teamColor: a.teamColor || pred?.teamColor || "var(--accent-live)",
+          position: a.position,
+          predictedPosition: pred?.position ?? null,
+          winProbability: pred?.winProbability ?? null,
+          finishRangeLow: pred?.finishRangeLow ?? null,
+          finishRangeHigh: pred?.finishRangeHigh ?? null,
+        };
+      })
+    : classification.slice(0, 3).map((c) => ({
+        driver: c.driver,
+        driverFullName: c.driverFullName,
+        team: c.team,
+        teamColor: c.teamColor,
+        position: c.position,
+        predictedPosition: c.position,
+        winProbability: c.winProbability ?? null,
+        finishRangeLow: c.finishRangeLow ?? null,
+        finishRangeHigh: c.finishRangeHigh ?? null,
+      }));
+
+  // Visual ordering: P2 left, P1 (taller) centre, P3 right.
+  const ordered: Array<{
+    entry: typeof items[number];
+    rank: 0 | 1 | 2;
+    order: number;
+  }> = [
+    { entry: items[1] ?? items[0], rank: 1, order: 0 },
+    { entry: items[0], rank: 0, order: 1 },
+    { entry: items[2] ?? items[0], rank: 2, order: 2 },
+  ];
+
+  return (
+    <div className="mb-8">
+      <div className="flex items-baseline justify-between mb-4">
+        <div>
+          <p className="hud-kicker mb-1">{isOfficial ? "Official Result" : "Model Forecast"}</p>
+          <h3 className="text-2xl font-black tracking-tight">
+            {isOfficial ? "Race Podium" : "Predicted Podium"}
+          </h3>
+        </div>
+        <Badge variant={isOfficial ? "positive" : "live"}>
+          {isOfficial ? "Result loaded" : "Prediction published"}
+        </Badge>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+        {ordered.map(({ entry, rank, order }, idx) => {
+          if (!entry) return null;
+          const isLeader = rank === 0;
+          const label = rank === 0 ? "P1" : rank === 1 ? "P2" : "P3";
+          const rankColor =
+            rank === 0
+              ? "text-[color:var(--hud-champagne)]"
+              : rank === 1
+              ? "text-[color:var(--accent-podium-2)]"
+              : "text-[color:var(--accent-podium-3)]";
+          return (
+            <motion.div
+              key={`${entry.driver}-${rank}`}
+              custom={idx}
+              initial={reduced ? "visible" : "hidden"}
+              whileInView="visible"
+              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+              variants={podiumReveal}
+              style={{ order } as React.CSSProperties}
+              className={isLeader ? "sm:-translate-y-2" : ""}
+            >
+              <Card
+                surface="paddock"
+                team={entry.team}
+                teamColor={entry.teamColor}
+                className={`p-5 sm:p-6 ${isLeader ? "sm:py-7" : ""}`}
+                style={isLeader ? { boxShadow: "var(--glow-podium)" } : undefined}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={`font-mono font-tabular text-3xl font-black ${rankColor}`}>
+                    {label}
+                  </span>
+                  <TeamColorBar
+                    teamColor={entry.teamColor}
+                    team={entry.team}
+                    variant="gradient"
+                    size={isLeader ? "lg" : "md"}
+                    animate="draw"
+                  />
+                </div>
+                <div className={`font-black tracking-tight mb-1 ${isLeader ? "text-3xl sm:text-4xl" : "text-2xl"}`}>
+                  {entry.driver}
+                </div>
+                <div className="text-sm text-[color:var(--text-muted)] mb-4">{entry.team}</div>
+                {entry.winProbability != null && entry.winProbability > 0 && (
+                  <>
+                    <p className="hud-kicker mb-1">Win probability</p>
+                    <AnimatedNumber
+                      value={entry.winProbability}
+                      decimals={1}
+                      suffix="%"
+                      variant={isLeader ? "huge" : "default"}
+                      className="text-[color:var(--accent-live)]"
+                    />
+                  </>
+                )}
+                {entry.finishRangeLow != null && entry.finishRangeHigh != null && (
+                  <p className="mt-3 text-xs font-mono text-[color:var(--text-muted)]">
+                    Range: P{entry.finishRangeLow}–P{entry.finishRangeHigh}
+                  </p>
+                )}
+                {isOfficial && entry.predictedPosition != null && entry.predictedPosition !== entry.position && (
+                  <p className="mt-2 text-xs font-mono text-[color:var(--accent-live)]">
+                    Predicted P{entry.predictedPosition}
+                  </p>
+                )}
+              </Card>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

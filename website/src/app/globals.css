@@ -804,6 +804,209 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px;
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+ * Cinematic overhaul utilities (supersedes the 2026-05 flat constraints).
+ * Use these via className.  Team-aware utilities resolve --team-color
+ * from either a [data-team="..."] ancestor or an inline style override.
+ * ───────────────────────────────────────────────────────────────────── */
+.team-glow {
+  box-shadow: 0 0 24px color-mix(in srgb, var(--team-color, var(--accent-live)) 45%, transparent),
+              0 0 48px color-mix(in srgb, var(--team-color, var(--accent-live)) 18%, transparent);
+}
+.team-tint-bg {
+  background: color-mix(in srgb, var(--team-color, var(--accent-live)) 14%, var(--surface));
+}
+.team-tint-bg-strong {
+  background: color-mix(in srgb, var(--team-color, var(--accent-live)) 28%, var(--surface));
+}
+.team-stripe {
+  border-left: 3px solid var(--team-color, var(--accent-live));
+}
+.team-gradient {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--team-color, var(--accent-live)) 26%, var(--surface)) 0%,
+    var(--surface) 65%,
+    color-mix(in srgb, var(--team-color, var(--accent-live)) 6%, var(--surface)) 100%);
+}
+.scanline-overlay {
+  position: relative;
+}
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-scanline);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+.hud-frame {
+  position: relative;
+  background: var(--surface);
+  box-shadow: var(--shadow-hud);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+}
+.hud-frame-strong {
+  background: linear-gradient(180deg, var(--surface-elevated) 0%, var(--surface) 100%);
+}
+.hud-corner-notch {
+  clip-path: polygon(
+    14px 0,
+    100% 0,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0 100%,
+    0 14px
+  );
+}
+.hud-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-live);
+}
+.telemetry-strip {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--accent-live) 20%,
+    var(--accent-live) 80%,
+    transparent 100%);
+  transform-origin: left center;
+  animation: telemetry-strip-draw 600ms var(--ease-pit) both;
+}
+@keyframes telemetry-strip-draw {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* ── Race-lights grid (5 panels of 4 bulbs) ──────────────────────── */
+.lights-out-grid {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: #050608;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lights-out-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  padding: 6px;
+  border-radius: 4px;
+  background: #0c0d10;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.lights-out-bulb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #1a1d22;
+  transition: background 80ms linear, box-shadow 120ms linear;
+}
+.lights-out-bulb.on {
+  background: var(--hud-red-light);
+  box-shadow: 0 0 8px rgba(255, 24, 1, 0.85),
+              0 0 18px rgba(255, 24, 1, 0.55);
+}
+
+/* ── Sector colours used by SectorBadge ──────────────────────────── */
+.sector-green   { background: rgba(34, 197, 94, 0.18); color: var(--hud-green); border: 1px solid rgba(34, 197, 94, 0.32); }
+.sector-yellow  { background: var(--hud-yellow-soft); color: var(--hud-yellow); border: 1px solid rgba(250, 204, 21, 0.32); }
+.sector-purple  { background: var(--hud-purple-soft); color: var(--hud-purple); border: 1px solid rgba(180, 92, 255, 0.36); }
+.sector-neutral { background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* ── Card surface variants (cinematic) ───────────────────────────── */
+.card-glow {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-elevated);
+  transition: box-shadow var(--dur-base) var(--ease-pit), border-color var(--dur-snap) ease;
+}
+.card-glow:hover {
+  box-shadow: var(--glow-accent), var(--shadow-elevated);
+  border-color: var(--accent-live);
+}
+.card-paddock {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--team-color, var(--accent-live)) 26%, var(--surface)) 0%,
+    var(--surface) 65%,
+    color-mix(in srgb, var(--team-color, var(--accent-live)) 6%, var(--surface)) 100%);
+  border: 1px solid color-mix(in srgb, var(--team-color, var(--accent-live)) 30%, var(--border));
+  border-radius: 14px;
+  transition: box-shadow var(--dur-base) var(--ease-pit), transform var(--dur-snap) var(--ease-drs), border-color var(--dur-snap) ease;
+}
+.card-paddock:hover {
+  box-shadow: var(--glow-team);
+  transform: translateY(-2px);
+  border-color: var(--team-color, var(--accent-live));
+}
+
+/* ── Animated underline used by tab navigation ───────────────────── */
+.cinema-underline {
+  position: relative;
+}
+.cinema-underline::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent-live);
+  box-shadow: 0 0 12px var(--accent-live);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-snap) var(--ease-pit);
+}
+.cinema-underline.active::after {
+  transform: scaleX(1);
+}
+
+/* ── Deep dive accordion summary cinematic bar ──────────────────── */
+.deep-dive-section > summary.deep-dive-summary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  width: 4px;
+  height: 60%;
+  background: var(--accent-live);
+  border-radius: 2px;
+  transition: transform var(--dur-snap) var(--ease-pit);
+}
+.deep-dive-section > summary.deep-dive-summary {
+  position: relative;
+}
+.deep-dive-section > summary.deep-dive-summary:hover::before,
+.deep-dive-section[open] > summary.deep-dive-summary::before {
+  transform: translateY(-50%) scaleX(1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * prefers-reduced-motion — global parity guard.  Every effect must
+ * have a static equivalent that still looks deliberate.
+ * ───────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .lights-out-grid .lights-out-bulb { opacity: 0.25; }
+  .scanline-overlay::after { display: none !important; }
+  .telemetry-strip { transform: scaleX(1); animation: none; }
+}
+
 @media (max-width: 640px) {
   .data-freshness-card {
     align-items: flex-start;

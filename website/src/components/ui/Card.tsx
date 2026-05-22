@@ -1,27 +1,56 @@
 /**
  * Card — shadcn-style surface primitive, theme-aware via design tokens.
  *
- * Composes <Card>, <CardHeader>, <CardTitle>, <CardDescription>,
- * <CardContent>, <CardFooter> with sane default spacing.  The base surface
- * pulls from `--surface` so light/dark theme swap is automatic.
+ * Cinematic overhaul (2026-05+): added `surface` variants for the
+ * motorsport visual language while keeping the legacy `flat` default
+ * 100% backwards compatible.  `paddock` resolves --team-color from
+ * either an inline style prop or a [data-team] ancestor.
  */
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
-export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        // Flat opaque surface — no backdrop-blur, no shadow trail.
-        // Border + small radius do the visual lift work.
-        "rounded-[12px] border bg-[color:var(--surface)] text-[color:var(--text-primary)]",
-        "border-[color:var(--border)] transition-[border-color] duration-150",
-        className,
-      )}
-      {...props}
-    />
-  ),
+const cardVariants = cva(
+  "rounded-[12px] text-[color:var(--text-primary)] transition-[border-color,box-shadow,transform] duration-200",
+  {
+    variants: {
+      surface: {
+        flat: "border border-[color:var(--border)] bg-[color:var(--surface)]",
+        glow: "card-glow",
+        hud: "hud-frame",
+        paddock: "card-paddock",
+      },
+      interactive: {
+        true: "cursor-pointer",
+        false: "",
+      },
+    },
+    defaultVariants: { surface: "flat", interactive: false },
+  },
+);
+
+interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {
+  teamColor?: string;
+  team?: string;
+}
+
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, surface, interactive, teamColor, team, style, ...props }, ref) => {
+    const inlineStyle: React.CSSProperties = teamColor
+      ? ({ ...style, ["--team-color" as string]: teamColor } as React.CSSProperties)
+      : style ?? {};
+    return (
+      <div
+        ref={ref}
+        data-team={team}
+        className={cn(cardVariants({ surface, interactive }), className)}
+        style={inlineStyle}
+        {...props}
+      />
+    );
+  },
 );
 Card.displayName = "Card";
 

@@ -22,6 +22,18 @@ import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
 import WinProbabilityChart from "@/components/charts/WinProbabilityChart";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
 import StrategyExplorer from "@/components/StrategyExplorer";
+import HUDHeader from "@/components/race-detail/HUDHeader";
+import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
+import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
+import HUDPanel from "@/components/ui/HUDPanel";
+import LoadingTire from "@/components/ui/LoadingTire";
+import ChartContainer from "@/components/charts/ChartContainer";
+import PredictedPaceChart from "@/components/charts/PredictedPaceChart";
+import PodiumProbabilityChart from "@/components/charts/PodiumProbabilityChart";
+import FinishProbabilityHeatmap from "@/components/charts/FinishProbabilityHeatmap";
+import HeadToHeadMatrix from "@/components/charts/HeadToHeadMatrix";
+import LapTimeDistributionChart from "@/components/charts/LapTimeDistributionChart";
+import CircuitSpeedMap from "@/components/charts/CircuitSpeedMap";
 import {
   fetchRoundData,
   fetchSeasonData,
@@ -178,10 +190,7 @@ export default function RaceDetailPage({ round }: Props) {
   if (!season && !data) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-3 border-f1-red border-t-transparent rounded-full animate-spin" />
-          <p style={{ color: "var(--text-muted)" }}>Loading race data...</p>
-        </div>
+        <LoadingTire label="Loading race data" />
       </div>
     );
   }
@@ -407,40 +416,33 @@ export default function RaceDetailPage({ round }: Props) {
         </div>
       )}
 
-      {/* ━━━ HEADER ━━━ */}
-      <motion.div
-        className="mb-2 hero-circuit-bg -mx-4 px-4 py-6 sm:-mx-6 sm:px-6 sm:py-8"
-        style={{
-          // Track A: ghost THIS round's track map behind the header.
-          ["--hero-image" as string]: `url("${getVisualizationPath(data.round, "track_map.png")}")`,
-        }}
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <div className="flex items-center gap-4">
-          <CountryFlag country={data.gpKey} size={44} />
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant="live">Round {data.round}</Badge>
-              {data.sprint && <Badge variant="info">Sprint Weekend</Badge>}
-              {liveMeta && <Badge variant={toneVariant(liveMeta.tone)}>{liveMeta.label}</Badge>}
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-black" style={{ color: "var(--text)" }}>{data.name}</h1>
-          </div>
-        </div>
-      </motion.div>
-      <p className="mb-6 text-sm" style={{ color: "var(--text-muted)" }}>
-        {data.circuit} • {formatDate(data.date)}
-      </p>
+      {/* ━━━ HUD HEADER (cinematic overhaul) ━━━ */}
+      <HUDHeader
+        round={data.round}
+        name={data.name}
+        country={data.gpKey}
+        circuit={data.circuit}
+        date={formatDate(data.date)}
+        sprint={data.sprint}
+        liveLabel={liveMeta?.label}
+        liveBadgeVariant={toneVariant(liveMeta?.tone)}
+        weather={data.weatherData ? {
+          temperatureC: data.weatherData.temperatureC,
+          rainProbability: Math.round((data.weatherData.rainProbability ?? 0) * 100),
+          humidity: data.weatherData.humidity,
+          windSpeedKmh: data.weatherData.windSpeedKmh,
+          weatherDescription: data.weatherData.weatherDescription,
+        } : undefined}
+      />
 
       {/* B-P1.3: auto-generated race narrative card */}
       <RaceNarrativeCard round={data} />
 
-      {/* B-P1.2: interactive win-probability chart */}
+      {/* B-P1.2: interactive win-probability chart, framed as HUD */}
       <div className="mb-6">
         <WinProbabilityChart classification={data.classification ?? []} />
       </div>
+
 
       <motion.div
         className="report-shell p-6 sm:p-7 mb-8"
@@ -565,28 +567,12 @@ export default function RaceDetailPage({ round }: Props) {
       </motion.div>
 
       {trackMapSrc && (
-        <motion.div
-          className="card p-4 mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.12 }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="section-heading mb-0">Circuit Plot</h3>
-            <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Corners Labeled</span>
-          </div>
-          <Image
-            src={trackMapSrc}
-            alt={`${data.name} circuit plot`}
-            className="viz-image w-full cursor-pointer"
-            width={1600}
-            height={900}
-            style={{ width: "100%", height: "auto" }}
-            onClick={() => setLightboxImg(trackMapSrc)}
-            onError={() => handleImageError("track_map.png")}
-            unoptimized
-          />
-        </motion.div>
+        <TrackMapWithOverlay
+          src={trackMapSrc}
+          alt={`${data.name} circuit plot`}
+          onLightbox={() => setLightboxImg(trackMapSrc)}
+          onError={() => handleImageError("track_map.png")}
+        />
       )}
 
       {/* ━━━ YouTube Highlight Links ━━━ */}
@@ -615,45 +601,55 @@ export default function RaceDetailPage({ round }: Props) {
         ))}
       </motion.div>
 
-      {/* ━━━ PODIUM ━━━ */}
-      <motion.div
-        className="card overflow-hidden mb-10"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
-        <div className="grid grid-cols-3">
-          {(actualRows.length > 0
-            ? actualRows.slice(0, 3).map(([driver, position]) => ({
-                driver,
-                position,
-                predicted: predictedByDriver.get(driver),
-              }))
-            : data.classification.slice(0, 3).map((entry) => ({
-                driver: entry.driver,
-                position: entry.position,
-                predicted: entry,
-              }))
-          ).map((entry, i) => (
-            <div key={entry.driver} className="p-5 sm:p-8 text-center border-r last:border-r-0 relative group" style={{ borderColor: "var(--border)" }}>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 100%, ${(entry.predicted?.teamColor || "#888")}15, transparent 70%)` }} />
-              <div className="relative">
-                <div className={`text-4xl sm:text-5xl font-black mb-2 ${i === 0 ? "podium-1" : i === 1 ? "podium-2" : "podium-3"}`}>P{entry.position}</div>
-                <div className="w-12 h-1 rounded-full mx-auto mb-3" style={{ backgroundColor: entry.predicted?.teamColor || "#888" }} />
-                <p className="font-black text-lg" style={{ color: "var(--text)" }}>{entry.driver}</p>
-                <p className="text-sm" style={{ color: "var(--text-muted)" }}>{entry.predicted?.driverFullName || entry.driver}</p>
-                <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>{entry.predicted?.team || "Official classification"}</p>
-                <p className="text-sm font-bold mt-2" style={{ color: "var(--text)" }}>
-                  {actualRows.length > 0 ? "Official podium" : `${entry.predicted?.predictedTime}s`}
-                </p>
-                <p className="text-f1-red font-bold text-sm">
-                  {actualRows.length > 0 ? `Predicted P${entry.predicted?.position ?? "—"}` : `+${entry.predicted?.points || 0} pts`}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
+      {/* ━━━ CINEMATIC PODIUM TRIO ━━━ */}
+      <PodiumPredictionTrio
+        classification={data.classification}
+        actualPodium={
+          actualRows.length >= 3
+            ? actualRows.slice(0, 3).map(([driver, position]) => {
+                const pred = predictedByDriver.get(driver);
+                return {
+                  driver,
+                  team: pred?.team,
+                  teamColor: pred?.teamColor,
+                  position,
+                };
+              })
+            : undefined
+        }
+      />
+
+      {/* ━━━ INTERACTIVE CHART STRIP: Pace + Podium Probability ━━━ */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-8">
+        <HUDPanel
+          kicker="Model Forecast"
+          title="Predicted Race Pace"
+          rightSlot={<Badge variant="live">Interactive</Badge>}
+          bodyClassName="p-4 sm:p-5"
+        >
+          <ChartContainer
+            fallbackSrc={getVisualizationPath(round, "predicted_laptimes.png")}
+            fallbackAlt="Predicted race pace"
+            height={400}
+          >
+            <PredictedPaceChart classification={data.classification} />
+          </ChartContainer>
+        </HUDPanel>
+        <HUDPanel
+          kicker="Probability Layer"
+          title="Podium Probability"
+          rightSlot={<Badge variant="live">Interactive</Badge>}
+          bodyClassName="p-4 sm:p-5"
+        >
+          <ChartContainer
+            fallbackSrc={getVisualizationPath(round, "podium_probability_board.png")}
+            fallbackAlt="Podium probability"
+            height={400}
+          >
+            <PodiumProbabilityChart classification={data.classification} />
+          </ChartContainer>
+        </HUDPanel>
+      </div>
 
       {/* ━━━ TAB NAVIGATION ━━━ */}
       <div className="flex gap-2 mb-10 overflow-x-auto pb-2">
@@ -1730,6 +1726,67 @@ export default function RaceDetailPage({ round }: Props) {
 
         return (
           <motion.div className="space-y-8" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            {/* ━━━ INTERACTIVE CHART GALLERY (cinematic overhaul) ━━━ */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <HUDPanel
+                kicker="Probability"
+                title="Finish Probability Heatmap"
+                rightSlot={<Badge variant="live">Interactive</Badge>}
+                bodyClassName="p-4 sm:p-5"
+              >
+                <ChartContainer
+                  fallbackSrc={getVisualizationPath(round, "finish_probability_heatmap.png")}
+                  fallbackAlt="Finish probability heatmap"
+                  height={420}
+                >
+                  <FinishProbabilityHeatmap classification={data.classification} />
+                </ChartContainer>
+              </HUDPanel>
+              <HUDPanel
+                kicker="Pairwise"
+                title="Head-to-Head Edges"
+                rightSlot={<Badge variant="live">Interactive</Badge>}
+                bodyClassName="p-4 sm:p-5"
+              >
+                <ChartContainer
+                  fallbackSrc={getVisualizationPath(round, "head_to_head_edges.png")}
+                  fallbackAlt="Head-to-head edges"
+                  height={420}
+                >
+                  <HeadToHeadMatrix classification={data.classification} />
+                </ChartContainer>
+              </HUDPanel>
+              <HUDPanel
+                kicker="Distribution"
+                title="Lap-Time Distribution"
+                rightSlot={<Badge variant="muted">Approximation</Badge>}
+                bodyClassName="p-4 sm:p-5"
+              >
+                <ChartContainer
+                  fallbackSrc={getVisualizationPath(round, "laptime_distribution.png")}
+                  fallbackAlt="Lap-time distribution"
+                  height={380}
+                >
+                  <LapTimeDistributionChart classification={data.classification} metrics={data.metrics} />
+                </ChartContainer>
+              </HUDPanel>
+              {trackMapSrc && (
+                <HUDPanel
+                  kicker="Circuit"
+                  title="Circuit Speed Map"
+                  rightSlot={<Badge variant="info">Pan / Zoom</Badge>}
+                  bodyClassName="p-4 sm:p-5"
+                >
+                  <CircuitSpeedMap
+                    src={trackMapSrc}
+                    alt={`${data.name} speed map`}
+                    onLightbox={() => setLightboxImg(trackMapSrc)}
+                    onError={() => handleImageError("track_map.png")}
+                  />
+                </HUDPanel>
+              )}
+            </div>
+
             {hasViz ? (
               <>
                 <div className="viz-command-center p-6 sm:p-7">

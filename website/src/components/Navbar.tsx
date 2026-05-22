@@ -85,23 +85,6 @@ export default function Navbar() {
     </Link>
   );
 
-  const navLinkWithBadge = (href: string, label: string, badge: string) => (
-    <Link
-      href={href}
-      aria-current={isActive(href) ? "page" : undefined}
-      className={`px-4 py-2 text-sm font-semibold tracking-wide transition-colors rounded-lg inline-flex items-center gap-2 ${
-        isActive(href)
-          ? "text-[color:var(--accent-live)]"
-          : "text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)]"
-      }`}
-    >
-      {label}
-      <Badge variant="live" className="px-1.5 py-0 text-[9px] leading-tight">
-        {badge}
-      </Badge>
-    </Link>
-  );
-
   const actualSet = new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round));
 
   // Compact accuracy chip — fetches gp_accuracy_report.json once and
@@ -121,24 +104,30 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Logo — cinematic glow + F1-broadcast geometry */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-sm tracking-tighter group-hover:scale-105 transition-transform shadow-lg"
+            <div
+              className="relative w-10 h-10 flex items-center justify-center font-black text-sm tracking-tighter transition-all duration-300 group-hover:scale-105"
               style={{
-                background: "var(--accent-live)",
+                background: "linear-gradient(135deg, var(--accent-live) 0%, var(--accent-live-hover) 100%)",
                 color: "var(--accent-live-fg)",
-                boxShadow: "0 8px 24px color-mix(in srgb, var(--accent-live) 22%, transparent)",
+                clipPath: "polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px)",
+                boxShadow:
+                  "0 8px 24px color-mix(in srgb, var(--accent-live) 35%, transparent), 0 0 20px color-mix(in srgb, var(--accent-live) 25%, transparent)",
               }}
             >
               F1
+              <span
+                className="absolute -bottom-0.5 left-1 right-1 h-px"
+                style={{ background: "var(--accent-live)", opacity: 0.6 }}
+                aria-hidden
+              />
             </div>
             <div className="hidden sm:block">
-              <p className="text-sm font-bold leading-tight" style={{ color: "var(--text)" }}>
+              <p className="text-sm font-black leading-tight tracking-tight" style={{ color: "var(--text)" }}>
                 {season?.season ?? DEFAULT_SEASON_YEAR} PREDICTIONS
               </p>
-              <p className="text-[10px] uppercase tracking-widest leading-tight" style={{ color: "var(--text-muted)" }}>
-                AI-Powered Forecasts
-              </p>
+              <p className="hud-kicker leading-tight">AI-Powered Forecasts</p>
             </div>
           </Link>
 
@@ -202,18 +191,20 @@ export default function Navbar() {
             {navLink("/standings", "Standings")}
             {navLink("/about", "About")}
 
-            {/* Accuracy chip — replaces the standalone /accuracy nav link */}
+            {/* Accuracy chip — HUD-styled, replaces standalone /accuracy nav link */}
             {accuracySummary && accuracySummary.roundsWithActual > 0 && (
               <Link
                 href="/about#methodology"
-                className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-mono font-tabular transition-colors"
+                className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-mono font-tabular transition-all hover:scale-105"
                 style={{
-                  borderColor: "var(--border)",
-                  color: "var(--text-muted)",
+                  borderColor: "color-mix(in srgb, var(--hud-cyan) 30%, transparent)",
+                  background: "color-mix(in srgb, var(--hud-cyan) 8%, transparent)",
+                  color: "var(--hud-cyan)",
+                  boxShadow: "0 0 12px color-mix(in srgb, var(--hud-cyan) 25%, transparent)",
                 }}
                 title={`Season accuracy ${accuracySummary.accuracyPct.toFixed(1)}% across ${accuracySummary.roundsWithActual} completed round(s)`}
               >
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent-positive)]" aria-hidden />
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent-positive)] animate-pulse" aria-hidden />
                 {accuracySummary.accuracyPct.toFixed(0)}% · {accuracySummary.roundsWithActual}R
               </Link>
             )}
