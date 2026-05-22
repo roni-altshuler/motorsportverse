@@ -4,14 +4,14 @@
   "featureDrift": [
     {
       "feature": "predictedTime",
-      "psi": 4.639,
+      "psi": 4.3299,
       "severity": "alarm",
       "baseline_n": 110,
       "current_n": 22
     },
     {
       "feature": "winProbability",
-      "psi": 3.1783,
+      "psi": 3.2487,
       "severity": "alarm",
       "baseline_n": 110,
       "current_n": 22
@@ -25,8 +25,8 @@
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.0869,
-      "severity": "ok",
+      "psi": 0.1169,
+      "severity": "warn",
       "baseline_n": 110,
       "current_n": 22
     }
@@ -39,11 +39,12 @@
     "rounds_compared": 1
   },
   "warnings": [
-    "finishRangeLow: PSI 0.211 (moderate drift vs baseline)"
+    "finishRangeLow: PSI 0.211 (moderate drift vs baseline)",
+    "finishRangeHigh: PSI 0.117 (moderate drift vs baseline)"
   ],
   "alarms": [
-    "predictedTime: PSI 4.639 (significant drift vs baseline)",
-    "winProbability: PSI 3.178 (significant drift vs baseline)"
+    "predictedTime: PSI 4.330 (significant drift vs baseline)",
+    "winProbability: PSI 3.249 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
