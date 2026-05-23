@@ -1,31 +1,25 @@
 /**
- * Badge — small pill for status / category labels.  Variants map to the
- * semantic accents defined in tokens.css so the same Badge automatically
- * recolours under light/dark theme swap.
+ * Badge — Bugatti redesign.
+ *
+ * Transparent background + hairline border (or no border) + mono uppercase
+ * with 2px tracking. The pill radius is the one Bugatti-permitted curve.
  */
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] transition-colors",
+  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono uppercase text-[11px] tracking-[0.18em] transition-colors border",
   {
     variants: {
       variant: {
-        default:
-          "border-[color:var(--border)] bg-[color:var(--surface-elevated)] text-[color:var(--text-primary)]",
-        live:
-          "border-[color:var(--border-accent)] bg-[color:color-mix(in_srgb,var(--accent-live)_14%,transparent)] text-[color:var(--accent-live)]",
-        positive:
-          "border-[color:color-mix(in_srgb,var(--accent-positive)_28%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-positive)_14%,transparent)] text-[color:var(--accent-positive)]",
-        negative:
-          "border-[color:color-mix(in_srgb,var(--accent-negative)_28%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-negative)_14%,transparent)] text-[color:var(--accent-negative)]",
-        info:
-          "border-[color:color-mix(in_srgb,var(--accent-info)_28%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-info)_14%,transparent)] text-[color:var(--accent-info)]",
-        muted:
-          "border-transparent bg-[color:var(--surface-elevated)] text-[color:var(--text-muted)]",
-        outline:
-          "border-[color:var(--border-strong)] bg-transparent text-[color:var(--text-secondary)]",
+        default:  "border-[color:var(--hairline)] bg-transparent text-[color:var(--muted)]",
+        live:     "border-[color:var(--ink)] bg-transparent text-[color:var(--ink)]",
+        positive: "border-[color:rgba(95,166,87,0.4)] bg-transparent text-[color:var(--success)]",
+        negative: "border-[color:var(--hairline)] bg-transparent text-[color:var(--muted)]",
+        info:     "border-[color:rgba(195,217,243,0.4)] bg-transparent text-[color:var(--link)]",
+        muted:    "border-[color:var(--hairline)] bg-transparent text-[color:var(--muted)]",
+        outline:  "border-[color:var(--hairline-strong)] bg-transparent text-[color:var(--body)]",
       },
     },
     defaultVariants: {

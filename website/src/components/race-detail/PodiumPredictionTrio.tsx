@@ -61,26 +61,24 @@ export default function PodiumPredictionTrio({
   ];
 
   return (
-    <div className="mb-8">
-      <div className="flex items-baseline justify-between mb-4">
+    <div className="mb-12">
+      <div className="flex items-baseline justify-between mb-8">
         <div>
-          <p className="hud-kicker mb-1">{isOfficial ? "Official Result" : "Model Forecast"}</p>
-          <h3 className="text-2xl font-black tracking-tight">
-            {isOfficial ? "Race Podium" : "Predicted Podium"}
-          </h3>
+          <p className="eyebrow mb-2">{isOfficial ? "Official Result" : "Model Forecast"}</p>
+          <h3 className="display-md">{isOfficial ? "Race Podium" : "Predicted Podium"}</h3>
         </div>
         <Badge variant={isOfficial ? "positive" : "live"}>
           {isOfficial ? "Result loaded" : "Prediction published"}
         </Badge>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 items-start">
         {ordered.map(({ entry, rank, order }, idx) => {
           if (!entry) return null;
           const isLeader = rank === 0;
           const label = rank === 0 ? "P1" : rank === 1 ? "P2" : "P3";
           const rankColor =
             rank === 0
-              ? "text-[color:var(--hud-champagne)]"
+              ? "text-[color:var(--accent-podium-1)]"
               : rank === 1
               ? "text-[color:var(--accent-podium-2)]"
               : "text-[color:var(--accent-podium-3)]";
@@ -93,50 +91,46 @@ export default function PodiumPredictionTrio({
               viewport={{ once: true, margin: "0px 0px -10% 0px" }}
               variants={podiumReveal}
               style={{ order } as React.CSSProperties}
-              className={isLeader ? "sm:-translate-y-2" : ""}
             >
               <Card
-                surface="paddock"
+                surface="flat"
                 team={entry.team}
                 teamColor={entry.teamColor}
-                className={`p-5 sm:p-6 ${isLeader ? "sm:py-7" : ""}`}
-                style={isLeader ? { boxShadow: "var(--glow-podium)" } : undefined}
+                className="p-6 sm:p-8"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <span className={`font-mono font-tabular text-3xl font-black ${rankColor}`}>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${rankColor}`}>
                     {label}
                   </span>
                   <TeamColorBar
                     teamColor={entry.teamColor}
                     team={entry.team}
-                    variant="gradient"
+                    variant="solid"
                     size={isLeader ? "lg" : "md"}
                     animate="draw"
                   />
                 </div>
-                <div className={`font-black tracking-tight mb-1 ${isLeader ? "text-3xl sm:text-4xl" : "text-2xl"}`}>
-                  {entry.driver}
-                </div>
-                <div className="text-sm text-[color:var(--text-muted)] mb-4">{entry.team}</div>
+                <div className={isLeader ? "display-lg" : "display-md"}>{entry.driver}</div>
+                <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">{entry.team}</div>
                 {entry.winProbability != null && entry.winProbability > 0 && (
                   <>
-                    <p className="hud-kicker mb-1">Win probability</p>
+                    <p className="eyebrow mb-2">Win probability</p>
                     <AnimatedNumber
                       value={entry.winProbability}
                       decimals={1}
                       suffix="%"
                       variant={isLeader ? "huge" : "default"}
-                      className="text-[color:var(--accent-live)]"
+                      className="text-[color:var(--ink)]"
                     />
                   </>
                 )}
                 {entry.finishRangeLow != null && entry.finishRangeHigh != null && (
-                  <p className="mt-3 text-xs font-mono text-[color:var(--text-muted)]">
-                    Range: P{entry.finishRangeLow}–P{entry.finishRangeHigh}
+                  <p className="eyebrow mt-4">
+                    Range P{entry.finishRangeLow}–P{entry.finishRangeHigh}
                   </p>
                 )}
                 {isOfficial && entry.predictedPosition != null && entry.predictedPosition !== entry.position && (
-                  <p className="mt-2 text-xs font-mono text-[color:var(--accent-live)]">
+                  <p className="eyebrow mt-2 text-[color:var(--link)]">
                     Predicted P{entry.predictedPosition}
                   </p>
                 )}

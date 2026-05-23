@@ -1,147 +1,130 @@
 /*
- * Design tokens — racing-inspired, light + dark, single source of truth.
+ * Design tokens — Bugatti redesign (dark-only).
  *
- * Why this exists
- * ---------------
- * The previous palette used F1's brand red (#E10600) as a near-omnipresent
- * accent.  That makes the site read as a fan-page clone of F1.com.  We want a
- * distinct visual identity: still automotive/motorsport, but recognisably its
- * own product.  Two design moves:
+ * The site now follows the Bugatti DESIGN.md aesthetic: pure black canvas,
+ * white uppercase letterspaced display, serif body, monospace nav/buttons/
+ * captions. No accent color, no gradients, no shadows, no chrome. Photography
+ * (per-round track maps) is the only depth element.
  *
- *   1. Demote brand red to a **status-only** colour (penalty / urgent / live).
- *   2. Promote **telemetry orange** (#F76B15) to the primary accent — the
- *      cockpit-instrument hue.  Pair with **hot-lap green** (#22C55E) for
- *      positive deltas and graphite surfaces for chrome.
+ * Existing variable NAMES are preserved (--bg, --surface, --accent-live,
+ * --text-primary, etc.) and re-pointed to Bugatti palette values so the rest
+ * of the codebase keeps compiling. New Bugatti-specific tokens (--canvas,
+ * --ink, --hairline, --link, --space-section, --font-display/serif/mono) are
+ * added alongside.
  *
- * Token taxonomy
- * --------------
- *   --bg-*           : page / card / surface fills
- *   --text-*         : foreground text scale
- *   --border-*       : strokes
- *   --accent-*       : semantic accents (live, positive, negative, info)
- *   --shadow-*       : elevation
- *   --radius-*       : corner radius scale
- *   --font-*         : font-family bindings (filled in by next/font)
- *
- * shadcn aliases (--primary, --foreground, --muted, etc.) are mapped to the
- * semantic tokens at the bottom so future shadcn primitives Just Work.
- *
- * Compatibility
- * -------------
- * The existing `--bg`, `--bg-card`, `--bg-card-solid`, `--bg-surface`, `--text`,
- * `--text-secondary`, `--text-muted`, `--border`, `--glass-border`, `--glass-bg`
- * variables in globals.css are kept and re-exported below.  Every existing
- * page continues to render until callers opt into the new tokens.
+ * Team-color block at the bottom is preserved as-is: team colors stay as the
+ * single chromatic exception (chart series, TeamColorBar stripe, team-stripe).
  */
 
 :root,
 [data-theme="dark"] {
-  /* ── Surfaces (graphite) ───────────────────────────────────────── */
-  /* Slightly warmed in the 2026-05-21 refinement so the hero circuit
-   * photography reads cleaner against a non-pure-black backdrop.
-   * Was: #0E1116 (near-black SaaS) → #141820 (a stop warmer, still
-   * unmistakably "dark"). */
-  --bg:                 #141820;         /* page background */
-  --bg-elevated:        #1A1F2A;         /* slight lift above page */
-  --surface:            #1C2230;         /* card body */
-  --surface-elevated:   #232A38;         /* card hover / panel */
-  --surface-overlay:    rgba(28, 34, 48, 0.78); /* glass overlay */
+  /* ── Bugatti palette ─────────────────────────────────────────────── */
+  --canvas:             #000000;
+  --surface-soft:       #0d0d0d;
+  --surface-card:       #141414;
+  --surface-elevated-b: #1f1f1f;
+  --hairline:           #262626;
+  --hairline-strong:    #3a3a3a;
+  --ink:                #ffffff;
+  --body:               #cccccc;
+  --body-strong:        #e6e6e6;
+  --muted:              #999999;
+  --muted-soft:         #666666;
+  --link:               #c3d9f3;
+  --on-primary:         #000000;
+  --on-photo:           #ffffff;
+  --warning:            #d4a017;
+  --success:            #5fa657;
 
-  /* ── Strokes ──────────────────────────────────────────────────── */
-  --border:             rgba(255, 255, 255, 0.07);
-  --border-strong:      rgba(255, 255, 255, 0.14);
-  --border-accent:      rgba(247, 107, 21, 0.32);   /* telemetry orange */
+  /* ── Legacy semantic names re-pointed to Bugatti values ──────────── */
+  --bg:                 #000000;          /* page background = canvas */
+  --bg-elevated:        #0d0d0d;          /* surface-soft */
+  --surface:            #141414;          /* surface-card */
+  --surface-elevated:   #1f1f1f;          /* one notch off black */
+  --surface-overlay:    #141414;          /* no glassmorphism */
 
-  /* ── Text ─────────────────────────────────────────────────────── */
-  --text-primary:       #F4F7FB;
-  --text-secondary:     #BCC4CF;
-  --text-muted:         #8A95A4;
-  --text-inverse:       #0E1116;
+  --border:             #262626;          /* hairline */
+  --border-strong:      #3a3a3a;          /* hairline-strong */
+  --border-accent:      #3a3a3a;          /* no orange accent border */
 
-  /* ── Accents (semantic) ───────────────────────────────────────── */
-  --accent-live:        #F76B15;   /* telemetry orange — primary CTA / live */
-  --accent-live-fg:     #0E1116;
-  --accent-live-hover:  #FF8033;
-  --accent-positive:    #22C55E;   /* hot-lap green */
-  --accent-positive-fg: #06140C;
-  --accent-negative:    #EF4444;   /* penalty red */
-  --accent-negative-fg: #FFFFFF;
-  --accent-info:        #38BDF8;   /* timing-screen cyan */
-  --accent-info-fg:     #061826;
-  --accent-podium-1:    #FFD166;   /* champagne gold */
-  --accent-podium-2:    #C5CCD3;   /* silver */
-  --accent-podium-3:    #CD7F32;   /* bronze */
+  --text-primary:       #ffffff;          /* ink */
+  --text-secondary:     #e6e6e6;          /* body-strong */
+  --text-muted:         #999999;          /* muted */
+  --text-inverse:       #000000;
 
-  /* ── Elevation ─────────────────────────────────────────────────── */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.30);
-  --shadow:     0 8px 24px rgba(0, 0, 0, 0.32);
-  --shadow-lg:  0 24px 64px rgba(0, 0, 0, 0.40);
+  /* "active" semantics preserved but chroma flipped to white. */
+  --accent-live:        #ffffff;
+  --accent-live-fg:     #000000;
+  --accent-live-hover:  #cccccc;
+  --accent-positive:    #5fa657;          /* success */
+  --accent-positive-fg: #000000;
+  --accent-negative:    #999999;          /* demoted; Bugatti has no marketing red */
+  --accent-negative-fg: #000000;
+  --accent-info:        #c3d9f3;          /* link ice-blue */
+  --accent-info-fg:     #000000;
+  --accent-podium-1:    #FFD166;          /* positional chromatic signal — kept */
+  --accent-podium-2:    #C5CCD3;
+  --accent-podium-3:    #CD7F32;
 
-  /* ── Radius ────────────────────────────────────────────────────── */
-  --radius-sm:  4px;
-  --radius:     8px;
-  --radius-lg:  12px;
-  --radius-xl:  18px;
+  /* ── Elevation — all shadows nuked ───────────────────────────────── */
+  --shadow-sm:  none;
+  --shadow:     none;
+  --shadow-lg:  none;
+  --shadow-elevated: none;
+  --shadow-hud:      none;
+
+  /* ── Glow stack — all glows nuked ────────────────────────────────── */
+  --glow-accent:  none;
+  --glow-purple:  none;
+  --glow-podium:  none;
+  --glow-team:    none;
+
+  /* ── Gradients — all decorative gradients nuked ──────────────────── */
+  --gradient-paddock:   none;
+  --gradient-hud-frame: none;
+  --gradient-scanline:  none;
+
+  /* ── Radius — binary system. The "old" small/med/lg/xl collapse to 0. */
+  --radius-sm:   0px;
+  --radius:      0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
   --radius-full: 9999px;
 
-  /* ── Spacing aliases (used sparingly; prefer Tailwind utilities) ── */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-12: 48px;
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+  --space-section: 120px;
 
-  /* ── Broadcast HUD palette (cinematic overhaul) ───────────────────
-   * Telemetry-channel hues lifted from live race-broadcast graphics.
-   * Use as semantic accents — fastest-lap purple, yellow flag, race
-   * lights red — not as decoration. */
-  --hud-purple:        #B45CFF;
-  --hud-purple-soft:   rgba(180, 92, 255, 0.18);
-  --hud-yellow:        #FACC15;
-  --hud-yellow-soft:   rgba(250, 204, 21, 0.18);
-  --hud-red-light:     #FF1801;
-  --hud-red-soft:      rgba(255, 24, 1, 0.20);
-  --hud-green:         var(--accent-positive);
-  --hud-cyan:          var(--accent-info);
+  /* Legacy aliases (used by older components). Keep mapped to the new scale. */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  40px;
+  --space-12: 64px;
+
+  /* ── HUD palette — most demoted to muted/link. Kept as token names
+   *    so components that reference --hud-* keep compiling. ────────── */
+  --hud-purple:        var(--muted);
+  --hud-purple-soft:   rgba(255, 255, 255, 0.06);
+  --hud-yellow:        var(--warning);
+  --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
+  --hud-red-light:     var(--ink);
+  --hud-red-soft:      rgba(255, 255, 255, 0.06);
+  --hud-green:         var(--success);
+  --hud-cyan:          var(--link);
   --hud-champagne:     var(--accent-podium-1);
 
-  /* ── Glow / shadow stack ──────────────────────────────────────────
-   * Drop-in box-shadow tokens. The --glow-team variant resolves
-   * against an upstream --team-color custom property (set per node
-   * via `data-team="..."` or inline style). */
-  --glow-accent:       0 0 24px rgba(247, 107, 21, 0.45),
-                       0 0 48px rgba(247, 107, 21, 0.20);
-  --glow-purple:       0 0 20px rgba(180, 92, 255, 0.50);
-  --glow-podium:       0 0 32px rgba(255, 209, 102, 0.55),
-                       0 12px 32px rgba(0, 0, 0, 0.45);
-  --glow-team:         0 0 24px color-mix(in srgb, var(--team-color, var(--accent-live)) 45%, transparent),
-                       0 0 48px color-mix(in srgb, var(--team-color, var(--accent-live)) 18%, transparent);
-  --shadow-elevated:   0 16px 48px rgba(0, 0, 0, 0.55),
-                       0 4px 12px rgba(0, 0, 0, 0.35),
-                       inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --shadow-hud:        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-                       0 24px 64px rgba(0, 0, 0, 0.48);
-
-  /* ── Gradient stops ──────────────────────────────────────────────── */
-  --gradient-paddock:  linear-gradient(135deg,
-                         color-mix(in srgb, var(--team-color, var(--accent-live)) 22%, var(--surface)) 0%,
-                         var(--surface) 60%,
-                         color-mix(in srgb, var(--team-color, var(--accent-live)) 8%, var(--surface)) 100%);
-  --gradient-hud-frame: linear-gradient(180deg,
-                         rgba(255, 255, 255, 0.05) 0%,
-                         rgba(255, 255, 255, 0.00) 30%,
-                         rgba(255, 255, 255, 0.00) 70%,
-                         rgba(255, 255, 255, 0.05) 100%);
-  --gradient-scanline:  repeating-linear-gradient(
-                         0deg,
-                         rgba(255, 255, 255, 0.03) 0px,
-                         rgba(255, 255, 255, 0.03) 1px,
-                         transparent 1px,
-                         transparent 3px);
-
-  /* ── Motion tokens (mirrored in src/lib/motion.ts) ─────────────── */
+  /* ── Motion tokens — kept (Bugatti permits restrained motion) ────── */
   --dur-instant: 80ms;
   --dur-snap:    180ms;
   --dur-base:    320ms;
@@ -151,37 +134,39 @@
   --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* ── Font bindings (resolved by next/font in layout.tsx) ───────── */
-  --font-sans: var(--font-geist-sans, "Geist", "Inter", system-ui, sans-serif);
-  --font-mono: var(--font-jetbrains-mono, "JetBrains Mono", ui-monospace, monospace);
+  /* ── Font bindings (resolved by next/font in layout.tsx) ─────────── */
+  --font-display: var(--font-saira-condensed, "Saira Condensed", "Impact", sans-serif);
+  --font-serif:   var(--font-eb-garamond, "EB Garamond", "Garamond", "Times New Roman", serif);
+  --font-mono:    var(--font-jetbrains-mono, "JetBrains Mono", ui-monospace, monospace);
+  /* Legacy names — point --font-sans at the display face so any caller
+   * that asks for "sans" gets the Bugatti display face. */
+  --font-sans:    var(--font-display);
 
-  /* ── shadcn aliases — point at our semantic tokens ─────────────── */
-  --background:         var(--bg);
-  --foreground:         var(--text-primary);
-  --card:               var(--surface);
-  --card-foreground:    var(--text-primary);
-  --popover:            var(--surface-elevated);
-  --popover-foreground: var(--text-primary);
-  --primary:            var(--accent-live);
-  --primary-foreground: var(--accent-live-fg);
-  --secondary:          var(--surface-elevated);
+  /* ── shadcn aliases — preserved ─────────────────────────────────── */
+  --background:           var(--bg);
+  --foreground:           var(--text-primary);
+  --card:                 var(--surface);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--surface-elevated);
+  --popover-foreground:   var(--text-primary);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--on-primary);
+  --secondary:            var(--surface-elevated);
   --secondary-foreground: var(--text-primary);
-  --muted:              var(--surface-elevated);
-  --muted-foreground:   var(--text-muted);
-  --accent:             var(--surface-elevated);
-  --accent-foreground:  var(--text-primary);
-  --destructive:        var(--accent-negative);
+  --muted-bg:             var(--surface-elevated);
+  --muted-foreground:     var(--text-muted);
+  --accent:               var(--surface-elevated);
+  --accent-foreground:    var(--text-primary);
+  --destructive:          var(--accent-negative);
   --destructive-foreground: var(--accent-negative-fg);
-  --input:              var(--border);
-  --ring:               var(--accent-live);
+  --input:                var(--border);
+  --ring:                 var(--ink);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
- * Team-color palette — 11 constructors.  Set via `data-team="..."` on
- * any wrapper element, or inline `style={{ "--team-color": entry.teamColor }}`
- * for data-driven cases (mid-season constructor swaps).  Downstream
- * utilities (.team-glow, .team-gradient, .team-tint-bg) resolve
- * against `var(--team-color)`.
+ * Team-color palette — KEEP AS-IS. The only chromatic exception in the
+ * Bugatti redesign. Resolved via `data-team="..."` attribute or inline
+ * `style={{ "--team-color": entry.teamColor }}`.
  * ───────────────────────────────────────────────────────────────────── */
 :root {
   --team-ferrari:        #E8002D;
@@ -210,136 +195,26 @@
 [data-team="Cadillac"]           { --team-color: var(--team-cadillac); }
 
 /* ─────────────────────────────────────────────────────────────────────
- * Hero circuit photography — Track A of the 2026-05-21 UX refinement.
- * A section with class `.hero-circuit-bg` accepts a `--hero-image: url(...)`
- * inline style and renders the image behind a dark gradient overlay so
- * the typography above stays readable.  No backdrop-blur (the new
- * design language is flat surfaces); the image itself is the only
- * non-flat element on the page.
- * ───────────────────────────────────────────────────────────────────── */
-.hero-circuit-bg {
-  position: relative;
-  isolation: isolate;
-}
-
-.hero-circuit-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--hero-image, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  /* Mute the image: low base opacity + a heavy gradient lays over it.
-   * 0.18 lets the circuit silhouette read without competing with the
-   * headline text. */
-  opacity: 0.18;
-  z-index: -2;
-}
-
-.hero-circuit-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, transparent 0%, var(--bg) 95%),
-    linear-gradient(90deg, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
-  z-index: -1;
-}
-
-[data-theme="light"] {
-  /* ── Surfaces (paper) ──────────────────────────────────────────── */
-  --bg:                 #F5F6F8;
-  --bg-elevated:        #FFFFFF;
-  --surface:            #FFFFFF;
-  --surface-elevated:   #F0F2F5;
-  --surface-overlay:    rgba(255, 255, 255, 0.78);
-
-  /* ── Strokes ──────────────────────────────────────────────────── */
-  --border:             rgba(15, 23, 42, 0.10);
-  --border-strong:      rgba(15, 23, 42, 0.18);
-  --border-accent:      rgba(202, 78, 4, 0.34);
-
-  /* ── Text ─────────────────────────────────────────────────────── */
-  --text-primary:       #0F172A;
-  --text-secondary:     #334155;
-  --text-muted:         #64748B;
-  --text-inverse:       #F5F6F8;
-
-  /* ── Accents — slightly muted for light backgrounds ───────────── */
-  --accent-live:        #CA4E04;
-  --accent-live-fg:     #FFFFFF;
-  --accent-live-hover:  #B14304;
-  --accent-positive:    #047857;
-  --accent-positive-fg: #FFFFFF;
-  --accent-negative:    #B91C1C;
-  --accent-negative-fg: #FFFFFF;
-  --accent-info:        #0369A1;
-  --accent-info-fg:     #FFFFFF;
-  --accent-podium-1:    #B8862F;
-  --accent-podium-2:    #6B7280;
-  --accent-podium-3:    #92400E;
-
-  /* ── Elevation ─────────────────────────────────────────────────── */
-  --shadow-sm:  0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow:     0 8px 24px rgba(15, 23, 42, 0.08);
-  --shadow-lg:  0 24px 64px rgba(15, 23, 42, 0.12);
-}
-
-/* ─────────────────────────────────────────────────────────────────────
- * Backwards-compat: keep the legacy --bg-card / --text / etc. variables
- * that the existing CSS classes (.card, .status-pill, .weekend-spotlight…)
- * depend on.  These are re-derived from the new semantic tokens so a single
- * palette change cascades everywhere.  Once components migrate to the
- * shadcn-style primitives in src/components/ui/, these aliases can retire.
+ * Legacy-compat aliases. The old --bg-card / --text / etc. names used by
+ * a handful of utility classes still resolve through here.
  * ───────────────────────────────────────────────────────────────────── */
 
 :root,
 [data-theme="dark"] {
-  --bg-card:        var(--surface-overlay);
-  --bg-card-solid:  var(--surface);
+  --bg-card:        var(--surface-card);
+  --bg-card-solid:  var(--surface-card);
   --bg-card-hover:  var(--surface-elevated);
-  --bg-surface:     var(--surface-elevated);
+  --bg-surface:     var(--surface-card);
   --text:           var(--text-primary);
-  --glass-border:   var(--border);
-  --glass-bg:       rgba(255, 255, 255, 0.03);
-}
-
-[data-theme="light"] {
-  --bg-card:        var(--surface-overlay);
-  --bg-card-solid:  var(--surface);
-  --bg-card-hover:  var(--surface-elevated);
-  --bg-surface:     var(--surface-elevated);
-  --text:           var(--text-primary);
-  --glass-border:   var(--border);
-  --glass-bg:       rgba(15, 23, 42, 0.03);
+  --glass-border:   var(--hairline);
+  --glass-bg:       transparent;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
  * Tabular-figure utility for numeric / timing displays.
- * Apply via `.font-tabular` or as the default for `font-mono`.
  * ───────────────────────────────────────────────────────────────────── */
 
 .font-tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
-}
-
-/* Carbon-weave subtle texture — opt-in via class `.surface-carbon`. */
-.surface-carbon {
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.012) 0,
-      rgba(255, 255, 255, 0.012) 1px,
-      transparent 1px,
-      transparent 6px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      rgba(255, 255, 255, 0.012) 0,
-      rgba(255, 255, 255, 0.012) 1px,
-      transparent 1px,
-      transparent 6px
-    );
 }

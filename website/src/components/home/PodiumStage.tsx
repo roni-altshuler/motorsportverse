@@ -19,11 +19,7 @@ interface PodiumEntry {
 
 interface PodiumStageProps {
   entries: PodiumEntry[];
-  /** Delay (ms) before the stagger starts.  Used by HomePage to sync
-   * the reveal with the lights-out sequence. */
   startDelay?: number;
-  /** Whether to skip the reveal stagger (e.g. when an event already
-   * fired upstream). */
   immediate?: boolean;
 }
 
@@ -32,17 +28,23 @@ const POSITION_LABELS = ["P1", "P2", "P3"];
 export default function PodiumStage({ entries, startDelay = 0, immediate = false }: PodiumStageProps) {
   const reduced = useReducedMotion();
   const slots = entries.slice(0, 3);
-  while (slots.length < 3) slots.push({ driver: "—", team: "—", teamColor: "var(--text-muted)" });
+  while (slots.length < 3) slots.push({ driver: "—", team: "—", teamColor: "var(--muted)" });
 
-  // Re-order so P1 sits visually in the center on desktop: P2 (left), P1 (center, taller), P3 (right).
   const ordered: { entry: PodiumEntry; rank: 0 | 1 | 2; order: number }[] = [
     { entry: slots[1], rank: 1, order: 0 },
     { entry: slots[0], rank: 0, order: 1 },
     { entry: slots[2], rank: 2, order: 2 },
   ];
 
+  const positionColor = (rank: 0 | 1 | 2) =>
+    rank === 0
+      ? "text-[color:var(--accent-podium-1)]"
+      : rank === 1
+        ? "text-[color:var(--accent-podium-2)]"
+        : "text-[color:var(--accent-podium-3)]";
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 items-end">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 items-start">
       {ordered.map(({ entry, rank, order }, idx) => {
         const isLeader = rank === 0;
         return (
@@ -54,50 +56,43 @@ export default function PodiumStage({ entries, startDelay = 0, immediate = false
             variants={podiumReveal}
             transition={{ delay: startDelay / 1000 }}
             style={{ order } as React.CSSProperties}
-            className={isLeader ? "sm:-translate-y-2" : ""}
           >
             <Card
-              surface="paddock"
+              surface="flat"
               team={entry.team}
               teamColor={entry.teamColor}
-              className={`p-5 sm:p-6 relative overflow-hidden ${isLeader ? "sm:py-8" : ""}`}
-              style={isLeader ? { boxShadow: "var(--glow-podium)" } : undefined}
+              className="p-6 sm:p-8 relative"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <span
-                  className={`font-mono font-tabular text-3xl ${isLeader ? "sm:text-4xl" : ""} font-black tracking-tight ${
-                    isLeader ? "text-[color:var(--hud-champagne)]" : "text-[color:var(--text-muted)]"
-                  }`}
-                  aria-hidden
-                >
+              <div className="flex items-center gap-3 mb-6">
+                <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${positionColor(rank)}`}>
                   {POSITION_LABELS[rank]}
                 </span>
                 <TeamColorBar
                   teamColor={entry.teamColor}
                   team={entry.team}
-                  variant="gradient"
+                  variant="solid"
                   size={isLeader ? "lg" : "md"}
                   animate="draw"
                 />
               </div>
-              <div className={`font-black tracking-tight mb-1 ${isLeader ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"}`}>
-                {entry.driver}
+              <div className={isLeader ? "display-lg" : "display-md"}>{entry.driver}</div>
+              <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">
+                {entry.driverFullName ?? entry.team}
               </div>
-              <div className="text-sm text-[color:var(--text-muted)] mb-5">{entry.driverFullName ?? entry.team}</div>
-              <div className="hud-kicker mb-1">Win probability</div>
+              <p className="eyebrow mb-2">Win probability</p>
               {entry.winProbability != null && entry.winProbability > 0 ? (
                 <AnimatedNumber
                   value={entry.winProbability}
                   decimals={1}
                   suffix="%"
                   variant={isLeader ? "huge" : "default"}
-                  className="text-[color:var(--accent-live)]"
+                  className="text-[color:var(--ink)]"
                 />
               ) : (
-                <span className="font-mono font-tabular text-3xl font-black text-[color:var(--text-muted)]">—</span>
+                <span className="display-md text-[color:var(--muted)]">—</span>
               )}
               {entry.gap && (
-                <p className="mt-3 text-xs font-mono text-[color:var(--text-muted)]">
+                <p className="eyebrow mt-4">
                   {entry.gap === "LEADER" ? "Projected leader" : `+${entry.gap}`}
                 </p>
               )}

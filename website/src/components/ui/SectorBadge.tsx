@@ -22,7 +22,7 @@ export function SectorBadge({ sector, color, time, ariaLabel, className }: Secto
     <span
       aria-label={ariaLabel ?? `Sector ${sector ?? ""} ${color}${time ? ` ${time}` : ""}`}
       className={cn(
-        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-mono text-[11px] font-bold tabular-nums tracking-wide",
+        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-mono text-[11px] uppercase tabular-nums tracking-[0.18em]",
         COLOR_CLASS[color],
         className,
       )}

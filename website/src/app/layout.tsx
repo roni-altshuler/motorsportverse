@@ -1,25 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { Saira_Condensed, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ThemeProvider from "@/components/ThemeProvider";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
-// Self-host both fonts via next/font for zero-CLS loading and correct
-// font-display: swap. Geist is the UI workhorse; JetBrains Mono provides
-// tabular figures for timing / lap-delta displays.
-const geistSans = Geist({
+// Bugatti redesign uses the recommended open-source substitutes for the three
+// licensed Bugatti typefaces: Saira Condensed (display headlines + wordmark),
+// EB Garamond (serif body), JetBrains Mono (buttons + nav + captions). All at
+// weight 400 — Bugatti's system has no bold role.
+const sairaCondensed = Saira_Condensed({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-saira-condensed",
+  weight: "400",
+  display: "swap",
+});
+
+const ebGaramond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-eb-garamond",
+  weight: "400",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  weight: "400",
   display: "swap",
 });
 
@@ -78,32 +87,21 @@ export default function RootLayout({
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${jetbrainsMono.variable}`}
+      className={`${sairaCondensed.variable} ${ebGaramond.variable} ${jetbrainsMono.variable}`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{const t=localStorage.getItem('f1-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}`,
-          }}
-        />
-      </head>
-      <body className="min-h-screen w-full flex flex-col antialiased" style={{ background: 'var(--bg)', color: 'var(--text-primary)' }}>
-        {/* B-P2.3: skip-to-content link.  Visible only on keyboard focus
-            so it stays out of the visual layout for mouse users. */}
+      <body className="min-h-screen w-full flex flex-col antialiased">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-[color:var(--accent-live)] focus:px-3 focus:py-2 focus:font-semibold focus:text-[color:var(--accent-live-fg)] focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-[color:var(--ink)] focus:px-3 focus:py-2 focus:text-[color:var(--canvas)]"
         >
           Skip to main content
         </a>
-        <ThemeProvider>
-          <SmoothScrollProvider>
-            <Navbar />
-            <LiveContextBand />
-            <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
-            <Footer />
-          </SmoothScrollProvider>
-        </ThemeProvider>
+        <SmoothScrollProvider>
+          <Navbar />
+          <LiveContextBand />
+          <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

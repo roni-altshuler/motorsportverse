@@ -20,9 +20,9 @@ interface AnimatedNumberProps {
 }
 
 const VARIANT_CLASS: Record<NonNullable<AnimatedNumberProps["variant"]>, string> = {
-  default: "text-2xl font-bold tracking-tight",
-  huge: "text-5xl sm:text-6xl font-black tracking-tighter",
-  compact: "text-sm font-semibold tracking-tight",
+  default: "title-md",
+  huge: "display-lg",
+  compact: "body-sm font-mono",
 };
 
 export function AnimatedNumber({

@@ -2,17 +2,30 @@
 @import "../styles/tokens.css";
 
 /*
- * Tailwind v4 theme inline — expose the design tokens to Tailwind utilities.
- * Add `bg-surface`, `text-text-primary`, `border-border`, etc. as classes that
- * pick up the CSS variables we define in styles/tokens.css.  Legacy `f1-*`
- * aliases are kept so existing components keep rendering until they migrate.
+ * Tailwind v4 theme inline — expose the Bugatti design tokens to Tailwind
+ * utilities. Use `bg-canvas`, `text-ink`, `border-hairline`, `font-display`,
+ * `py-section` etc. as classes that pick up the CSS variables.
  */
 @theme inline {
-  /* Semantic tokens — preferred surface for new code */
+  /* Bugatti palette */
+  --color-canvas: var(--canvas);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-card: var(--surface-card);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-body-strong: var(--body-strong);
+  --color-muted: var(--muted);
+  --color-muted-soft: var(--muted-soft);
+  --color-link: var(--link);
+
+  /* Legacy semantic names — kept so existing utilities like
+   * `bg-surface`, `text-text-primary`, `border-border` keep resolving. */
   --color-bg: var(--bg);
   --color-bg-elevated: var(--bg-elevated);
   --color-surface: var(--surface);
-  --color-surface-elevated: var(--surface-elevated);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-text-primary: var(--text-primary);
@@ -26,26 +39,35 @@
   --color-accent-podium-1: var(--accent-podium-1);
   --color-accent-podium-2: var(--accent-podium-2);
   --color-accent-podium-3: var(--accent-podium-3);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
 
-  /* Legacy f1-* aliases — preserved so existing class references keep
-   * working through the migration.  Do not add new uses. */
-  --color-f1-bg: #15151E;
-  --color-f1-card: #1F1F2B;
-  --color-f1-card-hover: #27273A;
-  --color-f1-border: #2D2D3F;
-  --color-f1-red: var(--accent-live);
-  --color-f1-red-dark: #B80500;
-  --color-f1-text: #F5F5F5;
-  --color-f1-text-muted: #9CA3AF;
-  --color-f1-accent: #FF1801;
-  --color-f1-gold: #FFD700;
-  --color-f1-silver: #C0C0C0;
-  --color-f1-bronze: #CD7F32;
-  --color-f1-green: #00D2BE;
-  --color-f1-surface: #1A1A28;
-  --color-f1-input: #242436;
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-serif:   var(--font-serif);
+  --font-mono:    var(--font-mono);
+  --font-sans:    var(--font-display);
+
+  /* Spacing — Bugatti rhythm */
+  --spacing-section: 120px;
+
+  /* Legacy f1-* aliases — keep mapped to Bugatti values so any lingering
+   * `bg-f1-red` / `text-f1-red` JSX falls through to the right thing
+   * during the migration. The block can be deleted once those classes
+   * are scrubbed from the codebase. */
+  --color-f1-bg: var(--canvas);
+  --color-f1-card: var(--surface-card);
+  --color-f1-card-hover: var(--surface-elevated);
+  --color-f1-border: var(--hairline);
+  --color-f1-red: var(--ink);
+  --color-f1-red-dark: var(--body);
+  --color-f1-text: var(--ink);
+  --color-f1-text-muted: var(--muted);
+  --color-f1-accent: var(--ink);
+  --color-f1-gold: var(--accent-podium-1);
+  --color-f1-silver: var(--accent-podium-2);
+  --color-f1-bronze: var(--accent-podium-3);
+  --color-f1-green: var(--success);
+  --color-f1-surface: var(--surface-card);
+  --color-f1-input: var(--surface-card);
 }
 
 
@@ -58,71 +80,254 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  font-family: var(--font-serif);
+  background: var(--canvas);
+  color: var(--body);
+  line-height: 1.5;
   overflow-x: hidden;
 }
 
-[data-theme="dark"] body {
-  /* Subtle top-down vignette on dark theme only — gives depth without a
-   * full hero gradient that fights the design-system surfaces. */
-  background:
-    linear-gradient(180deg, rgba(14, 17, 22, 0.0), rgba(8, 11, 16, 0.55)),
-    var(--bg);
-}
-
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--accent-live) 28%, transparent);
-  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--accent-live) 54%, transparent);
+  background: rgba(255, 255, 255, 0.40);
 }
 
-/* Deep Dive accordion section (2026-05-21 redesign).  Native
- * <details>/<summary> primitive styled to match the rest of the
- * design system — no JS, no library, no aria gymnastics. */
+:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Bugatti typography utilities — apply via className. Display-* always
+ * uppercase, weight 400, wide tracking. Body-* always sentence case,
+ * serif, no tracking. Caption-uppercase / eyebrow always monospace,
+ * uppercase, 2px tracking.
+ * ───────────────────────────────────────────────────────────────────── */
+.display-xl { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 6vw, 64px); line-height: 1.1; letter-spacing: 0.0625em; text-transform: uppercase; color: var(--ink); }
+.display-lg { font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 5vw, 48px); line-height: 1.15; letter-spacing: 0.0625em; text-transform: uppercase; color: var(--ink); }
+.display-md { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3.5vw, 32px); line-height: 1.2; letter-spacing: 0.0625em; text-transform: uppercase; color: var(--ink); }
+.display-sm { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.3; letter-spacing: 0.0625em; text-transform: uppercase; color: var(--ink); }
+.title-md   { font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.3; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); }
+.title-sm   { font-family: var(--font-display); font-weight: 400; font-size: 16px; line-height: 1.3; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink); }
+.wordmark   { font-family: var(--font-display); font-weight: 400; font-size: 14px; line-height: 1; letter-spacing: 0.42em; text-transform: uppercase; color: var(--ink); }
+
+.body-md { font-family: var(--font-serif); font-weight: 400; font-size: 16px; line-height: 1.5; color: var(--body); }
+.body-sm { font-family: var(--font-serif); font-weight: 400; font-size: 14px; line-height: 1.5; color: var(--body); }
+
+.eyebrow,
+.caption-uppercase,
+.hud-kicker {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.nav-link-text {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.button-label {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* The signature Bugatti button — transparent + 1px outline + pill. */
+.btn-bugatti {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 9999px;
+  padding: 14px 32px;
+  height: 44px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.btn-bugatti:hover { background: var(--ink); color: var(--canvas); }
+.btn-bugatti:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-icon-bugatti {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.btn-icon-bugatti:hover { background: var(--ink); color: var(--canvas); }
+
+/* Inline anchor — only chromatic exception in the body. */
+.link-bugatti {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 180ms ease;
+}
+.link-bugatti:hover { opacity: 0.7; }
+
+/* Hairline dividers. */
+.hairline-divider     { border-bottom: 1px solid var(--hairline); }
+.hairline-divider-top { border-top: 1px solid var(--hairline); }
+
+/* Career-listing-row / spec-cell — Bugatti's preferred list/grid pattern. */
+.row-spec {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.spec-cell {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* Hero photo band — full-bleed photographic backdrop with scrim. */
+.hero-photo-band {
+  position: relative;
+  width: 100%;
+  background: var(--canvas);
+  color: var(--ink);
+  padding: 96px 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-photo-band__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  z-index: 0;
+}
+.hero-photo-band__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 1;
+}
+.hero-photo-band > .hero-photo-band__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Bugatti section rhythm — 120px between major bands. */
+.section-bugatti {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+/* Underline-only text input. */
+.input-bugatti {
+  background: transparent;
+  color: var(--ink);
+  border: none;
+  border-bottom: 1px solid var(--hairline-strong);
+  border-radius: 0;
+  padding: 12px 0;
+  height: 44px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  width: 100%;
+}
+.input-bugatti:focus { outline: none; border-bottom-color: var(--ink); }
+.input-bugatti::placeholder { color: var(--muted); }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Restyled legacy classes — same names so JSX doesn't need rewriting,
+ * but the visual treatment now matches Bugatti.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* Hero section pass-through. */
+.hero-gradient {
+  position: relative;
+  background: var(--canvas);
+}
+
+/* Cards. */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: 0;
+  transition: border-color 180ms ease;
+}
+.card:hover { border-color: var(--hairline-strong); }
+
+/* Deep Dive accordion — Bugatti restyle: 0 radius, hairline border,
+ * display-type summary, mono +/- chevrons. */
 .deep-dive-section {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
   margin-bottom: 1rem;
   overflow: hidden;
 }
 .deep-dive-section > summary.deep-dive-summary {
   list-style: none;
   cursor: pointer;
-  padding: 1rem 1.25rem;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--text-primary);
+  padding: 18px 24px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 180ms ease;
 }
 .deep-dive-section > summary.deep-dive-summary::-webkit-details-marker {
   display: none;
 }
 .deep-dive-section > summary.deep-dive-summary::after {
   content: "+";
+  font-family: var(--font-mono);
   font-size: 18px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: var(--muted);
   margin-left: 1rem;
-  transition: transform 0.15s ease;
 }
 .deep-dive-section[open] > summary.deep-dive-summary::after {
   content: "−";
@@ -131,71 +336,38 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--surface-elevated);
 }
 .deep-dive-section[open] > summary.deep-dive-summary {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--hairline);
 }
 .deep-dive-section-body {
-  padding: 1.25rem;
+  padding: 24px;
 }
 
-/* Hero — flat surface, no decorative overlays (redesign 2026-05) */
-.hero-gradient {
-  position: relative;
-  background: var(--bg);
-}
-
-/* Cards — flat surface, no backdrop-blur (redesign 2026-05) */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-.card:hover { border-color: var(--border-strong); }
-.card-glow:hover { border-color: var(--accent-live); }
-
+/* Status pills — transparent + hairline border + mono uppercase. */
 .status-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.45rem 0.8rem;
-  border-radius: 999px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 400;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  border: 1px solid transparent;
+  border: 1px solid var(--hairline);
+  background: transparent;
   white-space: nowrap;
 }
-
-.status-pill-red {
-  background: color-mix(in srgb, var(--accent-live) 12%, transparent);
-  color: var(--accent-live);
-  border-color: color-mix(in srgb, var(--accent-live) 28%, transparent);
-}
-
-.status-pill-green {
-  background: rgba(0, 210, 190, 0.12);
-  color: #00D2BE;
-  border-color: rgba(0, 210, 190, 0.25);
-}
-
-.status-pill-amber {
-  background: rgba(255, 128, 0, 0.12);
-  color: #FF8000;
-  border-color: rgba(255, 128, 0, 0.25);
-}
-
-.status-pill-slate {
-  background: var(--bg-surface);
-  color: var(--text-muted);
-  border-color: var(--border);
-}
+.status-pill-red   { color: var(--ink);     border-color: var(--hairline-strong); }
+.status-pill-green { color: var(--success); border-color: rgba(95, 166, 87, 0.4); }
+.status-pill-amber { color: var(--warning); border-color: rgba(212, 160, 23, 0.4); }
+.status-pill-slate { color: var(--muted);   border-color: var(--hairline); }
 
 .weekend-spotlight {
   position: relative;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
 }
 
 .data-freshness-card {
@@ -203,11 +375,9 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border: 1px solid rgba(159, 176, 200, 0.18);
-  border-radius: 8px;
-  background:
-    linear-gradient(90deg, rgba(46, 196, 182, 0.08), color-mix(in srgb, var(--accent-live) 5%, transparent)),
-    var(--bg-card);
+  border: 1px solid var(--hairline);
+  border-radius: 0;
+  background: transparent;
   padding: 1rem 1.15rem;
 }
 
@@ -222,477 +392,275 @@ h1, h2, h3, h4, h5, h6 {
 .data-freshness-meta span {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--glass-border);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-secondary);
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   padding: 0.38rem 0.7rem;
 }
 
-/* Race report outer container — flat surface, no drop-shadow, no
- * gradient overlay (redesign 2026-05).  Border is the single visual
- * boundary. */
+/* Race report container. */
 .report-shell {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
 }
-
 .report-panel {
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
   padding: 1rem;
 }
-
 .report-panel-muted {
-  border-radius: 8px;
-  border: 1px dashed var(--border);
+  border-radius: 0;
+  border: 1px dashed var(--hairline);
   padding: 1rem;
-  color: var(--text-muted);
-  background: var(--bg-surface);
+  color: var(--muted);
+  background: transparent;
 }
-
 .report-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 0.95rem;
-  border-radius: 8px;
-  background: var(--bg-surface);
+  border-radius: 0;
+  background: transparent;
+  border-bottom: 1px solid var(--hairline);
 }
 
-/* Position badges */
+/* Position badges — Bugatti restyle. Podium 1/2/3 retains gold/silver/
+ * bronze as positional chromatic signal. Points / no-points go neutral. */
 .position-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 32px;
   height: 28px;
-  border-radius: 6px;
+  border-radius: 0;
+  font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--hairline);
+  background: transparent;
 }
-.position-badge.p1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #1A1A28; }
-.position-badge.p2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: #1A1A28; }
-.position-badge.p3 { background: linear-gradient(135deg, #CD7F32, #B06820); color: #1A1A28; }
-.position-badge.points { background: color-mix(in srgb, var(--accent-live) 12%, transparent); color: var(--accent-live); }
-.position-badge.no-points { background: var(--glass-bg); color: var(--text-muted); }
+.position-badge.p1 { color: var(--accent-podium-1); border-color: var(--accent-podium-1); }
+.position-badge.p2 { color: var(--accent-podium-2); border-color: var(--accent-podium-2); }
+.position-badge.p3 { color: var(--accent-podium-3); border-color: var(--accent-podium-3); }
+.position-badge.points { color: var(--ink); border-color: var(--hairline-strong); }
+.position-badge.no-points { color: var(--muted); border-color: var(--hairline); }
 
-.podium-1 { color: #FFD700; }
-.podium-2 { color: #C0C0C0; }
-.podium-3 { color: #CD7F32; }
+.podium-1 { color: var(--accent-podium-1); }
+.podium-2 { color: var(--accent-podium-2); }
+.podium-3 { color: var(--accent-podium-3); }
 
-/* Team color bar */
-.team-color-bar { width: 3px; border-radius: 99px; flex-shrink: 0; }
+/* Team color bar — KEEP AS-IS (the only legitimate team-color motif). */
+.team-color-bar { width: 3px; flex-shrink: 0; }
+.team-stripe { border-left: 3px solid var(--team-color, var(--ink)); }
 
-/* Tab buttons */
+/* Tabs. */
 .tab-button {
-  padding: 10px 20px;
+  padding: 12px 24px;
+  font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  font-weight: 400;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition: color 180ms ease, border-color 180ms ease;
 }
-.tab-button:hover { color: var(--text); background: var(--glass-bg); }
+.tab-button:hover { color: var(--body); }
 .tab-button.active {
-  color: var(--accent-live);
-  background: color-mix(in srgb, var(--accent-live) 8%, transparent);
-  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 
-/* Metric card */
+/* Metric card. */
 .metric-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  padding: 16px;
-  transition: border-color 0.2s ease;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 0;
+  padding: 24px;
 }
-.metric-card:hover { border-color: color-mix(in srgb, var(--accent-live) 15%, transparent); }
 
-/* Section heading — flat type, no vertical accent bar (the bar was a
- * Linear-style decoration we no longer use; section breaks now lean
- * on whitespace + bold weight). */
+/* Section heading — Bugatti display-md. */
 .section-heading {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 0.0625em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 24px;
 }
 
-/* Progress bar */
+/* Progress bar — white fill on hairline track. */
 .progress-bar {
   width: 100%;
-  height: 6px;
-  background: var(--glass-bg);
-  border-radius: 99px;
+  height: 2px;
+  background: var(--hairline);
+  border-radius: 0;
   overflow: hidden;
 }
 .progress-bar-fill {
   height: 100%;
-  border-radius: 99px;
+  background: var(--ink);
+  border-radius: 0;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Visualization images — flat surface, no scale-on-hover, no shadow trail */
+/* Visualisation images / placeholders. */
 .viz-image {
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  transition: border-color 0.15s ease;
-  background: var(--surface);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  transition: border-color 180ms ease;
+  background: var(--canvas);
 }
-.viz-image:hover {
-  border-color: var(--border-strong);
+.viz-image:hover { border-color: var(--hairline-strong); }
+
+.viz-placeholder {
+  background: transparent;
+  border: 1px dashed var(--hairline);
+  border-radius: 0;
+  padding: 2rem;
+  text-align: center;
 }
 
-/* Visualization command-center — minimal flat surface (was a multi-layer
- * radial-gradient with brand-red + blue glow halos.  Redesign 2026-05.) */
-.viz-command-center {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+/* Gradient text — flat passthrough. */
+.gradient-text { color: var(--ink); }
+
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }
 
-.viz-kicker {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent-live);
-  margin-bottom: 0.35rem;
-}
-
-.viz-metric-tile {
-  border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 12px 14px;
-}
-
-.viz-metric-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-
-.viz-metric-value {
-  margin-top: 2px;
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1.1;
-}
-
-.viz-category-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 1px solid;
-  border-radius: 999px;
-  padding: 0.38rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.viz-count-pill {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.3rem 0.65rem;
-}
-
-.viz-insight-list {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.viz-insight-item {
-  border-radius: 8px;
-  border: 1px dashed var(--border);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 0.55rem 0.75rem;
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.viz-card-pro {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  padding: 0.85rem;
-  cursor: default;
-  transition: border-color 0.15s ease;
-}
-
-.viz-card-pro:hover {
-  border-color: var(--border-strong);
-}
-
-.viz-card-featured {
-  border-color: var(--border-accent);
-  background: var(--surface);
-}
-
-.viz-card-media-wrap {
-  position: relative;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.viz-card-media {
-  width: 100%;
-  display: block;
-  object-fit: contain;
-  background: var(--bg-surface);
-}
-
-.viz-card-featured .viz-card-media {
-  min-height: 280px;
-  max-height: 520px;
-}
-
-.viz-card-body {
-  padding: 0.6rem 0.25rem 0.3rem;
-}
-
-.viz-rank-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 800;
-  color: #111827;
-  background: linear-gradient(135deg, #ffd166, #ff9f1c);
-}
-
-/* Weekend results container — flat surface, no radial gradients, no
- * drop shadow (redesign 2026-05). */
+/* Weekend results. */
 .weekend-results-shell {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
 }
 
 .session-tab-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0;
+  border-bottom: 1px solid var(--hairline);
 }
 
-/* Session tab — flat surface, single border, subtle hover.  No
- * translateY lift; active state uses a stronger border + accent
- * underline instead of a gradient overlay. */
 .session-tab {
   display: flex;
-  min-height: 96px;
+  min-height: 80px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.55rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  padding: 0.9rem;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--hairline);
+  background: transparent;
+  padding: 16px 20px;
   text-align: left;
   position: relative;
-  transition: border-color 0.15s ease;
+  transition: background-color 180ms ease;
 }
-
-.session-tab:hover {
-  border-color: var(--border-strong);
-}
-
+.session-tab:last-child { border-right: none; }
+.session-tab:hover { background: var(--surface-card); }
 .session-tab.active {
-  border-color: var(--accent-live);
+  background: var(--surface-card);
 }
-
 .session-tab.active::after {
-  /* 2px accent underline along the bottom edge of the active tab —
-   * replaces the gradient overlay with a precise, low-noise
-   * affordance. */
   content: "";
   position: absolute;
-  left: 12px;
-  right: 12px;
+  left: 0;
+  right: 0;
   bottom: -1px;
   height: 2px;
-  background: var(--accent-live);
-  border-radius: 2px;
+  background: var(--ink);
 }
-
 .session-tab-short {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 2rem;
   height: 1.55rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent-live) 12%, transparent);
-  color: var(--accent-live);
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid var(--hairline-strong);
+  color: var(--ink);
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   font-feature-settings: "tnum";
+  padding: 0 0.4rem;
 }
-
 .session-tab-main {
-  color: var(--text-primary);
+  color: var(--ink);
+  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   line-height: 1.2;
 }
 
 .session-detail-card {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  padding: 1rem;
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  padding: 24px;
 }
-
 .session-podium-card {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  padding: 0.9rem;
+  border-radius: 0;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  padding: 16px;
 }
-
 .session-results-table {
   width: 100%;
   min-width: 780px;
   border-collapse: collapse;
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: 14px;
 }
-
 .session-results-table th {
-  border-bottom: 1px solid var(--border);
-  color: var(--text-muted);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--muted);
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 12px 16px;
   text-align: left;
 }
-
 .session-results-table td {
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 0.75rem;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--body);
+  padding: 12px 16px;
   vertical-align: middle;
 }
 
-.session-results-table tr:hover td {
-  background: rgba(255, 255, 255, 0.025);
-}
-
-.viz-workbench {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 1rem;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--accent-live) 18%, transparent);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 44%),
-    var(--bg-card);
-  padding: 1rem;
-}
-
-.viz-stage {
-  min-width: 0;
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.16);
-  padding: 1rem;
-}
-
-.viz-stage-image {
-  display: block;
-  width: 100%;
-  max-height: 660px;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: var(--bg-surface);
-}
-
-.viz-rail {
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: var(--bg-surface);
-  padding: 0.85rem;
-  max-height: 760px;
-  overflow: auto;
-}
-
-.viz-rail-button {
-  display: flex;
-  width: 100%;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.7rem;
-  text-align: left;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.viz-rail-button:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.viz-rail-button.active {
-  border-color: color-mix(in srgb, var(--accent-live) 28%, transparent);
-  background: color-mix(in srgb, var(--accent-live) 8%, transparent);
-}
-
-.viz-rail-title {
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.25;
-}
-
-.viz-rail-source {
-  flex-shrink: 0;
-  color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Lightbox */
+/* Lightbox. */
 .lightbox-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -703,94 +671,33 @@ h1, h2, h3, h4, h5, h6 {
 .lightbox-image {
   max-width: 95vw;
   max-height: 92vh;
-  border-radius: 8px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  border-radius: 0;
   cursor: default;
   object-fit: contain;
 }
 
-/* Dropdown menu */
+/* Dropdown menu — flat surface, no shadow, no slide-down. */
 .dropdown-menu {
-  background: var(--bg-card-solid);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4);
-  animation: slideDown 0.15s ease;
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: 0;
+  animation: fadeIn 0.15s ease;
 }
 
-/* Loading states */
+/* Loading states. */
 .loading-pulse { animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 .skeleton {
-  background: linear-gradient(90deg, var(--bg-surface), var(--glass-bg), var(--bg-surface));
-  background-size: 200% 100%;
+  background: var(--hairline);
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 6px;
+  border-radius: 0;
 }
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Gradient text — retired in 2026-05 redesign.  Class kept as a flat
- * passthrough so any lingering JSX using `className="gradient-text"`
- * continues to render in the primary text colour during migration. */
-.gradient-text {
-  color: var(--text-primary);
-}
-
-.stat-number {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-}
-
-/* Viz placeholder */
-.viz-placeholder {
-  background: var(--bg-surface);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  transition: border-color 0.2s ease;
-}
-.viz-placeholder:hover { border-color: color-mix(in srgb, var(--accent-live) 20%, transparent); }
-
-/* News card */
-.news-card {
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  padding: 20px;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.news-card:hover {
-  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-/* Video card */
-.video-card {
-  background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.2s ease;
-}
-.video-card:hover {
-  border-color: color-mix(in srgb, var(--accent-live) 20%, transparent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
 }
 
 @keyframes fadeIn {
@@ -798,202 +705,29 @@ h1, h2, h3, h4, h5, h6 {
   to { opacity: 1; }
 }
 
-:focus-visible {
-  outline: 2px solid var(--accent-live);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* ─────────────────────────────────────────────────────────────────────
- * Cinematic overhaul utilities (supersedes the 2026-05 flat constraints).
- * Use these via className.  Team-aware utilities resolve --team-color
- * from either a [data-team="..."] ancestor or an inline style override.
- * ───────────────────────────────────────────────────────────────────── */
-.team-glow {
-  box-shadow: 0 0 24px color-mix(in srgb, var(--team-color, var(--accent-live)) 45%, transparent),
-              0 0 48px color-mix(in srgb, var(--team-color, var(--accent-live)) 18%, transparent);
-}
-.team-tint-bg {
-  background: color-mix(in srgb, var(--team-color, var(--accent-live)) 14%, var(--surface));
-}
-.team-tint-bg-strong {
-  background: color-mix(in srgb, var(--team-color, var(--accent-live)) 28%, var(--surface));
-}
-.team-stripe {
-  border-left: 3px solid var(--team-color, var(--accent-live));
-}
-.team-gradient {
-  background: linear-gradient(135deg,
-    color-mix(in srgb, var(--team-color, var(--accent-live)) 26%, var(--surface)) 0%,
-    var(--surface) 65%,
-    color-mix(in srgb, var(--team-color, var(--accent-live)) 6%, var(--surface)) 100%);
-}
-.scanline-overlay {
-  position: relative;
-}
-.scanline-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--gradient-scanline);
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  opacity: 0.7;
-}
+/* Legacy back-compat — JSX still referencing .hud-frame / .hud-frame-strong /
+ * .hud-corner-notch from before the Bugatti redesign. They resolve to the
+ * Bugatti flat-panel look. Once JSX is fully migrated these can be deleted. */
 .hud-frame {
-  position: relative;
-  background: var(--surface);
-  box-shadow: var(--shadow-hud);
-  border: 1px solid var(--border-strong);
-  border-radius: 12px;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: 0;
 }
 .hud-frame-strong {
-  background: linear-gradient(180deg, var(--surface-elevated) 0%, var(--surface) 100%);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 0;
 }
-.hud-corner-notch {
-  clip-path: polygon(
-    14px 0,
-    100% 0,
-    100% calc(100% - 14px),
-    calc(100% - 14px) 100%,
-    0 100%,
-    0 14px
-  );
-}
-.hud-kicker {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent-live);
-}
-.telemetry-strip {
-  position: relative;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    var(--accent-live) 20%,
-    var(--accent-live) 80%,
-    transparent 100%);
-  transform-origin: left center;
-  animation: telemetry-strip-draw 600ms var(--ease-pit) both;
-}
-@keyframes telemetry-strip-draw {
-  from { transform: scaleX(0); opacity: 0; }
-  to   { transform: scaleX(1); opacity: 1; }
-}
+.hud-corner-notch { /* no clip-path; Bugatti uses rectangular surfaces. */ }
 
-/* ── Race-lights grid (5 panels of 4 bulbs) ──────────────────────── */
-.lights-out-grid {
-  display: inline-flex;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  background: #050608;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.lights-out-panel {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
-  padding: 6px;
-  border-radius: 4px;
-  background: #0c0d10;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-}
-.lights-out-bulb {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: #1a1d22;
-  transition: background 80ms linear, box-shadow 120ms linear;
-}
-.lights-out-bulb.on {
-  background: var(--hud-red-light);
-  box-shadow: 0 0 8px rgba(255, 24, 1, 0.85),
-              0 0 18px rgba(255, 24, 1, 0.55);
-}
-
-/* ── Sector colours used by SectorBadge ──────────────────────────── */
-.sector-green   { background: rgba(34, 197, 94, 0.18); color: var(--hud-green); border: 1px solid rgba(34, 197, 94, 0.32); }
-.sector-yellow  { background: var(--hud-yellow-soft); color: var(--hud-yellow); border: 1px solid rgba(250, 204, 21, 0.32); }
-.sector-purple  { background: var(--hud-purple-soft); color: var(--hud-purple); border: 1px solid rgba(180, 92, 255, 0.36); }
-.sector-neutral { background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border); }
-
-/* ── Card surface variants (cinematic) ───────────────────────────── */
-.card-glow {
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-elevated);
-  transition: box-shadow var(--dur-base) var(--ease-pit), border-color var(--dur-snap) ease;
-}
-.card-glow:hover {
-  box-shadow: var(--glow-accent), var(--shadow-elevated);
-  border-color: var(--accent-live);
-}
-.card-paddock {
-  background: linear-gradient(135deg,
-    color-mix(in srgb, var(--team-color, var(--accent-live)) 26%, var(--surface)) 0%,
-    var(--surface) 65%,
-    color-mix(in srgb, var(--team-color, var(--accent-live)) 6%, var(--surface)) 100%);
-  border: 1px solid color-mix(in srgb, var(--team-color, var(--accent-live)) 30%, var(--border));
-  border-radius: 14px;
-  transition: box-shadow var(--dur-base) var(--ease-pit), transform var(--dur-snap) var(--ease-drs), border-color var(--dur-snap) ease;
-}
-.card-paddock:hover {
-  box-shadow: var(--glow-team);
-  transform: translateY(-2px);
-  border-color: var(--team-color, var(--accent-live));
-}
-
-/* ── Animated underline used by tab navigation ───────────────────── */
-.cinema-underline {
-  position: relative;
-}
-.cinema-underline::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: -2px;
-  height: 2px;
-  background: var(--accent-live);
-  box-shadow: 0 0 12px var(--accent-live);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform var(--dur-snap) var(--ease-pit);
-}
-.cinema-underline.active::after {
-  transform: scaleX(1);
-}
-
-/* ── Deep dive accordion summary cinematic bar ──────────────────── */
-.deep-dive-section > summary.deep-dive-summary::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) scaleX(0);
-  transform-origin: left center;
-  width: 4px;
-  height: 60%;
-  background: var(--accent-live);
-  border-radius: 2px;
-  transition: transform var(--dur-snap) var(--ease-pit);
-}
-.deep-dive-section > summary.deep-dive-summary {
-  position: relative;
-}
-.deep-dive-section > summary.deep-dive-summary:hover::before,
-.deep-dive-section[open] > summary.deep-dive-summary::before {
-  transform: translateY(-50%) scaleX(1);
-}
+/* Sector badges — neutral; semantic distinction comes from text alone. */
+.sector-green   { color: var(--success); border: 1px solid rgba(95, 166, 87, 0.4); background: transparent; }
+.sector-yellow  { color: var(--warning); border: 1px solid rgba(212, 160, 23, 0.4); background: transparent; }
+.sector-purple  { color: var(--link);    border: 1px solid var(--hairline-strong);   background: transparent; }
+.sector-neutral { color: var(--muted);   border: 1px solid var(--hairline);         background: transparent; }
 
 /* ─────────────────────────────────────────────────────────────────────
- * prefers-reduced-motion — global parity guard.  Every effect must
- * have a static equivalent that still looks deliberate.
+ * prefers-reduced-motion — global parity guard.
  * ───────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1002,9 +736,6 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .lights-out-grid .lights-out-bulb { opacity: 0.25; }
-  .scanline-overlay::after { display: none !important; }
-  .telemetry-strip { transform: scaleX(1); animation: none; }
 }
 
 @media (max-width: 640px) {
@@ -1012,7 +743,6 @@ h1, h2, h3, h4, h5, h6 {
     align-items: flex-start;
     flex-direction: column;
   }
-
   .data-freshness-meta {
     justify-content: flex-start;
     min-width: 0;
@@ -1023,26 +753,25 @@ h1, h2, h3, h4, h5, h6 {
   .session-tab-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .viz-workbench {
-    grid-template-columns: 1fr;
-  }
-
-  .viz-rail {
-    max-height: none;
-  }
 }
 
 @media (max-width: 640px) {
   .session-tab-grid {
     grid-template-columns: 1fr;
   }
-
   .session-tab {
     min-height: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
   }
-
   .session-podium-card {
     align-items: flex-start;
+  }
+  .hero-photo-band {
+    padding: 64px 16px;
+  }
+  .section-bugatti {
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
 }

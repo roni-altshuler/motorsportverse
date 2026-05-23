@@ -18,55 +18,22 @@ const YOUTUBE_CHANNELS = [
 export default function Footer() {
   return (
     <footer
-      className="border-t mt-12 relative"
-      style={{ borderColor: "var(--border)", background: "var(--bg)" }}
+      className="mt-24 border-t"
+      style={{ borderColor: "var(--hairline)", background: "var(--canvas)" }}
     >
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(225, 6, 0, 0.3), transparent)",
-        }}
-      />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 bg-f1-red rounded-lg flex items-center justify-center font-black text-white text-xs shadow-lg shadow-f1-red/20">
-                F1
-              </div>
-              <div>
-                <p
-                  className="text-sm font-bold"
-                  style={{ color: "var(--text)" }}
-                >
-                  {DEFAULT_SEASON_YEAR} Predictions
-                </p>
-                <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                  AI-Powered Forecasts
-                </p>
-              </div>
-            </div>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "var(--text-muted)" }}
-            >
-              ML-powered Formula 1 race predictions using XGBoost,
-              GradientBoosting, and LSTM models trained on FastF1 telemetry
-              data.
+            <p className="wordmark mb-4">F1 {DEFAULT_SEASON_YEAR} PREDICTIONS</p>
+            <p className="body-sm" style={{ color: "var(--muted)" }}>
+              Race-by-race classification forecasts, championship standings, pit strategy
+              and weekend telemetry — published every Grand Prix weekend.
             </p>
           </div>
 
-          {/* Navigation */}
           <div>
-            <h4
-              className="text-xs font-bold uppercase tracking-wider mb-4"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Navigation
-            </h4>
-            <div className="space-y-2.5">
+            <h4 className="eyebrow mb-4">Navigation</h4>
+            <div className="flex flex-col gap-3">
               {[
                 { href: "/", label: "Home" },
                 { href: "/calendar", label: "Season Calendar" },
@@ -77,8 +44,8 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block text-sm transition-colors hover:text-f1-red"
-                  style={{ color: "var(--text-muted)" }}
+                  className="body-sm transition-colors hover:text-[color:var(--ink)]"
+                  style={{ color: "var(--muted)" }}
                 >
                   {link.label}
                 </Link>
@@ -86,23 +53,17 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* F1 News */}
           <div>
-            <h4
-              className="text-xs font-bold uppercase tracking-wider mb-4"
-              style={{ color: "var(--text-muted)" }}
-            >
-              F1 News
-            </h4>
-            <div className="space-y-2.5">
+            <h4 className="eyebrow mb-4">F1 News</h4>
+            <div className="flex flex-col gap-3">
               {NEWS_OUTLETS.map((outlet) => (
                 <a
                   key={outlet.name}
                   href={outlet.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-sm transition-colors hover:text-f1-red"
-                  style={{ color: "var(--text-muted)" }}
+                  className="body-sm transition-colors hover:text-[color:var(--ink)]"
+                  style={{ color: "var(--muted)" }}
                 >
                   {outlet.name}
                 </a>
@@ -110,91 +71,44 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* YouTube & Tech */}
           <div>
-            <h4
-              className="text-xs font-bold uppercase tracking-wider mb-4"
-              style={{ color: "var(--text-muted)" }}
-            >
-              YouTube Channels
-            </h4>
-            <div className="space-y-2.5 mb-6">
+            <h4 className="eyebrow mb-4">YouTube</h4>
+            <div className="flex flex-col gap-3">
               {YOUTUBE_CHANNELS.map((ch) => (
                 <a
                   key={ch.name}
                   href={ch.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm transition-colors hover:text-f1-red"
-                  style={{ color: "var(--text-muted)" }}
+                  className="body-sm transition-colors hover:text-[color:var(--ink)]"
+                  style={{ color: "var(--muted)" }}
                 >
-                  <svg
-                    className="w-4 h-4 flex-shrink-0"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
                   {ch.name}
                 </a>
-              ))}
-            </div>
-
-            <h4
-              className="text-xs font-bold uppercase tracking-wider mb-3"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Tech Stack
-            </h4>
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                "XGBoost",
-                "LSTM",
-                "FastF1",
-                "Next.js",
-                "React",
-                "Tailwind",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 text-xs rounded-full font-medium"
-                  style={{
-                    background: "var(--bg-surface)",
-                    color: "var(--text-muted)",
-                    border: "1px solid var(--glass-border)",
-                  }}
-                >
-                  {tag}
-                </span>
               ))}
             </div>
           </div>
         </div>
 
         <div
-          className="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs"
-          style={{
-            borderTop: "1px solid var(--border)",
-            color: "var(--text-muted)",
-          }}
+          className="mt-16 pt-6 flex flex-col items-center gap-6 hairline-divider-top"
+          style={{ color: "var(--muted-soft)" }}
         >
-          <span>
-            &copy; {DEFAULT_SEASON_YEAR} F1 Predictions. Not affiliated with Formula 1.
-          </span>
-          <div className="flex items-center gap-4">
-            <span>Data via FastF1 API</span>
-            <span>&middot;</span>
-            <span>Weather via Open-Meteo</span>
-            <span>&middot;</span>
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
+            <span className="body-sm">
+              &copy; {DEFAULT_SEASON_YEAR} F1 Predictions. Not affiliated with Formula 1.
+            </span>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-f1-red transition-colors"
+              className="body-sm transition-colors hover:text-[color:var(--ink)]"
+              style={{ color: "var(--muted)" }}
             >
               GitHub
             </a>
           </div>
+          <p className="wordmark" style={{ color: "var(--body)" }}>F1 PREDICTIONS</p>
         </div>
       </div>
     </footer>

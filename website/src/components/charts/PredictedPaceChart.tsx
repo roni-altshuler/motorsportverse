@@ -32,25 +32,26 @@ function TooltipBody({ active, payload }: { active?: boolean; payload?: Array<{ 
   const row = payload[0].payload;
   return (
     <div
-      className="rounded-[8px] border p-3 shadow-lg"
+      className="rounded-none border p-3"
       style={{
-        background: "var(--surface-elevated)",
-        borderColor: "var(--border-strong)",
+        background: "var(--surface-card)",
+        borderColor: "var(--hairline)",
+        fontFamily: "var(--font-mono)",
       }}
     >
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex items-center gap-2 mb-2">
         <span
-          className="inline-block h-2 w-3 rounded-[2px]"
+          className="inline-block h-2 w-3 rounded-none"
           style={{ background: row.teamColor }}
           aria-hidden
         />
-        <span className="font-bold text-[color:var(--text-primary)]">{row.driver}</span>
-        <span className="text-xs text-[color:var(--text-muted)]">{row.team}</span>
+        <span className="title-sm">{row.driver}</span>
+        <span className="eyebrow">{row.team}</span>
       </div>
-      <div className="font-mono font-tabular text-xl font-bold text-[color:var(--accent-live)]">
+      <div className="font-mono font-tabular text-xl text-[color:var(--ink)]">
         {row.predictedTime.toFixed(3)}s
       </div>
-      <div className="text-xs text-[color:var(--text-muted)] mt-1">
+      <div className="eyebrow mt-2">
         Gap to leader: <span className="font-mono">+{(row.gapMs / 1000).toFixed(3)}s</span>
       </div>
     </div>

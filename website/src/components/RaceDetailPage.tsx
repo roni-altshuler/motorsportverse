@@ -318,8 +318,32 @@ export default function RaceDetailPage({ round }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tyreDegData = (data as any).tyreDegData;
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const heroTrackMap = `${basePath}/visualizations/round_${String(data.round).padStart(2, "0")}/track_map.webp`;
+
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
+    <div>
+      {/* Bugatti hero photo band — full-bleed track-map backdrop. */}
+      <section className="hero-photo-band">
+        <div
+          aria-hidden
+          className="hero-photo-band__image"
+          style={{ backgroundImage: `url("${heroTrackMap}")` }}
+        />
+        <div aria-hidden className="hero-photo-band__scrim" />
+        <div className="hero-photo-band__content max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="eyebrow mb-4">Round {String(data.round).padStart(2, "0")}</p>
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+            <CountryFlag country={data.gpKey} size={48} />
+            <h1 className="display-xl">{data.name}</h1>
+          </div>
+          <p className="body-md text-[color:var(--body-strong)] max-w-2xl mx-auto">
+            {data.circuit} · {formatDate(data.date)}
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
       {/* Lightbox */}
       {lightboxImg && (
         <div className="lightbox-overlay" onClick={() => setLightboxImg(null)}>
@@ -1536,6 +1560,7 @@ export default function RaceDetailPage({ round }: Props) {
             Next Round <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
           </Link>
         )}
+      </div>
       </div>
     </div>
   );

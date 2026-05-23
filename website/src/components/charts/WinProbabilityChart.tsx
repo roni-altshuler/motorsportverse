@@ -76,22 +76,23 @@ function CustomTooltip({ active, payload }: TooltipPayload) {
   const row = payload[0].payload;
   return (
     <div
-      className="rounded-[8px] border p-3 shadow-lg"
+      className="rounded-none border p-3"
       style={{
-        background: "var(--surface-elevated)",
-        borderColor: "var(--border-strong)",
+        background: "var(--surface-card)",
+        borderColor: "var(--hairline)",
+        fontFamily: "var(--font-mono)",
       }}
     >
-      <div className="mb-1 flex items-center gap-2">
+      <div className="mb-2 flex items-center gap-2">
         <span
-          className="inline-block h-2 w-3 rounded-[2px]"
+          className="inline-block h-2 w-3 rounded-none"
           style={{ background: row.teamColor }}
           aria-hidden
         />
-        <span className="font-bold text-[color:var(--text-primary)]">{row.driver}</span>
-        <span className="text-xs text-[color:var(--text-muted)]">{row.team}</span>
+        <span className="title-sm">{row.driver}</span>
+        <span className="eyebrow">{row.team}</span>
       </div>
-      <div className="font-mono font-tabular text-2xl font-bold text-[color:var(--accent-live)]">
+      <div className="title-md font-mono font-tabular text-[color:var(--ink)]">
         {row.winProbability.toFixed(1)}%
       </div>
       {row.simulatorWinProbability !== null && (
@@ -144,22 +145,22 @@ export default function WinProbabilityChart({
               <XAxis
                 type="number"
                 domain={[0, "dataMax"]}
-                tick={{ fill: "var(--text-muted)", fontSize: 11 }}
-                axisLine={{ stroke: "var(--border)" }}
+                tick={{ fill: "var(--muted)", fontSize: 11, fontFamily: "var(--font-mono)", letterSpacing: "2px" }}
+                axisLine={{ stroke: "var(--hairline)" }}
                 tickFormatter={(v) => `${v.toFixed(0)}%`}
               />
               <YAxis
                 type="category"
                 dataKey="driver"
-                tick={{ fill: "var(--text-secondary)", fontSize: 12, fontWeight: 700 }}
+                tick={{ fill: "var(--body)", fontSize: 12, fontFamily: "var(--font-mono)", letterSpacing: "1px" }}
                 width={64}
-                axisLine={{ stroke: "var(--border)" }}
+                axisLine={{ stroke: "var(--hairline)" }}
               />
               <Tooltip
                 content={<CustomTooltip />}
-                cursor={{ fill: "color-mix(in srgb, var(--accent-live) 10%, transparent)" }}
+                cursor={{ fill: "rgba(255,255,255,0.04)" }}
               />
-              <Bar dataKey="winProbability" radius={[0, 4, 4, 0]}>
+              <Bar dataKey="winProbability" radius={[0, 0, 0, 0]}>
                 {rows.map((row) => (
                   <Cell key={row.driver} fill={row.teamColor} />
                 ))}

@@ -1,29 +1,29 @@
 /**
- * Stat — telemetry-style numeric display.
+ * Stat — Bugatti redesign.
  *
- * Pairs a tabular-figures monospace value with an uppercase tracked label.
- * The intended use is dashboards: lap deltas, win-probabilities, pit-loss
- * seconds, gap-to-leader, etc.  Use the `tone` prop to colour positive
- * deltas (green) or negative deltas (red).
+ * Spec-cell pattern: transparent + hairline divider, label in eyebrow
+ * (mono uppercase), value in title-md (Saira Display) + tabular figures.
+ * Tone variants collapse to hairline borders — chromatic distinction comes
+ * from semantic tokens (success, link, etc.) on the value text only.
  */
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 const statVariants = cva(
-  "flex flex-col gap-1 rounded-[8px] border border-[color:var(--border)] bg-[color:var(--surface-elevated)] p-3",
+  "flex flex-col gap-2 border border-[color:var(--hairline)] bg-transparent rounded-none",
   {
     variants: {
       tone: {
         default: "",
-        positive: "border-[color:color-mix(in_srgb,var(--accent-positive)_28%,transparent)]",
-        negative: "border-[color:color-mix(in_srgb,var(--accent-negative)_28%,transparent)]",
-        live: "border-[color:var(--border-accent)]",
+        positive: "",
+        negative: "",
+        live: "",
       },
       size: {
-        sm: "p-2.5",
-        md: "p-3",
-        lg: "p-4",
+        sm: "p-3",
+        md: "p-4",
+        lg: "p-6",
       },
     },
     defaultVariants: {
@@ -36,13 +36,13 @@ const statVariants = cva(
 const valueColor = (tone: StatProps["tone"]) => {
   switch (tone) {
     case "positive":
-      return "text-[color:var(--accent-positive)]";
+      return "text-[color:var(--success)]";
     case "negative":
-      return "text-[color:var(--accent-negative)]";
+      return "text-[color:var(--muted)]";
     case "live":
-      return "text-[color:var(--accent-live)]";
+      return "text-[color:var(--ink)]";
     default:
-      return "text-[color:var(--text-primary)]";
+      return "text-[color:var(--ink)]";
   }
 };
 
@@ -57,19 +57,17 @@ export interface StatProps
 export function Stat({ label, value, hint, tone, size, className, ...props }: StatProps) {
   return (
     <div className={cn(statVariants({ tone, size }), className)} {...props}>
-      <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
-        {label}
-      </div>
+      <div className="eyebrow">{label}</div>
       <div
         className={cn(
-          "font-mono font-tabular text-2xl font-extrabold leading-none tracking-tight",
+          "title-md font-tabular leading-none",
           valueColor(tone),
         )}
       >
         {value}
       </div>
       {hint ? (
-        <div className="text-[11px] text-[color:var(--text-muted)]">{hint}</div>
+        <div className="body-sm text-[color:var(--muted)]">{hint}</div>
       ) : null}
     </div>
   );

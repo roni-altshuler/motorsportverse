@@ -1,27 +1,31 @@
 /**
- * Card — shadcn-style surface primitive, theme-aware via design tokens.
+ * Card — Bugatti redesign.
  *
- * Cinematic overhaul (2026-05+): added `surface` variants for the
- * motorsport visual language while keeping the legacy `flat` default
- * 100% backwards compatible.  `paddock` resolves --team-color from
- * either an inline style prop or a [data-team] ancestor.
+ * Surface variants collapse to two:
+ *   - flat (default): surface-card + hairline border + 0 radius
+ *   - photo: canvas background, used for full-bleed photo card layouts
+ *
+ * The `glow`/`hud`/`paddock` variants are kept in the variant enum (so call
+ * sites compile) but route to the `flat` surface — the Bugatti aesthetic
+ * has no glow, no HUD frame, no team-color gradient backdrop.
  */
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 const cardVariants = cva(
-  "rounded-[12px] text-[color:var(--text-primary)] transition-[border-color,box-shadow,transform] duration-200",
+  "rounded-none text-[color:var(--ink)] transition-colors duration-200",
   {
     variants: {
       surface: {
-        flat: "border border-[color:var(--border)] bg-[color:var(--surface)]",
-        glow: "card-glow",
-        hud: "hud-frame",
-        paddock: "card-paddock",
+        flat:    "border border-[color:var(--hairline)] bg-[color:var(--surface-card)]",
+        photo:   "border-none bg-[color:var(--canvas)]",
+        glow:    "border border-[color:var(--hairline)] bg-[color:var(--surface-card)]",
+        hud:     "border border-[color:var(--hairline)] bg-[color:var(--surface-card)]",
+        paddock: "border border-[color:var(--hairline)] bg-[color:var(--surface-card)]",
       },
       interactive: {
-        true: "cursor-pointer",
+        true: "cursor-pointer hover:border-[color:var(--hairline-strong)]",
         false: "",
       },
     },
@@ -56,7 +60,7 @@ Card.displayName = "Card";
 
 export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-1.5 p-6", className)} {...props} />
+    <div ref={ref} className={cn("flex flex-col gap-2 p-6", className)} {...props} />
   ),
 );
 CardHeader.displayName = "CardHeader";
@@ -67,7 +71,7 @@ export const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("text-lg font-semibold leading-tight tracking-tight", className)}
+    className={cn("title-md", className)}
     {...props}
   />
 ));
@@ -79,7 +83,7 @@ export const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-[color:var(--text-muted)]", className)}
+    className={cn("body-sm text-[color:var(--muted)]", className)}
     {...props}
   />
 ));

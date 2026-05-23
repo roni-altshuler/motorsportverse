@@ -80,28 +80,17 @@ export default function AccuracyDashboardPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
-      {/* Header */}
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
       <motion.div
-        className="mb-10 text-center"
+        className="mb-16 text-center"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <p
-          className="text-xs font-bold tracking-[0.3em] uppercase mb-2"
-          style={{ color: "#E10600" }}
-        >
-          Model Performance
-        </p>
-        <h1
-          className="text-3xl sm:text-4xl font-black mb-2"
-          style={{ color: "var(--text)" }}
-        >
-          Prediction Accuracy
-        </h1>
-        <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          Track how our ML model predictions compare to actual race results
+        <p className="eyebrow mb-4">Model Performance</p>
+        <h1 className="display-xl mb-4">Prediction Accuracy</h1>
+        <p className="body-md text-[color:var(--muted)]">
+          Track how our model predictions compare to actual race results
           across the {seasonYear} season
         </p>
       </motion.div>

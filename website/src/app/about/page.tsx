@@ -5,78 +5,73 @@ const ACTIVE_SEASON_YEAR = String(DEFAULT_SEASON_YEAR);
 
 export default function AboutPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <div className="text-center mb-12">
-        <p className="hud-kicker mb-2">About</p>
-        <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-3">
-          The {ACTIVE_SEASON_YEAR} Predictions Board
-        </h1>
-        <p className="text-base text-[color:var(--text-muted)] max-w-2xl mx-auto">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
+      <div className="text-center mb-20">
+        <p className="eyebrow mb-4">About</p>
+        <h1 className="display-xl mb-6">The {ACTIVE_SEASON_YEAR} Predictions Board</h1>
+        <p className="body-md max-w-2xl mx-auto">
           A self-updating dashboard for the {ACTIVE_SEASON_YEAR} Formula 1 season:
           per-Grand-Prix forecasts, championship standings, head-to-head matchups,
           and post-race accuracy — all in one place.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 mb-10">
-        <div className="hud-frame p-5">
-          <p className="hud-kicker mb-2">What you get</p>
-          <ul className="space-y-2 text-sm text-[color:var(--text-secondary)]">
-            <li>· Race-by-race winner and podium forecasts</li>
-            <li>· Per-driver win and podium probabilities</li>
-            <li>· Live championship standings</li>
-            <li>· Pre-race deep dives with telemetry context</li>
-            <li>· Post-race accuracy comparison once results land</li>
+      <div className="grid gap-0 sm:grid-cols-2 mb-16">
+        <div className="row-spec sm:border-b-0 sm:pr-8 sm:border-r border-[color:var(--hairline)]">
+          <p className="eyebrow mb-3">What you get</p>
+          <ul className="body-md space-y-3 list-none pl-0">
+            <li>Race-by-race winner and podium forecasts</li>
+            <li>Per-driver win and podium probabilities</li>
+            <li>Live championship standings</li>
+            <li>Pre-race deep dives with telemetry context</li>
+            <li>Post-race accuracy comparison once results land</li>
           </ul>
         </div>
-        <div className="hud-frame p-5">
-          <p className="hud-kicker mb-2">Cadence</p>
-          <ul className="space-y-2 text-sm text-[color:var(--text-secondary)]">
-            <li>· Forecasts refresh as each weekend approaches</li>
-            <li>· Standings sync from official feeds after each round</li>
-            <li>· Visualisations regenerate post-qualifying</li>
-            <li>· Accuracy is reported as soon as classified results are available</li>
+        <div className="row-spec sm:border-b-0 sm:pl-8">
+          <p className="eyebrow mb-3">Cadence</p>
+          <ul className="body-md space-y-3 list-none pl-0">
+            <li>Forecasts refresh as each weekend approaches</li>
+            <li>Standings sync from official feeds after each round</li>
+            <li>Visualisations regenerate post-qualifying</li>
+            <li>Accuracy is reported as soon as classified results are available</li>
           </ul>
         </div>
       </div>
 
-      <section className="hud-frame p-6 sm:p-8 mb-6">
-        <p className="hud-kicker mb-2">How to use this site</p>
-        <h2 className="text-xl font-black tracking-tight mb-3">Navigation</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+      <section className="hairline-divider-top pt-12 mb-16">
+        <p className="eyebrow mb-4">How to use this site</p>
+        <h2 className="display-md mb-8">Navigation</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
-            <p className="font-bold mb-1">
-              <Link href="/" className="hover:text-[color:var(--accent-live)]">Home</Link>
+            <p className="title-md mb-2">
+              <Link href="/" className="link-bugatti">Home</Link>
             </p>
-            <p className="text-[color:var(--text-muted)]">
+            <p className="body-sm text-[color:var(--muted)]">
               The next race up, the predicted podium, and championship snapshot.
             </p>
           </div>
           <div>
-            <p className="font-bold mb-1">
-              <Link href="/calendar" className="hover:text-[color:var(--accent-live)]">Calendar</Link>
+            <p className="title-md mb-2">
+              <Link href="/calendar" className="link-bugatti">Calendar</Link>
             </p>
-            <p className="text-[color:var(--text-muted)]">
+            <p className="body-sm text-[color:var(--muted)]">
               All {ACTIVE_SEASON_YEAR} Grands Prix at a glance with status per round.
             </p>
           </div>
           <div>
-            <p className="font-bold mb-1">
-              <Link href="/standings" className="hover:text-[color:var(--accent-live)]">Standings</Link>
+            <p className="title-md mb-2">
+              <Link href="/standings" className="link-bugatti">Standings</Link>
             </p>
-            <p className="text-[color:var(--text-muted)]">
+            <p className="body-sm text-[color:var(--muted)]">
               Drivers and constructors championships, updated through the latest round.
             </p>
           </div>
         </div>
       </section>
 
-      <section
-        className="hud-frame p-6 sm:p-8"
-        style={{ borderColor: "color-mix(in srgb, var(--hud-yellow) 30%, var(--border))" }}
-      >
-        <p className="hud-kicker mb-2" style={{ color: "var(--hud-yellow)" }}>Disclaimer</p>
-        <p className="text-sm leading-relaxed text-[color:var(--text-secondary)]">
+      <section className="hairline-divider-top pt-12">
+        <p className="eyebrow mb-4" style={{ color: "var(--warning)" }}>Disclaimer</p>
+        <p className="body-md text-[color:var(--body)]">
           This site is a personal project published for educational and entertainment
           purposes. Forecasts are model outputs and should not be used for betting or
           any form of gambling. The project is not affiliated with, endorsed by, or

@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { SeasonData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
-import HUDPanel from "@/components/ui/HUDPanel";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import LoadingTire from "@/components/ui/LoadingTire";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
@@ -47,54 +46,53 @@ export default function CalendarPage() {
   ).length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header */}
-      <div className="mb-6">
-        <p className="hud-kicker mb-2">{season.season} Championship</p>
-        <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2">Season Calendar</h1>
-        <p className="text-[color:var(--text-muted)]">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
+      <div className="mb-16">
+        <p className="eyebrow mb-4">{season.season} Championship</p>
+        <h1 className="display-xl mb-4">Season Calendar</h1>
+        <p className="body-md text-[color:var(--muted)]">
           {season.totalRounds} Grand Prix · {completedCount} forecasts published · {officialCount} official result{officialCount !== 1 ? "s" : ""}
         </p>
       </div>
 
-      {/* Season Ribbon */}
       <SeasonRibbon
         calendar={season.calendar}
         completedRounds={season.completedRounds}
         actualRounds={actualSet}
       />
 
-      {/* HUD KPI strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-        <HUDPanel kicker="Forecast Coverage" intensity="subtle">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 mb-16 mt-12 hairline-divider-top">
+        <div className="row-spec sm:border-b-0 sm:pr-8 sm:border-r border-[color:var(--hairline)]">
+          <p className="eyebrow mb-3">Forecast Coverage</p>
           <div className="flex items-baseline gap-2">
             <AnimatedNumber value={completedCount} variant="huge" />
-            <span className="text-lg text-[color:var(--text-muted)]">/ {season.totalRounds}</span>
+            <span className="body-md text-[color:var(--muted)]">/ {season.totalRounds}</span>
           </div>
-          <p className="text-xs text-[color:var(--text-muted)] mt-2">
+          <p className="body-sm text-[color:var(--muted)] mt-3">
             Rounds with model predictions published.
           </p>
-        </HUDPanel>
-        <HUDPanel kicker="Official Results" intensity="subtle">
-          <AnimatedNumber value={officialCount} variant="huge" className="text-[color:var(--accent-positive)]" />
-          <p className="text-xs text-[color:var(--text-muted)] mt-2">
+        </div>
+        <div className="row-spec sm:border-b-0 sm:px-8 sm:border-r border-[color:var(--hairline)]">
+          <p className="eyebrow mb-3">Official Results</p>
+          <AnimatedNumber value={officialCount} variant="huge" className="text-[color:var(--success)]" />
+          <p className="body-sm text-[color:var(--muted)] mt-3">
             Predictions now compared against real outcomes.
           </p>
-        </HUDPanel>
-        <HUDPanel kicker="Weekend Live" intensity="subtle">
+        </div>
+        <div className="row-spec sm:border-b-0 sm:pl-8">
+          <p className="eyebrow mb-3">Weekend Live</p>
           <AnimatedNumber
             value={liveCount}
             variant="huge"
-            className={liveCount > 0 ? "text-[color:var(--accent-live)]" : ""}
+            className={liveCount > 0 ? "text-[color:var(--ink)]" : ""}
           />
-          <p className="text-xs text-[color:var(--text-muted)] mt-2">
+          <p className="body-sm text-[color:var(--muted)] mt-3">
             Grand Prix weekend currently in progress.
           </p>
-        </HUDPanel>
+        </div>
       </div>
 
-      {/* Race List */}
-      <div className="space-y-3">
+      <div className="hairline-divider-top">
         {season.calendar.map((race, index) => {
           const hasPrediction = season.completedRounds.includes(race.round);
           const hasActual = actualSet.has(race.round);
@@ -113,102 +111,51 @@ export default function CalendarPage() {
             >
               <Link
                 href={`/race/${race.round}`}
-                className="card-glow flex items-center gap-4 sm:gap-6 px-5 py-4 rounded-xl group transition-all"
+                className="row-spec flex items-center gap-6 group transition-colors hover:bg-[color:var(--surface-card)]"
               >
-                {/* Round number */}
                 <div className="text-center shrink-0 w-12">
-                  <span
-                    className="text-3xl font-black stat-number font-tabular"
-                    style={{
-                      color: hasActual
-                        ? "var(--accent-positive)"
-                        : hasPrediction
-                        ? "var(--accent-live)"
-                        : "var(--text-muted)",
-                    }}
-                  >
-                    {race.round}
+                  <span className="font-mono font-tabular text-[20px] tracking-[0.05em] text-[color:var(--muted)]">
+                    {String(race.round).padStart(2, "0")}
                   </span>
                 </div>
 
-                {/* Flag + Name */}
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <CountryFlag country={race.country} size={32} className="shrink-0" />
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3
-                        className={`font-bold truncate transition-colors ${hasPrediction ? "group-hover:text-[color:var(--accent-live)]" : ""}`}
-                      >
+                    <div className="flex items-center gap-3 flex-wrap mb-1">
+                      <h3 className="title-md truncate group-hover:text-[color:var(--ink)] transition-colors">
                         {race.name}
                       </h3>
                       <Badge variant={variant}>{statusMeta.shortLabel}</Badge>
                       {race.sprint && <Badge variant="info">Sprint</Badge>}
                     </div>
-                    <p className="text-sm truncate text-[color:var(--text-muted)]">
-                      {race.circuit} ·{" "}
-                      {race.expectedStops === 1 ? "1 stop" : `${race.expectedStops} stops`} ·{" "}
-                      {race.drsZones} DRS
+                    <p className="eyebrow truncate">
+                      {race.circuit} · {race.expectedStops === 1 ? "1 stop" : `${race.expectedStops} stops`} · {race.drsZones} DRS
                     </p>
                   </div>
                 </div>
 
-                {/* Circuit characteristics */}
-                <div className="hidden lg:flex items-center gap-6 shrink-0">
+                <div className="hidden lg:flex items-center gap-8 shrink-0">
                   <div className="text-center w-14">
-                    <p className="hud-kicker">Laps</p>
-                    <p className="font-bold font-mono text-sm">{race.laps}</p>
+                    <p className="eyebrow">Laps</p>
+                    <p className="title-sm font-mono mt-1">{race.laps}</p>
                   </div>
-                  <div className="text-center w-16">
-                    <p className="hud-kicker">Length</p>
-                    <p className="font-bold font-mono text-sm">{race.circuitKm} km</p>
-                  </div>
-                  <div className="w-20">
-                    <p className="hud-kicker mb-1">Tyre Deg</p>
-                    <div className="progress-bar">
-                      <div
-                        className="progress-bar-fill"
-                        style={{
-                          width: `${race.tyreDeg * 100}%`,
-                          background:
-                            race.tyreDeg > 0.6
-                              ? "var(--accent-live)"
-                              : race.tyreDeg > 0.4
-                              ? "var(--hud-yellow)"
-                              : "var(--accent-positive)",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="w-20">
-                    <p className="hud-kicker mb-1">Overtake</p>
-                    <div className="progress-bar">
-                      <div
-                        className="progress-bar-fill"
-                        style={{ width: `${race.overtaking * 100}%`, background: "var(--accent-info)" }}
-                      />
-                    </div>
+                  <div className="text-center w-20">
+                    <p className="eyebrow">Length</p>
+                    <p className="title-sm font-mono mt-1">{race.circuitKm} km</p>
                   </div>
                 </div>
 
-                {/* Date */}
-                <div className="text-right shrink-0 w-28">
-                  <p className="text-sm font-medium font-mono">{formatDate(race.date)}</p>
-                  <p
-                    className="text-xs font-semibold mt-0.5"
-                    style={{
-                      color:
-                        statusMeta.tone === "green"
-                          ? "var(--accent-positive)"
-                          : statusMeta.tone === "red"
-                          ? "var(--accent-live)"
-                          : statusMeta.tone === "amber"
-                          ? "var(--hud-yellow)"
-                          : "var(--text-muted)",
-                    }}
-                  >
+                <div className="text-right shrink-0 w-32">
+                  <p className="body-sm font-mono">{formatDate(race.date)}</p>
+                  <p className="eyebrow mt-1">
                     {statusMeta.label}
                   </p>
                 </div>
+
+                <span className="text-[color:var(--muted)] shrink-0 group-hover:text-[color:var(--ink)] transition-colors" aria-hidden>
+                  →
+                </span>
               </Link>
             </motion.div>
           );

@@ -48,13 +48,14 @@ export default function StandingsChart({ data, rounds }: Props) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "var(--bg-card)",
-              border: "1px solid var(--border)",
-              borderRadius: "8px",
-              color: "var(--text)",
+              backgroundColor: "var(--surface-card)",
+              border: "1px solid var(--hairline)",
+              borderRadius: 0,
+              color: "var(--ink)",
               fontSize: "13px",
+              fontFamily: "var(--font-mono)",
             }}
-            labelStyle={{ color: "var(--text-muted)", fontWeight: "bold" }}
+            labelStyle={{ color: "var(--muted)", letterSpacing: "1px", textTransform: "uppercase" }}
           />
           <Legend
             wrapperStyle={{ fontSize: "12px", color: "var(--text)" }}

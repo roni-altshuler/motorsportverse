@@ -36,11 +36,9 @@ export default function StandingsPage() {
 
   if (error) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-black mb-4" style={{ color: "var(--text)" }}>
-          Standings Not Available
-        </h1>
-        <p style={{ color: "var(--text-muted)" }}>
+      <div className="max-w-6xl mx-auto px-4 section-bugatti text-center">
+        <h1 className="display-lg mb-6">Standings Not Available</h1>
+        <p className="body-md text-[color:var(--muted)]">
           No standings data has been generated yet.
         </p>
       </div>
@@ -70,24 +68,17 @@ export default function StandingsPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <p className="hud-kicker mb-2">Championship</p>
-        <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2">
-          {seasonYear} Standings
-        </h1>
-        <p className="text-[color:var(--text-muted)]">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
+      <div className="mb-16 text-center">
+        <p className="eyebrow mb-4">Championship</p>
+        <h1 className="display-xl mb-4">{seasonYear} Standings</h1>
+        <p className="body-md text-[color:var(--muted)]">
           Updated through Round {data.lastUpdatedRound} of {totalRounds}
         </p>
-        <div className="progress-bar w-48 mx-auto mt-3 h-2">
+        <div className="progress-bar w-48 mx-auto mt-6">
           <div
             className="progress-bar-fill"
-            style={{
-              width: `${(data.lastUpdatedRound / totalRounds) * 100}%`,
-              background: "var(--accent-live)",
-              boxShadow: "0 0 12px var(--accent-live)",
-            }}
+            style={{ width: `${(data.lastUpdatedRound / totalRounds) * 100}%` }}
           />
         </div>
       </div>

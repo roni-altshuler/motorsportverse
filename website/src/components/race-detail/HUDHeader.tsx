@@ -56,9 +56,6 @@ export default function HUDHeader({
       className="mb-6"
     >
       <HUDPanel
-        scanlines
-        cornerNotch
-        intensity="strong"
         kicker={`Round ${round}`}
         title={
           <span className="flex items-center gap-3">
@@ -73,52 +70,48 @@ export default function HUDHeader({
           </div>
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <p className="hud-kicker mb-1">Circuit</p>
-            <p className="text-lg font-bold">{circuit}</p>
-            <p className="text-sm text-[color:var(--text-muted)] mt-1 font-mono">{date}</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-0 -mx-5 sm:-mx-6 px-5 sm:px-6">
+          <div className="row-spec md:border-b-0 md:pr-6">
+            <p className="eyebrow mb-2">Circuit</p>
+            <p className="title-md">{circuit}</p>
+            <p className="body-sm text-[color:var(--muted)] mt-2 font-mono">{date}</p>
           </div>
           {weather && (
             <>
-              <div className="md:col-span-2 grid grid-cols-3 gap-3">
-                <div className="hud-frame p-3">
-                  <p className="hud-kicker mb-1">Temp</p>
-                  <div className="flex items-baseline gap-2">
-                    {weather.temperatureC != null ? (
-                      <>
-                        <AnimatedNumber value={weather.temperatureC} decimals={0} variant="default" />
-                        <span className="text-sm text-[color:var(--text-muted)]">°C</span>
-                      </>
-                    ) : (
-                      <span className="text-lg text-[color:var(--text-muted)]">—</span>
-                    )}
-                  </div>
-                </div>
-                <div className="hud-frame p-3">
-                  <p className="hud-kicker mb-1">Rain</p>
-                  <div className="flex items-baseline gap-2">
-                    {weather.rainProbability != null ? (
-                      <>
-                        <AnimatedNumber value={weather.rainProbability} decimals={0} variant="default" />
-                        <span className="text-sm text-[color:var(--text-muted)]">%</span>
-                      </>
-                    ) : (
-                      <span className="text-lg text-[color:var(--text-muted)]">—</span>
-                    )}
-                  </div>
-                </div>
-                <div className="hud-frame p-3 flex flex-col">
-                  <p className="hud-kicker mb-1">Sky</p>
-                  <span className="text-2xl" aria-hidden>
-                    {pickWeatherGlyph(weather.rainProbability, weather.weatherDescription)}
-                  </span>
-                  {weather.weatherDescription && (
-                    <span className="text-[10px] text-[color:var(--text-muted)] truncate">
-                      {weather.weatherDescription}
-                    </span>
+              <div className="row-spec md:border-b-0 md:px-6">
+                <p className="eyebrow mb-2">Temp</p>
+                <div className="flex items-baseline gap-2">
+                  {weather.temperatureC != null ? (
+                    <>
+                      <AnimatedNumber value={weather.temperatureC} decimals={0} variant="default" />
+                      <span className="body-sm text-[color:var(--muted)]">°C</span>
+                    </>
+                  ) : (
+                    <span className="title-md text-[color:var(--muted)]">—</span>
                   )}
                 </div>
+              </div>
+              <div className="row-spec md:border-b-0 md:px-6">
+                <p className="eyebrow mb-2">Rain</p>
+                <div className="flex items-baseline gap-2">
+                  {weather.rainProbability != null ? (
+                    <>
+                      <AnimatedNumber value={weather.rainProbability} decimals={0} variant="default" />
+                      <span className="body-sm text-[color:var(--muted)]">%</span>
+                    </>
+                  ) : (
+                    <span className="title-md text-[color:var(--muted)]">—</span>
+                  )}
+                </div>
+              </div>
+              <div className="row-spec md:border-b-0 md:pl-6 flex flex-col">
+                <p className="eyebrow mb-2">Sky</p>
+                <span className="text-2xl" aria-hidden>
+                  {pickWeatherGlyph(weather.rainProbability, weather.weatherDescription)}
+                </span>
+                {weather.weatherDescription && (
+                  <span className="eyebrow truncate">{weather.weatherDescription}</span>
+                )}
               </div>
             </>
           )}

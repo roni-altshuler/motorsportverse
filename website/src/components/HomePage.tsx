@@ -1,13 +1,11 @@
 "use client";
 
 /**
- * HomePage — cinematic race-weekend command center.
+ * HomePage — Bugatti redesign.
  *
- * Visual language: F1 broadcast HUD + paddock badge wall.  3-layer
- * parallax track silhouette behind the headline, RaceLightsGrid
- * announces predicted podium reveal, AnimatedNumber tickers run
- * win-prob counters when each card enters viewport.  Reduced-motion
- * collapses every effect to a calm static state.
+ * Pure black canvas. Hero band uses the featured round's track_map.webp as
+ * the full-bleed photographic backdrop. Headlines in uppercase Saira Display
+ * with wide tracking; body in EB Garamond serif; captions in JetBrains Mono.
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -19,7 +17,6 @@ import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
 import PodiumStage from "@/components/home/PodiumStage";
 import PaddockWall from "@/components/home/PaddockWall";
-import RaceLightsGrid from "@/components/ui/RaceLightsGrid";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import LoadingTire from "@/components/ui/LoadingTire";
 import { fadeUp } from "@/lib/motion";
@@ -33,6 +30,8 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const TONE_TO_BADGE_VARIANT = {
   red: "negative",
@@ -54,13 +53,16 @@ function formatCountdown(targetIso: string, now: Date): string {
   return `in ${hours}h`;
 }
 
+function trackMapPath(round: number): string {
+  return `${BASE_PATH}/visualizations/round_${String(round).padStart(2, "0")}/track_map.webp`;
+}
+
 export default function HomePage() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [standings, setStandings] = useState<StandingsData | null>(null);
   const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
-  const [podiumRevealed, setPodiumRevealed] = useState(false);
 
   useEffect(() => {
     fetchSeasonData().then(setSeason).catch(() => {});
@@ -114,61 +116,49 @@ export default function HomePage() {
   const featuredVariant: "live" | "positive" | "negative" | "muted" | "default" =
     TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default";
   const isPredictionView = featuredRound?.round === featuredRace.round;
-  const favourite = featuredRound?.classification?.[0];
-  const heroTeamColor = favourite?.teamColor ?? "var(--accent-live)";
 
   return (
     <div>
-      {/* ━━━ CINEMATIC HERO ━━━ */}
       <HeroParallax
-        teamColor={heroTeamColor}
-        className="pt-10 pb-16 lg:pt-16 lg:pb-20"
+        trackImage={trackMapPath(featuredRace.round)}
+        className="min-h-[60vh]"
       >
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 relative z-10">
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <RaceLightsGrid
-              panels={5}
-              stepMs={650}
-              holdMs={650}
-              skipKey="home-lights-played"
-              onSequenceComplete={() => setPodiumRevealed(true)}
-            />
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="flex flex-wrap items-center gap-4 mb-8">
             <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
-            <span className="text-sm text-[color:var(--text-muted)] font-mono">
+            <span className="eyebrow">
               R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
               {formatCountdown(featuredRace.date, new Date())}
             </span>
           </div>
 
-          <div className="flex items-start gap-4 mb-8">
-            <CountryFlag country={featuredRace.country} size={80} />
+          <div className="flex items-start gap-6 mb-12">
+            <CountryFlag country={featuredRace.country} size={64} />
             <div>
-              <p className="hud-kicker mb-2">Featured Grand Prix</p>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tighter leading-[1.02]">
-                {featuredRace.name}
-              </h1>
-              <p className="mt-3 text-base sm:text-lg text-[color:var(--text-secondary)] max-w-2xl">
+              <p className="eyebrow mb-3">Featured Grand Prix</p>
+              <h1 className="display-xl">{featuredRace.name}</h1>
+              <p className="body-md mt-4 max-w-2xl text-[color:var(--body-strong)]">
                 {featuredRace.circuit} · {featuredMeta.description}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             <Link
               href={`/race/${featuredRace.round}`}
-              className={buttonVariants({ size: "lg", variant: "primary" })}
+              className={buttonVariants({ variant: "primary" })}
             >
-              Open Race Report →
+              Open Race Report
             </Link>
             <Link
               href="/calendar"
-              className={buttonVariants({ size: "lg", variant: "secondary" })}
+              className={buttonVariants({ variant: "primary" })}
             >
               Full Calendar
             </Link>
             <Link
               href="/standings"
-              className={buttonVariants({ size: "lg", variant: "ghost" })}
+              className={buttonVariants({ variant: "ghost" })}
             >
               Standings
             </Link>
@@ -177,29 +167,26 @@ export default function HomePage() {
       </HeroParallax>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
-        {/* ━━━ PREDICTED PODIUM (reveals when lights go out) ━━━ */}
         {isPredictionView && featuredRound && featuredRound.classification && (
           <motion.section
-            className="pb-16 -mt-6"
+            className="section-bugatti"
             initial={{ opacity: 0 }}
-            animate={podiumRevealed ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-baseline justify-between mb-6">
+            <div className="flex items-baseline justify-between mb-12">
               <div>
-                <p className="hud-kicker mb-1">Model Forecast</p>
-                <h2 className="text-3xl font-black tracking-tight">
-                  Predicted Podium
-                </h2>
-                <p className="mt-1 text-sm text-[color:var(--text-muted)] max-w-xl">
+                <p className="eyebrow mb-2">Model Forecast</p>
+                <h2 className="display-md">Predicted Podium</h2>
+                <p className="body-md mt-4 max-w-xl text-[color:var(--muted)]">
                   Projected race winner and the two drivers most likely to share the rostrum.
                 </p>
               </div>
               <Link
                 href={`/race/${featuredRace.round}`}
-                className="text-sm font-semibold text-[color:var(--accent-live)] hover:underline"
+                className="link-bugatti button-label"
               >
-                Full classification →
+                Full classification
               </Link>
             </div>
 
@@ -222,73 +209,73 @@ export default function HomePage() {
                   gap: entry.gap,
                 };
               })}
-              immediate={!podiumRevealed ? false : true}
+              immediate
             />
           </motion.section>
         )}
 
-        {/* ━━━ LATEST OFFICIAL RESULT (timing-screen style) ━━━ */}
         {latestRound && latestRound.round !== featuredRace.round && (
           <motion.section
-            className="pb-16"
+            className="section-bugatti"
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <div className="flex items-baseline justify-between mb-6">
+            <div className="flex items-baseline justify-between mb-8">
               <div>
-                <p className="hud-kicker mb-1">Race Control</p>
-                <h2 className="text-2xl font-black tracking-tight">
-                  Latest Official Result
-                </h2>
-                <p className="mt-1 text-sm text-[color:var(--text-muted)]">
-                  Round {latestRound.round} · {latestRound.name} ·{" "}
-                  {formatDate(latestRound.date)}
+                <p className="eyebrow mb-2">Race Control</p>
+                <h2 className="display-md">Latest Official Result</h2>
+                <p className="body-md mt-3 text-[color:var(--muted)]">
+                  Round {latestRound.round} · {latestRound.name} · {formatDate(latestRound.date)}
                 </p>
               </div>
               <Link
                 href={`/race/${latestRound.round}`}
-                className="text-sm font-semibold text-[color:var(--accent-live)] hover:underline"
+                className="link-bugatti button-label"
               >
-                Compare to prediction →
+                Compare to prediction
               </Link>
             </div>
-            <div className="hud-frame overflow-hidden">
-              <table className="w-full text-sm">
+            <div className="border border-[color:var(--hairline)] overflow-hidden">
+              <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[color:var(--border)]">
-                    <th className="px-4 py-3 text-left hud-kicker">Pos</th>
-                    <th className="px-2 py-3 text-left hud-kicker">Driver</th>
-                    <th className="px-2 py-3 text-left hud-kicker hidden sm:table-cell">Team</th>
-                    <th className="px-4 py-3 text-right hud-kicker">Gap</th>
+                  <tr className="border-b border-[color:var(--hairline)]">
+                    <th className="px-4 py-3 text-left eyebrow">Pos</th>
+                    <th className="px-2 py-3 text-left eyebrow">Driver</th>
+                    <th className="px-2 py-3 text-left eyebrow hidden sm:table-cell">Team</th>
+                    <th className="px-4 py-3 text-right eyebrow">Gap</th>
                   </tr>
                 </thead>
                 <tbody>
                   {(latestRound.classification ?? []).slice(0, 10).map((entry) => (
                     <tr
                       key={entry.driver}
-                      className="border-b border-[color:var(--border)] last:border-b-0 transition-colors hover:bg-[color:var(--surface-elevated)]"
+                      className="border-b border-[color:var(--hairline)] last:border-b-0 transition-colors hover:bg-[color:var(--surface-card)]"
                       data-team={entry.team}
                     >
-                      <td className="px-4 py-3 font-mono font-tabular text-[color:var(--text-muted)] w-14">
+                      <td className="px-4 py-3 font-mono font-tabular text-[color:var(--muted)] w-14">
                         {entry.position === 1 && (
-                          <span className="text-[color:var(--hud-champagne)] font-bold">P1</span>
+                          <span className="text-[color:var(--accent-podium-1)]">P1</span>
                         )}
-                        {entry.position === 2 && <span className="text-[color:var(--accent-podium-2)] font-bold">P2</span>}
-                        {entry.position === 3 && <span className="text-[color:var(--accent-podium-3)] font-bold">P3</span>}
+                        {entry.position === 2 && (
+                          <span className="text-[color:var(--accent-podium-2)]">P2</span>
+                        )}
+                        {entry.position === 3 && (
+                          <span className="text-[color:var(--accent-podium-3)]">P3</span>
+                        )}
                         {entry.position > 3 && `P${entry.position}`}
                       </td>
                       <td className="px-2 py-3">
                         <span className="inline-flex items-center gap-3">
                           <TeamColorBar teamColor={entry.teamColor} team={entry.team} size="sm" />
-                          <span className="font-semibold">{entry.driver}</span>
+                          <span className="title-sm">{entry.driver}</span>
                         </span>
                       </td>
-                      <td className="px-2 py-3 text-[color:var(--text-muted)] hidden sm:table-cell">
+                      <td className="px-2 py-3 body-sm text-[color:var(--muted)] hidden sm:table-cell">
                         {entry.team}
                       </td>
-                      <td className="px-4 py-3 text-right font-mono font-tabular text-[color:var(--text-muted)]">
+                      <td className="px-4 py-3 text-right font-mono font-tabular text-[color:var(--muted)]">
                         {entry.position === 1 ? "LEADER" : entry.gap}
                       </td>
                     </tr>
@@ -299,32 +286,31 @@ export default function HomePage() {
           </motion.section>
         )}
 
-        {/* ━━━ CHAMPIONSHIP PADDOCK WALL ━━━ */}
         {standings && (
-          <section className="pb-16">
-            <div className="grid gap-10 lg:gap-12 lg:grid-cols-2">
+          <section className="section-bugatti">
+            <div className="grid gap-16 lg:grid-cols-2">
               <PaddockWall
                 title="Drivers"
                 href="/standings"
-                entries={standings.drivers.slice(0, 5).map((d) => ({
+                entries={standings.drivers.slice(0, 6).map((d) => ({
                   name: d.driver,
                   subtitle: d.team,
                   team: d.team,
-                  teamColor: d.teamColor || "var(--accent-live)",
+                  teamColor: d.teamColor || "var(--ink)",
                   points: d.points,
                 }))}
-                limit={5}
+                limit={6}
               />
               <PaddockWall
                 title="Constructors"
                 href="/standings"
-                entries={standings.constructors.slice(0, 5).map((t) => ({
+                entries={standings.constructors.slice(0, 6).map((t) => ({
                   name: t.team,
                   team: t.team,
-                  teamColor: t.teamColor || "var(--accent-live)",
+                  teamColor: t.teamColor || "var(--ink)",
                   points: t.points,
                 }))}
-                limit={5}
+                limit={6}
               />
             </div>
           </section>
