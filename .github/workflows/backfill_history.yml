@@ -41,12 +41,12 @@ jobs:
       group: history-backfill
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -59,7 +59,7 @@ jobs:
           pip install duckdb
 
       - name: Restore FastF1 cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: f1_cache
           key: fastf1-backfill-${{ runner.os }}-${{ github.run_id }}
@@ -118,13 +118,30 @@ jobs:
           git add -f data/history.duckdb
           if git diff --cached --quiet; then
             echo "No DB changes to commit"
-          else
-            ROWS=$(python -c "
+            exit 0
+          fi
+          ROWS=$(python -c "
           import duckdb
           c = duckdb.connect('data/history.duckdb', read_only=True)
           (n,) = c.execute('SELECT COUNT(DISTINCT (season, round)) FROM historical_predictions').fetchone()
           print(n)
           ")
-            git commit -m "[backfill] Refresh history.duckdb ($ROWS distinct rounds)"
-            git push origin HEAD:main
-          fi
+          git commit -m "[backfill] Refresh history.duckdb ($ROWS distinct rounds)"
+          # Re-set the remote with an explicit token URL so the push does not
+          # depend on the persisted extraheader (which has been observed to go
+          # missing on rare runs and produce "could not read Username" failures).
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # update_predictions.yml also pushes to main on overlapping crons; rebase
+          # so a concurrent commit doesn't cause a non-fast-forward rejection.
+          for attempt in 1 2 3; do
+            git fetch origin main || { echo "fetch failed (attempt $attempt)"; sleep 5; continue; }
+            git rebase origin/main || { git rebase --abort || true; echo "rebase failed (attempt $attempt)"; sleep 5; continue; }
+            if git push origin HEAD:main; then
+              echo "push succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "push failed on attempt $attempt; retrying"
+            sleep $((attempt * 10))
+          done
+          echo "push failed after 3 attempts"
+          exit 1

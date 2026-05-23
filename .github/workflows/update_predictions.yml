@@ -45,12 +45,12 @@ jobs:
       group: gp-weekend-${{ github.ref }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -86,7 +86,7 @@ jobs:
           echo "Round: $ROUND  |  Phase: $PHASE"
 
       - name: Restore FastF1 cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: f1_cache
           key: fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-${{ github.run_id }}
@@ -201,12 +201,29 @@ jobs:
           git add races/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
-          else
-            ROUND="${{ steps.config.outputs.round }}"
-            PHASE="${{ steps.config.outputs.phase }}"
-            git commit -m "[$PHASE] Update round $ROUND ($(date -u +%Y-%m-%d))"
-            git push origin HEAD:main
+            exit 0
           fi
+          ROUND="${{ steps.config.outputs.round }}"
+          PHASE="${{ steps.config.outputs.phase }}"
+          git commit -m "[$PHASE] Update round $ROUND ($(date -u +%Y-%m-%d))"
+          # Re-set the remote with an explicit token URL so the push does not
+          # depend on the persisted extraheader (which has been observed to go
+          # missing on rare runs and produce "could not read Username" failures).
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # backfill_history.yml also pushes to main on overlapping crons; rebase
+          # so a concurrent commit doesn't cause a non-fast-forward rejection.
+          for attempt in 1 2 3; do
+            git fetch origin main || { echo "fetch failed (attempt $attempt)"; sleep 5; continue; }
+            git rebase origin/main || { git rebase --abort || true; echo "rebase failed (attempt $attempt)"; sleep 5; continue; }
+            if git push origin HEAD:main; then
+              echo "push succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "push failed on attempt $attempt; retrying"
+            sleep $((attempt * 10))
+          done
+          echo "push failed after 3 attempts"
+          exit 1
 
   deploy:
     needs: predict
