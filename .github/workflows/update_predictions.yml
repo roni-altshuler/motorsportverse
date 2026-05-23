@@ -191,6 +191,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -f website/public/data/ website/public/visualizations/
+          # Per-round registry metadata: binaries are gitignored but
+          # metadata.json IS committed (see CLAUDE.md).  Each pipeline run
+          # overwrites these tracked files; without staging them here they
+          # land as "unstaged changes" and break the rebase pre-check below.
+          git add -f models/registry/ 2>/dev/null || true
           for f in "predicted_results_${SEASON_YEAR}.json" \
                    "season_results_${SEASON_YEAR}.json" \
                    "season_tracker_${SEASON_YEAR}.json"; do
@@ -210,20 +215,11 @@ jobs:
           # depend on the persisted extraheader (which has been observed to go
           # missing on rare runs and produce "could not read Username" failures).
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          # backfill_history.yml also pushes to main on overlapping crons; rebase
-          # so a concurrent commit doesn't cause a non-fast-forward rejection.
-          for attempt in 1 2 3; do
-            git fetch origin main || { echo "fetch failed (attempt $attempt)"; sleep 5; continue; }
-            git rebase origin/main || { git rebase --abort || true; echo "rebase failed (attempt $attempt)"; sleep 5; continue; }
-            if git push origin HEAD:main; then
-              echo "push succeeded on attempt $attempt"
-              exit 0
-            fi
-            echo "push failed on attempt $attempt; retrying"
-            sleep $((attempt * 10))
-          done
-          echo "push failed after 3 attempts"
-          exit 1
+          # backfill_history.yml also pushes to main on overlapping crons; the
+          # safe_push helper rebases (auto-stashing leftover working-tree
+          # changes the curated commit did not capture) and retries on transient
+          # failures.
+          bash .github/scripts/safe_push.sh
 
   deploy:
     needs: predict
