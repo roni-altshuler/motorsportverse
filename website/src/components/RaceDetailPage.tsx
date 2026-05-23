@@ -323,23 +323,36 @@ export default function RaceDetailPage({ round }: Props) {
 
   return (
     <div>
-      {/* Bugatti hero photo band — full-bleed track-map backdrop. */}
-      <section className="hero-photo-band">
-        <div
-          aria-hidden
-          className="hero-photo-band__image"
-          style={{ backgroundImage: `url("${heroTrackMap}")` }}
-        />
-        <div aria-hidden className="hero-photo-band__scrim" />
-        <div className="hero-photo-band__content max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="eyebrow mb-4">Round {String(data.round).padStart(2, "0")}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
-            <CountryFlag country={data.gpKey} size={48} />
-            <h1 className="display-xl">{data.name}</h1>
+      {/* Race detail hero — track circuit anchored to the left of the title
+          (per product direction); replaces the prior full-bleed backdrop. */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+          <div
+            className="shrink-0 w-full sm:w-64 md:w-72 lg:w-80 aspect-square relative"
+            style={{
+              border: "1px solid var(--hairline)",
+              background: "var(--surface-card)",
+            }}
+          >
+            <Image
+              src={heroTrackMap}
+              alt={`${data.circuit} circuit map`}
+              fill
+              sizes="(min-width: 1024px) 320px, (min-width: 640px) 256px, 100vw"
+              className="object-contain p-3"
+              unoptimized
+            />
           </div>
-          <p className="body-md text-[color:var(--body-strong)] max-w-2xl mx-auto">
-            {data.circuit} · {formatDate(data.date)}
-          </p>
+          <div className="min-w-0">
+            <p className="eyebrow mb-4">Round {String(data.round).padStart(2, "0")}</p>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <CountryFlag country={data.gpKey} size={48} />
+              <h1 className="display-xl">{data.name}</h1>
+            </div>
+            <p className="body-md text-[color:var(--body-strong)]">
+              {data.circuit} · {formatDate(data.date)}
+            </p>
+          </div>
         </div>
       </section>
 

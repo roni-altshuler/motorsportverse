@@ -22,6 +22,7 @@ const COUNTRY_CODES: Record<string, string> = {
   "Emilia Romagna": "it",
   Monaco: "mc",
   Spain: "es",
+  Madrid: "es",
   Canada: "ca",
   Austria: "at",
   "Great Britain": "gb",

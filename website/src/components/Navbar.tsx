@@ -155,6 +155,7 @@ export default function Navbar() {
                 {racesOpen && season && (
                   <div
                     role="menu"
+                    data-lenis-prevent
                     className="dropdown-menu absolute top-full left-0 mt-2 w-80 max-h-[70vh] overflow-y-auto overscroll-contain"
                     style={{ scrollbarGutter: "stable" }}
                   >

@@ -31,8 +31,6 @@ import {
   getRoundStatusMeta,
 } from "@/lib/data";
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 const TONE_TO_BADGE_VARIANT = {
   red: "negative",
   green: "positive",
@@ -51,10 +49,6 @@ function formatCountdown(targetIso: string, now: Date): string {
   const hours = Math.floor((ms % MS_PER_DAY) / (60 * 60 * 1000));
   if (days > 0) return `in ${days}d ${hours}h`;
   return `in ${hours}h`;
-}
-
-function trackMapPath(round: number): string {
-  return `${BASE_PATH}/visualizations/round_${String(round).padStart(2, "0")}/track_map.webp`;
 }
 
 export default function HomePage() {
@@ -119,10 +113,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <HeroParallax
-        trackImage={trackMapPath(featuredRace.round)}
-        className="min-h-[60vh]"
-      >
+      <HeroParallax className="min-h-[60vh]">
         <div className="mx-auto max-w-6xl px-6 lg:px-10">
           <div className="flex flex-wrap items-center gap-4 mb-8">
             <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
