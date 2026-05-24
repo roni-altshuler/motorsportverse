@@ -14,7 +14,7 @@ import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 const sairaCondensed = Saira_Condensed({
   subsets: ["latin"],
   variable: "--font-saira-condensed",
-  weight: "400",
+  weight: ["400", "700"],
   display: "swap",
 });
 

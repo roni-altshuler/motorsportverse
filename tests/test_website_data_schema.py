@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Optional
 
 import pytest
 from pydantic import BaseModel, ConfigDict, Field
@@ -35,11 +36,21 @@ class CalendarEntry(_Loose):
     sprint: bool
 
 
+class DriverInfo(_Loose):
+    code: str
+    fullName: str
+    team: str
+    # Mirror of `DriverInfo.headshotUrl` in website/src/types/index.ts.
+    headshotUrl: Optional[str] = None
+
+
 class SeasonData(_Loose):
     season: int
     totalRounds: int
     calendar: list[CalendarEntry]
     completedRounds: list[int]
+    # `drivers` is optional here — older snapshots may pre-date the field.
+    drivers: list[DriverInfo] = Field(default_factory=list)
 
 
 class ClassificationEntry(_Loose):
@@ -48,6 +59,8 @@ class ClassificationEntry(_Loose):
     team: str
     predictedTime: float
     points: int
+    # Mirror of `ClassificationEntry.headshotUrl` in website/src/types/index.ts.
+    headshotUrl: Optional[str] = None
 
 
 class RoundData(_Loose):
@@ -66,6 +79,20 @@ class SeasonTrackerRound(_Loose):
 
 class SeasonTrackerData(_Loose):
     rounds: list[SeasonTrackerRound]
+
+
+class DriverStanding(_Loose):
+    position: int
+    driver: str
+    team: str
+    points: float
+    # Mirror of `DriverStanding.headshotUrl` in website/src/types/index.ts.
+    headshotUrl: Optional[str] = None
+
+
+class StandingsData(_Loose):
+    lastUpdatedRound: int
+    drivers: list[DriverStanding] = Field(default_factory=list)
 
 
 class ProbabilityMarketEntry(_Loose):
@@ -120,6 +147,15 @@ def test_season_json_matches_schema():
 def test_season_tracker_matches_schema():
     data = _load(WEBSITE_DATA / "season_tracker.json")
     SeasonTrackerData(**data)
+
+
+@pytest.mark.skipif(
+    not (WEBSITE_DATA / "standings.json").exists(),
+    reason="No standings.json generated yet",
+)
+def test_standings_json_matches_schema():
+    data = _load(WEBSITE_DATA / "standings.json")
+    StandingsData(**data)
 
 
 @pytest.mark.parametrize(

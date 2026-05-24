@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# screenshot harness (Playwright)
+/scripts/screenshots/
+/test-results/
+/playwright-report/
+/playwright/.cache/

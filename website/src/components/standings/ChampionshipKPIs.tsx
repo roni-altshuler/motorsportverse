@@ -1,7 +1,10 @@
 "use client";
 
-import HUDPanel from "@/components/ui/HUDPanel";
-import AnimatedNumber from "@/components/ui/AnimatedNumber";
+import { Crown, GitCompare, TrendingUp, Trophy } from "lucide-react";
+
+import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { BorderBeam } from "@/components/magicui/border-beam";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import type { DriverStanding } from "@/types";
 
@@ -9,6 +12,14 @@ interface ChampionshipKPIsProps {
   drivers: DriverStanding[];
 }
 
+/**
+ * Championship-state KPI strip. Replaces the previous HUDPanel row with a
+ * 4-cell BentoGrid:
+ *   1. Championship leader (large, BorderBeam in F1-red)
+ *   2. Gap to P2
+ *   3. Biggest mover (recent points jump)
+ *   4. Total wins by leader (small badge cell)
+ */
 export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
   if (!drivers || drivers.length === 0) return null;
   const leader = drivers[0];
@@ -16,63 +27,168 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
   const gap = runner ? leader.points - runner.points : 0;
   const closingIn = gap > 0 && gap < 25;
 
-  // "Biggest mover" — driver with the most points scored this round
-  // (we use round-by-round delta if available, else fallback to highest podiums)
-  type WithDelta = DriverStanding & { lastRoundPoints?: number };
   const mover = drivers
-    .map((d) => d as WithDelta)
-    .sort((a, b) => (b.lastRoundPoints ?? b.podiums) - (a.lastRoundPoints ?? a.podiums))[0];
+    .filter((d) => d.pointsHistory.length >= 2)
+    .map((d) => {
+      const last = d.pointsHistory[d.pointsHistory.length - 1] ?? 0;
+      const prev = d.pointsHistory[d.pointsHistory.length - 2] ?? 0;
+      return { ...d, jump: last - prev };
+    })
+    .sort((a, b) => b.jump - a.jump)[0];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <HUDPanel
-        kicker="Championship Leader"
-        intensity="strong"
+    <BentoGrid className="grid-cols-2 md:grid-cols-4 auto-rows-[12rem] gap-3 sm:gap-4 mb-8">
+      {/* Championship leader (2-col, BorderBeam) */}
+      <BentoCard
+        className="col-span-2 row-span-1 relative overflow-hidden"
+        data-team={leader.team}
       >
-        <div className="flex items-center gap-3 mb-2">
-          <TeamColorBar teamColor={leader.teamColor} team={leader.team} variant="gradient" size="lg" />
-          <div className="flex-1">
-            <p className="text-2xl font-black tracking-tight">{leader.driver}</p>
-            <p className="text-xs text-[color:var(--text-muted)]">{leader.team}</p>
+        <BorderBeam
+          size={1}
+          duration={9}
+          colorFrom="#E10600"
+          colorTo="#FFD166"
+          borderRadius={4}
+        />
+        <div className="flex h-full flex-col justify-between p-5 sm:p-6">
+          <div className="flex items-center justify-between">
+            <p className="eyebrow">Championship Leader</p>
+            <Crown className="w-4 h-4 text-[color:var(--accent-podium-1)]" />
           </div>
-        </div>
-        <div className="flex items-baseline gap-2">
-          <AnimatedNumber value={leader.points} variant="huge" />
-          <span className="text-sm text-[color:var(--text-muted)]">pts</span>
-        </div>
-      </HUDPanel>
-
-      <HUDPanel kicker="Gap to P2" intensity="strong">
-        <div className="flex items-baseline gap-2 mb-2">
-          <AnimatedNumber
-            value={gap}
-            variant="huge"
-            className={closingIn ? "text-[color:var(--accent-live)]" : "text-[color:var(--text-primary)]"}
-          />
-          <span className="text-sm text-[color:var(--text-muted)]">pts</span>
-        </div>
-        <p className="text-xs text-[color:var(--text-muted)]">
-          {closingIn ? "Closing in — within a race weekend" : runner ? `vs ${runner.driver}` : "—"}
-        </p>
-      </HUDPanel>
-
-      {mover && (
-        <HUDPanel kicker="Biggest Mover" intensity="strong">
-          <div className="flex items-center gap-3 mb-2">
-            <TeamColorBar teamColor={mover.teamColor} team={mover.team} variant="gradient" size="lg" />
-            <div className="flex-1">
-              <p className="text-2xl font-black tracking-tight">{mover.driver}</p>
-              <p className="text-xs text-[color:var(--text-muted)]">
-                {mover.podiums} podium{mover.podiums !== 1 ? "s" : ""} · {mover.wins} win{mover.wins !== 1 ? "s" : ""}
+          <div className="flex items-center gap-4">
+            <TeamColorBar
+              teamColor={leader.teamColor}
+              team={leader.team}
+              variant="gradient"
+              size="lg"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[30px] !leading-none truncate">
+                {leader.driver}
+              </p>
+              <p className="caption-uppercase text-[10px] mt-1 tracking-[0.18em] text-[color:var(--muted)] truncate">
+                {leader.team}
               </p>
             </div>
+            <p className="font-mono font-tabular text-[42px] [font-weight:700] text-[color:var(--ink)] leading-none shrink-0">
+              <NumberTicker value={leader.points} />
+            </p>
           </div>
-          <div className="flex items-baseline gap-2">
-            <AnimatedNumber value={mover.points} variant="default" />
-            <span className="text-sm text-[color:var(--text-muted)]">total pts</span>
+        </div>
+      </BentoCard>
+
+      {/* Gap to P2 */}
+      <BentoCard className="col-span-1 row-span-1">
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <p className="eyebrow">Gap to P2</p>
+            <GitCompare className="w-4 h-4 text-[color:var(--muted)]" />
           </div>
-        </HUDPanel>
-      )}
-    </div>
+          <div>
+            <p
+              className="font-mono font-tabular text-[42px] [font-weight:700] leading-none"
+              style={{
+                color: closingIn
+                  ? "var(--accent-f1-red)"
+                  : "var(--ink)",
+              }}
+            >
+              <NumberTicker value={gap} />
+              <span className="text-base text-[color:var(--muted)] ml-1.5">pts</span>
+            </p>
+            <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)] truncate">
+              {closingIn
+                ? "Within a race weekend"
+                : runner
+                  ? `vs ${runner.driver}`
+                  : "—"}
+            </p>
+          </div>
+        </div>
+      </BentoCard>
+
+      {/* Biggest mover */}
+      <BentoCard className="col-span-1 row-span-1" data-team={mover?.team}>
+        <div className="flex h-full flex-col justify-between p-5">
+          <div className="flex items-center justify-between">
+            <p className="eyebrow">Biggest Mover</p>
+            <TrendingUp className="w-4 h-4 text-[color:var(--accent-podium-1)]" />
+          </div>
+          {mover ? (
+            <div>
+              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[28px] !leading-none">
+                {mover.driver}
+              </p>
+              <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)]">
+                +<NumberTicker value={mover.jump} /> pts last round
+              </p>
+            </div>
+          ) : (
+            <p className="body-sm text-[color:var(--muted)]">awaiting next round</p>
+          )}
+        </div>
+      </BentoCard>
+
+      {/* Leader wins */}
+      <BentoCard className="col-span-2 md:col-span-1 row-span-1">
+        <div className="flex h-full flex-col justify-between p-5" data-team={leader.team}>
+          <div className="flex items-center justify-between">
+            <p className="eyebrow">Wins · {leader.driver}</p>
+            <Trophy className="w-4 h-4 text-[color:var(--accent-podium-1)]" />
+          </div>
+          <div>
+            <p className="font-mono font-tabular text-[42px] [font-weight:700] text-[color:var(--ink)] leading-none">
+              <NumberTicker value={leader.wins} />
+            </p>
+            <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)]">
+              {leader.podiums} podium{leader.podiums !== 1 ? "s" : ""} so far
+            </p>
+          </div>
+        </div>
+      </BentoCard>
+
+      {/* Spacer/aux cell for md+: extends grid to 3 rows visually balanced */}
+      <BentoCard className="hidden md:block md:col-span-2 row-span-1">
+        <div className="flex h-full flex-col justify-between p-5">
+          <p className="eyebrow">Field Spread</p>
+          <div>
+            <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[26px] !leading-none">
+              {drivers.length > 1
+                ? `${drivers[0].points - drivers[drivers.length - 1].points} pts`
+                : "—"}
+            </p>
+            <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)]">
+              P1 to last on the grid
+            </p>
+          </div>
+        </div>
+      </BentoCard>
+
+      {/* Sprint-points share placeholder cell */}
+      <BentoCard className="hidden md:block md:col-span-2 row-span-1">
+        <div className="flex h-full flex-col justify-between p-5">
+          <p className="eyebrow">Podium Hits · Top 3</p>
+          <div className="flex items-end gap-5">
+            {drivers.slice(0, 3).map((d, i) => (
+              <div key={d.driver} className="flex-1" data-team={d.team}>
+                <p className="caption-uppercase text-[10px] mb-1 tracking-[0.18em] text-[color:var(--muted)]">
+                  P{i + 1}
+                </p>
+                <p className="font-mono font-tabular text-[28px] [font-weight:700] text-[color:var(--ink)] leading-none">
+                  <NumberTicker value={d.podiums} />
+                </p>
+                <TeamColorBar
+                  teamColor={d.teamColor}
+                  team={d.team}
+                  variant="solid"
+                  size="sm"
+                  className="mt-2"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </BentoCard>
+    </BentoGrid>
   );
 }

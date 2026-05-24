@@ -6,6 +6,9 @@ import { motion } from "framer-motion";
 import { SeasonTrackerData, SeasonData } from "@/types";
 import { fetchSeasonTrackerData, fetchSeasonData } from "@/lib/data";
 import { getSeasonYear } from "@/lib/season";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
+import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 
 export default function AccuracyDashboardPage() {
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
@@ -67,9 +70,8 @@ export default function AccuracyDashboardPage() {
     );
   }
 
-  const roundsWithActual = tracker.rounds.filter((r) => r.hasActual);
   const roundsWithoutActual = tracker.rounds.filter((r) => !r.hasActual);
-  const hasActualResults = roundsWithActual.length > 0;
+  const hasActualResults = tracker.rounds.some((r) => r.hasActual);
   const gpReports = tracker.gpReports || [];
   const seasonYear = getSeasonYear(season);
 
@@ -88,7 +90,15 @@ export default function AccuracyDashboardPage() {
         transition={{ duration: 0.4 }}
       >
         <p className="eyebrow mb-4">Model Performance</p>
-        <h1 className="display-xl mb-4">Prediction Accuracy</h1>
+        <h1 className="display-xl mb-4 [font-weight:700]">
+          <AnimatedGradientText
+            speed={10}
+            colorFrom="#E10600"
+            colorTo="#FFD166"
+          >
+            Prediction Accuracy
+          </AnimatedGradientText>
+        </h1>
         <p className="body-md text-[color:var(--muted)]">
           Track how our model predictions compare to actual race results
           across the {seasonYear} season
@@ -106,76 +116,53 @@ export default function AccuracyDashboardPage() {
           <h2 className="section-heading">Season Overview</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="metric-card text-center">
+              <p className="eyebrow mb-2">Season Accuracy</p>
               <p
-                className="text-xs font-medium mb-1"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Season Accuracy
-              </p>
-              <p
-                className="text-4xl font-black"
+                className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
                 style={{
                   color:
                     tracker.overallAccuracy.seasonAccuracyPct >= 70
-                      ? "#00D2BE"
+                      ? "var(--success)"
                       : tracker.overallAccuracy.seasonAccuracyPct >= 50
-                      ? "#FF8000"
-                      : "#E10600",
+                      ? "var(--warning)"
+                      : "var(--accent-f1-red)",
                 }}
               >
-                {tracker.overallAccuracy.seasonAccuracyPct}%
+                <NumberTicker value={tracker.overallAccuracy.seasonAccuracyPct} decimalPlaces={0} />
+                <span className="text-2xl ml-1">%</span>
               </p>
-              <p
-                className="text-xs mt-1"
-                style={{ color: "var(--text-muted)" }}
-              >
+              <p className="caption-uppercase text-[10px] mt-2">
                 predictions within 3 positions
               </p>
             </div>
             <div className="metric-card text-center">
+              <p className="eyebrow mb-2">Mean Position Error</p>
               <p
-                className="text-xs font-medium mb-1"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Mean Position Error
-              </p>
-              <p
-                className="text-4xl font-black"
+                className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
                 style={{
                   color:
                     tracker.overallAccuracy.seasonMeanError <= 2
-                      ? "#00D2BE"
+                      ? "var(--success)"
                       : tracker.overallAccuracy.seasonMeanError <= 4
-                      ? "#FF8000"
-                      : "#E10600",
+                      ? "var(--warning)"
+                      : "var(--accent-f1-red)",
                 }}
               >
-                {tracker.overallAccuracy.seasonMeanError.toFixed(1)}
+                <NumberTicker value={tracker.overallAccuracy.seasonMeanError} decimalPlaces={1} />
               </p>
-              <p
-                className="text-xs mt-1"
-                style={{ color: "var(--text-muted)" }}
-              >
+              <p className="caption-uppercase text-[10px] mt-2">
                 positions average off
               </p>
             </div>
             <div className="metric-card text-center">
+              <p className="eyebrow mb-2">Rounds Compared</p>
               <p
-                className="text-xs font-medium mb-1"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Rounds Compared
-              </p>
-              <p
-                className="text-4xl font-black"
+                className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
                 style={{ color: "var(--text)" }}
               >
-                {tracker.overallAccuracy.roundsWithActual}
+                <NumberTicker value={tracker.overallAccuracy.roundsWithActual} />
               </p>
-              <p
-                className="text-xs mt-1"
-                style={{ color: "var(--text-muted)" }}
-              >
+              <p className="caption-uppercase text-[10px] mt-2">
                 of {tracker.rounds.length} total rounds
               </p>
             </div>
@@ -183,7 +170,7 @@ export default function AccuracyDashboardPage() {
         </motion.div>
       )}
 
-      {/* Per-Round Accuracy Chart */}
+      {/* Per-Round Accuracy Heatmap */}
       {hasActualResults && (
         <motion.div
           className="card p-6 sm:p-8 mb-8"
@@ -191,67 +178,14 @@ export default function AccuracyDashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
         >
-          <h2 className="section-heading">Accuracy Per Round</h2>
-          <div className="space-y-3">
-            {roundsWithActual.map((r, i) => {
-              const pct = r.accuracyPct ?? 0;
-              const color =
-                pct >= 70 ? "#00D2BE" : pct >= 50 ? "#FF8000" : "#E10600";
-              return (
-                <motion.div
-                  key={r.round}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={`/race/${r.round}`}
-                    className="flex items-center gap-4 group"
-                  >
-                    <div
-                      className="w-36 sm:w-44 text-sm font-medium truncate group-hover:text-f1-red transition-colors"
-                      style={{ color: "var(--text)" }}
-                    >
-                      R{r.round}:{" "}
-                      {getRoundName(r.round).replace(" Grand Prix", "")}
-                    </div>
-                    <div className="flex-1 progress-bar h-4">
-                      <div
-                        className="progress-bar-fill h-full"
-                        style={{ width: `${pct}%`, background: color }}
-                      />
-                    </div>
-                    <span
-                      className="text-sm font-mono w-14 text-right font-bold"
-                      style={{ color }}
-                    >
-                      {pct}%
-                    </span>
-                  </Link>
-                  <div className="flex gap-4 ml-36 sm:ml-44 pl-4 mt-1">
-                    <span
-                      className="text-xs"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      Mean error: {r.meanError?.toFixed(1) ?? "–"} pos
-                    </span>
-                    <span
-                      className="text-xs"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      Exact: {r.exactMatches ?? 0}
-                    </span>
-                    <span
-                      className="text-xs"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      Within 3: {r.within3 ?? 0}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="mb-5">
+            <h2 className="section-heading mb-1">Accuracy Per Round</h2>
+            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+              Each cell is a round of the season. Brighter green = better
+              prediction accuracy. Click a cell for race-specific details.
+            </p>
           </div>
+          <RoundsHeatmap rounds={tracker.rounds} season={season} />
         </motion.div>
       )}
 

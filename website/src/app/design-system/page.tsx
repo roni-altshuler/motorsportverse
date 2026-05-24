@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Stat } from "@/components/ui/Stat";
+import MagicUIGallery from "@/components/design-system/MagicUIGallery";
 
 export const metadata: Metadata = {
   title: "Design System · F1 Predictions",
@@ -206,6 +207,8 @@ export default function DesignSystemPage() {
           </Card>
         </div>
       </section>
+
+      <MagicUIGallery />
     </div>
   );
 }

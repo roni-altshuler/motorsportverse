@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
-import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import { Badge } from "@/components/ui/Badge";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { BorderBeam } from "@/components/magicui/border-beam";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { podiumReveal } from "@/lib/motion";
 import type { ClassificationEntry } from "@/types";
@@ -12,7 +14,13 @@ import type { ClassificationEntry } from "@/types";
 interface PodiumPredictionTrioProps {
   classification: ClassificationEntry[];
   /** When official actual results exist, render the actual top-3 here and label "Official"; else label "Predicted". */
-  actualPodium?: Array<{ driver: string; team?: string; teamColor?: string; position: number }>;
+  actualPodium?: Array<{
+    driver: string;
+    team?: string;
+    teamColor?: string;
+    position: number;
+    headshotUrl?: string | null;
+  }>;
 }
 
 export default function PodiumPredictionTrio({
@@ -35,6 +43,7 @@ export default function PodiumPredictionTrio({
           winProbability: pred?.winProbability ?? null,
           finishRangeLow: pred?.finishRangeLow ?? null,
           finishRangeHigh: pred?.finishRangeHigh ?? null,
+          headshotUrl: a.headshotUrl ?? pred?.headshotUrl ?? null,
         };
       })
     : classification.slice(0, 3).map((c) => ({
@@ -47,6 +56,7 @@ export default function PodiumPredictionTrio({
         winProbability: c.winProbability ?? null,
         finishRangeLow: c.finishRangeLow ?? null,
         finishRangeHigh: c.finishRangeHigh ?? null,
+        headshotUrl: c.headshotUrl ?? null,
       }));
 
   // Visual ordering: P2 left, P1 (taller) centre, P3 right.
@@ -96,32 +106,54 @@ export default function PodiumPredictionTrio({
                 surface="flat"
                 team={entry.team}
                 teamColor={entry.teamColor}
-                className="p-6 sm:p-8"
+                className="p-6 sm:p-8 relative overflow-hidden"
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${rankColor}`}>
-                    {label}
-                  </span>
-                  <TeamColorBar
-                    teamColor={entry.teamColor}
-                    team={entry.team}
-                    variant="solid"
-                    size={isLeader ? "lg" : "md"}
-                    animate="draw"
+                {isLeader && (
+                  <BorderBeam
+                    size={1}
+                    duration={9}
+                    colorFrom={isOfficial ? "#E10600" : entry.teamColor}
+                    colorTo={isOfficial ? "#FFD166" : "#3671C6"}
+                    borderRadius={0}
                   />
+                )}
+                <div className="flex items-center gap-3 mb-6">
+                  <DriverPortrait
+                    driver={entry.driver}
+                    driverFullName={entry.driverFullName}
+                    team={entry.team}
+                    teamColor={entry.teamColor}
+                    headshotUrl={entry.headshotUrl}
+                    size={isLeader ? 72 : 56}
+                  />
+                  <div>
+                    <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${rankColor}`}>
+                      {label}
+                    </span>
+                    <div className="mt-1">
+                      <TeamColorBar
+                        teamColor={entry.teamColor}
+                        team={entry.team}
+                        variant="solid"
+                        size={isLeader ? "lg" : "md"}
+                        animate="draw"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className={isLeader ? "display-lg" : "display-md"}>{entry.driver}</div>
+                <div className={isLeader ? "display-lg [font-weight:700]" : "display-md [font-weight:700]"}>{entry.driver}</div>
                 <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">{entry.team}</div>
                 {entry.winProbability != null && entry.winProbability > 0 && (
                   <>
                     <p className="eyebrow mb-2">Win probability</p>
-                    <AnimatedNumber
-                      value={entry.winProbability}
-                      decimals={1}
-                      suffix="%"
-                      variant={isLeader ? "huge" : "default"}
-                      className="text-[color:var(--ink)]"
-                    />
+                    <p
+                      className={`font-mono font-tabular text-[color:var(--ink)] ${
+                        isLeader ? "text-[56px] leading-none [font-weight:700]" : "text-[28px]"
+                      }`}
+                    >
+                      <NumberTicker value={entry.winProbability} decimalPlaces={1} />
+                      <span className="text-[color:var(--muted)] text-base ml-1">%</span>
+                    </p>
                   </>
                 )}
                 {entry.finishRangeLow != null && entry.finishRangeHigh != null && (

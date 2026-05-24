@@ -2,14 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { ChevronDown, Github, Menu, X } from "lucide-react";
+
 import { SeasonData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
-import { fetchSeasonData, fetchSeasonTrackerData, getRoundLifecycle, getRoundStatusMeta } from "@/lib/data";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import {
+  fetchSeasonData,
+  fetchSeasonTrackerData,
+  getRoundLifecycle,
+  getRoundStatusMeta,
+} from "@/lib/data";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const GITHUB_URL = "https://github.com/roni-altshuler/f1_predictions";
 
 interface AccuracySummary {
   accuracyPct: number;
@@ -45,52 +55,81 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [racesOpen, setRacesOpen] = useState(false);
+  const [standingsOpen, setStandingsOpen] = useState(false);
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const [utilityHidden, setUtilityHidden] = useState(false);
   const racesRef = useRef<HTMLDivElement>(null);
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const standingsRef = useRef<HTMLDivElement>(null);
+  const racesCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const standingsCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const accuracy = useAccuracySummary();
+  const { scrollY } = useScroll();
 
   useEffect(() => {
     fetchSeasonData().then(setSeason).catch(() => {});
     fetchSeasonTrackerData().then(setTracker).catch(() => {});
   }, []);
 
+  // Outside-click to close dropdowns
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (racesRef.current && !racesRef.current.contains(e.target as Node)) {
         setRacesOpen(false);
+      }
+      if (standingsRef.current && !standingsRef.current.contains(e.target as Node)) {
+        setStandingsOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Close-on-hover-out uses a small grace timeout so the cursor can travel
-  // between the trigger button and the dropdown body without the menu
-  // collapsing under it.
-  const openRacesMenu = () => {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setUtilityHidden(latest > 80);
+  });
+
+  // Hover-open with grace timeout for cursor travel
+  const openMenu = (ref: typeof racesCloseTimerRef, setOpen: (b: boolean) => void) => {
+    if (ref.current) {
+      clearTimeout(ref.current);
+      ref.current = null;
     }
-    setRacesOpen(true);
+    setOpen(true);
   };
-  const scheduleRacesClose = () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = setTimeout(() => setRacesOpen(false), 140);
+  const scheduleClose = (ref: typeof racesCloseTimerRef, setOpen: (b: boolean) => void) => {
+    if (ref.current) clearTimeout(ref.current);
+    ref.current = setTimeout(() => setOpen(false), 140);
   };
   useEffect(() => () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    if (racesCloseTimerRef.current) clearTimeout(racesCloseTimerRef.current);
+    if (standingsCloseTimerRef.current) clearTimeout(standingsCloseTimerRef.current);
   }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  const actualSet = useMemo(
+    () => new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round)),
+    [tracker],
+  );
+
+  const seasonYear = season?.season ?? DEFAULT_SEASON_YEAR;
+  // Find next upcoming round (first non-completed)
+  const nextRound = useMemo(() => {
+    if (!season) return null;
+    const completed = new Set(season.completedRounds);
+    return season.calendar.find((r) => !completed.has(r.round)) ?? season.calendar[season.calendar.length - 1];
+  }, [season]);
+
+  const navLinkBase =
+    "nav-link-text px-3 lg:px-4 py-2 inline-flex items-center gap-1.5 transition-colors";
+
   const navLink = (href: string, label: string) => (
     <Link
       href={href}
       aria-current={isActive(href) ? "page" : undefined}
-      className={`nav-link-text px-4 py-2 transition-colors ${
+      className={`${navLinkBase} ${
         isActive(href)
           ? "text-[color:var(--ink)]"
           : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
@@ -100,63 +139,132 @@ export default function Navbar() {
     </Link>
   );
 
-  const actualSet = new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round));
-
-  const accuracySummary = useAccuracySummary();
-
-  const seasonYear = season?.season ?? DEFAULT_SEASON_YEAR;
-
   return (
     <nav
       className="sticky top-0 z-50"
       aria-label="Primary"
       style={{
         background: "rgba(0, 0, 0, 0.85)",
+        backdropFilter: "blur(10px)",
         borderBottom: "1px solid var(--hairline)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-3 items-center h-14">
-          {/* Left: MENU label (mobile hamburger) + desktop nav cluster */}
-          <div className="flex items-center gap-1 justify-start">
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden nav-link-text px-3 py-2 text-[color:var(--ink)]"
-              aria-label="Toggle menu"
+      {/* ── Row 1: utility strip (collapses on scroll) ─────────────── */}
+      <motion.div
+        initial={false}
+        animate={{
+          height: utilityHidden ? 0 : 32,
+          opacity: utilityHidden ? 0 : 1,
+        }}
+        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+        className="overflow-hidden border-b border-[color:var(--hairline)]/60"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-end gap-2 text-[10px]">
+          {accuracy && accuracy.roundsWithActual > 0 && (
+            <Link
+              href="/about#methodology"
+              className="eyebrow inline-flex items-center gap-1.5 px-2 py-0.5 border transition-colors hover:text-[color:var(--ink)]"
+              style={{
+                borderColor:
+                  accuracy.accuracyPct >= 80
+                    ? "var(--accent-f1-red-soft)"
+                    : accuracy.accuracyPct < 60
+                      ? "rgba(212,160,23,0.4)"
+                      : "var(--hairline)",
+                color: "var(--muted)",
+              }}
+              title={`Season accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} completed round(s)`}
             >
-              {mobileOpen ? "CLOSE" : "MENU"}
-            </button>
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full"
+                style={{
+                  background:
+                    accuracy.accuracyPct >= 80 ? "var(--accent-f1-red)" : "var(--muted)",
+                }}
+              />
+              {accuracy.accuracyPct.toFixed(0)}% · {accuracy.roundsWithActual}R
+            </Link>
+          )}
+          {process.env.NODE_ENV === "development" && (
+            <Link
+              href="/design-system"
+              className="eyebrow px-2 py-0.5 hover:text-[color:var(--ink)] text-[color:var(--muted)] transition-colors"
+            >
+              Design System
+            </Link>
+          )}
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="eyebrow inline-flex items-center gap-1 px-2 py-0.5 hover:text-[color:var(--ink)] text-[color:var(--muted)] transition-colors"
+            aria-label="GitHub repository"
+          >
+            <Github className="w-3 h-3" />
+            <span className="hidden sm:inline">GitHub</span>
+          </a>
+        </div>
+      </motion.div>
 
-            <div className="hidden md:flex items-center gap-0">
-              {navLink("/", "Home")}
+      {/* ── Row 2: primary nav ─────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center h-14 gap-2 sm:gap-4">
+          {/* mobile trigger */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden inline-flex items-center justify-center w-9 h-9 -ml-1.5"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5 text-[color:var(--ink)]" />
+          </button>
 
-              <div
-                ref={racesRef}
-                className="relative"
-                onMouseEnter={openRacesMenu}
-                onMouseLeave={scheduleRacesClose}
+          {/* wordmark */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
+            <span
+              className="inline-block w-1.5 h-6"
+              style={{ background: "var(--accent-f1-red)", boxShadow: "var(--glow-live)" }}
+              aria-hidden
+            />
+            <span className="wordmark">F1 {seasonYear} PREDICTIONS</span>
+          </Link>
+
+          {/* primary nav cluster (desktop) */}
+          <div className="hidden md:flex items-center gap-0 ml-4">
+            {navLink("/", "Home")}
+
+            {/* Races dropdown */}
+            <div
+              ref={racesRef}
+              className="relative"
+              onMouseEnter={() => openMenu(racesCloseTimerRef, setRacesOpen)}
+              onMouseLeave={() => scheduleClose(racesCloseTimerRef, setRacesOpen)}
+            >
+              <button
+                onClick={() => setRacesOpen((open) => !open)}
+                onFocus={() => openMenu(racesCloseTimerRef, setRacesOpen)}
+                aria-haspopup="menu"
+                aria-expanded={racesOpen}
+                className={`${navLinkBase} ${
+                  isActive("/race") || isActive("/calendar")
+                    ? "text-[color:var(--ink)]"
+                    : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                }`}
               >
-                <button
-                  onClick={() => setRacesOpen((open) => !open)}
-                  onFocus={openRacesMenu}
-                  aria-haspopup="menu"
-                  aria-expanded={racesOpen}
-                  className={`nav-link-text px-4 py-2 inline-flex items-center gap-1.5 transition-colors ${
-                    isActive("/race") || isActive("/calendar")
-                      ? "text-[color:var(--ink)]"
-                      : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
-                  }`}
-                >
-                  Races
-                  <svg className={`w-3 h-3 transition-transform ${racesOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+                Races
+                <ChevronDown
+                  className={`w-3 h-3 transition-transform ${racesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              <AnimatePresence>
                 {racesOpen && season && (
-                  <div
+                  <motion.div
                     role="menu"
                     data-lenis-prevent
-                    className="dropdown-menu absolute top-full left-0 mt-2 w-80 max-h-[70vh] overflow-y-auto overscroll-contain"
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
+                    className="dropdown-menu absolute top-full left-0 mt-1 w-80 max-h-[70vh] overflow-y-auto overscroll-contain"
                     style={{ scrollbarGutter: "stable" }}
                   >
                     <div className="p-2">
@@ -192,90 +300,214 @@ export default function Navbar() {
                         );
                       })}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
+              </AnimatePresence>
+            </div>
+
+            {/* Standings dropdown */}
+            <div
+              ref={standingsRef}
+              className="relative"
+              onMouseEnter={() => openMenu(standingsCloseTimerRef, setStandingsOpen)}
+              onMouseLeave={() => scheduleClose(standingsCloseTimerRef, setStandingsOpen)}
+            >
+              <button
+                onClick={() => setStandingsOpen((open) => !open)}
+                onFocus={() => openMenu(standingsCloseTimerRef, setStandingsOpen)}
+                aria-haspopup="menu"
+                aria-expanded={standingsOpen}
+                className={`${navLinkBase} ${
+                  isActive("/standings")
+                    ? "text-[color:var(--ink)]"
+                    : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                }`}
+              >
+                Standings
+                <ChevronDown
+                  className={`w-3 h-3 transition-transform ${standingsOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              <AnimatePresence>
+                {standingsOpen && (
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
+                    className="dropdown-menu absolute top-full left-0 mt-1 w-[440px] p-3"
+                  >
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { href: "/standings?tab=drivers", label: "Drivers", hint: "Per-driver totals" },
+                        { href: "/standings?tab=constructors", label: "Constructors", hint: "Team-by-team" },
+                        { href: "/standings?tab=whocanwin", label: "Who Can Still Win", hint: "Mathematical title race" },
+                      ].map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setStandingsOpen(false)}
+                          role="menuitem"
+                          className="block p-3 transition-colors hover:bg-[color:var(--surface-elevated)] border border-transparent hover:border-[color:var(--hairline)]"
+                        >
+                          <p className="title-sm text-[color:var(--ink)]">{item.label}</p>
+                          <p className="caption-uppercase mt-1 text-[10px] tracking-[0.14em]">
+                            {item.hint}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {navLink("/accuracy", "Accuracy")}
+            {navLink("/about", "About")}
+          </div>
+
+          <div className="flex-1" />
+
+          {/* CTA */}
+          {nextRound && (
+            <Link
+              href={`/race/${nextRound.round}`}
+              className="hidden sm:block"
+              aria-label={`Next race: ${nextRound.name}`}
+            >
+              <ShimmerButton
+                background="var(--accent-f1-red)"
+                shimmerColor="rgba(255,255,255,0.9)"
+                borderRadius="9999px"
+                className="button-label h-9 !py-0 !px-4 text-[12px]"
+              >
+                Next Race →
+              </ShimmerButton>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile drawer ─────────────────────────────────────────── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-40 bg-black/60"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              aria-hidden
+            />
+            <motion.aside
+              className="fixed top-0 right-0 bottom-0 z-50 w-[320px] max-w-[88vw] bg-[color:var(--canvas)] border-l border-[color:var(--hairline)] overflow-y-auto"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              role="dialog"
+              aria-label="Mobile navigation"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[color:var(--hairline)]">
+                <span className="wordmark">Menu</span>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                  className="inline-flex items-center justify-center w-9 h-9"
+                >
+                  <X className="w-5 h-5 text-[color:var(--ink)]" />
+                </button>
               </div>
 
-              {navLink("/standings", "Standings")}
-              {navLink("/about", "About")}
-            </div>
-          </div>
+              <nav className="flex flex-col gap-0 py-2">
+                {[
+                  { href: "/", label: "Home" },
+                  { href: "/calendar", label: "Season Calendar" },
+                  { href: "/standings", label: "Standings" },
+                  { href: "/accuracy", label: "Accuracy" },
+                  { href: "/about", label: "About" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    onClick={() => setMobileOpen(false)}
+                    className={`nav-link-text px-5 py-4 row-spec transition-colors ${
+                      isActive(item.href)
+                        ? "text-[color:var(--ink)]"
+                        : "text-[color:var(--muted)]"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
 
-          {/* Center: wordmark */}
-          <Link href="/" className="flex items-center justify-center gap-2 group">
-            <span className="wordmark">F1 {seasonYear} PREDICTIONS</span>
-          </Link>
-
-          {/* Right: accuracy chip */}
-          <div className="flex items-center justify-end">
-            {accuracySummary && accuracySummary.roundsWithActual > 0 && (
-              <Link
-                href="/about#methodology"
-                className="eyebrow inline-flex items-center gap-1.5 px-3 py-1 border transition-colors hover:text-[color:var(--ink)]"
-                style={{
-                  borderColor: "var(--hairline)",
-                  color: "var(--muted)",
-                }}
-                title={`Season accuracy ${accuracySummary.accuracyPct.toFixed(1)}% across ${accuracySummary.roundsWithActual} completed round(s)`}
-              >
-                {accuracySummary.accuracyPct.toFixed(0)}% · {accuracySummary.roundsWithActual}R
-              </Link>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden py-4 border-t" style={{ borderColor: "var(--hairline)" }}>
-            <div className="flex flex-col gap-0">
-              {[
-                { href: "/", label: "Home" },
-                { href: "/calendar", label: "Season Calendar" },
-                { href: "/standings", label: "Standings" },
-                { href: "/about", label: "About" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={isActive(item.href) ? "page" : undefined}
-                  onClick={() => setMobileOpen(false)}
-                  className={`nav-link-text px-4 py-3 row-spec transition-colors ${
-                    isActive(item.href)
-                      ? "text-[color:var(--ink)]"
-                      : "text-[color:var(--muted)]"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {season && season.completedRounds.length > 0 && (
-                <>
-                  <p className="eyebrow px-4 pt-4 pb-2">Race Status</p>
-                  {season.calendar
-                    .filter((r) => season.completedRounds.includes(r.round) || actualSet.has(r.round))
-                    .map((race) => (
-                      <Link
-                        key={race.round}
-                        href={`/race/${race.round}`}
-                        onClick={() => setMobileOpen(false)}
-                        className="px-4 py-3 row-spec text-sm flex items-center gap-2 justify-between font-serif transition-colors hover:text-[color:var(--ink)]"
-                        style={{ color: "var(--body)" }}
+                {nextRound && (
+                  <div className="px-5 pt-4">
+                    <Link href={`/race/${nextRound.round}`} onClick={() => setMobileOpen(false)}>
+                      <ShimmerButton
+                        background="var(--accent-f1-red)"
+                        shimmerColor="rgba(255,255,255,0.9)"
+                        borderRadius="9999px"
+                        className="w-full button-label h-10 !py-0 !px-4 text-[12px]"
                       >
-                        <span className="flex items-center gap-2">
-                          <CountryFlag country={race.country} size={18} />
-                          {race.name}
-                        </span>
-                        <Badge variant={TONE_TO_BADGE_VARIANT[getRoundStatusMeta(getRoundLifecycle(race, season.completedRounds.includes(race.round), actualSet.has(race.round))).tone as StatusTone] ?? "default"}>
-                          {getRoundStatusMeta(getRoundLifecycle(race, season.completedRounds.includes(race.round), actualSet.has(race.round))).shortLabel}
-                        </Badge>
-                      </Link>
-                    ))}
-                </>
-              )}
-            </div>
-          </div>
+                        Next Race → {nextRound.name}
+                      </ShimmerButton>
+                    </Link>
+                  </div>
+                )}
+
+                {season && season.completedRounds.length > 0 && (
+                  <div className="pt-4">
+                    <p className="eyebrow px-5 pt-4 pb-2">Race Status</p>
+                    {season.calendar
+                      .filter((r) => season.completedRounds.includes(r.round) || actualSet.has(r.round))
+                      .map((race) => (
+                        <Link
+                          key={race.round}
+                          href={`/race/${race.round}`}
+                          onClick={() => setMobileOpen(false)}
+                          className="px-5 py-3 row-spec text-sm flex items-center gap-2 justify-between font-serif transition-colors hover:text-[color:var(--ink)]"
+                          style={{ color: "var(--body)" }}
+                        >
+                          <span className="flex items-center gap-2">
+                            <CountryFlag country={race.country} size={18} />
+                            {race.name}
+                          </span>
+                          <Badge
+                            variant={
+                              TONE_TO_BADGE_VARIANT[
+                                getRoundStatusMeta(
+                                  getRoundLifecycle(
+                                    race,
+                                    season.completedRounds.includes(race.round),
+                                    actualSet.has(race.round),
+                                  ),
+                                ).tone as StatusTone
+                              ] ?? "default"
+                            }
+                          >
+                            {
+                              getRoundStatusMeta(
+                                getRoundLifecycle(
+                                  race,
+                                  season.completedRounds.includes(race.round),
+                                  actualSet.has(race.round),
+                                ),
+                              ).shortLabel
+                            }
+                          </Badge>
+                        </Link>
+                      ))}
+                  </div>
+                )}
+              </nav>
+            </motion.aside>
+          </>
         )}
-      </div>
+      </AnimatePresence>
     </nav>
   );
 }

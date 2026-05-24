@@ -52,14 +52,20 @@
   --text-muted:         #999999;          /* muted */
   --text-inverse:       #000000;
 
-  /* "active" semantics preserved but chroma flipped to white. */
-  --accent-live:        #ffffff;
-  --accent-live-fg:     #000000;
-  --accent-live-hover:  #cccccc;
+  /* F1 red accent — restricted to live/CTA/negative semantics only. */
+  --accent-f1-red:        #E10600;
+  --accent-f1-red-hover:  #B80500;
+  --accent-f1-red-bright: #FF1A1A;        /* small-text WCAG (6.91:1 on black) */
+  --accent-f1-red-soft:   rgba(225, 6, 0, 0.12);
+
+  /* "active" semantics — now F1-red instead of white. */
+  --accent-live:        var(--accent-f1-red);
+  --accent-live-fg:     #ffffff;
+  --accent-live-hover:  var(--accent-f1-red-hover);
   --accent-positive:    #5fa657;          /* success */
   --accent-positive-fg: #000000;
-  --accent-negative:    #999999;          /* demoted; Bugatti has no marketing red */
-  --accent-negative-fg: #000000;
+  --accent-negative:    var(--accent-f1-red); /* podium-miss arrows read red */
+  --accent-negative-fg: #ffffff;
   --accent-info:        #c3d9f3;          /* link ice-blue */
   --accent-info-fg:     #000000;
   --accent-podium-1:    #FFD166;          /* positional chromatic signal — kept */
@@ -73,18 +79,27 @@
   --shadow-elevated: none;
   --shadow-hud:      none;
 
-  /* ── Glow stack — all glows nuked ────────────────────────────────── */
-  --glow-accent:  none;
+  /* ── Glow stack — selectively re-armed for live + podium + team surfaces. */
+  --glow-accent:  none;                          /* kept off — Bugatti default */
   --glow-purple:  none;
-  --glow-podium:  none;
-  --glow-team:    none;
+  --glow-live:    0 0 14px rgba(225, 6, 0, 0.55), 0 0 32px rgba(225, 6, 0, 0.25);
+  --glow-podium:  0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-podium-gold: 0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-team:    0 0 18px color-mix(in srgb, var(--team-color, #ffffff) 50%, transparent);
 
-  /* ── Gradients — all decorative gradients nuked ──────────────────── */
-  --gradient-paddock:   none;
-  --gradient-hud-frame: none;
-  --gradient-scanline:  none;
+  /* ── Magic-UI HSL color triplets (used by gradient primitives) ────── */
+  --color-1: 0 100% 50%;     /* F1 red */
+  --color-2: 220 70% 55%;    /* broadcast blue */
+  --color-3: 45 100% 60%;    /* champagne gold */
+  --color-4: 175 84% 32%;    /* Mercedes-cyan */
+  --color-5: 28 100% 50%;    /* McLaren orange */
 
-  /* ── Radius — binary system. The "old" small/med/lg/xl collapse to 0. */
+  /* ── Gradients — decorative stack returned, sparing use ────────────── */
+  --gradient-paddock:   linear-gradient(180deg, rgba(225,6,0,0.10) 0%, transparent 55%);
+  --gradient-hud-frame: linear-gradient(180deg, var(--surface-soft), var(--surface-card));
+  --gradient-scanline:  repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+
+  /* ── Radius — Bugatti pill kept; cards get one notch of softness. ──── */
   --radius-sm:   0px;
   --radius:      0px;
   --radius-lg:   0px;
@@ -92,6 +107,7 @@
   --radius-none: 0px;
   --radius-pill: 9999px;
   --radius-full: 9999px;
+  --radius-card: 4px;                             /* F1.com photo-card softness */
 
   /* ── Spacing scale ───────────────────────────────────────────────── */
   --space-xxs: 4px;
@@ -118,8 +134,8 @@
   --hud-purple-soft:   rgba(255, 255, 255, 0.06);
   --hud-yellow:        var(--warning);
   --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
-  --hud-red-light:     var(--ink);
-  --hud-red-soft:      rgba(255, 255, 255, 0.06);
+  --hud-red-light:     var(--accent-f1-red);
+  --hud-red-soft:      var(--accent-f1-red-soft);
   --hud-green:         var(--success);
   --hud-cyan:          var(--link);
   --hud-champagne:     var(--accent-podium-1);

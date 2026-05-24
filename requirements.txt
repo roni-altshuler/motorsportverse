@@ -12,6 +12,8 @@ xgboost~=3.2.0
 # Viz
 matplotlib~=3.10.8
 seaborn~=0.13.2
+# Used by scripts/fetch_driver_headshots.py to convert openf1.org headshots to WebP.
+Pillow~=12.2.0
 
 # Notebook tooling (jupytext keeps .ipynb/.py in sync)
 ipykernel~=7.2.0

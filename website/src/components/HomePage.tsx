@@ -16,7 +16,10 @@ import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
 import PodiumStage from "@/components/home/PodiumStage";
-import PaddockWall from "@/components/home/PaddockWall";
+import RaceCardCarousel from "@/components/home/RaceCardCarousel";
+import ChampionshipBento from "@/components/home/ChampionshipBento";
+import ConstructorsConstellation from "@/components/home/ConstructorsConstellation";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import LoadingTire from "@/components/ui/LoadingTire";
 import { fadeUp } from "@/lib/motion";
@@ -51,12 +54,16 @@ function formatCountdown(targetIso: string, now: Date): string {
   return `in ${hours}h`;
 }
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export default function HomePage() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [standings, setStandings] = useState<StandingsData | null>(null);
   const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const [accuracyPct, setAccuracyPct] = useState<number | null>(null);
+  const [roundsGraded, setRoundsGraded] = useState<number>(0);
 
   useEffect(() => {
     fetchSeasonData().then(setSeason).catch(() => {});
@@ -67,6 +74,14 @@ export default function HomePage() {
         if (s.lastUpdatedRound > 0) {
           fetchRoundData(s.lastUpdatedRound).then(setLatestRound).catch(() => {});
         }
+      })
+      .catch(() => {});
+    fetch(`${BASE_PATH}/data/gp_accuracy_report.json`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!d?.overallAccuracy) return;
+        setAccuracyPct(d.overallAccuracy.seasonAccuracyPct ?? null);
+        setRoundsGraded(d.overallAccuracy.roundsWithActual ?? 0);
       })
       .catch(() => {});
   }, []);
@@ -127,35 +142,53 @@ export default function HomePage() {
             <CountryFlag country={featuredRace.country} size={64} />
             <div>
               <p className="eyebrow mb-3">Featured Grand Prix</p>
-              <h1 className="display-xl">{featuredRace.name}</h1>
+              <h1 className="display-xl [font-weight:700] text-balance">
+                {featuredRace.name}
+              </h1>
               <p className="body-md mt-4 max-w-2xl text-[color:var(--body-strong)]">
                 {featuredRace.circuit} · {featuredMeta.description}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            <Link
-              href={`/race/${featuredRace.round}`}
-              className={buttonVariants({ variant: "primary" })}
-            >
-              Open Race Report
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href={`/race/${featuredRace.round}`}>
+              <ShimmerButton
+                background="var(--accent-f1-red)"
+                shimmerColor="rgba(255,255,255,0.9)"
+                borderRadius="9999px"
+                className="button-label h-11 !px-7 !py-0 text-[13px]"
+              >
+                Open Race Report →
+              </ShimmerButton>
             </Link>
-            <Link
-              href="/calendar"
-              className={buttonVariants({ variant: "primary" })}
-            >
+            <Link href="/calendar" className={buttonVariants({ variant: "primary" })}>
               Full Calendar
             </Link>
-            <Link
-              href="/standings"
-              className={buttonVariants({ variant: "ghost" })}
-            >
+            <Link href="/standings" className={buttonVariants({ variant: "ghost" })}>
               Standings
             </Link>
           </div>
         </div>
       </HeroParallax>
+
+      {/* ── Race Card Carousel — F1.com Previous/Current/Next pattern ── */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-10 pt-12 sm:pt-16">
+        <div className="flex items-baseline justify-between mb-6">
+          <div>
+            <p className="eyebrow mb-1">Race Window</p>
+            <h2 className="display-md">This Weekend &amp; Beyond</h2>
+          </div>
+          <Link href="/calendar" className="link-bugatti button-label text-[11px]">
+            Full Season →
+          </Link>
+        </div>
+        <RaceCardCarousel
+          season={season}
+          roundsWithActual={roundsWithActual}
+          mode="featured"
+        />
+      </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
         {isPredictionView && featuredRound && featuredRound.classification && (
@@ -279,31 +312,42 @@ export default function HomePage() {
 
         {standings && (
           <section className="section-bugatti">
-            <div className="grid gap-16 lg:grid-cols-2">
-              <PaddockWall
-                title="Drivers"
-                href="/standings"
-                entries={standings.drivers.slice(0, 6).map((d) => ({
-                  name: d.driver,
-                  subtitle: d.team,
-                  team: d.team,
-                  teamColor: d.teamColor || "var(--ink)",
-                  points: d.points,
-                }))}
-                limit={6}
-              />
-              <PaddockWall
-                title="Constructors"
-                href="/standings"
-                entries={standings.constructors.slice(0, 6).map((t) => ({
-                  name: t.team,
-                  team: t.team,
-                  teamColor: t.teamColor || "var(--ink)",
-                  points: t.points,
-                }))}
-                limit={6}
-              />
+            <div className="flex items-baseline justify-between mb-10">
+              <div>
+                <p className="eyebrow mb-2">Championship Snapshot</p>
+                <h2 className="display-md">Where the season stands</h2>
+              </div>
+              <Link href="/standings" className="link-bugatti button-label text-[11px]">
+                Open Standings →
+              </Link>
             </div>
+            <ChampionshipBento
+              standings={standings}
+              season={season}
+              nextRace={
+                season.calendar.find(
+                  (r) => !season.completedRounds.includes(r.round),
+                ) ?? null
+              }
+              accuracyPct={accuracyPct}
+              roundsCompleted={roundsGraded}
+            />
+          </section>
+        )}
+
+        {standings && standings.constructors.length > 0 && (
+          <section className="section-bugatti relative">
+            <div className="text-center mb-10">
+              <p className="eyebrow mb-2">Constellation</p>
+              <h2 className="display-md">Eleven teams. One championship.</h2>
+              <p className="body-md mt-3 max-w-xl mx-auto text-[color:var(--muted)]">
+                Every constructor in orbit around the {season.season} title.
+              </p>
+            </div>
+            <ConstructorsConstellation
+              constructors={standings.constructors}
+              seasonYear={season.season}
+            />
           </section>
         )}
 

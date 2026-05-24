@@ -30,6 +30,13 @@ export interface DriverInfo {
   number: number;
   team: string;
   teamColor: string;
+  /**
+   * Path to a 192x192 WebP headshot relative to the website public root
+   * (e.g. `/headshots/VER.webp`).  Populated at Python build time by
+   * `scripts/fetch_driver_headshots.py`.  Consumers must prepend
+   * `NEXT_PUBLIC_BASE_PATH` before rendering — see `DriverPortrait`.
+   */
+  headshotUrl?: string | null;
 }
 
 export interface TeamInfo {
@@ -65,6 +72,8 @@ export interface ClassificationEntry {
   finishRangeLow?: number;
   finishRangeHigh?: number;
   winProbability?: number;
+  /** See {@link DriverInfo.headshotUrl}. */
+  headshotUrl?: string | null;
 }
 
 export interface ModelMetrics {
@@ -383,6 +392,8 @@ export interface DriverStanding {
   wins: number;
   podiums: number;
   pointsHistory: number[];  // cumulative per round
+  /** See {@link DriverInfo.headshotUrl}. */
+  headshotUrl?: string | null;
 }
 
 export interface ConstructorStanding {

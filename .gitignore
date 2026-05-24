@@ -87,6 +87,9 @@ odds_cache/
 odds_inbox/
 # anchored: only top-level DuckDB dir; doesn't capture website/public/data/
 /data/
+# Headshot manifest written by scripts/fetch_driver_headshots.py — it IS
+# committed so the website builds without re-fetching from openf1.org.
+!/data/driver_headshots.json
 
 # ========================
 # Misc

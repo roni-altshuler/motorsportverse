@@ -8,6 +8,11 @@ import { getSeasonYear } from "@/lib/season";
 import StandingsChart from "@/components/charts/StandingsChart";
 import DriverBadge from "@/components/standings/DriverBadge";
 import ChampionshipKPIs from "@/components/standings/ChampionshipKPIs";
+import StandingsHeroPodium from "@/components/standings/StandingsHeroPodium";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import TeamBadge from "@/components/standings/TeamBadge";
+import WhoCanWinLanes from "@/components/standings/WhoCanWinLanes";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 import LoadingTire from "@/components/ui/LoadingTire";
 import { motion } from "framer-motion";
 
@@ -131,9 +136,12 @@ export default function StandingsPage() {
       {/* Drivers Tab */}
       {activeTab === "drivers" && (
         <div className="space-y-8">
-          {/* ━━━ PADDOCK BADGE WALL — top 8 drivers as cinematic cards ━━━ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {data.drivers.slice(0, 8).map((d, i) => (
+          {/* ━━━ HERO PODIUM — F1.com signature 3-card row with portraits ━━━ */}
+          <StandingsHeroPodium drivers={data.drivers} />
+
+          {/* ━━━ Compact 4-up grid of P4–P8 ━━━ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {data.drivers.slice(3, 8).map((d, i) => (
               <DriverBadge
                 key={d.driver}
                 index={i}
@@ -170,6 +178,7 @@ export default function StandingsPage() {
                     {[
                       { label: "POS", sort: "ascending" as const },
                       { label: "", sort: undefined },
+                      { label: "", sort: undefined },
                       { label: "DRIVER", sort: undefined },
                       { label: "TEAM", sort: undefined },
                       // The table is pre-sorted by points descending — surface
@@ -177,9 +186,9 @@ export default function StandingsPage() {
                       { label: "PTS", sort: "descending" as const },
                       { label: "WINS", sort: undefined },
                       { label: "PODIUMS", sort: undefined },
-                    ].map((h) => (
+                    ].map((h, idx) => (
                       <th
-                        key={h.label}
+                        key={`${h.label}-${idx}`}
                         scope="col"
                         aria-sort={h.sort}
                         className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
@@ -229,6 +238,16 @@ export default function StandingsPage() {
                             style={{ backgroundColor: d.teamColor }}
                           />
                         </td>
+                        <td className="px-2 py-2">
+                          <DriverPortrait
+                            driver={d.driver}
+                            driverFullName={d.driverFullName}
+                            team={d.team}
+                            teamColor={d.teamColor}
+                            headshotUrl={d.headshotUrl}
+                            size={40}
+                          />
+                        </td>
                         <td className="px-4 py-3">
                           <span className="font-bold" style={{ color: "var(--text)" }}>
                             {d.driver}
@@ -246,10 +265,10 @@ export default function StandingsPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <span
-                              className="font-black text-lg"
+                              className="font-black text-lg font-mono font-tabular"
                               style={{ color: "var(--text)" }}
                             >
-                              {d.points}
+                              <NumberTicker value={d.points} />
                             </span>
                             <div className="hidden sm:block progress-bar w-24 h-1.5">
                               <div
@@ -293,7 +312,15 @@ export default function StandingsPage() {
             {data.constructors.slice(0, 6).map((c) => {
               const maxPts = data.constructors[0]?.points || 1;
               return (
-                <div key={c.team} className="card p-5 relative overflow-hidden">
+                <div
+                  key={c.team}
+                  data-team={c.team}
+                  className="card p-5 relative overflow-hidden"
+                  style={{
+                    background:
+                      "color-mix(in srgb, var(--team-color, var(--surface-card)) 6%, var(--surface-card))",
+                  }}
+                >
                   <div
                     className="absolute top-0 left-0 w-full h-1"
                     style={{ background: c.teamColor }}
@@ -313,18 +340,21 @@ export default function StandingsPage() {
                       P{c.position}
                     </span>
                     <span
-                      className="text-2xl font-black"
+                      className="text-2xl font-black font-mono font-tabular"
                       style={{ color: "var(--text)" }}
                     >
-                      {c.points} pts
+                      <NumberTicker value={c.points} /> pts
                     </span>
                   </div>
-                  <h3
-                    className="font-bold text-lg mb-1"
-                    style={{ color: "var(--text)" }}
-                  >
-                    {c.team}
-                  </h3>
+                  <div className="flex items-center gap-3 mb-2">
+                    <TeamBadge team={c.team} teamColor={c.teamColor} size={48} />
+                    <h3
+                      className="font-bold text-lg [font-family:var(--font-display)] uppercase tracking-[0.05em]"
+                      style={{ color: "var(--text)" }}
+                    >
+                      {c.team}
+                    </h3>
+                  </div>
                   <p className="text-sm mb-3" style={{ color: "var(--text-muted)" }}>
                     {c.drivers.join(" • ")}
                   </p>
@@ -446,115 +476,9 @@ export default function StandingsPage() {
         </div>
       )}
 
-      {/* WDC Possibility Tab */}
+      {/* WDC Possibility Tab — race-to-the-flag lanes + animated beams to CHAMPION ZONE */}
       {activeTab === "wdc" && (
-        <div className="space-y-6">
-          <div className="text-center mb-6">
-            <h2
-              className="text-xl font-bold mb-2"
-              style={{ color: "var(--text)" }}
-            >
-              Who Can Still Win the Championship?
-            </h2>
-            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-              Based on maximum possible points with{" "}
-              {Math.max(totalRounds - data.lastUpdatedRound, 0)} rounds remaining
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.wdcPossibility.map((w) => {
-              const leaderPts = data.drivers[0]?.points || 0;
-              const deficit = leaderPts - w.currentPoints;
-              return (
-                <div
-                  key={w.driver}
-                  className="card p-5 relative overflow-hidden"
-                  style={
-                    w.canStillWin
-                      ? { border: "1px solid rgba(0, 210, 190, 0.3)" }
-                      : { opacity: 0.6 }
-                  }
-                >
-                  <div
-                    className="absolute top-0 left-0 w-full h-1"
-                    style={{ background: w.teamColor }}
-                  />
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <p
-                        className="font-black text-lg"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {w.driver}
-                      </p>
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        {w.team}
-                      </p>
-                    </div>
-                    {w.canStillWin ? (
-                      <span
-                        className="px-3 py-1 rounded-full text-xs font-bold"
-                        style={{
-                          background: "rgba(0, 210, 190, 0.15)",
-                          color: "#00D2BE",
-                        }}
-                      >
-                        IN CONTENTION
-                      </span>
-                    ) : (
-                      <span
-                        className="px-3 py-1 rounded-full text-xs font-bold"
-                        style={{
-                          background: "var(--bg-surface)",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        ELIMINATED
-                      </span>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-2 gap-3 text-center">
-                    <div className="metric-card">
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        Current
-                      </p>
-                      <p
-                        className="font-black text-lg"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {w.currentPoints}
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        Max Possible
-                      </p>
-                      <p
-                        className="font-black text-lg"
-                        style={{
-                          color: w.canStillWin
-                            ? "#00D2BE"
-                            : "var(--text-muted)",
-                        }}
-                      >
-                        {w.maxPossiblePoints}
-                      </p>
-                    </div>
-                  </div>
-                  {deficit > 0 && (
-                    <p
-                      className="text-xs text-center mt-3"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      {deficit} points behind leader
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <WhoCanWinLanes standings={data} season={season} />
       )}
     </div>
   );

@@ -98,6 +98,58 @@ def _ensure_dirs():
         os.makedirs(d, exist_ok=True)
 
 
+# ── Driver headshot manifest ────────────────────────────────────────────
+# Populated by scripts/fetch_driver_headshots.py.  Maps 3-letter driver code
+# to a website-relative path (`/headshots/VER.webp`).  The website prefixes
+# `NEXT_PUBLIC_BASE_PATH` at render time inside DriverPortrait.
+_DRIVER_HEADSHOTS_MANIFEST_PATH = os.path.join(
+    PROJECT_ROOT, "data", "driver_headshots.json"
+)
+_DRIVER_HEADSHOTS_CACHE = None  # lazy-loaded
+
+
+def _load_driver_headshots_manifest():
+    """Load the headshot manifest once per process; tolerate missing/invalid
+    file by returning an empty dict so the rest of the pipeline degrades to
+    the 3-letter-code fallback in DriverPortrait."""
+    global _DRIVER_HEADSHOTS_CACHE
+    if _DRIVER_HEADSHOTS_CACHE is not None:
+        return _DRIVER_HEADSHOTS_CACHE
+    manifest = {}
+    path = _DRIVER_HEADSHOTS_MANIFEST_PATH
+    if os.path.exists(path):
+        try:
+            with open(path) as f:
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    manifest = {
+                        str(k).upper(): str(v)
+                        for k, v in loaded.items()
+                        if isinstance(v, str) and v
+                    }
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"  ⚠️  Could not read driver headshot manifest: {exc}")
+    _DRIVER_HEADSHOTS_CACHE = manifest
+    return manifest
+
+
+def _inject_driver_headshots(rows, *, code_key="driver"):
+    """Mutate each dict in `rows` (an iterable of driver-like dicts) by adding
+    `headshotUrl` resolved from the manifest.  Missing codes get `None`.  No-op
+    when the manifest is empty (headshot fetcher hasn't been run yet)."""
+    manifest = _load_driver_headshots_manifest()
+    if not manifest:
+        return rows
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        code = row.get(code_key)
+        if not isinstance(code, str):
+            continue
+        row["headshotUrl"] = manifest.get(code.upper())
+    return rows
+
+
 def ensure_track_map_asset(round_num, gp_key, fallback_year=2025):
     """Ensure a labeled-corner circuit map exists when FastF1 data is available."""
     round_viz_dir = os.path.join(VIZ_DIR, f"round_{round_num:02d}")
@@ -483,6 +535,7 @@ def export_season_metadata():
             "team":      team,
             "teamColor": TEAM_COLOURS.get(team, "#888888"),
         })
+    _inject_driver_headshots(drivers, code_key="code")
 
     # ── Teams (TeamInfo[]) ──
     teams = []
@@ -788,6 +841,10 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             if src_col in row and pd.notna(row[src_col]):
                 entry[payload_key] = round(float(row[src_col]), 3)
         classification_data.append(entry)
+
+    # Resolve official headshot URLs (manifest written by
+    # scripts/fetch_driver_headshots.py).  No-op when manifest is absent.
+    _inject_driver_headshots(classification_data, code_key="driver")
 
     # ── Metrics → ModelMetrics ──
     mae_vals = metrics_df["MAE (s)"].values
@@ -1566,6 +1623,7 @@ def _fetch_live_standings_from_jolpica(season_year=SEASON_YEAR):
         )
         row["podiums"] = int(driver_podiums.get(code, 0))
         driver_list.append(row)
+    _inject_driver_headshots(driver_list, code_key="driver")
 
     constructor_list = []
     for row in constructor_entries:
@@ -1994,6 +2052,7 @@ def export_standings():
             "podiums":        driver_podiums[code],
             "pointsHistory":  driver_pts_per_rnd[code],
         })
+    _inject_driver_headshots(driver_list, code_key="driver")
 
     # ── ConstructorStanding[] ──
     constructor_list = []
