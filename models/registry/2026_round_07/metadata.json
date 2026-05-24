@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Spain",
+  "ensemble_weights": {
+    "gb": 0.5662239846701285,
+    "lstm": 0.0,
+    "xgb": 0.43377601532987153
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Barcelona-Catalunya Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.10370523157775154,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.11556924642772809,
+      "R\u00b2": 0.9603125647185651
+    },
+    {
+      "MAE (s)": 0.13537030029297056,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.1471804694946763,
+      "R\u00b2": 0.9356321742676166
+    },
+    {
+      "MAE (s)": 0.09489778743729857,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.11749419953840799,
+      "R\u00b2": 0.9589794645292888
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 7,
+  "savedAt": "2026-05-24T11:51:26+00:00",
+  "season": 2026
+}

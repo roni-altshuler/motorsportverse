@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Great Britain",
+  "ensemble_weights": {
+    "gb": 0.60944427650003,
+    "lstm": 0.0,
+    "xgb": 0.3905557234999701
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "British Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.11368588947985928,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.12472904927302861,
+      "R\u00b2": 0.96410861602434
+    },
+    {
+      "MAE (s)": 0.17740161132812204,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.19158681623824192,
+      "R\u00b2": 0.9153189524281446
+    },
+    {
+      "MAE (s)": 0.08910636319210426,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.10820598806249752,
+      "R\u00b2": 0.9729879483671204
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 9,
+  "savedAt": "2026-05-24T11:52:45+00:00",
+  "season": 2026
+}

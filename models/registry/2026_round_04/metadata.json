@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Miami",
   "ensemble_weights": {
-    "gb": 0.6886329090778001,
+    "gb": 0.6878696854644326,
     "lstm": 0.0,
-    "xgb": 0.31136709092219994
+    "xgb": 0.3121303145355674
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -48,17 +48,17 @@
     "LocalBattleIntensity",
     "DRSOvertakeProbAhead"
   ],
-  "gitSha": "fbb04425dfa81bfe3a16df5a7826c8b2ec20f250",
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
   "gpName": "Miami Grand Prix",
   "kind": "qualifying-time",
   "lstm_used": false,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.27910644110288274,
+      "MAE (s)": 0.28010102810215187,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.3502314414551717,
-      "R\u00b2": 0.8946309897883912
+      "RMSE (s)": 0.3515094928901701,
+      "R\u00b2": 0.8938605693769435
     },
     {
       "MAE (s)": 0.6172838623046857,
@@ -67,14 +67,14 @@
       "R\u00b2": 0.5108705641927614
     },
     {
-      "MAE (s)": 0.279609697050617,
+      "MAE (s)": 0.2804791512097268,
       "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.3298810798018051,
-      "R\u00b2": 0.9065202693621578
+      "RMSE (s)": 0.33075696368161867,
+      "R\u00b2": 0.9060232048588198
     }
   ],
   "pythonVersion": "3.12.3",
   "round": 4,
-  "savedAt": "2026-05-21T08:23:45+00:00",
+  "savedAt": "2026-05-24T11:49:23+00:00",
   "season": 2026
 }

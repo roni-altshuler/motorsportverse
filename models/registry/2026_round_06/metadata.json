@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Monaco",
+  "ensemble_weights": {
+    "gb": 0.632012556336668,
+    "lstm": 0.0,
+    "xgb": 0.36798744366333214
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Monaco Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.08238770817937109,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.09829290036086766,
+      "R\u00b2": 0.9665024607475403
+    },
+    {
+      "MAE (s)": 0.14149957275390648,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.150727427890337,
+      "R\u00b2": 0.9212313901809952
+    },
+    {
+      "MAE (s)": 0.10413999901433897,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.11047071321063374,
+      "R\u00b2": 0.9576880617519137
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 6,
+  "savedAt": "2026-05-24T11:50:43+00:00",
+  "season": 2026
+}

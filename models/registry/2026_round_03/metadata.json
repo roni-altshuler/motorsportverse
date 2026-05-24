@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Japan",
   "ensemble_weights": {
-    "gb": 0.48612371549756433,
+    "gb": 0.4866052063909257,
     "lstm": 0.0,
-    "xgb": 0.5138762845024357
+    "xgb": 0.5133947936090744
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -48,17 +48,17 @@
     "LocalBattleIntensity",
     "DRSOvertakeProbAhead"
   ],
-  "gitSha": "fbb04425dfa81bfe3a16df5a7826c8b2ec20f250",
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
   "gpName": "Japanese Grand Prix",
   "kind": "qualifying-time",
   "lstm_used": false,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.2530933612532692,
+      "MAE (s)": 0.25260601963123575,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.2891110334220164,
-      "R\u00b2": 0.9140995739669734
+      "RMSE (s)": 0.28910469814897233,
+      "R\u00b2": 0.9141033385876767
     },
     {
       "MAE (s)": 0.23942471923828065,
@@ -67,14 +67,14 @@
       "R\u00b2": 0.9221886886503774
     },
     {
-      "MAE (s)": 0.19863418701543764,
+      "MAE (s)": 0.19892174447243746,
       "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.2334688313683884,
-      "R\u00b2": 0.9439824894657544
+      "RMSE (s)": 0.23351114350346314,
+      "R\u00b2": 0.9439621832412459
     }
   ],
   "pythonVersion": "3.12.3",
   "round": 3,
-  "savedAt": "2026-05-21T08:23:01+00:00",
+  "savedAt": "2026-05-24T11:48:52+00:00",
   "season": 2026
 }

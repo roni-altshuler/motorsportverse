@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Brazil",
+  "ensemble_weights": {
+    "gb": 0.555865109762957,
+    "lstm": 0.0,
+    "xgb": 0.444134890237043
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "S\u00e3o Paulo Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.09675746856486285,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.11205973997162359,
+      "R\u00b2": 0.9564620651453838
+    },
+    {
+      "MAE (s)": 0.12109857177734398,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.12734959110243096,
+      "R\u00b2": 0.9437705657159033
+    },
+    {
+      "MAE (s)": 0.08802250048578344,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.10416371390766709,
+      "R\u00b2": 0.9623814963559264
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 19,
+  "savedAt": "2026-05-24T12:00:35+00:00",
+  "season": 2026
+}

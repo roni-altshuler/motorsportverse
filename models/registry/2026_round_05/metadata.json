@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Canada",
   "ensemble_weights": {
-    "gb": 0.6356468466756529,
+    "gb": 0.6916492894493579,
     "lstm": 0.0,
-    "xgb": 0.3643531533243472
+    "xgb": 0.308350710550642
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -48,33 +48,33 @@
     "LocalBattleIntensity",
     "DRSOvertakeProbAhead"
   ],
-  "gitSha": "9526092d239bdf4750cb3ea1707649305c466c1d",
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
   "gpName": "Canadian Grand Prix",
   "kind": "qualifying-time",
   "lstm_used": false,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.09870445045266649,
+      "MAE (s)": 0.15739341912949953,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.10971965834323734,
-      "R\u00b2": 0.9600774566001752
+      "RMSE (s)": 0.1845689897789639,
+      "R\u00b2": 0.9569351330013175
     },
     {
-      "MAE (s)": 0.17219879150390796,
+      "MAE (s)": 0.3530429565429671,
       "Model": "XGBoost",
-      "RMSE (s)": 0.18415354546069174,
-      "R\u00b2": 0.8875370483055768
+      "RMSE (s)": 0.46903282445165967,
+      "R\u00b2": 0.7218928757962859
     },
     {
-      "MAE (s)": 0.09997545925592988,
+      "MAE (s)": 0.2039771639870537,
       "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.11810324325523676,
-      "R\u00b2": 0.9537434799982567
+      "RMSE (s)": 0.24215799845980096,
+      "R\u00b2": 0.9258684165692787
     }
   ],
-  "pythonVersion": "3.11.15",
+  "pythonVersion": "3.12.3",
   "round": 5,
-  "savedAt": "2026-05-24T08:14:25+00:00",
+  "savedAt": "2026-05-24T11:50:00+00:00",
   "season": 2026
 }

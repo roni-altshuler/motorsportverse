@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Abu Dhabi",
+  "ensemble_weights": {
+    "gb": 0.5435034835224288,
+    "lstm": 0.0,
+    "xgb": 0.45649651647757106
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Abu Dhabi Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.12684258795703726,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.14100701086582762,
+      "R\u00b2": 0.9512165163961678
+    },
+    {
+      "MAE (s)": 0.15101843261718956,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.15940783130473984,
+      "R\u00b2": 0.9376536972704962
+    },
+    {
+      "MAE (s)": 0.1066774602572508,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.12644856511364133,
+      "R\u00b2": 0.9607699186917319
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 22,
+  "savedAt": "2026-05-24T12:02:51+00:00",
+  "season": 2026
+}
