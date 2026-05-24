@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Canada",
   "ensemble_weights": {
-    "gb": 0.6916492894493579,
-    "lstm": 0.0,
-    "xgb": 0.308350710550642
+    "gb": 0.5671524173484735,
+    "lstm": 0.18,
+    "xgb": 0.25284758265152646
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -48,10 +48,10 @@
     "LocalBattleIntensity",
     "DRSOvertakeProbAhead"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "3f2befca620d2e4572d81a69235e4c78b9a0d8fc",
   "gpName": "Canadian Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
@@ -67,14 +67,20 @@
       "R\u00b2": 0.7218928757962859
     },
     {
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
       "MAE (s)": 0.2039771639870537,
-      "Model": "Ensemble (GBR + XGB)",
+      "Model": "Ensemble (GBR + XGB + LSTM)",
       "RMSE (s)": 0.24215799845980096,
       "R\u00b2": 0.9258684165692787
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.15",
   "round": 5,
-  "savedAt": "2026-05-24T11:50:00+00:00",
+  "savedAt": "2026-05-24T12:55:59+00:00",
   "season": 2026
 }

@@ -1,33 +1,33 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 6,
+  "lastEvaluatedRound": 22,
   "featureDrift": [
     {
       "feature": "predictedTime",
-      "psi": 4.639,
+      "psi": 6.6126,
       "severity": "alarm",
-      "baseline_n": 110,
+      "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "winProbability",
-      "psi": 3.1339,
+      "psi": 0.4329,
       "severity": "alarm",
-      "baseline_n": 110,
+      "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "finishRangeLow",
-      "psi": 0.2115,
-      "severity": "warn",
-      "baseline_n": 110,
+      "psi": 0.7363,
+      "severity": "alarm",
+      "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.0869,
+      "psi": 0.0639,
       "severity": "ok",
-      "baseline_n": 110,
+      "baseline_n": 462,
       "current_n": 22
     }
   ],
@@ -38,12 +38,11 @@
     "severity": "ok",
     "rounds_compared": 1
   },
-  "warnings": [
-    "finishRangeLow: PSI 0.211 (moderate drift vs baseline)"
-  ],
+  "warnings": [],
   "alarms": [
-    "predictedTime: PSI 4.639 (significant drift vs baseline)",
-    "winProbability: PSI 3.134 (significant drift vs baseline)"
+    "predictedTime: PSI 6.613 (significant drift vs baseline)",
+    "winProbability: PSI 0.433 (significant drift vs baseline)",
+    "finishRangeLow: PSI 0.736 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
