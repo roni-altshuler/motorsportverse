@@ -731,7 +731,74 @@
           "team": "Cadillac"
         }
       },
-      "actual": {}
+      "actual": {
+        "ANT": {
+          "position": 1
+        },
+        "HAM": {
+          "position": 2
+        },
+        "VER": {
+          "position": 3
+        },
+        "LEC": {
+          "position": 4
+        },
+        "HAD": {
+          "position": 5
+        },
+        "COL": {
+          "position": 6
+        },
+        "LAW": {
+          "position": 7
+        },
+        "GAS": {
+          "position": 8
+        },
+        "SAI": {
+          "position": 9
+        },
+        "BEA": {
+          "position": 10
+        },
+        "PIA": {
+          "position": 11
+        },
+        "HUL": {
+          "position": 12
+        },
+        "BOR": {
+          "position": 13
+        },
+        "OCO": {
+          "position": 14
+        },
+        "STR": {
+          "position": 15
+        },
+        "BOT": {
+          "position": 16
+        },
+        "PER": {
+          "position": 17
+        },
+        "NOR": {
+          "position": 18
+        },
+        "RUS": {
+          "position": 19
+        },
+        "ALO": {
+          "position": 20
+        },
+        "ALB": {
+          "position": 21
+        },
+        "LIN": {
+          "position": 22
+        }
+      }
     },
     "6": {
       "predicted": {
@@ -2351,6 +2418,15 @@
       "within_5_positions": 18,
       "total_drivers": 22,
       "accuracy_pct": 72.7
+    },
+    "5": {
+      "mean_position_error": 5.36,
+      "median_position_error": 4.0,
+      "exact_matches": 1,
+      "within_3_positions": 8,
+      "within_5_positions": 15,
+      "total_drivers": 22,
+      "accuracy_pct": 36.4
     }
   }
 }
