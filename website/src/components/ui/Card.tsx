@@ -25,7 +25,7 @@ const cardVariants = cva(
         paddock: "border border-[color:var(--hairline)] bg-[color:var(--surface-card)]",
       },
       interactive: {
-        true: "cursor-pointer hover:border-[color:var(--hairline-strong)]",
+        true: "cursor-pointer hover-lift-premium",
         false: "",
       },
     },

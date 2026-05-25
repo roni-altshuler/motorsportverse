@@ -18,6 +18,10 @@ interface NeonGradientCardProps {
 /**
  * Card with a soft glowing gradient border. Used ONCE per page max — the
  * live race card during a Grand Prix weekend.
+ *
+ * The neon "pulse" is a conic gradient rotated via `transform`, which the
+ * compositor handles on the GPU — no repaints, no layout, no
+ * background-position thrash like the previous implementation.
  */
 export function NeonGradientCard({
   borderSize = 2,
@@ -28,10 +32,7 @@ export function NeonGradientCard({
 }: NeonGradientCardProps) {
   return (
     <div
-      className={cn(
-        "relative z-10 w-full",
-        className,
-      )}
+      className={cn("relative z-10 w-full", className)}
       style={
         {
           "--border-size": `${borderSize}px`,
@@ -41,22 +42,23 @@ export function NeonGradientCard({
         } as CSSProperties
       }
     >
-      <div
-        className="relative h-full w-full overflow-hidden p-[var(--border-size)] rounded-[var(--border-radius)]"
-        style={{
-          background:
-            "linear-gradient(0deg, var(--neon-first-color), var(--neon-second-color))",
-          backgroundSize: "200% 200%",
-          animation: "neon-pulse 6s ease infinite",
-        }}
-      >
+      <div className="relative h-full w-full overflow-hidden p-[var(--border-size)] rounded-[var(--border-radius)]">
+        {/* Rotating conic-gradient backdrop. Sized larger than the parent +
+         * centred so corners stay filled when the conic sweeps past 90/180/270. */}
         <div
-          className="relative z-10 h-full w-full bg-[var(--surface-card)] rounded-[calc(var(--border-radius)-1px)]"
-        >
+          aria-hidden
+          className="absolute left-1/2 top-1/2 aspect-square w-[180%] -translate-x-1/2 -translate-y-1/2 animate-neon-spin"
+          style={{
+            background:
+              "conic-gradient(from 0deg, var(--neon-first-color), var(--neon-second-color), var(--neon-first-color))",
+          }}
+        />
+        <div className="relative z-10 h-full w-full bg-[var(--surface-card)] rounded-[calc(var(--border-radius)-1px)]">
           {children}
         </div>
       </div>
       <div
+        aria-hidden
         className="pointer-events-none absolute -inset-2 -z-10 rounded-[var(--border-radius)] opacity-60 blur-2xl"
         style={{
           background:

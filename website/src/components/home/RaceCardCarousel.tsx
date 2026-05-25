@@ -99,7 +99,7 @@ export default function RaceCardCarousel({
       >
         <Link
           href={`/race/${race.round}`}
-          className="relative block aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)]"
+          className="hover-lift-premium relative block aspect-[16/9] w-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)]"
         >
           <div
             className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.04]"

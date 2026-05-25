@@ -56,6 +56,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [racesOpen, setRacesOpen] = useState(false);
   const [standingsOpen, setStandingsOpen] = useState(false);
+  const [standingsAnchor, setStandingsAnchor] = useState<"left" | "right">("left");
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const [utilityHidden, setUtilityHidden] = useState(false);
@@ -88,6 +89,30 @@ export default function Navbar() {
   useMotionValueEvent(scrollY, "change", (latest) => {
     setUtilityHidden(latest > 80);
   });
+
+  // Compute the Standings dropdown anchor at open time so we don't have to
+  // synchronously setState from an effect (React 19 lint rule). Flips to
+  // right-anchored when the menu would overflow the viewport.
+  const computeStandingsAnchor = (): "left" | "right" => {
+    const trigger = standingsRef.current;
+    if (!trigger || typeof window === "undefined") return "left";
+    const rect = trigger.getBoundingClientRect();
+    return rect.left + 440 > window.innerWidth - 12 ? "right" : "left";
+  };
+  const openStandings = () => {
+    if (standingsCloseTimerRef.current) {
+      clearTimeout(standingsCloseTimerRef.current);
+      standingsCloseTimerRef.current = null;
+    }
+    setStandingsAnchor(computeStandingsAnchor());
+    setStandingsOpen(true);
+  };
+  const toggleStandings = () => {
+    setStandingsOpen((open) => {
+      if (!open) setStandingsAnchor(computeStandingsAnchor());
+      return !open;
+    });
+  };
 
   // Hover-open with grace timeout for cursor travel
   const openMenu = (ref: typeof racesCloseTimerRef, setOpen: (b: boolean) => void) => {
@@ -309,12 +334,12 @@ export default function Navbar() {
             <div
               ref={standingsRef}
               className="relative"
-              onMouseEnter={() => openMenu(standingsCloseTimerRef, setStandingsOpen)}
+              onMouseEnter={openStandings}
               onMouseLeave={() => scheduleClose(standingsCloseTimerRef, setStandingsOpen)}
             >
               <button
-                onClick={() => setStandingsOpen((open) => !open)}
-                onFocus={() => openMenu(standingsCloseTimerRef, setStandingsOpen)}
+                onClick={toggleStandings}
+                onFocus={openStandings}
                 aria-haspopup="menu"
                 aria-expanded={standingsOpen}
                 className={`${navLinkBase} ${
@@ -336,7 +361,9 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                    className="dropdown-menu absolute top-full left-0 mt-1 w-[440px] p-3"
+                    className={`dropdown-menu absolute top-full mt-1 p-3 w-[min(440px,calc(100vw-1.5rem))] ${
+                      standingsAnchor === "right" ? "right-0" : "left-0"
+                    }`}
                   >
                     <div className="grid grid-cols-3 gap-2">
                       {[
