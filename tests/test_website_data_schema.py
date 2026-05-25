@@ -194,6 +194,36 @@ def test_round_classification_drivers_unique():
         )
 
 
+def test_circuit_geometry_is_valid_when_present():
+    """When `generate_circuit_svg.py` has populated geometry, the SVG path
+    must be a closed loop. Rounds without geometry (cold-start) are skipped."""
+    rounds_dir = WEBSITE_DATA / "rounds"
+    if not rounds_dir.exists():
+        pytest.skip("No rounds/ generated yet")
+    checked = 0
+    for round_file in rounds_dir.glob("round_*.json"):
+        data = _load(round_file)
+        geometry = (data.get("circuitInfo") or {}).get("geometry")
+        if not isinstance(geometry, dict):
+            continue
+        checked += 1
+        assert isinstance(geometry.get("path"), str), (
+            f"{round_file.name}: geometry.path must be a string"
+        )
+        path = geometry["path"]
+        assert path.startswith("M "), (
+            f"{round_file.name}: geometry.path must start with `M ` (got {path[:8]!r})"
+        )
+        assert path.rstrip().endswith("Z"), (
+            f"{round_file.name}: geometry.path must close with `Z`"
+        )
+        assert isinstance(geometry.get("viewBox"), str)
+        assert isinstance(geometry.get("corners"), list)
+        assert isinstance(geometry.get("drsZones"), list)
+    if checked == 0:
+        pytest.skip("No rounds have geometry yet (run generate_circuit_svg.py)")
+
+
 @pytest.mark.parametrize(
     "prob_file",
     sorted((WEBSITE_DATA / "probabilities").glob("round_*.json"))
