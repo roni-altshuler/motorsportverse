@@ -302,12 +302,18 @@ def _process_one_race(
 
 @dataclass
 class _RaceEvent:
-    """One race's results in the format the builder consumes."""
+    """One race's results in the format the builder consumes.
+
+    ``grid_order`` is optional: when None, the qualifying_elo and
+    racecraft_elo updates are skipped for that race rather than fed a
+    leaky finish-as-grid approximation. This keeps those Elos honest
+    until a true grid source is plumbed through.
+    """
 
     season: int
     round: int
     finish_order: dict[str, int]
-    grid_order: dict[str, int]
+    grid_order: dict[str, int] | None
     team_of: dict[str, str]
     wet: bool = False
 
@@ -374,22 +380,24 @@ class EloFeatureBuilder:
         team_finish_order = {team: rank + 1 for rank, (team, _) in enumerate(sorted_teams)}
         _process_one_race(self.team_elo, team_finish_order, event.season, event.round)
 
-        # Qualifying Elo (grid order).
-        _process_one_race(self.qual_elo, event.grid_order, event.season, event.round)
+        # Qualifying Elo (grid order). Skipped when grid data isn't available
+        # rather than fed a leaky finish-as-grid approximation.
+        if event.grid_order is not None and len(event.grid_order) >= 2:
+            _process_one_race(self.qual_elo, event.grid_order, event.season, event.round)
 
-        # Race-craft Elo: positions gained from grid to finish.
-        positions_gained = {
-            d: event.grid_order.get(d, 99) - event.finish_order.get(d, 99)
-            for d in event.finish_order
-        }
-        # Higher = better; reverse to a finish-style ordering.
-        ranked = sorted(
-            positions_gained.items(), key=lambda kv: kv[1], reverse=True
-        )
-        rc_order = {d: rank + 1 for rank, (d, _) in enumerate(ranked)}
-        _process_one_race(
-            self.racecraft_elo, rc_order, event.season, event.round
-        )
+            # Race-craft Elo: positions gained from grid to finish.
+            positions_gained = {
+                d: event.grid_order.get(d, 99) - event.finish_order.get(d, 99)
+                for d in event.finish_order
+            }
+            # Higher = better; reverse to a finish-style ordering.
+            ranked = sorted(
+                positions_gained.items(), key=lambda kv: kv[1], reverse=True
+            )
+            rc_order = {d: rank + 1 for rank, (d, _) in enumerate(ranked)}
+            _process_one_race(
+                self.racecraft_elo, rc_order, event.season, event.round
+            )
 
         # Wet Elo: only update on wet races. (Same K schedule.)
         if event.wet:

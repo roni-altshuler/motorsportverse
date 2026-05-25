@@ -586,11 +586,14 @@ def _add_elo_features(merged, combined_results, current_round, current_season):
         }
         if len(finish_order) < 2:
             continue
-        # Grid order is not stored in combined_results; approximate
-        # with the finish order so qualifying_elo and racecraft_elo
-        # gain meaningful (if conservative) signal until a grid-order
-        # source is plumbed through.
-        grid_order = dict(finish_order)
+        # Grid order is not stored in combined_results. We deliberately pass
+        # None here rather than finish_order — feeding the finish positions in
+        # as a grid proxy collapsed qualifying_elo and racecraft_elo into
+        # noisy duplicates of driver_elo (audit 2026-05-25). The Elo builder
+        # now skips those two updates when grid_order is None; they will
+        # resume updating once a real grid source is plumbed through
+        # combine_results_data.
+        grid_order = None
         team_of = {drv: DRIVER_TEAM[drv] for drv in finish_order}
         events.append(
             RaceEvent(
