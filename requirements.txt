@@ -8,6 +8,9 @@ pandas~=2.3.3
 numpy~=2.4.2
 scikit-learn~=1.8.0
 xgboost~=3.2.0
+# LightGBM powers the learned race-projection head
+# (models/race_projection_head.py). Tested compatible with sklearn 1.8.0.
+lightgbm~=4.5.0
 
 # Viz
 matplotlib~=3.10.8
@@ -26,3 +29,7 @@ tqdm~=4.67.3
 #   - torch: install separately per platform (see https://pytorch.org/get-started/locally/).
 #            Without it, advanced_models.py LSTM path is skipped silently.
 #            We do NOT pin here because the CPU/CUDA wheel differs per host.
+#   - pymc + arviz: optional Bayesian hierarchical layer
+#            (models/hierarchical_bayes.py). When absent, the module imports
+#            cleanly but fit_hierarchical_skill_model() raises a clear error.
+#            Install with `pip install pymc arviz` to enable.

@@ -372,6 +372,16 @@ DEFAULT_FEATURE_COLS: list[str] = [
     "FieldPositionVolatility",
     "LocalBattleIntensity",
     "DRSOvertakeProbAhead",
+    # ---- Elo features (added 2026-05-25) ------------------------------
+    # Populated by _add_elo_features() from prior-round actual + predicted
+    # results; default to neutral values for rookies / missing history.
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo",
 ]
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -538,9 +548,119 @@ def _add_dynamic_team_form(merged, combined_results=None, current_round=1):
     return merged
 
 
-def _add_prediction_bias_features(merged, predicted_results, actual_results):
-    """Add driver/team bias features from historical prediction residuals."""
+def _add_elo_features(merged, combined_results, current_round, current_season):
+    """Compute the seven Elo features from prior-round results.
+
+    Populates ``driver_elo``, ``team_elo``, ``driver_form_elo``,
+    ``wet_weather_elo``, ``qualifying_elo``, ``racecraft_elo``,
+    ``teammate_delta_elo`` on ``merged``. Drivers with no prior-round
+    record (rookies, mid-season swaps) inherit the team-mean rating
+    via :meth:`models.elo.DriverElo.initialise_rookie` minus a small
+    discount. The feature is leakage-safe: ``combined_results`` is
+    already filtered to ``round < current_round`` by the caller.
+
+    The Elo system in this iteration uses **current-season results
+    only** — multi-season bootstrap would need per-season team
+    mappings which we do not currently store. Adding that is a
+    natural follow-up.
+    """
+    from models.elo import EloFeatureBuilder, RaceEvent, ELO_FEATURE_COLUMNS
+
+    builder = EloFeatureBuilder()
+
+    # Replay prior rounds. The race "wet" flag isn't currently stored
+    # in combined_results — leave it False until a wet-race indicator
+    # is plumbed through. wet_weather_elo will reflect 1500 for now
+    # but still be a usable z-score after the postprocessor scales it.
+    sorted_rounds = sorted(combined_results.keys(), key=lambda r: int(r))
+    events: list[RaceEvent] = []
+    for rnd_str in sorted_rounds:
+        rnd = int(rnd_str)
+        race_data = combined_results.get(rnd_str, {})
+        if not isinstance(race_data, dict) or not race_data:
+            continue
+        finish_order = {
+            drv: int(pos)
+            for drv, pos in race_data.items()
+            if drv in DRIVER_TEAM and isinstance(pos, (int, float))
+        }
+        if len(finish_order) < 2:
+            continue
+        # Grid order is not stored in combined_results; approximate
+        # with the finish order so qualifying_elo and racecraft_elo
+        # gain meaningful (if conservative) signal until a grid-order
+        # source is plumbed through.
+        grid_order = dict(finish_order)
+        team_of = {drv: DRIVER_TEAM[drv] for drv in finish_order}
+        events.append(
+            RaceEvent(
+                season=current_season,
+                round=rnd,
+                finish_order=finish_order,
+                grid_order=grid_order,
+                team_of=team_of,
+                wet=False,
+            )
+        )
+
+    if events:
+        builder.replay_history(
+            events,
+            current_season=current_season,
+            current_round=current_round,
+        )
+
+    # Seed any drivers that haven't competed yet (rookies, new entries).
+    roster = {drv: team for drv, team in DRIVER_TEAM.items() if drv in set(merged["Driver"])}
+    builder.ensure_rookies(roster)
+
+    # Each row in merged describes one driver; pull teammate from
+    # DRIVER_TEAM (same-team driver other than self).
+    def _teammate_of(driver: str) -> str | None:
+        team = DRIVER_TEAM.get(driver)
+        if team is None:
+            return None
+        for drv, t in DRIVER_TEAM.items():
+            if t == team and drv != driver:
+                return drv
+        return None
+
+    feature_arrays: dict[str, list[float]] = {col: [] for col in ELO_FEATURE_COLUMNS}
+    for _, row in merged.iterrows():
+        drv = row["Driver"]
+        team = DRIVER_TEAM.get(drv, row.get("Team", ""))
+        teammate = _teammate_of(drv)
+        feats = builder.features_for(drv, team, teammate)
+        for col in ELO_FEATURE_COLUMNS:
+            feature_arrays[col].append(feats[col])
+
+    for col, values in feature_arrays.items():
+        merged[col] = values
+
+    print(
+        f"✅ Elo features added — replayed {len(events)} prior round(s) "
+        f"for season {current_season}."
+    )
+    return merged
+
+
+def _add_prediction_bias_features(
+    merged, predicted_results, actual_results, *, current_round=None
+):
+    """Add driver/team bias features from historical prediction residuals.
+
+    The ``current_round`` argument is required to enforce leakage
+    discipline at the boundary: if either ``predicted_results`` or
+    ``actual_results`` contains a key at or beyond ``current_round``,
+    a :class:`LeakageError` fires. When ``current_round=None`` the
+    assertion is skipped to preserve backward compatibility with the
+    handful of unit tests that build the bias features directly.
+    """
     merged = merged.copy()
+
+    if current_round is not None:
+        assert_prior_only(predicted_results, current_round, "bias_predicted_results")
+        assert_prior_only(actual_results, current_round, "bias_actual_results")
 
     driver_sum = {drv: 0.0 for drv in DRIVER_TEAM}
     driver_weight = {drv: 0.0 for drv in DRIVER_TEAM}
@@ -911,7 +1031,18 @@ def build_training_dataset(grid, driver_stats, circuit_key="Australia",
     )
 
     # Historical prediction residuals help correct recurring over/under-rating.
-    merged = _add_prediction_bias_features(merged, predicted_results, actual_results)
+    merged = _add_prediction_bias_features(
+        merged, predicted_results, actual_results, current_round=current_round
+    )
+
+    # Elo ratings derived from prior-round finish orders. Adds the seven
+    # ELO_FEATURE_COLUMNS to merged; rookies are seeded from team mean.
+    merged = _add_elo_features(
+        merged,
+        combined_results=combined_results,
+        current_round=current_round,
+        current_season=SEASON_YEAR,
+    )
 
     print(f"✅ Training dataset built — {len(merged)} drivers, "
           f"{len(DEFAULT_FEATURE_COLS)} features.")
@@ -1180,6 +1311,96 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
         labels=["High", "Medium", "Low"],
     ).astype(str)
 
+    # Split-conformal prediction intervals from the accumulated
+    # residual cache. Additive — the legacy PredictionConfidence
+    # column stays as-is; the new fields expose a *statistically
+    # valid* interval that the website + forward-eval can audit
+    # against observed coverage.
+    try:
+        from models.conformal import (
+            ConformalIntervals,
+            MIN_CALIBRATION_SAMPLES,
+            load_residual_history,
+            width_to_confidence_label,
+        )
+
+        cur_season = int(os.getenv("F1_SEASON_YEAR", SEASON_YEAR))
+        cur_round = int(os.getenv("F1_CURRENT_ROUND", "0") or 0)
+        if cur_round > 0:
+            residuals = load_residual_history(
+                current_season=cur_season,
+                current_round=cur_round,
+                max_seasons_back=1,
+            )
+            if residuals.size >= MIN_CALIBRATION_SAMPLES:
+                # Treat the residuals as one-sided absolute values
+                # already; ConformalIntervals expects ``(y, yhat)`` so
+                # we synthesise a paired (0, residual) calibration set
+                # with the same quantile by construction.
+                cal_y = residuals
+                cal_yhat = np.zeros_like(residuals)
+                conf = ConformalIntervals(alpha=0.10).fit(cal_y, cal_yhat)
+                pred = merged["PredictedLapTime"].to_numpy(dtype=np.float64)
+                lows, highs = conf.predict_intervals(pred)
+                widths = highs - lows
+                merged["PredictedLapTimeConformalLow"] = lows
+                merged["PredictedLapTimeConformalHigh"] = highs
+                merged["ConformalIntervalWidth"] = widths
+                merged["CalibratedConfidence"] = width_to_confidence_label(widths)
+                print(
+                    f"✅ Conformal intervals applied "
+                    f"(n_calibration={residuals.size}, q90={conf.quantile:.3f}s)."
+                )
+            else:
+                print(
+                    f"ℹ️  Conformal calibration deferred — need >= "
+                    f"{MIN_CALIBRATION_SAMPLES} residuals, got {residuals.size}."
+                )
+    except Exception as exc:  # noqa: BLE001 — non-blocking
+        print(f"⚠️  Conformal intervals skipped: {exc}")
+
+    # Learned race-projection head (opt-in via registry). If a head has
+    # been trained for the current season and saved to sentinel round 96,
+    # load it and emit a shadow ``RaceProjectionScoreLearned`` column. If
+    # ``F1_USE_LEARNED_HEAD=1``, the learned column also replaces the
+    # legacy ``RaceProjectionScore`` field for downstream consumers.
+    try:
+        from models.race_projection_head import DEFAULT_HEAD_FEATURES
+        from models.registry import ModelRegistry
+
+        cur_season = int(os.getenv("F1_SEASON_YEAR", SEASON_YEAR))
+        registry = ModelRegistry()
+        loaded = registry.load(cur_season, 96)
+        head = loaded.get("race_projection_head") if loaded else None
+        if head is not None and head.is_fitted:
+            cols_present = [c for c in DEFAULT_HEAD_FEATURES if c in merged.columns]
+            if len(cols_present) == len(DEFAULT_HEAD_FEATURES):
+                feature_matrix = merged[list(DEFAULT_HEAD_FEATURES)].to_numpy(
+                    dtype=np.float64, na_value=0.0
+                )
+                raw = head.predict(feature_matrix)
+                centred = (raw - raw.mean()) / (raw.std() or 1.0)
+                merged["RaceProjectionScoreLearned"] = centred
+                if os.getenv("F1_USE_LEARNED_HEAD") == "1":
+                    merged["RaceProjectionScore"] = centred
+                    print(
+                        "✅ Learned race-projection head active "
+                        "(F1_USE_LEARNED_HEAD=1)."
+                    )
+                else:
+                    print(
+                        "ℹ️  Learned head loaded as shadow column "
+                        "RaceProjectionScoreLearned (legacy is load-bearing)."
+                    )
+            else:
+                missing = set(DEFAULT_HEAD_FEATURES) - set(cols_present)
+                print(
+                    f"ℹ️  Learned head feature columns missing: {missing}; "
+                    "skipping shadow score."
+                )
+    except Exception as exc:  # noqa: BLE001 — non-blocking
+        print(f"ℹ️  Learned head shadow score skipped: {exc}")
+
     gap_to_leader = (merged["RaceProjectionTime"] - merged["RaceProjectionTime"].min()).clip(lower=0.0)
     win_scale = max(0.12, 0.18 + volatility * 0.35 + model_dispersion.mean() * 0.8)
     win_weights = np.exp(-(gap_to_leader / win_scale))
@@ -1220,7 +1441,8 @@ def generate_qualifying_estimates(circuit_key):
 def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
                    test_size=0.2, random_state=42, calibrate=True,
                    max_spread_s=3.5, gb_params=None, xgb_params=None,
-                   lstm_predictions=None, lstm_weight=0.20):
+                   lstm_predictions=None, lstm_weight=0.20,
+                   sample_weight=None):
     """Train Gradient Boosting + XGBoost + optional LSTM ensemble.
 
     v3 improvements:
@@ -1229,6 +1451,10 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
       - **LSTM integration** → if lstm_predictions provided, 3-model
         weighted ensemble: GBR (0.40) + XGB (0.40) + LSTM (0.20)
         Falls back to GBR/XGB 50/50 if LSTM unavailable.
+      - **Time-decay sample weighting** → if ``sample_weight`` is provided,
+        recent training rows weigh more than old ones via
+        :func:`models.time_decay.compute_sample_weights`. Default
+        ``sample_weight=None`` preserves the legacy uniform fit.
 
     Parameters
     ----------
@@ -1238,6 +1464,10 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
     lstm_weight : float
         Weight for LSTM in the ensemble (default 0.20). GBR and XGB
         split the remaining weight equally.
+    sample_weight : array-like | None
+        Per-row sample weight (aligned with ``merged``). Forwarded to
+        both GBR and XGB ``.fit(...)`` calls. When ``None`` (default),
+        all rows weigh equally — backward compatible with prior callers.
     """
     if feature_cols is None:
         feature_cols = DEFAULT_FEATURE_COLS
@@ -1265,9 +1495,22 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
     print(f"Feature matrix : {X_scaled.shape}")
     print(f"Target vector  : {y_imp.shape}")
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X_scaled, y_imp, test_size=test_size, random_state=random_state,
-    )
+    if sample_weight is not None:
+        sw = np.asarray(sample_weight, dtype=np.float64)
+        if sw.shape[0] != len(merged):
+            raise ValueError(
+                f"sample_weight length {sw.shape[0]} != merged length "
+                f"{len(merged)}; the weight vector must be row-aligned."
+            )
+        X_train, X_test, y_train, y_test, w_train, w_test = train_test_split(
+            X_scaled, y_imp, sw,
+            test_size=test_size, random_state=random_state,
+        )
+    else:
+        X_train, X_test, y_train, y_test = train_test_split(
+            X_scaled, y_imp, test_size=test_size, random_state=random_state,
+        )
+        w_train = None
 
     # Determine if LSTM is part of the ensemble
     use_lstm = (lstm_predictions is not None
@@ -1293,7 +1536,7 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
     _gb = gb_params or dict(n_estimators=200, learning_rate=0.05,
                             max_depth=3, random_state=random_state)
     gb_model = GradientBoostingRegressor(**_gb)
-    gb_model.fit(X_train, y_train)
+    gb_model.fit(X_train, y_train, sample_weight=w_train)
     pbar.update(1)
 
     # XGBoost
@@ -1302,7 +1545,7 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
                                max_depth=3, random_state=random_state,
                                verbosity=0)
     xgb_model = XGBRegressor(**_xgb)
-    xgb_model.fit(X_train, y_train)
+    xgb_model.fit(X_train, y_train, sample_weight=w_train)
     pbar.update(1)
 
     gb_test = gb_model.predict(X_test)
@@ -1395,6 +1638,32 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
     ensemble_desc = "GBR+XGB+LSTM" if use_lstm else "GBR+XGB"
     print(f"⚖️  Dynamic ensemble weights: GBR={w_gb:.0%}, XGB={w_xgb:.0%}"
           + (f", LSTM={w_lstm:.0%}" if use_lstm else ""))
+
+    # Ensemble's prediction on the held-out test split — the source
+    # of conformal calibration residuals. Best-effort persistence so
+    # the next round's apply_race_postprocessing can fit a tight
+    # split-conformal interval from the accumulated cache.
+    try:
+        from models.conformal import save_round_residuals
+
+        ensemble_test = w_gb * gb_test + w_xgb * xgb_test
+        if use_lstm and lstm_predictions is not None:
+            # LSTM predictions are full-population; project onto X_test via the
+            # same row indices the splitter chose. We didn't keep the indices
+            # explicitly; the legacy code blends LSTM only at inference time.
+            # Skip LSTM blending for the calibration residuals — it would
+            # only matter if the LSTM materially shifts the ensemble's
+            # held-out residual distribution, which we measure-then-fix
+            # in forward_eval rather than mask here.
+            pass
+        residuals = ensemble_test - y_test
+        cur_season = int(os.getenv("F1_SEASON_YEAR", SEASON_YEAR))
+        cur_round = int(os.getenv("F1_CURRENT_ROUND", "0") or 0)
+        if cur_round > 0:
+            save_round_residuals(cur_season, cur_round, residuals)
+    except Exception as exc:  # noqa: BLE001 - calibration cache is non-blocking
+        print(f"⚠️  Conformal residual cache skipped: {exc}")
+
     print(f"✅ Ensemble model trained successfully ({ensemble_desc}).")
     return {
         "gb_model": gb_model, "xgb_model": xgb_model,

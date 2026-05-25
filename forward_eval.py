@@ -52,6 +52,12 @@ from pathlib import Path
 from typing import Iterable
 
 from leakage import LeakageError
+from models.reliability import (
+    MarketReliabilityReport,
+    compute_market_report_from_probabilities,
+    metrics_to_dict,
+    save_reliability_diagram,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "reports" / "forward_eval.json"
@@ -502,6 +508,125 @@ def _report_to_jsonable(report: ForwardEvalReport) -> dict:
     }
 
 
+def load_round_probabilities(
+    probabilities_dir: Path,
+    season: int,
+    rounds: Iterable[int] | None = None,
+) -> dict[int, dict]:
+    """Read ``probabilities/round_NN.json`` files for ``rounds``.
+
+    The probabilities directory is the same shape the website
+    consumes (``website/public/data/probabilities/``). Each file
+    carries ``classification[*].driver`` plus ``p_win``, ``p_podium``,
+    ``p_top6``, ``p_top10`` per market — keys conform to the
+    :mod:`models.calibration` payload schema.
+    """
+    if not probabilities_dir.exists():
+        return {}
+    out: dict[int, dict] = {}
+    wanted = set(rounds) if rounds is not None else None
+    for path in sorted(probabilities_dir.glob("round_*.json")):
+        try:
+            payload = json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError):
+            continue
+        rnd = int(payload.get("round", 0))
+        if rnd == 0:
+            continue
+        if wanted is not None and rnd not in wanted:
+            continue
+        out[rnd] = payload
+    return out
+
+
+def _actual_top_indicator(
+    actual_round: dict[str, int],
+    threshold: int,
+) -> dict[str, int]:
+    """Return ``{driver: 1}`` for finishing position <= threshold."""
+    return {
+        drv: int(pos <= threshold) for drv, pos in actual_round.items()
+    }
+
+
+def evaluate_calibration(
+    season: int,
+    probabilities_by_round: dict[int, dict],
+    actual: dict[int, dict[str, int]],
+) -> MarketReliabilityReport:
+    """Aggregate per-round market probabilities + actuals → calibration metrics.
+
+    Markets covered: ``win`` (pos==1), ``podium`` (pos<=3),
+    ``top6`` (pos<=6), ``top10`` (pos<=10). Rounds that lack
+    actuals are silently skipped. The output report can be
+    serialised via :func:`MarketReliabilityReport.to_dict`.
+    """
+    pred: dict[str, list[float]] = {m: [] for m in ("win", "podium", "top6", "top10")}
+    obs: dict[str, list[int]] = {m: [] for m in ("win", "podium", "top6", "top10")}
+    market_threshold = {"win": 1, "podium": 3, "top6": 6, "top10": 10}
+
+    for rnd, payload in probabilities_by_round.items():
+        actual_round = actual.get(rnd, {})
+        if not actual_round:
+            continue
+        # The probability JSON schema is ``markets: {<market>: [{driver, probability}, ...]}``.
+        # We also accept the older ``classification[*].p_<market>`` flat shape
+        # for backward compatibility.
+        markets_block = payload.get("markets") or {}
+        for market, threshold in market_threshold.items():
+            entries = markets_block.get(market) or []
+            for entry in entries:
+                drv = entry.get("driver") or entry.get("code")
+                p = entry.get("probability")
+                if p is None:
+                    p = entry.get("rawProbability")
+                if drv is None or p is None or drv not in actual_round:
+                    continue
+                pred[market].append(float(p))
+                obs[market].append(1 if actual_round[drv] <= threshold else 0)
+        # Backward-compat path.
+        for entry in payload.get("classification") or []:
+            drv = entry.get("driver") or entry.get("code")
+            if not drv or drv not in actual_round:
+                continue
+            for market, threshold in market_threshold.items():
+                key = {
+                    "win": "p_win",
+                    "podium": "p_podium",
+                    "top6": "p_top6",
+                    "top10": "p_top10",
+                }[market]
+                p = entry.get(key)
+                if p is None:
+                    continue
+                pred[market].append(float(p))
+                obs[market].append(1 if actual_round[drv] <= threshold else 0)
+
+    pred_nonempty = {m: v for m, v in pred.items() if v}
+    obs_nonempty = {m: v for m, v in obs.items() if v}
+    return compute_market_report_from_probabilities(pred_nonempty, obs_nonempty)
+
+
+def write_reliability_plots(
+    report: MarketReliabilityReport,
+    output_dir: Path,
+    *,
+    title_prefix: str = "Reliability",
+) -> list[Path]:
+    """Render one PNG per market into ``output_dir``."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for market, metrics in report.by_market.items():
+        out = output_dir / f"reliability_{market}.png"
+        save_reliability_diagram(
+            metrics,
+            out,
+            title=f"{title_prefix} — {market}",
+        )
+        written.append(out)
+    return written
+
+
 def write_per_round_files(report: ForwardEvalReport, output_dir: Path) -> list[Path]:
     """Write one JSON file per evaluated round.
 
@@ -536,6 +661,15 @@ def main() -> int:
                         help="When set, exit 0 (with a message) if no actuals "
                         "exist yet.  CI uses this on pre-race phases where the "
                         "forward-eval has nothing to score.")
+    parser.add_argument("--probabilities-dir", type=Path, default=None,
+                        help="Optional directory of probability JSON files "
+                        "(website/public/data/probabilities/). When given, "
+                        "calibration metrics (ECE/MCE/Brier per market) are "
+                        "added to the season report.")
+    parser.add_argument("--reliability-plots-dir", type=Path, default=None,
+                        help="Optional directory where reliability diagrams "
+                        "are saved (one PNG per market). Only used when "
+                        "--probabilities-dir is also set.")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
@@ -570,6 +704,35 @@ def main() -> int:
         )
         per_round_written = write_per_round_files(report, per_round_dir)
 
+    calibration_summary: dict[str, object] | None = None
+    plot_paths: list[Path] = []
+    if args.probabilities_dir is not None:
+        probabilities_dir = (
+            args.probabilities_dir
+            if args.probabilities_dir.is_absolute()
+            else PROJECT_ROOT / args.probabilities_dir
+        )
+        probs = load_round_probabilities(
+            probabilities_dir, args.season, rounds=_parse_rounds(args.rounds)
+        )
+        if probs:
+            cal_report = evaluate_calibration(args.season, probs, actual)
+            calibration_summary = cal_report.to_dict()
+            # Splice into the on-disk season report so downstream consumers
+            # don't have to re-parse the probabilities tree.
+            existing = json.loads(output_path.read_text())
+            existing["calibration"] = calibration_summary
+            output_path.write_text(json.dumps(existing, indent=2))
+            if args.reliability_plots_dir is not None:
+                plots_dir = (
+                    args.reliability_plots_dir
+                    if args.reliability_plots_dir.is_absolute()
+                    else PROJECT_ROOT / args.reliability_plots_dir
+                )
+                plot_paths = write_reliability_plots(
+                    cal_report, plots_dir, title_prefix=f"{args.season} season"
+                )
+
     if not args.quiet:
         print(f"📊 Forward-eval {args.season} — {report.summary['rounds_evaluated']} rounds")
         for r in report.rounds:
@@ -589,6 +752,22 @@ def main() -> int:
         if per_round_written:
             print(f"📝 Wrote {len(per_round_written)} per-round file(s) to "
                   f"{args.per_round_dir}")
+        if calibration_summary is not None:
+            markets = ", ".join(sorted(calibration_summary.keys()))
+            print(f"📐 Calibration metrics computed for markets: {markets}")
+            for market, m in calibration_summary.items():
+                ece = m.get("ece")
+                mce = m.get("mce")
+                brier = m.get("brier")
+                pieces = [
+                    f"ECE={ece:.3f}" if isinstance(ece, (int, float)) else "ECE=—",
+                    f"MCE={mce:.3f}" if isinstance(mce, (int, float)) else "MCE=—",
+                    f"Brier={brier:.3f}" if isinstance(brier, (int, float)) else "Brier=—",
+                ]
+                print(f"    {market}: " + "  ".join(pieces))
+        if plot_paths:
+            print(f"📝 Wrote {len(plot_paths)} reliability plot(s) to "
+                  f"{args.reliability_plots_dir}")
     return 0
 
 
