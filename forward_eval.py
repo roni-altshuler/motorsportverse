@@ -55,7 +55,6 @@ from leakage import LeakageError
 from models.reliability import (
     MarketReliabilityReport,
     compute_market_report_from_probabilities,
-    metrics_to_dict,
     save_reliability_diagram,
 )
 

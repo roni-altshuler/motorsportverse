@@ -208,7 +208,7 @@ def fit_hierarchical_skill_model(
         [team_idx[driver_team[d]] for d in drivers], dtype=np.int64
     )
 
-    with pm.Model() as model:  # type: ignore[attr-defined]
+    with pm.Model():  # type: ignore[attr-defined]
         sigma_pool = pm.HalfNormal("sigma_pool", sigma=1.5)
         sigma_team = pm.HalfNormal("sigma_team", sigma=3.0)
         sigma_obs = pm.HalfNormal("sigma_obs", sigma=3.0)

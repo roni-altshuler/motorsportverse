@@ -1,7 +1,6 @@
 """Tests for exponential time-decay sample weighting."""
 from __future__ import annotations
 
-import numpy as np
 import pytest
 
 from models.time_decay import (

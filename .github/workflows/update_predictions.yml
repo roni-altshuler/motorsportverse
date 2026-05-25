@@ -113,6 +113,10 @@ jobs:
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         env:
           PYTHONUNBUFFERED: "1"
+          # Required so the Layer 1 ensemble persists held-out residuals to
+          # data/conformal_residuals/<season>_round_<NN>.json. Without this,
+          # the conformal interval layer never accumulates calibration data.
+          F1_CURRENT_ROUND: ${{ steps.config.outputs.round }}
         run: |
           ROUND="${{ steps.config.outputs.round }}"
           PHASE="${{ steps.config.outputs.phase }}"
@@ -135,13 +139,19 @@ jobs:
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
-          mkdir -p website/public/data/forward_eval reports
+          mkdir -p website/public/data/forward_eval website/public/data/reliability_plots reports
           # --allow-empty makes pre-race / pre-actuals runs a no-op exit 0.
-          # The per-round JSONs get committed by the existing "Commit updated
-          # data" step below since /website/public/data is force-added.
+          # --probabilities-dir + --reliability-plots-dir emit per-market
+          # ECE/MCE/Brier into the season report plus PNG reliability diagrams.
+          # Both flags are no-ops when their inputs aren't yet present (e.g. on
+          # pre-race phases) so they don't break the existing --allow-empty path.
+          # All output paths under website/public/data/ are force-added by the
+          # commit step below.
           python forward_eval.py \
             --season "$SEASON_YEAR" \
             --per-round-dir website/public/data/forward_eval \
+            --probabilities-dir website/public/data/probabilities \
+            --reliability-plots-dir website/public/data/reliability_plots \
             --output "reports/forward_eval_${SEASON_YEAR}.json" \
             --allow-empty
 

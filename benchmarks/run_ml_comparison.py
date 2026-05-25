@@ -29,7 +29,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
@@ -43,7 +43,6 @@ if str(PROJECT_ROOT) not in sys.path:
 from models.conformal import (  # noqa: E402
     ConformalIntervals,
     MIN_CALIBRATION_SAMPLES,
-    load_residual_history,
 )
 from models.reliability import (  # noqa: E402
     compute_market_report_from_probabilities,
