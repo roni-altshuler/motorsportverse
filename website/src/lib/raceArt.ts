@@ -37,8 +37,8 @@ const RACE_ART: Record<string, RaceArt> = {
     source: "unsplash",
   },
   japan: {
-    src: "https://images.unsplash.com/photo-1545569310-4ad9d97eef64?w=1296&h=729&fit=crop&q=80",
-    credit: "Mt Fuji backdrop · Unsplash",
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg/1280px-View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg",
+    credit: "Mt Fuji · Wikimedia Commons",
     source: "unsplash",
   },
   bahrain: {
@@ -62,8 +62,8 @@ const RACE_ART: Record<string, RaceArt> = {
     source: "unsplash",
   },
   monaco: {
-    src: "https://images.unsplash.com/photo-1554435493-93422e8d1a41?w=1296&h=729&fit=crop&q=80",
-    credit: "Monte Carlo harbour · Unsplash",
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Monte_Carlo_Port_Hercules_b.jpg/1280px-Monte_Carlo_Port_Hercules_b.jpg",
+    credit: "Monte Carlo Port Hercules · Wikimedia Commons",
     source: "unsplash",
   },
   canada: {
@@ -102,8 +102,8 @@ const RACE_ART: Record<string, RaceArt> = {
     source: "unsplash",
   },
   netherlands: {
-    src: "https://images.unsplash.com/photo-1534351590666-13e3e96c5017?w=1296&h=729&fit=crop&q=80",
-    credit: "Zandvoort coast · Unsplash",
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Imagen_de_los_canales_conc%C3%A9ntricos_en_%C3%81msterdam.png/1280px-Imagen_de_los_canales_conc%C3%A9ntricos_en_%C3%81msterdam.png",
+    credit: "Amsterdam canal rings · Wikimedia Commons",
     source: "unsplash",
   },
   italy: {
@@ -117,8 +117,8 @@ const RACE_ART: Record<string, RaceArt> = {
     source: "unsplash",
   },
   azerbaijan: {
-    src: "https://images.unsplash.com/photo-1593253418107-edbe6a6bb6cb?w=1296&h=729&fit=crop&q=80",
-    credit: "Baku flame towers · Unsplash",
+    src: "https://upload.wikimedia.org/wikipedia/en/thumb/0/08/Flame_towers_baku.jpg/1280px-Flame_towers_baku.jpg",
+    credit: "Baku Flame Towers · Wikimedia Commons",
     source: "unsplash",
   },
   singapore: {
@@ -157,8 +157,8 @@ const RACE_ART: Record<string, RaceArt> = {
     source: "unsplash",
   },
   qatar: {
-    src: "https://images.unsplash.com/photo-1568834010441-78a90f0fefca?w=1296&h=729&fit=crop&q=80",
-    credit: "Doha skyline · Unsplash",
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/The_Pearl_Marina_in_Nov_2013.jpg/1280px-The_Pearl_Marina_in_Nov_2013.jpg",
+    credit: "Doha · The Pearl Marina · Wikimedia Commons",
     source: "unsplash",
   },
   abu_dhabi: {

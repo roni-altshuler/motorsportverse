@@ -6,7 +6,6 @@ import TeamColorBar from "@/components/ui/TeamColorBar";
 import { Badge } from "@/components/ui/Badge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { BorderBeam } from "@/components/magicui/border-beam";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import { podiumReveal } from "@/lib/motion";
@@ -107,16 +106,17 @@ export default function PodiumPredictionTrio({
                 surface="flat"
                 team={entry.team}
                 teamColor={entry.teamColor}
-                className="p-6 sm:p-8 relative overflow-hidden"
+                className={`p-6 sm:p-8 relative overflow-hidden${
+                  isLeader ? " podium-leader-card" : ""
+                }`}
               >
                 {isLeader && (
-                  <BorderBeam
-                    size={1}
-                    duration={9}
-                    colorFrom={isOfficial ? "#E10600" : entry.teamColor}
-                    colorTo={isOfficial ? "#FFD166" : "#3671C6"}
-                    borderRadius={0}
-                  />
+                  <>
+                    <span aria-hidden className="podium-leader-accent" />
+                    <span className="podium-leader-pill" aria-label={isOfficial ? "Race winner" : "Projected winner"}>
+                      {isOfficial ? "Race Winner" : "Projected Winner"}
+                    </span>
+                  </>
                 )}
                 <div className="flex items-center gap-3 mb-6">
                   <DriverPortrait

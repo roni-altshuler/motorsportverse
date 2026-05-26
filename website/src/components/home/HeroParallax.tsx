@@ -55,7 +55,7 @@ export default function HeroParallax({
         <div aria-hidden className="hero-track-ribbon">
           <svg
             viewBox={geometry.viewBox}
-            preserveAspectRatio="xMidYMid slice"
+            preserveAspectRatio="xMidYMid meet"
             role="presentation"
           >
             <defs>
