@@ -24,7 +24,9 @@ import DriverDetailSheet from "@/components/DriverDetailSheet";
 import StrategyExplorer from "@/components/StrategyExplorer";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
-import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
+import CircuitMap from "@/components/race-detail/CircuitMap";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import HUDPanel from "@/components/ui/HUDPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import ChartContainer from "@/components/charts/ChartContainer";
@@ -100,7 +102,6 @@ export default function RaceDetailPage({ round }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("weekend");
   const [activeWeekendSession, setActiveWeekendSession] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
-  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   // B-P1.3b: which classification row is expanded (driver code).
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   // B-P1.3b: per-driver standings used by the detail sheet (sparkline +
@@ -334,14 +335,26 @@ export default function RaceDetailPage({ round }: Props) {
               background: "var(--surface-card)",
             }}
           >
-            <Image
-              src={heroTrackMap}
-              alt={`${data.circuit} circuit map`}
-              fill
-              sizes="(min-width: 1024px) 320px, (min-width: 640px) 256px, 100vw"
-              className="object-contain p-3"
-              unoptimized
-            />
+            {data.circuitInfo?.geometry ? (
+              <div className="absolute inset-0 p-4">
+                <CircuitMap
+                  geometry={data.circuitInfo.geometry}
+                  showCorners={false}
+                  showDrsZones={false}
+                  strokeWidth={2.5}
+                  accentColor="var(--ink)"
+                />
+              </div>
+            ) : (
+              <Image
+                src={heroTrackMap}
+                alt={`${data.circuit} circuit map`}
+                fill
+                sizes="(min-width: 1024px) 320px, (min-width: 640px) 256px, 100vw"
+                className="object-contain p-3"
+                unoptimized
+              />
+            )}
           </div>
           <div className="min-w-0">
             <p className="eyebrow mb-4">Round {String(data.round).padStart(2, "0")}</p>
@@ -568,6 +581,7 @@ export default function RaceDetailPage({ round }: Props) {
                   team: pred?.team,
                   teamColor: pred?.teamColor,
                   position,
+                  headshotUrl: resolveDriverHeadshot(driver, pred?.headshotUrl),
                 };
               })
             : undefined
@@ -605,19 +619,6 @@ export default function RaceDetailPage({ round }: Props) {
           </ChartContainer>
         </HUDPanel>
       </div>
-
-      {/* ━━━ CIRCUIT FIGURE ━━━ */}
-      {(data.circuitInfo?.geometry || !failedImages.has("track_map.png")) && (
-        <TrackMapWithOverlay
-          geometry={data.circuitInfo?.geometry}
-          src={getVisualizationPath(round, "track_map.png")}
-          alt={`${data.name} circuit layout`}
-          kicker="Circuit"
-          title={`${data.circuit}`}
-          onLightbox={() => setLightboxImg(getVisualizationPath(round, "track_map.png"))}
-          onError={() => setFailedImages((prev) => new Set(prev).add("track_map.png"))}
-        />
-      )}
 
       {/* ━━━ TAB NAVIGATION ━━━ */}
       <div className="flex gap-2 mb-10 overflow-x-auto pb-2">
@@ -962,14 +963,24 @@ export default function RaceDetailPage({ round }: Props) {
                             <span className={`position-badge ${entry.position === 1 ? "p1" : entry.position === 2 ? "p2" : entry.position === 3 ? "p3" : entry.position <= 10 ? "points" : "no-points"}`}>{entry.position}</span>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driver}</span>
-                            <span className="ml-2 text-xs" style={{ color: "var(--text-muted)" }}>{entry.driverFullName}</span>
-                            <span
-                              className="ml-2 text-xs font-mono select-none"
-                              style={{ color: "var(--text-muted)" }}
-                              aria-hidden
-                            >
-                              {isExpanded ? "−" : "+"}
+                            <span className="inline-flex items-center gap-3">
+                              <DriverPortrait
+                                driver={entry.driver}
+                                driverFullName={entry.driverFullName}
+                                team={entry.team}
+                                teamColor={entry.teamColor}
+                                headshotUrl={resolveDriverHeadshot(entry.driver, entry.headshotUrl)}
+                                size={28}
+                              />
+                              <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driver}</span>
+                              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{entry.driverFullName}</span>
+                              <span
+                                className="text-xs font-mono select-none"
+                                style={{ color: "var(--text-muted)" }}
+                                aria-hidden
+                              >
+                                {isExpanded ? "−" : "+"}
+                              </span>
                             </span>
                           </td>
                           <td className="px-1 py-3"><div className="w-1 h-6 rounded" style={{ backgroundColor: entry.teamColor }} /></td>

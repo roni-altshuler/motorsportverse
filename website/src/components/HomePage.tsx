@@ -21,7 +21,9 @@ import ChampionshipBento from "@/components/home/ChampionshipBento";
 import ConstructorsConstellation from "@/components/home/ConstructorsConstellation";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import TeamColorBar from "@/components/ui/TeamColorBar";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import LoadingTire from "@/components/ui/LoadingTire";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import { fadeUp } from "@/lib/motion";
 import {
   fetchSeasonData,
@@ -128,7 +130,10 @@ export default function HomePage() {
 
   return (
     <div>
-      <HeroParallax className="min-h-[60vh]">
+      <HeroParallax
+        className="min-h-[60vh]"
+        geometry={featuredRound?.circuitInfo?.geometry ?? null}
+      >
         <div className="mx-auto max-w-6xl px-6 lg:px-10">
           <div className="flex flex-wrap items-center gap-4 mb-8">
             <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
@@ -200,10 +205,15 @@ export default function HomePage() {
           >
             <div className="flex items-baseline justify-between mb-12">
               <div>
-                <p className="eyebrow mb-2">Model Forecast</p>
-                <h2 className="display-md">Predicted Podium</h2>
-                <p className="body-md mt-4 max-w-xl text-[color:var(--muted)]">
-                  Projected race winner and the two drivers most likely to share the rostrum.
+                <p className="eyebrow mb-2">Race Forecast · Next Grand Prix</p>
+                <h2 className="display-md">
+                  Predicted Podium — {featuredRace.name}
+                </h2>
+                <p className="body-md mt-4 max-w-2xl text-[color:var(--muted)]">
+                  The model&apos;s top three picks for the upcoming{" "}
+                  {featuredRace.country} race on {formatDate(featuredRace.date)}.
+                  Projected race winner plus the two drivers most likely to share
+                  the rostrum.
                 </p>
               </div>
               <Link
@@ -231,6 +241,7 @@ export default function HomePage() {
                   winProbability: winProb,
                   predictedTime: entry.predictedTime,
                   gap: entry.gap,
+                  headshotUrl: resolveDriverHeadshot(entry.driver, entry.headshotUrl),
                 };
               })}
               immediate
@@ -238,77 +249,105 @@ export default function HomePage() {
           </motion.section>
         )}
 
-        {latestRound && latestRound.round !== featuredRace.round && (
-          <motion.section
-            className="section-bugatti"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="flex items-baseline justify-between mb-8">
-              <div>
-                <p className="eyebrow mb-2">Race Control</p>
-                <h2 className="display-md">Latest Official Result</h2>
-                <p className="body-md mt-3 text-[color:var(--muted)]">
-                  Round {latestRound.round} · {latestRound.name} · {formatDate(latestRound.date)}
-                </p>
-              </div>
-              <Link
-                href={`/race/${latestRound.round}`}
-                className="link-bugatti button-label"
+        {latestRound && latestRound.round !== featuredRace.round &&
+          latestRound.actualResults &&
+          Object.keys(latestRound.actualResults).length >= 3 && (() => {
+            const predictedByDriver = new Map(
+              (latestRound.classification ?? []).map((c) => [c.driver, c]),
+            );
+            const officialRows = Object.entries(latestRound.actualResults)
+              .sort(([, a], [, b]) => a - b)
+              .slice(0, 10)
+              .map(([driver, position]) => {
+                const pred = predictedByDriver.get(driver);
+                return {
+                  driver,
+                  position,
+                  team: pred?.team ?? "—",
+                  teamColor: pred?.teamColor ?? "var(--muted)",
+                  headshotUrl: resolveDriverHeadshot(driver, pred?.headshotUrl),
+                };
+              });
+            return (
+              <motion.section
+                className="section-bugatti"
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
               >
-                Compare to prediction
-              </Link>
-            </div>
-            <div className="border border-[color:var(--hairline)] overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[color:var(--hairline)]">
-                    <th className="px-4 py-3 text-left eyebrow">Pos</th>
-                    <th className="px-2 py-3 text-left eyebrow">Driver</th>
-                    <th className="px-2 py-3 text-left eyebrow hidden sm:table-cell">Team</th>
-                    <th className="px-4 py-3 text-right eyebrow">Gap</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(latestRound.classification ?? []).slice(0, 10).map((entry) => (
-                    <tr
-                      key={entry.driver}
-                      className="border-b border-[color:var(--hairline)] last:border-b-0 transition-colors hover:bg-[color:var(--surface-card)]"
-                      data-team={entry.team}
-                    >
-                      <td className="px-4 py-3 font-mono font-tabular text-[color:var(--muted)] w-14">
-                        {entry.position === 1 && (
-                          <span className="text-[color:var(--accent-podium-1)]">P1</span>
-                        )}
-                        {entry.position === 2 && (
-                          <span className="text-[color:var(--accent-podium-2)]">P2</span>
-                        )}
-                        {entry.position === 3 && (
-                          <span className="text-[color:var(--accent-podium-3)]">P3</span>
-                        )}
-                        {entry.position > 3 && `P${entry.position}`}
-                      </td>
-                      <td className="px-2 py-3">
-                        <span className="inline-flex items-center gap-3">
-                          <TeamColorBar teamColor={entry.teamColor} team={entry.team} size="sm" />
-                          <span className="title-sm">{entry.driver}</span>
-                        </span>
-                      </td>
-                      <td className="px-2 py-3 body-sm text-[color:var(--muted)] hidden sm:table-cell">
-                        {entry.team}
-                      </td>
-                      <td className="px-4 py-3 text-right font-mono font-tabular text-[color:var(--muted)]">
-                        {entry.position === 1 ? "LEADER" : entry.gap}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.section>
-        )}
+                <div className="flex items-baseline justify-between mb-8">
+                  <div>
+                    <p className="eyebrow mb-2">Race Control</p>
+                    <h2 className="display-md">Latest Official Result</h2>
+                    <p className="body-md mt-3 text-[color:var(--muted)]">
+                      Round {latestRound.round} · {latestRound.name} ·{" "}
+                      {formatDate(latestRound.date)}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/race/${latestRound.round}`}
+                    className="link-bugatti button-label"
+                  >
+                    Compare to prediction
+                  </Link>
+                </div>
+                <div className="border border-[color:var(--hairline)] overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-[color:var(--hairline)]">
+                        <th className="px-4 py-3 text-left eyebrow">Pos</th>
+                        <th className="px-2 py-3 text-left eyebrow">Driver</th>
+                        <th className="px-2 py-3 text-left eyebrow hidden sm:table-cell">Team</th>
+                        <th className="px-4 py-3 text-right eyebrow">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {officialRows.map((row) => (
+                        <tr
+                          key={row.driver}
+                          className="border-b border-[color:var(--hairline)] last:border-b-0 transition-colors hover:bg-[color:var(--surface-card)]"
+                          data-team={row.team}
+                        >
+                          <td className="px-4 py-3 font-mono font-tabular text-[color:var(--muted)] w-14">
+                            {row.position === 1 && (
+                              <span className="text-[color:var(--accent-podium-1)]">P1</span>
+                            )}
+                            {row.position === 2 && (
+                              <span className="text-[color:var(--accent-podium-2)]">P2</span>
+                            )}
+                            {row.position === 3 && (
+                              <span className="text-[color:var(--accent-podium-3)]">P3</span>
+                            )}
+                            {row.position > 3 && `P${row.position}`}
+                          </td>
+                          <td className="px-2 py-3">
+                            <span className="inline-flex items-center gap-3">
+                              <DriverPortrait
+                                driver={row.driver}
+                                team={row.team}
+                                teamColor={row.teamColor}
+                                headshotUrl={row.headshotUrl}
+                                size={32}
+                              />
+                              <TeamColorBar teamColor={row.teamColor} team={row.team} size="sm" />
+                              <span className="title-sm">{row.driver}</span>
+                            </span>
+                          </td>
+                          <td className="px-2 py-3 body-sm text-[color:var(--muted)] hidden sm:table-cell">
+                            {row.team}
+                          </td>
+                          <td className="px-4 py-3 text-right font-mono font-tabular text-[color:var(--muted)]">
+                            {row.position === 1 ? "WINNER" : "FINISHED"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.section>
+            );
+          })()}
 
         {standings && (
           <section className="section-bugatti">

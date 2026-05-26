@@ -111,6 +111,11 @@ const RACE_ART: Record<string, RaceArt> = {
     credit: "Monza royal park · Unsplash",
     source: "unsplash",
   },
+  madrid: {
+    src: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=1296&h=729&fit=crop&q=80",
+    credit: "Madrid Royal Palace · Unsplash",
+    source: "unsplash",
+  },
   azerbaijan: {
     src: "https://images.unsplash.com/photo-1593253418107-edbe6a6bb6cb?w=1296&h=729&fit=crop&q=80",
     credit: "Baku flame towers · Unsplash",
@@ -172,7 +177,11 @@ export function getRaceArt(
   round: number,
   basePath: string = "",
 ): { src: string; credit: string | null } {
-  const art = RACE_ART[gpKey?.toLowerCase()];
+  // gpKeys arrive as the calendar's country/race name ("Great Britain",
+  // "Las Vegas", "Abu Dhabi", "United States"). Normalise to the underscored
+  // lower-case form used as map keys so multi-word names resolve.
+  const normalised = gpKey?.toLowerCase().replace(/\s+/g, "_");
+  const art = RACE_ART[normalised] ?? RACE_ART[gpKey?.toLowerCase()];
   if (art) {
     return { src: art.src, credit: art.credit };
   }

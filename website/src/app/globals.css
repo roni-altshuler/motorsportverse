@@ -255,6 +255,69 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 2;
 }
 
+/* Animated circuit ribbon — the featured race's track geometry traced as a
+ * looping "comet" sweep behind the hero copy. The dash + dashoffset trick
+ * creates a moving highlight along the closed-loop path. */
+.hero-track-ribbon {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 50%,
+    #000 0%,
+    #000 65%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 50%,
+    #000 0%,
+    #000 65%,
+    transparent 100%
+  );
+}
+.hero-track-ribbon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-track-ribbon .ribbon-base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.hero-track-ribbon .ribbon-sweep {
+  fill: none;
+  stroke: url(#hero-track-gradient);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 900 3200;
+  filter: drop-shadow(0 0 10px rgba(225, 6, 0, 0.75));
+  animation: hero-track-sweep 9s linear infinite;
+}
+.hero-track-ribbon .ribbon-sweep-trail {
+  fill: none;
+  stroke: rgba(225, 6, 0, 0.55);
+  stroke-width: 14;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 500 3600;
+  filter: blur(8px);
+  animation: hero-track-sweep 9s linear infinite;
+}
+@keyframes hero-track-sweep {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -4100;
+  }
+}
+
 /* Bugatti section rhythm — 120px between major bands. */
 .section-bugatti {
   padding-top: 120px;

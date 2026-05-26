@@ -8,6 +8,7 @@ import DriverPortrait from "@/components/standings/DriverPortrait";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import { podiumReveal } from "@/lib/motion";
 import type { ClassificationEntry } from "@/types";
 
@@ -43,7 +44,7 @@ export default function PodiumPredictionTrio({
           winProbability: pred?.winProbability ?? null,
           finishRangeLow: pred?.finishRangeLow ?? null,
           finishRangeHigh: pred?.finishRangeHigh ?? null,
-          headshotUrl: a.headshotUrl ?? pred?.headshotUrl ?? null,
+          headshotUrl: resolveDriverHeadshot(a.driver, a.headshotUrl ?? pred?.headshotUrl),
         };
       })
     : classification.slice(0, 3).map((c) => ({
@@ -56,7 +57,7 @@ export default function PodiumPredictionTrio({
         winProbability: c.winProbability ?? null,
         finishRangeLow: c.finishRangeLow ?? null,
         finishRangeHigh: c.finishRangeHigh ?? null,
-        headshotUrl: c.headshotUrl ?? null,
+        headshotUrl: resolveDriverHeadshot(c.driver, c.headshotUrl),
       }));
 
   // Visual ordering: P2 left, P1 (taller) centre, P3 right.

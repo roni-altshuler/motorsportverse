@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import TeamColorBar from "@/components/ui/TeamColorBar";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import { podiumReveal } from "@/lib/motion";
 
 interface PodiumEntry {
@@ -15,6 +17,7 @@ interface PodiumEntry {
   winProbability?: number;
   predictedTime?: number;
   gap?: string;
+  headshotUrl?: string | null;
 }
 
 interface PodiumStageProps {
@@ -63,17 +66,27 @@ export default function PodiumStage({ entries, startDelay = 0, immediate = false
               teamColor={entry.teamColor}
               className="p-6 sm:p-8 relative"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${positionColor(rank)}`}>
-                  {POSITION_LABELS[rank]}
-                </span>
-                <TeamColorBar
-                  teamColor={entry.teamColor}
+              <div className="flex items-center gap-4 mb-5">
+                <DriverPortrait
+                  driver={entry.driver}
+                  driverFullName={entry.driverFullName}
                   team={entry.team}
-                  variant="solid"
-                  size={isLeader ? "lg" : "md"}
-                  animate="draw"
+                  teamColor={entry.teamColor}
+                  headshotUrl={resolveDriverHeadshot(entry.driver, entry.headshotUrl)}
+                  size={isLeader ? 80 : 56}
                 />
+                <div className="flex flex-col gap-2">
+                  <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${positionColor(rank)}`}>
+                    {POSITION_LABELS[rank]}
+                  </span>
+                  <TeamColorBar
+                    teamColor={entry.teamColor}
+                    team={entry.team}
+                    variant="solid"
+                    size={isLeader ? "lg" : "md"}
+                    animate="draw"
+                  />
+                </div>
               </div>
               <div className={isLeader ? "display-lg" : "display-md"}>{entry.driver}</div>
               <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">
