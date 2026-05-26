@@ -32,11 +32,11 @@
     }
   ],
   "outputDrift": {
-    "rolling_brier_recent": 5.535012523595917,
+    "rolling_brier_recent": 6.915069183904223,
     "rolling_brier_baseline": null,
     "relative_change": null,
     "severity": "ok",
-    "rounds_compared": 1
+    "rounds_compared": 2
   },
   "warnings": [],
   "alarms": [
@@ -48,6 +48,10 @@
     {
       "round": 4,
       "brier": 5.535012523595917
+    },
+    {
+      "round": 5,
+      "brier": 6.915069183904223
     }
   ]
 }
