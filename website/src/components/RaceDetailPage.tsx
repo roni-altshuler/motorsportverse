@@ -607,8 +607,9 @@ export default function RaceDetailPage({ round }: Props) {
       </div>
 
       {/* ━━━ CIRCUIT FIGURE ━━━ */}
-      {!failedImages.has("track_map.png") && (
+      {(data.circuitInfo?.geometry || !failedImages.has("track_map.png")) && (
         <TrackMapWithOverlay
+          geometry={data.circuitInfo?.geometry}
           src={getVisualizationPath(round, "track_map.png")}
           alt={`${data.name} circuit layout`}
           kicker="Circuit"

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 import { ConstructorStanding } from "@/types";
 import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
 
@@ -8,25 +10,55 @@ interface ConstructorsConstellationProps {
   seasonYear: number;
 }
 
+const MAX_SIZE = 460;
+const INNER_RATIO = 0.30;
+const OUTER_RATIO = 0.45;
+
 /**
  * 11-team orbital constellation. Inner static element is the season
  * wordmark; each team gets a circular badge orbiting at one of two
- * radii (alternating to avoid collisions).
+ * radii (alternating to avoid collisions). Container is responsive:
+ * orbit radii scale with the observed width so badges never spill the
+ * viewport on narrow screens.
  */
 export default function ConstructorsConstellation({
   constructors,
   seasonYear,
 }: ConstructorsConstellationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(MAX_SIZE);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = Math.min(entry.contentRect.width, MAX_SIZE);
+        setSize(width);
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Split the 11 teams across 2 rings (5 + 6) so badges don't overlap
   const innerRing = constructors.slice(0, 5);
   const outerRing = constructors.slice(5);
+  const innerR = Math.round(size * INNER_RATIO);
+  const outerR = Math.round(size * OUTER_RATIO);
 
   return (
-    <div className="relative w-full h-[460px] overflow-hidden">
+    <div
+      ref={containerRef}
+      className="relative mx-auto aspect-square w-full max-w-[460px] overflow-hidden"
+    >
       {/* Inner static label */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="flex flex-col items-center gap-1 text-center">
-          <span className="display-xl text-[color:var(--ink)] !text-[42px] !leading-none [font-weight:700]">
+          <span
+            className="display-xl text-[color:var(--ink)] !leading-none [font-weight:700]"
+            style={{ fontSize: "clamp(28px, 9vw, 42px)" }}
+          >
             {seasonYear}
           </span>
           <span className="caption-uppercase tracking-[0.30em] text-[color:var(--muted)]">
@@ -43,7 +75,7 @@ export default function ConstructorsConstellation({
       {innerRing.map((team, i) => (
         <OrbitingCircles
           key={team.team}
-          radius={140}
+          radius={innerR}
           duration={28}
           delay={(i / innerRing.length) * 28}
           pathColor="rgba(255,255,255,0.06)"
@@ -67,7 +99,7 @@ export default function ConstructorsConstellation({
       {outerRing.map((team, i) => (
         <OrbitingCircles
           key={team.team}
-          radius={210}
+          radius={outerR}
           duration={36}
           delay={(i / outerRing.length) * 36}
           reverse

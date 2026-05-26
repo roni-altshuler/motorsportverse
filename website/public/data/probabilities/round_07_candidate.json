@@ -1,0 +1,297 @@
+{
+  "season": 2026,
+  "round": 7,
+  "kind": "ranker-candidate",
+  "generatedAt": "2026-05-26T08:25:56+00:00",
+  "metadata": {
+    "ranker": {
+      "objective": "lambdarank",
+      "metric": [
+        "ndcg"
+      ],
+      "eval_at": [
+        3,
+        5,
+        10
+      ],
+      "lambdarank_truncation_level": 10,
+      "learning_rate": 0.05,
+      "num_leaves": 31,
+      "min_data_in_leaf": 20,
+      "feature_fraction": 0.9,
+      "bagging_fraction": 0.9,
+      "bagging_freq": 5,
+      "max_depth": -1,
+      "num_boost_round": 400,
+      "early_stopping_rounds": 40,
+      "seed": 1337,
+      "verbose": -1
+    },
+    "temperature": 1.5,
+    "cv_folds": 3,
+    "training_rows": 1397,
+    "training_races": 70,
+    "features": [
+      "PriorFinishMean3",
+      "PriorFinishMean8",
+      "PriorFinishStd5",
+      "PriorPodiumRate",
+      "PriorDNFRate",
+      "CurrentSeasonRound"
+    ]
+  },
+  "predictions": [
+    {
+      "position": 1,
+      "driver": "VER",
+      "rankerScore": 1.1672253126638532,
+      "winProbability": 0.621,
+      "podiumProbability": 0.9632,
+      "top6Probability": 1.0,
+      "top10Probability": 1.0
+    },
+    {
+      "position": 2,
+      "driver": "PIA",
+      "rankerScore": -1.5225051365191984,
+      "winProbability": 0.1036,
+      "podiumProbability": 0.4994,
+      "top6Probability": 0.905,
+      "top10Probability": 0.9978
+    },
+    {
+      "position": 3,
+      "driver": "LEC",
+      "rankerScore": -1.9820643549497614,
+      "winProbability": 0.0804,
+      "podiumProbability": 0.3964,
+      "top6Probability": 0.844,
+      "top10Probability": 0.9954
+    },
+    {
+      "position": 4,
+      "driver": "ANT",
+      "rankerScore": -2.2565237154211406,
+      "winProbability": 0.0572,
+      "podiumProbability": 0.3342,
+      "top6Probability": 0.7864,
+      "top10Probability": 0.9908
+    },
+    {
+      "position": 5,
+      "driver": "NOR",
+      "rankerScore": -2.3930816960854213,
+      "winProbability": 0.0522,
+      "podiumProbability": 0.3108,
+      "top6Probability": 0.7484,
+      "top10Probability": 0.987
+    },
+    {
+      "position": 6,
+      "driver": "HAM",
+      "rankerScore": -3.7224464762638636,
+      "winProbability": 0.0268,
+      "podiumProbability": 0.1436,
+      "top6Probability": 0.4484,
+      "top10Probability": 0.894
+    },
+    {
+      "position": 7,
+      "driver": "RUS",
+      "rankerScore": -4.3867751508583686,
+      "winProbability": 0.0158,
+      "podiumProbability": 0.0888,
+      "top6Probability": 0.3004,
+      "top10Probability": 0.7738
+    },
+    {
+      "position": 8,
+      "driver": "SAI",
+      "rankerScore": -4.66450031675371,
+      "winProbability": 0.0144,
+      "podiumProbability": 0.075,
+      "top6Probability": 0.2642,
+      "top10Probability": 0.723
+    },
+    {
+      "position": 9,
+      "driver": "ALO",
+      "rankerScore": -5.020191583474761,
+      "winProbability": 0.0098,
+      "podiumProbability": 0.0624,
+      "top6Probability": 0.2038,
+      "top10Probability": 0.6404
+    },
+    {
+      "position": 10,
+      "driver": "HUL",
+      "rankerScore": -7.188534204028254,
+      "winProbability": 0.0016,
+      "podiumProbability": 0.014,
+      "top6Probability": 0.052,
+      "top10Probability": 0.2022
+    },
+    {
+      "position": 11,
+      "driver": "ZHO",
+      "rankerScore": -7.293433413037793,
+      "winProbability": 0.0016,
+      "podiumProbability": 0.0118,
+      "top6Probability": 0.0478,
+      "top10Probability": 0.186
+    },
+    {
+      "position": 12,
+      "driver": "PER",
+      "rankerScore": -7.428832900380717,
+      "winProbability": 0.0022,
+      "podiumProbability": 0.011,
+      "top6Probability": 0.0404,
+      "top10Probability": 0.1584
+    },
+    {
+      "position": 13,
+      "driver": "RIC",
+      "rankerScore": -7.8060091009112975,
+      "winProbability": 0.001,
+      "podiumProbability": 0.0072,
+      "top6Probability": 0.0322,
+      "top10Probability": 0.1314
+    },
+    {
+      "position": 14,
+      "driver": "LAW",
+      "rankerScore": -7.856155297610271,
+      "winProbability": 0.0006,
+      "podiumProbability": 0.0064,
+      "top6Probability": 0.0316,
+      "top10Probability": 0.129
+    },
+    {
+      "position": 15,
+      "driver": "TSU",
+      "rankerScore": -7.857912274035971,
+      "winProbability": 0.001,
+      "podiumProbability": 0.008,
+      "top6Probability": 0.032,
+      "top10Probability": 0.1338
+    },
+    {
+      "position": 16,
+      "driver": "BOR",
+      "rankerScore": -7.8672942526136085,
+      "winProbability": 0.0012,
+      "podiumProbability": 0.007,
+      "top6Probability": 0.0324,
+      "top10Probability": 0.1312
+    },
+    {
+      "position": 17,
+      "driver": "BEA",
+      "rankerScore": -7.893270418064101,
+      "winProbability": 0.0008,
+      "podiumProbability": 0.0092,
+      "top6Probability": 0.0338,
+      "top10Probability": 0.1296
+    },
+    {
+      "position": 18,
+      "driver": "OCO",
+      "rankerScore": -7.925502641167103,
+      "winProbability": 0.0016,
+      "podiumProbability": 0.0086,
+      "top6Probability": 0.035,
+      "top10Probability": 0.1368
+    },
+    {
+      "position": 19,
+      "driver": "STR",
+      "rankerScore": -8.003742677145665,
+      "winProbability": 0.0016,
+      "podiumProbability": 0.0054,
+      "top6Probability": 0.022,
+      "top10Probability": 0.1064
+    },
+    {
+      "position": 20,
+      "driver": "MAG",
+      "rankerScore": -8.026674308819684,
+      "winProbability": 0.0008,
+      "podiumProbability": 0.007,
+      "top6Probability": 0.0242,
+      "top10Probability": 0.1064
+    },
+    {
+      "position": 21,
+      "driver": "HAD",
+      "rankerScore": -8.130294072580888,
+      "winProbability": 0.0014,
+      "podiumProbability": 0.0078,
+      "top6Probability": 0.0282,
+      "top10Probability": 0.1088
+    },
+    {
+      "position": 22,
+      "driver": "BOT",
+      "rankerScore": -8.871717505854408,
+      "winProbability": 0.001,
+      "podiumProbability": 0.005,
+      "top6Probability": 0.0206,
+      "top10Probability": 0.0772
+    },
+    {
+      "position": 23,
+      "driver": "ALB",
+      "rankerScore": -8.959719567860775,
+      "winProbability": 0.0004,
+      "podiumProbability": 0.004,
+      "top6Probability": 0.0148,
+      "top10Probability": 0.0618
+    },
+    {
+      "position": 24,
+      "driver": "GAS",
+      "rankerScore": -9.169868354220405,
+      "winProbability": 0.0008,
+      "podiumProbability": 0.0044,
+      "top6Probability": 0.016,
+      "top10Probability": 0.0558
+    },
+    {
+      "position": 25,
+      "driver": "SAR",
+      "rankerScore": -9.316843225107787,
+      "winProbability": 0.0002,
+      "podiumProbability": 0.0028,
+      "top6Probability": 0.0114,
+      "top10Probability": 0.0482
+    },
+    {
+      "position": 26,
+      "driver": "COL",
+      "rankerScore": -9.709548091655973,
+      "winProbability": 0.0006,
+      "podiumProbability": 0.003,
+      "top6Probability": 0.011,
+      "top10Probability": 0.0396
+    },
+    {
+      "position": 27,
+      "driver": "DOO",
+      "rankerScore": -10.271948121463133,
+      "winProbability": 0.0002,
+      "podiumProbability": 0.0014,
+      "top6Probability": 0.0066,
+      "top10Probability": 0.0266
+    },
+    {
+      "position": 28,
+      "driver": "DEV",
+      "rankerScore": -10.316262644075179,
+      "winProbability": 0.0002,
+      "podiumProbability": 0.0022,
+      "top6Probability": 0.0074,
+      "top10Probability": 0.0286
+    }
+  ]
+}

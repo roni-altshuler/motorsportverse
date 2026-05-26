@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { cn } from "@/components/ui/cn";
 
 /**
@@ -39,8 +41,9 @@ interface DriverPortraitProps {
 }
 
 /**
- * F1.com-style 64px circular driver portrait. Team color background, white
- * letters fallback when no headshot is available.
+ * F1.com-style circular driver portrait. Shows the headshot when available;
+ * falls back to a team-tinted conic backdrop with a fine diagonal stripe and
+ * the driver's 3-letter code. Same outer dimensions in both states — no CLS.
  */
 export default function DriverPortrait({
   driver,
@@ -51,8 +54,11 @@ export default function DriverPortrait({
   size = 64,
   className,
 }: DriverPortraitProps) {
+  const [imageFailed, setImageFailed] = useState(false);
   const bg = teamColor || "var(--team-color, var(--surface-elevated))";
   const resolvedSrc = resolveHeadshotSrc(headshotUrl);
+  const showFallback = !resolvedSrc || imageFailed;
+
   return (
     <span
       data-team={team}
@@ -68,27 +74,52 @@ export default function DriverPortrait({
         boxShadow: `0 0 0 2px ${bg}, 0 1px 2px rgba(0,0,0,0.4)`,
       }}
     >
-      {resolvedSrc ? (
+      {showFallback ? (
+        <>
+          {/* Conic backdrop — team color rotated through a darker variant for depth. */}
+          <span
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background: `conic-gradient(from 220deg, ${
+                teamColor || "var(--team-color, var(--surface-elevated))"
+              }, color-mix(in oklab, ${
+                teamColor || "var(--team-color, #2a2a2a)"
+              } 30%, #000) 60%, ${teamColor || "var(--team-color, var(--surface-elevated))"})`,
+            }}
+          />
+          {/* Subtle diagonal stripe overlay. */}
+          <span
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 8px)",
+            }}
+          />
+          <span
+            className="relative font-mono text-white"
+            style={{
+              fontSize: Math.max(11, Math.round(size * 0.22)),
+              lineHeight: 1,
+              letterSpacing: "0.08em",
+              textShadow: "0 1px 2px rgba(0,0,0,0.6)",
+            }}
+          >
+            {driver}
+          </span>
+        </>
+      ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={resolvedSrc}
+          src={resolvedSrc!}
           alt={driverFullName ?? driver}
           width={size}
           height={size}
           style={{ objectFit: "cover", width: size, height: size }}
           loading="lazy"
+          onError={() => setImageFailed(true)}
         />
-      ) : (
-        <span
-          className="font-display [font-weight:700] text-white tracking-[0.04em]"
-          style={{
-            fontSize: Math.max(12, Math.round(size * 0.34)),
-            lineHeight: 1,
-            textShadow: "0 1px 2px rgba(0,0,0,0.6)",
-          }}
-        >
-          {driver}
-        </span>
       )}
     </span>
   );

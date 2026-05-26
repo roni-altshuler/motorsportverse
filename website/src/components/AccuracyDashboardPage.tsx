@@ -204,7 +204,7 @@ export default function AccuracyDashboardPage() {
               .map((report) => (
                 <Link key={`gp-report-${report.round}`} href={`/race/${report.round}`} className="block">
                   <div
-                    className="p-4 rounded-xl transition-colors"
+                    className="hover-lift-premium p-4 rounded-xl"
                     style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-3 mb-2">

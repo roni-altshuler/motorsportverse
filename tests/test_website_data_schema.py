@@ -194,9 +194,43 @@ def test_round_classification_drivers_unique():
         )
 
 
+def test_circuit_geometry_is_valid_when_present():
+    """When `generate_circuit_svg.py` has populated geometry, the SVG path
+    must be a closed loop. Rounds without geometry (cold-start) are skipped."""
+    rounds_dir = WEBSITE_DATA / "rounds"
+    if not rounds_dir.exists():
+        pytest.skip("No rounds/ generated yet")
+    checked = 0
+    for round_file in rounds_dir.glob("round_*.json"):
+        data = _load(round_file)
+        geometry = (data.get("circuitInfo") or {}).get("geometry")
+        if not isinstance(geometry, dict):
+            continue
+        checked += 1
+        assert isinstance(geometry.get("path"), str), (
+            f"{round_file.name}: geometry.path must be a string"
+        )
+        path = geometry["path"]
+        assert path.startswith("M "), (
+            f"{round_file.name}: geometry.path must start with `M ` (got {path[:8]!r})"
+        )
+        assert path.rstrip().endswith("Z"), (
+            f"{round_file.name}: geometry.path must close with `Z`"
+        )
+        assert isinstance(geometry.get("viewBox"), str)
+        assert isinstance(geometry.get("corners"), list)
+        assert isinstance(geometry.get("drsZones"), list)
+    if checked == 0:
+        pytest.skip("No rounds have geometry yet (run generate_circuit_svg.py)")
+
+
 @pytest.mark.parametrize(
     "prob_file",
-    sorted((WEBSITE_DATA / "probabilities").glob("round_*.json"))
+    # Exclude *_candidate.json — the shadow stream from models/ranking_pipeline
+    # has its own schema (kind: "ranker-candidate") and is not subject to the
+    # legacy probability contract until the promotion gate accepts it live.
+    [p for p in sorted((WEBSITE_DATA / "probabilities").glob("round_*.json"))
+     if "_candidate" not in p.stem]
     if (WEBSITE_DATA / "probabilities").exists()
     else [],
     ids=lambda p: p.name,
@@ -204,3 +238,27 @@ def test_round_classification_drivers_unique():
 def test_probabilities_round_json_matches_schema(prob_file: Path):
     data = _load(prob_file)
     ProbabilityRoundData(**data)
+
+
+@pytest.mark.parametrize(
+    "candidate_file",
+    sorted((WEBSITE_DATA / "probabilities").glob("round_*_candidate.json"))
+    if (WEBSITE_DATA / "probabilities").exists()
+    else [],
+    ids=lambda p: p.name,
+)
+def test_ranker_candidate_json_has_expected_shape(candidate_file: Path):
+    data = _load(candidate_file)
+    assert data.get("kind") == "ranker-candidate", (
+        f"{candidate_file.name}: expected kind='ranker-candidate', got {data.get('kind')!r}"
+    )
+    assert "predictions" in data and isinstance(data["predictions"], list)
+    assert "metadata" in data and isinstance(data["metadata"], dict)
+    positions = [p["position"] for p in data["predictions"]]
+    assert positions == sorted(positions), (
+        f"{candidate_file.name}: predictions must be sorted by position"
+    )
+    for entry in data["predictions"]:
+        for field in ("position", "driver", "rankerScore",
+                      "winProbability", "podiumProbability"):
+            assert field in entry, f"{candidate_file.name}: missing {field!r}"

@@ -299,6 +299,42 @@ h1, h2, h3, h4, h5, h6 {
 }
 .card:hover { border-color: var(--hairline-strong); }
 
+/* Premium hover for interactive surfaces — subtle lift + team-tinted glow.
+ * Uses --team-color when present, falls back to F1-red-bright. Compositor-only
+ * (transform + box-shadow + filter) so it never reflows. Reduced-motion users
+ * get only the border-color shift the parent already provides. */
+.hover-lift-premium {
+  transition:
+    transform var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    box-shadow var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    filter var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    border-color var(--dur-snap, 180ms) ease;
+  will-change: transform;
+}
+.hover-lift-premium:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 24px -8px color-mix(in oklab, var(--team-color, var(--accent-f1-red-bright)) 35%, transparent),
+    0 1px 0 0 var(--hairline-strong) inset;
+  filter: saturate(1.04);
+  border-color: var(--hairline-strong);
+}
+.hover-lift-premium:focus-visible {
+  outline: 1px solid var(--team-color, var(--accent-f1-red-bright));
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift-premium {
+    transition: border-color 180ms ease;
+    will-change: auto;
+  }
+  .hover-lift-premium:hover {
+    transform: none;
+    box-shadow: none;
+    filter: none;
+  }
+}
+
 /* Deep Dive accordion — Bugatti restyle: 0 radius, hairline border,
  * display-type summary, mono +/- chevrons. */
 .deep-dive-section {
@@ -787,9 +823,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 .animate-gradient { animation: gradient var(--duration, 8s) linear infinite; }
 
-@keyframes neon-pulse {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+/* Compositor-only spin used by NeonGradientCard. Transform rotation avoids
+ * the per-frame repaints that the prior background-position approach caused. */
+@keyframes neon-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-neon-spin {
+  animation: neon-spin var(--neon-spin-duration, 6s) linear infinite;
+  will-change: transform;
 }
 
 /* ─────────────────────────────────────────────────────────────────────

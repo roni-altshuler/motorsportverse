@@ -97,6 +97,26 @@ export interface VisualizationDetail {
   source: "model" | "fastf1" | "advanced" | string;
 }
 
+/** Vector geometry for a circuit, produced by `generate_circuit_svg.py`.
+ * All coordinates are in the normalised viewBox space (default 0..1000). */
+export interface CircuitGeometry {
+  /** SVG viewBox string, e.g. `"0 0 1000 1000"`. */
+  viewBox: string;
+  /** Closed SVG path data, e.g. `"M x0 y0 L x1 y1 …Z"`. */
+  path: string;
+  corners: Array<{
+    number: number;
+    x: number;
+    y: number;
+    name?: string | null;
+  }>;
+  /** Index ranges (into the simplified path) where DRS is enabled. */
+  drsZones: Array<{ startIdx: number; endIdx: number }>;
+  metresPerUnit: number;
+  source: "fastf1";
+  generatedAt: string;
+}
+
 export interface GrandPrixReportMiss {
   driver: string;
   team: string;
@@ -202,6 +222,10 @@ export interface RoundData {
     drsZones: number;
     safetyCarLikelihood: number;
     altitudeM: number;
+    /** SVG vector geometry derived from FastF1 telemetry at build time.
+     * Optional — circuits without telemetry yet (cold-start) fall back
+     * to the matplotlib PNG. */
+    geometry?: CircuitGeometry | null;
   };
   weatherData?: {
     rainProbability: number;
