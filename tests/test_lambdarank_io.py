@@ -13,7 +13,7 @@ import pytest
 
 lgb = pytest.importorskip("lightgbm")  # noqa: F841
 
-from models.ranking import LambdaRanker, LambdaRankerConfig, build_groups
+from models.ranking import LambdaRanker, LambdaRankerConfig, build_groups  # noqa: E402
 
 
 def _synthetic_races(n_races: int = 6, drivers: int = 8) -> pd.DataFrame:
