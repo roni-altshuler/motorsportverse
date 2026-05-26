@@ -35,6 +35,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 try:
     import optuna
 except ImportError:  # pragma: no cover
@@ -44,8 +47,8 @@ except ImportError:  # pragma: no cover
     )
     raise SystemExit(1)
 
-from models.cv import RaceGroupedTimeSeriesSplit
-from models.ranking import LambdaRanker, LambdaRankerConfig, build_groups
+from models.cv import RaceGroupedTimeSeriesSplit  # noqa: E402
+from models.ranking import LambdaRanker, LambdaRankerConfig, build_groups  # noqa: E402
 
 
 def _ndcg_at_k(ordering: np.ndarray, relevance: np.ndarray, k: int) -> float:

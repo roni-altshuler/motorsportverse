@@ -226,7 +226,11 @@ def test_circuit_geometry_is_valid_when_present():
 
 @pytest.mark.parametrize(
     "prob_file",
-    sorted((WEBSITE_DATA / "probabilities").glob("round_*.json"))
+    # Exclude *_candidate.json — the shadow stream from models/ranking_pipeline
+    # has its own schema (kind: "ranker-candidate") and is not subject to the
+    # legacy probability contract until the promotion gate accepts it live.
+    [p for p in sorted((WEBSITE_DATA / "probabilities").glob("round_*.json"))
+     if "_candidate" not in p.stem]
     if (WEBSITE_DATA / "probabilities").exists()
     else [],
     ids=lambda p: p.name,
@@ -234,3 +238,27 @@ def test_circuit_geometry_is_valid_when_present():
 def test_probabilities_round_json_matches_schema(prob_file: Path):
     data = _load(prob_file)
     ProbabilityRoundData(**data)
+
+
+@pytest.mark.parametrize(
+    "candidate_file",
+    sorted((WEBSITE_DATA / "probabilities").glob("round_*_candidate.json"))
+    if (WEBSITE_DATA / "probabilities").exists()
+    else [],
+    ids=lambda p: p.name,
+)
+def test_ranker_candidate_json_has_expected_shape(candidate_file: Path):
+    data = _load(candidate_file)
+    assert data.get("kind") == "ranker-candidate", (
+        f"{candidate_file.name}: expected kind='ranker-candidate', got {data.get('kind')!r}"
+    )
+    assert "predictions" in data and isinstance(data["predictions"], list)
+    assert "metadata" in data and isinstance(data["metadata"], dict)
+    positions = [p["position"] for p in data["predictions"]]
+    assert positions == sorted(positions), (
+        f"{candidate_file.name}: predictions must be sorted by position"
+    )
+    for entry in data["predictions"]:
+        for field in ("position", "driver", "rankerScore",
+                      "winProbability", "podiumProbability"):
+            assert field in entry, f"{candidate_file.name}: missing {field!r}"
