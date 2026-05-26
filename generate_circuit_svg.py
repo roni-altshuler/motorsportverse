@@ -176,26 +176,38 @@ def _drs_zone_indices(distance_axis: np.ndarray, marshal_lights, kept_indices: n
 
 
 # ── FastF1 → geometry ─────────────────────────────────────────────────────
+def _load_telemetry(year: int, gp_key: str):
+    """Attempt to load FastF1 session telemetry. Returns (tel, info) or None.
+
+    Future races have no telemetry yet, so we walk back one season at a time
+    (down to a 5-season window) looking for the same circuit's most recent
+    completed running. Circuit layouts rarely change year-over-year.
+    """
+    for candidate_year in (year, year - 1, year - 2, year - 3):
+        try:
+            session = fastf1.get_session(candidate_year, gp_key, "R")
+            session.load(laps=True, telemetry=True, weather=False, messages=False)
+            lap = session.laps.pick_fastest()
+            tel = lap.get_telemetry()
+            if tel is not None and len(tel) >= 50:
+                info = session.get_circuit_info()
+                if candidate_year != year:
+                    print(f"    using {candidate_year} layout for {gp_key} (no {year} data yet)")
+                return tel, info
+        except Exception as exc:  # noqa: BLE001
+            print(f"    skip {candidate_year}: {exc}")
+            continue
+    return None
+
+
 def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
     """Returns the geometry payload for one circuit, or None on failure."""
     print(f"  • {year} R{gp_key}: loading FastF1 session…")
-    try:
-        session = fastf1.get_session(year, gp_key, "R")
-        session.load(laps=True, telemetry=True, weather=False, messages=False)
-    except Exception as exc:  # noqa: BLE001 — FastF1 throws many types
-        print(f"    skip: session load failed ({exc})")
+    loaded = _load_telemetry(year, gp_key)
+    if loaded is None:
+        print(f"    skip: no usable telemetry found in {year} or recent prior seasons")
         return None
-
-    try:
-        lap = session.laps.pick_fastest()
-        tel = lap.get_telemetry()
-    except Exception as exc:  # noqa: BLE001
-        print(f"    skip: telemetry unavailable ({exc})")
-        return None
-
-    if tel is None or len(tel) < 50:
-        print(f"    skip: insufficient telemetry ({0 if tel is None else len(tel)} pts)")
-        return None
+    tel, info = loaded
 
     raw_xy = np.column_stack([tel["X"].values, tel["Y"].values]).astype(np.float64)
 
@@ -228,8 +240,7 @@ def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
     corners_xy: np.ndarray | None = None
     corner_meta: list[dict] = []
     try:
-        info = session.get_circuit_info()
-        corners_df = info.corners
+        corners_df = info.corners if info is not None else None
         if corners_df is not None and len(corners_df):
             cx = corners_df["X"].values.astype(np.float64)
             cy = corners_df["Y"].values.astype(np.float64)
