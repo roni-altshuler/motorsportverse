@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  ErrorBar,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -25,6 +26,8 @@ interface Row {
   teamColor: string;
   predictedTime: number;
   gapMs: number;
+  /** [lower, upper] error-bar deltas in milliseconds, relative to gapMs. */
+  ciError?: [number, number];
 }
 
 function TooltipBody({ active, payload }: { active?: boolean; payload?: Array<{ payload: Row }> }) {
@@ -62,19 +65,47 @@ export default function PredictedPaceChart({ classification, limit = 14 }: Predi
   const rows = useMemo<Row[]>(() => {
     const ordered = [...classification].sort((a, b) => a.predictedTime - b.predictedTime).slice(0, limit);
     const leader = ordered[0]?.predictedTime ?? 0;
-    return ordered.map((c) => ({
-      driver: c.driver,
-      team: c.team,
-      teamColor: c.teamColor || "#888",
-      predictedTime: c.predictedTime,
-      gapMs: Math.max(0, (c.predictedTime - leader) * 1000),
-    }));
+    return ordered.map((c) => {
+      const gapMs = Math.max(0, (c.predictedTime - leader) * 1000);
+      // 90% bootstrap interval, converted from absolute seconds to gap-domain
+      // milliseconds. Lower error = gap - (low - leader); upper = (high - leader) - gap.
+      let ciError: [number, number] | undefined;
+      if (c.predictionIntervalLow != null && c.predictionIntervalHigh != null) {
+        const lowMs = Math.max(0, (c.predictionIntervalLow - leader) * 1000);
+        const highMs = Math.max(0, (c.predictionIntervalHigh - leader) * 1000);
+        const lowerWhisker = Math.max(0, gapMs - lowMs);
+        const upperWhisker = Math.max(0, highMs - gapMs);
+        // Only attach when at least one whisker is non-trivial (>2ms).
+        if (lowerWhisker > 2 || upperWhisker > 2) {
+          ciError = [lowerWhisker, upperWhisker];
+        }
+      }
+      return {
+        driver: c.driver,
+        team: c.team,
+        teamColor: c.teamColor || "#888",
+        predictedTime: c.predictedTime,
+        gapMs,
+        ciError,
+      };
+    });
   }, [classification, limit]);
 
   if (rows.length === 0) return null;
+  const hasIntervals = rows.some((r) => r.ciError);
 
   return (
     <div style={{ width: "100%", height: "100%", minHeight: 320 }}>
+      {hasIntervals && (
+        <div className="mb-2 text-[10px] font-mono uppercase tracking-[0.18em] text-[color:var(--text-muted)] flex items-center gap-2">
+          <svg width="20" height="6" aria-hidden>
+            <line x1="2" y1="3" x2="18" y2="3" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="2" y1="1" x2="2" y2="5" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="18" y1="1" x2="18" y2="5" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          Whiskers · 90% prediction interval
+        </div>
+      )}
       <ResponsiveContainer>
         <BarChart data={rows} layout="vertical" margin={{ top: 8, right: 24, left: 8, bottom: 8 }}>
           <defs>
@@ -108,6 +139,15 @@ export default function PredictedPaceChart({ classification, limit = 14 }: Predi
             {rows.map((row) => (
               <Cell key={row.driver} fill={`url(#pace-${row.driver})`} />
             ))}
+            {hasIntervals && (
+              <ErrorBar
+                dataKey="ciError"
+                width={5}
+                strokeWidth={1.25}
+                stroke="var(--text-muted)"
+                direction="x"
+              />
+            )}
           </Bar>
         </BarChart>
       </ResponsiveContainer>

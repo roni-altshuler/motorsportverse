@@ -72,6 +72,12 @@ export interface ClassificationEntry {
   finishRangeLow?: number;
   finishRangeHigh?: number;
   winProbability?: number;
+  /** Bootstrap 90% prediction interval lower bound (seconds, absolute). */
+  predictionIntervalLow?: number;
+  /** Bootstrap 90% prediction interval upper bound (seconds, absolute). */
+  predictionIntervalHigh?: number;
+  /** Per-driver probability of NOT classifying (DNF) in this race. */
+  dnfProbability?: number;
   /** See {@link DriverInfo.headshotUrl}. */
   headshotUrl?: string | null;
 }

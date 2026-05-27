@@ -113,7 +113,7 @@ const EMPTY_STATE_COMMAND =
   "python backfill_history.py --seasons 2023,2024,2025 --force";
 
 const EMPTY_STATE_BODY =
-  "Calibration not yet applied. Run the command below to populate the training set. Until then, the probabilities on /value are uncalibrated Plackett-Luce outputs.";
+  "Calibration not yet applied. The model is still publishing raw win probabilities while the training set populates with multi-season race history.";
 
 export default function CalibrationPanel({ summary }: CalibrationPanelProps) {
   const markets = useMemo(() => {

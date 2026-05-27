@@ -1,93 +1,25 @@
 {
   "artifacts": [
-    "gbr",
-    "scaler",
-    "xgb"
+    "calibrator"
   ],
-  "circuitKey": "Canada",
-  "ensemble_weights": {
-    "gb": 0.4932419449837821,
-    "lstm": 0.18,
-    "xgb": 0.326758055016218
-  },
-  "feature_cols": [
-    "TeamAdjustedPace",
-    "TeamPerformanceScore",
-    "TeamFormDelta",
-    "CleanAirPace",
-    "BestLapTime",
-    "LapTimeStd",
-    "ConsistencyScore",
-    "SectorBalance",
-    "PitTimeLoss",
-    "TyreDegFactor",
-    "ExperienceFactor",
-    "RainProbability",
-    "Temperature",
-    "WeatherRiskScore",
-    "CircuitOvertaking",
-    "CircuitSafetyCar",
-    "CircuitGripPenalty",
-    "ExpectedStopsFeature",
-    "SprintWeekend",
-    "QualifyingRank",
-    "GridAdvantage",
-    "CurrentForm",
-    "PreviousPosition",
-    "SeasonMomentum",
-    "PositionTrend",
-    "DriverPredictionBias",
-    "TeamPredictionBias",
-    "DriverDegComposite",
-    "DriverDegDeltaField",
-    "UndercutEdgeAhead",
-    "OvercutEdgeBehind",
-    "TeamOrderPressure",
-    "TeammateConflictRisk",
-    "FieldPositionVolatility",
-    "LocalBattleIntensity",
-    "DRSOvertakeProbAhead",
-    "driver_elo",
-    "team_elo",
-    "driver_form_elo",
-    "wet_weather_elo",
-    "qualifying_elo",
-    "racecraft_elo",
-    "teammate_delta_elo"
+  "dbHistoryRounds": 114,
+  "fittedMarkets": [
+    "win",
+    "podium",
+    "top6",
+    "top10"
   ],
-  "gitSha": "041efc7fa408baa62bdf8265d79337e8d677387e",
-  "gpName": "Canadian Grand Prix",
-  "kind": "qualifying-time",
-  "lstm_used": true,
-  "max_spread_s": 3.5,
-  "metrics": [
-    {
-      "MAE (s)": 0.23388041303127238,
-      "Model": "Gradient Boosting",
-      "RMSE (s)": 0.30583202083294253,
-      "R\u00b2": 0.8817580594068573
-    },
-    {
-      "MAE (s)": 0.3530429565429671,
-      "Model": "XGBoost",
-      "RMSE (s)": 0.46903282445165967,
-      "R\u00b2": 0.7218928757962859
-    },
-    {
-      "MAE (s)": 0.0,
-      "Model": "LSTM Neural Network",
-      "RMSE (s)": 0.0,
-      "R\u00b2": 0.0
-    },
-    {
-      "MAE (s)": 0.2547059057078485,
-      "Model": "Ensemble (GBR + XGB + LSTM)",
-      "RMSE (s)": 0.30042411914491296,
-      "R\u00b2": 0.8859027353260944
-    }
-  ],
-  "pythonVersion": "3.11.15",
+  "gitSha": "b77ddb54f072329f1737d0b78edaaa4b52a2ac8d",
+  "historyRecords": 9000,
+  "kind": "probability-calibrator",
+  "pythonVersion": "3.12.3",
   "round": 5,
-  "savedAt": "2026-05-25T14:52:28+00:00",
+  "sampleCounts": {
+    "podium": 2250,
+    "top10": 2250,
+    "top6": 2250,
+    "win": 2250
+  },
+  "savedAt": "2026-05-27T11:20:12+00:00",
   "season": 2026
 }

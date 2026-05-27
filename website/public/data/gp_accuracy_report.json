@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T02:28:47.866831Z",
+  "generatedAt": "2026-05-27T08:03:24.664831Z",
   "overallAccuracy": {
     "seasonMeanError": 4.51,
     "seasonAccuracyPct": 57.3,
@@ -456,9 +456,9 @@
       "comparedDrivers": 22,
       "meanError": 5.36,
       "medianError": 4.0,
-      "exactMatches": 1,
+      "exactMatches": 2,
       "within3": 8,
-      "within5": 15,
+      "within5": 14,
       "winnerHit": false,
       "podiumHits": 0,
       "biggestMisses": [
@@ -495,17 +495,22 @@
           "absDelta": 8
         },
         {
-          "driver": "BOT",
-          "team": "Cadillac",
-          "predicted": 22,
-          "actual": 16,
-          "delta": 6,
-          "absDelta": 6
+          "driver": "GAS",
+          "team": "Alpine",
+          "predicted": 15,
+          "actual": 8,
+          "delta": 7,
+          "absDelta": 7
         }
       ],
       "teamMeanError": [
         {
           "team": "Williams",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
           "meanError": 2.5,
           "drivers": 2
         },
@@ -516,11 +521,6 @@
         },
         {
           "team": "Aston Martin",
-          "meanError": 3.5,
-          "drivers": 2
-        },
-        {
-          "team": "Audi",
           "meanError": 3.5,
           "drivers": 2
         },
@@ -541,7 +541,7 @@
         },
         {
           "team": "Alpine",
-          "meanError": 5.5,
+          "meanError": 6.5,
           "drivers": 2
         },
         {

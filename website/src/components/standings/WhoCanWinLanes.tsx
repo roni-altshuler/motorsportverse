@@ -38,16 +38,21 @@ export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProp
   const remainingRounds = Math.max(totalRounds - completedRounds, 0);
   const remainingPointsCap = remainingRounds * MAX_POINTS_PER_ROUND;
 
-  const leaderPoints = standings.drivers[0]?.points ?? 0;
+  const drivers = useMemo(() => standings.drivers ?? [], [standings.drivers]);
+  const wdcPossibility = useMemo(
+    () => standings.wdcPossibility ?? [],
+    [standings.wdcPossibility],
+  );
+  const leaderPoints = drivers[0]?.points ?? 0;
 
   // Compute lane data: sort by max possible (desc) so the strongest title
   // pictures sit at the top.  Re-derive `canStillWin` locally with the same
   // rule the design spec calls out: max possible < leader's CURRENT points.
   const lanes = useMemo(() => {
     const headshotByCode = new Map(
-      standings.drivers.map((d) => [d.driver, d.headshotUrl ?? null]),
+      drivers.map((d) => [d.driver, d.headshotUrl ?? null]),
     );
-    return standings.wdcPossibility
+    return wdcPossibility
       .map((w) => {
         const maxPossible = w.currentPoints + remainingPointsCap;
         const eliminated = maxPossible < leaderPoints;
@@ -63,7 +68,7 @@ export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProp
         };
       })
       .sort((a, b) => b.maxPossible - a.maxPossible);
-  }, [standings.drivers, standings.wdcPossibility, remainingPointsCap, leaderPoints]);
+  }, [drivers, wdcPossibility, remainingPointsCap, leaderPoints]);
 
   // The horizontal axis is shared across lanes — fill widths are proportional
   // to the highest "max possible" across all contenders so the bars line up.
@@ -117,6 +122,23 @@ export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProp
   }, []);
 
   const contenders = lanes.filter((l) => !l.eliminated);
+
+  if (lanes.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="display-md mb-2">Mathematical Title Picture</h2>
+        </div>
+        <div className="card p-8 text-center">
+          <p className="eyebrow mb-2">Title race not yet computed</p>
+          <p className="body-sm text-[color:var(--text-muted)] max-w-md mx-auto">
+            The mathematical title picture publishes once the first race weekend
+            results are official. Check back after Round {(standings.lastUpdatedRound ?? 0) + 1}.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

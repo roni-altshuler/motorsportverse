@@ -121,12 +121,18 @@ jobs:
           ROUND="${{ steps.config.outputs.round }}"
           PHASE="${{ steps.config.outputs.phase }}"
 
+          # Ensure a race-pace ensemble is registered before the simulator runs.
+          # train_race_pace.py is a no-op when the registry already has a sentinel
+          # round 99 entry; only re-trains on cache miss. Failure is non-fatal —
+          # the simulator silently no-ops if no ensemble is registered.
+          python train_race_pace.py --seasons 2018-2025 || echo "⚠️  race-pace trainer skipped (see logs)"
+
           if [ "$PHASE" = "full" ]; then
-            python gp_weekend.py --round "$ROUND" --full --no-build
+            python gp_weekend.py --round "$ROUND" --full --no-build --use-race-simulator
           elif [ "$PHASE" = "auto" ]; then
-            python gp_weekend.py --round "$ROUND" --no-build
+            python gp_weekend.py --round "$ROUND" --no-build --use-race-simulator
           else
-            python gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build
+            python gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build --use-race-simulator
           fi
 
       - name: Generate labeled circuit maps for all rounds

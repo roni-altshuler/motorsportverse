@@ -147,7 +147,7 @@ CALENDAR_2026 = {
     2:  {"name": "Chinese Grand Prix",        "gp_key": "China",          "circuit": "Shanghai International", "date": "2026-03-15", "laps": 56, "circuit_km": 5.451, "sprint": True,  "sprint_laps": 21},
     3:  {"name": "Japanese Grand Prix",       "gp_key": "Japan",          "circuit": "Suzuka",                 "date": "2026-03-29", "laps": 53, "circuit_km": 5.807, "sprint": False},
     4:  {"name": "Miami Grand Prix",          "gp_key": "Miami",          "circuit": "Miami International",    "date": "2026-05-03", "laps": 57, "circuit_km": 5.412, "sprint": True,  "sprint_laps": 21},
-    5:  {"name": "Canadian Grand Prix",       "gp_key": "Canada",         "circuit": "Circuit Gilles Villeneuve", "date": "2026-05-24", "laps": 70, "circuit_km": 4.361, "sprint": False},
+    5:  {"name": "Canadian Grand Prix",       "gp_key": "Canada",         "circuit": "Circuit Gilles Villeneuve", "date": "2026-05-24", "laps": 70, "circuit_km": 4.361, "sprint": True,  "sprint_laps": 23},
     6:  {"name": "Monaco Grand Prix",         "gp_key": "Monaco",         "circuit": "Monaco",                 "date": "2026-06-07", "laps": 78, "circuit_km": 3.337, "sprint": False},
     7:  {"name": "Barcelona-Catalunya Grand Prix", "gp_key": "Spain",     "circuit": "Barcelona-Catalunya",    "date": "2026-06-14", "laps": 66, "circuit_km": 4.657, "sprint": False},
     8:  {"name": "Austrian Grand Prix",       "gp_key": "Austria",        "circuit": "Red Bull Ring",          "date": "2026-06-28", "laps": 71, "circuit_km": 4.318, "sprint": True,  "sprint_laps": 24},

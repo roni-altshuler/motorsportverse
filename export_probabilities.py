@@ -192,6 +192,7 @@ def build_round_payload(
     n_samples: int = DEFAULT_N_SAMPLES,
     temperature: float = DEFAULT_TEMPERATURE,
     now: _dt.datetime | None = None,
+    history_db_path: Path | None = None,
 ) -> tuple[dict, MarketProbabilities]:
     """Compute the FROZEN-schema payload for one round.  Pure (no file write)."""
     rnd = _round_number(round_file)
@@ -212,6 +213,18 @@ def build_round_payload(
         "%Y-%m-%dT%H:%M:%SZ"
     )
 
+    # DNF probabilities (optional market). Splices into markets["dnf"] as a
+    # sorted-descending list of {driver, probability} entries, matching the
+    # shape of win/podium/top6/top10 so the website can render it identically.
+    dnf_payload = _build_dnf_market(
+        round_data=round_data,
+        season=season,
+        current_round=rnd,
+        history_db_path=history_db_path,
+    )
+    if dnf_payload:
+        markets_payload["dnf"] = dnf_payload
+
     payload = {
         "round": rnd,
         "season": season,
@@ -228,6 +241,48 @@ def build_round_payload(
         "h2h": mp.h2h,
     }
     return payload, mp
+
+
+def _build_dnf_market(
+    round_data: dict,
+    season: int,
+    current_round: int,
+    history_db_path: Path | None,
+) -> list[dict] | None:
+    """Compute per-driver DNF probabilities via models.dnf and return a market
+    payload sorted descending by probability. Returns None when no
+    classification entries are available or the historical DB is missing."""
+    classification = round_data.get("classification") or []
+    if not classification:
+        return None
+    try:
+        from models.dnf import compute_dnf_probabilities, DnfModelInputs
+    except ImportError:
+        return None
+    db_path = Path(history_db_path) if history_db_path else Path("data/history.duckdb")
+    inputs = [
+        DnfModelInputs(
+            driver=str(entry.get("driver", "")),
+            predicted_position=int(entry.get("position", 11) or 11),
+            circuit_key=str(round_data.get("gpKey", "")),
+        )
+        for entry in classification
+        if entry.get("driver")
+    ]
+    if not inputs:
+        return None
+    probs = compute_dnf_probabilities(
+        history_db_path=db_path,
+        season=season,
+        current_round=current_round,
+        inputs=inputs,
+    )
+    rows = [
+        {"driver": driver, "probability": prob, "rawProbability": prob}
+        for driver, prob in probs.items()
+    ]
+    rows.sort(key=lambda r: r["probability"], reverse=True)
+    return rows
 
 
 # --------------------------------------------------------------------------- #
@@ -396,6 +451,12 @@ def run(
     for rnd, (raw_payload, mp) in raw_round_payloads.items():
         market_struct = calibrate_market_probabilities(mp, effective_calibrator)
         markets_payload = {m: _sort_market_entries(market_struct[m]) for m in MARKETS}
+        # Preserve any non-MARKETS extras the first pass injected (notably
+        # `dnf` from _build_dnf_market) — those don't get re-calibrated, they
+        # just pass through unchanged.
+        for extra_key, extra_val in (raw_payload.get("markets") or {}).items():
+            if extra_key not in MARKETS:
+                markets_payload[extra_key] = extra_val
         final_payload = dict(raw_payload)
         final_payload["markets"] = markets_payload
         final_payload["calibration"] = {

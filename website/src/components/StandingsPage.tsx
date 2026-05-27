@@ -14,6 +14,7 @@ import TeamBadge from "@/components/standings/TeamBadge";
 import WhoCanWinLanes from "@/components/standings/WhoCanWinLanes";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import LoadingTire from "@/components/ui/LoadingTire";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { motion } from "framer-motion";
 
 type Tab = "drivers" | "constructors" | "wdc";
@@ -493,7 +494,9 @@ export default function StandingsPage() {
 
       {/* WDC Possibility Tab — race-to-the-flag lanes + animated beams to CHAMPION ZONE */}
       {activeTab === "wdc" && (
-        <WhoCanWinLanes standings={data} season={season} />
+        <ErrorBoundary label="WhoCanWinLanes">
+          <WhoCanWinLanes standings={data} season={season} />
+        </ErrorBoundary>
       )}
     </div>
   );

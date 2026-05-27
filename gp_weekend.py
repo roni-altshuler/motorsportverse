@@ -204,7 +204,7 @@ def _print_banner(title, char="═"):
 # Phase Runners
 # ═════════════════════════════════════════════════════════════════════════
 
-def run_pre_weekend(round_num, skip_build=False):
+def run_pre_weekend(round_num, skip_build=False, use_race_simulator=False):
     """Phase 1: Pre-weekend predictions with weather forecast.
 
     Run this on Thursday/Friday before the race weekend.
@@ -224,6 +224,7 @@ def run_pre_weekend(round_num, skip_build=False):
         use_lstm=False,        # LSTM not needed in pre-phase
         use_weather_api=True,  # live weather forecast
         use_telemetry=False,   # no telemetry yet
+        use_race_simulator=use_race_simulator,
     )
 
     # Update metadata
@@ -240,7 +241,7 @@ def run_pre_weekend(round_num, skip_build=False):
     return round_data, merged
 
 
-def run_post_qualifying(round_num, skip_build=False):
+def run_post_qualifying(round_num, skip_build=False, use_race_simulator=False):
     """Phase 2: Post-qualifying update with real data.
 
     Run this after qualifying on Saturday.
@@ -264,6 +265,7 @@ def run_post_qualifying(round_num, skip_build=False):
         use_lstm=True,          # full ensemble with LSTM
         use_weather_api=True,   # updated weather (closer to race)
         use_telemetry=True,     # speed traps + sector times from quali
+        use_race_simulator=use_race_simulator,
     )
 
     # Generate FastF1 historical visualizations
@@ -458,15 +460,15 @@ def _build_website():
 # Full Pipeline
 # ═════════════════════════════════════════════════════════════════════════
 
-def run_full(round_num, skip_build=False):
+def run_full(round_num, skip_build=False, use_race_simulator=False):
     """Run all phases sequentially (for testing or catch-up)."""
     _print_banner(f"FULL PIPELINE: Round {round_num}", "█")
 
-    rd, merged = run_pre_weekend(round_num, skip_build=True)
+    rd, merged = run_pre_weekend(round_num, skip_build=True, use_race_simulator=use_race_simulator)
 
     # Try post-quali (may fail if qualifying hasn't happened)
     try:
-        rd, merged = run_post_qualifying(round_num, skip_build=True)
+        rd, merged = run_post_qualifying(round_num, skip_build=True, use_race_simulator=use_race_simulator)
     except Exception as e:
         print(f"\n⚠️  Post-qualifying skipped: {e}")
 
@@ -515,6 +517,9 @@ Typical GP Weekend Workflow:
                         help="Skip website rebuild after data generation")
     parser.add_argument("--dry-run", action="store_true",
                         help="Show what would be executed without actually running")
+    parser.add_argument("--use-race-simulator", action="store_true",
+                        help="Splice per-lap MC race simulator probabilities into round JSON "
+                             "(requires a registered race-pace ensemble — run train_race_pace.py first).")
     args = parser.parse_args()
 
     # ── Resolve round ──
@@ -566,11 +571,11 @@ Typical GP Weekend Workflow:
 
     # ── Execute ──
     if phase == "full":
-        run_full(round_num, skip_build=args.no_build)
+        run_full(round_num, skip_build=args.no_build, use_race_simulator=args.use_race_simulator)
     elif phase == "pre":
-        run_pre_weekend(round_num, skip_build=args.no_build)
+        run_pre_weekend(round_num, skip_build=args.no_build, use_race_simulator=args.use_race_simulator)
     elif phase == "post-quali":
-        run_post_qualifying(round_num, skip_build=args.no_build)
+        run_post_qualifying(round_num, skip_build=args.no_build, use_race_simulator=args.use_race_simulator)
     elif phase == "post-race":
         run_post_race(round_num, skip_build=args.no_build)
 
