@@ -252,6 +252,16 @@ export default function RaceDetailPage({ round }: Props) {
   const activeSession = weekendSessions.find((session) => session.key === activeWeekendSession) || defaultWeekendSession;
   const loadedWeekendSessions = weekendSessions.filter((session) => session.rows.length > 0);
   const actualRows = data.actualResults ? Object.entries(data.actualResults).sort((a, b) => a[1] - b[1]) : [];
+  // The model only publishes its final forecast once qualifying is in.
+  // Pre-qualifying we hide the classification table, win-probability
+  // chart, and the model-narrative card behind a single "Awaiting
+  // Qualifying" placeholder so the page never advertises predictions
+  // built on synthetic lap times. Officially-classified races stay
+  // visible — they're history, not forecasts.
+  const isPredictionPublished =
+    actualRows.length > 0 ||
+    data.predictionPhase === "post-quali" ||
+    data.predictionPhase === "post-race";
   const gpReport = data.gpReport || null;
   const actualStatus = data.actualStatus || {};
   const predictedByDriver = new Map(data.classification.map((e) => [e.driver, e]));
@@ -418,15 +428,35 @@ export default function RaceDetailPage({ round }: Props) {
         } : undefined}
       />
 
-      {/* B-P1.3: auto-generated race narrative card */}
-      <RaceNarrativeCard round={data} />
+      {/* Prediction-publish gate. The model only publishes a final
+          forecast after qualifying — pre-quali the page focuses on the
+          circuit, the calendar slot, and the weather, and explicitly
+          tells the user the prediction will land on Saturday. */}
+      {isPredictionPublished ? (
+        <>
+          <RaceNarrativeCard round={data} />
+          <div className="mb-6">
+            <WinProbabilityChart classification={data.classification ?? []} />
+          </div>
+        </>
+      ) : (
+        <div className="mb-8 p-6 sm:p-8 rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)]">
+          <p className="eyebrow mb-3">Predictions publish on Saturday</p>
+          <h3 className="title-md mb-3" style={{ color: "var(--text)" }}>
+            Awaiting Qualifying
+          </h3>
+          <p className="body-sm max-w-2xl" style={{ color: "var(--text-muted)" }}>
+            The race prediction for {data.name} publishes after qualifying is
+            complete. Qualifying pace is the strongest single-lap signal of
+            race competitiveness — the model holds back until it has those
+            lap times to ensure the published forecast reflects the freshest
+            data available before lights out.
+          </p>
+        </div>
+      )}
 
-      {/* B-P1.2: interactive win-probability chart, framed as HUD */}
-      <div className="mb-6">
-        <WinProbabilityChart classification={data.classification ?? []} />
-      </div>
 
-
+      {isPredictionPublished && (
       <motion.div
         className="report-shell p-6 sm:p-7 mb-8"
         initial={{ opacity: 0, y: 12 }}
@@ -556,6 +586,7 @@ export default function RaceDetailPage({ round }: Props) {
           </div>
         </div>
       </motion.div>
+      )}
 
 
       {/* ━━━ YouTube Highlight Links ━━━ */}
@@ -788,7 +819,7 @@ export default function RaceDetailPage({ round }: Props) {
 
       {/* ═══ Deep Dive ═══ — folds Classification + Analysis + Strategy +
            Visualizations into accordion sections, all closed by default. */}
-      {activeTab === "deepdive" && (
+      {activeTab === "deepdive" && isPredictionPublished && (
       <details className="deep-dive-section">
         <summary className="deep-dive-summary">Model Forecast</summary>
         <div className="deep-dive-section-body">

@@ -373,18 +373,25 @@ export default function StandingsPage() {
                       <NumberTicker value={c.points} /> pts
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <TeamBadge team={c.team} teamColor={c.teamColor} size={48} />
-                    <h3
-                      className="font-bold text-lg [font-family:var(--font-display)] uppercase tracking-[0.05em]"
-                      style={{ color: "var(--text)" }}
-                    >
-                      {c.team}
-                    </h3>
+                  <div className="flex items-start gap-4 mb-3">
+                    <TeamBadge
+                      team={c.team}
+                      teamColor={c.teamColor}
+                      size={84}
+                      variant="card"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <h3
+                        className="font-bold text-lg [font-family:var(--font-display)] uppercase tracking-[0.05em] mb-1"
+                        style={{ color: "var(--text)" }}
+                      >
+                        {c.team}
+                      </h3>
+                      <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+                        {c.drivers.join(" • ")}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-sm mb-3" style={{ color: "var(--text-muted)" }}>
-                    {c.drivers.join(" • ")}
-                  </p>
                   <div className="progress-bar h-2">
                     <div
                       className="progress-bar-fill"

@@ -94,7 +94,12 @@ function ConstructorRow({ row, topProb, reduced, dimmed }: ConstructorRowProps) 
       className="flex items-center gap-3 sm:gap-4"
       style={{ opacity: dimmed ? 0.55 : 1 }}
     >
-      <TeamBadge team={row.team} teamColor={row.teamColor} size={36} />
+      <TeamBadge
+        team={row.team}
+        teamColor={row.teamColor}
+        size={56}
+        variant="card"
+      />
 
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between mb-1 gap-3">
