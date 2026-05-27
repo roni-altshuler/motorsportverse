@@ -97,7 +97,7 @@ function CustomTooltip({ active, payload }: TooltipPayload) {
       </div>
       {row.simulatorWinProbability !== null && (
         <div className="mt-1 text-xs text-[color:var(--text-secondary)]">
-          Simulator: <span className="font-mono font-tabular">{row.simulatorWinProbability.toFixed(1)}%</span>
+          Race outlook: <span className="font-mono font-tabular">{row.simulatorWinProbability.toFixed(1)}%</span>
         </div>
       )}
       <div className="mt-1 text-xs text-[color:var(--text-muted)]">
@@ -130,8 +130,8 @@ export default function WinProbabilityChart({
         <Badge variant="live" className="self-start">Interactive</Badge>
         <CardTitle>Win Probability</CardTitle>
         <CardDescription>
-          Model-derived P(win) for the top {rows.length}. Hover any bar for raw probability,
-          simulator probability, and the prediction interval.
+          Win chances for the top {rows.length}. Hover any bar for the
+          confidence range and detailed odds.
         </CardDescription>
       </CardHeader>
       <CardContent>

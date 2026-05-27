@@ -592,7 +592,8 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                       game_theory_neighbors=2,
                       persist_output=True,
                       generate_visualizations=True,
-                      use_race_simulator=False):
+                      use_race_simulator=False,
+                      prediction_phase="preview"):
     """Run prediction pipeline for one round; export JSON + visualisations.
     If return_merged=True, returns (round_data, merged_df) for advanced models.
     If use_lstm=True, computes LSTM grid predictions and feeds them into
@@ -963,6 +964,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             ),
         },
         "generatedAt": _utc_now_iso(),
+        # Phase of the weekend the prediction was generated in. The UI
+        # uses this to frame the prediction: "preview" pre-quali
+        # (tentative — qualifying not run yet); "post-quali" once we
+        # have actual qualifying times; "post-race" after the race is
+        # classified. Keeps the model honest by stamping each artefact
+        # with the freshness of its underlying signals.
+        "predictionPhase": str(prediction_phase or "preview"),
+        "qualifyingDataAvailable": bool(quali is not quali_estimates),
         "dataFreshness": {
             "weatherSource": weather_full.get("source", "static") if weather_full else "static",
             "qualifyingSource": "FastF1" if quali is not quali_estimates else "model estimate",

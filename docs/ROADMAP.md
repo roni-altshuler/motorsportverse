@@ -55,6 +55,12 @@ The betting / Kelly-sizing flow exists at the Python level but the UI was remove
 ### Mobile-first standings
 The current standings layout works on mobile but isn't optimized for it. Compact view with sticky live cursor + horizontal scroll for the points-progression chart.
 
+### Hybrid blend policy  ✓ shipped
+[`models/hybrid_blend.py`](../models/hybrid_blend.py) — explicit policy layer that, given a circuit and the current weekend phase, returns `(historical, weekend)` weight pair. Quali-dominant circuits (Monaco, Hungary, Singapore) swing 80% to weekend signal post-qualifying; specialist circuits (Brazil, Spa, Suzuka) keep more historical weight; high-variance circuits (Bahrain, Saudi, Miami, Canada) take a moderate 60/40 lean.
+
+### Prediction-timing gate  ✓ shipped
+Round JSON now carries `predictionPhase: "preview" | "post-quali" | "post-race"`. Pre-quali predictions are labelled "Preview · Awaiting Qualifying" in the UI; post-quali predictions get the "Final Prediction · Post-Qualifying" framing. Wired through `gp_weekend.py`'s phase runners.
+
 ### LICENSE file  ✓ shipped
 [`LICENSE`](../LICENSE) (MIT) with attribution carve-outs for FastF1, Jolpica/Ergast, Wikimedia, and the headshot directory.
 

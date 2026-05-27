@@ -103,7 +103,7 @@ export default function PredictedPaceChart({ classification, limit = 14 }: Predi
             <line x1="2" y1="1" x2="2" y2="5" stroke="currentColor" strokeWidth="1.5" />
             <line x1="18" y1="1" x2="18" y2="5" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          Whiskers · 90% prediction interval
+          Whiskers · pace uncertainty range
         </div>
       )}
       <ResponsiveContainer>

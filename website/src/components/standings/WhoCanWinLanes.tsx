@@ -18,17 +18,18 @@ interface WhoCanWinLanesProps {
 }
 
 /**
- * Probabilistic championship simulator output.  One row per driver,
- * sorted by P(WDC) descending.  Each row shows:
+/**
+ * Title-race forecast row per driver, sorted by championship win
+ * probability descending. Each row shows:
  *
  *   - Driver portrait + team
  *   - Championship-win probability (bar + percentage)
- *   - Current points → expected final points
- *   - 5th / 95th percentile points range
+ *   - Current points → projected final points
+ *   - Projected points range (low / high)
  *
- * Drivers with P(WDC) < 0.001 (rounded display 0.0%) are dimmed and
- * grouped at the bottom as "mathematically out" — they cannot win the
- * championship in any Monte Carlo sample.
+ * Drivers below the visibility threshold are grouped at the bottom
+ * as "mathematically out" — they cannot reach the title in any
+ * projected outcome.
  */
 const PROBABILITY_VISIBLE_THRESHOLD = 0.001;
 
@@ -92,23 +93,15 @@ export default function WhoCanWinLanes({
         <div>
           <h2 className="display-md mb-2">Title Race Forecast</h2>
           <p className="body-md text-[color:var(--text-muted)] max-w-2xl">
-            Championship win probability from a Monte Carlo simulation of the
-            {" "}
+            Championship win probability across the{" "}
             <span className="font-mono text-[color:var(--text)]">
               {forecast?.remainingRounds ?? 0}
             </span>{" "}
             remaining round
-            {forecast?.remainingRounds === 1 ? "" : "s"}.
-            {forecast?.monteCarloSamples
-              ? ` Based on ${forecast.monteCarloSamples.toLocaleString()} simulated seasons.`
-              : ""}
+            {forecast?.remainingRounds === 1 ? "" : "s"}. Updated after the
+            latest Grand Prix.
           </p>
         </div>
-        {forecast?.skillSourceRound != null && (
-          <div className="eyebrow text-[color:var(--text-muted)]">
-            Skill from R{forecast.skillSourceRound}
-          </div>
-        )}
       </div>
 
       <div className="card p-4 sm:p-6">
@@ -145,11 +138,10 @@ export default function WhoCanWinLanes({
       </div>
 
       <p className="text-xs text-[color:var(--text-muted)]">
-        Win probability comes from a Monte Carlo simulation of the remaining
-        races. Each simulated season samples a finishing order per race from
-        the model&apos;s current win-probability distribution and applies the
-        F1 points system (with sprint and fastest-lap bonuses).
-        Reliability — i.e. DNF risk — is sampled per race as well.
+        Title odds are projected from the model&apos;s current form-card
+        across the remaining race weekends, applying the official points
+        system (including sprint and fastest-lap bonuses) and accounting
+        for retirement risk.
       </p>
     </div>
   );

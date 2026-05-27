@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import TeamBadge from "@/components/standings/TeamBadge";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import type { ChampionshipForecast, WccForecastEntry } from "@/types";
 
@@ -21,10 +22,10 @@ export default function ConstructorsForecastLanes({
   if (rows.length === 0) {
     return (
       <div className="card p-8 text-center">
-        <p className="eyebrow mb-2">Constructors forecast not yet computed</p>
+        <p className="eyebrow mb-2">Constructors outlook not yet available</p>
         <p className="body-sm text-[color:var(--text-muted)] max-w-md mx-auto">
-          The constructors&apos; championship simulator publishes after the
-          first race weekend completes.
+          The constructors&apos; title outlook publishes after the first race
+          weekend completes.
         </p>
       </div>
     );
@@ -93,17 +94,7 @@ function ConstructorRow({ row, topProb, reduced, dimmed }: ConstructorRowProps) 
       className="flex items-center gap-3 sm:gap-4"
       style={{ opacity: dimmed ? 0.55 : 1 }}
     >
-      {/* Team color swatch */}
-      <div
-        aria-hidden
-        className="shrink-0 rounded-full"
-        style={{
-          width: 36,
-          height: 36,
-          background: `linear-gradient(135deg, ${row.teamColor}, color-mix(in srgb, ${row.teamColor} 50%, var(--surface-card)))`,
-          border: `1px solid color-mix(in srgb, ${row.teamColor} 50%, transparent)`,
-        }}
-      />
+      <TeamBadge team={row.team} teamColor={row.teamColor} size={36} />
 
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between mb-1 gap-3">

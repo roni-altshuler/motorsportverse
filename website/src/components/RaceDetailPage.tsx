@@ -319,9 +319,6 @@ export default function RaceDetailPage({ round }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tyreDegData = (data as any).tyreDegData;
 
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const heroTrackMap = `${basePath}/visualizations/round_${String(data.round).padStart(2, "0")}/track_map.webp`;
-
   return (
     <div>
       {/* Race detail hero — track circuit anchored to the left of the title
@@ -346,14 +343,24 @@ export default function RaceDetailPage({ round }: Props) {
                 />
               </div>
             ) : (
-              <Image
-                src={heroTrackMap}
-                alt={`${data.circuit} circuit map`}
-                fill
-                sizes="(min-width: 1024px) 320px, (min-width: 640px) 256px, 100vw"
-                className="object-contain p-3"
-                unoptimized
-              />
+              <div
+                className="absolute inset-0 flex items-center justify-center"
+                aria-label={`${data.circuit} circuit map`}
+                role="img"
+              >
+                <svg
+                  viewBox="0 0 100 100"
+                  className="w-1/2 h-1/2 opacity-40"
+                  fill="none"
+                  stroke="var(--ink)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M20 50 Q 20 20 50 20 T 80 50 Q 80 80 50 80 T 20 50 Z" />
+                </svg>
+              </div>
             )}
           </div>
           <div className="min-w-0">
@@ -434,12 +441,20 @@ export default function RaceDetailPage({ round }: Props) {
             </h2>
             <p className="text-sm mt-2 max-w-3xl" style={{ color: "var(--text-muted)" }}>
               {actualRows.length > 0
-                ? "The model forecast remains visible alongside the classified result so visitors can clearly evaluate accuracy, misses, and team-level performance."
-                : "This page is configured for the live Grand Prix weekend flow: predictions are front-and-center now, and the official result will replace the headline state once the race is complete."}
+                ? "The model forecast remains visible alongside the official result so visitors can evaluate accuracy and team-level performance."
+                : data.predictionPhase === "preview"
+                ? "Tentative outlook published ahead of qualifying. The final prediction updates once qualifying lap times are confirmed — that's when the model gets its strongest single-lap pace signal."
+                : "Prediction front-and-centre for the live Grand Prix weekend flow; the official result will replace the headline state once the race is complete."}
             </p>
           </div>
           <Badge variant={actualRows.length > 0 ? "positive" : toneVariant(liveMeta?.tone)}>
-            {actualRows.length > 0 ? "Official Result Loaded" : liveMeta?.label || "Prediction Published"}
+            {actualRows.length > 0
+              ? "Official Result Loaded"
+              : data.predictionPhase === "preview"
+              ? "Preview · Awaiting Qualifying"
+              : data.predictionPhase === "post-quali"
+              ? "Final Prediction · Post-Qualifying"
+              : liveMeta?.label || "Prediction Published"}
           </Badge>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

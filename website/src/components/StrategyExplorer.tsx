@@ -124,16 +124,15 @@ export default function StrategyExplorer({ strategyData, totalLaps }: Props) {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="live">Interactive</Badge>
-            <Badge variant="muted">Monte-Carlo sim</Badge>
           </div>
           <h3 className="text-lg font-bold tracking-tight">
             Strategy Comparison
           </h3>
           <p className="text-xs text-[color:var(--text-muted)] mt-1">
-            {totalLaps ? `${totalLaps}-lap race` : "Race-distance simulation"}
+            {totalLaps ? `${totalLaps}-lap race` : "Race-distance outlook"}
             {" · "}
-            Best strategy first.  Hover any bar for stop count, std-dev, and
-            delta to the optimal.
+            Best strategy first. Hover any bar for stop count, variance,
+            and delta to the optimal.
           </p>
         </div>
         <div className="text-xs text-[color:var(--text-muted)] font-mono font-tabular hidden sm:block">

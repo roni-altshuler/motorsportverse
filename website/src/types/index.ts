@@ -211,6 +211,16 @@ export interface RoundData {
   date: string;
   sprint: boolean;
   sprintLaps: number;
+  /**
+   * Which weekend phase the prediction was generated in.
+   *   "preview"     — pre-quali; tentative outlook, qualifying not yet run
+   *   "post-quali"  — qualifying complete; prediction uses real lap times
+   *   "post-race"   — race classified; predicted-vs-actual comparison live
+   * Optional for backwards compatibility with older round JSONs.
+   */
+  predictionPhase?: "preview" | "post-quali" | "post-race";
+  /** True when qualifying lap times are real (not synthetic estimates). */
+  qualifyingDataAvailable?: boolean;
   classification: ClassificationEntry[];
   metrics: ModelMetrics;
   featureImportance: FeatureImportance[];

@@ -284,7 +284,10 @@ export default function StandingsPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3" style={{ color: "var(--text-muted)" }}>
-                          {d.team}
+                          <span className="inline-flex items-center gap-2">
+                            <TeamBadge team={d.team} teamColor={d.teamColor} size={26} />
+                            <span>{d.team}</span>
+                          </span>
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
@@ -500,9 +503,8 @@ export default function StandingsPage() {
         </div>
       )}
 
-      {/* Title-race forecast — Monte Carlo simulator output. WDC + WCC
-          side-by-side so users can compare driver vs team championship
-          races on the same page. */}
+      {/* Title race outlook — WDC + WCC side-by-side so users can
+          compare driver vs team championship races on the same page. */}
       {activeTab === "wdc" && (
         <ErrorBoundary label="WhoCanWinLanes">
           <div className="space-y-10">
@@ -510,8 +512,8 @@ export default function StandingsPage() {
             <div>
               <h2 className="display-md mb-2">Constructors Title Race</h2>
               <p className="body-md text-[color:var(--text-muted)] max-w-2xl mb-6">
-                Same Monte Carlo simulation summed by team. Mercedes vs Ferrari
-                vs McLaren over the {forecast?.remainingRounds ?? 0} remaining
+                Driver projections aggregated by team. Mercedes vs Ferrari vs
+                McLaren over the {forecast?.remainingRounds ?? 0} remaining
                 round{forecast?.remainingRounds === 1 ? "" : "s"}.
               </p>
               <ConstructorsForecastLanes forecast={forecast} />

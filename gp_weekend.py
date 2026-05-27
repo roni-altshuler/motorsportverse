@@ -225,6 +225,7 @@ def run_pre_weekend(round_num, skip_build=False, use_race_simulator=False):
         use_weather_api=True,  # live weather forecast
         use_telemetry=False,   # no telemetry yet
         use_race_simulator=use_race_simulator,
+        prediction_phase="preview",
     )
 
     # Update metadata
@@ -266,6 +267,7 @@ def run_post_qualifying(round_num, skip_build=False, use_race_simulator=False):
         use_weather_api=True,   # updated weather (closer to race)
         use_telemetry=True,     # speed traps + sector times from quali
         use_race_simulator=use_race_simulator,
+        prediction_phase="post-quali",
     )
 
     # Generate FastF1 historical visualizations
