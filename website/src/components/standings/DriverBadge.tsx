@@ -51,6 +51,7 @@ export default function DriverBadge({
     >
       <Card
         surface="paddock"
+        interactive
         team={team}
         teamColor={teamColor}
         className="p-4 sm:p-5 h-full"

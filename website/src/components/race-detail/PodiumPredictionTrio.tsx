@@ -104,6 +104,7 @@ export default function PodiumPredictionTrio({
             >
               <Card
                 surface="flat"
+                interactive
                 team={entry.team}
                 teamColor={entry.teamColor}
                 className={`p-6 sm:p-8 relative overflow-hidden${

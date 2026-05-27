@@ -62,6 +62,7 @@ export default function PodiumStage({ entries, startDelay = 0, immediate = false
           >
             <Card
               surface="flat"
+              interactive
               team={entry.team}
               teamColor={entry.teamColor}
               className="p-6 sm:p-8 relative"

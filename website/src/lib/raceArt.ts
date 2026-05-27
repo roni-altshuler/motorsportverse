@@ -133,10 +133,12 @@ const RACE_ART: Record<string, RaceArt> = {
     credit: "Monza aerial · Planet Labs / Wikimedia Commons",
     source: "unsplash",
   },
-  // R14 — Madring (new 2026 Madrid street circuit)
+  // R14 — Madring (new 2026 Madrid street circuit) — circuit not yet built so
+  // no aerial exists; use the Cuatro Torres Business Area aerial which sits
+  // adjacent to IFEMA, where the circuit will run.
   madrid: {
-    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Colorz_-_Flickr_-_madring_hda.jpg/1280px-Colorz_-_Flickr_-_madring_hda.jpg",
-    credit: "Madring · Wikimedia Commons",
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Madrid_Cuatro_Torres_Business_Area-2.jpg/1280px-Madrid_Cuatro_Torres_Business_Area-2.jpg",
+    credit: "Madrid · Cuatro Torres aerial · Wikimedia Commons",
     source: "unsplash",
   },
   // R15 — Baku City Circuit · SkySat aerial

@@ -330,7 +330,7 @@ export default function StandingsPage() {
                 <div
                   key={c.team}
                   data-team={c.team}
-                  className="card p-5 relative overflow-hidden"
+                  className="card hover-lift-premium p-5 relative overflow-hidden"
                   style={{
                     background:
                       "color-mix(in srgb, var(--team-color, var(--surface-card)) 6%, var(--surface-card))",

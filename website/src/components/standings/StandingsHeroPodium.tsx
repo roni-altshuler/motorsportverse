@@ -1,11 +1,8 @@
 "use client";
 
-import { Trophy } from "lucide-react";
-
 import { DriverStanding } from "@/types";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { BorderBeam } from "@/components/magicui/border-beam";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 
 interface StandingsHeroPodiumProps {
@@ -13,8 +10,10 @@ interface StandingsHeroPodiumProps {
 }
 
 /**
- * Three-card hero row for P1/P2/P3 in the drivers tab. P1 gets a
- * BorderBeam in F1-red. F1.com-style 64px circular portrait.
+ * Three-card hero row for P1/P2/P3 in the drivers tab. Mirrors the race-detail
+ * Race Podium visual language: dark `var(--surface-card)` surface for every
+ * card, a thin champagne accent strip + "Championship Leader" pill on P1,
+ * no team-color gradient backdrop, no BorderBeam. Same shape as PodiumPredictionTrio.
  */
 export default function StandingsHeroPodium({ drivers }: StandingsHeroPodiumProps) {
   const podium = drivers.slice(0, 3);
@@ -49,22 +48,19 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
     <div
       data-team={driver.team}
       className={`relative overflow-hidden border border-[color:var(--hairline)] bg-[color:var(--surface-card)] rounded-[var(--radius-card)] hover-lift-premium${
-        isP1 ? " podium-card-p1" : ""
+        isP1 ? " podium-card-p1 podium-leader-card" : ""
       }`}
     >
       {isP1 && (
-        <BorderBeam
-          size={1}
-          duration={8}
-          colorFrom="#E10600"
-          colorTo="#FFD166"
-          borderRadius={4}
-        />
+        <>
+          <span aria-hidden className="podium-leader-accent" />
+          <span className="podium-leader-pill" aria-label="Championship leader">
+            Championship Leader
+          </span>
+        </>
       )}
-      {/* top accent strip */}
-      <div className="h-1 w-full" style={{ background: tintToken }} aria-hidden />
       <div className="p-5 sm:p-7 flex flex-col items-start gap-4">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center w-full">
           <span
             className="position-badge"
             style={{
@@ -78,11 +74,6 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
           >
             P{rank}
           </span>
-          {isP1 && (
-            <span className="inline-flex items-center gap-1.5 status-pill status-pill-amber">
-              <Trophy className="w-3 h-3" /> Championship Leader
-            </span>
-          )}
         </div>
 
         <div className="flex items-center gap-4 w-full">

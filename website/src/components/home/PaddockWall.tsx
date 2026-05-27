@@ -44,6 +44,7 @@ export default function PaddockWall({ title, entries, href, limit = 6 }: Paddock
           >
             <Card
               surface="flat"
+              interactive
               team={entry.team}
               teamColor={entry.teamColor}
               className="p-6 h-full flex flex-col gap-4 min-w-0"

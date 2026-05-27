@@ -49,8 +49,7 @@ export function BentoCard({
       className={cn(
         "group relative col-span-3 flex flex-col justify-between overflow-hidden",
         "border border-[var(--hairline)] bg-[var(--surface-card)] rounded-[var(--radius-card,4px)]",
-        "transition-all duration-300",
-        "hover:border-[var(--hairline-strong)]",
+        "hover-lift-premium",
         className,
       )}
       {...props}
