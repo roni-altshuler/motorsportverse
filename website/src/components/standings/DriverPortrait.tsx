@@ -56,7 +56,11 @@ export default function DriverPortrait({
 }: DriverPortraitProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const bg = teamColor || "var(--team-color, var(--surface-elevated))";
-  const resolvedSrc = resolveHeadshotSrc(headshotUrl);
+  // When the data layer omits headshotUrl, synthesize the conventional asset
+  // path `/headshots/<CODE>.webp`. onError below still falls back to the
+  // conic-gradient avatar for reserves and mid-season debuts.
+  const candidate = headshotUrl || (driver ? `/headshots/${driver}.webp` : null);
+  const resolvedSrc = resolveHeadshotSrc(candidate);
   const showFallback = !resolvedSrc || imageFailed;
 
   return (

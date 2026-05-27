@@ -48,10 +48,9 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
   return (
     <div
       data-team={driver.team}
-      className="relative overflow-hidden border border-[color:var(--hairline)] bg-[color:var(--surface-card)] rounded-[var(--radius-card)]"
-      style={{
-        transform: isP1 ? "translateY(-12px)" : undefined,
-      }}
+      className={`relative overflow-hidden border border-[color:var(--hairline)] bg-[color:var(--surface-card)] rounded-[var(--radius-card)] hover-lift-premium${
+        isP1 ? " podium-card-p1" : ""
+      }`}
     >
       {isP1 && (
         <BorderBeam

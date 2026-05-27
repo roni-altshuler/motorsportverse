@@ -25,6 +25,20 @@ function parseTab(value: string | null): Tab {
   return "drivers";
 }
 
+function formatRelativeTime(iso: string | null | undefined): string {
+  if (!iso) return "Updated recently";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "Updated recently";
+  const delta = Math.max(0, Date.now() - then);
+  const m = Math.round(delta / 60000);
+  if (m < 1) return "Updated just now";
+  if (m < 60) return `Updated ${m}m ago`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `Updated ${h}h ago`;
+  const d = Math.round(h / 24);
+  return `Updated ${d}d ago`;
+}
+
 export default function StandingsPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -92,14 +106,13 @@ export default function StandingsPage() {
       <ChampionshipKPIs drivers={data.drivers} />
 
       <div className="data-freshness-card mb-8">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em]" style={{ color: "#9FB0C8" }}>Data Freshness</p>
-          <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
-            {data.statusNote || "Standings are refreshed from the configured official data pipeline when the export workflow runs."}
-          </p>
+        <div className="data-freshness-status">
+          <span className="data-freshness-dot" aria-hidden />
+          <span className="data-freshness-eyebrow">Data Freshness · Live</span>
+          <span className="data-freshness-note">Standings sync with the latest official classification</span>
         </div>
         <div className="data-freshness-meta">
-          <span>{data.source || "Standings data"}</span>
+          <span>{formatRelativeTime(data.lastUpdated)}</span>
           <span>{formatDateTime(data.lastUpdated)}</span>
         </div>
       </div>
@@ -153,6 +166,7 @@ export default function StandingsPage() {
                 points={d.points}
                 wins={d.wins}
                 podiums={d.podiums}
+                headshotUrl={d.headshotUrl}
               />
             ))}
           </div>
@@ -163,6 +177,7 @@ export default function StandingsPage() {
               <StandingsChart
                 data={data.drivers.slice(0, 10)}
                 rounds={completedRounds}
+                totalRounds={totalRounds}
               />
             </div>
           )}

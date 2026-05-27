@@ -419,6 +419,7 @@ h1, h2, h3, h4, h5, h6 {
  * (transform + box-shadow + filter) so it never reflows. Reduced-motion users
  * get only the border-color shift the parent already provides. */
 .hover-lift-premium {
+  transform-style: preserve-3d;
   transition:
     transform var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
     box-shadow var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
@@ -427,11 +428,17 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform;
 }
 .hover-lift-premium:hover {
-  transform: translateY(-2px);
+  transform:
+    perspective(1000px)
+    translateZ(8px)
+    translateY(-6px)
+    rotateX(1.5deg)
+    scale(1.015);
   box-shadow:
-    0 6px 24px -8px color-mix(in oklab, var(--team-color, var(--accent-f1-red-bright)) 35%, transparent),
+    0 18px 40px -14px color-mix(in oklab, var(--team-color, var(--accent-f1-red-bright)) 45%, transparent),
+    0 6px 12px -6px rgba(0, 0, 0, 0.55),
     0 1px 0 0 var(--hairline-strong) inset;
-  filter: saturate(1.04);
+  filter: saturate(1.08);
   border-color: var(--hairline-strong);
 }
 .hover-lift-premium:focus-visible {
@@ -445,8 +452,34 @@ h1, h2, h3, h4, h5, h6 {
   }
   .hover-lift-premium:hover {
     transform: none;
-    box-shadow: none;
+    box-shadow: 0 0 0 1px var(--hairline-strong) inset;
     filter: none;
+  }
+}
+
+/* P1 podium card composes a -12px base lift (visually elevated above P2/P3)
+ * with the moderate 3D hover treatment from .hover-lift-premium. */
+.podium-card-p1 {
+  transform: translateY(-12px);
+}
+.podium-card-p1.hover-lift-premium {
+  transition:
+    transform var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    box-shadow var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    filter var(--dur-base, 320ms) var(--ease-pit, cubic-bezier(0.16, 1, 0.3, 1)),
+    border-color var(--dur-snap, 180ms) ease;
+}
+.podium-card-p1.hover-lift-premium:hover {
+  transform:
+    perspective(1000px)
+    translateZ(10px)
+    translateY(-18px)
+    rotateX(1.5deg)
+    scale(1.02);
+}
+@media (prefers-reduced-motion: reduce) {
+  .podium-card-p1.hover-lift-premium:hover {
+    transform: translateY(-12px);
   }
 }
 
@@ -540,30 +573,79 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--hairline);
   border-radius: 0;
   background: transparent;
-  padding: 1rem 1.15rem;
+  padding: 0.55rem 0.95rem;
+  min-height: 40px;
+}
+
+.data-freshness-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.data-freshness-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #19D27B;
+  box-shadow: 0 0 0 4px color-mix(in oklab, #19D27B 22%, transparent);
+  animation: data-freshness-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes data-freshness-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px color-mix(in oklab, #19D27B 22%, transparent);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 8px color-mix(in oklab, #19D27B 6%, transparent);
+    opacity: 0.78;
+  }
+}
+
+.data-freshness-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.data-freshness-note {
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .data-freshness-meta {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 0.5rem;
-  min-width: 220px;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .data-freshness-meta span {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--hairline);
-  border-radius: 9999px;
-  background: transparent;
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 0.38rem 0.7rem;
+}
+
+.data-freshness-meta span + span {
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--hairline);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .data-freshness-dot {
+    animation: none;
+  }
 }
 
 /* Race report container. */

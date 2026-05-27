@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import TeamColorBar from "@/components/ui/TeamColorBar";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import { fadeUp } from "@/lib/motion";
 
 interface DriverBadgeProps {
@@ -15,6 +16,7 @@ interface DriverBadgeProps {
   points: number;
   wins?: number;
   podiums?: number;
+  headshotUrl?: string | null;
   index?: number;
 }
 
@@ -27,6 +29,7 @@ export default function DriverBadge({
   points,
   wins = 0,
   podiums = 0,
+  headshotUrl,
   index = 0,
 }: DriverBadgeProps) {
   const positionColor =
@@ -59,6 +62,14 @@ export default function DriverBadge({
           >
             {position}
           </span>
+          <DriverPortrait
+            driver={driver}
+            driverFullName={driverFullName}
+            team={team}
+            teamColor={teamColor}
+            headshotUrl={headshotUrl}
+            size={36}
+          />
           <TeamColorBar teamColor={teamColor} team={team} variant="gradient" size="md" />
           <div className="ml-auto flex flex-col items-end">
             <p className="hud-kicker">Points</p>

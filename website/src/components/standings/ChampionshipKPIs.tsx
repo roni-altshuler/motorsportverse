@@ -4,7 +4,6 @@ import { Crown, GitCompare, TrendingUp, Trophy } from "lucide-react";
 
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { BorderBeam } from "@/components/magicui/border-beam";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import type { DriverStanding } from "@/types";
 
@@ -38,40 +37,37 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
 
   return (
     <BentoGrid className="grid-cols-2 md:grid-cols-4 auto-rows-[12rem] gap-3 sm:gap-4 mb-8">
-      {/* Championship leader (2-col, BorderBeam) */}
+      {/* Championship leader — restrained dark surface, same visual language as
+          the Podium-Hits cell below: thin team-color bar under the driver code,
+          no glow, no team-color background fill. */}
       <BentoCard
-        className="col-span-2 row-span-1 relative overflow-hidden"
+        className="col-span-2 row-span-1"
         data-team={leader.team}
       >
-        <BorderBeam
-          size={1}
-          duration={9}
-          colorFrom="#E10600"
-          colorTo="#FFD166"
-          borderRadius={4}
-        />
         <div className="flex h-full flex-col justify-between p-5 sm:p-6">
           <div className="flex items-center justify-between">
             <p className="eyebrow">Championship Leader</p>
             <Crown className="w-4 h-4 text-[color:var(--accent-podium-1)]" />
           </div>
-          <div className="flex items-center gap-4">
-            <TeamColorBar
-              teamColor={leader.teamColor}
-              team={leader.team}
-              variant="gradient"
-              size="lg"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[30px] !leading-none truncate">
+          <div className="flex items-end justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none truncate">
                 {leader.driver}
               </p>
-              <p className="caption-uppercase text-[10px] mt-1 tracking-[0.18em] text-[color:var(--muted)] truncate">
+              <TeamColorBar
+                teamColor={leader.teamColor}
+                team={leader.team}
+                variant="solid"
+                size="sm"
+                className="mt-2"
+              />
+              <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)] truncate">
                 {leader.team}
               </p>
             </div>
             <p className="font-mono font-tabular text-[42px] [font-weight:700] text-[color:var(--ink)] leading-none shrink-0">
               <NumberTicker value={leader.points} />
+              <span className="text-base text-[color:var(--muted)] ml-1.5">pts</span>
             </p>
           </div>
         </div>
