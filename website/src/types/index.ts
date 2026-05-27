@@ -457,6 +457,47 @@ export interface WDCPossibility {
   canStillWin: boolean;
 }
 
+/**
+ * Output of the Monte Carlo championship simulator
+ * (`championship_simulator.py`).  Consumed by the WDC + WCC tabs on
+ * the standings page.
+ */
+export interface ChampionshipForecast {
+  wdcForecast: WdcForecastEntry[];
+  wccForecast: WccForecastEntry[];
+  remainingRounds: number;
+  remainingRoundList: { round: number; name: string; sprint: boolean }[];
+  monteCarloSamples: number;
+  skillSourceRound: number | null;
+  lastCompletedRound: number;
+  status: "ok" | "season_complete";
+  note?: string;
+  generatedAt?: string;
+}
+
+export interface WdcForecastEntry {
+  driver: string;
+  driverFullName: string;
+  team: string;
+  teamColor: string;
+  currentPoints: number;
+  championshipWinProbability: number;
+  expectedFinalPoints: number;
+  expectedFinalPosition: number;
+  p5thPercentilePoints: number;
+  p95thPercentilePoints: number;
+}
+
+export interface WccForecastEntry {
+  team: string;
+  teamColor: string;
+  currentPoints: number;
+  championshipWinProbability: number;
+  expectedFinalPoints: number;
+  p5thPercentilePoints: number;
+  p95thPercentilePoints: number;
+}
+
 // Country flag emoji lookup
 export const COUNTRY_FLAGS: Record<string, string> = {
   "Australia": "🇦🇺", "China": "🇨🇳", "Japan": "🇯🇵",

@@ -6,6 +6,7 @@ import {
   SeasonTrackerData,
   RaceCalendarEntry,
   RoundLifecycle,
+  ChampionshipForecast,
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -238,6 +239,16 @@ export async function fetchWeatherData(): Promise<WeatherData | null> {
 export async function fetchSeasonTrackerData(): Promise<SeasonTrackerData | null> {
   try {
     const res = await fetch(`${BASE_PATH}/season_tracker.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchChampionshipForecast(): Promise<ChampionshipForecast | null> {
+  try {
+    const res = await fetch(`${BASE_PATH}/championship_forecast.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {

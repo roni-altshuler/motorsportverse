@@ -1,397 +1,259 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 import DriverPortrait from "@/components/standings/DriverPortrait";
-import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-import type { StandingsData, SeasonData } from "@/types";
+import type {
+  ChampionshipForecast,
+  StandingsData,
+  WdcForecastEntry,
+} from "@/types";
 
 interface WhoCanWinLanesProps {
   standings: StandingsData;
-  season: SeasonData | null;
+  forecast: ChampionshipForecast | null;
 }
 
 /**
- * "Race to the flag" lanes — one horizontal lane per championship contender.
- * Each lane shows current points (solid team color) and the maximum possible
- * additional points (ghost team color) the driver could still earn.
+ * Probabilistic championship simulator output.  One row per driver,
+ * sorted by P(WDC) descending.  Each row shows:
  *
- * Drivers whose theoretical maximum is still less than the current leader's
- * points are mathematically eliminated; they appear dimmed and have no beam
- * drawn to the CHAMPION ZONE anchor on the right.
+ *   - Driver portrait + team
+ *   - Championship-win probability (bar + percentage)
+ *   - Current points → expected final points
+ *   - 5th / 95th percentile points range
  *
- * Upper bound per remaining round = 25 (win) + 1 (fastest lap) + 8 (sprint),
- * applied uniformly. Conservative on weekends without sprints — favours the
- * contender, which is the safe direction for "can still win" math.
+ * Drivers with P(WDC) < 0.001 (rounded display 0.0%) are dimmed and
+ * grouped at the bottom as "mathematically out" — they cannot win the
+ * championship in any Monte Carlo sample.
  */
+const PROBABILITY_VISIBLE_THRESHOLD = 0.001;
 
-const MAX_POINTS_PER_ROUND = 25 + 1 + 8; // win + fastest lap + sprint
-
-export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProps) {
+export default function WhoCanWinLanes({
+  standings,
+  forecast,
+}: WhoCanWinLanesProps) {
   const reduced = useReducedMotion();
 
-  const completedRounds = season?.completedRounds?.length ?? standings.lastUpdatedRound ?? 0;
-  const totalRounds = season?.totalRounds ?? 22;
-  const remainingRounds = Math.max(totalRounds - completedRounds, 0);
-  const remainingPointsCap = remainingRounds * MAX_POINTS_PER_ROUND;
-
-  const drivers = useMemo(() => standings.drivers ?? [], [standings.drivers]);
-  const wdcPossibility = useMemo(
-    () => standings.wdcPossibility ?? [],
-    [standings.wdcPossibility],
-  );
-  const leaderPoints = drivers[0]?.points ?? 0;
-
-  // Compute lane data: sort by max possible (desc) so the strongest title
-  // pictures sit at the top.  Re-derive `canStillWin` locally with the same
-  // rule the design spec calls out: max possible < leader's CURRENT points.
-  const lanes = useMemo(() => {
-    const headshotByCode = new Map(
-      drivers.map((d) => [d.driver, d.headshotUrl ?? null]),
-    );
-    return wdcPossibility
-      .map((w) => {
-        const maxPossible = w.currentPoints + remainingPointsCap;
-        const eliminated = maxPossible < leaderPoints;
-        return {
-          driver: w.driver,
-          driverFullName: w.driverFullName,
-          team: w.team,
-          teamColor: w.teamColor,
-          currentPoints: w.currentPoints,
-          maxPossible,
-          eliminated,
-          headshotUrl: headshotByCode.get(w.driver) ?? null,
-        };
-      })
-      .sort((a, b) => b.maxPossible - a.maxPossible);
-  }, [drivers, wdcPossibility, remainingPointsCap, leaderPoints]);
-
-  // The horizontal axis is shared across lanes — fill widths are proportional
-  // to the highest "max possible" across all contenders so the bars line up.
-  const axisMax = Math.max(
-    ...lanes.map((l) => l.maxPossible),
-    leaderPoints,
-    1,
-  );
-
-  // Refs for beam endpoints. The beam connects each lane-end to the anchor.
-  //
-  // Lane DOM nodes are tracked via a stable Map held in a mutable ref —
-  // NOT React state. Putting them in state caused an infinite re-render
-  // loop because the callback-ref returned by `setLaneEl(driver)` is a
-  // fresh closure on every render, so React called the old ref with
-  // `null` and the new ref with the element on each pass, each triggering
-  // a `setLaneNodes(...)` call and another render.  The mutable-ref
-  // version below is render-pure: it stores nodes without scheduling a
-  // re-render, and a single `mounted` flag below flips once after first
-  // paint so AnimatedBeam can read the refs.
-  const containerRef = useRef<HTMLDivElement>(null);
-  const anchorRef = useRef<HTMLDivElement>(null);
-  const laneNodesRef = useRef<Map<string, HTMLDivElement | null>>(new Map());
-  const laneRefSettersRef = useRef<Map<string, (el: HTMLDivElement | null) => void>>(
-    new Map(),
-  );
-
-  // Return the same callback-ref setter for the same driver across
-  // renders so React does not see a "changed" ref and re-trigger the
-  // attach / detach cycle. The setter mutates `laneNodesRef.current`
-  // in place — no state update, no re-render.
-  const getLaneRefSetter = (driver: string) => {
-    const existing = laneRefSettersRef.current.get(driver);
-    if (existing) return existing;
-    const setter = (el: HTMLDivElement | null) => {
-      const map = laneNodesRef.current;
-      if (el === null) map.delete(driver);
-      else map.set(driver, el);
-    };
-    laneRefSettersRef.current.set(driver, setter);
-    return setter;
-  };
-
-  // The synthetic RefObject AnimatedBeam consumes. Reads only — writes
-  // are ignored. Re-derived every render but with stable identity per
-  // driver via memoisation below.
-  const laneRefs = useMemo(() => {
-    const out = new Map<string, RefObject<HTMLDivElement | null>>();
-    for (const lane of lanes) {
-      out.set(lane.driver, {
-        get current() {
-          return laneNodesRef.current.get(lane.driver) ?? null;
-        },
-        set current(_v: HTMLDivElement | null) {
-          /* read-only synthetic ref */
-        },
-      });
+  // When the simulator output is missing (pre-deploy or first run),
+  // fall back to the static feasibility list so the UI still renders
+  // something useful.
+  const rows = useMemo<WdcForecastEntry[]>(() => {
+    if (forecast?.wdcForecast?.length) {
+      return forecast.wdcForecast;
     }
-    return out;
-  }, [lanes]);
+    return (standings.wdcPossibility ?? []).map((w) => ({
+      driver: w.driver,
+      driverFullName: w.driverFullName,
+      team: w.team,
+      teamColor: w.teamColor,
+      currentPoints: w.currentPoints,
+      championshipWinProbability: w.canStillWin ? 0.001 : 0,
+      expectedFinalPoints: w.maxPossiblePoints,
+      expectedFinalPosition: 0,
+      p5thPercentilePoints: w.currentPoints,
+      p95thPercentilePoints: w.maxPossiblePoints,
+    }));
+  }, [forecast, standings.wdcPossibility]);
 
-  const getLaneRef = (driver: string): RefObject<HTMLDivElement | null> =>
-    laneRefs.get(driver) ?? { current: null };
-
-  // After mount, flip `mounted` so AnimatedBeam mounts AFTER the lane
-  // endpoints have attached and `laneNodesRef.current` is populated.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    // Defer one frame so callback-refs have run before AnimatedBeam
-    // tries to read their bounding rects.
-    const id = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  const contenders = lanes.filter((l) => !l.eliminated);
-
-  if (lanes.length === 0) {
+  if (rows.length === 0) {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="display-md mb-2">Mathematical Title Picture</h2>
+          <h2 className="display-md mb-2">Title Race Forecast</h2>
         </div>
         <div className="card p-8 text-center">
-          <p className="eyebrow mb-2">Title race not yet computed</p>
+          <p className="eyebrow mb-2">Forecast not yet computed</p>
           <p className="body-sm text-[color:var(--text-muted)] max-w-md mx-auto">
-            The mathematical title picture publishes once the first race weekend
-            results are official. Check back after Round {(standings.lastUpdatedRound ?? 0) + 1}.
+            The championship simulator publishes once the first race weekend
+            completes. Check back after Round{" "}
+            {(standings.lastUpdatedRound ?? 0) + 1}.
           </p>
         </div>
       </div>
     );
   }
 
+  const top = rows[0];
+  const topProb = top.championshipWinProbability;
+  const contenders = rows.filter(
+    (r) => r.championshipWinProbability >= PROBABILITY_VISIBLE_THRESHOLD,
+  );
+  const eliminated = rows.filter(
+    (r) => r.championshipWinProbability < PROBABILITY_VISIBLE_THRESHOLD,
+  );
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="display-md mb-2">Mathematical Title Picture</h2>
-        <p className="body-md text-[color:var(--text-muted)] max-w-2xl">
-          Drivers who could still win the championship if results break their way.
-          Bars show current points (solid) plus the maximum additional points
-          available across the remaining {remainingRounds} round
-          {remainingRounds === 1 ? "" : "s"}.
-        </p>
+      <div className="flex items-baseline justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="display-md mb-2">Title Race Forecast</h2>
+          <p className="body-md text-[color:var(--text-muted)] max-w-2xl">
+            Championship win probability from a Monte Carlo simulation of the
+            {" "}
+            <span className="font-mono text-[color:var(--text)]">
+              {forecast?.remainingRounds ?? 0}
+            </span>{" "}
+            remaining round
+            {forecast?.remainingRounds === 1 ? "" : "s"}.
+            {forecast?.monteCarloSamples
+              ? ` Based on ${forecast.monteCarloSamples.toLocaleString()} simulated seasons.`
+              : ""}
+          </p>
+        </div>
+        {forecast?.skillSourceRound != null && (
+          <div className="eyebrow text-[color:var(--text-muted)]">
+            Skill from R{forecast.skillSourceRound}
+          </div>
+        )}
       </div>
 
-      <div
-        ref={containerRef}
-        className="relative card p-6 sm:p-8 overflow-hidden"
-      >
-        {/* Lanes column + champion-zone column */}
-        <div className="grid grid-cols-[1fr_auto] gap-6 sm:gap-10 items-stretch">
-          {/* ━━━ Lanes ━━━ */}
-          <ol className="space-y-3 sm:space-y-4">
-            {lanes.map((lane) => {
-              const currentPct = (lane.currentPoints / axisMax) * 100;
-              const maxPct = (lane.maxPossible / axisMax) * 100;
-              return (
-                <li
-                  key={lane.driver}
-                  data-team={lane.team}
-                  className="flex items-center gap-3 sm:gap-4"
-                  style={{
-                    opacity: lane.eliminated ? 0.4 : 1,
-                    transition: reduced ? undefined : "opacity 240ms ease-out",
-                  }}
-                >
-                  <DriverPortrait
-                    driver={lane.driver}
-                    driverFullName={lane.driverFullName}
-                    team={lane.team}
-                    teamColor={lane.teamColor}
-                    headshotUrl={lane.headshotUrl}
-                    size={40}
-                  />
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline justify-between mb-1 gap-3">
-                      <span
-                        className="font-display font-bold tracking-[0.04em] uppercase text-sm sm:text-base truncate"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {lane.driver}
-                        <span
-                          className="ml-2 font-sans font-normal normal-case text-[10px] sm:text-xs tracking-normal"
-                          style={{ color: "var(--text-muted)" }}
-                        >
-                          {lane.team}
-                        </span>
-                      </span>
-                      <span
-                        className="text-xs uppercase tracking-[0.12em]"
-                        style={{
-                          color: lane.eliminated
-                            ? "var(--text-muted)"
-                            : "var(--success)",
-                        }}
-                      >
-                        {lane.eliminated ? "Eliminated" : "In contention"}
-                      </span>
-                    </div>
-
-                    {/* Bar track */}
-                    <div
-                      className="relative h-3 rounded-full overflow-hidden"
-                      style={{
-                        background: "var(--surface-card)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      {/* Ghost fill — max possible additional points */}
-                      <motion.div
-                        className="absolute inset-y-0 left-0"
-                        style={{
-                          background: `color-mix(in srgb, ${lane.teamColor} 28%, transparent)`,
-                          width: `${maxPct}%`,
-                        }}
-                        initial={reduced ? false : { width: 0 }}
-                        animate={{ width: `${maxPct}%` }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                      {/* Solid fill — current points */}
-                      <motion.div
-                        className="absolute inset-y-0 left-0"
-                        style={{
-                          background: lane.teamColor,
-                          width: `${currentPct}%`,
-                          boxShadow: lane.eliminated
-                            ? undefined
-                            : `0 0 12px color-mix(in srgb, ${lane.teamColor} 60%, transparent)`,
-                        }}
-                        initial={reduced ? false : { width: 0 }}
-                        animate={{ width: `${currentPct}%` }}
-                        transition={{
-                          duration: 0.6,
-                          delay: 0.05,
-                          ease: [0.16, 1, 0.3, 1],
-                        }}
-                      />
-
-                      {/* Lane-end anchor (invisible) — beam origin */}
-                      <div
-                        ref={getLaneRefSetter(lane.driver)}
-                        className="absolute top-1/2"
-                        style={{
-                          left: `${maxPct}%`,
-                          transform: "translate(-50%, -50%)",
-                          width: 1,
-                          height: 1,
-                        }}
-                        aria-hidden
-                      />
-                    </div>
-
-                    {/* Numbers row */}
-                    <div className="flex items-center justify-between mt-1.5 text-[11px] font-mono font-tabular">
-                      <span style={{ color: "var(--text-muted)" }}>
-                        <NumberTicker value={lane.currentPoints} />{" "}
-                        <span className="uppercase tracking-[0.1em]">pts now</span>
-                      </span>
-                      <span
-                        style={{
-                          color: lane.eliminated
-                            ? "var(--text-muted)"
-                            : "var(--text)",
-                        }}
-                      >
-                        max{" "}
-                        <span className="font-bold">
-                          <NumberTicker value={lane.maxPossible} />
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Trailing max-total chip — also doubles as the visual end-cap */}
-                  <div
-                    className="hidden sm:flex flex-col items-end shrink-0 w-14 text-right"
-                    style={{
-                      color: lane.eliminated
-                        ? "var(--text-muted)"
-                        : "var(--text)",
-                    }}
-                  >
-                    <span className="text-[10px] uppercase tracking-[0.12em] text-[color:var(--text-muted)]">
-                      Max
-                    </span>
-                    <span className="font-mono font-tabular font-black text-lg leading-none">
-                      <NumberTicker value={lane.maxPossible} />
-                    </span>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-
-          {/* ━━━ CHAMPION ZONE anchor ━━━ */}
-          <div className="flex items-center">
-            <div
-              ref={anchorRef}
-              className="relative flex flex-col items-center justify-center px-4 sm:px-5 py-6 sm:py-8 rounded-2xl text-center"
-              style={{
-                background:
-                  "linear-gradient(180deg, color-mix(in srgb, var(--success) 18%, transparent), color-mix(in srgb, var(--success) 4%, transparent))",
-                border: "1px solid color-mix(in srgb, var(--success) 40%, transparent)",
-                boxShadow:
-                  "0 0 28px color-mix(in srgb, var(--success) 25%, transparent)",
-                minHeight: 120,
-                minWidth: 110,
-              }}
-            >
-              <span
-                className="text-[10px] sm:text-xs font-display font-bold uppercase tracking-[0.18em]"
-                style={{ color: "var(--success)" }}
-              >
-                Champion
-              </span>
-              <span
-                className="text-[10px] sm:text-xs font-display font-bold uppercase tracking-[0.18em] mb-2"
-                style={{ color: "var(--success)" }}
-              >
-                Zone
-              </span>
-              <span
-                className="font-mono font-tabular font-black text-2xl sm:text-3xl leading-none"
-                style={{ color: "var(--text)" }}
-              >
-                <NumberTicker value={leaderPoints} />
-              </span>
-              <span
-                className="text-[10px] uppercase tracking-[0.12em] mt-1"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Leader pts
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Beams from each in-contention lane to the champion-zone anchor.
-            Skipped entirely under reduced motion to honour the global rule. */}
-        {mounted && !reduced &&
-          contenders.map((lane, i) => (
-            <AnimatedBeam
-              key={`beam-${lane.driver}`}
-              containerRef={containerRef}
-              fromRef={getLaneRef(lane.driver)}
-              toRef={anchorRef}
-              curvature={20}
-              duration={4.5}
-              delay={i * 0.18}
-              pathColor="rgba(255,255,255,0.05)"
-              pathWidth={1.5}
-              gradientStartColor={lane.teamColor}
-              gradientStopColor="var(--success)"
+      <div className="card p-4 sm:p-6">
+        <ol className="space-y-2 sm:space-y-3">
+          {contenders.map((row) => (
+            <ForecastRow
+              key={row.driver}
+              row={row}
+              topProb={topProb}
+              reduced={reduced}
             />
           ))}
+        </ol>
+
+        {eliminated.length > 0 && (
+          <details className="mt-6 group">
+            <summary className="cursor-pointer eyebrow text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors">
+              Mathematically out · {eliminated.length} driver
+              {eliminated.length === 1 ? "" : "s"} (click to expand)
+            </summary>
+            <ol className="mt-3 space-y-2 opacity-60">
+              {eliminated.map((row) => (
+                <ForecastRow
+                  key={row.driver}
+                  row={row}
+                  topProb={topProb}
+                  reduced={reduced}
+                  dimmed
+                />
+              ))}
+            </ol>
+          </details>
+        )}
       </div>
 
       <p className="text-xs text-[color:var(--text-muted)]">
-        Eliminated when a driver{"'"}s maximum reachable total is less than the
-        current leader{"'"}s points. Max per round assumes win + fastest lap +
-        sprint victory ({MAX_POINTS_PER_ROUND} pts).
+        Win probability comes from a Monte Carlo simulation of the remaining
+        races. Each simulated season samples a finishing order per race from
+        the model&apos;s current win-probability distribution and applies the
+        F1 points system (with sprint and fastest-lap bonuses).
+        Reliability — i.e. DNF risk — is sampled per race as well.
       </p>
     </div>
+  );
+}
+
+interface ForecastRowProps {
+  row: WdcForecastEntry;
+  topProb: number;
+  reduced: boolean;
+  dimmed?: boolean;
+}
+
+function ForecastRow({ row, topProb, reduced, dimmed }: ForecastRowProps) {
+  // Bar width: P(WDC) normalised to the leader's probability so the bar
+  // visually compares title chances head-to-head.  Eliminated rows have
+  // 0% bar width.
+  const widthPct = topProb > 0 ? (row.championshipWinProbability / topProb) * 100 : 0;
+  const probLabel = row.championshipWinProbability >= 0.001
+    ? `${(row.championshipWinProbability * 100).toFixed(row.championshipWinProbability >= 0.1 ? 1 : 2)}%`
+    : "<0.1%";
+
+  return (
+    <li
+      data-team={row.team}
+      className="flex items-center gap-3 sm:gap-4"
+      style={{ opacity: dimmed ? 0.55 : 1 }}
+    >
+      <DriverPortrait
+        driver={row.driver}
+        driverFullName={row.driverFullName}
+        team={row.team}
+        teamColor={row.teamColor}
+        headshotUrl={null}
+        size={36}
+      />
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline justify-between mb-1 gap-3">
+          <span
+            className="font-display font-bold tracking-[0.04em] uppercase text-sm truncate"
+            style={{ color: "var(--text)" }}
+          >
+            {row.driver}
+            <span
+              className="ml-2 font-sans font-normal normal-case text-[10px] tracking-normal"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {row.team}
+            </span>
+          </span>
+          <span
+            className="font-mono font-tabular text-sm font-bold whitespace-nowrap"
+            style={{
+              color: dimmed
+                ? "var(--text-muted)"
+                : row.championshipWinProbability >= 0.5
+                ? "var(--success)"
+                : "var(--text)",
+            }}
+          >
+            {probLabel}
+          </span>
+        </div>
+
+        {/* Probability bar */}
+        <div
+          className="relative h-2 rounded-full overflow-hidden"
+          style={{
+            background: "var(--surface-card)",
+            border: "1px solid var(--border)",
+          }}
+        >
+          <motion.div
+            className="absolute inset-y-0 left-0"
+            style={{
+              background: row.teamColor,
+              width: `${widthPct}%`,
+              boxShadow: dimmed
+                ? undefined
+                : `0 0 8px color-mix(in srgb, ${row.teamColor} 60%, transparent)`,
+            }}
+            initial={reduced ? false : { width: 0 }}
+            animate={{ width: `${widthPct}%` }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </div>
+
+        {/* Points info */}
+        <div className="flex items-center justify-between mt-1.5 text-[11px] font-mono font-tabular">
+          <span style={{ color: "var(--text-muted)" }}>
+            <NumberTicker value={row.currentPoints} />{" "}
+            <span className="uppercase tracking-[0.1em]">pts now</span>
+          </span>
+          <span style={{ color: "var(--text-muted)" }}>
+            <span className="uppercase tracking-[0.1em]">proj.</span>{" "}
+            <span className="text-[color:var(--text)] font-bold">
+              {row.expectedFinalPoints.toFixed(0)}
+            </span>
+            <span className="text-[10px] ml-1">
+              ({row.p5thPercentilePoints.toFixed(0)}–{row.p95thPercentilePoints.toFixed(0)})
+            </span>
+          </span>
+        </div>
+      </div>
+    </li>
   );
 }

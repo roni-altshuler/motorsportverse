@@ -173,6 +173,15 @@ jobs:
             --output website/public/data/model_health.json \
             --allow-empty
 
+      - name: Championship simulator — WDC + WCC Monte Carlo forecast
+        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        run: |
+          # Generates website/public/data/championship_forecast.json.
+          # Reads the freshly-published standings.json + the latest
+          # round_NN.json probabilities and runs a Monte Carlo over the
+          # remaining season.  Force-added by the commit step.
+          python championship_simulator.py --samples 5000
+
       - name: Promotion decision — production vs candidate (A-P1.3)
         if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
         run: |

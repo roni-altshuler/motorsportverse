@@ -2,8 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { StandingsData, SeasonData } from "@/types";
-import { fetchStandingsData, fetchSeasonData, formatDateTime } from "@/lib/data";
+import { StandingsData, SeasonData, ChampionshipForecast } from "@/types";
+import {
+  fetchStandingsData,
+  fetchSeasonData,
+  fetchChampionshipForecast,
+  formatDateTime,
+} from "@/lib/data";
 import { getSeasonYear } from "@/lib/season";
 import StandingsChart from "@/components/charts/StandingsChart";
 import DriverBadge from "@/components/standings/DriverBadge";
@@ -12,6 +17,7 @@ import StandingsHeroPodium from "@/components/standings/StandingsHeroPodium";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import TeamBadge from "@/components/standings/TeamBadge";
 import WhoCanWinLanes from "@/components/standings/WhoCanWinLanes";
+import ConstructorsForecastLanes from "@/components/standings/ConstructorsForecastLanes";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import LoadingTire from "@/components/ui/LoadingTire";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
@@ -46,12 +52,14 @@ export default function StandingsPage() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<StandingsData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
+  const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
   const [error, setError] = useState(false);
   const activeTab = parseTab(searchParams.get("tab"));
 
   useEffect(() => {
     fetchStandingsData().then(setData).catch(() => setError(true));
     fetchSeasonData().then(setSeason).catch(() => {});
+    fetchChampionshipForecast().then(setForecast).catch(() => {});
   }, []);
 
   if (error) {
@@ -492,10 +500,23 @@ export default function StandingsPage() {
         </div>
       )}
 
-      {/* WDC Possibility Tab — race-to-the-flag lanes + animated beams to CHAMPION ZONE */}
+      {/* Title-race forecast — Monte Carlo simulator output. WDC + WCC
+          side-by-side so users can compare driver vs team championship
+          races on the same page. */}
       {activeTab === "wdc" && (
         <ErrorBoundary label="WhoCanWinLanes">
-          <WhoCanWinLanes standings={data} season={season} />
+          <div className="space-y-10">
+            <WhoCanWinLanes standings={data} forecast={forecast} />
+            <div>
+              <h2 className="display-md mb-2">Constructors Title Race</h2>
+              <p className="body-md text-[color:var(--text-muted)] max-w-2xl mb-6">
+                Same Monte Carlo simulation summed by team. Mercedes vs Ferrari
+                vs McLaren over the {forecast?.remainingRounds ?? 0} remaining
+                round{forecast?.remainingRounds === 1 ? "" : "s"}.
+              </p>
+              <ConstructorsForecastLanes forecast={forecast} />
+            </div>
+          </div>
         </ErrorBoundary>
       )}
     </div>
