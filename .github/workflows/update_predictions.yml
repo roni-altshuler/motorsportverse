@@ -181,9 +181,14 @@ jobs:
           # has been scored.  When forward_eval_candidate/ starts producing
           # files, this auto-promotes via the guarded rule in
           # models/promotion.py.
+          # --apply appends "promote" recommendations to
+          # auto_promotion_log.json so CI history captures the chain of
+          # decisions. The flag does NOT swap registry artefacts on its
+          # own — that is intentionally left to a separate, gated step.
           python promotion_decision.py \
             --season "$SEASON_YEAR" \
             --output website/public/data/promotion_status.json \
+            --apply \
             --allow-empty
 
       - name: Install test dependencies

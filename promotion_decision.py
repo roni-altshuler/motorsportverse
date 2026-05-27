@@ -142,6 +142,14 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Exit 0 when no candidate scores exist (pre-A/B-launch).",
     )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="When the decision is 'promote', append an entry to "
+        "auto_promotion_log.json so CI / operators can audit the chain "
+        "of recommendations.  No artefact swap is performed by this "
+        "flag — the registry copy is left to a separate workflow step.",
+    )
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args(argv)
 
@@ -176,6 +184,36 @@ def main(argv: list[str] | None = None) -> int:
             fh,
             indent=2,
         )
+
+    if args.apply and decision.decision == "promote":
+        from datetime import datetime, timezone
+
+        log_path = output_path.parent / "auto_promotion_log.json"
+        existing: list[dict] = []
+        if log_path.exists():
+            try:
+                with log_path.open("r", encoding="utf-8") as fh:
+                    loaded = json.load(fh)
+                    if isinstance(loaded, list):
+                        existing = loaded
+            except (OSError, json.JSONDecodeError):
+                existing = []
+        existing.append(
+            {
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "season": args.season,
+                "decision": decision.decision,
+                "reason": decision.reason,
+                "rounds_compared": decision.rounds_compared,
+                "mean_production": decision.mean_production,
+                "mean_candidate": decision.mean_candidate,
+                "relative_change": decision.relative_change,
+            }
+        )
+        with log_path.open("w") as fh:
+            json.dump(existing, fh, indent=2)
+        if not args.quiet:
+            print(f"📜 Appended promote entry to {log_path.name}")
 
     if not args.quiet:
         emoji = {"promote": "✅", "hold": "⏸️", "demote": "⛔"}.get(decision.decision, "?")

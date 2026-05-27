@@ -945,6 +945,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         "predictionInsights": prediction_insights,
         "modelConfig": {
             "lstmEnabled": bool(use_lstm),
+            "ensembleWeights": _json_safe(results.get("ensemble_weights", {})),
             "gameTheoryEnhancements": _json_safe(game_theory_diag),
             "raceSimulator": (
                 {

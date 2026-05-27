@@ -183,6 +183,25 @@ class TestProbabilityCalibrator:
         out = cal.transform("bogus_market", [0.1, 0.5])
         np.testing.assert_allclose(out, [0.1, 0.5])
 
+    def test_deterministic_fit_byte_identical(self):
+        # Frozen training set fed twice must produce identical transforms —
+        # otherwise the calibration layer is unreliable for promotion gating.
+        rng = np.random.default_rng(123)
+        preds = rng.uniform(0.0, 1.0, size=300)
+        obs = (rng.uniform(0.0, 1.0, size=300) < preds).astype(int)
+        history = [
+            {"market": "win", "predicted": float(p), "observed": int(o)}
+            for p, o in zip(preds, obs)
+        ]
+        cal_a = ProbabilityCalibrator()
+        cal_a.fit_from_history(history)
+        cal_b = ProbabilityCalibrator()
+        cal_b.fit_from_history(history)
+        probe = np.linspace(0.0, 1.0, 50)
+        out_a = cal_a.transform("win", probe)
+        out_b = cal_b.transform("win", probe)
+        np.testing.assert_array_equal(out_a, out_b)
+
 
 # --------------------------------------------------------------------------- #
 # Reliability diagram + metrics

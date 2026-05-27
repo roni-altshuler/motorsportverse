@@ -1441,6 +1441,18 @@ def generate_qualifying_estimates(circuit_key):
 # 6. MODEL TRAINING  (v2 — StandardScaler + calibration)
 # ==========================================================================
 
+def _load_hps_config(path: str = "models/hps_config.json") -> dict:
+    """Load Optuna-tuned hyperparameters from disk; return {} if absent."""
+    try:
+        if not os.path.exists(path):
+            return {}
+        with open(path) as fh:
+            data = json.load(fh)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
 def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
                    test_size=0.2, random_state=42, calibrate=True,
                    max_spread_s=3.5, gb_params=None, xgb_params=None,
@@ -1536,17 +1548,20 @@ def train_ensemble(merged, feature_cols=None, target_col="AdjustedQualiTime",
 
     # Gradient Boosting
     pbar.set_postfix(model="Gradient Boosting")
-    _gb = gb_params or dict(n_estimators=200, learning_rate=0.05,
-                            max_depth=3, random_state=random_state)
+    _hps = _load_hps_config()
+    _gb = gb_params or {**dict(n_estimators=200, learning_rate=0.05,
+                                max_depth=3, random_state=random_state),
+                         **(_hps.get("gb") or {})}
     gb_model = GradientBoostingRegressor(**_gb)
     gb_model.fit(X_train, y_train, sample_weight=w_train)
     pbar.update(1)
 
     # XGBoost
     pbar.set_postfix(model="XGBoost")
-    _xgb = xgb_params or dict(n_estimators=250, learning_rate=0.05,
-                               max_depth=3, random_state=random_state,
-                               verbosity=0)
+    _xgb = xgb_params or {**dict(n_estimators=250, learning_rate=0.05,
+                                  max_depth=3, random_state=random_state,
+                                  verbosity=0),
+                           **(_hps.get("xgb") or {})}
     xgb_model = XGBRegressor(**_xgb)
     xgb_model.fit(X_train, y_train, sample_weight=w_train)
     pbar.update(1)

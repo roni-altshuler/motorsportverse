@@ -1,0 +1,52 @@
+MIT License
+
+Copyright (c) 2026 Roni Altshuler
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Third-party data sources
+
+This software ingests and visualises F1 race data from third-party sources
+that are independently licensed. The MIT licence above covers the source code
+in this repository and does NOT extend to the underlying data:
+
+- **FastF1 telemetry & timing** — accessed via the open-source FastF1 library
+  (MIT-licensed). Underlying timing data is the property of Formula One World
+  Championship Limited and used here under fair-use for non-commercial
+  predictive modelling.
+- **Jolpica / Ergast-compatible historical archive** — accessed via the
+  Jolpica public API. Underlying data is sourced from publicly-published
+  race classifications.
+- **Wikimedia Commons circuit photography** — individual photos are released
+  under various Creative Commons licences (CC BY-SA 3.0, CC BY 4.0, CC0).
+  Attribution is in
+  [`website/src/lib/raceArt.ts`](website/src/lib/raceArt.ts) where each URL
+  is anchored to the source page.
+- **Driver headshots** under [`website/public/headshots/`](website/public/headshots/)
+  are derived from publicly-published team and Formula One promotional
+  imagery and are used under fair-use for non-commercial analytical
+  visualisation. No claim of original authorship is made.
+
+The curated race-art manifest in [`website/src/lib/raceArt.ts`](website/src/lib/raceArt.ts)
+— the URLs themselves, not the underlying photos — is released under CC0.
+
+If you are a rights-holder for any image referenced here and would like it
+removed or re-attributed, please open an issue in this repository.
