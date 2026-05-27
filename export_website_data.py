@@ -556,10 +556,24 @@ def export_season_metadata():
         if os.path.exists(path):
             data = _safe_load_json(path)
             expected = CALENDAR.get(rnd, {})
+            # A round counts as "completed" ONLY when its actuals
+            # have landed. The mere existence of a round_NN.json on
+            # disk (e.g. a pre-quali preview) is not enough — every
+            # downstream consumer (home-page sprint counter, WCC
+            # forecast, championship simulator) relies on this field
+            # being honest about which races have been raced.
+            has_actuals = bool(
+                isinstance(data, dict) and data.get("actualResults")
+            )
+            phase = (
+                data.get("predictionPhase") if isinstance(data, dict) else None
+            )
+            is_classified = has_actuals or phase == "post-race"
             if (
                 isinstance(data, dict)
                 and data.get("round") == rnd
                 and data.get("gpKey") == expected.get("gp_key")
+                and is_classified
             ):
                 completed.append(rnd)
 

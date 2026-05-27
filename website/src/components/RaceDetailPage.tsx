@@ -417,8 +417,14 @@ export default function RaceDetailPage({ round }: Props) {
         circuit={data.circuit}
         date={formatDate(data.date)}
         sprint={data.sprint}
-        liveLabel={liveMeta?.label}
-        liveBadgeVariant={toneVariant(liveMeta?.tone)}
+        liveLabel={
+          isPredictionPublished
+            ? liveMeta?.label
+            : "Awaiting Qualifying"
+        }
+        liveBadgeVariant={
+          isPredictionPublished ? toneVariant(liveMeta?.tone) : "muted"
+        }
         weather={data.weatherData ? {
           temperatureC: data.weatherData.temperatureC,
           rainProbability: Math.round((data.weatherData.rainProbability ?? 0) * 100),
@@ -615,56 +621,60 @@ export default function RaceDetailPage({ round }: Props) {
         ))}
       </motion.div>
 
-      {/* ━━━ CINEMATIC PODIUM TRIO ━━━ */}
-      <PodiumPredictionTrio
-        classification={data.classification}
-        actualPodium={
-          actualRows.length >= 3
-            ? actualRows.slice(0, 3).map(([driver, position]) => {
-                const pred = predictedByDriver.get(driver);
-                return {
-                  driver,
-                  team: pred?.team,
-                  teamColor: pred?.teamColor,
-                  position,
-                  headshotUrl: resolveDriverHeadshot(driver, pred?.headshotUrl),
-                };
-              })
-            : undefined
-        }
-      />
+      {/* Prediction-gated podium + chart strip. Hidden pre-quali so
+          synthetic lap times never reach the user-facing surface. */}
+      {isPredictionPublished && (
+        <>
+          <PodiumPredictionTrio
+            classification={data.classification}
+            actualPodium={
+              actualRows.length >= 3
+                ? actualRows.slice(0, 3).map(([driver, position]) => {
+                    const pred = predictedByDriver.get(driver);
+                    return {
+                      driver,
+                      team: pred?.team,
+                      teamColor: pred?.teamColor,
+                      position,
+                      headshotUrl: resolveDriverHeadshot(driver, pred?.headshotUrl),
+                    };
+                  })
+                : undefined
+            }
+          />
 
-      {/* ━━━ INTERACTIVE CHART STRIP: Pace + Podium Probability ━━━ */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-8">
-        <HUDPanel
-          kicker="Model Forecast"
-          title="Predicted Race Pace"
-          rightSlot={<Badge variant="live">Interactive</Badge>}
-          bodyClassName="p-4 sm:p-5"
-        >
-          <ChartContainer
-            fallbackSrc={getVisualizationPath(round, "predicted_laptimes.png")}
-            fallbackAlt="Predicted race pace"
-            height={400}
-          >
-            <PredictedPaceChart classification={data.classification} />
-          </ChartContainer>
-        </HUDPanel>
-        <HUDPanel
-          kicker="Probability Layer"
-          title="Podium Probability"
-          rightSlot={<Badge variant="live">Interactive</Badge>}
-          bodyClassName="p-4 sm:p-5"
-        >
-          <ChartContainer
-            fallbackSrc={getVisualizationPath(round, "podium_probability_board.png")}
-            fallbackAlt="Podium probability"
-            height={400}
-          >
-            <PodiumProbabilityChart classification={data.classification} />
-          </ChartContainer>
-        </HUDPanel>
-      </div>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-8">
+            <HUDPanel
+              kicker="Model Forecast"
+              title="Predicted Race Pace"
+              rightSlot={<Badge variant="live">Interactive</Badge>}
+              bodyClassName="p-4 sm:p-5"
+            >
+              <ChartContainer
+                fallbackSrc={getVisualizationPath(round, "predicted_laptimes.png")}
+                fallbackAlt="Predicted race pace"
+                height={400}
+              >
+                <PredictedPaceChart classification={data.classification} />
+              </ChartContainer>
+            </HUDPanel>
+            <HUDPanel
+              kicker="Probability Layer"
+              title="Podium Probability"
+              rightSlot={<Badge variant="live">Interactive</Badge>}
+              bodyClassName="p-4 sm:p-5"
+            >
+              <ChartContainer
+                fallbackSrc={getVisualizationPath(round, "podium_probability_board.png")}
+                fallbackAlt="Podium probability"
+                height={400}
+              >
+                <PodiumProbabilityChart classification={data.classification} />
+              </ChartContainer>
+            </HUDPanel>
+          </div>
+        </>
+      )}
 
       {/* ━━━ TAB NAVIGATION ━━━ */}
       <div className="flex gap-2 mb-10 overflow-x-auto pb-2">
@@ -1482,7 +1492,7 @@ export default function RaceDetailPage({ round }: Props) {
       )}
 
       {/* ═══ Deep Dive: Strategy ═══ */}
-      {activeTab === "deepdive" && (
+      {activeTab === "deepdive" && isPredictionPublished && (
       <details className="deep-dive-section">
         <summary className="deep-dive-summary">Strategy</summary>
         <div className="deep-dive-section-body">
@@ -1563,7 +1573,7 @@ export default function RaceDetailPage({ round }: Props) {
       )}
 
       {/* ═══ Deep Dive: Visualisations ═══ */}
-      {activeTab === "deepdive" && (
+      {activeTab === "deepdive" && isPredictionPublished && (
       <details className="deep-dive-section">
         <summary className="deep-dive-summary">Visualisations</summary>
         <div className="deep-dive-section-body">
