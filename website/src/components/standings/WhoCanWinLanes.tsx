@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { motion } from "framer-motion";
 
 import DriverPortrait from "@/components/standings/DriverPortrait";
@@ -80,45 +80,67 @@ export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProp
 
   // Refs for beam endpoints. The beam connects each lane-end to the anchor.
   //
-  // React 19's `react-hooks/refs` rule forbids touching a ref's `.current`
-  // during render — so we use a callback-ref pattern. Each lane attaches a
-  // `setLaneEl(driver)` callback to its end-of-bar div; that callback writes
-  // the DOM node into state. We then wrap each node in a synthetic
-  // `RefObject` shape that AnimatedBeam expects (it only reads `.current`).
+  // Lane DOM nodes are tracked via a stable Map held in a mutable ref —
+  // NOT React state. Putting them in state caused an infinite re-render
+  // loop because the callback-ref returned by `setLaneEl(driver)` is a
+  // fresh closure on every render, so React called the old ref with
+  // `null` and the new ref with the element on each pass, each triggering
+  // a `setLaneNodes(...)` call and another render.  The mutable-ref
+  // version below is render-pure: it stores nodes without scheduling a
+  // re-render, and a single `mounted` flag below flips once after first
+  // paint so AnimatedBeam can read the refs.
   const containerRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const [laneNodes, setLaneNodes] = useState<Map<string, HTMLDivElement | null>>(
-    () => new Map(),
+  const laneNodesRef = useRef<Map<string, HTMLDivElement | null>>(new Map());
+  const laneRefSettersRef = useRef<Map<string, (el: HTMLDivElement | null) => void>>(
+    new Map(),
   );
 
-  const setLaneEl = useCallback(
-    (driver: string) => (el: HTMLDivElement | null) => {
-      setLaneNodes((prev) => {
-        if (prev.get(driver) === el) return prev;
-        const next = new Map(prev);
-        if (el === null) next.delete(driver);
-        else next.set(driver, el);
-        return next;
+  // Return the same callback-ref setter for the same driver across
+  // renders so React does not see a "changed" ref and re-trigger the
+  // attach / detach cycle. The setter mutates `laneNodesRef.current`
+  // in place — no state update, no re-render.
+  const getLaneRefSetter = (driver: string) => {
+    const existing = laneRefSettersRef.current.get(driver);
+    if (existing) return existing;
+    const setter = (el: HTMLDivElement | null) => {
+      const map = laneNodesRef.current;
+      if (el === null) map.delete(driver);
+      else map.set(driver, el);
+    };
+    laneRefSettersRef.current.set(driver, setter);
+    return setter;
+  };
+
+  // The synthetic RefObject AnimatedBeam consumes. Reads only — writes
+  // are ignored. Re-derived every render but with stable identity per
+  // driver via memoisation below.
+  const laneRefs = useMemo(() => {
+    const out = new Map<string, RefObject<HTMLDivElement | null>>();
+    for (const lane of lanes) {
+      out.set(lane.driver, {
+        get current() {
+          return laneNodesRef.current.get(lane.driver) ?? null;
+        },
+        set current(_v: HTMLDivElement | null) {
+          /* read-only synthetic ref */
+        },
       });
-    },
-    [],
-  );
+    }
+    return out;
+  }, [lanes]);
 
-  const getLaneRef = (driver: string): RefObject<HTMLDivElement | null> => ({
-    get current() {
-      return laneNodes.get(driver) ?? null;
-    },
-    set current(_v: HTMLDivElement | null) {
-      /* read-only synthetic ref — writes are ignored */
-    },
-  });
+  const getLaneRef = (driver: string): RefObject<HTMLDivElement | null> =>
+    laneRefs.get(driver) ?? { current: null };
 
-  // After mount, force a layout pass so AnimatedBeam can read bounding boxes.
-  // (AnimatedBeam already does its own ResizeObserver — this just nudges it
-  // once after the first paint so refs are populated.)
+  // After mount, flip `mounted` so AnimatedBeam mounts AFTER the lane
+  // endpoints have attached and `laneNodesRef.current` is populated.
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setMounted(true);
+    // Defer one frame so callback-refs have run before AnimatedBeam
+    // tries to read their bounding rects.
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const contenders = lanes.filter((l) => !l.eliminated);
@@ -248,7 +270,7 @@ export default function WhoCanWinLanes({ standings, season }: WhoCanWinLanesProp
 
                       {/* Lane-end anchor (invisible) — beam origin */}
                       <div
-                        ref={setLaneEl(lane.driver)}
+                        ref={getLaneRefSetter(lane.driver)}
                         className="absolute top-1/2"
                         style={{
                           left: `${maxPct}%`,
