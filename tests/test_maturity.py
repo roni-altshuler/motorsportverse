@@ -6,7 +6,6 @@ import pytest
 
 from leakage import LeakageError
 from models.maturity import (
-    CAREER_SATURATION,
     FULL_MATURITY_AT_DEFAULT,
     compute_driver_maturity,
     compute_maturity_frame,

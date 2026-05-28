@@ -289,13 +289,6 @@ def test_benchmark_default_variants_are_production_lineup_only() -> None:
         importlib.reload(sys.modules["benchmark_models"])
     bm = importlib.import_module("benchmark_models")
 
-    parser = None
-    for name in dir(bm):
-        obj = getattr(bm, name)
-        if callable(obj) and name == "main":
-            # Build the parser by introspecting `main`'s subparsers via argv
-            # parse — easiest is to call `argparse` indirectly through CLI help.
-            break
     # Direct check on the documented default string.
     src = (PROJECT_ROOT / "benchmark_models.py").read_text()
     assert 'default=(\n            "baseline,elite_head_plus_hybrid,"\n            "regime_routed_with_weekend_static"\n        )' in src, (

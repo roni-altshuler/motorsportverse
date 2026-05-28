@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from models.early_fusion import EARLY_CONVERSION_CAP, early_fusion
 from models.late_fusion import late_fusion

@@ -20,7 +20,7 @@ from models.moe_gate import (
 
 
 def test_fuse_with_gate_uniform_weights_averages_experts() -> None:
-    K, n = 3, 4
+    K = 3
     pw = np.array(
         [
             [0.50, 0.30, 0.15, 0.05],
