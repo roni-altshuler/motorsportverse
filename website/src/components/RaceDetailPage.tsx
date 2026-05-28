@@ -25,6 +25,7 @@ import StrategyExplorer from "@/components/StrategyExplorer";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import CircuitMap from "@/components/race-detail/CircuitMap";
+import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import HUDPanel from "@/components/ui/HUDPanel";
@@ -483,15 +484,18 @@ export default function RaceDetailPage({ round }: Props) {
                 : "Prediction front-and-centre for the live Grand Prix weekend flow; the official result will replace the headline state once the race is complete."}
             </p>
           </div>
-          <Badge variant={actualRows.length > 0 ? "positive" : toneVariant(liveMeta?.tone)}>
-            {actualRows.length > 0
-              ? "Official Result Loaded"
-              : data.predictionPhase === "preview"
-              ? "Preview · Awaiting Qualifying"
-              : data.predictionPhase === "post-quali"
-              ? "Final Prediction · Post-Qualifying"
-              : liveMeta?.label || "Prediction Published"}
-          </Badge>
+          <div className="flex flex-wrap items-center gap-2 justify-end">
+            <Badge variant={actualRows.length > 0 ? "positive" : toneVariant(liveMeta?.tone)}>
+              {actualRows.length > 0
+                ? "Official Result Loaded"
+                : data.predictionPhase === "preview"
+                ? "Preview · Awaiting Qualifying"
+                : data.predictionPhase === "post-quali"
+                ? "Final Prediction · Post-Qualifying"
+                : liveMeta?.label || "Prediction Published"}
+            </Badge>
+            <RaceVolatilityBadge classification={data.classification ?? []} />
+          </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="report-panel">

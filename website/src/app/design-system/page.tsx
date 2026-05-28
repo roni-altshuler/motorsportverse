@@ -198,10 +198,10 @@ export default function DesignSystemPage() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-3">
-                <Stat label="Brier" value="0.18" hint="lower is better" />
-                <Stat label="Log-loss" value="0.42" />
+                <Stat label="Calibration Error" value="0.18" hint="lower is better" />
+                <Stat label="Forecast Sharpness" value="0.42" />
                 <Stat label="Calibration" value="applied" tone="positive" hint="≥3 rounds in history" />
-                <Stat label="Drift" value="0.08" hint="PSI rolling 12-round" />
+                <Stat label="Drift" value="0.08" hint="rolling 12-round" />
               </div>
             </CardContent>
           </Card>

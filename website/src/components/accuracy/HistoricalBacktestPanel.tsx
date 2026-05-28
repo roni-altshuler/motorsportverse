@@ -210,8 +210,8 @@ function OverviewTab({ block }: { block: SeasonBlock }) {
     { label: "Within 5 Positions", value: s.within_5_rate, format: "pct" as const, digits: 1 },
     { label: "Podium Hit Rate", value: s.podium_hit_rate, format: "pct" as const, digits: 1 },
     { label: "Winner Hit Rate", value: s.winner_hit_rate, format: "pct" as const, digits: 1 },
-    { label: "Mean Spearman", value: s.mean_spearman, format: "fix" as const, digits: 3 },
-    { label: "Mean NDCG@5", value: s.mean_ndcg_at_5, format: "fix" as const, digits: 3 },
+    { label: "Order Agreement", value: s.mean_spearman, format: "fix" as const, digits: 3 },
+    { label: "Top-5 Ranking Score", value: s.mean_ndcg_at_5, format: "fix" as const, digits: 3 },
   ];
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -577,14 +577,15 @@ function CalibrationTab({
       </div>
 
       <div className="card p-4 sm:p-5">
-        <p className="eyebrow mb-1">Rank-Correlation Stability — {block.season}</p>
+        <p className="eyebrow mb-1">Finishing-Order Agreement — {block.season}</p>
         <p
           className="text-xs mb-3"
           style={{ color: "var(--text-muted)" }}
         >
-          Spearman correlation between predicted and actual finishing
-          order, round-by-round. Higher and steadier is better; the dip
-          rounds are where strategy and incidents broke the ranking.
+          How closely the predicted finishing order matched the actual
+          finishing order, round-by-round. Higher and steadier is
+          better; the dip rounds are where strategy and incidents broke
+          the ranking.
         </p>
         <div style={{ width: "100%", height: 280 }}>
           <ResponsiveContainer>

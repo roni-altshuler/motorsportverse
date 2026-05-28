@@ -109,11 +109,8 @@ function isAllNull(summary: CalibrationSummary | null): boolean {
   );
 }
 
-const EMPTY_STATE_COMMAND =
-  "python backfill_history.py --seasons 2023,2024,2025 --force";
-
 const EMPTY_STATE_BODY =
-  "Calibration not yet applied. The model is still publishing raw win probabilities while the training set populates with multi-season race history.";
+  "Forecast tuning hasn't been applied yet — the model is still publishing raw win probabilities while the multi-season race archive builds up.";
 
 export default function CalibrationPanel({ summary }: CalibrationPanelProps) {
   const markets = useMemo(() => {
@@ -209,16 +206,6 @@ export default function CalibrationPanel({ summary }: CalibrationPanelProps) {
           <p className="text-sm mb-3" style={{ color: "var(--text-muted)" }}>
             {summary?.dataLimitation || EMPTY_STATE_BODY}
           </p>
-          <div
-            className="inline-block px-3 py-2 rounded-lg text-xs font-mono"
-            style={{
-              background: "var(--bg-card-solid)",
-              border: "1px solid var(--border)",
-              color: "var(--text)",
-            }}
-          >
-            {EMPTY_STATE_COMMAND}
-          </div>
         </div>
       ) : (
         <>
@@ -382,7 +369,7 @@ export default function CalibrationPanel({ summary }: CalibrationPanelProps) {
                   className="text-xs font-medium mb-1"
                   style={{ color: "var(--text-muted)" }}
                 >
-                  Brier Score
+                  Calibration Error
                 </p>
                 <p
                   className="text-2xl font-black font-mono"
@@ -402,7 +389,7 @@ export default function CalibrationPanel({ summary }: CalibrationPanelProps) {
                   className="text-xs font-medium mb-1"
                   style={{ color: "var(--text-muted)" }}
                 >
-                  Log Loss
+                  Forecast Sharpness
                 </p>
                 <p
                   className="text-2xl font-black font-mono"

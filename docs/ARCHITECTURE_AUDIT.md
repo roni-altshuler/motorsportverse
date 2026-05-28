@@ -148,3 +148,23 @@ The architecture itself is fine — the three-layer split is the right call. The
 4. **Build the SHAP ablation surface** so future audits are grounded in feature-level evidence rather than narrative.
 
 The accuracy page redesign that ships alongside this audit gives users (and us) a continuous signal on where the model is winning vs losing — round-over-round, per-circuit, per-driver, and calibrated-vs-actual.
+
+---
+
+## 11. Phase 10 production freeze (2026-05-28)
+
+After Phases 5–9 explored regime routing, probabilistic fusion, mixture-of-experts gating, and dynamic telemetry features, the strongest variant on every honest backtest is `regime_routed_with_weekend_static`: the Phase-5 regime router on top of an elite head trained over the 7-column Phase-7 static weekend feature set. The freeze decision and its enforcement live in code:
+
+* **Production model facade** — [`models/production_model.py`](../models/production_model.py) wraps the variant as a stable callable. Its `predict_for_round(frame, prior)` returns a frozen `ProductionPrediction` schema with `model_version` and `model_variant` baked in.
+* **Feature flag** — `F1_PRODUCTION_MODEL_ENABLED` (env var). Defaults to `"0"` (off). Flip to `"1"` to route a production caller through the freeze. The flag is required reading for `gp_weekend.py` / `export_website_data.py` if either ever wires this in.
+* **Canonical feature set** — [`models/weekend_features.py`](../models/weekend_features.py) `WEEKEND_FEATURE_COLUMNS` is now the 7-column Phase 7 set. The 3 Phase-8 dynamic curves (`fp2_deg_slope`, `q_vs_fp2_pace_delta`, `intra_stint_drift`) were demoted to `ARCHIVED_DYNAMIC_COLUMNS` after combined importance dropped from 4.1% (2-season) to 1.6% (3-season) — the wrong direction under added data. They are preserved in the parquet on disk for reproducibility but are NOT in any production training path. Research benchmarks can opt in via `WEEKEND_FEATURE_COLUMNS_WITH_RESEARCH`.
+* **Default benchmark lineup** — [`benchmark_models.py`](../benchmark_models.py) `--variants` default is now `baseline,elite_head_plus_hybrid,regime_routed_with_weekend_static`. The experimental variants (MoE, Phase 8 full, per_circuit/hybrid_blend, temporally_robust, regime_routed_three_layer) are accessible via `--include-research` so they remain reproducible without polluting the default report.
+
+**Versioning protocol.** `PRODUCTION_MODEL_VERSION = "2026.07.phase7-static"`. Bumping this version requires:
+
+1. A freeze benchmark (`python benchmark_models.py run --seasons 2024 2025`) showing the new candidate beats `regime_routed_with_weekend_static` on aggregate winner-hit by at least +1pp with no per-season regression beyond 1pp.
+2. Updating this section of the audit.
+
+**Data infrastructure.** [`backfill_2018_2022.py`](../backfill_2018_2022.py) lands the FastF1 backfill into `data/history.duckdb` (TLA driver codes; idempotent INSERT OR REPLACE). 2022 already landed (22 rounds, 439 complete observations). 2018-2021 are the remaining one-command runs once the FastF1 cache covers those rounds. The expected payoff is direct: Phase 9 showed ~+6pp winner-hit per added season on the existing static model — five more seasons could push the aggregate to ~40-50% winner-hit if scaling is even half-linear.
+
+**What was demoted to research.** MoE gate, three-layer probabilistic fusion, regime-routed-three-layer (non-static), temporally-robust probabilistic, per-circuit hierarchical, hybrid blend, two-stage classifier, and the Phase 8 dynamic features. All preserved in-tree, but none are on the production path. The fixed lesson: with `n=48-92` training rounds, additional architectural complexity consistently saturates or regresses; the highest-ROI bet is data depth on the existing static model.
