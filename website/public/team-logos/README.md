@@ -2,72 +2,33 @@
 
 This directory holds team-logo assets used by `<TeamBadge>`.
 
-## Quick start — adding your own logos
+## Asset map
 
-To swap in a licensed team logo (your own asset, or one you have rights
-to use): drop an SVG (or PNG) into this directory using the filename
-convention below. `<TeamBadge>` picks the new file up automatically on
-the next build — no code change needed.
+The current files in this directory and their team mapping. The mapping lives in [`src/lib/teamLogo.ts`](../../src/lib/teamLogo.ts) — `LOGO_BY_TEAM`. To swap any of these out: drop a new file with the same filename into this directory and the UI picks it up automatically.
 
-```
-website/public/team-logos/<team-slug>.svg
-```
+| Team             | File                       |
+|------------------|----------------------------|
+| Mercedes         | `MercedesBenzLogo.png`     |
+| Red Bull Racing  | `RedBullLogo.webp`         |
+| Ferrari          | `FerrariLogo.avif`         |
+| McLaren          | `MclarenLogo.jpg`          |
+| Aston Martin     | `AstonMartinLogo.png`      |
+| Alpine           | `AlpineLogo.svg`           |
+| Williams         | `WilliamsLogo.png`         |
+| Racing Bulls     | `RacingBullLogo.png`       |
+| Haas             | `HaasLogo.jpg`             |
+| Audi             | `AudiLogo.png`             |
+| Cadillac         | `CadillacLogo.webp`        |
 
-That's it. The slug derivation is below; the fallback chain handles
-the rest.
+## Adding a new team
 
-## Filename convention
+1. Drop the asset file into this directory (any standard web format works — SVG/PNG/JPG/WebP/AVIF).
+2. Add the team name → filename pair to `LOGO_BY_TEAM` in [`src/lib/teamLogo.ts`](../../src/lib/teamLogo.ts).
 
-`<team-slug>.svg` — where `<team-slug>` is the team name lower-cased
-and hyphenated. Example mapping:
+That's it. `<TeamBadge>` resolves the URL via `teamLogoUrl(team)` and renders the asset. A missing or 404 file degrades gracefully to a tinted initials badge.
 
-| Team name        | Filename                |
-|------------------|-------------------------|
-| Mercedes         | `mercedes.svg`          |
-| Red Bull Racing  | `red-bull-racing.svg`   |
-| Ferrari          | `ferrari.svg`           |
-| McLaren          | `mclaren.svg`           |
-| Aston Martin     | `aston-martin.svg`      |
-| Alpine           | `alpine.svg`            |
-| Williams         | `williams.svg`          |
-| Racing Bulls     | `racing-bulls.svg`      |
-| Haas             | `haas.svg`              |
-| Audi             | `audi.svg`              |
-| Cadillac         | `cadillac.svg`          |
+## Recommended specs
 
-The slug derivation lives in
-[`src/lib/teamLogo.ts`](../../src/lib/teamLogo.ts) — `teamSlug(name)`.
-
-## Recommended asset specs
-
-For best results across both badge variants:
-
-- **Format**: SVG preferred (scales cleanly); transparent PNG also OK
-- **Aspect ratio**: roughly square (256×256 viewBox is what's
-  shipped); the badge crops at the centre when rendered in the
-  circular "badge" variant
-- **Colour**: should read on both dark and light surfaces; the badge
-  background sits on a near-black backdrop with the team's accent
-  colour as a frame
-- **Layout** (for the rectangular "card" variant): emblem on top,
-  team wordmark, optional small subtitle — matches the broadcast
-  graphics pattern used in motorsport coverage
-
-## What ships in this repo
-
-The 11 SVGs currently committed here are **abstract geometric
-placeholders** — three-letter abbreviation inside a ringed disc with
-the team wordmark beneath, in each team's official colour. They are
-**not** reproductions of the trademarked team logos and are
-intentionally neutral so the repo can ship them safely. Replace any
-of them with your licensed assets by overwriting the same filename.
-
-## Fallback behaviour
-
-`<TeamBadge>` handles a missing file gracefully:
-1. Try the explicit `logoUrl` prop (if passed)
-2. Try the conventional `/team-logos/<slug>.svg` path
-3. On `onError` (file 404s), fall back to a tinted initials badge
-
-The UI never shows a broken-image icon. You can ship logos for some
-teams and leave others on the initials fallback — they'll mix cleanly.
+- **Format**: SVG ideal for crispness; PNG with transparency is fine. AVIF / WebP supported.
+- **Aspect**: roughly square works best across both badge variants. The `card` variant gives the logo more room to breathe.
+- **Background**: transparent. The badge renders on a near-black backdrop framed by the team's accent colour.
