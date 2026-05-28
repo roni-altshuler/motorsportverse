@@ -6,6 +6,11 @@
 fastf1~=3.8.1
 pandas~=2.3.3
 numpy~=2.4.2
+# Parquet I/O engine for the weekend-features pipeline
+# (extract_weekend_features.py + models/weekend_features.py). Without an
+# engine installed, pandas.{read,to}_parquet raise ImportError at runtime
+# and the Phase 7 weekend feature loader test suite fails.
+pyarrow~=18.1.0
 scikit-learn~=1.8.0
 xgboost~=3.2.0
 # LightGBM powers the learned race-projection head
