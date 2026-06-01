@@ -10,7 +10,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { SeasonData, StandingsData, RoundData, SeasonTrackerData } from "@/types";
+import { SeasonData, StandingsData, RoundData, SeasonTrackerData, TrustStats } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
@@ -22,9 +22,15 @@ import ConstructorsConstellation from "@/components/home/ConstructorsConstellati
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import DriverPortrait from "@/components/standings/DriverPortrait";
-import LoadingTire from "@/components/ui/LoadingTire";
 import { resolveDriverHeadshot } from "@/lib/headshots";
-import { fadeUp } from "@/lib/motion";
+import { DEFAULT_SEASON_YEAR } from "@/lib/season";
+import { fadeUp, staggerContainer } from "@/lib/motion";
+import TrustBand from "@/components/marketing/TrustBand";
+import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
+import FeatureOutcomes from "@/components/marketing/FeatureOutcomes";
+import TechnicalCredibility from "@/components/marketing/TechnicalCredibility";
+import FAQ from "@/components/marketing/FAQ";
+import FinalCTA from "@/components/marketing/FinalCTA";
 import {
   fetchSeasonData,
   fetchStandingsData,
@@ -56,16 +62,16 @@ function formatCountdown(targetIso: string, now: Date): string {
   return `in ${hours}h`;
 }
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
-export default function HomePage() {
+export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [standings, setStandings] = useState<StandingsData | null>(null);
   const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
-  const [accuracyPct, setAccuracyPct] = useState<number | null>(null);
-  const [roundsGraded, setRoundsGraded] = useState<number>(0);
+
+  // Current-season accuracy comes from build-time props (honest, no fetch flash).
+  const accuracyPct = trustStats.currentSeason?.accuracyPct ?? null;
+  const roundsGraded = trustStats.currentSeason?.roundsGraded ?? 0;
 
   useEffect(() => {
     fetchSeasonData().then(setSeason).catch(() => {});
@@ -76,14 +82,6 @@ export default function HomePage() {
         if (s.lastUpdatedRound > 0) {
           fetchRoundData(s.lastUpdatedRound).then(setLatestRound).catch(() => {});
         }
-      })
-      .catch(() => {});
-    fetch(`${BASE_PATH}/data/gp_accuracy_report.json`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (!d?.overallAccuracy) return;
-        setAccuracyPct(d.overallAccuracy.seasonAccuracyPct ?? null);
-        setRoundsGraded(d.overallAccuracy.roundsWithActual ?? 0);
       })
       .catch(() => {});
   }, []);
@@ -103,86 +101,166 @@ export default function HomePage() {
     }
   }, [season, tracker]);
 
-  if (!season) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <LoadingTire label="Loading season data" />
-      </div>
-    );
-  }
-
+  // Season-derived view data — computed only once the season JSON has loaded.
+  // The static marketing scaffold (value prop, trust, how-it-works, features,
+  // technical credibility, FAQ, final CTA) renders regardless, so the
+  // prerendered HTML communicates value before any fetch resolves.
   const roundsWithActual = (tracker?.rounds || [])
     .filter((r) => r.hasActual)
     .map((r) => r.round);
-  const ctx = getCurrentRaceContext(season, roundsWithActual);
+  const ctx = season ? getCurrentRaceContext(season, roundsWithActual) : null;
   const featuredRace =
-    ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0];
-  const featuredMeta = getRoundStatusMeta(
-    getRoundLifecycle(
-      featuredRace,
-      season.completedRounds.includes(featuredRace.round),
-      roundsWithActual.includes(featuredRace.round),
-    ),
-  );
+    season && ctx
+      ? ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0]
+      : null;
+  const featuredMeta =
+    season && featuredRace
+      ? getRoundStatusMeta(
+          getRoundLifecycle(
+            featuredRace,
+            season.completedRounds.includes(featuredRace.round),
+            roundsWithActual.includes(featuredRace.round),
+          ),
+        )
+      : null;
   const featuredVariant: "live" | "positive" | "negative" | "muted" | "default" =
-    TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default";
-  const isPredictionView = featuredRound?.round === featuredRace.round;
+    featuredMeta
+      ? TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default"
+      : "default";
+  const isPredictionView =
+    !!featuredRace && featuredRound?.round === featuredRace.round;
 
   return (
     <div>
       <HeroParallax
-        className="min-h-[60vh]"
+        className="min-h-[78vh] flex items-center"
         geometry={featuredRound?.circuitInfo?.geometry ?? null}
       >
-        <div className="mx-auto max-w-6xl px-6 lg:px-10">
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
-            <span className="eyebrow">
-              R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
-              {formatCountdown(featuredRace.date, new Date())}
-            </span>
-          </div>
+        <div className="mx-auto w-full max-w-6xl px-6 lg:px-10 py-20">
+          {/* ── Value proposition — what RaceIQ is, why it's credible ── */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="max-w-3xl"
+          >
+            <motion.p variants={fadeUp} className="eyebrow mb-5">
+              RaceIQ · Formula 1 {season?.season ?? DEFAULT_SEASON_YEAR}
+            </motion.p>
+            <motion.h1
+              variants={fadeUp}
+              className="display-xl [font-weight:700] text-balance"
+            >
+              Read the grid before lights out
+            </motion.h1>
+            <motion.p
+              variants={fadeUp}
+              className="body-md mt-6 max-w-2xl text-[color:var(--body-strong)]"
+            >
+              Open-source machine-learning forecasts for every Grand Prix —{" "}
+              {trustStats.backtest?.rounds
+                ? `backtested across ${trustStats.backtest.rounds} races`
+                : "backtested over past seasons"}{" "}
+              and graded against every official result.
+            </motion.p>
+          </motion.div>
 
-          <div className="flex items-start gap-6 mb-12">
-            <CountryFlag country={featuredRace.country} size={64} />
-            <div>
-              <p className="eyebrow mb-3">Featured Grand Prix</p>
-              <h1 className="display-xl [font-weight:700] text-balance">
-                {featuredRace.name}
-              </h1>
-              <p className="body-md mt-4 max-w-2xl text-[color:var(--body-strong)]">
-                {featuredRace.circuit} · {featuredMeta.description}
-              </p>
+          {/* ── Featured race — the live hook (renders once data loads) ── */}
+          {featuredRace && featuredMeta ? (
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
+              className="mt-12 border-t border-[color:var(--hairline)] pt-8"
+            >
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
+                <span className="eyebrow">
+                  R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
+                  {formatCountdown(featuredRace.date, new Date())}
+                </span>
+              </div>
+
+              <div className="flex items-start gap-5 mb-8">
+                <CountryFlag country={featuredRace.country} size={56} />
+                <div>
+                  <p className="eyebrow mb-2">Next up · Featured Grand Prix</p>
+                  <h2 className="display-md text-balance">{featuredRace.name}</h2>
+                  <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
+                    {featuredRace.circuit} · {featuredMeta.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href={`/race/${featuredRace.round}`}>
+                  <ShimmerButton
+                    background="var(--accent-f1-red)"
+                    shimmerColor="rgba(255,255,255,0.9)"
+                    borderRadius="9999px"
+                    className="button-label h-11 !px-7 !py-0 text-[13px]"
+                  >
+                    Open Race Report →
+                  </ShimmerButton>
+                </Link>
+                <Link href="/calendar" className={buttonVariants({ variant: "primary" })}>
+                  Full Calendar
+                </Link>
+                <Link href="/standings" className={buttonVariants({ variant: "ghost" })}>
+                  Standings
+                </Link>
+              </div>
+            </motion.div>
+          ) : (
+            <div className="mt-12 border-t border-[color:var(--hairline)] pt-8 flex flex-wrap items-center gap-4">
+              <Link href="/calendar" className={buttonVariants({ variant: "primary" })}>
+                Explore the season
+              </Link>
+              <Link href="/standings" className={buttonVariants({ variant: "ghost" })}>
+                Standings
+              </Link>
             </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <Link href={`/race/${featuredRace.round}`}>
-              <ShimmerButton
-                background="var(--accent-f1-red)"
-                shimmerColor="rgba(255,255,255,0.9)"
-                borderRadius="9999px"
-                className="button-label h-11 !px-7 !py-0 text-[13px]"
-              >
-                Open Race Report →
-              </ShimmerButton>
-            </Link>
-            <Link href="/calendar" className={buttonVariants({ variant: "primary" })}>
-              Full Calendar
-            </Link>
-            <Link href="/standings" className={buttonVariants({ variant: "ghost" })}>
-              Standings
-            </Link>
-          </div>
+          )}
         </div>
       </HeroParallax>
 
+      {/* ── Trust band — honest, understated credibility ── */}
+      <TrustBand trustStats={trustStats} />
+
+      {/* ── How it works — sticky scroll-story ── */}
+      <section
+        aria-labelledby="how-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
+      >
+        <div className="mb-12 max-w-2xl">
+          <p className="eyebrow mb-2">How it works</p>
+          <h2 id="how-heading" className="display-md">
+            Live data → model → forecast
+          </h2>
+          <p className="body-md mt-4 text-[color:var(--body)]">
+            From raw timing sheets to a probability for every car — here is the
+            path each forecast travels before it reaches you.
+          </p>
+        </div>
+        <HowItWorksDiagram variant="scrollstory" />
+      </section>
+
+      {/* ── Features as outcomes ── */}
+      <FeatureOutcomes />
+
+      {/* ── Live product proof — renders once the season JSON loads ── */}
+      {season && (
+      <>
       {/* ── Race Card Carousel — F1.com Previous/Current/Next pattern ── */}
-      <section className="mx-auto max-w-7xl px-6 lg:px-10 pt-12 sm:pt-16">
+      <section
+        aria-labelledby="race-window-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 pt-12 sm:pt-16"
+      >
         <div className="flex items-baseline justify-between mb-6">
           <div>
             <p className="eyebrow mb-1">Race Window</p>
-            <h2 className="display-md">This Weekend &amp; Beyond</h2>
+            <h2 id="race-window-heading" className="display-md">This Weekend &amp; Beyond</h2>
           </div>
           <Link href="/calendar" className="link-bugatti button-label text-[11px]">
             Full Season →
@@ -198,6 +276,7 @@ export default function HomePage() {
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
         {isPredictionView && featuredRound && featuredRound.classification && (
           <motion.section
+            aria-labelledby="forecast-heading"
             className="section-bugatti"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -206,7 +285,7 @@ export default function HomePage() {
             <div className="flex items-baseline justify-between mb-12">
               <div>
                 <p className="eyebrow mb-2">Race Forecast · Next Grand Prix</p>
-                <h2 className="display-md">
+                <h2 id="forecast-heading" className="display-md">
                   Predicted Podium — {featuredRace.name}
                 </h2>
                 <p className="body-md mt-4 max-w-2xl text-[color:var(--muted)]">
@@ -249,7 +328,7 @@ export default function HomePage() {
           </motion.section>
         )}
 
-        {latestRound && latestRound.round !== featuredRace.round &&
+        {latestRound && latestRound.round !== featuredRace?.round &&
           latestRound.actualResults &&
           Object.keys(latestRound.actualResults).length >= 3 && (() => {
             const predictedByDriver = new Map(
@@ -271,6 +350,7 @@ export default function HomePage() {
               });
             return (
               <motion.section
+                aria-labelledby="latest-result-heading"
                 className="section-bugatti"
                 variants={fadeUp}
                 initial="hidden"
@@ -280,7 +360,7 @@ export default function HomePage() {
                 <div className="flex items-baseline justify-between mb-8">
                   <div>
                     <p className="eyebrow mb-2">Race Control</p>
-                    <h2 className="display-md">Latest Official Result</h2>
+                    <h2 id="latest-result-heading" className="display-md">Latest Official Result</h2>
                     <p className="body-md mt-3 text-[color:var(--muted)]">
                       Round {latestRound.round} · {latestRound.name} ·{" "}
                       {formatDate(latestRound.date)}
@@ -352,11 +432,11 @@ export default function HomePage() {
           })()}
 
         {standings && (
-          <section className="section-bugatti">
+          <section aria-labelledby="championship-heading" className="section-bugatti">
             <div className="flex items-baseline justify-between mb-10">
               <div>
                 <p className="eyebrow mb-2">Championship Snapshot</p>
-                <h2 className="display-md">Where the season stands</h2>
+                <h2 id="championship-heading" className="display-md">Where the season stands</h2>
               </div>
               <Link href="/standings" className="link-bugatti button-label text-[11px]">
                 Open Standings →
@@ -377,10 +457,10 @@ export default function HomePage() {
         )}
 
         {standings && standings.constructors.length > 0 && (
-          <section className="section-bugatti relative">
+          <section aria-labelledby="constellation-heading" className="section-bugatti relative">
             <div className="text-center mb-10">
               <p className="eyebrow mb-2">Constellation</p>
-              <h2 className="display-md">Eleven teams. One championship.</h2>
+              <h2 id="constellation-heading" className="display-md">Eleven teams. One championship.</h2>
               <p className="body-md mt-3 max-w-xl mx-auto text-[color:var(--muted)]">
                 Every constructor in orbit around the {season.season} title.
               </p>
@@ -393,6 +473,17 @@ export default function HomePage() {
         )}
 
       </div>
+      </>
+      )}
+
+      {/* ── Technical credibility — honest, no algorithm names ── */}
+      <TechnicalCredibility trustStats={trustStats} />
+
+      {/* ── FAQ — native disclosure ── */}
+      <FAQ />
+
+      {/* ── Final CTA — dominant conversion path ── */}
+      <FinalCTA />
     </div>
   );
 }
