@@ -609,6 +609,46 @@ export interface CalibrationSummary {
   perMarket: Record<string, MarketCalibrationStats>;
 }
 
+/**
+ * TrustStats — build-time-derived, honest credibility numbers surfaced on the
+ * marketing layer (home TrustBand + TechnicalCredibility). Assembled in
+ * `lib/loadTrustStats.ts` from `benchmark/summary.json`,
+ * `historical_backtest/summary.json` and `gp_accuracy_report.json`.
+ *
+ * NOT a Python→JSON output contract — this is a presentation-only aggregate,
+ * so it has no pydantic mirror in test_website_data_schema.py. The honesty
+ * rule (never blend backtest and current-season into one number) is encoded by
+ * keeping the two groups structurally separate.
+ *
+ * Rates are stored as fractions in [0,1]; format at the render site.
+ */
+export interface TrustStats {
+  /** Out-of-sample backtest across prior completed seasons. */
+  backtest: {
+    rounds: number;
+    seasons: number[];
+    maePositions: number;
+    within3Rate: number;
+    podiumHitRate: number;
+    winnerHitRate: number;
+    ndcgAt5: number;
+    /** Fractional MAE improvement over the qualifying-pace baseline. */
+    maeImprovementVsBaseline: number;
+    /** Graded driver-rows behind the backtest. */
+    gradedRows: number;
+  } | null;
+  /** Live current-season grading so far — never blended with the backtest. */
+  currentSeason: {
+    accuracyPct: number | null;
+    roundsGraded: number;
+    meanError: number | null;
+  } | null;
+  /** Freshness / provenance metadata for the credibility section. */
+  provenance: {
+    generatedAt: string | null;
+  };
+}
+
 // Team colors for CSS usage
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",

@@ -41,6 +41,16 @@ export const fadeUp: Variants = {
   }),
 };
 
+/**
+ * Parent wrapper that staggers any direct children carrying `hidden`/`visible`
+ * variants (e.g. `fadeUp`). Pair with `initial="hidden" whileInView="visible"`.
+ * Empty states keep the parent itself invisible-free so layout never shifts.
+ */
+export const staggerContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: STAGGER.base } },
+};
+
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: (i: number = 0) => ({

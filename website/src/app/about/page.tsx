@@ -1,22 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { Database, Cpu, Trophy } from "lucide-react";
 
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
-import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { MagicCard } from "@/components/magicui/magic-card";
+import { HowItWorksBeam } from "@/components/marketing/HowItWorksDiagram";
 
 const ACTIVE_SEASON_YEAR = String(DEFAULT_SEASON_YEAR);
 
 export default function AboutPage() {
-  const diagramRef = useRef<HTMLDivElement>(null);
-  const dataRef = useRef<HTMLDivElement>(null);
-  const modelRef = useRef<HTMLDivElement>(null);
-  const forecastRef = useRef<HTMLDivElement>(null);
-
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
       <div className="text-center mb-20">
@@ -38,54 +31,13 @@ export default function AboutPage() {
         </p>
       </div>
 
-      {/* ── How it works — AnimatedBeam diagram ── */}
-      <section className="mb-20">
+      {/* ── How it works — shared AnimatedBeam diagram ── */}
+      <section className="mb-20" aria-labelledby="about-how-heading">
         <div className="text-center mb-10">
           <p className="eyebrow mb-2">How it works</p>
-          <h2 className="display-md">Live data → Model → Forecast</h2>
+          <h2 id="about-how-heading" className="display-md">Live data → Model → Forecast</h2>
         </div>
-
-        <div
-          ref={diagramRef}
-          className="relative grid grid-cols-3 gap-4 sm:gap-8 py-10 px-2 sm:px-8"
-        >
-          <DiagramNode
-            innerRef={dataRef}
-            Icon={Database}
-            title="Live F1 Data"
-            description="Race results, telemetry, weather and standings ingested every Grand Prix weekend."
-          />
-          <DiagramNode
-            innerRef={modelRef}
-            Icon={Cpu}
-            title="AI Model"
-            description="A learning system that re-trains as the season progresses, then weighs every car in the field."
-          />
-          <DiagramNode
-            innerRef={forecastRef}
-            Icon={Trophy}
-            title="Race Forecast"
-            description="Probabilities for win, podium, top 6 and full classification — refreshed before lights out."
-          />
-
-          <AnimatedBeam
-            containerRef={diagramRef}
-            fromRef={dataRef}
-            toRef={modelRef}
-            duration={4}
-            gradientStartColor="#E10600"
-            gradientStopColor="#3671C6"
-          />
-          <AnimatedBeam
-            containerRef={diagramRef}
-            fromRef={modelRef}
-            toRef={forecastRef}
-            duration={4}
-            delay={1}
-            gradientStartColor="#3671C6"
-            gradientStopColor="#FFD166"
-          />
-        </div>
+        <HowItWorksBeam />
       </section>
 
       {/* ── Methodology anchor section ── */}
@@ -173,34 +125,6 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
-    </div>
-  );
-}
-
-function DiagramNode({
-  innerRef,
-  Icon,
-  title,
-  description,
-}: {
-  innerRef: React.RefObject<HTMLDivElement | null>;
-  Icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div ref={innerRef} className="relative z-10 flex flex-col items-center text-center">
-      <span
-        className="inline-flex items-center justify-center w-14 h-14 rounded-full border mb-4"
-        style={{
-          borderColor: "var(--hairline-strong)",
-          background: "var(--surface-card)",
-        }}
-      >
-        <Icon className="w-6 h-6 text-[color:var(--ink)]" />
-      </span>
-      <p className="title-sm text-[color:var(--ink)] mb-2">{title}</p>
-      <p className="body-sm text-[color:var(--muted)] max-w-[200px]">{description}</p>
     </div>
   );
 }

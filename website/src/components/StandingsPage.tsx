@@ -100,7 +100,10 @@ export default function StandingsPage() {
       <div className="mb-16 text-center">
         <p className="eyebrow mb-4">Championship</p>
         <h1 className="display-xl mb-4">{seasonYear} Standings</h1>
-        <p className="body-md text-[color:var(--muted)]">
+        <p className="body-md text-[color:var(--body)] max-w-xl mx-auto">
+          Who is winning the title — and where the model expects it to go from here.
+        </p>
+        <p className="body-sm text-[color:var(--muted)] mt-2">
           Updated through Round {data.lastUpdatedRound} of {totalRounds}
         </p>
         <div className="progress-bar w-48 mx-auto mt-6">

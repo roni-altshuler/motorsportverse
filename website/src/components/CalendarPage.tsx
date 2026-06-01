@@ -56,20 +56,24 @@ export default function CalendarPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-bugatti">
-      <div className="mb-12">
+      <div className="mb-12 max-w-3xl">
         <p className="eyebrow mb-4">{season.season} Championship</p>
         <h1 className="display-xl [font-weight:700] mb-4">Season Calendar</h1>
-        <p className="body-md text-[color:var(--muted)]">
+        <p className="body-md text-[color:var(--body)] mb-2">
+          Every round of the {season.season} season — a forecast before each
+          weekend, the official result after.
+        </p>
+        <p className="body-sm text-[color:var(--muted)]">
           {season.totalRounds} Grand Prix · {completedCount} forecasts published · {officialCount} official result{officialCount !== 1 ? "s" : ""}
         </p>
       </div>
 
       {/* ── Photographic carousel — full season ── */}
-      <div className="mb-16">
+      <section className="mb-16" aria-labelledby="season-window-heading">
         <div className="flex items-baseline justify-between mb-6">
           <div>
             <p className="eyebrow mb-1">Season Window</p>
-            <h2 className="display-md">All 22 Grand Prix in photography</h2>
+            <h2 id="season-window-heading" className="display-md">All 22 Grand Prix in photography</h2>
           </div>
         </div>
         <RaceCardCarousel
@@ -77,7 +81,7 @@ export default function CalendarPage() {
           roundsWithActual={roundsWithActual}
           mode="full-season"
         />
-      </div>
+      </section>
 
       <SeasonRibbon
         calendar={season.calendar}
