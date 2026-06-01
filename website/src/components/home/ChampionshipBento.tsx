@@ -7,6 +7,8 @@ import { RaceCalendarEntry, SeasonData, StandingsData } from "@/types";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import TeamColorBar from "@/components/ui/TeamColorBar";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 
 interface ChampionshipBentoProps {
   standings: StandingsData;
@@ -48,7 +50,7 @@ export default function ChampionshipBento({
     .map((d) => {
       const last = d.pointsHistory[d.pointsHistory.length - 1] ?? 0;
       const prev = d.pointsHistory[d.pointsHistory.length - 2] ?? 0;
-      return { driver: d.driver, team: d.team, teamColor: d.teamColor, jump: last - prev };
+      return { driver: d.driver, driverFullName: d.driverFullName, team: d.team, teamColor: d.teamColor, jump: last - prev };
     })
     .sort((a, b) => b.jump - a.jump)[0];
 
@@ -76,6 +78,14 @@ export default function ChampionshipBento({
                 <span className="position-badge points w-9 shrink-0 text-center">
                   {d.position}
                 </span>
+                <DriverPortrait
+                  driver={d.driver}
+                  driverFullName={d.driverFullName}
+                  team={d.team}
+                  teamColor={d.teamColor}
+                  headshotUrl={resolveDriverHeadshot(d.driver)}
+                  size={28}
+                />
                 <TeamColorBar teamColor={d.teamColor} team={d.team} size="sm" />
                 <div className="min-w-0 flex-1">
                   <p className="title-sm text-[color:var(--ink)] truncate">
@@ -185,7 +195,17 @@ export default function ChampionshipBento({
             <p className="eyebrow mb-1">Biggest Mover</p>
             {mover ? (
               <>
-                <p className="display-sm text-[color:var(--ink)] !text-[28px]">{mover.driver}</p>
+                <div className="flex items-center gap-2">
+                  <DriverPortrait
+                    driver={mover.driver}
+                    driverFullName={mover.driverFullName}
+                    team={mover.team}
+                    teamColor={mover.teamColor}
+                    headshotUrl={resolveDriverHeadshot(mover.driver)}
+                    size={28}
+                  />
+                  <p className="display-sm text-[color:var(--ink)] !text-[28px] truncate">{mover.driverFullName ?? mover.driver}</p>
+                </div>
                 <p className="caption-uppercase text-[10px] mt-1 tracking-[0.16em] text-[color:var(--muted)]">
                   +<NumberTicker value={mover.jump} /> pts last round
                 </p>
@@ -223,6 +243,14 @@ export default function ChampionshipBento({
           </div>
           {driverLeader ? (
             <div className="flex flex-1 items-end gap-4">
+              <DriverPortrait
+                driver={driverLeader.driver}
+                driverFullName={driverLeader.driverFullName}
+                team={driverLeader.team}
+                teamColor={driverLeader.teamColor}
+                headshotUrl={resolveDriverHeadshot(driverLeader.driver)}
+                size={28}
+              />
               <TeamColorBar teamColor={driverLeader.teamColor} team={driverLeader.team} />
               <div className="flex-1 min-w-0">
                 <p className="display-sm text-[color:var(--ink)] !text-[26px] truncate">

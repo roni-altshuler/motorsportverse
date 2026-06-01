@@ -30,16 +30,12 @@ import argparse
 import json
 import math
 import sqlite3  # used as a stdlib fallback if duckdb is missing
-import sys
-import time
 import uuid
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
-from bet_sizing import cap_portfolio, expected_value, kelly_fraction
-from f1_prediction_utils import DRIVER_FULL_NAMES
+from bet_sizing import cap_portfolio, kelly_fraction
 from odds_ingest import devig_proportional, load_cached_payload
 
 PROJECT_ROOT = Path(__file__).resolve().parent

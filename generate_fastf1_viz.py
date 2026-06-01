@@ -18,7 +18,9 @@ Usage:
     python generate_fastf1_viz.py --all-circuits --year <season-year>
 """
 
-import argparse, os, sys
+import argparse
+import os
+import sys
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")

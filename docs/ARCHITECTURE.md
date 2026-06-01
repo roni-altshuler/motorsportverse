@@ -1,4 +1,8 @@
-# Architecture
+# RaceIQ — Architecture
+
+This document describes how RaceIQ is built today (the three-layer prediction
+pipeline + the static dashboard) and, at the end, the **target architecture**
+the codebase is converging toward.
 
 ## Three-layer prediction pipeline
 
@@ -104,3 +108,46 @@ Design system: Bugatti palette (dark theme primary), 11-team color tokens via `[
 | [`models/drift.py`](../models/drift.py) + [`drift_report.py`](../drift_report.py) | PSI per feature against a baseline + rolling-Brier trend. Severity bands: PSI 0.10/0.25, Brier 5%/15% regression. |
 | [`models/promotion.py`](../models/promotion.py) + [`promotion_decision.py`](../promotion_decision.py) | Guarded production/candidate comparison. Requires ≥5 overlapping rounds + 2% mean improvement + no per-round 20%+ regression before recommending promote. |
 | [`models/online_game_theory.py`](../models/online_game_theory.py) | Ridge-regression learner for game-theory coefficients in `RaceProjectionScore`. Registry sentinel round 98. |
+
+## Target architecture (north star)
+
+The pipeline grew organically: today the Python entry points live as ~40 scripts
+at the repository root, wired directly into the cron CI workflows and the test
+suite. That works and is intentionally left in place — moving load-bearing entry
+points would break the live deploy. But the **intended** module boundaries, which
+new code should respect and which a future refactor should converge toward, are:
+
+```
+raceiq/
+├── core/        Pure domain logic — no I/O. Pipeline math, scoring, leakage
+│                guards, calibration, intervals. (today: models/, leakage.py,
+│                f1_prediction_utils.py internals)
+├── services/    Orchestration + side effects. Data ingestion, backfill, the
+│                export pipeline, registry, drift/promotion. (today:
+│                export_*.py, *_backfill.py, drift_report.py, promotion_decision.py)
+├── data/        Storage adapters — DuckDB history, JSON contract writers,
+│                caches. (today: data/, the JSON-writing parts of export_*.py)
+├── lib/         Shared cross-cutting helpers (config, env, logging, dates).
+├── cli/         Thin argument-parsing entry points that call services/.
+│                (today: the top-level scripts ARE the CLI)
+└── ui/          The Next.js dashboard. (today: website/)
+```
+
+**Guiding rules for new code (apply now, even before any physical move):**
+
+- **No I/O in `core`-style logic.** Keep pure functions (math, scoring,
+  transforms) free of file/network access so they stay unit-testable. The
+  existing `models/` package already mostly follows this.
+- **Side effects live in services / CLI.** Argument parsing, file writes, and
+  API calls belong in the entry-point scripts, not in the math.
+- **One contract, two mirrors.** The Python↔website contract is
+  `website/src/types/index.ts` + the pydantic mirror in
+  `tests/test_website_data_schema.py`. Changes touch both together.
+- **The website is a leaf.** It only ever reads the JSON snapshots; it never
+  reaches back into Python.
+
+The current root-level layout maps onto these boundaries by responsibility (see
+the comments in the tree above), so the target is a **reorganization, not a
+rewrite** — to be done incrementally and only alongside the corresponding CI /
+test / `CLAUDE.md` path updates. See [`REBRAND.md`](REBRAND.md) for the related
+set of deferred, deploy-coupled changes.

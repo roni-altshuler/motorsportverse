@@ -24,22 +24,21 @@ Import:
     ... )
 """
 
-import os, json, warnings
+import os
+import json
+import warnings
 from datetime import datetime
 import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
 
 warnings.filterwarnings("ignore")
 
 # Import constants from the base utils
 from f1_prediction_utils import (
-    TEAM_COLOURS, DRIVER_TEAM, DRIVER_FULL_NAMES,
-    CALENDAR, CIRCUIT_CHARACTERISTICS, TEAM_PIT_SPEED,
-    F1_POINTS,
+    DRIVER_TEAM, CALENDAR, CIRCUIT_CHARACTERISTICS, TEAM_PIT_SPEED,
     WEBSITE_DATA_DIR, SEASON_YEAR,
 )
 
@@ -308,7 +307,6 @@ def _simulate_multi_agent_field(df, gp_key, total_laps, field_simulations=700,
     else:
         uncertainty = pd.Series(np.full(n, 0.8), index=order.index, dtype=float)
 
-    expected_stops = int(char.get("expected_stops", 2))
     strategies = get_default_strategies(int(total_laps), gp_key)
     if not strategies:
         return {drv: 0.0 for drv in drivers}, {drv: 0.0 for drv in drivers}
@@ -439,7 +437,6 @@ def apply_game_theory_enhancements(merged, round_num, gp_key, total_laps,
     sort_col = "QualifyingRank" if "QualifyingRank" in df.columns else "AdjustedQualiTime"
     order = df.sort_values(sort_col).reset_index()
     idx_order = order["index"].tolist()
-    drv_order = order["Driver"].astype(str).tolist()
 
     undercut = np.zeros(len(df), dtype=float)
     overcut = np.zeros(len(df), dtype=float)
@@ -847,7 +844,7 @@ def plot_tyre_degradation_curves(curves, gp_name, out_dir, total_laps):
         cliff = data["cliff_lap"]
         if cliff <= total_laps:
             ax.axvline(x=cliff, color=color, alpha=0.3, linestyle="--", linewidth=1)
-            ax.annotate(f"Cliff", xy=(cliff, data["deltas"][cliff - 1]),
+            ax.annotate("Cliff", xy=(cliff, data["deltas"][cliff - 1]),
                         xytext=(cliff + 2, data["deltas"][cliff - 1] + 0.2),
                         fontsize=9, color=color, fontweight="bold",
                         arrowprops=dict(arrowstyle="->", color=color, lw=1.5))
@@ -913,7 +910,7 @@ class LSTMLapPredictor:
             self._build_model()
 
     def _build_model(self):
-        torch, nn = self.torch, self.nn
+        nn = self.nn
 
         class _LSTM(nn.Module):
             def __init__(self, input_size, hidden_size, num_layers):
@@ -1179,7 +1176,7 @@ class LSTMGridPredictor:
             self._build_model()
 
     def _build_model(self):
-        torch, nn = self.torch, self.nn
+        nn = self.nn
         n_feat, hidden, n_layers = self.n_features, self.hidden_size, self.num_layers
 
         class _GridLSTM(nn.Module):
@@ -1853,7 +1850,7 @@ def generate_advanced_features(round_num, classification_data, merged,
 
     # --- Pit Strategy Simulation ---
     print(f"\n🔧 Generating advanced features for Round {round_num}...")
-    print(f"  ⛽ Pit strategy simulation...")
+    print("  ⛽ Pit strategy simulation...")
     try:
         p1_driver = classification_data[0]["driver"]
         p1_time = classification_data[0]["predictedTime"]
@@ -1880,7 +1877,7 @@ def generate_advanced_features(round_num, classification_data, merged,
         print(f"  ⚠️  Pit strategy failed: {e}")
 
     # --- Tyre Degradation Curves ---
-    print(f"  🔴 Tyre degradation curves...")
+    print("  🔴 Tyre degradation curves...")
     try:
         curves = model_tyre_degradation(gp_key, total_laps)
         fname = plot_tyre_degradation_curves(curves, gp_name, out_dir,
@@ -1899,7 +1896,7 @@ def generate_advanced_features(round_num, classification_data, merged,
         print(f"  ⚠️  Tyre degradation failed: {e}")
 
     # --- LSTM Pace Prediction (visualization) ---
-    print(f"  🧠 LSTM lap-time prediction (visualization)...")
+    print("  🧠 LSTM lap-time prediction (visualization)...")
     try:
         lstm_model, lstm_info = train_lstm_from_fastf1(
             gp_key, years=fastf1_years)
@@ -1932,22 +1929,22 @@ def generate_advanced_features(round_num, classification_data, merged,
         result["lstmData"] = {"available": False, "note": str(e)}
 
     # --- LSTM Grid Predictions (ensemble integration, v3 NEW) ---
-    print(f"  🧠 LSTM Grid Predictor (ensemble member)...")
+    print("  🧠 LSTM Grid Predictor (ensemble member)...")
     try:
         lstm_grid_preds = compute_lstm_grid_predictions(
             merged, gp_key, years=fastf1_years)
         result["lstmGridPredictions"] = lstm_grid_preds
         if lstm_grid_preds is not None:
-            print(f"  ✅ LSTM grid predictions ready for ensemble")
+            print("  ✅ LSTM grid predictions ready for ensemble")
         else:
-            print(f"  ⚠️  LSTM grid predictions unavailable — ensemble "
+            print("  ⚠️  LSTM grid predictions unavailable — ensemble "
                   "will use GBR+XGB only")
     except Exception as e:
         print(f"  ⚠️  LSTM Grid Predictor failed: {e}")
         result["lstmGridPredictions"] = None
 
     # --- Season Tracker ---
-    print(f"  📊 Season tracker...")
+    print("  📊 Season tracker...")
     try:
         tracker = SeasonTracker()
         rounds_dir = os.path.join(WEBSITE_DATA_DIR, "rounds")

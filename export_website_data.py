@@ -22,7 +22,12 @@ Outputs:
         round_01/*.png           ← prediction + FastF1 visualisations
 """
 
-import argparse, json, os, sys, math, unicodedata
+import argparse
+import json
+import os
+import sys
+import math
+import unicodedata
 from datetime import datetime, timezone
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
@@ -1209,9 +1214,7 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
         drivers = np.array(sim["drivers"])
         positions = sim["positions"]
         podium_prob = sim["podium_prob"]
-        win_prob_mc = sim["win_prob"]
         mean_pos = sim["mean_pos"]
-        unc = sim["uncertainty"]
 
         # 8. Podium probability board
         top_idx = np.argsort(podium_prob)[::-1][:12]

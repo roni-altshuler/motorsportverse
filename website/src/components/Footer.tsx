@@ -24,7 +24,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <p className="wordmark mb-4">F1 {DEFAULT_SEASON_YEAR} PREDICTIONS</p>
+            <p className="wordmark mb-4">RaceIQ</p>
             <p className="body-sm" style={{ color: "var(--muted)" }}>
               Race-by-race classification forecasts, championship standings, pit strategy
               and weekend telemetry — published every Grand Prix weekend.
@@ -96,7 +96,7 @@ export default function Footer() {
         >
           <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
             <span className="body-sm">
-              &copy; {DEFAULT_SEASON_YEAR} F1 Predictions. Not affiliated with Formula 1.
+              &copy; {DEFAULT_SEASON_YEAR} RaceIQ. Not affiliated with Formula 1.
             </span>
             <a
               href="https://github.com"
@@ -108,7 +108,7 @@ export default function Footer() {
               GitHub
             </a>
           </div>
-          <p className="wordmark" style={{ color: "var(--body)" }}>F1 PREDICTIONS</p>
+          <p className="wordmark" style={{ color: "var(--body)" }}>RaceIQ</p>
         </div>
       </div>
     </footer>

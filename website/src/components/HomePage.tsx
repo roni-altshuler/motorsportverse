@@ -262,6 +262,7 @@ export default function HomePage() {
                 const pred = predictedByDriver.get(driver);
                 return {
                   driver,
+                  driverFullName: pred?.driverFullName,
                   position,
                   team: pred?.team ?? "—",
                   teamColor: pred?.teamColor ?? "var(--muted)",
@@ -325,13 +326,14 @@ export default function HomePage() {
                             <span className="inline-flex items-center gap-3">
                               <DriverPortrait
                                 driver={row.driver}
+                                driverFullName={row.driverFullName}
                                 team={row.team}
                                 teamColor={row.teamColor}
                                 headshotUrl={row.headshotUrl}
                                 size={32}
                               />
                               <TeamColorBar teamColor={row.teamColor} team={row.team} size="sm" />
-                              <span className="title-sm">{row.driver}</span>
+                              <span className="title-sm">{row.driverFullName ?? row.driver}</span>
                             </span>
                           </td>
                           <td className="px-2 py-3 body-sm text-[color:var(--muted)] hidden sm:table-cell">

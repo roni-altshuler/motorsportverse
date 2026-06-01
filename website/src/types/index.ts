@@ -1,4 +1,4 @@
-// F1 Predictions Website – Core Types
+// RaceIQ Website – Core Types
 
 export interface RaceCalendarEntry {
   round: number;

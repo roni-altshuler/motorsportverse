@@ -34,7 +34,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, Optional, Sequence
+from typing import Dict, Sequence
 
 import numpy as np
 

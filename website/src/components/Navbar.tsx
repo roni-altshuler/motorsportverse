@@ -16,7 +16,6 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
-import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const GITHUB_URL = "https://github.com/roni-altshuler/f1_predictions";
@@ -139,7 +138,6 @@ export default function Navbar() {
     [tracker],
   );
 
-  const seasonYear = season?.season ?? DEFAULT_SEASON_YEAR;
   // Find next upcoming round (first non-completed)
   const nextRound = useMemo(() => {
     if (!season) return null;
@@ -244,13 +242,20 @@ export default function Navbar() {
           </button>
 
           {/* wordmark */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
+          <Link href="/" className="flex items-center gap-2 group shrink-0" aria-label="RaceIQ home">
             <span
               className="inline-block w-1.5 h-6"
               style={{ background: "var(--accent-f1-red)", boxShadow: "var(--glow-live)" }}
               aria-hidden
             />
-            <span className="wordmark">F1 {seasonYear} PREDICTIONS</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${BASE_PATH}/brand/raceiq-logo.webp`}
+              alt="RaceIQ"
+              className="h-7 w-auto"
+              style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))" }}
+            />
+            <span className="wordmark">RaceIQ</span>
           </Link>
 
           {/* primary nav cluster (desktop) */}

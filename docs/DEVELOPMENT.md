@@ -89,7 +89,7 @@ The site is **static-export only** (`output: "export"` in [`next.config.ts`](../
 pytest tests/ -q                            # full suite (390+ tests; ~15s)
 pytest tests/test_leakage.py -v             # one file
 pytest tests/ -q -k calibration             # filter by keyword
-ruff check leakage.py forward_eval.py tests/  # what CI runs
+ruff check .                                # what CI runs (config in pyproject.toml)
 ```
 
 ## Build gotchas

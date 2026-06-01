@@ -17,6 +17,8 @@ import {
   ZAxis,
   ReferenceLine,
 } from "recharts";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 
 interface RoundEntry {
   round: number;
@@ -430,11 +432,19 @@ function DriverList({
             key={r.driver}
             className="grid grid-cols-[64px_1fr_auto] items-center gap-3"
           >
-            <span
-              className="font-display font-bold tracking-[0.04em] uppercase text-sm"
-              style={{ color: "var(--text)" }}
-            >
-              {r.driver}
+            <span className="flex items-center gap-2 min-w-0">
+              <DriverPortrait
+                driver={r.driver}
+                team=""
+                headshotUrl={resolveDriverHeadshot(r.driver)}
+                size={24}
+              />
+              <span
+                className="font-display font-bold tracking-[0.04em] uppercase text-sm truncate"
+                style={{ color: "var(--text)" }}
+              >
+                {r.driver}
+              </span>
             </span>
             <div
               className="relative h-2 rounded-full overflow-hidden"

@@ -37,8 +37,8 @@ function buildBullets(round: RoundData): NarrativeBullet[] {
     .modelConfig?.raceSimulator;
   const cls = round.classification ?? [];
   if (simulator?.applied && cls.length >= 3) {
-    const topRow = cls[0] as unknown as { driver: string; simulatorWinProbability?: number };
-    const p2 = cls[1] as unknown as { driver: string; simulatorWinProbability?: number };
+    const topRow = cls[0] as unknown as { driver: string; driverFullName?: string; simulatorWinProbability?: number };
+    const p2 = cls[1] as unknown as { driver: string; driverFullName?: string; simulatorWinProbability?: number };
     if (typeof topRow.simulatorWinProbability === "number") {
       const a = (topRow.simulatorWinProbability * 100).toFixed(0);
       const b =
@@ -48,8 +48,8 @@ function buildBullets(round: RoundData): NarrativeBullet[] {
       out.push({
         label: "MODEL",
         tone: "live",
-        text: `Race simulator favours ${topRow.driver} (${a}%)${
-          b ? ` over ${p2.driver} (${b}%)` : ""
+        text: `Race simulator favours ${topRow.driverFullName ?? topRow.driver} (${a}%)${
+          b ? ` over ${p2.driverFullName ?? p2.driver} (${b}%)` : ""
         }.`,
       });
     }

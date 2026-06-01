@@ -67,7 +67,7 @@ The `/value` page was removed from the website in the 2026-05-21 redesign. The P
 pytest tests/ -q                            # full suite (390+ tests; ~15s)
 pytest tests/test_leakage.py -v             # one file
 pytest tests/ -q -k calibration             # filter by keyword
-ruff check leakage.py forward_eval.py tests/   # what CI runs
+ruff check .                                   # what CI runs (config in pyproject.toml)
 ```
 
 ### Website (Next.js 16 static export → GitHub Pages)
@@ -177,7 +177,7 @@ Aesthetic direction: broadcast-HUD + paddock-badge-wall vocabulary blending F1 T
 
 ### CI gates
 
-- [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — `ruff check leakage.py forward_eval.py tests/` + full `pytest tests/` on every push/PR. Other Python files are NOT linted by CI even though they should be.
+- [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — `ruff check .` (config + per-file ignores in [`pyproject.toml`](pyproject.toml)) + full `pytest tests/` on every push/PR. The whole repo is now linted (excluding generated `races/` scripts, the legacy framework, and `scripts/archive/`).
 - [`.github/workflows/update_predictions.yml`](.github/workflows/update_predictions.yml) — cron-scheduled race-weekend pipeline. Runs `gp_weekend.py`, then `forward_eval.py --per-round-dir ... --allow-empty`, then `drift_report.py --allow-empty`, then `promotion_decision.py --allow-empty`, then `pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py` *before* committing. The pytest is the gate that stops degenerate output (all-NaN, missing drivers, duplicate positions) from reaching GitHub Pages.
 - [`.github/workflows/backfill_history.yml`](.github/workflows/backfill_history.yml) — nightly cron at 03:00 UTC. Runs the Ergast (Tier 2) backfill, then a rate-limited slice of the FastF1 (Tier 1) backfill, then force-commits `data/history.duckdb` if changed. The DB is gitignored (`/data/`) so the commit step uses `git add -f`.
 - The reusable-workflow reference in `update_predictions.yml` uses the absolute form `roni-altshuler/f1_predictions/.github/workflows/deploy.yml@main` (not relative) to keep the VS Code GitHub Actions extension's "Unable to find reusable workflow" diagnostic from firing.

@@ -9,6 +9,8 @@ import { getSeasonYear } from "@/lib/season";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 
 export default function AccuracyDashboardPage() {
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
@@ -239,8 +241,17 @@ export default function AccuracyDashboardPage() {
                       </div>
                     </div>
                     {report.biggestMisses?.length > 0 && (
-                      <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>
-                        Biggest miss: {report.biggestMisses[0].driver} (Pred P{report.biggestMisses[0].predicted} vs Actual P{report.biggestMisses[0].actual})
+                      <p className="text-xs mt-2 flex items-center gap-1.5 flex-wrap" style={{ color: "var(--text-muted)" }}>
+                        Biggest miss:
+                        <DriverPortrait
+                          driver={report.biggestMisses[0].driver}
+                          team={report.biggestMisses[0].team ?? ""}
+                          headshotUrl={resolveDriverHeadshot(report.biggestMisses[0].driver)}
+                          size={18}
+                          className="align-middle"
+                        />
+                        <span style={{ color: "var(--text)" }}>{report.biggestMisses[0].driver}</span>
+                        (Pred P{report.biggestMisses[0].predicted} vs Actual P{report.biggestMisses[0].actual})
                       </p>
                     )}
                   </div>

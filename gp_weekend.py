@@ -253,7 +253,7 @@ def run_post_qualifying(round_num, skip_build=False, use_race_simulator=False):
 
     from export_website_data import (
         export_round_data, export_standings, export_season_metadata,
-        _run_advanced, _generate_fastf1_viz, ROUNDS_DIR, CALENDAR, VIZ_DIR
+        _run_advanced, _generate_fastf1_viz, ROUNDS_DIR, CALENDAR
     )
     import json
 
@@ -318,7 +318,6 @@ def run_post_race(round_num, skip_build=False):
     from export_website_data import (
         export_standings, export_season_metadata, ROUNDS_DIR, _write_gp_accuracy_report
     )
-    import fastf1
     import pandas as pd
 
     enable_cache()
@@ -345,7 +344,6 @@ def run_post_race(round_num, skip_build=False):
     # Save actual results for race-to-race feature tracking
     print("\n💾 Saving actual results for future predictions...")
     # Build a classification-like DataFrame for save_race_result
-    import pandas as pd
     clf_data = pd.DataFrame([
         {"Driver": drv, "Pos": pos}
         for drv, pos in actual_results.items()
@@ -565,7 +563,7 @@ Typical GP Weekend Workflow:
         commands = {
             "pre":        f"export_round_data({round_num}, use_weather_api=True)",
             "post-quali": f"export_round_data({round_num}, use_lstm=True, use_weather_api=True, use_telemetry=True) + FastF1 viz + advanced models",
-            "post-race":  f"Fetch race results from FastF1 → update SeasonTracker → inject into round JSON",
+            "post-race":  "Fetch race results from FastF1 → update SeasonTracker → inject into round JSON",
             "full":       "pre → post-quali → post-race (all phases)",
         }
         print(f"  Pipeline: {commands[phase]}")

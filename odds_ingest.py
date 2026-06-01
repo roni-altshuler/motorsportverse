@@ -32,7 +32,6 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 # Optional .env loading.  python-dotenv is in requirements-dev.txt; the
 # try/except keeps runtime installs of just requirements.txt working — missing

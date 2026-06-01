@@ -143,7 +143,7 @@ export default function PodiumPredictionTrio({
                     </div>
                   </div>
                 </div>
-                <div className={isLeader ? "display-lg [font-weight:700]" : "display-md [font-weight:700]"}>{entry.driver}</div>
+                <div className={isLeader ? "display-lg [font-weight:700]" : "display-md [font-weight:700]"}>{entry.driverFullName ?? entry.driver}</div>
                 <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">{entry.team}</div>
                 {entry.winProbability != null && entry.winProbability > 0 && (
                   <>

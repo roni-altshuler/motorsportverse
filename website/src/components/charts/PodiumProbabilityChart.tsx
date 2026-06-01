@@ -6,7 +6,11 @@ import { Bar } from "@visx/shape";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { AxisLeft, AxisBottom } from "@visx/axis";
 import { ParentSize } from "@visx/responsive";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import type { ClassificationEntry } from "@/types";
+
+/** SVG <image> ticks store public-rooted paths; basePath is applied here. */
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 interface PodiumProbabilityChartProps {
   classification: ClassificationEntry[];
@@ -135,12 +139,37 @@ function PodiumProbabilityChartInner({
           scale={yScale}
           stroke="var(--border)"
           tickStroke="var(--border)"
-          tickLabelProps={{
-            fill: "var(--text-secondary)",
-            fontSize: 11,
-            fontWeight: 700,
-            textAnchor: "end",
-            dy: "0.33em",
+          tickComponent={({ x, y, formattedValue }) => {
+            const code = formattedValue ?? "";
+            const path = resolveDriverHeadshot(code);
+            const SIZE = 24;
+            // Left-axis ticks are right-anchored at x; place the circular
+            // headshot just left of the axis, vertically centred on the bar.
+            return path ? (
+              <image
+                href={`${BASE_PATH}${path}`}
+                x={x - SIZE - 4}
+                y={y - SIZE / 2}
+                width={SIZE}
+                height={SIZE}
+                clipPath="circle(50%)"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <title>{code}</title>
+              </image>
+            ) : (
+              <text
+                x={x}
+                y={y}
+                dy="0.33em"
+                textAnchor="end"
+                fontSize={11}
+                fontWeight={700}
+                fill="var(--text-secondary)"
+              >
+                {code}
+              </text>
+            );
           }}
         />
         <AxisBottom

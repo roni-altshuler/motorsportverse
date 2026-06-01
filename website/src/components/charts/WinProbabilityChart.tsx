@@ -24,12 +24,15 @@ import {
 } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import type { ClassificationEntry } from "@/types";
 
 interface ChartRow {
   driver: string;
+  driverFullName: string;
   team: string;
   teamColor: string;
+  headshotUrl: string | null;
   winProbability: number;
   simulatorWinProbability: number | null;
   predictionIntervalLow: number | null;
@@ -47,8 +50,10 @@ function buildRows(classification: ClassificationEntry[]): ChartRow[] {
       };
       return {
         driver: cTyped.driver,
+        driverFullName: cTyped.driverFullName,
         team: cTyped.team,
         teamColor: cTyped.teamColor || "#888",
+        headshotUrl: cTyped.headshotUrl ?? null,
         winProbability: typeof cTyped.winProbability === "number" ? cTyped.winProbability : 0,
         simulatorWinProbability:
           typeof cTyped.simulatorWinProbability === "number"
@@ -84,10 +89,13 @@ function CustomTooltip({ active, payload }: TooltipPayload) {
       }}
     >
       <div className="mb-2 flex items-center gap-2">
-        <span
-          className="inline-block h-2 w-3 rounded-none"
-          style={{ background: row.teamColor }}
-          aria-hidden
+        <DriverPortrait
+          driver={row.driver}
+          driverFullName={row.driverFullName}
+          team={row.team}
+          teamColor={row.teamColor}
+          headshotUrl={row.headshotUrl}
+          size={20}
         />
         <span className="title-sm">{row.driver}</span>
         <span className="eyebrow">{row.team}</span>

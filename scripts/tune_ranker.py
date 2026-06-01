@@ -100,7 +100,6 @@ def objective(trial: optuna.Trial, X: pd.DataFrame, y: np.ndarray, groups_df: pd
             slice_y = y[test_idx][start:end]
             # finish-position → relevance: lower position is better
             relevance = np.clip(22.0 - np.clip(slice_y, 1, 22) + 1, 0, None)
-            order = np.argsort(-slice_scores) + 1  # 1-indexed predicted positions
             ordering = np.empty(size, dtype=np.int64)
             ordering[np.argsort(-slice_scores)] = np.arange(1, size + 1)
             per_race.append(_ndcg_at_k(ordering, relevance, k=5))

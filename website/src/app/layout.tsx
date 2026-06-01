@@ -44,7 +44,7 @@ const SITE_URL =
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const OG_DEFAULT = `${BASE_PATH}/og/default.png`;
 
-const SITE_TITLE = `F1 ${ACTIVE_SEASON_YEAR} Predictions | AI-Powered Race Forecasts`;
+const SITE_TITLE = `RaceIQ | F1 ${ACTIVE_SEASON_YEAR} Race Predictions & Forecasts`;
 const SITE_DESCRIPTION =
   `AI and machine learning-powered Formula 1 ${ACTIVE_SEASON_YEAR} season predictions. ` +
   "Race classifications, championship standings, pit strategy simulations, " +
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
-    siteName: "F1 Predictions",
+    siteName: "RaceIQ",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: "/",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
         url: OG_DEFAULT,
         width: 1200,
         height: 630,
-        alt: `F1 ${ACTIVE_SEASON_YEAR} Predictions — AI-powered race forecasts`,
+        alt: `RaceIQ — F1 ${ACTIVE_SEASON_YEAR} AI-powered race forecasts`,
       },
     ],
   },

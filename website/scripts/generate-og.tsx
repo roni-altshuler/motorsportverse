@@ -1,7 +1,7 @@
 /**
  * generate-og.tsx
  *
- * Renders 1200x630 Open Graph images for the F1 Predictions site.
+ * Renders 1200x630 Open Graph images for the RaceIQ site.
  *
  *   - public/og/default.png             site-wide fallback
  *   - public/og/round_NN.png            one per round (1..totalRounds)
@@ -307,7 +307,7 @@ function buildRaceCard(opts: {
             textTransform: "uppercase",
           },
         },
-        "F1 Predictions"
+        "RaceIQ"
       )
     ),
     // Race name + date + country block
@@ -521,7 +521,7 @@ function buildRaceCard(opts: {
             letterSpacing: "2px",
           },
         },
-        "f1-predictions"
+        "raceiq"
       )
     )
   );
@@ -579,7 +579,7 @@ function buildDefaultCard(season: number): Node {
             lineHeight: 1.0,
           },
         },
-        "F1 Predictions"
+        "RaceIQ"
       ),
       h(
         "div",
@@ -592,7 +592,7 @@ function buildDefaultCard(season: number): Node {
             maxWidth: "1000px",
           },
         },
-        "AI and machine-learning powered race forecasts, championship standings, pit-strategy simulations, and value-finder bets for every Grand Prix."
+        "AI and machine-learning powered race forecasts, championship standings, and pit-strategy simulations for every Grand Prix."
       )
     ),
     h(
@@ -627,7 +627,7 @@ function buildDefaultCard(season: number): Node {
           {
             style: { fontSize: "20px", fontWeight: 600, color: MUTED },
           },
-          "Race predictions * Standings * Accuracy * Value bets"
+          "Race predictions * Standings * Accuracy"
         )
       ),
       h(
@@ -640,7 +640,7 @@ function buildDefaultCard(season: number): Node {
             letterSpacing: "3px",
           },
         },
-        "f1-predictions"
+        "raceiq"
       )
     )
   );

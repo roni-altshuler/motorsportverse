@@ -418,7 +418,7 @@ def main(argv: list[str] | None = None) -> int:
             f"podium-hits={summary['podium_hit_rate']:.1%}  "
             f"winner-hits={summary['winner_hit_rate']:.1%}"
         )
-    print(f"📝 Written reports/historical_backtest.json + per-season files")
+    print("📝 Written reports/historical_backtest.json + per-season files")
     return 0
 
 

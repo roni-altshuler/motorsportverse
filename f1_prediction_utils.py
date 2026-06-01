@@ -24,7 +24,8 @@ Import in any race-specific script:
 import warnings
 warnings.filterwarnings("ignore")
 
-import os, json
+import os
+import json
 from datetime import datetime
 import numpy as np
 import pandas as pd

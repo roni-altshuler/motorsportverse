@@ -5,6 +5,7 @@ import { Crown, GitCompare, TrendingUp, Trophy } from "lucide-react";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import TeamColorBar from "@/components/ui/TeamColorBar";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import type { DriverStanding } from "@/types";
 
 interface ChampionshipKPIsProps {
@@ -51,9 +52,19 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
           </div>
           <div className="flex items-end justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none truncate">
-                {leader.driver}
-              </p>
+              <div className="flex items-center gap-3">
+                <DriverPortrait
+                  driver={leader.driver}
+                  driverFullName={leader.driverFullName}
+                  team={leader.team}
+                  teamColor={leader.teamColor}
+                  headshotUrl={leader.headshotUrl}
+                  size={40}
+                />
+                <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none truncate">
+                  {leader.driverFullName ?? leader.driver}
+                </p>
+              </div>
               <TeamColorBar
                 teamColor={leader.teamColor}
                 team={leader.team}
@@ -96,7 +107,7 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
               {closingIn
                 ? "Within a race weekend"
                 : runner
-                  ? `vs ${runner.driver}`
+                  ? `vs ${runner.driverFullName ?? runner.driver}`
                   : "—"}
             </p>
           </div>
@@ -112,9 +123,19 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
           </div>
           {mover ? (
             <div>
-              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[28px] !leading-none">
-                {mover.driver}
-              </p>
+              <div className="flex items-center gap-2">
+                <DriverPortrait
+                  driver={mover.driver}
+                  driverFullName={mover.driverFullName}
+                  team={mover.team}
+                  teamColor={mover.teamColor}
+                  headshotUrl={mover.headshotUrl}
+                  size={28}
+                />
+                <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[28px] !leading-none truncate">
+                  {mover.driverFullName ?? mover.driver}
+                </p>
+              </div>
               <p className="caption-uppercase text-[10px] mt-2 tracking-[0.18em] text-[color:var(--muted)]">
                 +<NumberTicker value={mover.jump} /> pts last round
               </p>
@@ -129,7 +150,7 @@ export default function ChampionshipKPIs({ drivers }: ChampionshipKPIsProps) {
       <BentoCard className="col-span-2 md:col-span-1 row-span-1">
         <div className="flex h-full flex-col justify-between p-5" data-team={leader.team}>
           <div className="flex items-center justify-between">
-            <p className="eyebrow">Wins · {leader.driver}</p>
+            <p className="eyebrow">Wins · {leader.driverFullName ?? leader.driver}</p>
             <Trophy className="w-4 h-4 text-[color:var(--accent-podium-1)]" />
           </div>
           <div>

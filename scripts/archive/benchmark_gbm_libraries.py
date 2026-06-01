@@ -21,7 +21,6 @@ Usage::
 from __future__ import annotations
 
 import argparse
-import sys
 from typing import Optional
 
 
@@ -44,7 +43,6 @@ def _import_catboost():
 
 
 def benchmark_round(round_num: int, season: int) -> int:
-    import numpy as np
     from sklearn.ensemble import GradientBoostingRegressor
     from sklearn.metrics import mean_absolute_error
     from sklearn.model_selection import train_test_split

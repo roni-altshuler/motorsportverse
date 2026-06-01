@@ -81,7 +81,7 @@ y_imp = results["y_imputed"]
 gb_model  = results["gb_model"]
 xgb_model = results["xgb_model"]
 
-print(f"\n  📐  ADDITIONAL MODEL DIAGNOSTICS")
+print("\n  📐  ADDITIONAL MODEL DIAGNOSTICS")
 print("  " + "-" * 64)
 print(f"  Training samples         : {len(results['X_imputed']) - len(results['X_test'])}")
 print(f"  Test samples             : {len(results['X_test'])}")
@@ -91,7 +91,7 @@ print(f"  Feature names            : {', '.join(results['feature_cols'])}")
 print()
 
 # Feature importance comparison
-print(f"  📈  FEATURE IMPORTANCE (Ensemble avg)")
+print("  📈  FEATURE IMPORTANCE (Ensemble avg)")
 print("  " + "-" * 50)
 feat_imp_gb  = gb_model.feature_importances_
 feat_imp_xgb = xgb_model.feature_importances_
@@ -108,7 +108,7 @@ print()
 
 # Prediction spread
 pred_times = merged["PredictedLapTime"]
-print(f"  📊  PREDICTION SPREAD")
+print("  📊  PREDICTION SPREAD")
 print("  " + "-" * 50)
 print(f"  Fastest predicted time   : {pred_times.min():.3f}s  "
       f"({classification.iloc[0]['Driver']} — {classification.iloc[0]['DriverName']})")

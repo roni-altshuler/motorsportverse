@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Roni Altshuler
+Copyright (c) 2026 RaceIQ — Roni Altshuler
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,33 +20,73 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
----
+================================================================================
+THIRD-PARTY DATA, IMAGERY & SOFTWARE
+================================================================================
 
-## Third-party data sources
+The MIT license above covers the RaceIQ source code in this repository. It does
+NOT extend to the third-party data, imagery, or software listed below, each of
+which is independently licensed by its owner. RaceIQ is an independent project
+and is NOT affiliated with Formula 1, the FIA, or any team; "F1" and
+"Formula 1" are trademarks of their respective owners. The detailed, regularly
+maintained breakdown lives in `docs/DATA_SOURCES.md`.
 
-This software ingests and visualises F1 race data from third-party sources
-that are independently licensed. The MIT licence above covers the source code
-in this repository and does NOT extend to the underlying data:
+--------------------------------------------------------------------------------
+Data sources
+--------------------------------------------------------------------------------
 
-- **FastF1 telemetry & timing** — accessed via the open-source FastF1 library
-  (MIT-licensed). Underlying timing data is the property of Formula One World
-  Championship Limited and used here under fair-use for non-commercial
+- FastF1 telemetry & timing — accessed via the open-source FastF1 library
+  (MIT-licensed). The underlying timing data is the property of Formula One
+  World Championship Limited and is used here under fair use for non-commercial
   predictive modelling.
-- **Jolpica / Ergast-compatible historical archive** — accessed via the
-  Jolpica public API. Underlying data is sourced from publicly-published
-  race classifications.
-- **Wikimedia Commons circuit photography** — individual photos are released
-  under various Creative Commons licences (CC BY-SA 3.0, CC BY 4.0, CC0).
-  Attribution is in
-  [`website/src/lib/raceArt.ts`](website/src/lib/raceArt.ts) where each URL
-  is anchored to the source page.
-- **Driver headshots** under [`website/public/headshots/`](website/public/headshots/)
-  are derived from publicly-published team and Formula One promotional
-  imagery and are used under fair-use for non-commercial analytical
-  visualisation. No claim of original authorship is made.
+- Jolpica / Ergast-compatible historical archive — accessed via the Jolpica
+  public API (a community mirror of the retired Ergast API). Underlying data is
+  sourced from publicly-published race classifications (open data, CC0).
+- Open-Meteo — free weather forecast API (planned/optional wiring; see
+  `docs/DATA_SOURCES.md`).
 
-The curated race-art manifest in [`website/src/lib/raceArt.ts`](website/src/lib/raceArt.ts)
-— the URLs themselves, not the underlying photos — is released under CC0.
+--------------------------------------------------------------------------------
+Imagery
+--------------------------------------------------------------------------------
+
+- Circuit photography (calendar page) — sourced from Wikimedia Commons under
+  various Creative Commons licences (CC BY-SA 3.0, CC BY 4.0, CC0), including
+  Planet Labs Inc. "SkySat" satellite aerials. Each URL is anchored to its
+  source page in `website/src/lib/raceArt.ts`. The curated URL manifest itself
+  (the list of URLs, not the underlying photos) is released under CC0.
+- Driver headshots — under `website/public/headshots/`, derived from
+  publicly-published team and Formula One promotional imagery, used under fair
+  use for non-commercial analytical visualisation. No claim of original
+  authorship is made.
+- Team logos — under `website/public/team-logos/`, trademarks of their
+  respective owners, used for identification under fair use.
+- Country flags — fetched at build time from flagcdn.com.
 
 If you are a rights-holder for any image referenced here and would like it
 removed or re-attributed, please open an issue in this repository.
+
+--------------------------------------------------------------------------------
+Software dependencies (each under its own license)
+--------------------------------------------------------------------------------
+
+Frontend:
+  Next.js (MIT), React (MIT), Tailwind CSS (MIT), Recharts (MIT),
+  @visx/* (MIT), Framer Motion (MIT), GSAP (GreenSock no-charge license),
+  Lenis (MIT), Magic UI (MIT), Lucide (ISC), Satori + @resvg/resvg-js (MIT),
+  Sharp (Apache-2.0), Playwright (Apache-2.0), Prettier (MIT), ESLint (MIT).
+
+Backend / ML:
+  scikit-learn (BSD-3), XGBoost (Apache-2.0), LightGBM (MIT), PyTorch (BSD),
+  pandas + NumPy (BSD), DuckDB (MIT), Matplotlib (PSF-based), seaborn (BSD),
+  Pillow (HPND/MIT-CMU), pytest (MIT), Ruff (MIT), mypy (MIT).
+
+--------------------------------------------------------------------------------
+Acknowledgement
+--------------------------------------------------------------------------------
+
+RaceIQ began from `mar-antaya/2025_f1_predictions` and has since been
+substantially extended. The original author retains credit for the initial v1
+framework.
+
+See `docs/DATA_SOURCES.md` for the authoritative, version-controlled list with
+links, roles, and usage notes.

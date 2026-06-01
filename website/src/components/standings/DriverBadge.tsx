@@ -77,11 +77,8 @@ export default function DriverBadge({
             <AnimatedNumber value={points} variant="default" decimals={0} />
           </div>
         </div>
-        <p className="text-lg font-black tracking-tight leading-tight">{driver}</p>
-        {driverFullName && driverFullName !== driver && (
-          <p className="text-xs text-[color:var(--text-muted)] mb-2">{driverFullName}</p>
-        )}
-        <p className="text-sm text-[color:var(--text-muted)]">{team}</p>
+        <p className="text-lg font-black tracking-tight leading-tight">{driverFullName ?? driver}</p>
+        <p className="text-sm text-[color:var(--text-muted)] mt-1">{team}</p>
         <div className="flex items-center gap-3 mt-3 text-[11px] font-mono text-[color:var(--text-muted)]">
           <span>
             <span className="text-[color:var(--hud-champagne)] font-bold">{wins}</span> wins

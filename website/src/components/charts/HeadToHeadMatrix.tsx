@@ -5,7 +5,11 @@ import { Group } from "@visx/group";
 import { scaleBand } from "@visx/scale";
 import { AxisLeft, AxisTop } from "@visx/axis";
 import { ParentSize } from "@visx/responsive";
+import { resolveDriverHeadshot } from "@/lib/headshots";
 import type { ClassificationEntry } from "@/types";
+
+/** SVG <image> ticks store public-rooted paths; basePath is applied here. */
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 interface HeadToHeadMatrixProps {
   classification: ClassificationEntry[];
@@ -128,16 +132,46 @@ function MatrixInner({
             dy: "-0.5em",
           }}
         />
+        {/* headshot tick not applied to the top (AxisTop, column) axis:
+            labels are rotated -45 degrees and bands are narrow in this N×N
+            matrix — an image would collide with neighbours. The native title
+            tooltip on each cell carries the driver codes. */}
         <AxisLeft
           scale={axis}
           stroke="var(--border)"
           tickStroke="var(--border)"
-          tickLabelProps={{
-            fill: "var(--text-secondary)",
-            fontSize: 11,
-            fontWeight: 700,
-            textAnchor: "end",
-            dy: "0.33em",
+          tickComponent={({ x, y, formattedValue }) => {
+            const code = formattedValue ?? "";
+            const path = resolveDriverHeadshot(code);
+            // Fit the circular headshot inside the row band, capped at 24px.
+            const SIZE = Math.min(24, Math.max(0, axis.bandwidth()));
+            // Only render an image when the band is tall enough to read it;
+            // otherwise keep the compact code text.
+            return path && SIZE >= 14 ? (
+              <image
+                href={`${BASE_PATH}${path}`}
+                x={x - SIZE - 4}
+                y={y - SIZE / 2}
+                width={SIZE}
+                height={SIZE}
+                clipPath="circle(50%)"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <title>{code}</title>
+              </image>
+            ) : (
+              <text
+                x={x}
+                y={y}
+                dy="0.33em"
+                textAnchor="end"
+                fontSize={11}
+                fontWeight={700}
+                fill="var(--text-secondary)"
+              >
+                {code}
+              </text>
+            );
           }}
         />
       </Group>

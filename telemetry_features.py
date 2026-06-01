@@ -20,7 +20,6 @@ import os
 import sys
 import warnings
 
-import numpy as np
 
 warnings.filterwarnings("ignore")
 
@@ -29,7 +28,6 @@ from f1_prediction_utils import (
     CALENDAR,
     TEAM_COLOURS,
     DRIVER_TEAM,
-    DRIVER_FULL_NAMES,
     SEASON_YEAR,
 )
 
@@ -488,7 +486,7 @@ def extract_telemetry_for_round(
         race_control = []
 
     if not speed_traps and not sector_times and not stints and not track_status and not pit_impact and not sector_dominance and not race_control:
-        print(f"  ⚠️  No telemetry data available")
+        print("  ⚠️  No telemetry data available")
         return None
 
     telemetry = {

@@ -753,8 +753,16 @@ export default function RaceDetailPage({ round }: Props) {
                                 P{row.position}
                               </span>
                               <div className="team-color-bar h-10" style={{ backgroundColor: row.teamColor }} />
+                              <DriverPortrait
+                                driver={row.driver}
+                                driverFullName={row.driverFullName}
+                                team={row.team}
+                                teamColor={row.teamColor}
+                                headshotUrl={resolveDriverHeadshot(row.driver)}
+                                size={56}
+                              />
                               <div>
-                                <p className="font-black" style={{ color: "var(--text)" }}>{row.driver}</p>
+                                <p className="font-black" style={{ color: "var(--text)" }}>{row.driverFullName ?? row.driver}</p>
                                 <p className="text-xs" style={{ color: "var(--text-muted)" }}>{row.team}</p>
                               </div>
                               <p className="ml-auto text-sm font-mono" style={{ color: "var(--text-muted)" }}>
@@ -781,8 +789,17 @@ export default function RaceDetailPage({ round }: Props) {
                                 <tr key={`${activeSession.key}-${row.driver}`}>
                                   <td><span className={`position-badge ${row.position <= 3 ? `p${row.position}` : row.position <= 10 ? "points" : "no-points"}`}>P{row.position}</span></td>
                                   <td>
-                                    <span className="font-bold" style={{ color: "var(--text)" }}>{row.driver}</span>
-                                    <span className="ml-2 text-xs" style={{ color: "var(--text-muted)" }}>{row.driverFullName}</span>
+                                    <span className="flex items-center gap-2">
+                                      <DriverPortrait
+                                        driver={row.driver}
+                                        driverFullName={row.driverFullName}
+                                        team={row.team}
+                                        teamColor={row.teamColor}
+                                        headshotUrl={resolveDriverHeadshot(row.driver)}
+                                        size={28}
+                                      />
+                                      <span className="font-bold" style={{ color: "var(--text)" }}>{row.driverFullName ?? row.driver}</span>
+                                    </span>
                                   </td>
                                   <td>
                                     <span className="inline-flex items-center gap-2">
@@ -1032,8 +1049,7 @@ export default function RaceDetailPage({ round }: Props) {
                                 headshotUrl={resolveDriverHeadshot(entry.driver, entry.headshotUrl)}
                                 size={28}
                               />
-                              <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driver}</span>
-                              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{entry.driverFullName}</span>
+                              <span className="font-bold" style={{ color: "var(--text)" }}>{entry.driverFullName ?? entry.driver}</span>
                               <span
                                 className="text-xs font-mono select-none"
                                 style={{ color: "var(--text-muted)" }}
@@ -1254,7 +1270,18 @@ export default function RaceDetailPage({ round }: Props) {
                         {data.telemetryData.speedTraps.slice(0, 10).map((st, i) => (
                           <tr key={`${st.driver}-${st.sector}`} style={{ borderBottom: "1px solid var(--border)" }}>
                             <td className="px-3 py-2 font-bold" style={{ color: "var(--text-muted)" }}>{i + 1}</td>
-                            <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>{st.driver}</td>
+                            <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>
+                              <span className="flex items-center gap-2">
+                                <DriverPortrait
+                                  driver={st.driver}
+                                  team={st.team}
+                                  teamColor={st.teamColor}
+                                  headshotUrl={resolveDriverHeadshot(st.driver)}
+                                  size={24}
+                                />
+                                <span>{st.driver}</span>
+                              </span>
+                            </td>
                             <td className="px-3 py-2 flex items-center gap-2">
                               <div className="w-1 h-4 rounded" style={{ backgroundColor: st.teamColor }} />
                               <span style={{ color: "var(--text-muted)" }}>{st.team}</span>
@@ -1284,7 +1311,18 @@ export default function RaceDetailPage({ round }: Props) {
                         {data.telemetryData.sectorTimes.slice(0, 10).map((st, i) => (
                           <tr key={st.driver} style={{ borderBottom: "1px solid var(--border)" }}>
                             <td className="px-3 py-2 font-bold" style={{ color: "var(--text-muted)" }}>{i + 1}</td>
-                            <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>{st.driver}</td>
+                            <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>
+                              <span className="flex items-center gap-2">
+                                <DriverPortrait
+                                  driver={st.driver}
+                                  team={st.team}
+                                  teamColor={st.teamColor}
+                                  headshotUrl={resolveDriverHeadshot(st.driver)}
+                                  size={24}
+                                />
+                                <span>{st.driver}</span>
+                              </span>
+                            </td>
                             <td className="px-3 py-2 flex items-center gap-2">
                               <div className="w-1 h-4 rounded" style={{ backgroundColor: st.teamColor }} />
                               <span style={{ color: "var(--text-muted)" }}>{st.team}</span>
@@ -1312,7 +1350,16 @@ export default function RaceDetailPage({ round }: Props) {
                   return (
                     <div key={`stint-${row.driver}`}>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-bold" style={{ color: "var(--text)" }}>{row.driver}</span>
+                        <span className="flex items-center gap-2 text-sm font-bold" style={{ color: "var(--text)" }}>
+                          <DriverPortrait
+                            driver={row.driver}
+                            team={row.team}
+                            teamColor={row.teamColor}
+                            headshotUrl={resolveDriverHeadshot(row.driver)}
+                            size={24}
+                          />
+                          <span>{row.driver}</span>
+                        </span>
                         <span className="text-xs" style={{ color: "var(--text-muted)" }}>{row.team}</span>
                       </div>
                       <div className="h-6 rounded-md overflow-hidden flex" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
@@ -1430,7 +1477,18 @@ export default function RaceDetailPage({ round }: Props) {
                       const rankColor = (r: number) => r <= 3 ? "var(--accent-positive)" : r <= 8 ? "var(--accent-info)" : "var(--accent-live)";
                       return (
                         <tr key={`dom-${row.driver}`} style={{ borderBottom: "1px solid var(--border)" }}>
-                          <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>{row.driver}</td>
+                          <td className="px-3 py-2 font-bold" style={{ color: "var(--text)" }}>
+                            <span className="flex items-center gap-2">
+                              <DriverPortrait
+                                driver={row.driver}
+                                team={row.team}
+                                teamColor={row.teamColor}
+                                headshotUrl={resolveDriverHeadshot(row.driver)}
+                                size={24}
+                              />
+                              <span>{row.driver}</span>
+                            </span>
+                          </td>
                           <td className="px-3 py-2" style={{ color: "var(--text-muted)" }}>{row.team}</td>
                           <td className="px-3 py-2 font-mono" style={{ color: rankColor(row.sector1Rank) }}>#{row.sector1Rank}</td>
                           <td className="px-3 py-2 font-mono" style={{ color: rankColor(row.sector2Rank) }}>#{row.sector2Rank}</td>

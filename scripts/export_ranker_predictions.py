@@ -189,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
         f.write("\n")
     print(f"  Wrote {len(payload['predictions'])} predictions → {out}")
     print(f"  Plackett-Luce temperature: {result.metadata['temperature']:.3f}")
-    print(f"  Top 3:")
+    print("  Top 3:")
     for entry in payload["predictions"][:3]:
         print(f"    P{entry['position']}  {entry['driver']:>6}  "
               f"win={entry['winProbability']:.3f}  podium={entry['podiumProbability']:.3f}")

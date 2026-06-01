@@ -20,8 +20,7 @@ import sys
 # Add project root to path
 sys.path.insert(0, os.path.dirname(__file__))
 from f1_prediction_utils import (
-    CALENDAR, SEASON_YEAR, CIRCUIT_CHARACTERISTICS, DRIVER_QUALI_OFFSET,
-    generate_qualifying_estimates,
+    CALENDAR, SEASON_YEAR, generate_qualifying_estimates,
 )
 
 

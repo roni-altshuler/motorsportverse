@@ -8,6 +8,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.{ts,tsx}\"",
     "og": "tsx scripts/generate-og.tsx",
     "webp": "tsx scripts/convert-viz-to-webp.ts",
     "shoot": "tsx scripts/screenshot.ts"
@@ -49,6 +51,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "playwright": "^1.60.0",
+    "prettier": "^3.4.2",
     "satori": "^0.26.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.3",

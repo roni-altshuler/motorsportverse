@@ -12,6 +12,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 import type { ClassificationEntry } from "@/types";
 
 interface PredictedPaceChartProps {
@@ -22,8 +23,10 @@ interface PredictedPaceChartProps {
 
 interface Row {
   driver: string;
+  driverFullName: string;
   team: string;
   teamColor: string;
+  headshotUrl: string | null;
   predictedTime: number;
   gapMs: number;
   /** [lower, upper] error-bar deltas in milliseconds, relative to gapMs. */
@@ -43,10 +46,13 @@ function TooltipBody({ active, payload }: { active?: boolean; payload?: Array<{ 
       }}
     >
       <div className="flex items-center gap-2 mb-2">
-        <span
-          className="inline-block h-2 w-3 rounded-none"
-          style={{ background: row.teamColor }}
-          aria-hidden
+        <DriverPortrait
+          driver={row.driver}
+          driverFullName={row.driverFullName}
+          team={row.team}
+          teamColor={row.teamColor}
+          headshotUrl={row.headshotUrl}
+          size={20}
         />
         <span className="title-sm">{row.driver}</span>
         <span className="eyebrow">{row.team}</span>
@@ -82,8 +88,10 @@ export default function PredictedPaceChart({ classification, limit = 14 }: Predi
       }
       return {
         driver: c.driver,
+        driverFullName: c.driverFullName,
         team: c.team,
         teamColor: c.teamColor || "#888",
+        headshotUrl: c.headshotUrl ?? null,
         predictedTime: c.predictedTime,
         gapMs,
         ciError,

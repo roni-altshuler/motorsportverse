@@ -184,7 +184,7 @@ function ForecastRow({ row, topProb, reduced, dimmed }: ForecastRowProps) {
             className="font-display font-bold tracking-[0.04em] uppercase text-sm truncate"
             style={{ color: "var(--text)" }}
           >
-            {row.driver}
+            {row.driverFullName ?? row.driver}
             <span
               className="ml-2 font-sans font-normal normal-case text-[10px] tracking-normal"
               style={{ color: "var(--text-muted)" }}

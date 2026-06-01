@@ -60,7 +60,6 @@ def _build_objective(season: int, holdout_round: int):
     We import the heavy stack lazily so a `--help` invocation does not
     require pandas/xgboost.
     """
-    import numpy as np
     from sklearn.ensemble import GradientBoostingRegressor
     from sklearn.metrics import mean_absolute_error
     from xgboost import XGBRegressor

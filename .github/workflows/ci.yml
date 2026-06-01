@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Lint with ruff
-        run: ruff check leakage.py forward_eval.py tests/
+        run: ruff check .
 
       - name: Run pytest
         run: pytest tests/ -v --tb=short

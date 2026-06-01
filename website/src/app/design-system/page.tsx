@@ -20,7 +20,7 @@ import { Stat } from "@/components/ui/Stat";
 import MagicUIGallery from "@/components/design-system/MagicUIGallery";
 
 export const metadata: Metadata = {
-  title: "Design System · F1 Predictions",
+  title: "Design System · RaceIQ",
   description:
     "Internal showcase of design tokens, palette, typography, and UI primitives.",
 };
@@ -65,7 +65,7 @@ export default function DesignSystemPage() {
       <header className="space-y-3">
         <Badge variant="live">Internal · QA</Badge>
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
-          F1 Predictions · Design System
+          RaceIQ · Design System
         </h1>
         <p className="text-[color:var(--text-secondary)] max-w-2xl">
           Racing-inspired tokens, typography, and primitives. Theme-swap via the

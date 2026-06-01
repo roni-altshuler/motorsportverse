@@ -87,10 +87,10 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
           />
           <div className="min-w-0 flex-1">
             <p className="caption-uppercase text-[10px] tracking-[0.18em] truncate">
-              {driver.driverFullName ?? driver.driver}
-            </p>
-            <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1">
               {driver.driver}
+            </p>
+            <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1 truncate">
+              {driver.driverFullName ?? driver.driver}
             </p>
             <div className="flex items-center gap-2 mt-2">
               <TeamColorBar teamColor={driver.teamColor} team={driver.team} size="sm" />

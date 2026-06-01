@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import type { DriverStanding } from "@/types";
 import { computeForecast } from "@/lib/standingsForecast";
+import DriverPortrait from "@/components/standings/DriverPortrait";
 
 interface Props {
   data: DriverStanding[];
@@ -182,10 +183,13 @@ function ChartLegend({ drivers }: { drivers: DriverStanding[] }) {
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         {drivers.map((d) => (
           <span key={d.driver} className="inline-flex items-center gap-1.5">
-            <span
-              aria-hidden
-              className="inline-block w-2.5 h-2.5 rounded-full"
-              style={{ background: d.teamColor }}
+            <DriverPortrait
+              driver={d.driver}
+              driverFullName={d.driverFullName}
+              team={d.team}
+              teamColor={d.teamColor}
+              headshotUrl={d.headshotUrl}
+              size={18}
             />
             <span style={{ color: "var(--text)" }}>{d.driver}</span>
           </span>

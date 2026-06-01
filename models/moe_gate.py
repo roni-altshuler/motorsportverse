@@ -43,7 +43,6 @@ strictly prior to (s, r).
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Sequence
 
 import numpy as np
 from scipy.optimize import minimize
@@ -134,7 +133,6 @@ class LearnedGate:
         self, theta: np.ndarray, examples: list[TrainingExample]
     ) -> tuple[float, np.ndarray]:
         W, b = self._unpack(theta)
-        K, d = self.n_experts, self.n_features
         total_loss = 0.0
         dW = np.zeros_like(W)
         db = np.zeros_like(b)

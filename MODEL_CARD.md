@@ -1,7 +1,7 @@
-# Model Card — F1 Race Predictions (2026 season)
+# Model Card — RaceIQ (2026 season)
 
-This card documents the predictive model that powers the F1 Predictions
-website and the experimental `/value` betting page. It follows the
+This card documents the predictive model that powers the RaceIQ
+website. It follows the
 [Model Cards for Model Reporting](https://arxiv.org/abs/1810.03993) format and
 is the canonical reference for what the model is, what it is **not**, and the
 honest limits of what it can claim.

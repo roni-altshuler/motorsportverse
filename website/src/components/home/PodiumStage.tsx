@@ -89,9 +89,9 @@ export default function PodiumStage({ entries, startDelay = 0, immediate = false
                   />
                 </div>
               </div>
-              <div className={isLeader ? "display-lg" : "display-md"}>{entry.driver}</div>
+              <div className={isLeader ? "display-lg" : "display-md"}>{entry.driverFullName ?? entry.driver}</div>
               <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">
-                {entry.driverFullName ?? entry.team}
+                {entry.team}
               </div>
               <p className="eyebrow mb-2">Win probability</p>
               {entry.winProbability != null && entry.winProbability > 0 ? (
