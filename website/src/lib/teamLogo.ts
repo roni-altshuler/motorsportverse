@@ -23,18 +23,23 @@ const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
  * Team name → checked-in asset filename. Filenames are case-sensitive
  * and must match exactly what's under `public/team-logos/`.
  */
+// Normalised assets under `team-logos/norm/` — every raster logo has had its
+// baked background stripped (white / checkerboard keyed to transparent),
+// autocropped to the mark, and re-padded onto a uniform transparent square so
+// all logos share the same optical footprint inside <TeamBadge>. Alpine stays
+// as its source SVG (already a clean single-colour vector).
 const LOGO_BY_TEAM: Record<string, string> = {
-  Mercedes: "MercedesBenzLogo.png",
-  "Red Bull Racing": "RedBullLogo.webp",
-  Ferrari: "FerrariLogo.avif",
-  McLaren: "MclarenLogo.jpg",
-  "Aston Martin": "AstonMartinLogo.png",
+  Mercedes: "norm/Mercedes.png",
+  "Red Bull Racing": "norm/RedBullRacing.png",
+  Ferrari: "norm/Ferrari.png",
+  McLaren: "norm/McLaren.png",
+  "Aston Martin": "norm/AstonMartin.png",
   Alpine: "AlpineLogo.svg",
-  Williams: "WilliamsLogo.png",
-  "Racing Bulls": "RacingBullLogo.png",
-  Haas: "HaasLogo.jpg",
-  Audi: "AudiLogo.png",
-  Cadillac: "CadillacLogo.webp",
+  Williams: "norm/Williams.png",
+  "Racing Bulls": "norm/RacingBulls.png",
+  Haas: "norm/Haas.png",
+  Audi: "norm/Audi.png",
+  Cadillac: "norm/Cadillac.png",
 };
 
 /**
