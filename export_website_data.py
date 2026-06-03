@@ -662,10 +662,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                                              sprint=info.get("sprint", False))
     quali_estimates = generate_qualifying_estimates(gp_key)
     quali           = get_qualifying_or_estimates(SEASON_YEAR, gp_key, quali_estimates)
+    # Official grid (incl. no-time drivers at the back) captured during the
+    # qualifying fetch — used to seat DNS / deleted-lap drivers correctly.
+    quali_grid      = get_last_qualifying_grid(SEASON_YEAR, gp_key)
     merged          = apply_qualifying_data(merged, quali,
                                             rain_probability=weather["rain"],
                                             temperature_c=weather["temp"],
-                                            fallback_times=quali_estimates)
+                                            fallback_times=quali_estimates,
+                                            grid_positions=quali_grid)
 
     game_theory_diag = {"enabled": False, "reason": "disabled"}
     game_theory_flag = str(os.getenv("ENABLE_GAME_THEORY_ENHANCEMENTS", "1")).strip().lower()
