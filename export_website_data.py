@@ -617,7 +617,46 @@ def export_season_metadata():
     path = os.path.join(DATA_DIR, "season.json")
     _write_json(path, season)
     print(f"✅ Season metadata → {path}")
+
+    _write_seasons_index(completed)
     return season
+
+
+def _write_seasons_index(completed_rounds=None):
+    """Write seasons.json — the multi-season index the website reads to know
+    which seasons exist and which is current.
+
+    The ACTIVE season's data lives at the top level of ``website/public/data``;
+    ARCHIVED seasons live under ``website/public/data/seasons/<year>/`` (created
+    by ``scripts/season_rollover.py``). The frontend resolves a season's base
+    path as ``/data`` when it is current, else ``/data/seasons/<year>``.
+    """
+    seasons_dir = os.path.join(DATA_DIR, "seasons")
+    archived = []
+    if os.path.isdir(seasons_dir):
+        for name in os.listdir(seasons_dir):
+            if name.isdigit() and os.path.isdir(os.path.join(seasons_dir, name)):
+                archived.append(int(name))
+    available = sorted(set(archived) | {int(SEASON_YEAR)})
+    index = {
+        "current": int(SEASON_YEAR),
+        "available": available,
+        "archived": sorted(archived),
+        "lastUpdated": _utc_now_iso(),
+        "seasons": [
+            {
+                "year": y,
+                "isCurrent": y == int(SEASON_YEAR),
+                # base path the frontend appends after its data root
+                "path": "" if y == int(SEASON_YEAR) else f"seasons/{y}",
+                "label": str(y),
+            }
+            for y in available
+        ],
+    }
+    _write_json(os.path.join(DATA_DIR, "seasons.json"), index)
+    print(f"✅ Seasons index → seasons.json (current={SEASON_YEAR}, available={available})")
+    return index
 
 
 # ═════════════════════════════════════════════════════════════════════════

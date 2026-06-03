@@ -10,6 +10,7 @@ import SeasonRibbon from "@/components/calendar/SeasonRibbon";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { fetchSeasonData, fetchSeasonTrackerData, formatDate, getRoundLifecycle, getRoundStatusMeta } from "@/lib/data";
+import { useSeason } from "@/lib/SeasonProvider";
 
 const TONE_TO_BADGE_VARIANT = {
   red: "negative",
@@ -31,11 +32,12 @@ const LIFECYCLE_BORDER: Record<string, string> = {
 export default function CalendarPage() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const { basePath } = useSeason();
 
   useEffect(() => {
-    fetchSeasonData().then(setSeason).catch(console.error);
-    fetchSeasonTrackerData().then(setTracker).catch(() => {});
-  }, []);
+    fetchSeasonData(basePath).then(setSeason).catch(console.error);
+    fetchSeasonTrackerData(basePath).then(setTracker).catch(() => {});
+  }, [basePath]);
 
   if (!season) {
     return (

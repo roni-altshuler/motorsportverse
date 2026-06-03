@@ -47,6 +47,7 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
+import { useSeason } from "@/lib/SeasonProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 // Centralised legacy status-pill tone → Badge variant map.  Same as the
@@ -98,6 +99,7 @@ function bestQualifyingTime(row: { q1?: string | null; q2?: string | null; q3?: 
 }
 
 export default function RaceDetailPage({ round }: Props) {
+  const { basePath } = useSeason();
   const [data, setData] = useState<RoundData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("weekend");
@@ -113,7 +115,7 @@ export default function RaceDetailPage({ round }: Props) {
   // of the season/round-data fetch so it can run in parallel.
   useEffect(() => {
     let active = true;
-    fetchStandingsData()
+    fetchStandingsData(basePath)
       .then((s) => {
         if (active) setStandings(s.drivers ?? null);
       })
@@ -121,16 +123,16 @@ export default function RaceDetailPage({ round }: Props) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [basePath]);
 
   useEffect(() => {
     let active = true;
-    fetchSeasonData()
+    fetchSeasonData(basePath)
       .then((seasonData) => {
         if (!active) return;
         setSeason(seasonData);
         const expectedRace = seasonData.calendar.find((race) => race.round === round);
-        fetchRoundData(round)
+        fetchRoundData(round, basePath)
           .then((roundData) => {
             if (!active) return;
             const matchesCalendar =
@@ -143,12 +145,12 @@ export default function RaceDetailPage({ round }: Props) {
       .catch(() => {
         if (!active) return;
         setSeason(null);
-        fetchRoundData(round).then(setData).catch(() => setData(null));
+        fetchRoundData(round, basePath).then(setData).catch(() => setData(null));
       });
     return () => {
       active = false;
     };
-  }, [round]);
+  }, [round, basePath]);
 
   if (!season && !data) {
     return (

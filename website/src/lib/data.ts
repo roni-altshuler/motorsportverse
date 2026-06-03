@@ -10,23 +10,32 @@ import {
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const BASE_PATH = PREFIX + "/data";
+export const BASE_PATH = PREFIX + "/data";
 
-export async function fetchSeasonData(): Promise<SeasonData> {
-  const res = await fetch(`${BASE_PATH}/season.json`);
+/**
+ * Resolve the data root for a season. The active season lives at /data; an
+ * archived season lives at /data/seasons/<year>. Pass the result as the `base`
+ * arg to any fetcher to load a specific season (defaults to the current one).
+ */
+export function seasonBasePath(relativePath?: string | null): string {
+  return relativePath ? `${BASE_PATH}/${relativePath}` : BASE_PATH;
+}
+
+export async function fetchSeasonData(base: string = BASE_PATH): Promise<SeasonData> {
+  const res = await fetch(`${base}/season.json`);
   if (!res.ok) throw new Error("Failed to fetch season data");
   return res.json();
 }
 
-export async function fetchRoundData(round: number): Promise<RoundData> {
+export async function fetchRoundData(round: number, base: string = BASE_PATH): Promise<RoundData> {
   const pad = round.toString().padStart(2, "0");
-  const res = await fetch(`${BASE_PATH}/rounds/round_${pad}.json`);
+  const res = await fetch(`${base}/rounds/round_${pad}.json`);
   if (!res.ok) throw new Error(`Failed to fetch round ${round} data`);
   return res.json();
 }
 
-export async function fetchStandingsData(): Promise<StandingsData> {
-  const res = await fetch(`${BASE_PATH}/standings.json`);
+export async function fetchStandingsData(base: string = BASE_PATH): Promise<StandingsData> {
+  const res = await fetch(`${base}/standings.json`);
   if (!res.ok) throw new Error("Failed to fetch standings data");
   return res.json();
 }
@@ -226,9 +235,9 @@ export function getCurrentRaceContext(
   return { liveRound, nextRound, latestPredictionRound, latestOfficialRound };
 }
 
-export async function fetchWeatherData(): Promise<WeatherData | null> {
+export async function fetchWeatherData(base: string = BASE_PATH): Promise<WeatherData | null> {
   try {
-    const res = await fetch(`${BASE_PATH}/weather.json`);
+    const res = await fetch(`${base}/weather.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -236,9 +245,9 @@ export async function fetchWeatherData(): Promise<WeatherData | null> {
   }
 }
 
-export async function fetchSeasonTrackerData(): Promise<SeasonTrackerData | null> {
+export async function fetchSeasonTrackerData(base: string = BASE_PATH): Promise<SeasonTrackerData | null> {
   try {
-    const res = await fetch(`${BASE_PATH}/season_tracker.json`);
+    const res = await fetch(`${base}/season_tracker.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -246,9 +255,9 @@ export async function fetchSeasonTrackerData(): Promise<SeasonTrackerData | null
   }
 }
 
-export async function fetchChampionshipForecast(): Promise<ChampionshipForecast | null> {
+export async function fetchChampionshipForecast(base: string = BASE_PATH): Promise<ChampionshipForecast | null> {
   try {
-    const res = await fetch(`${BASE_PATH}/championship_forecast.json`);
+    const res = await fetch(`${base}/championship_forecast.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {

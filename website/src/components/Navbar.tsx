@@ -16,6 +16,8 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
+import { useSeason } from "@/lib/SeasonProvider";
+import SeasonSwitcher from "@/components/SeasonSwitcher";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const GITHUB_URL = "https://github.com/roni-altshuler/f1_predictions";
@@ -25,13 +27,16 @@ interface AccuracySummary {
   roundsWithActual: number;
 }
 
-function useAccuracySummary(): AccuracySummary | null {
+function useAccuracySummary(base: string): AccuracySummary | null {
   const [summary, setSummary] = useState<AccuracySummary | null>(null);
   useEffect(() => {
-    fetch(`${BASE_PATH}/data/gp_accuracy_report.json`)
+    fetch(`${base}/gp_accuracy_report.json`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (!d?.overallAccuracy) return;
+        if (!d?.overallAccuracy) {
+          setSummary(null);
+          return;
+        }
         setSummary({
           // Prefer the finisher figure (pace-forecast skill); falls back to raw.
           accuracyPct: d.overallAccuracy.seasonAccuracyPctClassified
@@ -40,7 +45,7 @@ function useAccuracySummary(): AccuracySummary | null {
         });
       })
       .catch(() => {});
-  }, []);
+  }, [base]);
   return summary;
 }
 
@@ -65,13 +70,19 @@ export default function Navbar() {
   const standingsRef = useRef<HTMLDivElement>(null);
   const racesCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const standingsCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const accuracy = useAccuracySummary();
+  const { basePath, year, index } = useSeason();
+  const accuracy = useAccuracySummary(basePath);
   const { scrollY } = useScroll();
 
+  // Append ?season=<year> to in-app links when viewing a non-current season so
+  // deep links land on the right archive.
+  const withSeason = (href: string) =>
+    index && year !== index.current ? `${href}${href.includes("?") ? "&" : "?"}season=${year}` : href;
+
   useEffect(() => {
-    fetchSeasonData().then(setSeason).catch(() => {});
-    fetchSeasonTrackerData().then(setTracker).catch(() => {});
-  }, []);
+    fetchSeasonData(basePath).then(setSeason).catch(() => setSeason(null));
+    fetchSeasonTrackerData(basePath).then(setTracker).catch(() => setTracker(null));
+  }, [basePath]);
 
   // Outside-click to close dropdowns
   useEffect(() => {
@@ -152,7 +163,7 @@ export default function Navbar() {
 
   const navLink = (href: string, label: string) => (
     <Link
-      href={href}
+      href={withSeason(href)}
       aria-current={isActive(href) ? "page" : undefined}
       className={`${navLinkBase} ${
         isActive(href)
@@ -185,6 +196,7 @@ export default function Navbar() {
         className="overflow-hidden border-b border-[color:var(--hairline)]/60"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-end gap-2 text-[10px]">
+          <SeasonSwitcher />
           {accuracy && accuracy.roundsWithActual > 0 && (
             <Link
               href="/about#methodology"
@@ -301,7 +313,7 @@ export default function Navbar() {
                   >
                     <div className="p-2">
                       <Link
-                        href="/calendar"
+                        href={withSeason("/calendar")}
                         onClick={() => setRacesOpen(false)}
                         className="nav-link-text flex items-center gap-3 px-3 py-2.5 text-[color:var(--ink)] transition-colors hover:bg-[color:var(--surface-elevated)]"
                       >
@@ -316,7 +328,7 @@ export default function Navbar() {
                         return (
                           <Link
                             key={race.round}
-                            href={`/race/${race.round}`}
+                            href={withSeason(`/race/${race.round}`)}
                             onClick={() => setRacesOpen(false)}
                             role="menuitem"
                             className="flex items-center gap-3 px-3 py-2 text-sm font-serif transition-colors hover:bg-[color:var(--surface-elevated)]"
@@ -374,9 +386,9 @@ export default function Navbar() {
                   >
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { href: "/standings?tab=drivers", label: "Drivers", hint: "Per-driver totals" },
-                        { href: "/standings?tab=constructors", label: "Constructors", hint: "Team-by-team" },
-                        { href: "/standings?tab=whocanwin", label: "Who Can Still Win", hint: "Mathematical title race" },
+                        { href: withSeason("/standings?tab=drivers"), label: "Drivers", hint: "Per-driver totals" },
+                        { href: withSeason("/standings?tab=constructors"), label: "Constructors", hint: "Team-by-team" },
+                        { href: withSeason("/standings?tab=whocanwin"), label: "Who Can Still Win", hint: "Mathematical title race" },
                       ].map((item) => (
                         <Link
                           key={item.href}
@@ -406,7 +418,7 @@ export default function Navbar() {
           {/* CTA */}
           {nextRound && (
             <Link
-              href={`/race/${nextRound.round}`}
+              href={withSeason(`/race/${nextRound.round}`)}
               className="hidden sm:block"
               aria-label={`Next race: ${nextRound.name}`}
             >
@@ -458,8 +470,8 @@ export default function Navbar() {
               <nav className="flex flex-col gap-0 py-2">
                 {[
                   { href: "/", label: "Home" },
-                  { href: "/calendar", label: "Season Calendar" },
-                  { href: "/standings", label: "Standings" },
+                  { href: withSeason("/calendar"), label: "Season Calendar" },
+                  { href: withSeason("/standings"), label: "Standings" },
                   { href: "/accuracy", label: "Accuracy" },
                   { href: "/about", label: "About" },
                 ].map((item) => (
@@ -480,7 +492,7 @@ export default function Navbar() {
 
                 {nextRound && (
                   <div className="px-5 pt-4">
-                    <Link href={`/race/${nextRound.round}`} onClick={() => setMobileOpen(false)}>
+                    <Link href={withSeason(`/race/${nextRound.round}`)} onClick={() => setMobileOpen(false)}>
                       <ShimmerButton
                         background="var(--accent-f1-red)"
                         shimmerColor="rgba(255,255,255,0.9)"
@@ -501,7 +513,7 @@ export default function Navbar() {
                       .map((race) => (
                         <Link
                           key={race.round}
-                          href={`/race/${race.round}`}
+                          href={withSeason(`/race/${race.round}`)}
                           onClick={() => setMobileOpen(false)}
                           className="px-5 py-3 row-spec text-sm flex items-center gap-2 justify-between font-serif transition-colors hover:text-[color:var(--ink)]"
                           style={{ color: "var(--body)" }}
