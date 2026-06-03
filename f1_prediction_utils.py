@@ -1057,8 +1057,54 @@ def build_training_dataset(grid, driver_stats, circuit_key="Australia",
 # 5. QUALIFYING DATA — AUTOMATIC INGESTION (with date guard + timeout)
 # ==========================================================================
 
+# Cache of the most recently-fetched official grid order, keyed by
+# "<year>:<grand_prix>".  Populated by ``fetch_qualifying_data`` (no extra
+# FastF1 load) and read by ``get_last_qualifying_grid`` so the export pipeline
+# can seat no-time drivers from the real grid without re-loading the session.
+_QUALI_GRID_CACHE: dict = {}
+
+
+def _extract_qualifying_grid(session):
+    """Best-effort {driver: official grid/quali position} from a Q session.
+
+    Reads ``session.results`` (FastF1) which carries the classified
+    qualifying order *including* drivers who set no lap (they appear at the
+    back, e.g. P21/P22).  Returns ``{}`` when results are unavailable.
+    """
+    try:
+        res = getattr(session, "results", None)
+        if res is None or len(res) == 0:
+            return {}
+        grid = {}
+        for _, row in res.iterrows():
+            drv = row.get("Abbreviation")
+            if not drv:
+                continue
+            pos = row.get("Position")
+            if pos is None or (isinstance(pos, float) and np.isnan(pos)):
+                pos = row.get("GridPosition")
+            if pos is None or (isinstance(pos, float) and np.isnan(pos)):
+                continue
+            grid[str(drv)] = int(pos)
+        return grid
+    except Exception:
+        return {}
+
+
+def get_last_qualifying_grid(year, grand_prix):
+    """Return the official grid order captured by the last fetch, or ``{}``."""
+    return dict(_QUALI_GRID_CACHE.get(f"{year}:{grand_prix}", {}))
+
+
 def fetch_qualifying_data(year, grand_prix):
-    """Try to fetch qualifying data from FastF1 (with date guard + timeout)."""
+    """Try to fetch qualifying data from FastF1 (with date guard + timeout).
+
+    Returns a ``{driver: best_lap_seconds}`` dict for drivers who set a valid
+    lap.  Drivers with NO valid lap (DNS, all laps deleted, missing telemetry)
+    are deliberately **excluded** so downstream logic can treat them as
+    no-time runners rather than silently optimistic estimates.  As a
+    side-effect the official grid order is cached for ``get_last_qualifying_grid``.
+    """
     from datetime import date as _date
     for info in CALENDAR.values():
         if grand_prix.lower() in info["name"].lower() or \
@@ -1083,8 +1129,15 @@ def fetch_qualifying_data(year, grand_prix):
         laps = session.laps.copy()
         laps["Q (s)"] = laps["LapTime"].dt.total_seconds()
         best = laps.groupby("Driver")["Q (s)"].min().to_dict()
+        # Drop drivers whose best lap is NaN (deleted/invalidated laps) — they
+        # did not set a representative time and must NOT be promoted.
+        best = {d: float(t) for d, t in best.items()
+                if t is not None and not (isinstance(t, float) and np.isnan(t))}
+        # Cache official grid (incl. no-time drivers at the back) for the
+        # export pipeline's conservative seating.
+        _QUALI_GRID_CACHE[f"{year}:{grand_prix}"] = _extract_qualifying_grid(session)
         if best:
-            print(f"✅ Qualifying data fetched — {len(best)} drivers.")
+            print(f"✅ Qualifying data fetched — {len(best)} drivers with valid laps.")
             return best
         return None
     except Exception as exc:
@@ -1092,12 +1145,53 @@ def fetch_qualifying_data(year, grand_prix):
         return None
 
 
+# Seconds inserted between consecutive no-time drivers when seating them
+# behind the field.  Large enough that QualifyingRank cleanly places them last.
+QUALI_FLOOR_GAP_S = 0.75
+
+
+def _timed_drivers(qualifying_times):
+    """Set of drivers with a genuine (non-NaN) qualifying time."""
+    if not qualifying_times:
+        return set()
+    out = set()
+    for drv, t in qualifying_times.items():
+        if t is None:
+            continue
+        if isinstance(t, float) and np.isnan(t):
+            continue
+        out.add(drv)
+    return out
+
+
 def apply_qualifying_data(merged, qualifying_times,
                           rain_probability=0.0, temperature_c=25.0,
-                          fallback_times=None):
-    """Add qualifying + weather columns to the dataset."""
+                          fallback_times=None, grid_positions=None,
+                          enforce_grid_floor=True):
+    """Add qualifying + weather columns to the dataset.
+
+    PRIORITY-1 RELIABILITY FIX (qualifying-NaN edge case):
+    A driver who set **no valid qualifying time** (DNS, deleted laps, missing
+    telemetry, incomplete session) must never be promoted ahead of drivers who
+    did set a time.  When real qualifying is present but partial, no-time
+    drivers are seated *behind the entire timed field* — ordered by official
+    grid (``grid_positions``) when available, otherwise by their fallback
+    estimate.  This is skipped when qualifying is fully synthetic (preview
+    phase: every driver "missing") or fully present (no missing drivers), so
+    pre-qualifying previews are unaffected.
+    """
     merged = merged.copy()
     merged["QualifyingTime"] = merged["Driver"].map(qualifying_times)
+
+    # Drivers that genuinely set a time *before* any fallback fills NaNs.
+    timed = _timed_drivers(qualifying_times)
+    no_time_mask = ~merged["Driver"].isin(timed)
+    n_timed = int((~no_time_mask).sum())
+    n_total = len(merged)
+    # Conservative seating only applies to a *partial* real session: some
+    # drivers timed, some not.  Fully-synthetic previews (n_timed == 0) and
+    # complete sessions (n_timed == n_total) are no-ops.
+    apply_floor = bool(enforce_grid_floor and 0 < n_timed < n_total)
 
     # FastF1 qualifying feeds can miss drivers (e.g., DNS/early retirement).
     # Backfill with generated estimates first, then with robust medians.
@@ -1137,11 +1231,28 @@ def apply_qualifying_data(merged, qualifying_times,
             merged["QualifyingTime"]
         )
 
+    # ── Conservative back-of-grid seating for no-time drivers ──
+    merged["QualifyingDataMissing"] = no_time_mask.values
+    if apply_floor:
+        slowest_timed = float(merged.loc[~no_time_mask, "AdjustedQualiTime"].max())
+        no_time_drivers = list(merged.loc[no_time_mask, "Driver"])
+        if grid_positions:
+            order_key = {d: grid_positions.get(d, 10_000 + i)
+                         for i, d in enumerate(no_time_drivers)}
+        else:
+            est = merged.set_index("Driver")["AdjustedQualiTime"].to_dict()
+            order_key = {d: est.get(d, float("inf")) for d in no_time_drivers}
+        for rank, drv in enumerate(sorted(no_time_drivers, key=lambda d: order_key[d]), start=1):
+            penalised = slowest_timed + QUALI_FLOOR_GAP_S * rank
+            merged.loc[merged["Driver"] == drv, "AdjustedQualiTime"] = penalised
+            merged.loc[merged["Driver"] == drv, "QualifyingTime"] = penalised
+        print(f"🛑 Conservative grid floor applied to {len(no_time_drivers)} "
+              f"no-time driver(s): {sorted(no_time_drivers)} (seated behind P{n_timed}).")
+
     merged["QualifyingRank"] = merged["AdjustedQualiTime"].rank(method="min")
     median_quali = merged["AdjustedQualiTime"].median()
     merged["GridAdvantage"] = median_quali - merged["AdjustedQualiTime"]
-    print(f"✅ Qualifying data added for "
-          f"{merged['QualifyingTime'].notna().sum()}/{len(merged)} drivers.")
+    print(f"✅ Qualifying data added for {n_timed}/{n_total} drivers with valid laps.")
     return merged
 
 
