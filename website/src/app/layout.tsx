@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import { SeasonProvider } from "@/lib/SeasonProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
 // Bugatti redesign uses the recommended open-source substitutes for the three
@@ -96,12 +97,14 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <SmoothScrollProvider>
-          <Navbar />
-          <LiveContextBand />
-          <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
-          <Footer />
-        </SmoothScrollProvider>
+        <SeasonProvider>
+          <SmoothScrollProvider>
+            <Navbar />
+            <LiveContextBand />
+            <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
+            <Footer />
+          </SmoothScrollProvider>
+        </SeasonProvider>
       </body>
     </html>
   );

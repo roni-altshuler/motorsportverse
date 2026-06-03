@@ -58,9 +58,17 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Determine round and phase
+      - name: Determine season, round and phase
         id: config
         run: |
+          # ── Determine season (auto-detect from the newest CALENDAR_<year>) ──
+          # The static vars.F1_SEASON_YEAR is an OPTIONAL override; when unset we
+          # derive the active season from the calendar, so adding CALENDAR_2027
+          # rolls the pipeline forward automatically.
+          SEASON="${F1_SEASON_YEAR:-$(python -c "from f1_prediction_utils import get_season_year; print(get_season_year())")}"
+          echo "F1_SEASON_YEAR=$SEASON" >> "$GITHUB_ENV"
+          echo "season=$SEASON" >> "$GITHUB_OUTPUT"
+
           # ── Detect round ──
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.round }}" = "next" ]; then
             ROUND=$(python -c "
@@ -83,7 +91,14 @@ jobs:
           fi
           echo "phase=$PHASE" >> "$GITHUB_OUTPUT"
 
-          echo "Round: $ROUND  |  Phase: $PHASE"
+          echo "Season: $SEASON  |  Round: $ROUND  |  Phase: $PHASE"
+
+      - name: Season rollover (auto)
+        run: |
+          # No-op until the active season is COMPLETE and a newer CALENDAR_<year>
+          # exists. When both hold, it archives the finished season into
+          # website/public/data/seasons/<year>/ and starts the new one.
+          python scripts/season_rollover.py --auto || echo "⚠️  rollover skipped (non-fatal)"
 
       - name: Restore FastF1 cache
         uses: actions/cache@v5

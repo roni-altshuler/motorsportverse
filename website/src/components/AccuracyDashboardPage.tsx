@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SeasonTrackerData, SeasonData } from "@/types";
 import { fetchSeasonTrackerData, fetchSeasonData } from "@/lib/data";
+import { useSeason } from "@/lib/SeasonProvider";
 import { getSeasonYear } from "@/lib/season";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
@@ -16,16 +17,17 @@ export default function AccuracyDashboardPage() {
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [error, setError] = useState(false);
+  const { basePath } = useSeason();
 
   useEffect(() => {
-    fetchSeasonTrackerData()
+    fetchSeasonTrackerData(basePath)
       .then((d) => {
         if (!d) setError(true);
         else setTracker(d);
       })
       .catch(() => setError(true));
-    fetchSeasonData().then(setSeason).catch(() => {});
-  }, []);
+    fetchSeasonData(basePath).then(setSeason).catch(() => {});
+  }, [basePath]);
 
   if (error) {
     return (

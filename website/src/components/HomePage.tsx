@@ -41,6 +41,7 @@ import {
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
+import { useSeason } from "@/lib/SeasonProvider";
 
 const TONE_TO_BADGE_VARIANT = {
   red: "negative",
@@ -68,23 +69,24 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const { basePath } = useSeason();
 
   // Current-season accuracy comes from build-time props (honest, no fetch flash).
   const accuracyPct = trustStats.currentSeason?.accuracyPct ?? null;
   const roundsGraded = trustStats.currentSeason?.roundsGraded ?? 0;
 
   useEffect(() => {
-    fetchSeasonData().then(setSeason).catch(() => {});
-    fetchSeasonTrackerData().then(setTracker).catch(() => {});
-    fetchStandingsData()
+    fetchSeasonData(basePath).then(setSeason).catch(() => {});
+    fetchSeasonTrackerData(basePath).then(setTracker).catch(() => {});
+    fetchStandingsData(basePath)
       .then((s) => {
         setStandings(s);
         if (s.lastUpdatedRound > 0) {
-          fetchRoundData(s.lastUpdatedRound).then(setLatestRound).catch(() => {});
+          fetchRoundData(s.lastUpdatedRound, basePath).then(setLatestRound).catch(() => {});
         }
       })
       .catch(() => {});
-  }, []);
+  }, [basePath]);
 
   useEffect(() => {
     if (!season) return;
@@ -95,11 +97,11 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
     const target =
       ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0];
     if (target) {
-      fetchRoundData(target.round)
+      fetchRoundData(target.round, basePath)
         .then(setFeaturedRound)
         .catch(() => {});
     }
-  }, [season, tracker]);
+  }, [season, tracker, basePath]);
 
   // Season-derived view data — computed only once the season JSON has loaded.
   // The static marketing scaffold (value prop, trust, how-it-works, features,

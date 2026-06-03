@@ -10,6 +10,7 @@ import {
   formatDateTime,
 } from "@/lib/data";
 import { getSeasonYear } from "@/lib/season";
+import { useSeason } from "@/lib/SeasonProvider";
 import StandingsChart from "@/components/charts/StandingsChart";
 import DriverBadge from "@/components/standings/DriverBadge";
 import ChampionshipKPIs from "@/components/standings/ChampionshipKPIs";
@@ -54,13 +55,14 @@ export default function StandingsPage() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
   const [error, setError] = useState(false);
+  const { basePath } = useSeason();
   const activeTab = parseTab(searchParams.get("tab"));
 
   useEffect(() => {
-    fetchStandingsData().then(setData).catch(() => setError(true));
-    fetchSeasonData().then(setSeason).catch(() => {});
-    fetchChampionshipForecast().then(setForecast).catch(() => {});
-  }, []);
+    fetchStandingsData(basePath).then(setData).catch(() => setError(true));
+    fetchSeasonData(basePath).then(setSeason).catch(() => {});
+    fetchChampionshipForecast(basePath).then(setForecast).catch(() => {});
+  }, [basePath]);
 
   if (error) {
     return (
