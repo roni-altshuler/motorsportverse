@@ -33,7 +33,9 @@ function useAccuracySummary(): AccuracySummary | null {
       .then((d) => {
         if (!d?.overallAccuracy) return;
         setSummary({
-          accuracyPct: d.overallAccuracy.seasonAccuracyPct ?? 0,
+          // Prefer the finisher figure (pace-forecast skill); falls back to raw.
+          accuracyPct: d.overallAccuracy.seasonAccuracyPctClassified
+            ?? d.overallAccuracy.seasonAccuracyPct ?? 0,
           roundsWithActual: d.overallAccuracy.roundsWithActual ?? 0,
         });
       })

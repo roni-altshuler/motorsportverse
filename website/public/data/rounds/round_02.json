@@ -785,7 +785,15 @@
     "within_3_positions": 12,
     "within_5_positions": 16,
     "total_drivers": 22,
-    "accuracy_pct": 54.5
+    "accuracy_pct": 54.5,
+    "mean_position_error_classified": 3.13,
+    "exact_matches_classified": 1,
+    "within_3_classified": 10,
+    "within_5_classified": 12,
+    "total_classified": 15,
+    "accuracy_pct_classified": 66.7,
+    "within_5_pct_classified": 80.0,
+    "dnf_count": 7
   },
   "gpReport": {
     "round": 2,
@@ -4708,5 +4716,13 @@
     "ALB": "W"
   },
   "predictionPhase": "post-race",
-  "qualifyingDataAvailable": true
+  "qualifyingDataAvailable": true,
+  "circuitVolatility": {
+    "circuit": "China",
+    "safetyCarProbability": 0.45,
+    "vscProbability": 0.36,
+    "redFlagProbability": 0.06,
+    "volatilityScore": 0.497,
+    "nEmpirical": 0
+  }
 }

@@ -804,7 +804,15 @@
     "within_3_positions": 16,
     "within_5_positions": 18,
     "total_drivers": 22,
-    "accuracy_pct": 72.7
+    "accuracy_pct": 72.7,
+    "mean_position_error_classified": 2.94,
+    "exact_matches_classified": 1,
+    "within_3_classified": 15,
+    "within_5_classified": 17,
+    "total_classified": 18,
+    "accuracy_pct_classified": 83.3,
+    "within_5_pct_classified": 94.4,
+    "dnf_count": 4
   },
   "gpReport": {
     "round": 4,
@@ -4208,5 +4216,37 @@
     ]
   },
   "predictionPhase": "post-race",
-  "qualifyingDataAvailable": true
+  "qualifyingDataAvailable": true,
+  "actualStatus": {
+    "ANT": "1",
+    "NOR": "2",
+    "PIA": "3",
+    "RUS": "4",
+    "VER": "5",
+    "HAM": "6",
+    "COL": "7",
+    "LEC": "8",
+    "SAI": "9",
+    "ALB": "10",
+    "BEA": "11",
+    "BOR": "12",
+    "OCO": "13",
+    "LIN": "14",
+    "ALO": "15",
+    "PER": "16",
+    "STR": "17",
+    "BOT": "18",
+    "HUL": "R",
+    "LAW": "R",
+    "GAS": "R",
+    "HAD": "R"
+  },
+  "circuitVolatility": {
+    "circuit": "Miami",
+    "safetyCarProbability": 0.55,
+    "vscProbability": 0.44,
+    "redFlagProbability": 0.06,
+    "volatilityScore": 0.515,
+    "nEmpirical": 0
+  }
 }
