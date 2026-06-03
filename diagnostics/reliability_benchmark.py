@@ -29,7 +29,7 @@ import duckdb  # noqa: E402
 
 import f1_prediction_utils as fpu  # noqa: E402
 from models.reliability_model import (ReliabilityModel, ReliabilityInputs,  # noqa: E402
-                                      classify_retirement, FEATURE_NAMES)
+                                      classify_retirement)
 from models.dnf import compute_dnf_probabilities, DnfModelInputs  # noqa: E402
 
 fastf1.Cache.enable_cache("f1_cache")
