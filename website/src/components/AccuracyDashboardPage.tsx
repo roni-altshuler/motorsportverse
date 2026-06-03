@@ -117,45 +117,67 @@ export default function AccuracyDashboardPage() {
         >
           <h2 className="section-heading">Season Overview</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="metric-card text-center">
-              <p className="eyebrow mb-2">Season Accuracy</p>
-              <p
-                className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
-                style={{
-                  color:
-                    tracker.overallAccuracy.seasonAccuracyPct >= 70
-                      ? "var(--success)"
-                      : tracker.overallAccuracy.seasonAccuracyPct >= 50
-                      ? "var(--warning)"
-                      : "var(--accent-f1-red)",
-                }}
-              >
-                <NumberTicker value={tracker.overallAccuracy.seasonAccuracyPct} decimalPlaces={0} />
-                <span className="text-2xl ml-1">%</span>
-              </p>
-              <p className="caption-uppercase text-[10px] mt-2">
-                predictions within 3 positions
-              </p>
-            </div>
-            <div className="metric-card text-center">
-              <p className="eyebrow mb-2">Mean Position Error</p>
-              <p
-                className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
-                style={{
-                  color:
-                    tracker.overallAccuracy.seasonMeanError <= 2
-                      ? "var(--success)"
-                      : tracker.overallAccuracy.seasonMeanError <= 4
-                      ? "var(--warning)"
-                      : "var(--accent-f1-red)",
-                }}
-              >
-                <NumberTicker value={tracker.overallAccuracy.seasonMeanError} decimalPlaces={1} />
-              </p>
-              <p className="caption-uppercase text-[10px] mt-2">
-                positions average off
-              </p>
-            </div>
+            {(() => {
+              const accPct = tracker.overallAccuracy.seasonAccuracyPctClassified ?? tracker.overallAccuracy.seasonAccuracyPct;
+              const meanErr = tracker.overallAccuracy.seasonMeanErrorClassified ?? tracker.overallAccuracy.seasonMeanError;
+              const hasClassified = tracker.overallAccuracy.seasonAccuracyPctClassified != null;
+              return (
+                <>
+                  <div className="metric-card text-center">
+                    <p className="eyebrow mb-2">Season Accuracy</p>
+                    <p
+                      className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
+                      style={{
+                        color:
+                          accPct >= 70
+                            ? "var(--success)"
+                            : accPct >= 50
+                            ? "var(--warning)"
+                            : "var(--accent-f1-red)",
+                      }}
+                    >
+                      <NumberTicker value={accPct} decimalPlaces={0} />
+                      <span className="text-2xl ml-1">%</span>
+                    </p>
+                    <p className="caption-uppercase text-[10px] mt-2">
+                      within 3 positions{hasClassified ? " · finishers" : ""}
+                    </p>
+                    {hasClassified && (
+                      <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
+                        {tracker.overallAccuracy.seasonWithin5PctClassified != null && (
+                          <>{tracker.overallAccuracy.seasonWithin5PctClassified}% within 5 · </>
+                        )}
+                        {tracker.overallAccuracy.seasonAccuracyPct}% all drivers
+                      </p>
+                    )}
+                  </div>
+                  <div className="metric-card text-center">
+                    <p className="eyebrow mb-2">Mean Position Error</p>
+                    <p
+                      className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
+                      style={{
+                        color:
+                          meanErr <= 2
+                            ? "var(--success)"
+                            : meanErr <= 4
+                            ? "var(--warning)"
+                            : "var(--accent-f1-red)",
+                      }}
+                    >
+                      <NumberTicker value={meanErr} decimalPlaces={1} />
+                    </p>
+                    <p className="caption-uppercase text-[10px] mt-2">
+                      positions off{hasClassified ? " · finishers" : ""}
+                    </p>
+                    {hasClassified && (
+                      <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
+                        {tracker.overallAccuracy.seasonMeanError} all drivers
+                      </p>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
             <div className="metric-card text-center">
               <p className="eyebrow mb-2">Rounds Compared</p>
               <p
@@ -169,6 +191,14 @@ export default function AccuracyDashboardPage() {
               </p>
             </div>
           </div>
+          {tracker.overallAccuracy.seasonAccuracyPctClassified != null && (
+            <p className="text-xs mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+              Headline figures are measured among <strong style={{ color: "var(--text)" }}>classified finishers</strong> — the model forecasts race pace and order, not mechanical failures or crashes.
+              {tracker.overallAccuracy.totalDnfsExcluded != null && (
+                <> {tracker.overallAccuracy.totalDnfsExcluded} retirements/DNS across the season are reported separately rather than counted as pace errors.</>
+              )} All-driver figures are shown alongside for full transparency.
+            </p>
+          )}
         </motion.div>
       )}
 

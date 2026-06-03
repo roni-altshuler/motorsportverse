@@ -1467,6 +1467,20 @@ def _analytical_lstm_fallback(merged):
 # 4. SEASON TRACKER — Predicted vs Actual
 # ═════════════════════════════════════════════════════════════════════════
 
+def finishers_from_status(actual_status):
+    """Return the set of CLASSIFIED finishers from a Jolpica positionText map.
+
+    ``actual_status`` maps driver -> positionText: a numeric string ("1".."22")
+    means classified at the finish; a letter code ("R" retired, "W" withdrew/
+    DNS, "D" disqualified, "E"/"F"/"N" etc.) means the driver did not finish.
+    Returns the drivers whose status is numeric. Empty/absent status -> empty
+    set (caller should treat "no DNF info" as "no exclusion").
+    """
+    if not isinstance(actual_status, dict) or not actual_status:
+        return set()
+    return {str(d) for d, s in actual_status.items() if str(s).strip().isdigit()}
+
+
 class SeasonTracker:
     """Track prediction accuracy across the season.
 
@@ -1539,6 +1553,12 @@ class SeasonTracker:
             self.data["rounds"][rnd]["actual"] = {
                 drv: {"position": int(pos)} for drv, pos in actual.items()
             }
+
+        # Capture finish status (positionText) so accuracy can also be reported
+        # among classified finishers — DNFs are reliability/luck, not pace error.
+        status = round_data.get("actualStatus") if isinstance(round_data, dict) else None
+        if isinstance(status, dict) and status:
+            self.data["rounds"][rnd]["actualStatus"] = dict(status)
 
         self._compute_accuracy(round_num)
 
@@ -1628,7 +1648,7 @@ class SeasonTracker:
 
         within_5 = int(sum(1 for d in diffs if d <= 5))
 
-        self.data["accuracy"][rnd] = {
+        metrics = {
             "mean_position_error": round(np.mean(diffs), 2),
             "median_position_error": round(float(np.median(diffs)), 1),
             "exact_matches": exact,
@@ -1637,6 +1657,32 @@ class SeasonTracker:
             "total_drivers": len(common),
             "accuracy_pct": round(within_3 / len(common) * 100, 1),
         }
+
+        # ── Accuracy among CLASSIFIED FINISHERS (excludes DNF/DNS) ──
+        # The pace model forecasts race order, not reliability; retirements are
+        # attrition/luck. Reporting accuracy over finishers is a fairer measure
+        # of forecast skill. Shown alongside the raw number, never instead of it.
+        finishers = finishers_from_status(
+            self.data["rounds"][rnd].get("actualStatus", {}))
+        classified = sorted(common & finishers) if finishers else []
+        dnf_count = len(common) - len(classified) if finishers else 0
+        if classified:
+            cdiffs = [abs(int(predicted[d]["position"]) - int(actual[d]["position"]))
+                      for d in classified]
+            cw3 = int(sum(1 for d in cdiffs if d <= 3))
+            cw5 = int(sum(1 for d in cdiffs if d <= 5))
+            metrics.update({
+                "mean_position_error_classified": round(float(np.mean(cdiffs)), 2),
+                "exact_matches_classified": int(sum(1 for d in cdiffs if d == 0)),
+                "within_3_classified": cw3,
+                "within_5_classified": cw5,
+                "total_classified": len(classified),
+                "accuracy_pct_classified": round(cw3 / len(classified) * 100, 1),
+                "within_5_pct_classified": round(cw5 / len(classified) * 100, 1),
+                "dnf_count": dnf_count,
+            })
+
+        self.data["accuracy"][rnd] = metrics
 
     def _round_comparison_rows(self, round_num):
         rnd = str(round_num)
@@ -1732,6 +1778,11 @@ class SeasonTracker:
                 "exactMatches": accuracy.get("exact_matches"),
                 "within3": accuracy.get("within_3_positions"),
                 "accuracyPct": accuracy.get("accuracy_pct"),
+                "meanErrorClassified": accuracy.get("mean_position_error_classified"),
+                "within3Classified": accuracy.get("within_3_classified"),
+                "accuracyPctClassified": accuracy.get("accuracy_pct_classified"),
+                "within5PctClassified": accuracy.get("within_5_pct_classified"),
+                "dnfCount": accuracy.get("dnf_count"),
             })
             if has_actual:
                 report = self.get_round_report(rnd_num)
@@ -1754,12 +1805,28 @@ class SeasonTracker:
                    for v in self.data["accuracy"].values()]
         totals = [v["total_drivers"]
                   for v in self.data["accuracy"].values()]
-        return {
+
+        # Season aggregate among classified finishers (rounds that carry it).
+        cls = [v for v in self.data["accuracy"].values()
+               if v.get("total_classified")]
+        season = {
             "seasonMeanError": round(np.mean(errors), 2),
             "seasonAccuracyPct": round(
                 sum(within3) / max(sum(totals), 1) * 100, 1),
             "roundsWithActual": len(self.data["accuracy"]),
         }
+        if cls:
+            c_w3 = sum(v["within_3_classified"] for v in cls)
+            c_w5 = sum(v.get("within_5_classified", 0) for v in cls)
+            c_tot = sum(v["total_classified"] for v in cls)
+            c_err = [v["mean_position_error_classified"] for v in cls]
+            season.update({
+                "seasonMeanErrorClassified": round(float(np.mean(c_err)), 2),
+                "seasonAccuracyPctClassified": round(c_w3 / max(c_tot, 1) * 100, 1),
+                "seasonWithin5PctClassified": round(c_w5 / max(c_tot, 1) * 100, 1),
+                "totalDnfsExcluded": sum(v.get("dnf_count", 0) for v in self.data["accuracy"].values()),
+            })
+        return season
 
 
 def plot_season_accuracy(tracker_data, out_dir):

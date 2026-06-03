@@ -859,30 +859,50 @@ export default function RaceDetailPage({ round }: Props) {
             <div className="card p-6">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <h3 className="section-heading mb-0">Predicted vs Actual Race Outcome</h3>
-                {data.accuracy?.accuracy_pct != null && (
-                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: "color-mix(in srgb, var(--accent-live) 10%, transparent)", color: "var(--accent-live)", border: "1px solid color-mix(in srgb, var(--accent-live) 20%, transparent)" }}>
-                    Within 3 Positions: {data.accuracy.accuracy_pct}%
-                  </span>
-                )}
+                <div className="flex flex-wrap items-center gap-2">
+                  {data.accuracy?.accuracy_pct_classified != null && (
+                    <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full" style={{ background: "color-mix(in srgb, var(--accent-live) 14%, transparent)", color: "var(--accent-live)", border: "1px solid color-mix(in srgb, var(--accent-live) 30%, transparent)" }}>
+                      Within 3 (finishers): {data.accuracy.accuracy_pct_classified}%
+                    </span>
+                  )}
+                  {data.accuracy?.accuracy_pct != null && (
+                    <span className="text-xs font-semibold tracking-wide px-3 py-1 rounded-full" style={{ background: "color-mix(in srgb, var(--text-muted) 8%, transparent)", color: "var(--text-muted)", border: "1px solid var(--border)" }}>
+                      All drivers: {data.accuracy.accuracy_pct}%
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                 <div className="metric-card">
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Mean Position Error</p>
-                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.mean_position_error ?? "-"}</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Mean Error (finishers)</p>
+                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.mean_position_error_classified ?? data.accuracy?.mean_position_error ?? "-"}</p>
+                  {data.accuracy?.mean_position_error != null && data.accuracy?.mean_position_error_classified != null && (
+                    <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>{data.accuracy.mean_position_error} all drivers</p>
+                  )}
+                </div>
+                <div className="metric-card">
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Within 3 (finishers)</p>
+                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.within_3_classified ?? data.accuracy?.within_3_positions ?? 0}<span className="text-sm font-semibold" style={{ color: "var(--text-muted)" }}>/{data.accuracy?.total_classified ?? data.accuracy?.total_drivers ?? actualRows.length}</span></p>
+                </div>
+                <div className="metric-card">
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Within 5 (finishers)</p>
+                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.within_5_pct_classified != null ? `${data.accuracy.within_5_pct_classified}%` : (data.accuracy?.within_5_positions ?? "-")}</p>
                 </div>
                 <div className="metric-card">
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>Exact Matches</p>
                   <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.exact_matches ?? 0}</p>
                 </div>
-                <div className="metric-card">
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Within 3</p>
-                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.within_3_positions ?? 0}</p>
-                </div>
-                <div className="metric-card">
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Drivers Compared</p>
-                  <p className="text-xl font-black" style={{ color: "var(--text)" }}>{data.accuracy?.total_drivers ?? actualRows.length}</p>
-                </div>
               </div>
+              {(data.accuracy?.dnf_count != null || data.circuitVolatility) && (
+                <p className="text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                  {data.accuracy?.dnf_count != null && data.accuracy.dnf_count > 0 && (
+                    <>Finisher accuracy excludes <strong style={{ color: "var(--text)" }}>{data.accuracy.dnf_count}</strong> retirement{data.accuracy.dnf_count === 1 ? "" : "s"}/DNS — outcomes driven by reliability and incidents, not race-pace prediction. </>
+                  )}
+                  {data.circuitVolatility && (
+                    <>Circuit volatility <strong style={{ color: "var(--text)" }}>{Math.round(data.circuitVolatility.volatilityScore * 100)}%</strong> (expected deviation from pace order; {Math.round(data.circuitVolatility.safetyCarProbability * 100)}% safety-car risk).</>
+                  )}
+                </p>
+              )}
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>

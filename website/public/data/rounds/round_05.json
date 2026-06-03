@@ -778,7 +778,15 @@
     "within_3_positions": 8,
     "within_5_positions": 14,
     "total_drivers": 22,
-    "accuracy_pct": 36.4
+    "accuracy_pct": 36.4,
+    "mean_position_error_classified": 4.0,
+    "exact_matches_classified": 2,
+    "within_3_classified": 6,
+    "within_5_classified": 11,
+    "total_classified": 16,
+    "accuracy_pct_classified": 37.5,
+    "within_5_pct_classified": 68.8,
+    "dnf_count": 6
   },
   "gpReport": {
     "round": 5,
@@ -5913,5 +5921,13 @@
     "LIN": "W"
   },
   "predictionPhase": "post-race",
-  "qualifyingDataAvailable": true
+  "qualifyingDataAvailable": true,
+  "circuitVolatility": {
+    "circuit": "Canada",
+    "safetyCarProbability": 0.7,
+    "vscProbability": 0.56,
+    "redFlagProbability": 0.06,
+    "volatilityScore": 0.59,
+    "nEmpirical": 0
+  }
 }

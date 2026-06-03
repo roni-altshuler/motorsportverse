@@ -243,7 +243,7 @@ def _build_visualization_details(filenames):
     return details
 
 
-def _compute_round_accuracy(classification_rows, actual_results):
+def _compute_round_accuracy(classification_rows, actual_results, actual_status=None):
     if not classification_rows or not actual_results:
         return None
 
@@ -266,7 +266,7 @@ def _compute_round_accuracy(classification_rows, actual_results):
     within_3 = int(sum(1 for d in diffs if d <= 3))
     within_5 = int(sum(1 for d in diffs if d <= 5))
 
-    return {
+    result = {
         "mean_position_error": round(float(np.mean(diffs)), 2),
         "median_position_error": round(float(np.median(diffs)), 1),
         "exact_matches": exact,
@@ -275,6 +275,26 @@ def _compute_round_accuracy(classification_rows, actual_results):
         "total_drivers": len(common),
         "accuracy_pct": round(within_3 / len(common) * 100, 1),
     }
+
+    # Accuracy among classified finishers (excludes DNF/DNS — attrition, not pace).
+    from advanced_models import finishers_from_status
+    finishers = finishers_from_status(actual_status or {})
+    classified = [d for d in common if d in finishers] if finishers else []
+    if classified:
+        cdiffs = [abs(predicted[d] - int(actual_results[d])) for d in classified]
+        cw3 = int(sum(1 for d in cdiffs if d <= 3))
+        cw5 = int(sum(1 for d in cdiffs if d <= 5))
+        result.update({
+            "mean_position_error_classified": round(float(np.mean(cdiffs)), 2),
+            "exact_matches_classified": int(sum(1 for d in cdiffs if d == 0)),
+            "within_3_classified": cw3,
+            "within_5_classified": cw5,
+            "total_classified": len(classified),
+            "accuracy_pct_classified": round(cw3 / len(classified) * 100, 1),
+            "within_5_pct_classified": round(cw5 / len(classified) * 100, 1),
+            "dnf_count": len(common) - len(classified),
+        })
+    return result
 
 
 def _sanitize_telemetry_payload(telemetry):
@@ -1049,9 +1069,18 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         local_accuracy = _compute_round_accuracy(
             round_data.get("classification", []),
             round_data.get("actualResults", {}),
+            round_data.get("actualStatus"),
         )
         if local_accuracy:
             round_data["accuracy"] = local_accuracy
+
+    # Attach circuit volatility (expected deviation from pace order) — an honest
+    # "how chaotic is this circuit" signal for the UI.
+    try:
+        from models.race_volatility import circuit_volatility
+        round_data["circuitVolatility"] = circuit_volatility(gp_key).as_dict()
+    except Exception as e:
+        print(f"  ⚠️  Volatility attach failed: {e}")
 
     if persist_output:
         _write_json(path, round_data)

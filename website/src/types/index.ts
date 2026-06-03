@@ -286,6 +286,23 @@ export interface RoundData {
     within_5_positions?: number;
     total_drivers?: number;
     accuracy_pct?: number;
+    // Accuracy among classified finishers (DNF/DNS excluded — attrition, not pace).
+    mean_position_error_classified?: number;
+    exact_matches_classified?: number;
+    within_3_classified?: number;
+    within_5_classified?: number;
+    total_classified?: number;
+    accuracy_pct_classified?: number;
+    within_5_pct_classified?: number;
+    dnf_count?: number;
+  };
+  circuitVolatility?: {
+    circuit: string;
+    safetyCarProbability: number;
+    vscProbability: number;
+    redFlagProbability: number;
+    volatilityScore: number;
+    nEmpirical: number;
   };
   gpReport?: GrandPrixPerformanceReport;
   generatedAt?: string;
@@ -401,6 +418,12 @@ export interface SeasonTrackerRound {
   exactMatches: number | null;
   within3: number | null;
   accuracyPct: number | null;
+  // Among classified finishers (DNF/DNS excluded).
+  meanErrorClassified?: number | null;
+  within3Classified?: number | null;
+  accuracyPctClassified?: number | null;
+  within5PctClassified?: number | null;
+  dnfCount?: number | null;
 }
 
 export interface SeasonTrackerData {
@@ -409,6 +432,10 @@ export interface SeasonTrackerData {
     seasonMeanError: number;
     seasonAccuracyPct: number;
     roundsWithActual: number;
+    seasonMeanErrorClassified?: number;
+    seasonAccuracyPctClassified?: number;
+    seasonWithin5PctClassified?: number;
+    totalDnfsExcluded?: number;
   } | null;
   gpReports?: GrandPrixPerformanceReport[];
   generatedAt?: string;
