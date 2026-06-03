@@ -299,6 +299,10 @@ def test_export_probabilities_round1_smoke(tmp_path, monkeypatch):
     # Redirect output to a scratch dir so we don't pollute the website data tree.
     out_dir = tmp_path / "probabilities"
     monkeypatch.setattr(ep, "PROBS_DIR", out_dir)
+    # Disable the model registry so the calibrator save does NOT mutate the
+    # committed models/registry/2026_round_01/metadata.json (this smoke test
+    # only validates the output JSON; registry persistence is covered elsewhere).
+    monkeypatch.setenv("F1_REGISTRY_ENABLED", "0")
 
     result = ep.run(rounds=[1], quiet=True)
     assert result["rounds_written"] == 1
