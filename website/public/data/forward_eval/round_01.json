@@ -1,0 +1,54 @@
+{
+  "season": 2026,
+  "round": 1,
+  "drivers_compared": 22,
+  "mean_position_error": 5.454545454545454,
+  "median_position_error": 5.5,
+  "rmse_position_error": 7.342281042638651,
+  "exact_matches": 3,
+  "within_3": 9,
+  "within_5": 11,
+  "winner_hit": false,
+  "podium_hits": 1,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.33032185206098247,
+  "ndcg_at_5": 0.7525738038445419,
+  "biggest_misses": [
+    {
+      "driver": "PIA",
+      "predicted": 2,
+      "actual": 21,
+      "delta": -19,
+      "absDelta": 19
+    },
+    {
+      "driver": "VER",
+      "predicted": 20,
+      "actual": 6,
+      "delta": 14,
+      "absDelta": 14
+    },
+    {
+      "driver": "HAD",
+      "predicted": 7,
+      "actual": 20,
+      "delta": -13,
+      "absDelta": 13
+    },
+    {
+      "driver": "BOR",
+      "predicted": 18,
+      "actual": 9,
+      "delta": 9,
+      "absDelta": 9
+    },
+    {
+      "driver": "LIN",
+      "predicted": 17,
+      "actual": 8,
+      "delta": 9,
+      "absDelta": 9
+    }
+  ],
+  "baselines": {}
+}
