@@ -93,11 +93,21 @@ jobs:
 
           echo "Season: $SEASON  |  Round: $ROUND  |  Phase: $PHASE"
 
+      - name: Bootstrap next season calendar (auto)
+        run: |
+          # Once F1 publishes next year's schedule (typically mid-prior-year),
+          # this pulls it from FastF1 and writes generated_seasons/<year>.json,
+          # which f1_prediction_utils registers as CALENDAR_<year>. No-op until
+          # the schedule exists. The pre-staged calendar stays dormant — it does
+          # NOT become the active season until its first race date passes (see
+          # _default_season_year in f1_prediction_utils).
+          python scripts/bootstrap_next_season.py || echo "⚠️  bootstrap skipped (non-fatal)"
+
       - name: Season rollover (auto)
         run: |
-          # No-op until the active season is COMPLETE and a newer CALENDAR_<year>
-          # exists. When both hold, it archives the finished season into
-          # website/public/data/seasons/<year>/ and starts the new one.
+          # No-op until a newer season has actually STARTED while the website is
+          # still on the old one. When that holds, it archives the finished
+          # season into website/public/data/seasons/<year>/ and starts the new one.
           python scripts/season_rollover.py --auto || echo "⚠️  rollover skipped (non-fatal)"
 
       - name: Restore FastF1 cache
@@ -249,6 +259,8 @@ jobs:
             fi
           done
           git add races/ 2>/dev/null || true
+          # Pre-staged future-season calendars from bootstrap_next_season.py.
+          git add generated_seasons/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
