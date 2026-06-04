@@ -228,9 +228,76 @@ def _available_season_years(prefix: str) -> list[int]:
     return sorted(set(years))
 
 
+def _load_generated_seasons() -> None:
+    """Register pre-staged future-season constants from ``generated_seasons/<year>.json``.
+
+    ``scripts/bootstrap_next_season.py`` writes next year's calendar plus a
+    carried-forward lineup there so the season rolls over with zero manual code
+    edits. We inject them as module globals (``CALENDAR_<year>``,
+    ``DRIVER_TEAM_<year>``, ``DRIVER_NUMBERS_<year>``) so the existing season
+    scanner and rollover pick them up. ``setdefault`` means any hand-coded
+    constant always wins. A pre-staged calendar does NOT become the active
+    season until its first race date passes — see ``_season_started()`` /
+    ``_default_season_year()``.
+    """
+    gen_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated_seasons")
+    if not os.path.isdir(gen_dir):
+        return
+    for fname in sorted(os.listdir(gen_dir)):
+        year, ext = os.path.splitext(fname)
+        if ext != ".json" or not year.isdigit():
+            continue
+        try:
+            with open(os.path.join(gen_dir, fname), encoding="utf-8") as fh:
+                payload = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        cal = payload.get("calendar")
+        if isinstance(cal, dict) and cal:
+            globals().setdefault(f"CALENDAR_{year}", {int(k): v for k, v in cal.items()})
+        dt = payload.get("driver_team")
+        if isinstance(dt, dict) and dt:
+            globals().setdefault(f"DRIVER_TEAM_{year}", dict(dt))
+        dn = payload.get("driver_numbers")
+        if isinstance(dn, dict) and dn:
+            globals().setdefault(f"DRIVER_NUMBERS_{year}", {k: int(v) for k, v in dn.items()})
+
+
+_load_generated_seasons()
+
+
+def _season_started(year: int) -> bool:
+    """True once ``year``'s first race date is on/before today (UTC).
+
+    Guards active-season selection so a pre-staged future calendar never
+    hijacks the live season before it has actually begun racing.
+    """
+    cal = globals().get(f"CALENDAR_{year}")
+    if not cal:
+        return False
+    dates = []
+    for entry in cal.values():
+        raw = entry.get("date")
+        if not raw:
+            continue
+        try:
+            dates.append(datetime.strptime(raw, "%Y-%m-%d").date())
+        except (TypeError, ValueError):
+            continue
+    if not dates:
+        return False
+    return min(dates) <= datetime.utcnow().date()
+
+
 def _default_season_year() -> int:
     available = _available_season_years("CALENDAR")
-    return max(available) if available else int(datetime.utcnow().year)
+    if not available:
+        return int(datetime.utcnow().year)
+    started = [y for y in available if _season_started(y)]
+    # Prefer the newest season that has actually begun; pre-staged future
+    # calendars stay dormant until their opening race so the live pipeline
+    # never jumps ahead of itself.
+    return max(started) if started else min(available)
 
 
 DEFAULT_SEASON_YEAR = _default_season_year()

@@ -136,19 +136,38 @@ def start(year: int, dry_run: bool = False) -> None:
     print(f"✅ Season {year} is now active. Run the pipeline to populate rounds.")
 
 
+def _current_website_year() -> int:
+    """The season the website currently treats as live.
+
+    Anchored to the newest root ``season_tracker_<year>.json`` — the live tracker
+    the pipeline rewrites each round. ``start()`` creates the next season's
+    tracker, so once a rollover runs this advances on its own and the trigger
+    below stops re-firing.
+    """
+    years = []
+    for path in ROOT.glob("season_tracker_*.json"):
+        stem = path.stem.rsplit("_", 1)[-1]
+        if stem.isdigit():
+            years.append(int(stem))
+    return max(years) if years else _active_year()
+
+
 def auto(dry_run: bool = False) -> None:
+    # ``active`` is the newest calendar that has actually BEGUN racing
+    # (f1_prediction_utils gates this on the opening race date), so a calendar
+    # pre-staged by bootstrap_next_season.py stays dormant until its first race.
     active = _active_year()
-    calendars = _available_calendar_years()
-    newest = max(calendars) if calendars else active
-    print(f"🔎 auto: active={active}, newest calendar={newest}, "
-          f"active complete={_season_complete(active)}")
-    if newest > active and _season_complete(active):
-        print(f"➡️  Season {active} complete and {newest} calendar present — rolling over.")
-        archive(active, dry_run=dry_run)
-        start(newest, dry_run=dry_run)
+    data_year = _current_website_year()
+    print(f"🔎 auto: active(started)={active}, website data season={data_year}")
+    if active > data_year:
+        print(f"➡️  Season {active} has begun while the site is still on "
+              f"{data_year} — rolling over.")
+        archive(data_year, dry_run=dry_run)
+        start(active, dry_run=dry_run)
     else:
-        print("✅ No rollover needed (season ongoing or no newer calendar).")
-        _refresh_index() if not dry_run else None
+        print("✅ No rollover needed (no newer season has started yet).")
+        if not dry_run:
+            _refresh_index()
 
 
 def main() -> None:
