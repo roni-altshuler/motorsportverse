@@ -10,17 +10,12 @@
       "Barcelona": 4,
       "Budapest": 11,
       "Hockenheim": 10,
-      "Imola": 25,
-      "Istanbul": 26,
       "Le Castellet": 7,
       "Melbourne": 0,
       "Mexico City": 17,
       "Monte Carlo": 5,
       "Montr\u00e9al": 6,
       "Monza": 20,
-      "Mugello": 22,
-      "N\u00fcrburgring": 23,
-      "Portim\u00e3o": 24,
       "Sakhir": 1,
       "Shanghai": 2,
       "Silverstone": 9,
@@ -34,12 +29,10 @@
       "Yas Marina": 19
     },
     "driver": {
-      "AIT": 28,
       "ALB": 20,
       "ALO": 2,
       "BOT": 17,
       "ERI": 19,
-      "FIT": 27,
       "GAS": 0,
       "GIO": 25,
       "GRO": 18,
@@ -51,38 +44,28 @@
       "LAT": 26,
       "LEC": 3,
       "MAG": 6,
-      "MAZ": 31,
-      "MSC": 30,
       "NOR": 22,
       "OCO": 10,
       "PER": 1,
-      "PIA": 32,
       "RAI": 16,
       "RIC": 9,
       "RUS": 23,
       "SAI": 15,
-      "SAR": 34,
       "SIR": 12,
       "STR": 4,
-      "TSU": 29,
       "VAN": 5,
       "VER": 11,
-      "VET": 14,
-      "ZHO": 33
+      "VET": 14
     },
     "team": {
       "ALFA ROMEO RACING": 11,
       "ALPHATAURI": 12,
-      "ALPINE": 14,
-      "ASTON MARTIN": 13,
       "FERRARI": 9,
       "FORCE INDIA": 1,
       "HAAS F1 TEAM": 5,
-      "KICK SAUBER": 15,
       "MCLAREN": 2,
       "MERCEDES": 8,
       "RACING POINT": 10,
-      "RB": 16,
       "RED BULL RACING": 7,
       "RENAULT": 6,
       "SAUBER": 3,
@@ -91,8 +74,8 @@
     }
   },
   "ensemble_weights": {
-    "gbr": 0.4189471983329624,
-    "xgb": 0.5810528016670375
+    "gbr": 0.43987786413312424,
+    "xgb": 0.5601221358668758
   },
   "feature_columns": [
     "driver_id",
@@ -112,18 +95,18 @@
     "track_temp_c",
     "rain_intensity"
   ],
-  "gitSha": "2e8e9015a4fd289cb6ab42b1fc2fc6db246b3587",
+  "gitSha": "835e9b7b3f71cb1f9a75bf2cf232567918f183b1",
   "kind": "race-pace",
   "metrics": {
-    "ensemble_mae_s": 1.926310051929041,
-    "gbr_mae_s": 2.3700057207656835,
-    "n_test": 13596,
-    "n_train": 54384,
-    "xgb_mae_s": 1.7088072786143194
+    "ensemble_mae_s": 1.6430214172269892,
+    "gbr_mae_s": 1.9198528160697985,
+    "n_test": 10355,
+    "n_train": 41417,
+    "xgb_mae_s": 1.5077082338046706
   },
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.15",
   "round": 99,
-  "savedAt": "2026-05-20T12:04:55+00:00",
+  "savedAt": "2026-06-05T09:40:27+00:00",
   "season": 2025,
   "training_pair_count": 176,
   "training_rounds": [
@@ -150,7 +133,7 @@
     21,
     22
   ],
-  "training_row_count": 67980,
+  "training_row_count": 51772,
   "training_seasons": [
     2018,
     2019,
