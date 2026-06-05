@@ -10,12 +10,14 @@
       "Barcelona": 4,
       "Budapest": 11,
       "Hockenheim": 10,
+      "Imola": 22,
       "Le Castellet": 7,
       "Melbourne": 0,
       "Mexico City": 17,
       "Monte Carlo": 5,
       "Montr\u00e9al": 6,
       "Monza": 20,
+      "Portim\u00e3o": 23,
       "Sakhir": 1,
       "Shanghai": 2,
       "Silverstone": 9,
@@ -26,7 +28,8 @@
       "Suzuka": 15,
       "S\u00e3o Paulo": 18,
       "Yas Island": 21,
-      "Yas Marina": 19
+      "Yas Marina": 19,
+      "Zandvoort": 24
     },
     "driver": {
       "ALB": 20,
@@ -44,6 +47,8 @@
       "LAT": 26,
       "LEC": 3,
       "MAG": 6,
+      "MAZ": 29,
+      "MSC": 28,
       "NOR": 22,
       "OCO": 10,
       "PER": 1,
@@ -53,6 +58,7 @@
       "SAI": 15,
       "SIR": 12,
       "STR": 4,
+      "TSU": 27,
       "VAN": 5,
       "VER": 11,
       "VET": 14
@@ -60,6 +66,8 @@
     "team": {
       "ALFA ROMEO RACING": 11,
       "ALPHATAURI": 12,
+      "ALPINE": 14,
+      "ASTON MARTIN": 13,
       "FERRARI": 9,
       "FORCE INDIA": 1,
       "HAAS F1 TEAM": 5,
@@ -74,8 +82,8 @@
     }
   },
   "ensemble_weights": {
-    "gbr": 0.43987786413312424,
-    "xgb": 0.5601221358668758
+    "gbr": 0.4379385059495178,
+    "xgb": 0.5620614940504823
   },
   "feature_columns": [
     "driver_id",
@@ -95,18 +103,18 @@
     "track_temp_c",
     "rain_intensity"
   ],
-  "gitSha": "835e9b7b3f71cb1f9a75bf2cf232567918f183b1",
+  "gitSha": "fae334a65bc6cfad17f306c08dadebb32f61eadd",
   "kind": "race-pace",
   "metrics": {
-    "ensemble_mae_s": 1.6430214172269892,
-    "gbr_mae_s": 1.9198528160697985,
-    "n_test": 10355,
-    "n_train": 41417,
-    "xgb_mae_s": 1.5077082338046706
+    "ensemble_mae_s": 1.650191548183829,
+    "gbr_mae_s": 1.9444429906908507,
+    "n_test": 13112,
+    "n_train": 52448,
+    "xgb_mae_s": 1.5150414452171677
   },
   "pythonVersion": "3.11.15",
   "round": 99,
-  "savedAt": "2026-06-05T09:40:27+00:00",
+  "savedAt": "2026-06-05T14:35:22+00:00",
   "season": 2025,
   "training_pair_count": 176,
   "training_rounds": [
@@ -133,7 +141,7 @@
     21,
     22
   ],
-  "training_row_count": 51772,
+  "training_row_count": 65560,
   "training_seasons": [
     2018,
     2019,
