@@ -15,8 +15,11 @@
       "Jeddah": 29,
       "Le Castellet": 7,
       "Lusail": 28,
+      "Marina Bay": 32,
       "Melbourne": 0,
       "Mexico City": 17,
+      "Miami": 30,
+      "Monaco": 31,
       "Monte Carlo": 5,
       "Montr\u00e9al": 6,
       "Monza": 20,
@@ -41,6 +44,7 @@
       "ALB": 20,
       "ALO": 2,
       "BOT": 17,
+      "DEV": 33,
       "ERI": 19,
       "FIT": 27,
       "GAS": 0,
@@ -68,9 +72,11 @@
       "TSU": 29,
       "VAN": 5,
       "VER": 11,
-      "VET": 14
+      "VET": 14,
+      "ZHO": 32
     },
     "team": {
+      "ALFA ROMEO": 15,
       "ALFA ROMEO RACING": 11,
       "ALPHATAURI": 12,
       "ALPINE": 14,
@@ -89,8 +95,8 @@
     }
   },
   "ensemble_weights": {
-    "gbr": 0.4094105211730233,
-    "xgb": 0.5905894788269768
+    "gbr": 0.4231942975766045,
+    "xgb": 0.5768057024233955
   },
   "feature_columns": [
     "driver_id",
@@ -110,18 +116,18 @@
     "track_temp_c",
     "rain_intensity"
   ],
-  "gitSha": "457cfdf56b444ab94364a6adbb45935b939b4c40",
+  "gitSha": "f78dce3cdd06fca8a0239ddaa2d6c03f6e603ef3",
   "kind": "race-pace",
   "metrics": {
-    "ensemble_mae_s": 1.9254155083831292,
-    "gbr_mae_s": 2.4238556748016187,
-    "n_test": 17115,
-    "n_train": 68460,
-    "xgb_mae_s": 1.6802737783946318
+    "ensemble_mae_s": 2.1127424827303916,
+    "gbr_mae_s": 2.5760101247731804,
+    "n_test": 20792,
+    "n_train": 83164,
+    "xgb_mae_s": 1.8899826938662911
   },
   "pythonVersion": "3.11.15",
   "round": 99,
-  "savedAt": "2026-06-05T19:52:57+00:00",
+  "savedAt": "2026-06-06T03:33:38+00:00",
   "season": 2025,
   "training_pair_count": 176,
   "training_rounds": [
@@ -148,7 +154,7 @@
     21,
     22
   ],
-  "training_row_count": 85575,
+  "training_row_count": 103956,
   "training_seasons": [
     2018,
     2019,
