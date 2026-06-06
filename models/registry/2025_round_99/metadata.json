@@ -13,6 +13,7 @@
       "Imola": 25,
       "Istanbul": 26,
       "Jeddah": 29,
+      "Las Vegas": 33,
       "Le Castellet": 7,
       "Lusail": 28,
       "Marina Bay": 32,
@@ -43,6 +44,7 @@
       "AIT": 28,
       "ALB": 20,
       "ALO": 2,
+      "BEA": 37,
       "BOT": 17,
       "DEV": 33,
       "ERI": 19,
@@ -56,6 +58,7 @@
       "KUB": 24,
       "KVY": 21,
       "LAT": 26,
+      "LAW": 36,
       "LEC": 3,
       "MAG": 6,
       "MAZ": 31,
@@ -63,10 +66,12 @@
       "NOR": 22,
       "OCO": 10,
       "PER": 1,
+      "PIA": 35,
       "RAI": 16,
       "RIC": 9,
       "RUS": 23,
       "SAI": 15,
+      "SAR": 34,
       "SIR": 12,
       "STR": 4,
       "TSU": 29,
@@ -84,9 +89,11 @@
       "FERRARI": 9,
       "FORCE INDIA": 1,
       "HAAS F1 TEAM": 5,
+      "KICK SAUBER": 16,
       "MCLAREN": 2,
       "MERCEDES": 8,
       "RACING POINT": 10,
+      "RB": 17,
       "RED BULL RACING": 7,
       "RENAULT": 6,
       "SAUBER": 3,
@@ -95,8 +102,8 @@
     }
   },
   "ensemble_weights": {
-    "gbr": 0.4231942975766045,
-    "xgb": 0.5768057024233955
+    "gbr": 0.4245318150922904,
+    "xgb": 0.5754681849077096
   },
   "feature_columns": [
     "driver_id",
@@ -116,18 +123,18 @@
     "track_temp_c",
     "rain_intensity"
   ],
-  "gitSha": "f78dce3cdd06fca8a0239ddaa2d6c03f6e603ef3",
+  "gitSha": "72df55c52ee3ec9ff4d27c37c6236845b66721fa",
   "kind": "race-pace",
   "metrics": {
-    "ensemble_mae_s": 2.1127424827303916,
-    "gbr_mae_s": 2.5760101247731804,
-    "n_test": 20792,
-    "n_train": 83164,
-    "xgb_mae_s": 1.8899826938662911
+    "ensemble_mae_s": 2.224596152058765,
+    "gbr_mae_s": 2.703052003783322,
+    "n_test": 27296,
+    "n_train": 109183,
+    "xgb_mae_s": 1.9940834324994372
   },
   "pythonVersion": "3.11.15",
   "round": 99,
-  "savedAt": "2026-06-06T03:33:38+00:00",
+  "savedAt": "2026-06-06T08:45:13+00:00",
   "season": 2025,
   "training_pair_count": 176,
   "training_rounds": [
@@ -154,7 +161,7 @@
     21,
     22
   ],
-  "training_row_count": 103956,
+  "training_row_count": 136479,
   "training_seasons": [
     2018,
     2019,
