@@ -1442,6 +1442,50 @@ def _env_float(name, default, min_value=None, max_value=None):
     return value
 
 
+def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0):
+    """Circuit-conditioned weighting of grid position in the race outcome.
+
+    The single biggest reason a flat win probability is wrong is that it ignores
+    *track position*. On circuits where overtaking is hard (Monaco,
+    ``overtaking≈0.1``) the starting grid is the dominant predictor of the
+    result — the pole-sitter has by far the best chance of winning and the
+    order barely changes. On open circuits (Monza/Bahrain, ``overtaking≈0.7+``)
+    race pace routinely overrides grid, so the grid prior is light and the win
+    chance is spread across the front of the field. Safety cars and rain
+    scramble the order, softening the lock either way.
+
+    This runs for **every** round — the circuit's ``overtaking`` characteristic
+    is what makes Monaco behave differently from Monza, automatically.
+
+    Returns:
+        pole_lock   – weight applied to the grid-rank z-score when building the
+                      race-projection score (higher → grid order dominates the
+                      predicted finishing order).
+        win_decay_k – decay length, in finishing positions, of the win
+                      probability. Small → a confident, pole-dominant favourite;
+                      large → win chance spread across the field.
+    """
+    overtaking = float(np.clip(overtaking, 0.0, 1.0))
+    safety_car = float(np.clip(safety_car, 0.0, 1.0))
+    rain = float(np.clip(rain_probability, 0.0, 1.0))
+
+    # How "locked" the grid is: hard to pass, dry, low safety-car risk.
+    stickiness = float(np.clip(
+        (1.0 - overtaking) * (1.0 - 0.30 * safety_car) * (1.0 - 0.45 * rain),
+        0.0, 1.0,
+    ))
+    pole_lock = 0.95 * stickiness
+
+    # How "open" the race is: easy to pass, wet, safety-car prone. Drives how
+    # quickly win probability decays from the projected leader down the order.
+    openness = float(np.clip(
+        0.22 + 0.78 * overtaking + 0.30 * rain + 0.12 * safety_car,
+        0.18, 1.20,
+    ))
+    win_decay_k = float(np.clip(1.5 + 5.5 * openness, 1.5, 8.0))
+    return pole_lock, win_decay_k
+
+
 def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=0.0):
     """Transform baseline lap-time predictions into more realistic race outcomes."""
     char = CIRCUIT_CHARACTERISTICS.get(circuit_key, {})
@@ -1554,6 +1598,22 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
         teammate_conflict_term * (0.022 * game_theory_scale) +
         field_volatility_term * (0.028 * game_theory_scale)
     )
+
+    # Circuit-conditioned grid-position prior. The terms above rank drivers
+    # mostly on pace; on hard-to-pass circuits that under-weights the simple
+    # fact that you can't win a race you can't overtake your way to the front
+    # of. ``pole_lock`` pulls the predicted order toward the starting grid in
+    # proportion to how grid-locked the track is (strong at Monaco, light at
+    # Monza), so the pole-sitter is favoured by default and the win-probability
+    # decay below stays consistent with the finishing order.
+    pole_lock, win_decay_k = circuit_grid_dynamics(
+        overtaking, safety_car, rain_probability
+    )
+    grid_rank = merged["QualifyingRank"].fillna(merged["QualifyingRank"].max())
+    merged["RaceProjectionScore"] = (
+        merged["RaceProjectionScore"] + _zscore(grid_rank) * pole_lock
+    )
+
     merged["RaceProjectionTime"] = (
         merged["PredictedLapTime"].min() + 1.15 + _zscore(merged["RaceProjectionScore"]) * 0.85
     )
@@ -1677,14 +1737,21 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
     except Exception as exc:  # noqa: BLE001 — non-blocking
         print(f"ℹ️  Learned head shadow score skipped: {exc}")
 
-    gap_to_leader = (merged["RaceProjectionTime"] - merged["RaceProjectionTime"].min()).clip(lower=0.0)
-    win_scale = max(0.12, 0.18 + volatility * 0.35 + model_dispersion.mean() * 0.8)
-    win_weights = np.exp(-(gap_to_leader / win_scale))
+    # Win probability decays from the projected leader down the finishing order,
+    # so the predicted winner (P1) always holds the highest win chance — the
+    # finishing order and the win odds can no longer disagree. ``win_decay_k``
+    # sets how sharply: small on grid-locked tracks (a dominant pole-sitter),
+    # large on open tracks (a wide-open front). A secondary pace-gap term lets a
+    # genuinely dominant car pull further clear than rank alone would imply.
+    order_rank = merged["RaceProjectionTime"].rank(method="first")
+    proj_z = _zscore(merged["RaceProjectionScore"])
+    score_gap = (proj_z - proj_z.min()).clip(lower=0.0)
+    win_weights = np.exp(-(order_rank - 1.0) / win_decay_k) * np.exp(-0.30 * score_gap)
     merged["WinProbability"] = (win_weights / max(win_weights.sum(), 1e-9) * 100).round(1)
     print(
         f"✅ Race-aware postprocessing applied "
         f"(quali={quali_lock_in:.0%}, pace={pace_weight:.0%}, form={form_weight:.0%}, "
-        f"gt-scale={game_theory_scale:.2f})."
+        f"pole-lock={pole_lock:.2f}, win-k={win_decay_k:.1f}, gt-scale={game_theory_scale:.2f})."
     )
     return merged
 
