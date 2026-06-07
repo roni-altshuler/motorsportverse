@@ -2,17 +2,17 @@
   "season": 2026,
   "round": 6,
   "drivers_compared": 22,
-  "mean_position_error": 5.7272727272727275,
-  "median_position_error": 5.0,
-  "rmse_position_error": 7.416198487095663,
-  "exact_matches": 3,
-  "within_3": 9,
-  "within_5": 13,
+  "mean_position_error": 5.545454545454546,
+  "median_position_error": 4.5,
+  "rmse_position_error": 7.292586522065966,
+  "exact_matches": 2,
+  "within_3": 10,
+  "within_5": 14,
   "winner_hit": true,
   "podium_hits": 2,
   "log_loss_uniform_baseline": 3.091042453358316,
-  "spearman_correlation": 0.3167701863354037,
-  "ndcg_at_5": 0.6377162486566138,
+  "spearman_correlation": 0.339356295878035,
+  "ndcg_at_5": 0.6444502988835386,
   "biggest_misses": [
     {
       "driver": "VER",
@@ -38,9 +38,9 @@
     {
       "driver": "ALO",
       "predicted": 20,
-      "actual": 11,
-      "delta": 9,
-      "absDelta": 9
+      "actual": 10,
+      "delta": 10,
+      "absDelta": 10
     },
     {
       "driver": "LIN",
@@ -52,10 +52,10 @@
   ],
   "baselines": {
     "last_race_winner": {
-      "mean_position_error": 6.273,
+      "mean_position_error": 6.091,
       "winner_hit": true,
       "podium_hits": 2,
-      "spearman_correlation": 0.16770186335403728
+      "spearman_correlation": 0.18464144551101072
     }
   }
 }

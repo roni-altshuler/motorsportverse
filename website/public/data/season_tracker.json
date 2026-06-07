@@ -68,10 +68,10 @@
     {
       "round": 6,
       "hasActual": true,
-      "meanError": 5.73,
-      "exactMatches": 3,
-      "within3": 9,
-      "accuracyPct": 40.9,
+      "meanError": 5.55,
+      "exactMatches": 2,
+      "within3": 10,
+      "accuracyPct": 45.5,
       "meanErrorClassified": null,
       "within3Classified": null,
       "accuracyPctClassified": null,
@@ -288,8 +288,8 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 4.56,
-    "seasonAccuracyPct": 55.3,
+    "seasonMeanError": 4.53,
+    "seasonAccuracyPct": 56.1,
     "roundsWithActual": 6,
     "seasonMeanErrorClassified": 3.33,
     "seasonAccuracyPctClassified": 65.9,
@@ -856,11 +856,11 @@
       "round": 6,
       "name": "Monaco Grand Prix",
       "comparedDrivers": 22,
-      "meanError": 5.73,
-      "medianError": 5.0,
-      "exactMatches": 3,
-      "within3": 9,
-      "within5": 13,
+      "meanError": 5.55,
+      "medianError": 4.5,
+      "exactMatches": 2,
+      "within3": 10,
+      "within5": 14,
       "winnerHit": true,
       "podiumHits": 2,
       "biggestMisses": [
@@ -892,9 +892,9 @@
           "driver": "ALO",
           "team": "Aston Martin",
           "predicted": 20,
-          "actual": 11,
-          "delta": 9,
-          "absDelta": 9
+          "actual": 10,
+          "delta": 10,
+          "absDelta": 10
         },
         {
           "driver": "LIN",
@@ -907,23 +907,23 @@
       ],
       "teamMeanError": [
         {
-          "team": "Alpine",
-          "meanError": 2.5,
+          "team": "Cadillac",
+          "meanError": 1.5,
           "drivers": 2
         },
         {
-          "team": "Audi",
-          "meanError": 3.5,
+          "team": "Alpine",
+          "meanError": 2.0,
           "drivers": 2
         },
         {
           "team": "Mercedes",
-          "meanError": 4.0,
+          "meanError": 3.5,
           "drivers": 2
         },
         {
-          "team": "Cadillac",
-          "meanError": 4.0,
+          "team": "Audi",
+          "meanError": 4.5,
           "drivers": 2
         },
         {
@@ -938,7 +938,7 @@
         },
         {
           "team": "Aston Martin",
-          "meanError": 6.5,
+          "meanError": 7.0,
           "drivers": 2
         },
         {
@@ -964,5 +964,5 @@
       ]
     }
   ],
-  "generatedAt": "2026-06-07T19:15:00.959658Z"
+  "generatedAt": "2026-06-07T22:08:16.393289Z"
 }

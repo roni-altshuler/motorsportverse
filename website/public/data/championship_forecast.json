@@ -169,10 +169,10 @@
       "p95thPercentilePoints": 144.0
     },
     {
-      "driver": "PER",
-      "driverFullName": "Sergio P\u00e9rez",
-      "team": "Cadillac",
-      "teamColor": "#C0C0C0",
+      "driver": "ALO",
+      "driverFullName": "Fernando Alonso",
+      "team": "Aston Martin",
+      "teamColor": "#229971",
       "currentPoints": 1.0,
       "championshipWinProbability": 0.0002,
       "expectedFinalPoints": 82.2,
@@ -181,10 +181,10 @@
       "p95thPercentilePoints": 132.05000000000018
     },
     {
-      "driver": "ALO",
-      "driverFullName": "Fernando Alonso",
-      "team": "Aston Martin",
-      "teamColor": "#229971",
+      "driver": "BOT",
+      "driverFullName": "Valtteri Bottas",
+      "team": "Cadillac",
+      "teamColor": "#C0C0C0",
       "currentPoints": 0.0,
       "championshipWinProbability": 0.0002,
       "expectedFinalPoints": 79.9,
@@ -193,8 +193,8 @@
       "p95thPercentilePoints": 130.0
     },
     {
-      "driver": "BOT",
-      "driverFullName": "Valtteri Bottas",
+      "driver": "PER",
+      "driverFullName": "Sergio P\u00e9rez",
       "team": "Cadillac",
       "teamColor": "#C0C0C0",
       "currentPoints": 0.0,
@@ -348,22 +348,22 @@
       "p95thPercentilePoints": 232.0
     },
     {
-      "team": "Cadillac",
-      "teamColor": "#C0C0C0",
-      "currentPoints": 1.0,
-      "championshipWinProbability": 0.0,
-      "expectedFinalPoints": 162.6,
-      "p5thPercentilePoints": 100.0,
-      "p95thPercentilePoints": 229.0
-    },
-    {
       "team": "Aston Martin",
       "teamColor": "#229971",
+      "currentPoints": 1.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 163.4,
+      "p5thPercentilePoints": 101.0,
+      "p95thPercentilePoints": 230.0
+    },
+    {
+      "team": "Cadillac",
+      "teamColor": "#C0C0C0",
       "currentPoints": 0.0,
       "championshipWinProbability": 0.0,
-      "expectedFinalPoints": 161.2,
+      "expectedFinalPoints": 160.4,
       "p5thPercentilePoints": 99.0,
-      "p95thPercentilePoints": 228.0
+      "p95thPercentilePoints": 226.0
     }
   ],
   "remainingRounds": 16,
@@ -452,7 +452,7 @@
   "monteCarloSamples": 5000,
   "skillSourceRound": 7,
   "status": "ok",
-  "generatedAt": "2026-06-07T19:17:56.305820+00:00",
+  "generatedAt": "2026-06-07T22:11:07.424159+00:00",
   "lastCompletedRound": 6,
   "note": "Monte Carlo simulation of the remaining season. Skill vector uses the next race's published win probabilities as a proxy for all remaining rounds; refresh after each GP weekend."
 }
