@@ -146,6 +146,28 @@ def _session_available(year, gp_key, session_type):
         return False
 
 
+def _jolpica_session_available(year, round_num, kind):
+    """Check Jolpica/Ergast for classified results — the *timely* source.
+
+    FastF1 telemetry for the live weekend lags hours behind Jolpica's
+    classified results, so we treat Jolpica as the authoritative availability
+    signal (it's the same source the website's results tables already use).
+    ``kind`` is ``"qualifying"`` or ``"results"`` (race).
+    """
+    from urllib.request import urlopen
+
+    endpoint = "qualifying" if kind == "qualifying" else "results"
+    field = "QualifyingResults" if kind == "qualifying" else "Results"
+    try:
+        url = f"https://api.jolpi.ca/ergast/f1/{year}/{int(round_num)}/{endpoint}.json"
+        with urlopen(url, timeout=20) as response:
+            payload = json.load(response)
+        races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
+        return bool(races and races[0].get(field))
+    except Exception:
+        return False
+
+
 def _detect_phase(round_num):
     """Auto-detect which phase we're in based on data availability."""
     cal = _load_calendar()
@@ -177,15 +199,19 @@ def _detect_phase(round_num):
 
     if today >= race_date:
         season_year = _season_year()
-        # Check if race data is available for the configured season.
-        if _session_available(season_year, gp_key, "R"):
+        # Prefer Jolpica (timely) and fall back to a FastF1 probe.
+        if _jolpica_session_available(season_year, round_num, "results") or \
+           _session_available(season_year, gp_key, "R"):
             print("   ✅ Race data available → post-race")
             return "post-race"
 
     # Check if qualifying data is available for the configured season.
     if today >= race_date - timedelta(days=1):
         season_year = _season_year()
-        if _session_available(season_year, gp_key, "Q"):
+        # Jolpica publishes classified qualifying hours before FastF1 telemetry
+        # lands — check it first so the prediction isn't stuck on estimates.
+        if _jolpica_session_available(season_year, round_num, "qualifying") or \
+           _session_available(season_year, gp_key, "Q"):
             print("   ✅ Qualifying data available → post-quali")
             return "post-quali"
 
@@ -235,6 +261,8 @@ def run_pre_weekend(round_num, skip_build=False, use_race_simulator=False):
     print(f"\n✅ Pre-weekend prediction complete for Round {round_num}")
     print(f"   Predicted winner: {round_data['classification'][0]['driver']} "
           f"({round_data['classification'][0]['team']})")
+
+    _generate_circuit_geometry(round_num)
 
     if not skip_build:
         _build_website()
@@ -295,6 +323,8 @@ def run_post_qualifying(round_num, skip_build=False, use_race_simulator=False):
     print(f"\n✅ Post-qualifying update complete for Round {round_num}")
     print(f"   Predicted winner: {round_data['classification'][0]['driver']} "
           f"({round_data['classification'][0]['team']})")
+
+    _generate_circuit_geometry(round_num)
 
     if not skip_build:
         _build_website()
@@ -395,6 +425,8 @@ def run_post_race(round_num, skip_build=False):
 
     print(f"\n✅ Post-race update complete for Round {round_num}")
 
+    _generate_circuit_geometry(round_num)
+
     if not skip_build:
         _build_website()
 
@@ -454,6 +486,36 @@ def _build_website():
         print("⚠️  npm not found. Build the website manually: cd website && npm run build")
     except subprocess.TimeoutExpired:
         print("⚠️  Website build timed out (3 min). Try manually.")
+
+
+def _generate_circuit_geometry(round_num):
+    """Inject the monochrome circuit vector into round_NN.json.
+
+    Must run *after* ``export_round_data`` (and the advanced-model writes),
+    because those rewrite ``circuitInfo`` without the ``geometry`` field — so
+    this is the last mutation before the website build. ``generate_circuit_svg``
+    falls back to prior-season layouts, so it works even before the current
+    weekend's FastF1 telemetry has landed. Best-effort: never fail the pipeline.
+    """
+    _print_banner("CIRCUIT GEOMETRY", "─")
+    season_year = _season_year()
+    try:
+        result = subprocess.run(
+            [sys.executable, "generate_circuit_svg.py",
+             "--season", str(season_year), "--round", str(round_num)],
+            cwd=os.path.dirname(__file__),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode == 0:
+            print(f"✅ Circuit geometry refreshed for Round {round_num}.")
+        else:
+            print(f"⚠️  Circuit geometry generation failed:\n{result.stderr[-400:]}")
+    except subprocess.TimeoutExpired:
+        print("⚠️  Circuit geometry generation timed out (2 min).")
+    except Exception as exc:
+        print(f"⚠️  Circuit geometry generation error: {type(exc).__name__}: {exc}")
 
 
 # ═════════════════════════════════════════════════════════════════════════

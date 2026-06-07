@@ -1163,6 +1163,98 @@ def get_last_qualifying_grid(year, grand_prix):
     return dict(_QUALI_GRID_CACHE.get(f"{year}:{grand_prix}", {}))
 
 
+# Jolpica/Ergast is the same timely source the website's qualifying *table*
+# already trusts. FastF1 telemetry for the current weekend lags hours behind
+# Jolpica's classified results, so we fall back to Jolpica for the model's
+# qualifying input — otherwise the published forecast silently runs on
+# estimates while the official quali order is already on the page.
+_JOLPICA_BASE_URL = "https://api.jolpi.ca/ergast/f1"
+
+
+def _resolve_round_number(grand_prix):
+    """Map a grand-prix name / gp_key to its calendar round number, or None."""
+    needle = (grand_prix or "").lower()
+    for rnd, info in CALENDAR.items():
+        if needle == info.get("gp_key", "").lower() or needle in info["name"].lower():
+            return rnd
+    return None
+
+
+def _parse_laptime_to_seconds(value):
+    """Parse a ``"M:SS.mmm"`` (or ``"SS.mmm"``) lap string to float seconds.
+
+    Returns ``None`` for blanks / unparseable values so callers can skip
+    no-time entries (Jolpica emits ``null`` or ``""`` for sessions a driver
+    did not set a lap in).
+    """
+    if not value or not isinstance(value, str):
+        return None
+    text = value.strip()
+    if not text:
+        return None
+    try:
+        if ":" in text:
+            minutes, seconds = text.split(":", 1)
+            return int(minutes) * 60 + float(seconds)
+        return float(text)
+    except (ValueError, TypeError):
+        return None
+
+
+def _fetch_qualifying_from_jolpica(year, grand_prix):
+    """Fetch official qualifying times from Jolpica/Ergast as a FastF1 fallback.
+
+    Returns ``{driver_code: best_lap_seconds}`` for drivers who set a valid lap
+    (best of Q3 → Q2 → Q1), and — as a side-effect — caches the full classified
+    grid order (incl. no-time drivers at the back) for ``get_last_qualifying_grid``.
+    Returns ``None`` when Jolpica has no qualifying data for the round yet.
+    """
+    from urllib.request import urlopen
+
+    rnd = _resolve_round_number(grand_prix)
+    if rnd is None:
+        return None
+    try:
+        url = f"{_JOLPICA_BASE_URL}/{year}/{int(rnd)}/qualifying.json"
+        with urlopen(url, timeout=20) as response:
+            payload = json.load(response)
+        races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
+        if not races:
+            return None
+        results = races[0].get("QualifyingResults", [])
+        if not results:
+            return None
+    except Exception as exc:
+        print(f"⚠️  Jolpica qualifying unavailable: {type(exc).__name__}")
+        return None
+
+    best = {}
+    grid = {}
+    for entry in results:
+        code = (entry.get("Driver") or {}).get("code")
+        if not code:
+            continue
+        times = [
+            _parse_laptime_to_seconds(entry.get(key))
+            for key in ("Q3", "Q2", "Q1")
+        ]
+        times = [t for t in times if t is not None]
+        if times:
+            best[code] = min(times)
+        try:
+            grid[code] = int(entry.get("position"))
+        except (TypeError, ValueError):
+            pass
+
+    if grid:
+        _QUALI_GRID_CACHE[f"{year}:{grand_prix}"] = grid
+    if best:
+        print(f"🏁 Qualifying data fetched from Jolpica — {len(best)} drivers "
+              "with valid laps (FastF1 fallback).")
+        return best
+    return None
+
+
 def fetch_qualifying_data(year, grand_prix):
     """Try to fetch qualifying data from FastF1 (with date guard + timeout).
 
@@ -1206,10 +1298,12 @@ def fetch_qualifying_data(year, grand_prix):
         if best:
             print(f"✅ Qualifying data fetched — {len(best)} drivers with valid laps.")
             return best
-        return None
+        print("ℹ️  FastF1 returned no timed laps — trying Jolpica fallback…")
+        return _fetch_qualifying_from_jolpica(year, grand_prix)
     except Exception as exc:
-        print(f"⚠️  Qualifying unavailable: {type(exc).__name__}")
-        return None
+        print(f"⚠️  FastF1 qualifying unavailable: {type(exc).__name__} — "
+              "trying Jolpica fallback…")
+        return _fetch_qualifying_from_jolpica(year, grand_prix)
 
 
 # Seconds inserted between consecutive no-time drivers when seating them

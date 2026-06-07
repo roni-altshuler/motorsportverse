@@ -123,6 +123,15 @@ def _dedupe_by_acronym(drivers: Iterable[dict]) -> dict[str, dict]:
     return by_code
 
 
+def _is_fallback_silhouette(url: str) -> bool:
+    """True when an openf1 headshot_url is F1.com's generic silhouette.
+
+    Cloudinary serves the placeholder via the ``d_driver_fallback_image.png``
+    delivery directive when no real profile photo exists for a driver.
+    """
+    return "d_driver_fallback_image" in url or "driver_fallback_image" in url
+
+
 def _convert_to_webp(raw: bytes, dest: Path) -> None:
     img = Image.open(io.BytesIO(raw))
     if img.mode not in {"RGB", "RGBA"}:
@@ -194,6 +203,23 @@ def fetch_and_cache(force: bool = False) -> dict:
             continue
 
         dest = HEADSHOTS_DIR / f"{code}.webp"
+
+        # Some drivers (typically rookies whose profile photo hasn't been shot
+        # yet, e.g. Lindblad) only have F1.com's generic silhouette, which
+        # openf1 serves via Cloudinary's ``d_driver_fallback_image.png``
+        # directive. Never let that clobber a curated headshot we've committed
+        # by hand — skip it even under ``--force``.
+        if _is_fallback_silhouette(url):
+            if dest.exists():
+                manifest[code] = f"/headshots/{code}.webp"
+                skipped += 1
+                print(f"  [keep] {code}: openf1 has only a fallback silhouette "
+                      "— keeping existing curated headshot")
+            else:
+                print(f"  [skip] {code}: openf1 has only a fallback silhouette, "
+                      "no curated headshot yet")
+            continue
+
         if dest.exists() and not force:
             manifest[code] = f"/headshots/{code}.webp"
             skipped += 1

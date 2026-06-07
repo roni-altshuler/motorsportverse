@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Monaco",
   "ensemble_weights": {
-    "gb": 0.4926538409662076,
-    "lstm": 0.0,
-    "xgb": 0.5073461590337924
+    "gb": 0.5742781506919482,
+    "lstm": 0.18,
+    "xgb": 0.24572184930805183
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -55,33 +55,39 @@
     "racecraft_elo",
     "teammate_delta_elo"
   ],
-  "gitSha": "21edceb9d01f3026fbc4766fb79d43aea118f946",
+  "gitSha": "41c62c16ab7e07ad6bf3268710e782676046385e",
   "gpName": "Monaco Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.11934379113083651,
+      "MAE (s)": 0.1559972877698982,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.12933729745981717,
-      "R\u00b2": 0.9420015792229178
+      "RMSE (s)": 0.16798565378534774,
+      "R\u00b2": 0.9802718316649726
     },
     {
-      "MAE (s)": 0.11588769531250023,
+      "MAE (s)": 0.36458228759765915,
       "Model": "XGBoost",
-      "RMSE (s)": 0.12219131156139332,
-      "R\u00b2": 0.9482334458259596
+      "RMSE (s)": 0.48308920934763283,
+      "R\u00b2": 0.8368462535468253
     },
     {
-      "MAE (s)": 0.10092403622066684,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.10931624531122003,
-      "R\u00b2": 0.958567797794418
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.2185018213849929,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.2556002445633754,
+      "R\u00b2": 0.9543264354366393
     }
   ],
-  "pythonVersion": "3.11.15",
+  "pythonVersion": "3.13.12",
   "round": 6,
-  "savedAt": "2026-06-07T02:32:06+00:00",
+  "savedAt": "2026-06-07T06:09:16+00:00",
   "season": 2026
 }
