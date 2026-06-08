@@ -1481,6 +1481,55 @@ def finishers_from_status(actual_status):
     return {str(d) for d, s in actual_status.items() if str(s).strip().isdigit()}
 
 
+# Headline-accuracy weighting: the rostrum matters more than the lower points
+# places, so the blended score leans on podium classification.
+PODIUM_WEIGHT = 0.6
+POINTS_WEIGHT = 0.4
+
+
+def podium_points_accuracy(predicted_pos, actual_pos):
+    """Classification accuracy over the podium (top 3) and points (top 10).
+
+    Both arguments are ``{driver_code: position}`` maps. We score how many of the
+    drivers who *actually* finished on the podium / in the points the model also
+    placed in that group (set membership — the exact P1/P2/P3 order within the
+    group does not matter). This is a far more meaningful benchmark than how well
+    the model orders all 22 cars. The headline ``accuracy_pct`` is a podium-weighted
+    blend of the two (60% podium, 40% points).
+
+    Returns a metrics dict, or ``None`` when there is nothing to score.
+    """
+    if not predicted_pos or not actual_pos:
+        return None
+
+    predicted_order = sorted(predicted_pos, key=lambda d: int(predicted_pos[d]))
+
+    def _overlap_in_cutoff(cutoff):
+        predicted_top = set(predicted_order[:cutoff])
+        actual_top = {d for d, pos in actual_pos.items() if int(pos) <= cutoff}
+        hits = len(predicted_top & actual_top)
+        return hits, len(actual_top)
+
+    podium_hits, podium_total = _overlap_in_cutoff(3)
+    points_hits, points_total = _overlap_in_cutoff(10)
+    if podium_total == 0 and points_total == 0:
+        return None
+
+    podium_pct = round(podium_hits / podium_total * 100, 1) if podium_total else 0.0
+    points_pct = round(points_hits / points_total * 100, 1) if points_total else 0.0
+    headline = round(PODIUM_WEIGHT * podium_pct + POINTS_WEIGHT * points_pct, 1)
+
+    return {
+        "podium_hits": int(podium_hits),
+        "podium_total": int(podium_total),
+        "podium_accuracy_pct": podium_pct,
+        "points_hits": int(points_hits),
+        "points_total": int(points_total),
+        "points_accuracy_pct": points_pct,
+        "accuracy_pct": headline,
+    }
+
+
 class SeasonTracker:
     """Track prediction accuracy across the season.
 
@@ -1655,8 +1704,20 @@ class SeasonTracker:
             "within_3_positions": within_3,
             "within_5_positions": within_5,
             "total_drivers": len(common),
-            "accuracy_pct": round(within_3 / len(common) * 100, 1),
+            # Legacy "within 3 across all drivers" kept as a detail stat below.
+            "within_3_accuracy_pct": round(within_3 / len(common) * 100, 1),
         }
+
+        # ── Headline accuracy: podium-weighted, exact-position over top 3 / top 10.
+        # Emphasises classifying the rostrum and points finishers over ordering
+        # every car — so calling the winner counts for far more than before.
+        predicted_pos = {d: int(predicted[d]["position"]) for d in common}
+        actual_pos = {d: int(actual[d]["position"]) for d in common}
+        pp = podium_points_accuracy(predicted_pos, actual_pos)
+        if pp:
+            metrics.update(pp)
+        else:
+            metrics["accuracy_pct"] = metrics["within_3_accuracy_pct"]
 
         # ── Accuracy among CLASSIFIED FINISHERS (excludes DNF/DNS) ──
         # The pace model forecasts race order, not reliability; retirements are
@@ -1722,6 +1783,11 @@ class SeasonTracker:
         predicted_winner = min(rows, key=lambda x: x["predicted"])["driver"]
         actual_winner = min(rows, key=lambda x: x["actual"])["driver"]
 
+        pp = podium_points_accuracy(
+            {r["driver"]: r["predicted"] for r in rows},
+            {r["driver"]: r["actual"] for r in rows},
+        ) or {}
+
         team_acc = {}
         for row in rows:
             team = row["team"]
@@ -1752,6 +1818,11 @@ class SeasonTracker:
             "within5": int(within5),
             "winnerHit": predicted_winner == actual_winner,
             "podiumHits": len(predicted_podium & actual_podium),
+            "pointsHits": pp.get("points_hits"),
+            "pointsTotal": pp.get("points_total"),
+            "podiumAccuracyPct": pp.get("podium_accuracy_pct"),
+            "pointsAccuracyPct": pp.get("points_accuracy_pct"),
+            "accuracyPct": pp.get("accuracy_pct"),
             "biggestMisses": biggest_misses,
             "teamMeanError": team_mean_error,
         }
@@ -1778,6 +1849,9 @@ class SeasonTracker:
                 "exactMatches": accuracy.get("exact_matches"),
                 "within3": accuracy.get("within_3_positions"),
                 "accuracyPct": accuracy.get("accuracy_pct"),
+                "podiumAccuracyPct": accuracy.get("podium_accuracy_pct"),
+                "pointsAccuracyPct": accuracy.get("points_accuracy_pct"),
+                "within3AccuracyPct": accuracy.get("within_3_accuracy_pct"),
                 "meanErrorClassified": accuracy.get("mean_position_error_classified"),
                 "within3Classified": accuracy.get("within_3_classified"),
                 "accuracyPctClassified": accuracy.get("accuracy_pct_classified"),
@@ -1801,18 +1875,27 @@ class SeasonTracker:
             return None
         errors = [v["mean_position_error"]
                   for v in self.data["accuracy"].values()]
-        within3 = [v["within_3_positions"]
-                   for v in self.data["accuracy"].values()]
-        totals = [v["total_drivers"]
-                  for v in self.data["accuracy"].values()]
+
+        # Season headline = podium-weighted blend, aggregated by pooling exact
+        # hits over slots across every scored round (not a mean of per-round %s).
+        vals = list(self.data["accuracy"].values())
+        podium_hits = sum(v.get("podium_hits", 0) for v in vals)
+        podium_total = sum(v.get("podium_total", 0) for v in vals)
+        points_hits = sum(v.get("points_hits", 0) for v in vals)
+        points_total = sum(v.get("points_total", 0) for v in vals)
+        season_podium_pct = round(podium_hits / podium_total * 100, 1) if podium_total else 0.0
+        season_points_pct = round(points_hits / points_total * 100, 1) if points_total else 0.0
+        season_accuracy_pct = round(
+            PODIUM_WEIGHT * season_podium_pct + POINTS_WEIGHT * season_points_pct, 1)
 
         # Season aggregate among classified finishers (rounds that carry it).
         cls = [v for v in self.data["accuracy"].values()
                if v.get("total_classified")]
         season = {
             "seasonMeanError": round(np.mean(errors), 2),
-            "seasonAccuracyPct": round(
-                sum(within3) / max(sum(totals), 1) * 100, 1),
+            "seasonAccuracyPct": season_accuracy_pct,
+            "seasonPodiumAccuracyPct": season_podium_pct,
+            "seasonPointsAccuracyPct": season_points_pct,
             "roundsWithActual": len(self.data["accuracy"]),
         }
         if cls:

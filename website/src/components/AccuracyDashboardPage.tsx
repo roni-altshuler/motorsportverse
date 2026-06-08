@@ -120,9 +120,11 @@ export default function AccuracyDashboardPage() {
           <h2 className="section-heading">Season Overview</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {(() => {
-              const accPct = tracker.overallAccuracy.seasonAccuracyPctClassified ?? tracker.overallAccuracy.seasonAccuracyPct;
+              const accPct = tracker.overallAccuracy.seasonAccuracyPct;
+              const podiumPct = tracker.overallAccuracy.seasonPodiumAccuracyPct;
+              const pointsPct = tracker.overallAccuracy.seasonPointsAccuracyPct;
               const meanErr = tracker.overallAccuracy.seasonMeanErrorClassified ?? tracker.overallAccuracy.seasonMeanError;
-              const hasClassified = tracker.overallAccuracy.seasonAccuracyPctClassified != null;
+              const hasClassified = tracker.overallAccuracy.seasonMeanErrorClassified != null;
               return (
                 <>
                   <div className="metric-card text-center">
@@ -142,14 +144,13 @@ export default function AccuracyDashboardPage() {
                       <span className="text-2xl ml-1">%</span>
                     </p>
                     <p className="caption-uppercase text-[10px] mt-2">
-                      within 3 positions{hasClassified ? " · finishers" : ""}
+                      podium &amp; points classification
                     </p>
-                    {hasClassified && (
+                    {(podiumPct != null || pointsPct != null) && (
                       <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
-                        {tracker.overallAccuracy.seasonWithin5PctClassified != null && (
-                          <>{tracker.overallAccuracy.seasonWithin5PctClassified}% within 5 · </>
-                        )}
-                        {tracker.overallAccuracy.seasonAccuracyPct}% all drivers
+                        {podiumPct != null && <>{podiumPct}% podium</>}
+                        {podiumPct != null && pointsPct != null && <> · </>}
+                        {pointsPct != null && <>{pointsPct}% points</>}
                       </p>
                     )}
                   </div>
@@ -193,14 +194,9 @@ export default function AccuracyDashboardPage() {
               </p>
             </div>
           </div>
-          {tracker.overallAccuracy.seasonAccuracyPctClassified != null && (
-            <p className="text-xs mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-              Headline figures are measured among <strong style={{ color: "var(--text)" }}>classified finishers</strong> — the model forecasts race pace and order, not mechanical failures or crashes.
-              {tracker.overallAccuracy.totalDnfsExcluded != null && (
-                <> {tracker.overallAccuracy.totalDnfsExcluded} retirements/DNS across the season are reported separately rather than counted as pace errors.</>
-              )} All-driver figures are shown alongside for full transparency.
-            </p>
-          )}
+          <p className="text-xs mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+            Season accuracy is a <strong style={{ color: "var(--text)" }}>podium-weighted blend</strong> (60% podium, 40% points) of how often the model puts the <strong style={{ color: "var(--text)" }}>right drivers</strong> on the podium (top 3) and in the points (top 10) — a more meaningful benchmark than ordering all 22 cars. Mean position error and within-3 figures are shown alongside for full transparency.
+          </p>
         </motion.div>
       )}
 
@@ -263,10 +259,10 @@ export default function AccuracyDashboardPage() {
                         Exact: <span style={{ color: "var(--text)" }}>{report.exactMatches}</span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
-                        Within 3: <span style={{ color: "var(--text)" }}>{report.within3}</span>
+                        Podium: <span style={{ color: "var(--text)" }}>{report.podiumHits}/3</span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
-                        Podium Hits: <span style={{ color: "var(--text)" }}>{report.podiumHits}/3</span>
+                        Points: <span style={{ color: "var(--text)" }}>{report.pointsHits ?? "–"}/{report.pointsTotal ?? 10}</span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
                         Compared: <span style={{ color: "var(--text)" }}>{report.comparedDrivers}</span>
@@ -487,6 +483,16 @@ export default function AccuracyDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
           <div>
             <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
+              Podium &amp; Points Accuracy
+            </h4>
+            <p style={{ color: "var(--text-muted)" }}>
+              Our primary metric: a podium-weighted blend (60% podium, 40% points)
+              of how often the model puts the right drivers on the podium (top 3)
+              and in the points (top 10).
+            </p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
               Mean Position Error
             </h4>
             <p style={{ color: "var(--text-muted)" }}>
@@ -496,20 +502,11 @@ export default function AccuracyDashboardPage() {
           </div>
           <div>
             <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
-              Exact Matches
-            </h4>
-            <p style={{ color: "var(--text-muted)" }}>
-              Number of drivers whose predicted position exactly matches their
-              actual finishing position.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
               Within 3 Positions
             </h4>
             <p style={{ color: "var(--text-muted)" }}>
-              Percentage of drivers predicted within 3 positions of their actual
-              result. This is our primary accuracy metric.
+              A transparency detail: the share of all drivers predicted within 3
+              positions of their actual result.
             </p>
           </div>
         </div>

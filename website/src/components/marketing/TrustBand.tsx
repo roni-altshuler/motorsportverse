@@ -153,8 +153,9 @@ export default function TrustBand({ trustStats }: { trustStats: TrustStats }) {
           <span className="font-mono uppercase tracking-[0.14em] text-[color:var(--body-strong)]">
             This season, live:
           </span>{" "}
-          {currentSeason.accuracyPct.toFixed(1)}% of finishers placed within three
-          positions across {currentSeason.roundsGraded}{" "}
+          {currentSeason.accuracyPct.toFixed(1)}% podium &amp; points accuracy — how
+          often the model puts the right drivers on the podium and in the points —
+          across {currentSeason.roundsGraded}{" "}
           {currentSeason.roundsGraded === 1 ? "round" : "rounds"} graded so far.
         </p>
       )}

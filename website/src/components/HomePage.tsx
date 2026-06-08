@@ -131,6 +131,12 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       : "default";
   const isPredictionView =
     !!featuredRace && featuredRound?.round === featuredRace.round;
+  // The model only produces a genuine forecast once qualifying is in. Don't tease a
+  // "predicted podium" for an upcoming GP before its qualifying session is official.
+  const qualifyingOfficial =
+    featuredRound?.weekendResults?.sessions?.some(
+      (s) => s.kind === "qualifying" && s.status === "official",
+    ) ?? false;
 
   return (
     <div>
@@ -276,7 +282,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
-        {isPredictionView && featuredRound && featuredRound.classification && (
+        {isPredictionView && qualifyingOfficial && featuredRound && featuredRound.classification && (
           <motion.section
             aria-labelledby="forecast-heading"
             className="section-bugatti"

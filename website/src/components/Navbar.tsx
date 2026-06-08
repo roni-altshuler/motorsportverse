@@ -38,9 +38,8 @@ function useAccuracySummary(base: string): AccuracySummary | null {
           return;
         }
         setSummary({
-          // Prefer the finisher figure (pace-forecast skill); falls back to raw.
-          accuracyPct: d.overallAccuracy.seasonAccuracyPctClassified
-            ?? d.overallAccuracy.seasonAccuracyPct ?? 0,
+          // Headline = podium-weighted (60/40) exact-position accuracy.
+          accuracyPct: d.overallAccuracy.seasonAccuracyPct ?? 0,
           roundsWithActual: d.overallAccuracy.roundsWithActual ?? 0,
         });
       })
@@ -210,7 +209,7 @@ export default function Navbar() {
                       : "var(--hairline)",
                 color: "var(--muted)",
               }}
-              title={`Season accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} completed round(s)`}
+              title={`Season podium & points accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} completed round(s)`}
             >
               <span
                 className="inline-block w-1.5 h-1.5 rounded-full"

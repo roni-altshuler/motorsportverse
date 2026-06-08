@@ -273,8 +273,21 @@ def _compute_round_accuracy(classification_rows, actual_results, actual_status=N
         "within_3_positions": within_3,
         "within_5_positions": within_5,
         "total_drivers": len(common),
-        "accuracy_pct": round(within_3 / len(common) * 100, 1),
+        # Legacy "within 3 across all drivers" kept as a detail stat.
+        "within_3_accuracy_pct": round(within_3 / len(common) * 100, 1),
     }
+
+    # Headline accuracy = podium-weighted, exact-position over top 3 / top 10.
+    # Mirrors advanced_models.podium_points_accuracy so both compute paths agree.
+    from advanced_models import podium_points_accuracy
+    pp = podium_points_accuracy(
+        {d: predicted[d] for d in common},
+        {d: int(actual_results[d]) for d in common},
+    )
+    if pp:
+        result.update(pp)
+    else:
+        result["accuracy_pct"] = result["within_3_accuracy_pct"]
 
     # Accuracy among classified finishers (excludes DNF/DNS — attrition, not pace).
     from advanced_models import finishers_from_status
@@ -1089,6 +1102,10 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         official_actual_results = _fetch_live_round_actual_results(round_num, SEASON_YEAR)
         if isinstance(official_actual_results, dict) and official_actual_results:
             round_data["actualResults"] = official_actual_results
+
+    # Safeguard: never strand a concluded race on an empty weekend session when the
+    # official classified results are already known.
+    _backfill_race_session_from_actual(round_data)
 
     # ── Telemetry: speed traps & sector times from FastF1 ──
     if use_telemetry:
@@ -2053,6 +2070,62 @@ def _fetch_weekend_results(round_num, info, season_year=SEASON_YEAR):
         "loadedSessions": loaded,
         "sessions": sessions,
     }
+
+
+# Standard F1 points by finishing position (fastest-lap bonus not reconstructed).
+_RACE_POINTS_BY_POSITION = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
+
+
+def _backfill_race_session_from_actual(round_data):
+    """Populate the Grand Prix race session from ``actualResults`` if it's empty.
+
+    The weekend race session and ``actualResults`` are fetched independently from
+    Jolpica; a flaky/empty race-results fetch can leave a *concluded* race stranded
+    showing "Awaiting data" even though ``actualResults`` is fully populated. When
+    that happens we synthesize the session order from the authoritative classified
+    results so the page never strands a finished GP. Returns True if it backfilled.
+    """
+    weekend = round_data.get("weekendResults")
+    actual_results = round_data.get("actualResults")
+    if not isinstance(weekend, dict) or not isinstance(actual_results, dict) or not actual_results:
+        return False
+
+    sessions = weekend.get("sessions") or []
+    race_session = next((s for s in sessions if s.get("key") == "grandPrix"), None)
+    if race_session is None or race_session.get("rows"):
+        return False  # missing session or already populated — nothing to do
+
+    rows = []
+    for code, position in sorted(actual_results.items(), key=lambda kv: int(kv[1])):
+        pos = int(position)
+        team = DRIVER_TEAM.get(code, "Unknown")
+        rows.append({
+            "position": pos,
+            "positionText": str(pos),
+            "driver": code,
+            "driverFullName": DRIVER_FULL_NAMES.get(code, code),
+            "team": team,
+            "teamColor": TEAM_COLOURS.get(team, "#888"),
+            "points": _RACE_POINTS_BY_POSITION.get(pos, 0),
+            "grid": None,
+            "laps": None,
+            "status": "Classified",
+            "time": None,
+            "gap": None,
+        })
+    if not rows:
+        return False
+
+    race_session.update({
+        "status": "official",
+        "rows": rows,
+        "note": "Order derived from the official classified results (live session "
+                "timing was unavailable at fetch time).",
+    })
+    weekend["loadedSessions"] = sum(1 for s in sessions if s.get("rows"))
+    if not round_data.get("actualStatus"):
+        round_data["actualStatus"] = {r["driver"]: r["positionText"] for r in rows}
+    return True
 
 
 # ═════════════════════════════════════════════════════════════════════════

@@ -149,6 +149,11 @@ export interface GrandPrixPerformanceReport {
   within5: number;
   winnerHit: boolean;
   podiumHits: number;
+  pointsHits?: number | null;
+  pointsTotal?: number | null;
+  podiumAccuracyPct?: number | null;
+  pointsAccuracyPct?: number | null;
+  accuracyPct?: number | null;
   biggestMisses: GrandPrixReportMiss[];
   teamMeanError: GrandPrixTeamError[];
 }
@@ -285,7 +290,16 @@ export interface RoundData {
     within_3_positions?: number;
     within_5_positions?: number;
     total_drivers?: number;
+    // Headline accuracy: podium-weighted (60/40) classification over top 3 / top 10.
     accuracy_pct?: number;
+    podium_hits?: number;
+    podium_total?: number;
+    podium_accuracy_pct?: number;
+    points_hits?: number;
+    points_total?: number;
+    points_accuracy_pct?: number;
+    // Legacy "within 3 across all drivers" kept as a detail stat.
+    within_3_accuracy_pct?: number;
     // Accuracy among classified finishers (DNF/DNS excluded — attrition, not pace).
     mean_position_error_classified?: number;
     exact_matches_classified?: number;
@@ -418,6 +432,9 @@ export interface SeasonTrackerRound {
   exactMatches: number | null;
   within3: number | null;
   accuracyPct: number | null;
+  podiumAccuracyPct?: number | null;
+  pointsAccuracyPct?: number | null;
+  within3AccuracyPct?: number | null;
   // Among classified finishers (DNF/DNS excluded).
   meanErrorClassified?: number | null;
   within3Classified?: number | null;
@@ -431,6 +448,8 @@ export interface SeasonTrackerData {
   overallAccuracy: {
     seasonMeanError: number;
     seasonAccuracyPct: number;
+    seasonPodiumAccuracyPct?: number;
+    seasonPointsAccuracyPct?: number;
     roundsWithActual: number;
     seasonMeanErrorClassified?: number;
     seasonAccuracyPctClassified?: number;

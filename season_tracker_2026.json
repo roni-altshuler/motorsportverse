@@ -1039,9 +1039,6 @@
         "OCO": {
           "position": 9
         },
-        "PER": {
-          "position": 15
-        },
         "ALO": {
           "position": 10
         },
@@ -1056,6 +1053,9 @@
         },
         "COL": {
           "position": 14
+        },
+        "PER": {
+          "position": 15
         },
         "SAI": {
           "position": 16
@@ -1078,6 +1078,30 @@
         "VER": {
           "position": 22
         }
+      },
+      "actualStatus": {
+        "ANT": "1",
+        "HAM": "2",
+        "HAD": "3",
+        "PIA": "4",
+        "LAW": "5",
+        "LIN": "6",
+        "GAS": "7",
+        "ALB": "8",
+        "OCO": "9",
+        "ALO": "10",
+        "BOR": "11",
+        "RUS": "12",
+        "HUL": "13",
+        "COL": "14",
+        "PER": "15",
+        "SAI": "16",
+        "LEC": "17",
+        "STR": "18",
+        "NOR": "19",
+        "BEA": "20",
+        "BOT": "21",
+        "VER": "22"
       }
     },
     "7": {
@@ -2577,7 +2601,14 @@
       "within_3_positions": 9,
       "within_5_positions": 11,
       "total_drivers": 22,
-      "accuracy_pct": 40.9,
+      "within_3_accuracy_pct": 40.9,
+      "podium_hits": 1,
+      "podium_total": 3,
+      "podium_accuracy_pct": 33.3,
+      "points_hits": 6,
+      "points_total": 10,
+      "points_accuracy_pct": 60.0,
+      "accuracy_pct": 44.0,
       "mean_position_error_classified": 4.62,
       "exact_matches_classified": 2,
       "within_3_classified": 7,
@@ -2594,7 +2625,14 @@
       "within_3_positions": 12,
       "within_5_positions": 16,
       "total_drivers": 22,
-      "accuracy_pct": 54.5,
+      "within_3_accuracy_pct": 54.5,
+      "podium_hits": 2,
+      "podium_total": 3,
+      "podium_accuracy_pct": 66.7,
+      "points_hits": 7,
+      "points_total": 10,
+      "points_accuracy_pct": 70.0,
+      "accuracy_pct": 68.0,
       "mean_position_error_classified": 3.13,
       "exact_matches_classified": 1,
       "within_3_classified": 10,
@@ -2611,7 +2649,14 @@
       "within_3_positions": 19,
       "within_5_positions": 22,
       "total_drivers": 22,
-      "accuracy_pct": 86.4,
+      "within_3_accuracy_pct": 86.4,
+      "podium_hits": 2,
+      "podium_total": 3,
+      "podium_accuracy_pct": 66.7,
+      "points_hits": 9,
+      "points_total": 10,
+      "points_accuracy_pct": 90.0,
+      "accuracy_pct": 76.0,
       "mean_position_error_classified": 1.95,
       "exact_matches_classified": 1,
       "within_3_classified": 18,
@@ -2628,7 +2673,14 @@
       "within_3_positions": 16,
       "within_5_positions": 18,
       "total_drivers": 22,
-      "accuracy_pct": 72.7,
+      "within_3_accuracy_pct": 72.7,
+      "podium_hits": 1,
+      "podium_total": 3,
+      "podium_accuracy_pct": 33.3,
+      "points_hits": 7,
+      "points_total": 10,
+      "points_accuracy_pct": 70.0,
+      "accuracy_pct": 48.0,
       "mean_position_error_classified": 2.94,
       "exact_matches_classified": 1,
       "within_3_classified": 15,
@@ -2645,7 +2697,14 @@
       "within_3_positions": 8,
       "within_5_positions": 14,
       "total_drivers": 22,
-      "accuracy_pct": 36.4,
+      "within_3_accuracy_pct": 36.4,
+      "podium_hits": 0,
+      "podium_total": 3,
+      "podium_accuracy_pct": 0.0,
+      "points_hits": 7,
+      "points_total": 10,
+      "points_accuracy_pct": 70.0,
+      "accuracy_pct": 28.0,
       "mean_position_error_classified": 4.0,
       "exact_matches_classified": 2,
       "within_3_classified": 6,
@@ -2662,7 +2721,22 @@
       "within_3_positions": 10,
       "within_5_positions": 14,
       "total_drivers": 22,
-      "accuracy_pct": 45.5
+      "within_3_accuracy_pct": 45.5,
+      "podium_hits": 2,
+      "podium_total": 3,
+      "podium_accuracy_pct": 66.7,
+      "points_hits": 6,
+      "points_total": 10,
+      "points_accuracy_pct": 60.0,
+      "accuracy_pct": 64.0,
+      "mean_position_error_classified": 5.55,
+      "exact_matches_classified": 2,
+      "within_3_classified": 10,
+      "within_5_classified": 14,
+      "total_classified": 22,
+      "accuracy_pct_classified": 45.5,
+      "within_5_pct_classified": 63.6,
+      "dnf_count": 0
     }
   }
 }
