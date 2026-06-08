@@ -118,6 +118,43 @@ Each piece writes to `website/public/data/` and is wired into [`update_predictio
 - **[`models/promotion.py`](models/promotion.py)** + **[`promotion_decision.py`](promotion_decision.py)** — guarded production/candidate comparison. Requires ≥5 overlapping rounds + 2% mean improvement + no per-round 20%+ regression before recommending promote. Output: `promotion_status.json`.
 - **[`models/online_game_theory.py`](models/online_game_theory.py)** — ridge-regression learner for the 7 game-theory coefficients in `RaceProjectionScore`. Exponential blend with the legacy values (default α=0.30, ~2-round half-life). Registry sentinel round 98.
 
+### Accuracy metric & post-race data hydration
+
+Two pieces of post-race logic are easy to get wrong because the data flows through
+two parallel code paths that **must stay identical**:
+
+- **Headline accuracy** is a **podium-weighted classification blend**, NOT
+  "within-N positions". [`advanced_models.py::podium_points_accuracy`](advanced_models.py)
+  is the single source of truth: `0.6 * podium% + 0.4 * points%`, where each term
+  is *set-membership* overlap — how many of the actual top-3 / top-10 drivers the
+  model also placed in that group (exact P1/P2/P3 order within the group does NOT
+  matter). It's consumed by both `SeasonTracker._compute_accuracy` (feeds
+  `season_tracker.json`, the navbar chip, the accuracy dashboard) **and**
+  `export_website_data._compute_round_accuracy` (feeds `round_NN.json::accuracy`).
+  If you change the formula, change the helper, not the call sites. The legacy
+  `within_3_positions` / `*_classified` fields are still computed but are
+  transparency detail only — `accuracy_pct` is the blend.
+- **Weekend race-session timing** can lag the classified order. A concluded race
+  whose Jolpica `results` fetch was empty at export time would otherwise show
+  "Awaiting data". [`export_website_data._refresh_race_session_timing`](export_website_data.py)
+  re-fetches from Jolpica (timing usually publishes shortly after the order) and
+  only falls back to `_backfill_race_session_from_actual` (position-only synthesis
+  from `actualResults`, no times/grid/laps) when nothing is published yet. Both are
+  self-healing and wired into `export_round_data`, so a normal re-export fixes a
+  stranded session.
+
+**Recomputing past rounds WITHOUT re-prediction:** predictions are locked once a
+weekend runs — never re-run the ML predictor over a completed round to refresh
+derived data. [`diagnostics/recompute_accuracy_podium_points.py`](diagnostics/recompute_accuracy_podium_points.py)
+is the pattern: `SeasonTracker.sync_from_round_directory` recomputes accuracy from
+the stored `predicted`/`actual`, re-publishes `season_tracker.json` +
+`gp_accuracy_report.json`, and writes the recomputed `accuracy` block back into
+each `round_NN.json` — all without touching `classification`.
+
+The home page only shows the "Predicted Podium — Next Grand Prix" forecast once
+that round's qualifying session is `official` ([`HomePage.tsx`](website/src/components/HomePage.tsx))
+— the model has no genuine forecast before qualifying, so don't tease one.
+
 ### Calibration is honestly gated
 
 `export_probabilities.py` writes `calibration.applied = false` until the history DB contains ≥ `--min-completed-rounds` distinct (season, round) tuples (default 3). When `applied=false`, raw Plackett-Luce numbers are published as-is and the website renders a disclaimer banner. The gate exists because isotonic on a tiny sample collapses to a step function. **Never claim calibration is applied without verifying the gate trips.**
@@ -158,7 +195,7 @@ Key data files under `website/public/data/`:
 - `forward_eval/round_NN.json` — per-round accuracy metrics (A-P0.2).
 - `model_health.json` — feature drift + rolling-Brier (A-P1.2).
 - `promotion_status.json` — shadow/A-B promotion decision (A-P1.3).
-- `gp_accuracy_report.json` — season-rolling accuracy (used by the navbar accuracy chip).
+- `gp_accuracy_report.json` — season-rolling accuracy (used by the navbar accuracy chip). `seasonAccuracyPct` is the podium-weighted classification blend (see "Accuracy metric & post-race data hydration").
 
 ### Website design system (cinematic overhaul, supersedes 2026-05 flat redesign)
 
