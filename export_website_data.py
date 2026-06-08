@@ -1103,9 +1103,10 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         if isinstance(official_actual_results, dict) and official_actual_results:
             round_data["actualResults"] = official_actual_results
 
-    # Safeguard: never strand a concluded race on an empty weekend session when the
-    # official classified results are already known.
-    _backfill_race_session_from_actual(round_data)
+    # Safeguard: never strand a concluded race on an empty/timing-less weekend
+    # session — re-fetch official timing, falling back to the classified order.
+    if has_actual_results or bool(round_data.get("actualResults")):
+        _refresh_race_session_timing(round_data, round_num, SEASON_YEAR)
 
     # ── Telemetry: speed traps & sector times from FastF1 ──
     if use_telemetry:
@@ -2126,6 +2127,51 @@ def _backfill_race_session_from_actual(round_data):
     if not round_data.get("actualStatus"):
         round_data["actualStatus"] = {r["driver"]: r["positionText"] for r in rows}
     return True
+
+
+def _race_session_has_timing(session):
+    """True if the race session carries real timing (times/gaps/grid/laps)."""
+    rows = session.get("rows") or []
+    return any(
+        row.get(field) not in (None, "")
+        for row in rows
+        for field in ("time", "gap", "grid", "laps")
+    )
+
+
+def _refresh_race_session_timing(round_data, round_num, season_year=SEASON_YEAR):
+    """Ensure the Grand Prix race session carries full timing, not just an order.
+
+    A race session that was first published before the official timing landed (or
+    was synthesized position-only from ``actualResults``) carries no time/gap/grid/
+    laps. Re-fetch it from Jolpica — the data is usually available a little later —
+    and only fall back to the position-only synthesis if it still isn't. Returns
+    True if the session was changed.
+    """
+    weekend = round_data.get("weekendResults")
+    if not isinstance(weekend, dict):
+        return False
+    sessions = weekend.get("sessions") or []
+    idx = next((i for i, s in enumerate(sessions) if s.get("key") == "grandPrix"), None)
+    if idx is None:
+        return _backfill_race_session_from_actual(round_data)
+    if _race_session_has_timing(sessions[idx]):
+        return False  # already complete — nothing to do
+
+    fresh = _fetch_jolpica_weekend_session(
+        round_num, season_year, "results", "grandPrix", "Grand Prix Result", "Race", "race"
+    )
+    if fresh.get("rows"):
+        sessions[idx] = fresh
+        weekend["loadedSessions"] = sum(1 for s in sessions if s.get("rows"))
+        round_data["actualStatus"] = {
+            row["driver"]: row.get("positionText") or f"P{row.get('position')}"
+            for row in fresh["rows"] if row.get("driver")
+        }
+        return True
+
+    # Still nothing published — keep the page populated with the classified order.
+    return _backfill_race_session_from_actual(round_data)
 
 
 # ═════════════════════════════════════════════════════════════════════════

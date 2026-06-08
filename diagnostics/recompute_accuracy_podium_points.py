@@ -43,12 +43,15 @@ def write_round(r, data):
 
 
 def main():
-    # 1. Backfill any empty race session from the official classified results.
+    # 1. Ensure every concluded round's race session carries full official timing
+    #    (re-fetch from Jolpica; fall back to the classified order if still empty).
     for r in COMPLETED_ROUNDS:
         data = load_round(r)
-        if ew._backfill_race_session_from_actual(data):
+        if ew._refresh_race_session_timing(data, r):
             write_round(r, data)
-            print(f"  R{r}: backfilled Grand Prix Result session from actualResults")
+            sess = next(s for s in data["weekendResults"]["sessions"] if s["key"] == "grandPrix")
+            kind = "official timing" if ew._race_session_has_timing(sess) else "classified order"
+            print(f"  R{r}: refreshed Grand Prix Result session ({kind})")
 
     # 2. Recompute accuracy from stored predicted/actual with the new formula.
     tracker = SeasonTracker()
