@@ -20,6 +20,7 @@
       "Melbourne": 0,
       "Mexico City": 17,
       "Miami": 30,
+      "Miami Gardens": 34,
       "Monaco": 31,
       "Monte Carlo": 5,
       "Montr\u00e9al": 6,
@@ -44,14 +45,19 @@
       "AIT": 28,
       "ALB": 20,
       "ALO": 2,
+      "ANT": 39,
       "BEA": 37,
+      "BOR": 40,
       "BOT": 17,
+      "COL": 38,
       "DEV": 33,
+      "DOO": 42,
       "ERI": 19,
       "FIT": 27,
       "GAS": 0,
       "GIO": 25,
       "GRO": 18,
+      "HAD": 41,
       "HAM": 13,
       "HAR": 8,
       "HUL": 7,
@@ -92,6 +98,7 @@
       "KICK SAUBER": 16,
       "MCLAREN": 2,
       "MERCEDES": 8,
+      "RACING BULLS": 18,
       "RACING POINT": 10,
       "RB": 17,
       "RED BULL RACING": 7,
@@ -102,8 +109,8 @@
     }
   },
   "ensemble_weights": {
-    "gbr": 0.39702250590204785,
-    "xgb": 0.6029774940979522
+    "gbr": 0.42126969163448796,
+    "xgb": 0.578730308365512
   },
   "feature_columns": [
     "driver_id",
@@ -123,18 +130,18 @@
     "track_temp_c",
     "rain_intensity"
   ],
-  "gitSha": "a41516f1ceee96560495378f077198588842a431",
+  "gitSha": "0edba21fe3e297ad55118d07f7c14fab5e86ea4a",
   "kind": "race-pace",
   "metrics": {
-    "ensemble_mae_s": 2.4123337327231336,
-    "gbr_mae_s": 3.138576290826944,
-    "n_test": 28016,
-    "n_train": 112062,
-    "xgb_mae_s": 2.066553787074587
+    "ensemble_mae_s": 2.267733745251717,
+    "gbr_mae_s": 2.774434358624261,
+    "n_test": 36230,
+    "n_train": 144920,
+    "xgb_mae_s": 2.019567819108576
   },
   "pythonVersion": "3.11.15",
   "round": 99,
-  "savedAt": "2026-06-08T11:03:11+00:00",
+  "savedAt": "2026-06-08T16:06:32+00:00",
   "season": 2025,
   "training_pair_count": 176,
   "training_rounds": [
@@ -161,7 +168,7 @@
     21,
     22
   ],
-  "training_row_count": 140078,
+  "training_row_count": 181150,
   "training_seasons": [
     2018,
     2019,
