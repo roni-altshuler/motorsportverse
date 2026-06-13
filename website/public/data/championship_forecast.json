@@ -1,12 +1,453 @@
 {
-  "wdcForecast": [],
-  "wccForecast": [],
-  "remainingRounds": 0,
-  "remainingRoundList": [],
-  "monteCarloSamples": 0,
-  "skillSourceRound": null,
-  "status": "season_complete",
-  "generatedAt": "2026-06-13T14:21:42.355050+00:00",
-  "lastCompletedRound": 22,
+  "wdcForecast": [
+    {
+      "driver": "ANT",
+      "driverFullName": "Kimi Antonelli",
+      "team": "Mercedes",
+      "teamColor": "#27F4D2",
+      "currentPoints": 156.0,
+      "championshipWinProbability": 0.8878,
+      "expectedFinalPoints": 233.2,
+      "expectedFinalPosition": 1.13,
+      "p5thPercentilePoints": 191.0,
+      "p95thPercentilePoints": 282.0
+    },
+    {
+      "driver": "HAM",
+      "driverFullName": "Lewis Hamilton",
+      "team": "Ferrari",
+      "teamColor": "#E8002D",
+      "currentPoints": 90.0,
+      "championshipWinProbability": 0.041,
+      "expectedFinalPoints": 165.9,
+      "expectedFinalPosition": 3.73,
+      "p5thPercentilePoints": 125.0,
+      "p95thPercentilePoints": 214.0
+    },
+    {
+      "driver": "RUS",
+      "driverFullName": "George Russell",
+      "team": "Mercedes",
+      "teamColor": "#27F4D2",
+      "currentPoints": 88.0,
+      "championshipWinProbability": 0.0384,
+      "expectedFinalPoints": 163.7,
+      "expectedFinalPosition": 3.93,
+      "p5thPercentilePoints": 121.0,
+      "p95thPercentilePoints": 213.0
+    },
+    {
+      "driver": "LEC",
+      "driverFullName": "Charles Leclerc",
+      "team": "Ferrari",
+      "teamColor": "#E8002D",
+      "currentPoints": 75.0,
+      "championshipWinProbability": 0.017,
+      "expectedFinalPoints": 151.1,
+      "expectedFinalPosition": 4.98,
+      "p5thPercentilePoints": 110.0,
+      "p95thPercentilePoints": 199.0
+    },
+    {
+      "driver": "PIA",
+      "driverFullName": "Oscar Piastri",
+      "team": "McLaren",
+      "teamColor": "#FF8000",
+      "currentPoints": 58.0,
+      "championshipWinProbability": 0.0058,
+      "expectedFinalPoints": 133.7,
+      "expectedFinalPosition": 6.95,
+      "p5thPercentilePoints": 91.0,
+      "p95thPercentilePoints": 181.05000000000018
+    },
+    {
+      "driver": "NOR",
+      "driverFullName": "Lando Norris",
+      "team": "McLaren",
+      "teamColor": "#FF8000",
+      "currentPoints": 58.0,
+      "championshipWinProbability": 0.005,
+      "expectedFinalPoints": 134.1,
+      "expectedFinalPosition": 6.88,
+      "p5thPercentilePoints": 92.0,
+      "p95thPercentilePoints": 182.05000000000018
+    },
+    {
+      "driver": "VER",
+      "driverFullName": "Max Verstappen",
+      "team": "Red Bull Racing",
+      "teamColor": "#3671C6",
+      "currentPoints": 43.0,
+      "championshipWinProbability": 0.0016,
+      "expectedFinalPoints": 118.5,
+      "expectedFinalPosition": 9.06,
+      "p5thPercentilePoints": 76.0,
+      "p95thPercentilePoints": 165.05000000000018
+    },
+    {
+      "driver": "GAS",
+      "driverFullName": "Pierre Gasly",
+      "team": "Alpine",
+      "teamColor": "#FF87BC",
+      "currentPoints": 35.0,
+      "championshipWinProbability": 0.0016,
+      "expectedFinalPoints": 111.1,
+      "expectedFinalPosition": 10.23,
+      "p5thPercentilePoints": 69.0,
+      "p95thPercentilePoints": 160.0
+    },
+    {
+      "driver": "HAD",
+      "driverFullName": "Isack Hadjar",
+      "team": "Red Bull Racing",
+      "teamColor": "#3671C6",
+      "currentPoints": 26.0,
+      "championshipWinProbability": 0.0006,
+      "expectedFinalPoints": 101.9,
+      "expectedFinalPosition": 11.73,
+      "p5thPercentilePoints": 59.0,
+      "p95thPercentilePoints": 151.0
+    },
+    {
+      "driver": "LAW",
+      "driverFullName": "Liam Lawson",
+      "team": "Racing Bulls",
+      "teamColor": "#6692FF",
+      "currentPoints": 24.0,
+      "championshipWinProbability": 0.0004,
+      "expectedFinalPoints": 99.6,
+      "expectedFinalPosition": 12.15,
+      "p5thPercentilePoints": 56.0,
+      "p95thPercentilePoints": 149.0
+    },
+    {
+      "driver": "BEA",
+      "driverFullName": "Oliver Bearman",
+      "team": "Haas",
+      "teamColor": "#B6BABD",
+      "currentPoints": 18.0,
+      "championshipWinProbability": 0.0004,
+      "expectedFinalPoints": 93.9,
+      "expectedFinalPosition": 13.08,
+      "p5thPercentilePoints": 51.0,
+      "p95thPercentilePoints": 142.0
+    },
+    {
+      "driver": "SAI",
+      "driverFullName": "Carlos Sainz Jr.",
+      "team": "Williams",
+      "teamColor": "#64C4FF",
+      "currentPoints": 6.0,
+      "championshipWinProbability": 0.0004,
+      "expectedFinalPoints": 82.0,
+      "expectedFinalPosition": 15.09,
+      "p5thPercentilePoints": 39.0,
+      "p95thPercentilePoints": 132.0
+    },
+    {
+      "driver": "COL",
+      "driverFullName": "Franco Colapinto",
+      "team": "Alpine",
+      "teamColor": "#FF87BC",
+      "currentPoints": 15.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 91.0,
+      "expectedFinalPosition": 13.55,
+      "p5thPercentilePoints": 50.0,
+      "p95thPercentilePoints": 139.0
+    },
+    {
+      "driver": "LIN",
+      "driverFullName": "Arvid Lindblad",
+      "team": "Racing Bulls",
+      "teamColor": "#6692FF",
+      "currentPoints": 11.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 87.0,
+      "expectedFinalPosition": 14.27,
+      "p5thPercentilePoints": 44.0,
+      "p95thPercentilePoints": 135.0
+    },
+    {
+      "driver": "ALB",
+      "driverFullName": "Alexander Albon",
+      "team": "Williams",
+      "teamColor": "#64C4FF",
+      "currentPoints": 5.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 81.2,
+      "expectedFinalPosition": 15.2,
+      "p5thPercentilePoints": 39.0,
+      "p95thPercentilePoints": 130.0
+    },
+    {
+      "driver": "OCO",
+      "driverFullName": "Esteban Ocon",
+      "team": "Haas",
+      "teamColor": "#B6BABD",
+      "currentPoints": 3.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 79.4,
+      "expectedFinalPosition": 15.47,
+      "p5thPercentilePoints": 37.0,
+      "p95thPercentilePoints": 128.0
+    },
+    {
+      "driver": "BOR",
+      "driverFullName": "Gabriel Bortoleto",
+      "team": "Audi",
+      "teamColor": "#1E1E1E",
+      "currentPoints": 2.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 78.2,
+      "expectedFinalPosition": 15.73,
+      "p5thPercentilePoints": 36.0,
+      "p95thPercentilePoints": 126.0
+    },
+    {
+      "driver": "ALO",
+      "driverFullName": "Fernando Alonso",
+      "team": "Aston Martin",
+      "teamColor": "#229971",
+      "currentPoints": 1.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 78.0,
+      "expectedFinalPosition": 15.72,
+      "p5thPercentilePoints": 35.0,
+      "p95thPercentilePoints": 126.0
+    },
+    {
+      "driver": "HUL",
+      "driverFullName": "Nico H\u00fclkenberg",
+      "team": "Audi",
+      "teamColor": "#1E1E1E",
+      "currentPoints": 0.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 76.2,
+      "expectedFinalPosition": 15.99,
+      "p5thPercentilePoints": 32.0,
+      "p95thPercentilePoints": 125.0
+    },
+    {
+      "driver": "BOT",
+      "driverFullName": "Valtteri Bottas",
+      "team": "Cadillac",
+      "teamColor": "#C0C0C0",
+      "currentPoints": 0.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 76.0,
+      "expectedFinalPosition": 16.06,
+      "p5thPercentilePoints": 34.0,
+      "p95thPercentilePoints": 125.0
+    },
+    {
+      "driver": "PER",
+      "driverFullName": "Sergio P\u00e9rez",
+      "team": "Cadillac",
+      "teamColor": "#C0C0C0",
+      "currentPoints": 0.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 75.6,
+      "expectedFinalPosition": 16.13,
+      "p5thPercentilePoints": 33.0,
+      "p95thPercentilePoints": 124.0
+    },
+    {
+      "driver": "STR",
+      "driverFullName": "Lance Stroll",
+      "team": "Aston Martin",
+      "teamColor": "#229971",
+      "currentPoints": 0.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 76.7,
+      "expectedFinalPosition": 15.95,
+      "p5thPercentilePoints": 34.0,
+      "p95thPercentilePoints": 125.0
+    }
+  ],
+  "wccForecast": [
+    {
+      "team": "Mercedes",
+      "teamColor": "#27F4D2",
+      "currentPoints": 244.0,
+      "championshipWinProbability": 0.915,
+      "expectedFinalPoints": 396.9,
+      "p5thPercentilePoints": 337.0,
+      "p95thPercentilePoints": 463.0
+    },
+    {
+      "team": "Ferrari",
+      "teamColor": "#E8002D",
+      "currentPoints": 165.0,
+      "championshipWinProbability": 0.0748,
+      "expectedFinalPoints": 317.0,
+      "p5thPercentilePoints": 256.0,
+      "p95thPercentilePoints": 382.0
+    },
+    {
+      "team": "McLaren",
+      "teamColor": "#FF8000",
+      "currentPoints": 116.0,
+      "championshipWinProbability": 0.0092,
+      "expectedFinalPoints": 267.9,
+      "p5thPercentilePoints": 209.0,
+      "p95thPercentilePoints": 333.0
+    },
+    {
+      "team": "Red Bull Racing",
+      "teamColor": "#3671C6",
+      "currentPoints": 69.0,
+      "championshipWinProbability": 0.0004,
+      "expectedFinalPoints": 220.4,
+      "p5thPercentilePoints": 159.0,
+      "p95thPercentilePoints": 286.0500000000002
+    },
+    {
+      "team": "Alpine",
+      "teamColor": "#FF87BC",
+      "currentPoints": 50.0,
+      "championshipWinProbability": 0.0004,
+      "expectedFinalPoints": 202.1,
+      "p5thPercentilePoints": 143.0,
+      "p95thPercentilePoints": 266.0
+    },
+    {
+      "team": "Cadillac",
+      "teamColor": "#C0C0C0",
+      "currentPoints": 0.0,
+      "championshipWinProbability": 0.0002,
+      "expectedFinalPoints": 151.6,
+      "p5thPercentilePoints": 91.0,
+      "p95thPercentilePoints": 218.0
+    },
+    {
+      "team": "Racing Bulls",
+      "teamColor": "#6692FF",
+      "currentPoints": 35.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 186.6,
+      "p5thPercentilePoints": 127.0,
+      "p95thPercentilePoints": 253.0
+    },
+    {
+      "team": "Haas",
+      "teamColor": "#B6BABD",
+      "currentPoints": 21.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 173.3,
+      "p5thPercentilePoints": 113.0,
+      "p95thPercentilePoints": 240.0
+    },
+    {
+      "team": "Williams",
+      "teamColor": "#64C4FF",
+      "currentPoints": 11.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 163.2,
+      "p5thPercentilePoints": 103.0,
+      "p95thPercentilePoints": 229.0
+    },
+    {
+      "team": "Audi",
+      "teamColor": "#1E1E1E",
+      "currentPoints": 2.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 154.4,
+      "p5thPercentilePoints": 95.95000000000002,
+      "p95thPercentilePoints": 218.05000000000018
+    },
+    {
+      "team": "Aston Martin",
+      "teamColor": "#229971",
+      "currentPoints": 1.0,
+      "championshipWinProbability": 0.0,
+      "expectedFinalPoints": 154.7,
+      "p5thPercentilePoints": 94.0,
+      "p95thPercentilePoints": 219.0
+    }
+  ],
+  "remainingRounds": 15,
+  "remainingRoundList": [
+    {
+      "round": 8,
+      "name": "Austrian Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 9,
+      "name": "British Grand Prix",
+      "sprint": true
+    },
+    {
+      "round": 10,
+      "name": "Belgian Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 11,
+      "name": "Hungarian Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 12,
+      "name": "Dutch Grand Prix",
+      "sprint": true
+    },
+    {
+      "round": 13,
+      "name": "Italian Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 14,
+      "name": "Spanish Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 15,
+      "name": "Azerbaijan Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 16,
+      "name": "Singapore Grand Prix",
+      "sprint": true
+    },
+    {
+      "round": 17,
+      "name": "United States Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 18,
+      "name": "Mexico City Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 19,
+      "name": "S\u00e3o Paulo Grand Prix",
+      "sprint": true
+    },
+    {
+      "round": 20,
+      "name": "Las Vegas Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 21,
+      "name": "Qatar Grand Prix",
+      "sprint": false
+    },
+    {
+      "round": 22,
+      "name": "Abu Dhabi Grand Prix",
+      "sprint": false
+    }
+  ],
+  "monteCarloSamples": 5000,
+  "skillSourceRound": 7,
+  "status": "ok",
+  "generatedAt": "2026-06-13T19:49:08.170042+00:00",
+  "lastCompletedRound": 7,
   "note": "Monte Carlo simulation of the remaining season. Skill vector uses the next race's published win probabilities as a proxy for all remaining rounds; refresh after each GP weekend."
 }

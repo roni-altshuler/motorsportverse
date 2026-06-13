@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Spain",
   "ensemble_weights": {
-    "gb": 0.6359369600538551,
-    "lstm": 0.0,
-    "xgb": 0.36406303994614475
+    "gb": 0.5194330093168033,
+    "lstm": 0.18,
+    "xgb": 0.3005669906831967
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -55,17 +55,17 @@
     "racecraft_elo",
     "teammate_delta_elo"
   ],
-  "gitSha": "e7d09fd69b6b77945001d5d8ad508e1c24c0f321",
+  "gitSha": "ff530558864a020ce39c5b6a2f8bb22044801b71",
   "gpName": "Barcelona-Catalunya Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.062184034051665546,
+      "MAE (s)": 0.06285330310924167,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.09030185961074358,
-      "R\u00b2": 0.9757695288196256
+      "RMSE (s)": 0.09035305433374784,
+      "R\u00b2": 0.9757420471288741
     },
     {
       "MAE (s)": 0.10862164306640806,
@@ -74,14 +74,20 @@
       "R\u00b2": 0.9609343097885255
     },
     {
-      "MAE (s)": 0.06809569818058207,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.08078628460554464,
-      "R\u00b2": 0.9806070560642306
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.06853321101538938,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.08110185287231504,
+      "R\u00b2": 0.9804552542987298
     }
   ],
   "pythonVersion": "3.11.15",
   "round": 7,
-  "savedAt": "2026-06-13T14:18:44+00:00",
+  "savedAt": "2026-06-13T19:45:32+00:00",
   "season": 2026
 }
