@@ -31,7 +31,7 @@ target-version = "py311"
 line-length = 100
 extend-exclude = [
     "races",                      # generated per-round scripts (one per GP)
-    "F1PredictionFramework.py",   # legacy notebook-derived framework
+    "archive",                    # legacy notebook-derived framework, kept for history
     "*.ipynb",
     "scripts/archive",            # archived one-off analysis scripts
     "website",                    # JS/TS project, linted by ESLint
@@ -74,4 +74,4 @@ python_files = ["test_*.py"]
 python_version = "3.11"
 ignore_missing_imports = true
 warn_unused_ignores = true
-exclude = "(races/|website/|F1PredictionFramework\\.py|scripts/archive/)"
+exclude = "(races/|website/|archive/|scripts/archive/)"

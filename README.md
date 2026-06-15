@@ -14,6 +14,13 @@ interactive dashboard.
 [Architecture](docs/ARCHITECTURE.md) ·
 [Contributing](CONTRIBUTING.md)
 
+[![CI](https://github.com/roni-altshuler/f1_predictions/actions/workflows/ci.yml/badge.svg)](https://github.com/roni-altshuler/f1_predictions/actions/workflows/ci.yml)
+&nbsp;[![Deploy](https://github.com/roni-altshuler/f1_predictions/actions/workflows/deploy.yml/badge.svg)](https://github.com/roni-altshuler/f1_predictions/actions/workflows/deploy.yml)
+&nbsp;![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)
+&nbsp;![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=next.js)
+&nbsp;![Tests](https://img.shields.io/badge/tests-650%2B-2EA043)
+&nbsp;[![License](https://img.shields.io/badge/license-see%20LICENSE-blue)](LICENSE)
+
 </div>
 
 ---
@@ -35,12 +42,22 @@ interactive dashboard.
 - **Sprint weekends are first-class** — Sprint Qualifying + Sprint Race sit
   alongside Qualifying and the Grand Prix on each race page.
 - **Championship math** — "who can still win the title" lanes with
-  mathematical-elimination logic and a living points-progression chart.
+  mathematical-elimination logic, plus living points-progression projections for
+  both the drivers' and constructors' championships.
 
-## Screenshots
+## Explore the live dashboard
 
-> _Capture and add: `/` (home), `/race/N` (race detail), `/standings`,
-> `/standings?tab=wdc`, `/calendar`, `/accuracy`._
+The deployed site is the best way to see RaceIQ in action — every page is live
+and updates automatically within minutes of each session:
+
+| Page | What you'll see |
+|---|---|
+| [Home](https://roni-altshuler.github.io/f1_predictions/) | Next-Grand-Prix predicted podium + season pulse |
+| [Race detail](https://roni-altshuler.github.io/f1_predictions/race/7/) | Per-weekend sessions, model forecast, circuit & strategy deep-dive |
+| [Standings](https://roni-altshuler.github.io/f1_predictions/standings/) | Drivers + constructors with points-progression projections |
+| [Who can still win](https://roni-altshuler.github.io/f1_predictions/standings/?tab=wdc) | Monte-Carlo title-race odds for drivers and teams |
+| [Accuracy](https://roni-altshuler.github.io/f1_predictions/accuracy/) | Round-by-round track record of the model vs. reality |
+| [Calendar](https://roni-altshuler.github.io/f1_predictions/calendar/) | Full season schedule with aerial circuit photography |
 
 ## Quick start
 
@@ -76,6 +93,8 @@ promotion — so the site you see is always backed by a measured track record.
 | [Architecture](docs/ARCHITECTURE.md) | System design, the prediction pipeline, target module boundaries, data flow |
 | [Setup](SETUP.md) | Local environment, dependencies, running the pipeline + site |
 | [Contributing](CONTRIBUTING.md) | Workflow, standards, the website↔pipeline data contract |
+| [Development](docs/DEVELOPMENT.md) | Day-to-day dev workflow, commands, conventions |
+| [Environment variables](docs/ENV_VARS.md) | Every env var the pipeline reads, with defaults |
 | [ML pipeline](docs/ML_PIPELINE.md) | Training methodology, calibration gating, leakage discipline |
 | [Model evaluation](docs/MODEL_EVALUATION.md) | Forward-eval methodology, per-round scoring |
 | [Performance](docs/PERFORMANCE.md) | Quantitative before/after across the ML phases |
@@ -90,6 +109,8 @@ promotion — so the site you see is always backed by a measured track record.
 ├── README.md                  ← this file
 ├── SETUP.md                   ← onboarding / local setup
 ├── CONTRIBUTING.md            ← contributor workflow + standards
+├── pyproject.toml             ← project metadata + ruff / pytest / mypy config
+├── requirements*.txt          ← pinned Python dependencies (runtime + dev)
 ├── docs/                      ← detailed engineering documentation
 ├── website/                   ← Next.js static dashboard
 │   ├── src/                   ← React + TypeScript components
@@ -97,12 +118,16 @@ promotion — so the site you see is always backed by a measured track record.
 ├── models/                    ← calibration, race simulator, intervals, DNF, registry
 ├── features/                  ← feature engineering
 ├── scripts/                   ← utilities (headshot fetch, analysis, archive)
-├── tests/                     ← pytest suite (390+ tests)
+├── tests/                     ← pytest suite (650+ tests)
+├── archive/                   ← superseded code kept for reference (not run/linted)
 └── *.py                       ← pipeline entry points (training, export, eval, drift)
 ```
 
-A full target architecture (clean `core / services / ui / lib` boundaries) is
-described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+The top-level `*.py` modules are intentionally flat scripts invoked by path from
+the CI workflows; only `models/` and `features/` are importable packages (see
+the rationale in [pyproject.toml](pyproject.toml)). A fuller target architecture
+(clean `core / services / ui / lib` boundaries) is sketched in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## License
 
