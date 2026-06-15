@@ -97,15 +97,19 @@ def main() -> int:
         counts[e["maturity"]] = counts.get(e["maturity"], 0) + 1
 
     index = {
-        "generated_by": "scripts/build_registry.py",
+        "generated_by": "motorsportverse registry build",
         "count": len(entries),
         "maturity_counts": counts,
         "projects": entries,
     }
 
-    INDEX_PATH.write_text(json.dumps(index, indent=2) + "\n")
+    # ensure_ascii=False so output is byte-identical to the Node generator
+    # (build_registry_node.mjs) — keeps the committed JSON stable regardless of
+    # which generator ran last.
+    blob = json.dumps(index, indent=2, ensure_ascii=False) + "\n"
+    INDEX_PATH.write_text(blob)
     WEBSITE_COPY.parent.mkdir(parents=True, exist_ok=True)
-    WEBSITE_COPY.write_text(json.dumps(index, indent=2) + "\n")
+    WEBSITE_COPY.write_text(blob)
 
     print(f"OK: {len(entries)} projects validated.")
     print(f"  maturity: {counts}")

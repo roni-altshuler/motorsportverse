@@ -51,7 +51,9 @@ const counts = {};
 for (const e of entries) counts[e.maturity] = (counts[e.maturity] || 0) + 1;
 
 const index = {
-  generated_by: "scripts/build_registry_node.mjs",
+  // Same value as build_registry.py so output is byte-identical regardless of
+  // which generator ran last.
+  generated_by: "motorsportverse registry build",
   count: entries.length,
   maturity_counts: counts,
   projects: entries,

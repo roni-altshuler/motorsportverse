@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Node / Next.js
+node_modules/
+website/.next/
+website/out/
+projects/*/website/.next/
+projects/*/website/out/
+
+# Data artifacts (regenerable)
+*.duckdb
+# Anchored: only ignore a top-level data/ dir (the DuckDB store), NOT
+# website/public/data/ — an unanchored `data/` would shadow the committed
+# registry.json + f2.json below.
+/data/
+
+# Generated but COMMITTED (catalog/data source of truth — keep in VCS):
+#   registry/index.json
+#   website/public/data/registry.json
+#   projects/*/website/public/data/*.json
+# These are emitted by scripts/build_registry.py and f2_predictions.export.
+
+# Env / editor
+.env
+.DS_Store
+.idea/
+.vscode/
