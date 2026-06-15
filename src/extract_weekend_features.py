@@ -39,7 +39,7 @@ for noisy in ("core", "req", "_api"):
 
 import fastf1  # noqa: E402  (after logging silenced)
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 F1_CACHE_DIR = PROJECT_ROOT / "f1_cache"
 OUTPUT_PATH = PROJECT_ROOT / "data" / "weekend_features.parquet"
 

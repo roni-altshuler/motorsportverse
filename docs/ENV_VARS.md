@@ -44,7 +44,7 @@ setup section in the README](../README.md#local-development-setup).
   Boxing, Cricket, Golf, MMA, Soccer, Tennis, etc.) but does **not** include
   any motorsport — F1 is unavailable on any tier. The key itself is valid and
   the project's tests exercise the client against a fixture, but
-  `python odds_ingest.py --round N --season YYYY` will hit a 404 on the
+  `python src/odds_ingest.py --round N --season YYYY` will hit a 404 on the
   `motorsport_f1` sport key and exit with a clear error message listing
   alternative sources. **No quota is charged for the 404**, so a misconfigured
   run does not eat into the free-tier 500/month allowance.

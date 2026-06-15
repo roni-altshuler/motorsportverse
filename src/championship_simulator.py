@@ -41,7 +41,7 @@ from typing import Optional
 
 import numpy as np
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 STANDINGS_PATH = PROJECT_ROOT / "website" / "public" / "data" / "standings.json"
 SEASON_PATH = PROJECT_ROOT / "website" / "public" / "data" / "season.json"
 PROBABILITIES_DIR = PROJECT_ROOT / "website" / "public" / "data" / "probabilities"

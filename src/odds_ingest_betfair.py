@@ -52,13 +52,13 @@ from typing import Any
 try:
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parent / ".env")
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 except ImportError:
     pass
 
 from f1_prediction_utils import DRIVER_FULL_NAMES  # noqa: E402
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = PROJECT_ROOT / "odds_cache"
 SEASON_FILE = PROJECT_ROOT / "website" / "public" / "data" / "season.json"
 

@@ -46,6 +46,11 @@ permissions:
 
 env:
   F1_SEASON_YEAR: ${{ vars.F1_SEASON_YEAR }}
+  # Pipeline entry-point scripts live in src/; the importable packages
+  # (models/, features/) stay at the repo root. Putting both on PYTHONPATH lets
+  # `python src/<script>.py`, the inline `python -c` imports, and the scripts/
+  # helpers all resolve modules from either location.
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
 
 jobs:
   predict:
@@ -153,7 +158,7 @@ jobs:
           # publishing official results within one poll interval of availability.
           SHOULD_RUN=false
           if [ "$IS_RACE_WEEKEND" = "true" ]; then
-            PENDING=$(python gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
+            PENDING=$(python src/gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
             echo "   Work pending for round $ROUND: $PENDING"
             if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
           fi
@@ -179,28 +184,28 @@ jobs:
           # detect_target_round has already advanced to the next race while a
           # just-finished Grand Prix never got its results published (source
           # lagged at poll time). No-op when nothing is stranded.
-          python gp_weekend.py --backfill-missing-results --no-build || \
+          python src/gp_weekend.py --backfill-missing-results --no-build || \
             echo "⚠️  stranded-results backfill skipped (non-fatal)"
 
           # Ensure a race-pace ensemble is registered before the simulator runs.
           # train_race_pace.py is a no-op when the registry already has a sentinel
           # round 99 entry; only re-trains on cache miss. Failure is non-fatal —
           # the simulator silently no-ops if no ensemble is registered.
-          python train_race_pace.py --seasons 2018-2025 || echo "⚠️  race-pace trainer skipped (see logs)"
+          python src/train_race_pace.py --seasons 2018-2025 || echo "⚠️  race-pace trainer skipped (see logs)"
 
           if [ "$PHASE" = "full" ]; then
-            python gp_weekend.py --round "$ROUND" --full --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --full --no-build --use-race-simulator
           elif [ "$PHASE" = "auto" ]; then
-            python gp_weekend.py --round "$ROUND" --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --no-build --use-race-simulator
           else
-            python gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build --use-race-simulator
           fi
 
       - name: Generate labeled circuit maps for all rounds
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
-          python generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
+          python src/generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
 
       - name: Forward-eval — score predictions vs actuals (A-P0.2)
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
@@ -214,7 +219,7 @@ jobs:
           # pre-race phases) so they don't break the existing --allow-empty path.
           # All output paths under website/public/data/ are force-added by the
           # commit step below.
-          python forward_eval.py \
+          python src/forward_eval.py \
             --season "$SEASON_YEAR" \
             --per-round-dir website/public/data/forward_eval \
             --probabilities-dir website/public/data/probabilities \
@@ -229,7 +234,7 @@ jobs:
           # --allow-empty so pre-race runs with no forward-eval data exit 0.
           # model_health.json lands under website/public/data/ alongside
           # the round + forward-eval JSONs; force-added by the commit step.
-          python drift_report.py \
+          python src/drift_report.py \
             --season "$SEASON_YEAR" \
             --output website/public/data/model_health.json \
             --allow-empty
@@ -241,7 +246,7 @@ jobs:
           # Reads the freshly-published standings.json + the latest
           # round_NN.json probabilities and runs a Monte Carlo over the
           # remaining season.  Force-added by the commit step.
-          python championship_simulator.py --samples 5000
+          python src/championship_simulator.py --samples 5000
 
       - name: Promotion decision — production vs candidate (A-P1.3)
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
@@ -255,7 +260,7 @@ jobs:
           # auto_promotion_log.json so CI history captures the chain of
           # decisions. The flag does NOT swap registry artefacts on its
           # own — that is intentionally left to a separate, gated step.
-          python promotion_decision.py \
+          python src/promotion_decision.py \
             --season "$SEASON_YEAR" \
             --output website/public/data/promotion_status.json \
             --apply \

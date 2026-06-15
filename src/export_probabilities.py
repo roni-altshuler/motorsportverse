@@ -50,7 +50,7 @@ from models.calibration import (
 )
 from models.registry import ModelRegistry, registry_enabled
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROUNDS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "rounds"
 PROBS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "probabilities"
 SEASON_RESULTS_PATH = PROJECT_ROOT / "season_results_2026.json"

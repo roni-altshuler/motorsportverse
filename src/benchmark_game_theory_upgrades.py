@@ -9,7 +9,7 @@ from statistics import mean, median
 from export_website_data import export_round_data
 
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREDICTION_STATE_FILES = [
     os.path.join(PROJECT_ROOT, "predicted_results_2026.json"),
     os.path.join(PROJECT_ROOT, "website", "public", "data", "predicted_results_2026.json"),

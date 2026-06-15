@@ -240,7 +240,7 @@ def _load_generated_seasons() -> None:
     season until its first race date passes — see ``_season_started()`` /
     ``_default_season_year()``.
     """
-    gen_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated_seasons")
+    gen_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "generated_seasons")
     if not os.path.isdir(gen_dir):
         return
     for fname in sorted(os.listdir(gen_dir)):
@@ -452,7 +452,7 @@ DEFAULT_FEATURE_COLS: list[str] = [
     "teammate_delta_elo",
 ]
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEBSITE_DATA_DIR = os.path.join(PROJECT_ROOT, "website", "public", "data")
 
 # Canonical state files (absolute paths so CWD does not matter)

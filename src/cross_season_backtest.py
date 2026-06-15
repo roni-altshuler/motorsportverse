@@ -27,7 +27,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Optional
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 REPORTS_DIR = PROJECT_ROOT / "reports"
 DEFAULT_OUTPUT = REPORTS_DIR / "cross_season_backtest.json"
 

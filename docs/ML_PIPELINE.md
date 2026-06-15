@@ -114,17 +114,17 @@ End-to-end for a single round:
 
 ```bash
 # 1. Predict pace + probabilities + simulator probabilities
-python export_website_data.py --round 5 --fastf1 --advanced --use-race-simulator
+python src/export_website_data.py --round 5 --fastf1 --advanced --use-race-simulator
 
 # 2. Layer 2 probabilities + calibration summary
-python export_probabilities.py --rounds 5
+python src/export_probabilities.py --rounds 5
 
 # 3. Forward-time evaluation (after the race)
-python forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
+python src/forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
 
 # 4. Drift + promotion (continuous learning)
-python drift_report.py --season 2026 --allow-empty
-python promotion_decision.py --season 2026 --allow-empty
+python src/drift_report.py --season 2026 --allow-empty
+python src/promotion_decision.py --season 2026 --allow-empty
 ```
 
 All wired into [`.github/workflows/update_predictions.yml`](../.github/workflows/update_predictions.yml).

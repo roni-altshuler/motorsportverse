@@ -80,7 +80,7 @@ import fastf1
 
 from leakage import LeakageError, assert_seasons_prior_only
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "history.duckdb"
 FASTF1_CACHE_DIR = PROJECT_ROOT / "f1_cache"
 

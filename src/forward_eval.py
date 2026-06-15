@@ -58,7 +58,7 @@ from models.reliability import (
     save_reliability_diagram,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "reports" / "forward_eval.json"
 
 

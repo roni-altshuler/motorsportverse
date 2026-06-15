@@ -31,7 +31,7 @@ from f1_prediction_utils import (
     SEASON_YEAR,
 )
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEBSITE_ROUNDS_DIR = os.path.join(PROJECT_ROOT, "website", "public", "data", "rounds")
 F1_CACHE_DIR = os.path.join(PROJECT_ROOT, "f1_cache")
 

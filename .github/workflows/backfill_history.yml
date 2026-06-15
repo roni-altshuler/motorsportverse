@@ -33,6 +33,12 @@ on:
 permissions:
   contents: write
 
+env:
+  # Pipeline scripts live in src/; the importable packages (models/, features/)
+  # stay at the repo root. Put both on PYTHONPATH so the backfill entry points
+  # and their internal imports resolve.
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
@@ -73,7 +79,7 @@ jobs:
         run: |
           SEASONS="${{ github.event.inputs.ergast_seasons }}"
           SEASONS="${SEASONS:-1950-2025}"
-          python ergast_backfill.py --seasons "$SEASONS" --quiet
+          python src/ergast_backfill.py --seasons "$SEASONS" --quiet
         continue-on-error: true
 
       - name: FastF1 (Tier 1) backfill — rate-limited slice
@@ -87,7 +93,7 @@ jobs:
           # Compute the slice of rounds to process this run.  The exact slice
           # logic is owned by backfill_history.py (it skips rounds already
           # present, so progressive runs converge on a complete DB).
-          python backfill_history.py --seasons "$SEASONS" --rounds "1-$MAX_ROUNDS" --quiet
+          python src/backfill_history.py --seasons "$SEASONS" --rounds "1-$MAX_ROUNDS" --quiet
         continue-on-error: true
 
       - name: Sanity-check the DB

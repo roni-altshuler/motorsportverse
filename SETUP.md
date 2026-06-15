@@ -35,11 +35,11 @@ pip install -r requirements-dev.txt     # pytest, ruff, mypy, etc.
 cp .env.example .env                     # edit as needed; all keys are optional
 
 # 3. Generate predictions + JSON for one round
-python export_website_data.py --round 6 --fastf1 --advanced
+python src/export_website_data.py --round 6 --fastf1 --advanced
 
 # 4. Probability layer + evaluation
-python export_probabilities.py --rounds 1,2,3,4,5,6
-python forward_eval.py --season 2026 --allow-empty
+python src/export_probabilities.py --rounds 1,2,3,4,5,6
+python src/forward_eval.py --season 2026 --allow-empty
 ```
 
 > The pipeline degrades gracefully: external sources (FastF1, Jolpica) are

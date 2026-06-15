@@ -162,7 +162,7 @@ After Phases 5–9 explored regime routing, probabilistic fusion, mixture-of-exp
 
 **Versioning protocol.** `PRODUCTION_MODEL_VERSION = "2026.07.phase7-static"`. Bumping this version requires:
 
-1. A freeze benchmark (`python benchmark_models.py run --seasons 2024 2025`) showing the new candidate beats `regime_routed_with_weekend_static` on aggregate winner-hit by at least +1pp with no per-season regression beyond 1pp.
+1. A freeze benchmark (`python src/benchmark_models.py run --seasons 2024 2025`) showing the new candidate beats `regime_routed_with_weekend_static` on aggregate winner-hit by at least +1pp with no per-season regression beyond 1pp.
 2. Updating this section of the audit.
 
 **Data infrastructure.** [`backfill_2018_2022.py`](../backfill_2018_2022.py) lands the FastF1 backfill into `data/history.duckdb` (TLA driver codes; idempotent INSERT OR REPLACE). 2022 already landed (22 rounds, 439 complete observations). 2018-2021 are the remaining one-command runs once the FastF1 cache covers those rounds. The expected payoff is direct: Phase 9 showed ~+6pp winner-hit per added season on the existing static model — five more seasons could push the aggregate to ~40-50% winner-hit if scaling is even half-linear.

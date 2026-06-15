@@ -1,6 +1,6 @@
 # RaceIQ — Python project metadata + centralized tool configuration.
 #
-# The prediction pipeline runs as a set of top-level entry-point scripts wired
+# The prediction pipeline runs as a set of entry-point scripts under src/ wired
 # into the CI workflows; this file does NOT change how those run. It exists to
 # (1) give the project real metadata and (2) centralize the configuration for
 # ruff, pytest, and mypy so the standards are declared in one place.
@@ -19,8 +19,8 @@ requires-python = ">=3.11"
 dependencies = []
 
 [tool.setuptools]
-# Only the real importable packages are declared; the top-level entry-point
-# scripts intentionally remain flat scripts, not package modules.
+# Only the real importable packages are declared; the entry-point scripts under
+# src/ intentionally remain flat scripts (run by path), not package modules.
 packages = ["models", "features"]
 
 # ---------------------------------------------------------------------------
@@ -55,9 +55,9 @@ ignore = [
 # which makes ruff unable to resolve downstream names (F403/F405). Converting
 # them to explicit imports is tracked in docs/ROADMAP.md; until then the
 # star-import rules are silenced only for these specific files.
-"export_website_data.py" = ["F403", "F405"]
-"f1_prediction_utils.py" = ["F403", "F405"]
-"report_results.py" = ["F403", "F405"]
+"src/export_website_data.py" = ["F403", "F405"]
+"src/f1_prediction_utils.py" = ["F403", "F405"]
+"src/report_results.py" = ["F403", "F405"]
 
 # ---------------------------------------------------------------------------
 # Pytest

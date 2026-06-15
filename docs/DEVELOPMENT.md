@@ -45,29 +45,29 @@ Full reference in [`docs/ENV_VARS.md`](ENV_VARS.md). Critical ones:
 
 ```bash
 # Predict + export one round (full pipeline)
-python export_website_data.py --round 6 --fastf1 --advanced
+python src/export_website_data.py --round 6 --fastf1 --advanced
 
 # Opt into the per-lap race simulator
-python export_website_data.py --round 6 --use-race-simulator
+python src/export_website_data.py --round 6 --use-race-simulator
 
 # Probability layer (Plackett-Luce → calibration)
-python export_probabilities.py --rounds 1,2,3,4,5,6
+python src/export_probabilities.py --rounds 1,2,3,4,5,6
 
 # Forward-time evaluation
-python forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
+python src/forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
 
 # Drift report
-python drift_report.py --season 2026 --allow-empty
+python src/drift_report.py --season 2026 --allow-empty
 
 # Promotion decision
-python promotion_decision.py --season 2026 --allow-empty
+python src/promotion_decision.py --season 2026 --allow-empty
 
 # Historical backfill
-python backfill_history.py --seasons 2023,2024,2025 --force      # Tier 1 (FastF1, rate-limited)
-python ergast_backfill.py --seasons 1950-2025                    # Tier 2 (Ergast/Jolpica, no rate cap)
+python src/backfill_history.py --seasons 2023,2024,2025 --force      # Tier 1 (FastF1, rate-limited)
+python src/ergast_backfill.py --seasons 1950-2025                    # Tier 2 (Ergast/Jolpica, no rate cap)
 
 # Offline trainer for the per-lap race simulator
-python train_race_pace.py --seasons 2018-2025
+python src/train_race_pace.py --seasons 2018-2025
 ```
 
 ### Website

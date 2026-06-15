@@ -39,7 +39,7 @@ from pathlib import Path
 try:
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parent / ".env")
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 except ImportError:
     pass
 
@@ -47,7 +47,7 @@ import requests
 
 from f1_prediction_utils import DRIVER_FULL_NAMES
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = PROJECT_ROOT / "odds_cache"
 API_BASE = "https://api.the-odds-api.com/v4/sports/motorsport_f1/odds"
 DEFAULT_TIMEOUT_S = 10

@@ -1537,7 +1537,7 @@ class SeasonTracker:
     for the website.
     """
 
-    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     TRACKER_FILE = os.path.join(PROJECT_ROOT, f"season_tracker_{SEASON_YEAR}.json")
     WEBSITE_TRACKER_FILE = os.path.join(WEBSITE_DATA_DIR, "season_tracker.json")
 

@@ -50,7 +50,7 @@ except ImportError:  # pragma: no cover
     raise SystemExit(1)
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ROUNDS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "rounds"
 CACHE_DIR = PROJECT_ROOT / "f1_cache"
 SEASON_JSON = PROJECT_ROOT / "website" / "public" / "data" / "season.json"

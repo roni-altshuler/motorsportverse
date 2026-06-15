@@ -47,7 +47,7 @@ from models.drift import (
     build_health_report,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEBSITE_ROUNDS = PROJECT_ROOT / "website" / "public" / "data" / "rounds"
 WEBSITE_FORWARD_EVAL = PROJECT_ROOT / "website" / "public" / "data" / "forward_eval"
 DEFAULT_OUTPUT = (

@@ -45,7 +45,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 # ── Lazy imports (f1_prediction_utils requires fastf1) ──
 # We import these inside functions so --help and --dry-run work fast.
 
-WEBSITE_DIR = os.path.join(os.path.dirname(__file__), "website")
+WEBSITE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "website")
 DATA_DIR = os.path.join(WEBSITE_DIR, "public", "data")
 
 

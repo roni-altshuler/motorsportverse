@@ -14,33 +14,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Run the full ML pipeline for one round (predicts → writes JSON + visualizations)
-python export_website_data.py --round 6 --fastf1 --advanced
+python src/export_website_data.py --round 6 --fastf1 --advanced
 
 # Opt into the per-lap Monte Carlo race simulator (A-P1.1 Step 3).  Silently
 # no-ops when no race-pace ensemble is registered — run train_race_pace.py first.
-python export_website_data.py --round 6 --use-race-simulator
+python src/export_website_data.py --round 6 --use-race-simulator
 
 # Probability layer (Plackett-Luce → isotonic calibration → /value JSON)
-python export_probabilities.py                    # all rounds
-python export_probabilities.py --rounds 1,2,3     # subset
-python export_probabilities.py --min-completed-rounds 5   # raise calibration gate
+python src/export_probabilities.py                    # all rounds
+python src/export_probabilities.py --rounds 1,2,3     # subset
+python src/export_probabilities.py --min-completed-rounds 5   # raise calibration gate
 
 # Forward-time evaluation (scores predicted vs actual per round)
-python forward_eval.py --season 2026
-python forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
+python src/forward_eval.py --season 2026
+python src/forward_eval.py --season 2026 --per-round-dir website/public/data/forward_eval --allow-empty
 
 # Drift report (feature PSI + rolling Brier) → model_health.json
-python drift_report.py --season 2026 --allow-empty
+python src/drift_report.py --season 2026 --allow-empty
 
 # Shadow / A-B promotion decision (production vs candidate stream)
-python promotion_decision.py --season 2026 --allow-empty
+python src/promotion_decision.py --season 2026 --allow-empty
 
 # Historical backfill (populates data/history.duckdb so calibration applies)
-python backfill_history.py --seasons 2023,2024,2025 --force      # Tier 1 (FastF1)
-python ergast_backfill.py --seasons 1950-2025                    # Tier 2 (Jolpica/Ergast)
+python src/backfill_history.py --seasons 2023,2024,2025 --force      # Tier 1 (FastF1)
+python src/ergast_backfill.py --seasons 1950-2025                    # Tier 2 (Jolpica/Ergast)
 
 # Offline trainer for the per-lap race-pace ensemble (saves to registry)
-python train_race_pace.py --seasons 2018-2025
+python src/train_race_pace.py --seasons 2018-2025
 ```
 
 FastF1 rate-limits at ~500 requests/hour. The Tier-1 backfill typically tops out at ~24-30 rounds per run; re-run later to fill the rest. The DB is idempotent (PK on `(season, round, driver)`).
@@ -48,15 +48,15 @@ FastF1 rate-limits at ~500 requests/hour. The Tier-1 backfill typically tops out
 ### Odds ingestion (5 paths, same wrapped-payload schema downstream)
 
 ```bash
-python odds_ingest_unified.py --round 6 --season 2026 [--merge best-back|average|prefer-betfair|prefer-csv]
-python odds_scraper.py --round 6 --season 2026 --scrape oddschecker
-python odds_ingest.py        --round 6 --season 2026   # The Odds API — DOES NOT COVER F1, see below
-python odds_ingest_betfair.py --round 6 --season 2026  # requires BETFAIR_* env + betfairlightweight
-python odds_import_csv.py     --round 6 --season 2026 --csv odds_inbox/round_06.csv
-python odds_import_csv.py     --print-template > odds_inbox/round_06.csv  # 22-driver template
+python src/odds_ingest_unified.py --round 6 --season 2026 [--merge best-back|average|prefer-betfair|prefer-csv]
+python src/odds_scraper.py --round 6 --season 2026 --scrape oddschecker
+python src/odds_ingest.py        --round 6 --season 2026   # The Odds API — DOES NOT COVER F1, see below
+python src/odds_ingest_betfair.py --round 6 --season 2026  # requires BETFAIR_* env + betfairlightweight
+python src/odds_import_csv.py     --round 6 --season 2026 --csv odds_inbox/round_06.csv
+python src/odds_import_csv.py     --print-template > odds_inbox/round_06.csv  # 22-driver template
 
 # After odds land, compute edges + Kelly sizing
-python export_value_data.py --round 6 --season 2026
+python src/export_value_data.py --round 6 --season 2026
 ```
 
 The `/value` page was removed from the website in the 2026-05-21 redesign. The Python-side odds-ingest CLIs above remain — they're backend tooling for a future revival of the betting flow.

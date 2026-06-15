@@ -165,7 +165,7 @@ def test_live_production_paths_do_not_invoke_production_model_unless_flag_on() -
     call before merging.
     """
     for filename in ("gp_weekend.py", "export_website_data.py"):
-        path = PROJECT_ROOT / filename
+        path = PROJECT_ROOT / "src" / filename
         if not path.exists():
             continue
         src = path.read_text()
@@ -290,7 +290,7 @@ def test_benchmark_default_variants_are_production_lineup_only() -> None:
     bm = importlib.import_module("benchmark_models")
 
     # Direct check on the documented default string.
-    src = (PROJECT_ROOT / "benchmark_models.py").read_text()
+    src = (PROJECT_ROOT / "src" / "benchmark_models.py").read_text()
     assert 'default=(\n            "baseline,elite_head_plus_hybrid,"\n            "regime_routed_with_weekend_static"\n        )' in src, (
         "benchmark_models.py default variants string drifted from the freeze"
     )

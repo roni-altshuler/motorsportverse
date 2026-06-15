@@ -38,7 +38,7 @@ from pathlib import Path
 from bet_sizing import cap_portfolio, kelly_fraction
 from odds_ingest import devig_proportional, load_cached_payload
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROBS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "probabilities"
 ODDS_CACHE_DIR = PROJECT_ROOT / "odds_cache"
 DATA_DIR = PROJECT_ROOT / "data"

@@ -46,7 +46,7 @@ from typing import Iterable
 
 import duckdb
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "data" / "history.duckdb"
 REPORTS_DIR = PROJECT_ROOT / "reports"
 WEB_OUT_DIR = PROJECT_ROOT / "website" / "public" / "data" / "historical_backtest"

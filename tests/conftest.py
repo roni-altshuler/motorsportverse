@@ -9,8 +9,12 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEBSITE_DATA = PROJECT_ROOT / "website" / "public" / "data"
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+# The pipeline entry-point scripts live in src/; the importable packages
+# (models/, features/) stay at the repo root. Put both on sys.path so test
+# imports resolve regardless of which side a module lives on.
+for _p in (PROJECT_ROOT / "src", PROJECT_ROOT):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
 
 @pytest.fixture(autouse=True, scope="session")

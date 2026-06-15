@@ -62,7 +62,7 @@ import duckdb
 import fastf1  # noqa: E402
 import pandas as pd  # noqa: E402
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 F1_CACHE_DIR = PROJECT_ROOT / "f1_cache"
 DB_PATH = PROJECT_ROOT / "data" / "history.duckdb"
 

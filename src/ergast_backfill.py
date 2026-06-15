@@ -80,7 +80,7 @@ from backfill_history import (
     round_already_present,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Jolpica is a drop-in Ergast successor at api.jolpi.ca/ergast/f1.  The legacy
 # ergast.com endpoint is being deprecated; Jolpica is the community-maintained

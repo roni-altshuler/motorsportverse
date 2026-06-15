@@ -50,7 +50,7 @@ from urllib.parse import urlparse
 try:
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parent / ".env")
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 except ImportError:
     pass
 
@@ -59,7 +59,7 @@ import requests
 from f1_prediction_utils import CALENDAR, DRIVER_FULL_NAMES  # noqa: E402
 from odds_import_csv import MIN_DRIVERS_MATCHED, parse_csv  # noqa: E402
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 INBOX_DIR = PROJECT_ROOT / "odds_inbox"
 CACHE_DIR = PROJECT_ROOT / "odds_cache"
 SEASON_DATA = PROJECT_ROOT / "website" / "public" / "data" / "season.json"

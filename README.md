@@ -112,22 +112,21 @@ promotion — so the site you see is always backed by a measured track record.
 ├── pyproject.toml             ← project metadata + ruff / pytest / mypy config
 ├── requirements*.txt          ← pinned Python dependencies (runtime + dev)
 ├── docs/                      ← detailed engineering documentation
+├── src/                       ← pipeline entry points (training, export, eval, drift)
+├── models/                    ← calibration, race simulator, intervals, DNF, registry
+├── features/                  ← feature engineering
+├── scripts/                   ← utilities (headshot fetch, season rollover, analysis)
 ├── website/                   ← Next.js static dashboard
 │   ├── src/                   ← React + TypeScript components
 │   └── public/                ← brand assets, headshots, JSON data snapshots
-├── models/                    ← calibration, race simulator, intervals, DNF, registry
-├── features/                  ← feature engineering
-├── scripts/                   ← utilities (headshot fetch, analysis, archive)
 ├── tests/                     ← pytest suite (650+ tests)
-├── archive/                   ← superseded code kept for reference (not run/linted)
-└── *.py                       ← pipeline entry points (training, export, eval, drift)
+└── archive/                   ← superseded code kept for reference (not run/linted)
 ```
 
-The top-level `*.py` modules are intentionally flat scripts invoked by path from
-the CI workflows; only `models/` and `features/` are importable packages (see
-the rationale in [pyproject.toml](pyproject.toml)). A fuller target architecture
-(clean `core / services / ui / lib` boundaries) is sketched in
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+The `src/` modules are run by path from the CI workflows (e.g.
+`python src/gp_weekend.py`); `models/` and `features/` are the importable
+packages. A fuller target architecture (clean `core / services / ui / lib`
+boundaries) is sketched in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## License
 

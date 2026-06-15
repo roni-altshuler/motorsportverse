@@ -41,7 +41,7 @@ from pathlib import Path
 try:
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parent / ".env")
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 except ImportError:
     pass
 
@@ -58,7 +58,7 @@ from f1_prediction_utils import (
 )
 from odds_ingest import devig_proportional, load_cached_payload
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROBS_DIR = PROJECT_ROOT / "website" / "public" / "data" / "probabilities"
 VALUE_DIR = PROJECT_ROOT / "website" / "public" / "data" / "value"
 ODDS_CACHE_DIR = PROJECT_ROOT / "odds_cache"

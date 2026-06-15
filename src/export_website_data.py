@@ -40,7 +40,7 @@ from f1_prediction_utils import *
 from models.registry import ModelRegistry, registry_enabled
 
 # ── Paths ────────────────────────────────────────────────────────────────
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEBSITE_DIR = os.path.join(PROJECT_ROOT, "website")
 DATA_DIR   = os.path.join(WEBSITE_DIR, "public", "data")
 VIZ_DIR    = os.path.join(WEBSITE_DIR, "public", "visualizations")

@@ -109,7 +109,7 @@ from models.volatility_model import (
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = PROJECT_ROOT / "data" / "history.duckdb"
 
 

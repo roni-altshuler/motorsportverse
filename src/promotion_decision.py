@@ -36,7 +36,7 @@ from models.promotion import (
     evaluate_promotion,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 WEBSITE_FORWARD_EVAL = PROJECT_ROOT / "website" / "public" / "data" / "forward_eval"
 WEBSITE_FORWARD_EVAL_CANDIDATE = (
     PROJECT_ROOT / "website" / "public" / "data" / "forward_eval_candidate"
@@ -123,13 +123,13 @@ def main(argv: list[str] | None = None) -> int:
         "--threshold",
         type=float,
         default=DEFAULT_RELATIVE_IMPROVEMENT_THRESHOLD,
-        help=f"Relative improvement threshold for promotion (default {DEFAULT_RELATIVE_IMPROVEMENT_THRESHOLD:.0%}).",
+        help=f"Relative improvement threshold for promotion (default {DEFAULT_RELATIVE_IMPROVEMENT_THRESHOLD * 100:.0f}%%).",
     )
     parser.add_argument(
         "--max-per-round-regression",
         type=float,
         default=DEFAULT_MAX_PER_ROUND_REGRESSION,
-        help=f"Max single-round regression that still permits promotion (default {DEFAULT_MAX_PER_ROUND_REGRESSION:.0%}).",
+        help=f"Max single-round regression that still permits promotion (default {DEFAULT_MAX_PER_ROUND_REGRESSION * 100:.0f}%%).",
     )
     parser.add_argument(
         "--trailing-window",

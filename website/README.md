@@ -26,9 +26,9 @@ The website reads static JSON and PNG files from `public/data/` and `public/visu
 
 ```bash
 # From f1_predictions root:
-python export_website_data.py --round 1 --fastf1 --advanced   # Single round
-python export_website_data.py --all --fastf1 --advanced        # All rounds
-python export_website_data.py --metadata                       # Season + standings only
+python src/export_website_data.py --round 1 --fastf1 --advanced   # Single round
+python src/export_website_data.py --all --fastf1 --advanced        # All rounds
+python src/export_website_data.py --metadata                       # Season + standings only
 ```
 
 ### Automated Updates
