@@ -387,7 +387,7 @@ export default function Navbar() {
                       {[
                         { href: withSeason("/standings?tab=drivers"), label: "Drivers", hint: "Per-driver totals" },
                         { href: withSeason("/standings?tab=constructors"), label: "Constructors", hint: "Team-by-team" },
-                        { href: withSeason("/standings?tab=whocanwin"), label: "Who Can Still Win", hint: "Mathematical title race" },
+                        { href: withSeason("/standings?tab=wdc"), label: "Who Can Still Win", hint: "Mathematical title race" },
                       ].map((item) => (
                         <Link
                           key={item.href}

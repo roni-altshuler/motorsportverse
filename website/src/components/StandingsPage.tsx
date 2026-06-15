@@ -12,6 +12,7 @@ import {
 import { getSeasonYear } from "@/lib/season";
 import { useSeason } from "@/lib/SeasonProvider";
 import StandingsChart from "@/components/charts/StandingsChart";
+import ConstructorsStandingsChart from "@/components/charts/ConstructorsStandingsChart";
 import DriverBadge from "@/components/standings/DriverBadge";
 import ChampionshipKPIs from "@/components/standings/ChampionshipKPIs";
 import StandingsHeroPodium from "@/components/standings/StandingsHeroPodium";
@@ -29,6 +30,12 @@ type Tab = "drivers" | "constructors" | "wdc";
 function parseTab(value: string | null): Tab {
   if (value === "constructors" || value === "wdc") {
     return value;
+  }
+  // "whocanwin" is the human-readable slug used in nav/shared links; map it to
+  // the internal "wdc" tab so those deep links don't silently fall back to
+  // Drivers.
+  if (value === "whocanwin") {
+    return "wdc";
   }
   return "drivers";
 }
@@ -420,6 +427,17 @@ export default function StandingsPage() {
             })}
           </div>
 
+          {completedRounds.length > 0 && (
+            <div className="card p-6">
+              <h3 className="section-heading">Team Points Progression</h3>
+              <ConstructorsStandingsChart
+                data={data.constructors}
+                rounds={completedRounds}
+                totalRounds={totalRounds}
+              />
+            </div>
+          )}
+
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
               <table
@@ -520,14 +538,36 @@ export default function StandingsPage() {
       {activeTab === "wdc" && (
         <ErrorBoundary label="WhoCanWinLanes">
           <div className="space-y-10">
+            {completedRounds.length > 0 && (
+              <div className="card p-6">
+                <h3 className="section-heading">Drivers — Points Projection</h3>
+                <StandingsChart
+                  data={data.drivers.slice(0, 10)}
+                  rounds={completedRounds}
+                  totalRounds={totalRounds}
+                />
+              </div>
+            )}
             <WhoCanWinLanes standings={data} forecast={forecast} />
-            <div>
-              <h2 className="display-md mb-2">Constructors Title Race</h2>
-              <p className="body-md text-[color:var(--text-muted)] max-w-2xl mb-6">
-                Driver projections aggregated by team. Mercedes vs Ferrari vs
-                McLaren over the {forecast?.remainingRounds ?? 0} remaining
-                round{forecast?.remainingRounds === 1 ? "" : "s"}.
-              </p>
+            <div className="space-y-6">
+              <div>
+                <h2 className="display-md mb-2">Constructors Title Race</h2>
+                <p className="body-md text-[color:var(--text-muted)] max-w-2xl">
+                  Driver projections aggregated by team. Mercedes vs Ferrari vs
+                  McLaren over the {forecast?.remainingRounds ?? 0} remaining
+                  round{forecast?.remainingRounds === 1 ? "" : "s"}.
+                </p>
+              </div>
+              {completedRounds.length > 0 && (
+                <div className="card p-6">
+                  <h3 className="section-heading">Teams — Points Projection</h3>
+                  <ConstructorsStandingsChart
+                    data={data.constructors}
+                    rounds={completedRounds}
+                    totalRounds={totalRounds}
+                  />
+                </div>
+              )}
               <ConstructorsForecastLanes forecast={forecast} />
             </div>
           </div>

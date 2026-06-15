@@ -354,9 +354,13 @@ def run_post_race(round_num, skip_build=False):
     info = CALENDAR[round_num]
     gp_key = info["gp_key"]
 
-    # Fetch actual race results from FastF1
-    print("🏁 Fetching actual race results from FastF1...")
-    actual_results = _fetch_actual_race_results(gp_key, year=_season_year())
+    # Fetch actual race results. Jolpica/Ergast publishes classified results
+    # within minutes of the chequered flag, hours (sometimes days, and for the
+    # live season sometimes never) before FastF1 telemetry lands — so it is the
+    # timely, authoritative source here, mirroring the post-quali path. FastF1
+    # is kept only as a secondary fallback.
+    print("🏁 Fetching actual race results (Jolpica → FastF1)...")
+    actual_results = _fetch_actual_race_results(round_num, gp_key, year=_season_year())
 
     if not actual_results:
         print("⚠️  Could not fetch race results. Session may not be available yet.")
@@ -433,9 +437,29 @@ def run_post_race(round_num, skip_build=False):
     return actual_results
 
 
-def _fetch_actual_race_results(gp_key, year=None):
-    """Fetch actual race classification from FastF1."""
+def _fetch_actual_race_results(round_num, gp_key, year=None):
+    """Fetch actual race classification, Jolpica-first with a FastF1 fallback.
+
+    Returns ``{driver_code: position}`` or ``None``. Jolpica/Ergast carries the
+    official classified order almost immediately after the race and uses the
+    same 3-letter driver codes the website + SeasonTracker already key on, so it
+    is tried first. FastF1 (richer but lagging) is the secondary source for the
+    rare case Jolpica is unreachable.
+    """
     season_year = _season_year() if year is None else int(year)
+
+    # ── Primary: Jolpica/Ergast official classified results (timely) ──
+    try:
+        from export_website_data import _fetch_live_round_actual_results
+
+        jolpica = _fetch_live_round_actual_results(round_num, season_year=season_year)
+        if jolpica:
+            print(f"   📡  Official results via Jolpica ({len(jolpica)} drivers).")
+            return jolpica
+    except Exception as e:  # noqa: BLE001 — never let the fallback path crash ingestion
+        print(f"   ⚠️  Jolpica race results fetch failed ({e}); trying FastF1…")
+
+    # ── Secondary: FastF1 telemetry classification (lags, may be absent) ──
     try:
         import fastf1
         import pandas as pd
@@ -547,6 +571,117 @@ def run_full(round_num, skip_build=False, use_race_simulator=False):
 
 
 # ═════════════════════════════════════════════════════════════════════════
+# Freshness gate + stranded-round backfill
+# ═════════════════════════════════════════════════════════════════════════
+
+def _committed_round_state(round_num):
+    """Read the already-published round JSON; ``{}`` if it doesn't exist yet."""
+    try:
+        from export_website_data import ROUNDS_DIR
+        path = os.path.join(ROUNDS_DIR, f"round_{round_num:02d}.json")
+        if not os.path.exists(path):
+            return {}
+        with open(path) as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _has_committed_actuals(state):
+    return isinstance(state.get("actualResults"), dict) and bool(state["actualResults"])
+
+
+def needs_update(round_num):
+    """True when the best available official data isn't published yet.
+
+    This is the cheap gate that lets the cron poll frequently without rebuilding
+    the whole pipeline every time: it only returns True when a *new* session
+    result (qualifying or race) exists on the timely Jolpica feed but is not yet
+    reflected in the committed round JSON. Once published, repeat polls are
+    no-ops until the next session lands.
+    """
+    cal = _load_calendar()
+    if cal[round_num].get("postponed", False):
+        return False
+    phase = _detect_phase(round_num)
+    state = _committed_round_state(round_num)
+
+    if phase == "post-race":
+        return not _has_committed_actuals(state)
+    if phase == "post-quali":
+        # Publish if we haven't advanced past the preview yet.
+        return state.get("predictionPhase") not in ("post-quali", "post-race") \
+            or not state.get("qualifyingDataAvailable", False)
+    # pre — only (re)publish if nothing has ever been generated for this round.
+    return not state
+
+
+def _stranded_rounds(today=None, probe_jolpica=True):
+    """Completed rounds whose official results are missing from the website.
+
+    A round is stranded when its race date has passed, the committed round JSON
+    has no ``actualResults``, and (when ``probe_jolpica``) Jolpica already
+    carries the classified results. Set ``probe_jolpica=False`` for a cheap,
+    network-free pre-filter.
+    """
+    cal = _load_calendar()
+    today = today or _utc_today()
+    season_year = _season_year()
+    stranded = []
+    for rnd in sorted(cal.keys()):
+        info = cal[rnd]
+        if info.get("postponed", False):
+            continue
+        if date.fromisoformat(info["date"]) > today:
+            continue  # race hasn't happened yet
+        if _has_committed_actuals(_committed_round_state(rnd)):
+            continue  # already published
+        if probe_jolpica and not _jolpica_session_available(season_year, rnd, "results"):
+            continue  # results genuinely not out yet
+        stranded.append(rnd)
+    return stranded
+
+
+def work_pending(round_num):
+    """True when *any* publishable update is outstanding.
+
+    Combines the active round's freshness (``needs_update``) with a sweep for
+    prior rounds stranded by the weekend hand-off. This is the single gate the
+    cron uses to decide whether to spin up the heavy pipeline.
+    """
+    if needs_update(round_num):
+        return True
+    return bool(_stranded_rounds())
+
+
+def backfill_missing_results(today=None):
+    """Ingest official results for any completed round still missing them.
+
+    Guards against the hand-off gap where ``detect_target_round`` has already
+    advanced to the next weekend while a just-finished race never got its
+    results published (e.g. the source lagged at the moment the cron ran). Runs
+    post-race ingestion for each stranded round whose results Jolpica now has.
+    Returns the list of rounds that were updated.
+    """
+    cal = _load_calendar()
+    updated = []
+    for rnd in _stranded_rounds(today=today):
+        print(f"\n🔧 Backfilling stranded official results for Round {rnd}: {cal[rnd]['name']}")
+        try:
+            result = run_post_race(rnd, skip_build=True)
+            if result:
+                updated.append(rnd)
+        except Exception as e:  # noqa: BLE001 — one bad round must not abort the sweep
+            print(f"   ⚠️  Backfill for Round {rnd} failed: {e}")
+
+    if updated:
+        print(f"\n✅ Backfilled official results for rounds: {updated}")
+    else:
+        print("\n✓ No stranded rounds needed backfilling.")
+    return updated
+
+
+# ═════════════════════════════════════════════════════════════════════════
 # CLI
 # ═════════════════════════════════════════════════════════════════════════
 
@@ -582,7 +717,20 @@ Typical GP Weekend Workflow:
     parser.add_argument("--use-race-simulator", action="store_true",
                         help="Splice per-lap MC race simulator probabilities into round JSON "
                              "(requires a registered race-pace ensemble — run train_race_pace.py first).")
+    parser.add_argument("--check-work-pending", action="store_true",
+                        help="Print 'yes' if any publishable update is outstanding — new official "
+                             "session data for the target round OR a prior round stranded without "
+                             "results — else 'no'. Used by the cron freshness gate to skip the heavy "
+                             "pipeline on no-op polls. Exits without running.")
+    parser.add_argument("--backfill-missing-results", action="store_true",
+                        help="Ingest official results for ANY completed round still missing them "
+                             "(recovers rounds stranded by the weekend hand-off). Exits when done.")
     args = parser.parse_args()
+
+    # ── Standalone maintenance modes (no single-round resolution needed) ──
+    if args.backfill_missing_results:
+        backfill_missing_results()
+        return
 
     # ── Resolve round ──
     if args.round:
@@ -606,6 +754,12 @@ Typical GP Weekend Workflow:
 
     if info.get("postponed", False) and phase != "post-race":
         print(f"\n⏸️  {info['name']} is marked as postponed. No pre-weekend or qualifying automation will run until a new date is set.")
+        return
+
+    # ── Freshness gate (cron poll short-circuit) ──
+    if args.check_work_pending:
+        answer = "yes" if work_pending(round_num) else "no"
+        print(answer)
         return
 
     # ── Dry run ──

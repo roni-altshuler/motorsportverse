@@ -2,16 +2,26 @@ name: Update Race Predictions
 
 on:
   schedule:
-    # Frequent polling during GP weekends. The Python pipeline auto-detects
-    # whether to publish previews, refresh post-quali forecasts, or ingest
-    # official results, so these schedules are intentionally broad.
+    # The Python pipeline auto-detects whether to publish previews, refresh
+    # post-quali forecasts, or ingest official results. A cheap freshness gate
+    # (gp_weekend.py --check-work-pending) runs first on every poll and skips
+    # the heavy pipeline unless there is genuinely something new to publish, so
+    # tight Sat/Sun polling stays inexpensive while cutting result latency from
+    # hours to minutes.
+    # ── Pre-weekend: predictions + previews (coarse cadence is fine) ──
     - cron: "0 0 * * 4"    # Thursday 00:00 UTC
     - cron: "0 12 * * 4"   # Thursday 12:00 UTC
     - cron: "0 0,6,12,18 * * 5"  # Friday every 6 hours
-    - cron: "0 0,6,12,18,22 * * 6"  # Saturday with a late-night retry
-    - cron: "0 0,6,12,18,21 * * 0"  # Sunday including post-race retry
-    - cron: "0 0,6,12 * * 1"  # Monday result backfill window
-    - cron: "0 0 * * 2"  # Tuesday final backfill retry
+    # ── Saturday qualifying: poll every 15 min across the global quali window
+    #    so post-quali forecasts refresh within ~15 min of the session ending. ──
+    - cron: "*/15 4-23 * * 6"
+    # ── Sunday race: poll every 15 min across the global race window so the
+    #    OFFICIAL Grand Prix result lands on the site within ~15 min, not hours. ──
+    - cron: "*/15 4-23 * * 0"
+    # ── Post-weekend safety net: recover anything stranded by a late-publishing
+    #    source or the weekend hand-off to the next round. ──
+    - cron: "0 */4 * * 1"   # Monday every 4 hours
+    - cron: "0 8,20 * * 2"  # Tuesday twice
   workflow_dispatch:
     inputs:
       round:
@@ -44,6 +54,10 @@ jobs:
     concurrency:
       group: gp-weekend-${{ github.ref }}
       cancel-in-progress: false
+    outputs:
+      # Surfaced to the deploy job so a full Pages rebuild only happens when new
+      # data was actually pushed (not on every no-op freshness poll).
+      committed: ${{ steps.commit.outputs.committed }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -119,23 +133,37 @@ jobs:
             fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-
             fastf1-${{ runner.os }}-
 
-      - name: Check if it's a race weekend
+      - name: Freshness gate — should this poll do real work?
         id: check
         if: github.event_name == 'schedule'
         run: |
+          ROUND="${{ steps.config.outputs.round }}"
           IS_RACE_WEEKEND=$(python -c "
           import sys
           sys.path.insert(0, '.')
           from gp_weekend import is_race_weekend
-          print('true' if is_race_weekend(int('${{ steps.config.outputs.round }}')) else 'false')
+          print('true' if is_race_weekend(int('$ROUND')) else 'false')
           ")
           echo "is_race_weekend=$IS_RACE_WEEKEND" >> "$GITHUB_OUTPUT"
-          if [ "$IS_RACE_WEEKEND" = "false" ]; then
-            echo "⏭️  Not a race weekend — skipping."
+
+          # Only spin up the heavy pipeline when there is genuinely something
+          # new to publish — fresh quali/race data for the active round, or a
+          # prior round stranded without official results. This keeps the tight
+          # 15-min Sat/Sun polls cheap (most exit here in ~1-2 min) while still
+          # publishing official results within one poll interval of availability.
+          SHOULD_RUN=false
+          if [ "$IS_RACE_WEEKEND" = "true" ]; then
+            PENDING=$(python gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
+            echo "   Work pending for round $ROUND: $PENDING"
+            if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
+          fi
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          if [ "$SHOULD_RUN" != "true" ]; then
+            echo "⏭️  Nothing new to publish — skipping heavy pipeline this poll."
           fi
 
       - name: Run GP weekend pipeline
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         env:
           PYTHONUNBUFFERED: "1"
           # Required so the Layer 1 ensemble persists held-out residuals to
@@ -145,6 +173,14 @@ jobs:
         run: |
           ROUND="${{ steps.config.outputs.round }}"
           PHASE="${{ steps.config.outputs.phase }}"
+
+          # Recover any COMPLETED round still missing official results before
+          # touching the active round. Guards the weekend hand-off gap where
+          # detect_target_round has already advanced to the next race while a
+          # just-finished Grand Prix never got its results published (source
+          # lagged at poll time). No-op when nothing is stranded.
+          python gp_weekend.py --backfill-missing-results --no-build || \
+            echo "⚠️  stranded-results backfill skipped (non-fatal)"
 
           # Ensure a race-pace ensemble is registered before the simulator runs.
           # train_race_pace.py is a no-op when the registry already has a sentinel
@@ -161,13 +197,13 @@ jobs:
           fi
 
       - name: Generate labeled circuit maps for all rounds
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           python generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
 
       - name: Forward-eval — score predictions vs actuals (A-P0.2)
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           mkdir -p website/public/data/forward_eval website/public/data/reliability_plots reports
@@ -187,7 +223,7 @@ jobs:
             --allow-empty
 
       - name: Drift report — feature PSI + rolling-Brier (A-P1.2)
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           # --allow-empty so pre-race runs with no forward-eval data exit 0.
@@ -199,7 +235,7 @@ jobs:
             --allow-empty
 
       - name: Championship simulator — WDC + WCC Monte Carlo forecast
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           # Generates website/public/data/championship_forecast.json.
           # Reads the freshly-published standings.json + the latest
@@ -208,7 +244,7 @@ jobs:
           python championship_simulator.py --samples 5000
 
       - name: Promotion decision — production vs candidate (A-P1.3)
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           # --allow-empty so the step is a no-op until a candidate model
@@ -226,11 +262,11 @@ jobs:
             --allow-empty
 
       - name: Install test dependencies
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: pip install pytest pydantic
 
       - name: Validate generated outputs
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |
           # Schema + sanity tests must pass against the freshly-generated JSON
           # *before* we commit it.  This gates degenerate pushes (all-NaN, missing
@@ -238,10 +274,12 @@ jobs:
           pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py -v --tb=short
 
       - name: Commit updated data
-        if: github.event_name != 'schedule' || steps.check.outputs.is_race_weekend == 'true'
+        id: commit
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -277,9 +315,17 @@ jobs:
           # changes the curated commit did not capture) and retries on transient
           # failures.
           bash .github/scripts/safe_push.sh
+          # Signal the deploy job that new data was actually pushed, so the tight
+          # 15-min polls don't trigger a full Pages rebuild when nothing changed.
+          echo "committed=true" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: predict
+    # Only rebuild + redeploy the site when the predict job actually pushed new
+    # data. A bot push using GITHUB_TOKEN does NOT auto-trigger deploy.yml's
+    # `push` event (GitHub's recursion guard), which is why deploy is wired here
+    # as needs:predict — but gated so no-op freshness polls skip the deploy.
+    if: needs.predict.outputs.committed == 'true'
     # Absolute form keeps the GitHub Actions VS Code extension happy
     # (relative `./.github/workflows/deploy.yml` paths trigger a false-
     # positive "Unable to find reusable workflow" diagnostic).  GitHub
