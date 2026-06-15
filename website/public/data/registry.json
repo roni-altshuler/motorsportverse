@@ -1,0 +1,343 @@
+{
+  "generated_by": "scripts/build_registry.py",
+  "count": 11,
+  "maturity_counts": {
+    "production": 1,
+    "experimental": 1,
+    "concept": 9
+  },
+  "projects": [
+    {
+      "slug": "f1-predictions",
+      "name": "F1 Predictions",
+      "sport": "Formula 1",
+      "category": "open-wheel",
+      "maturity": "production",
+      "summary": "Calibrated race-outcome forecasts for every Formula 1 Grand Prix.",
+      "description": "The MotorsportVerse flagship. A three-pathway prediction engine \u2014 qualifying-pace regression, Plackett-Luce probability calibration, and a per-lap Monte Carlo race simulator \u2014 with continuous-learning infrastructure (model registry, drift detection, A/B promotion) and a live static-export dashboard. Reference implementation for all other projects.",
+      "repo": "https://github.com/motorsportverse/f1-predictions",
+      "website": "https://motorsportverse.org/projects/f1-predictions",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FastF1",
+        "Jolpica/Ergast"
+      ],
+      "models": [
+        "quali-regression",
+        "plackett-luce",
+        "race-simulator"
+      ],
+      "tags": [
+        "calibrated-probabilities",
+        "monte-carlo",
+        "continuous-learning"
+      ],
+      "icon": "/brand/sports/f1.svg",
+      "accent": "#E10600",
+      "uses_core": [
+        "calibration",
+        "registry",
+        "drift",
+        "promotion",
+        "elo",
+        "eval",
+        "leakage"
+      ],
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "motorsportverse"
+        }
+      ],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "f2-predictions",
+      "name": "RaceIQ F2",
+      "sport": "Formula 2",
+      "category": "open-wheel",
+      "maturity": "experimental",
+      "summary": "Qualifying, race, and championship forecasts for FIA Formula 2.",
+      "description": "First fully operational expansion beyond F1. Runs end-to-end on the shared core: standings, leakage-safe pace estimation, Plackett-Luce qualifying + race probabilities, and a Monte Carlo championship projection, with a full website. ~74% of the pipeline and ~77% of the website are reused MotorsportVerse infrastructure. Results currently come from a reproducible latent-pace model pending a live F2 feed.",
+      "repo": "https://github.com/motorsportverse/f2-predictions",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FastF1 (planned)",
+        "latent-pace model"
+      ],
+      "models": [
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "feeder-series",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/f2.svg",
+      "accent": "#1E9BD7",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "eval",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "motorsportverse"
+        }
+      ],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "f3-predictions",
+      "name": "F3 Predictions",
+      "sport": "Formula 3",
+      "category": "open-wheel",
+      "maturity": "concept",
+      "summary": "Race forecasts for the FIA Formula 3 championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FastF1",
+        "Jolpica/Ergast"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/f3.svg",
+      "accent": "#C0C0C0",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "formula-e-predictions",
+      "name": "Formula E Predictions",
+      "sport": "Formula E",
+      "category": "electric",
+      "maturity": "concept",
+      "summary": "Energy-aware race forecasts for the ABB FIA Formula E championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FIA Formula E timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/formula-e.svg",
+      "accent": "#1E1AF0",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "imsa-predictions",
+      "name": "IMSA Predictions",
+      "sport": "IMSA",
+      "category": "endurance",
+      "maturity": "concept",
+      "summary": "Multi-class forecasts for the IMSA SportsCar Championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "IMSA timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/imsa.svg",
+      "accent": "#0A2A5E",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "indycar-predictions",
+      "name": "IndyCar Predictions",
+      "sport": "IndyCar",
+      "category": "open-wheel",
+      "maturity": "concept",
+      "summary": "Race forecasts for the NTT IndyCar Series (road, street, oval).",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "IndyCar timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/indycar.svg",
+      "accent": "#D31217",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "lemans-predictions",
+      "name": "Le Mans Predictions",
+      "sport": "24h of Le Mans",
+      "category": "endurance",
+      "maturity": "concept",
+      "summary": "Dedicated forecasting for the 24 Hours of Le Mans.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FIA WEC timing",
+        "ACO"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/lemans.svg",
+      "accent": "#1A6B3C",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "motogp-predictions",
+      "name": "MotoGP Predictions",
+      "sport": "MotoGP",
+      "category": "motorcycle",
+      "maturity": "concept",
+      "summary": "Race forecasts for the MotoGP world championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "MotoGP timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/motogp.svg",
+      "accent": "#CC0000",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "nascar-predictions",
+      "name": "NASCAR Predictions",
+      "sport": "NASCAR",
+      "category": "stock",
+      "maturity": "concept",
+      "summary": "Oval and road-course forecasts for the NASCAR Cup Series.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "NASCAR API"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/nascar.svg",
+      "accent": "#FFD659",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "wec-predictions",
+      "name": "WEC Predictions",
+      "sport": "WEC",
+      "category": "endurance",
+      "maturity": "concept",
+      "summary": "Multi-class endurance forecasts for the FIA World Endurance Championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "FIA WEC timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/wec.svg",
+      "accent": "#E8002D",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "wrc-predictions",
+      "name": "WRC Predictions",
+      "sport": "WRC",
+      "category": "rally",
+      "maturity": "concept",
+      "summary": "Stage-time forecasts for the FIA World Rally Championship.",
+      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
+      "repo": "",
+      "website": "",
+      "docs": "https://motorsportverse.org/docs",
+      "datasets": [
+        "WRC timing"
+      ],
+      "models": [],
+      "tags": [
+        "concept"
+      ],
+      "icon": "/brand/sports/wrc.svg",
+      "accent": "#0F62FE",
+      "uses_core": [
+        "calibration",
+        "eval"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    }
+  ]
+}

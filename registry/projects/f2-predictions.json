@@ -1,0 +1,20 @@
+{
+  "slug": "f2-predictions",
+  "name": "RaceIQ F2",
+  "sport": "Formula 2",
+  "category": "open-wheel",
+  "maturity": "experimental",
+  "summary": "Qualifying, race, and championship forecasts for FIA Formula 2.",
+  "description": "First fully operational expansion beyond F1. Runs end-to-end on the shared core: standings, leakage-safe pace estimation, Plackett-Luce qualifying + race probabilities, and a Monte Carlo championship projection, with a full website. ~74% of the pipeline and ~77% of the website are reused MotorsportVerse infrastructure. Results currently come from a reproducible latent-pace model pending a live F2 feed.",
+  "repo": "https://github.com/motorsportverse/f2-predictions",
+  "website": "",
+  "docs": "https://motorsportverse.org/docs",
+  "datasets": ["FastF1 (planned)", "latent-pace model"],
+  "models": ["plackett-luce", "championship-monte-carlo", "standings"],
+  "tags": ["feeder-series", "calibrated-probabilities", "monte-carlo"],
+  "icon": "/brand/sports/f2.svg",
+  "accent": "#1E9BD7",
+  "uses_core": ["calibration", "championship", "standings", "eval", "leakage", "interfaces"],
+  "maintainers": [{ "name": "MotorsportVerse", "github": "motorsportverse" }],
+  "added": "2026-06-15"
+}
