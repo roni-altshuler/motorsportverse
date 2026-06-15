@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://motorsportverse.org/schema/maturity.schema.json",
+  "title": "MotorsportVerse project maturity level",
+  "description": "Lifecycle stage of a MotorsportVerse project, scverse-style.",
+  "type": "string",
+  "enum": ["concept", "in-development", "experimental", "production", "archived"],
+  "meta:levels": {
+    "concept": "Registered idea; no code yet (stub entry only).",
+    "in-development": "Scaffold + data source in progress; not yet end-to-end.",
+    "experimental": "Runs end-to-end; accuracy not yet validated.",
+    "production": "Validated, live website, automated pipeline.",
+    "archived": "Frozen or superseded; kept for reference."
+  }
+}

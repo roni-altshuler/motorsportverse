@@ -1,0 +1,62 @@
+/* MotorsportVerse ecosystem design tokens.
+ *
+ * Re-themed from the F1 project's tokens: a neutral, sport-agnostic identity
+ * (graphite canvas, off-white ink, a single electric accent) so no one sport's
+ * livery dominates the ecosystem shell. Per-project accent colors come from the
+ * registry entry's `accent` field, applied inline via --accent on cards.
+ */
+
+:root {
+  /* Surfaces */
+  --canvas: #0a0b0d;
+  --surface: #141619;
+  --surface-2: #1b1e22;
+  --surface-3: #23272c;
+  --hairline: #2a2e34;
+  --hairline-strong: #3a3f47;
+
+  /* Ink */
+  --ink: #f4f5f7;
+  --ink-muted: #aab0b8;
+  --ink-dim: #767c85;
+
+  /* Ecosystem accent (neutral electric — NOT any single sport's red) */
+  --accent: #38e1c6;
+  --accent-strong: #19c7aa;
+  --accent-ink: #04221d;
+
+  /* Maturity palette */
+  --maturity-production: #38e1c6;
+  --maturity-experimental: #6aa6ff;
+  --maturity-in-development: #f5c451;
+  --maturity-concept: #9aa0a8;
+  --maturity-archived: #6b7280;
+
+  /* Spacing (8px base) */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-xxl: 96px;
+  --section-pad: 96px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Motion (mirrors F1 token names so copied components resolve) */
+  --dur-instant: 80ms;
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 520ms;
+  --dur-cinema: 900ms;
+  --ease-pit: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-launch: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drs: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Per-card accent default (overridden inline from registry) */
+  --team-color: var(--accent);
+}

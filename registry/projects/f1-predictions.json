@@ -1,0 +1,20 @@
+{
+  "slug": "f1-predictions",
+  "name": "F1 Predictions",
+  "sport": "Formula 1",
+  "category": "open-wheel",
+  "maturity": "production",
+  "summary": "Calibrated race-outcome forecasts for every Formula 1 Grand Prix.",
+  "description": "The MotorsportVerse flagship. A three-pathway prediction engine — qualifying-pace regression, Plackett-Luce probability calibration, and a per-lap Monte Carlo race simulator — with continuous-learning infrastructure (model registry, drift detection, A/B promotion) and a live static-export dashboard. Reference implementation for all other projects.",
+  "repo": "https://github.com/motorsportverse/f1-predictions",
+  "website": "https://motorsportverse.org/projects/f1-predictions",
+  "docs": "https://motorsportverse.org/docs",
+  "datasets": ["FastF1", "Jolpica/Ergast"],
+  "models": ["quali-regression", "plackett-luce", "race-simulator"],
+  "tags": ["calibrated-probabilities", "monte-carlo", "continuous-learning"],
+  "icon": "/brand/sports/f1.svg",
+  "accent": "#E10600",
+  "uses_core": ["calibration", "registry", "drift", "promotion", "elo", "eval", "leakage"],
+  "maintainers": [{ "name": "MotorsportVerse", "github": "motorsportverse" }],
+  "added": "2026-06-15"
+}

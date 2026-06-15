@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://motorsportverse.org/schema/project.schema.json",
+  "title": "MotorsportVerse project entry",
+  "description": "One project in the MotorsportVerse catalog. Source of truth for the ecosystem website project directory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "name", "sport", "category", "maturity", "summary"],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Stable kebab-case id, also the repo name, e.g. 'f1-predictions'."
+    },
+    "name": { "type": "string", "description": "Display name." },
+    "sport": { "type": "string", "description": "e.g. 'Formula 1', 'NASCAR'." },
+    "category": {
+      "type": "string",
+      "enum": ["open-wheel", "stock", "endurance", "rally", "motorcycle", "electric"]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["concept", "in-development", "experimental", "production", "archived"]
+    },
+    "summary": { "type": "string", "maxLength": 160, "description": "One-line catalog blurb." },
+    "description": { "type": "string", "description": "Longer description for the project detail page." },
+    "repo": { "type": "string", "description": "Source repository URL (may be empty for concepts)." },
+    "website": { "type": "string", "description": "Live project website URL." },
+    "docs": { "type": "string", "description": "Documentation URL." },
+    "datasets": { "type": "array", "items": { "type": "string" } },
+    "models": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "icon": { "type": "string", "description": "Path to the sport mark, e.g. '/brand/sports/f1.svg'." },
+    "accent": { "type": "string", "pattern": "^#([0-9a-fA-F]{6})$", "description": "Hex accent color." },
+    "uses_core": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "motorsport-core modules the project depends on."
+    },
+    "maintainers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "github": { "type": "string" }
+        }
+      }
+    },
+    "added": { "type": "string", "description": "ISO date the project was registered." }
+  }
+}
