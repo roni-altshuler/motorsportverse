@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ProjectCard } from "@/components/ProjectCard";
@@ -14,6 +15,14 @@ export default function HomePage() {
     <div className="mx-auto max-w-6xl px-6">
       {/* Hero */}
       <section className="py-20 sm:py-28">
+        <Image
+          src="/brand/motorsportverse-logo.png"
+          alt="MotorsportVerse"
+          width={1217}
+          height={414}
+          priority
+          className="mb-8 h-auto w-full max-w-xl"
+        />
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
           Open-source motorsport AI
         </p>

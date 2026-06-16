@@ -19,7 +19,29 @@ python scripts/generate_brand.py
 | Product family | **RaceIQ** | the prediction engine brand |
 | Per-series product | **RaceIQ &lt;Series&gt;** | RaceIQ F1, RaceIQ F2, RaceIQ NASCAR |
 
-## What every logo shares
+## Primary ecosystem logo (authoritative)
+
+The MotorsportVerse ecosystem identity is the supplied artwork, sliced from the
+master collage (`website/public/brand/source/motorsportverse-logo-collage.png`)
+into purpose-specific assets:
+
+| Asset | File | Used for |
+|---|---|---|
+| **Hero lockup** (car + wordmark + "AI · PREDICTION · ANALYTICS") | `website/public/brand/motorsportverse-logo.png` | README hero, website home hero, OG/Twitter card |
+| **Hex MV badge** (square) | `website/public/brand/motorsportverse-mark.png` | navbar mark, favicon source (`website/src/app/icon.png`) |
+| **Master collage** (all 6 variants) | `website/public/brand/source/…collage.png` | source of truth; re-slice for new placements |
+
+The collage also contains alternate lockups ("Intelligence in Motion",
+"Predict. Simulate. Win.", "Data. Intelligence. Victory.", an MV monogram with
+circuit traces). Re-crop from the master collage as needed — keep that file as
+the single source.
+
+> The generated SVGs below (`scripts/generate_brand.py`) remain the system for
+> **per-series RaceIQ marks** (F1/F2/F3/…), which the ecosystem collage does not
+> cover. The ecosystem-level `logo.svg`/`mark.svg` produced by the generator are
+> now superseded by the PNG artwork above for the hero/mark/favicon placements.
+
+## What every (series) logo shares
 
 1. **Common typography** — a condensed geometric uppercase wordmark
    (`Saira Condensed`, weight 700, positive letter-tracking). "Race" in ink,

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="website/public/brand/logo.svg" alt="MotorsportVerse" width="420" />
+<img src="website/public/brand/motorsportverse-logo.png" alt="MotorsportVerse" width="560" />
 
 # 🏁 MotorsportVerse
 
