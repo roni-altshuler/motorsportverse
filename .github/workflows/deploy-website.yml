@@ -33,7 +33,10 @@ jobs:
       # prebuild regenerates public/data/registry.json from registry/projects/*
       - run: npm run build
         env:
-          PAGES_BASE_PATH: ${{ github.event.repository.name == 'motorsportverse' && '' || format('/{0}', github.event.repository.name) }}
+          # Project page served at https://<owner>.github.io/<repo>/ — assets
+          # must be prefixed with /<repo>. (For an org user-page repo named
+          # <org>.github.io, set this to "" instead.)
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: website/out
