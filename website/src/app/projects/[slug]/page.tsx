@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
+import { GridPattern } from "@/components/magicui/grid-pattern";
 import { getProject, getProjects } from "@/lib/registry";
 
 export function generateStaticParams() {
@@ -32,62 +34,92 @@ export default async function ProjectDetailPage({
   const accent = project.accent || "var(--accent)";
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16" style={{ ["--team-color" as string]: accent }}>
-      <Link href="/projects" className="text-sm text-[var(--ink-dim)] hover:text-[var(--ink)]">
-        ← All projects
-      </Link>
-
-      <div className="mt-6 flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <span
-            className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-md)] text-lg font-bold"
-            style={{ color: accent, backgroundColor: `color-mix(in srgb, ${accent} 16%, transparent)` }}
-            aria-hidden
+    <div style={{ ["--team-color" as string]: accent }}>
+      {/* Header band */}
+      <section className="relative overflow-hidden border-b border-[var(--hairline)]">
+        <GridPattern
+          width={44}
+          height={44}
+          className="[mask-image:radial-gradient(70%_80%_at_30%_0%,white,transparent)] opacity-50"
+        />
+        <span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+        />
+        <div className="shell relative py-16">
+          <Link
+            href="/projects"
+            className="text-sm text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
           >
-            {project.sport.slice(0, 2).toUpperCase()}
-          </span>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-[var(--ink)]">{project.name}</h1>
-            <p className="text-[var(--ink-dim)]">
-              {project.sport} · <span className="capitalize">{project.category}</span>
-            </p>
+            ← All projects
+          </Link>
+
+          <div className="mt-8 flex flex-wrap items-start justify-between gap-6">
+            <div className="flex items-center gap-5">
+              {project.icon && (
+                <Image src={project.icon} alt="" width={64} height={64} className="h-16 w-16" />
+              )}
+              <div>
+                <h1 className="display text-5xl">{project.name}</h1>
+                <p className="mt-2 text-[var(--ink-dim)]">
+                  {project.sport} · <span className="capitalize">{project.category}</span>
+                </p>
+              </div>
+            </div>
+            <MaturityBadge maturity={project.maturity} />
+          </div>
+
+          <p className="lead mt-8 max-w-3xl">{project.description || project.summary}</p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {project.repo && <LinkButton href={project.repo} label="Repository" primary accent={accent} />}
+            {project.website && <LinkButton href={project.website} label="Website" accent={accent} />}
+            {project.docs && <LinkButton href={project.docs} label="Docs" accent={accent} />}
           </div>
         </div>
-        <MaturityBadge maturity={project.maturity} />
-      </div>
-
-      <p className="mt-8 text-lg leading-relaxed text-[var(--ink-muted)]">
-        {project.description || project.summary}
-      </p>
-
-      {/* Links */}
-      <div className="mt-8 flex flex-wrap gap-3">
-        {project.repo && <LinkButton href={project.repo} label="Repository" accent={accent} />}
-        {project.website && <LinkButton href={project.website} label="Website" accent={accent} />}
-        {project.docs && <LinkButton href={project.docs} label="Docs" accent={accent} />}
-      </div>
+      </section>
 
       {/* Meta grid */}
-      <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        <MetaList title="Datasets" items={project.datasets} />
-        <MetaList title="Models" items={project.models} />
-        <MetaList title="Shared core modules" items={project.uses_core} />
-        <MetaList title="Tags" items={project.tags} />
-      </div>
-
-      {project.added && (
-        <p className="mt-12 text-xs text-[var(--ink-dim)]">Registered {project.added}</p>
-      )}
+      <section className="shell section">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <MetaList title="Datasets" items={project.datasets} />
+          <MetaList title="Models" items={project.models} />
+          <MetaList title="Shared core modules" items={project.uses_core} />
+          <MetaList title="Tags" items={project.tags} />
+        </div>
+        {project.added && (
+          <p className="mt-10 text-xs uppercase tracking-wider text-[var(--ink-dim)]">
+            Registered {project.added}
+          </p>
+        )}
+      </section>
     </div>
   );
 }
 
-function LinkButton({ href, label, accent }: { href: string; label: string; accent: string }) {
+function LinkButton({
+  href,
+  label,
+  primary = false,
+  accent,
+}: {
+  href: string;
+  label: string;
+  primary?: boolean;
+  accent: string;
+}) {
+  if (primary) {
+    return (
+      <a href={href} className="btn-accent px-5 py-2.5 text-sm font-semibold">
+        {label} →
+      </a>
+    );
+  }
   return (
     <a
       href={href}
-      className="rounded-full border px-4 py-2 text-sm font-medium"
-      style={{ color: accent, borderColor: `color-mix(in srgb, ${accent} 40%, transparent)` }}
+      className="rounded-[var(--radius-pill)] border px-5 py-2.5 text-sm font-medium"
+      style={{ color: accent, borderColor: `color-mix(in srgb, ${accent} 45%, transparent)` }}
     >
       {label} →
     </a>
@@ -97,15 +129,13 @@ function LinkButton({ href, label, accent }: { href: string; label: string; acce
 function MetaList({ title, items }: { title: string; items?: string[] }) {
   if (!items || items.length === 0) return null;
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-5">
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--ink-dim)]">
-        {title}
-      </h3>
-      <ul className="mt-3 flex flex-wrap gap-2">
+    <div className="card-surface p-6">
+      <h3 className="eyebrow text-[var(--ink-dim)]">{title}</h3>
+      <ul className="mt-4 flex flex-wrap gap-2">
         {items.map((it) => (
           <li
             key={it}
-            className="rounded-full border border-[var(--hairline)] px-2.5 py-1 text-xs text-[var(--ink-muted)]"
+            className="rounded-full border border-[var(--hairline)] bg-[var(--surface-2)] px-3 py-1 text-xs text-[var(--ink-muted)]"
           >
             {it}
           </li>

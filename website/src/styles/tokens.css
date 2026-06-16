@@ -1,61 +1,80 @@
-/* MotorsportVerse ecosystem design tokens.
+/* MotorsportVerse ecosystem design tokens — cinematic, premium.
  *
- * Re-themed from the F1 project's tokens: a neutral, sport-agnostic identity
- * (graphite canvas, off-white ink, a single electric accent) so no one sport's
- * livery dominates the ecosystem shell. Per-project accent colors come from the
- * registry entry's `accent` field, applied inline via --accent on cards.
+ * Deep blue-black canvas tuned to the logo artwork's baked background (#060910)
+ * so the hero logo blends seamlessly. Single bold accent (motorsport crimson,
+ * matching the logo + the F1 flagship's red restraint); silver for metallic
+ * highlights; teal reserved for data/AI + the "production" maturity state.
  */
 
 :root {
-  /* Surfaces */
-  --canvas: #0a0b0d;
-  --surface: #141619;
-  --surface-2: #1b1e22;
-  --surface-3: #23272c;
-  --hairline: #2a2e34;
-  --hairline-strong: #3a3f47;
+  /* Canvas & surfaces (matched to logo bg, lifted in steps for depth) */
+  --canvas: #060910;
+  --canvas-deep: #04060c;
+  --surface: #0c1119;
+  --surface-2: #111824;
+  --surface-3: #18202e;
+  --hairline: #1d2735;
+  --hairline-strong: #2c3848;
 
   /* Ink */
-  --ink: #f4f5f7;
-  --ink-muted: #aab0b8;
-  --ink-dim: #767c85;
+  --ink: #f4f7fb;
+  --ink-strong: #ffffff;
+  --ink-muted: #aeb8c6;
+  --ink-dim: #6c7787;
 
-  /* Ecosystem accent (neutral electric — NOT any single sport's red) */
-  --accent: #38e1c6;
-  --accent-strong: #19c7aa;
-  --accent-ink: #04221d;
+  /* Primary accent — motorsport crimson (matches the logo) */
+  --accent: #e7102f;
+  --accent-bright: #ff2d49;
+  --accent-deep: #b00a23;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(231, 16, 47, 0.12);
+
+  /* Metallic + cool secondary (data / AI / production) */
+  --silver: #c8d2df;
+  --teal: #38e1c6;
 
   /* Maturity palette */
   --maturity-production: #38e1c6;
   --maturity-experimental: #6aa6ff;
   --maturity-in-development: #f5c451;
-  --maturity-concept: #9aa0a8;
-  --maturity-archived: #6b7280;
+  --maturity-concept: #8a93a3;
+  --maturity-archived: #5f6b7a;
 
-  /* Spacing (8px base) */
+  /* Glow stack */
+  --glow-accent: 0 0 24px rgba(231, 16, 47, 0.45), 0 0 64px rgba(231, 16, 47, 0.18);
+  --glow-soft: 0 0 0 1px var(--hairline), 0 24px 60px -28px rgba(0, 0, 0, 0.9);
+  --glow-card-hover: 0 0 0 1px var(--hairline-strong),
+    0 30px 70px -30px rgba(231, 16, 47, 0.28), 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+
+  /* Gradients */
+  --gradient-hero: radial-gradient(120% 80% at 50% -10%, rgba(231, 16, 47, 0.16) 0%, transparent 55%);
+  --gradient-aurora: radial-gradient(60% 50% at 80% 0%, rgba(56, 225, 198, 0.10) 0%, transparent 60%);
+  --gradient-ink: linear-gradient(180deg, #ffffff 0%, #b9c2cf 100%);
+  --gradient-accent-text: linear-gradient(92deg, #ffffff 0%, #ff7a8c 45%, #e7102f 100%);
+  --gradient-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+
+  /* Spacing */
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
   --space-lg: 40px;
   --space-xl: 64px;
   --space-xxl: 96px;
-  --section-pad: 96px;
+  --section-pad: clamp(72px, 11vw, 140px);
 
   /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
   --radius-pill: 999px;
 
-  /* Motion (mirrors F1 token names so copied components resolve) */
-  --dur-instant: 80ms;
+  /* Motion */
   --dur-fast: 160ms;
-  --dur-base: 280ms;
-  --dur-slow: 520ms;
-  --dur-cinema: 900ms;
-  --ease-pit: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-launch: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-drs: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-base: 300ms;
+  --dur-slow: 560ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 
   /* Per-card accent default (overridden inline from registry) */
   --team-color: var(--accent);

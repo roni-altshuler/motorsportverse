@@ -35,24 +35,20 @@ const STEPS = [
 
 export default function ContributePage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-[var(--ink)]">Contribute</h1>
-      <p className="mt-3 text-[var(--ink-muted)]">
-        MotorsportVerse grows one sport at a time. The shared core does the heavy
-        lifting — you bring the data and the domain knowledge.
+    <div className="shell section max-w-3xl">
+      <p className="eyebrow">Contribute</p>
+      <h1 className="display mt-3 text-5xl">Add a sport</h1>
+      <p className="lead mt-4">
+        MotorsportVerse grows one sport at a time. The shared core does the heavy lifting — you
+        bring the data and the domain knowledge.
       </p>
-      <ol className="mt-10 space-y-5">
+      <ol className="mt-12 space-y-4">
         {STEPS.map((s) => (
-          <li
-            key={s.n}
-            className="flex gap-4 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-5"
-          >
-            <span className="text-sm font-bold" style={{ color: "var(--accent)" }}>
-              {s.n}
-            </span>
+          <li key={s.n} className="card-surface hover-lift flex gap-5 p-6">
+            <span className="font-display text-2xl font-bold text-[var(--accent-bright)]">{s.n}</span>
             <div>
-              <h2 className="text-base font-semibold text-[var(--ink)]">{s.title}</h2>
-              <p className="mt-1 text-sm leading-relaxed text-[var(--ink-muted)]">{s.body}</p>
+              <h2 className="font-display text-lg font-semibold text-[var(--ink)]">{s.title}</h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--ink-muted)]">{s.body}</p>
             </div>
           </li>
         ))}

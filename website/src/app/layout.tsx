@@ -1,9 +1,29 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
 import "./globals.css";
+
+const saira = Saira_Condensed({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-saira",
+  display: "swap",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://roni-altshuler.github.io/motorsportverse/"),
@@ -22,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}>
       <body>
         <Navbar />
         <main className="min-h-[70vh]">{children}</main>

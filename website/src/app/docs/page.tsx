@@ -35,21 +35,21 @@ const SECTIONS = [
 
 export default function DocsPage() {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-[var(--ink)]">Documentation</h1>
-      <p className="mt-3 max-w-2xl text-[var(--ink-muted)]">
-        Everything you need to understand the ecosystem and ship a new motorsport
-        project on top of the shared infrastructure.
+    <div className="shell section">
+      <p className="eyebrow">Documentation</p>
+      <h1 className="display mt-3 text-5xl">Build on the core</h1>
+      <p className="lead mt-4 max-w-2xl">
+        Everything you need to understand the ecosystem and ship a new motorsport project on top of
+        the shared infrastructure.
       </p>
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-12 grid gap-5 sm:grid-cols-2">
         {SECTIONS.map((s) => (
-          <a
-            key={s.title}
-            href={s.href}
-            className="rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-6 transition-colors hover:border-[var(--accent)]"
-          >
-            <h2 className="text-base font-semibold text-[var(--ink)]">{s.title}</h2>
+          <a key={s.title} href={s.href} className="card-surface hover-lift group p-6">
+            <h2 className="font-display text-lg font-semibold text-[var(--ink)]">{s.title}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{s.body}</p>
+            <span className="mt-4 inline-block text-sm font-medium text-[var(--accent-bright)] transition-transform group-hover:translate-x-1">
+              Read →
+            </span>
           </a>
         ))}
       </div>

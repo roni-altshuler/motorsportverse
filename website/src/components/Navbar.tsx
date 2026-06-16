@@ -9,30 +9,35 @@ const LINKS = [
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--hairline)] bg-[color-mix(in_srgb,var(--canvas)_85%,transparent)] backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2.5">
+    <header className="sticky top-0 z-50 border-b border-[var(--hairline)]/70 bg-[var(--canvas)]/70 backdrop-blur-xl">
+      <nav className="shell flex items-center justify-between py-3.5">
+        <Link href="/" className="group flex items-center gap-2.5">
           <Image
             src="/brand/motorsportverse-mark.png"
             alt="MotorsportVerse"
-            width={28}
-            height={28}
-            className="h-7 w-7"
+            width={30}
+            height={30}
+            className="h-[30px] w-[30px]"
             priority
           />
-          <span className="text-sm font-semibold tracking-tight text-[var(--ink)]">
-            Motorsport<span style={{ color: "var(--accent)" }}>Verse</span>
+          <span className="font-display text-base font-semibold tracking-tight text-[var(--ink)]">
+            Motorsport<span className="text-[var(--accent-bright)]">Verse</span>
           </span>
         </Link>
-        <div className="flex items-center gap-6 text-sm text-[var(--ink-muted)]">
+
+        <div className="flex items-center gap-1 sm:gap-2">
           {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-[var(--ink)]">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3 py-2 text-sm text-[var(--ink-muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
+            >
               {l.label}
             </Link>
           ))}
           <a
             href="https://github.com/motorsportverse"
-            className="rounded-full border border-[var(--hairline-strong)] px-3 py-1.5 text-xs text-[var(--ink)] hover:border-[var(--accent)]"
+            className="btn-ghost ml-1 hidden px-4 py-2 text-xs font-medium sm:inline-block"
           >
             GitHub
           </a>

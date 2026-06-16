@@ -11,13 +11,14 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   const projects = getProjects();
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-[var(--ink)]">Project directory</h1>
-      <p className="mt-3 max-w-2xl text-[var(--ink-muted)]">
-        Every motorsport in the ecosystem, from production projects to registered
-        concepts. Filter by lifecycle stage or category.
+    <div className="shell section">
+      <p className="eyebrow">The grid</p>
+      <h1 className="display mt-3 text-5xl">Project directory</h1>
+      <p className="lead mt-4 max-w-2xl">
+        Every motorsport in the ecosystem, from production projects to registered concepts. Filter
+        by lifecycle stage or category.
       </p>
-      <div className="mt-10">
+      <div className="mt-12">
         <ProjectExplorer projects={projects} />
       </div>
     </div>
