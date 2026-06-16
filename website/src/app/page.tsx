@@ -5,6 +5,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
 import { GridPattern } from "@/components/magicui/grid-pattern";
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import { asset } from "@/lib/asset";
 import { getMaturityCounts, getProjects } from "@/lib/registry";
 
 export default function HomePage() {
@@ -32,7 +33,7 @@ export default function HomePage() {
         />
         <div className="shell relative flex flex-col items-center pt-24 pb-20 text-center sm:pt-32">
           <Image
-            src="/brand/motorsportverse-logo.png"
+            src={asset("/brand/motorsportverse-logo.png")}
             alt="MotorsportVerse"
             width={1217}
             height={414}

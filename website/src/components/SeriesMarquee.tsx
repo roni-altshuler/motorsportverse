@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { Marquee } from "@/components/magicui/marquee";
+import { asset } from "@/lib/asset";
 
 export interface SeriesItem {
   key: string;
@@ -22,7 +23,7 @@ export function SeriesMarquee({ items }: { items: SeriesItem[] }) {
             className="flex items-center gap-3 rounded-[var(--radius-pill)] border border-[var(--hairline)] bg-[var(--surface)]/70 px-5 py-3 backdrop-blur"
             style={{ ["--team-color" as string]: s.accent || "var(--accent)" }}
           >
-            {s.icon && <Image src={s.icon} alt="" width={26} height={26} className="h-[26px] w-[26px]" />}
+            {s.icon && <Image src={asset(s.icon)} alt="" width={26} height={26} className="h-[26px] w-[26px]" />}
             <span className="whitespace-nowrap font-display text-sm font-semibold tracking-wide text-[var(--ink)]">
               RaceIQ {s.sport}
             </span>

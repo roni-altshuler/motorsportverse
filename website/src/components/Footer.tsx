@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { asset } from "@/lib/asset";
+
 export function Footer() {
   return (
     <footer className="hairline-top mt-10 bg-[var(--canvas-deep)]">
       <div className="shell grid gap-8 py-14 sm:grid-cols-[1.5fr_1fr_1fr]">
         <div>
           <Image
-            src="/brand/motorsportverse-logo.png"
+            src={asset("/brand/motorsportverse-logo.png")}
             alt="MotorsportVerse"
             width={1217}
             height={414}

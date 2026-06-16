@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
+import { asset } from "@/lib/asset";
 import type { Project } from "@/types/registry";
 
 export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
@@ -29,7 +30,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
         <div className="flex items-center gap-3">
           {project.icon ? (
             <Image
-              src={project.icon}
+              src={asset(project.icon)}
               alt=""
               width={featured ? 48 : 40}
               height={featured ? 48 : 40}

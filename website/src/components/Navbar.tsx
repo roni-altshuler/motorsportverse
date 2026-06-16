@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { asset } from "@/lib/asset";
+
 const LINKS = [
   { href: "/projects", label: "Projects" },
   { href: "/docs", label: "Docs" },
@@ -13,7 +15,7 @@ export function Navbar() {
       <nav className="shell flex items-center justify-between py-3.5">
         <Link href="/" className="group flex items-center gap-2.5">
           <Image
-            src="/brand/motorsportverse-mark.png"
+            src={asset("/brand/motorsportverse-mark.png")}
             alt="MotorsportVerse"
             width={30}
             height={30}

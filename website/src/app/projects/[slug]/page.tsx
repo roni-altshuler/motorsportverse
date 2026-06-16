@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
+import { asset } from "@/lib/asset";
 import { GridPattern } from "@/components/magicui/grid-pattern";
 import { getProject, getProjects } from "@/lib/registry";
 
@@ -57,7 +58,7 @@ export default async function ProjectDetailPage({
           <div className="mt-8 flex flex-wrap items-start justify-between gap-6">
             <div className="flex items-center gap-5">
               {project.icon && (
-                <Image src={project.icon} alt="" width={64} height={64} className="h-16 w-16" />
+                <Image src={asset(project.icon)} alt="" width={64} height={64} className="h-16 w-16" />
               )}
               <div>
                 <h1 className="display text-5xl">{project.name}</h1>
