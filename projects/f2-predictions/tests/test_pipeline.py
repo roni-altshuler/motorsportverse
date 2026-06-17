@@ -24,10 +24,13 @@ def test_calendar_and_completed_rounds(source):
 
 def test_completed_round_has_two_races(source):
     races = source.race_results_for_round(config.SEASON, 1)
-    assert len(races["sprint"]) == 22
-    assert len(races["feature"]) == 22
-    # positions are a complete permutation 1..22
-    assert sorted(r.position for r in races["feature"]) == list(range(1, 23))
+    # Real classifications: classified finishers only (retirements excluded), so
+    # positions are unique and ascending but need not fill 1..22.
+    for race in (races["sprint"], races["feature"]):
+        assert 12 <= len(race) <= 22
+        pos = [r.position for r in race]
+        assert pos == sorted(pos)
+        assert len(set(pos)) == len(pos)
 
 
 def test_future_round_has_no_results(source):
@@ -49,8 +52,9 @@ def test_driver_standings(source):
     # monotonically non-increasing points
     pts = [r.points for r in table]
     assert pts == sorted(pts, reverse=True)
-    # every driver raced sprint+feature across all completed rounds
-    assert table[0].rounds == config.COMPLETED_ROUNDS * 2
+    # the leader has scored across sprint+feature; with real DNFs the count is
+    # at most two races per completed round.
+    assert 0 < table[0].rounds <= config.COMPLETED_ROUNDS * 2
 
 
 def test_team_standings(source):

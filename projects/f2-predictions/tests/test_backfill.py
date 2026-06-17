@@ -11,9 +11,10 @@ def test_backfill_writes_both_races(tmp_path):
     db = tmp_path / "history.duckdb"
     written, provenance = backfill.backfill(config.SEASON, db)
 
-    # 2 races × 22 drivers × completed rounds.
+    # 2 races × 22 drivers × completed rounds (a row per roster driver, whether
+    # or not they were classified — DNFs get a null actual_position).
     assert written == 2 * 22 * config.COMPLETED_ROUNDS
-    assert provenance.get("synthetic", 0) == written  # default source is synthetic
+    assert provenance.get("snapshot", 0) == written  # default source is the real snapshot
 
     from motorsport_data.store import HistoryStore
 

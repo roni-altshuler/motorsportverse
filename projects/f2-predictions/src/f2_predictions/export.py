@@ -123,6 +123,7 @@ def _race_block(
 
 
 def round_payload(fc: RoundForecastF2, source: F2DataSource, completed: bool) -> dict:
+    data_source = source.provenance(fc.season, fc.round, race_index=1) if completed else None
     return {
         "round": fc.round,
         "season": fc.season,
@@ -130,7 +131,7 @@ def round_payload(fc: RoundForecastF2, source: F2DataSource, completed: bool) ->
         "venueName": fc.venue_name,
         "country": fc.country,
         "completed": completed,
-        "dataSource": "synthetic",  # Phase 1; flips to the live feed in Phase 2
+        "dataSource": data_source,  # real provenance: "snapshot"/"fia" (real) or "synthetic"
         "sprint": _race_block(fc.sprint, source, fc.season, fc.round, completed),
         "feature": _race_block(fc.feature, source, fc.season, fc.round, completed),
     }
@@ -350,12 +351,85 @@ def _points_history(
     return driver_hist, team_hist
 
 
-def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSource, year: int) -> dict:
-    driver_standings = pipeline.driver_standings(source, year)
-    teams = pipeline.team_standings(source, year)
-    driver_hist, team_hist = _points_history(source, year)
+def _standings_lists(source: F2DataSource, year: int) -> tuple[list[dict], list[dict]]:
+    """(driverStandings, teamStandings) for f2.json — official snapshot totals
+    when the feed is real (exact, incl. pole/FL bonuses), else recomputed."""
+    official = pipeline.official_standings(source, year)
+    if official:
+        drivers = official.get("driverStandings", [])
+        teams = official.get("teamStandings", [])
+        team_wp: dict[str, dict[str, int]] = {}
+        for d in drivers:
+            wp = team_wp.setdefault(d.get("team", ""), {"wins": 0, "podiums": 0})
+            wp["wins"] += int(d.get("wins", 0))
+            wp["podiums"] += int(d.get("podiums", 0))
+        driver_rows = [
+            {
+                "position": d["position"],
+                "code": d["code"],
+                "name": d.get("name", d["code"]),
+                "team": d.get("team", ""),
+                "teamColor": TEAM_COLOR.get(d.get("team", ""), "#1E9BD7"),
+                "points": d["points"],
+                "wins": int(d.get("wins", 0)),
+                "podiums": int(d.get("podiums", 0)),
+                "pointsHistory": d.get("pointsHistory", []),
+            }
+            for d in drivers
+        ]
+        team_rows = [
+            {
+                "position": t["position"],
+                "team": t["team"],
+                "teamColor": TEAM_COLOR.get(t["team"], "#1E9BD7"),
+                "points": t["points"],
+                "wins": team_wp.get(t["team"], {}).get("wins", 0),
+                "podiums": team_wp.get(t["team"], {}).get("podiums", 0),
+                "pointsHistory": t.get("pointsHistory", []),
+            }
+            for t in teams
+        ]
+        return driver_rows, team_rows
 
-    next_round = config.COMPLETED_ROUNDS + 1
+    # Fallback: recompute from the source's results (synthetic / no snapshot).
+    ds = pipeline.driver_standings(source, year)
+    ts = pipeline.team_standings(source, year)
+    driver_hist, team_hist = _points_history(source, year)
+    driver_rows = [
+        {
+            "position": i,
+            "code": r.key,
+            "name": config.DRIVER_NAME.get(r.key, r.key),
+            "team": config.TEAM_OF.get(r.key, ""),
+            "teamColor": TEAM_COLOR.get(config.TEAM_OF.get(r.key, ""), "#1E9BD7"),
+            "points": r.points,
+            "wins": r.wins,
+            "podiums": r.podiums,
+            "pointsHistory": driver_hist.get(r.key, []),
+        }
+        for i, r in enumerate(ds, start=1)
+    ]
+    team_rows = [
+        {
+            "position": i,
+            "team": r.key,
+            "teamColor": TEAM_COLOR.get(r.key, "#1E9BD7"),
+            "points": r.points,
+            "wins": r.wins,
+            "podiums": r.podiums,
+            "pointsHistory": team_hist.get(r.key, []),
+        }
+        for i, r in enumerate(ts, start=1)
+    ]
+    return driver_rows, team_rows
+
+
+def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSource, year: int) -> dict:
+    completed = source.completed_rounds(year)
+    n_completed = len(completed)
+    driver_rows, team_rows = _standings_lists(source, year)
+
+    next_round = (max(completed) + 1) if completed else 1
     prediction = None
     if next_round <= len(config.CALENDAR):
         pred = pipeline.predict_round(source, year, next_round)
@@ -381,12 +455,13 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
             ],
         }
 
+    meta = config.CALENDAR_META
     return {
         "sport": config.SPORT,
         "season": year,
         "generatedAt": _now_iso(),
-        "completedRounds": config.COMPLETED_ROUNDS,
-        "lastUpdatedRound": config.COMPLETED_ROUNDS,
+        "completedRounds": n_completed,
+        "lastUpdatedRound": max(completed) if completed else 0,
         "totalRounds": len(config.CALENDAR),
         "calendar": [
             {
@@ -394,37 +469,16 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
                 "key": v.key,
                 "name": v.name,
                 "country": v.country,
-                "completed": i <= config.COMPLETED_ROUNDS,
-                "dataSource": "synthetic" if i <= config.COMPLETED_ROUNDS else None,
+                "city": meta.get(i, {}).get("city", ""),
+                "sprintDate": meta.get(i, {}).get("sprint", ""),
+                "featureDate": meta.get(i, {}).get("feature", ""),
+                "completed": i in completed,
+                "dataSource": source.provenance(year, i, race_index=1) if i in completed else None,
             }
             for i, v in enumerate(config.CALENDAR, start=1)
         ],
-        "driverStandings": [
-            {
-                "position": i,
-                "code": r.key,
-                "name": config.DRIVER_NAME.get(r.key, r.key),
-                "team": config.TEAM_OF.get(r.key, ""),
-                "teamColor": TEAM_COLOR.get(config.TEAM_OF.get(r.key, ""), "#1E9BD7"),
-                "points": r.points,
-                "wins": r.wins,
-                "podiums": r.podiums,
-                "pointsHistory": driver_hist.get(r.key, []),
-            }
-            for i, r in enumerate(driver_standings, start=1)
-        ],
-        "teamStandings": [
-            {
-                "position": i,
-                "team": r.key,
-                "teamColor": TEAM_COLOR.get(r.key, "#1E9BD7"),
-                "points": r.points,
-                "wins": r.wins,
-                "podiums": r.podiums,
-                "pointsHistory": team_hist.get(r.key, []),
-            }
-            for i, r in enumerate(teams, start=1)
-        ],
+        "driverStandings": driver_rows,
+        "teamStandings": team_rows,
         "championship": _championship(source, year),
         "seasonAccuracy": _season_accuracy(round_forecasts, source, year),
         "nextPrediction": prediction,

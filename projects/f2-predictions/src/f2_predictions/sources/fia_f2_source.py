@@ -40,6 +40,13 @@ _RE_NAME = re.compile(r'<span class="visible-desktop-up">\s*([^<]+?)\s*</span>')
 _RE_TEAM = re.compile(r'<span class="team-name">\s*([^<]+?)\s*</span>')
 _RE_RACEID = re.compile(r'raceid=(\d+)')
 _RE_TITLE_COUNTRY = re.compile(r"Round\s+\d+\s*:\s*([^,<]+)")
+# Full title shape: "... Round 2 : USA , Miami 01-03 May 2026". Round number is
+# authoritative — raceids are NOT in calendar order (fly-aways added late carry
+# higher ids), so never infer the round from raceid sort order.
+_RE_TITLE_ROUND = re.compile(
+    r"Round\s+(\d+)\s*:\s*([^,<]+?)\s*,\s*([^0-9<]+?)\s*"
+    r"(\d{1,2}-\d{1,2}\s+\w+\s+\d{4})"
+)
 
 
 class FiaF2Source:
@@ -49,6 +56,8 @@ class FiaF2Source:
         self._timeout = timeout
         self._page_cache: dict[int, str] = {}
         self._raceids_cache: dict[int, list[int]] = {}
+        self._round_map_cache: dict[int, dict[int, int]] = {}
+        self._calendar_cache: dict[int, list[dict]] = {}
         self._entries: dict[int, dict[str, dict[str, str]]] = {}
 
     # ------------------------------------------------------------------ #
@@ -57,10 +66,10 @@ class FiaF2Source:
     def results(self, year: int, round: int, race_index: int = 1) -> list[Result] | None:
         """Classified order for one race, or ``None`` if it can't be fetched/parsed."""
         try:
-            raceids = self._season_raceids(year)
-            if not raceids or not (1 <= round <= len(raceids)):
+            raceid = self._round_map(year).get(round)
+            if raceid is None:
                 return None
-            page = self._page(raceids[round - 1])
+            page = self._page(raceid)
             if page is None:
                 return None
             rows = self._parse_session(page, _SESSION_HEADING[race_index])
@@ -85,20 +94,44 @@ class FiaF2Source:
         return dict(self._entries.get(year, {}))
 
     def calendar(self, year: int) -> list[dict]:
-        """Ordered [{round, raceid, country}] derived from the navigator + titles."""
+        """Ordered [{round, raceid, country, city, dates}] from each page's title.
+
+        Round order comes from the *title* (``Round N``), not the raceid sort
+        order, because the FIA assigns raceids out of calendar order.
+        """
+        if year in self._calendar_cache:
+            return self._calendar_cache[year]
         out: list[dict] = []
-        for i, raceid in enumerate(self._season_raceids(year), start=1):
-            country = None
+        for raceid in self._season_raceids(year):
             page = self._page(raceid)
-            if page:
-                m = _RE_TITLE_COUNTRY.search(page)
-                if m:
-                    country = _html.unescape(m.group(1)).strip()
-            out.append({"round": i, "raceid": raceid, "country": country})
+            if not page:
+                continue
+            m = _RE_TITLE_ROUND.search(page)
+            if not m:
+                continue
+            out.append(
+                {
+                    "round": int(m.group(1)),
+                    "raceid": raceid,
+                    "country": _html.unescape(m.group(2)).strip(),
+                    "city": _html.unescape(m.group(3)).strip(),
+                    "dates": m.group(4).strip(),
+                }
+            )
+        out.sort(key=lambda r: r["round"])
+        self._calendar_cache[year] = out
         return out
 
     def num_rounds(self, year: int) -> int:
         return len(self._season_raceids(year))
+
+    def _round_map(self, year: int) -> dict[int, int]:
+        """{round_number: raceid} resolved from page titles (authoritative)."""
+        if year not in self._round_map_cache:
+            self._round_map_cache[year] = {
+                c["round"]: c["raceid"] for c in self.calendar(year)
+            }
+        return self._round_map_cache[year]
 
     # ------------------------------------------------------------------ #
     # Internals
@@ -143,8 +176,15 @@ class FiaF2Source:
         return raceids
 
     @staticmethod
-    def _parse_session(page: str, heading: str) -> list[dict]:
-        """Extract classified rows from the table following a session heading."""
+    def _parse_session(page: str, heading: str, *, include_unclassified: bool = False) -> list[dict]:
+        """Extract rows from the table following a session heading.
+
+        By default returns only **classified** finishers (numeric position),
+        sorted/deduped by position — the contract the composite seam + standings
+        rely on. With ``include_unclassified=True`` it also returns retirements
+        (DNF/DNS/DSQ/NC) with ``position=None`` and a ``status`` string, appended
+        after the classified rows, so race pages can show the full field.
+        """
         h = page.find(f">{heading}</span>")
         if h == -1:
             return []
@@ -154,21 +194,27 @@ class FiaF2Source:
             return []
         body = page[body_start:body_end]
         rows: list[dict] = []
+        unclassified: list[dict] = []
         for tr in re.split(r"<tr\b", body)[1:]:
-            pos = _RE_POS.search(tr)
             code = _RE_CODE.search(tr)
-            if not pos or not code:
-                continue  # unclassified / DNS rows lack a numeric position
+            if not code:
+                continue
             name = _RE_NAME.search(tr)
             team = _RE_TEAM.search(tr)
-            rows.append(
-                {
-                    "position": int(pos.group(1)),
-                    "code": code.group(1).upper(),
-                    "name": _html.unescape(name.group(1)) if name else code.group(1),
-                    "team": _html.unescape(team.group(1)) if team else "",
-                }
-            )
+            base = {
+                "code": code.group(1).upper(),
+                "name": _html.unescape(name.group(1)) if name else code.group(1),
+                "team": _html.unescape(team.group(1)) if team else "",
+            }
+            pos = _RE_POS.search(tr)
+            if pos:
+                rows.append({**base, "position": int(pos.group(1)), "status": "Finished"})
+            elif include_unclassified:
+                # Non-numeric position cell (DNF/DNS/DSQ/NC) — capture the status.
+                raw = re.search(r'class="pos">\s*([^<\s][^<]*?)\s*</', tr)
+                unclassified.append(
+                    {**base, "position": None, "status": (raw.group(1).strip() if raw else "DNF")}
+                )
         # Dedup by finishing position, keep ascending (defends against stray matches).
         seen: set[int] = set()
         ordered = []
@@ -177,6 +223,9 @@ class FiaF2Source:
                 continue
             seen.add(r["position"])
             ordered.append(r)
+        if include_unclassified:
+            seen_codes = {r["code"] for r in ordered}
+            ordered.extend(u for u in unclassified if u["code"] not in seen_codes)
         return ordered
 
     def _record_entries(self, year: int, rows: list[dict]) -> None:

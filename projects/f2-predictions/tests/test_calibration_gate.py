@@ -27,9 +27,18 @@ def _live_real_source() -> F2DataSource:
 
 
 def test_gate_closed_on_synthetic():
-    calibrator, real_rounds = export.build_calibrator(F2DataSource(), config.SEASON)
+    # A synthetic-only source is never treated as real → gate stays closed.
+    synthetic = F2DataSource(source=SyntheticF2Source())
+    calibrator, real_rounds = export.build_calibrator(synthetic, config.SEASON)
     assert calibrator is None
     assert real_rounds == 0
+
+
+def test_gate_open_on_real_snapshot():
+    # The default source serves the committed real snapshot, so the gate opens.
+    calibrator, real_rounds = export.build_calibrator(F2DataSource(), config.SEASON)
+    assert real_rounds == config.COMPLETED_ROUNDS
+    assert calibrator is not None and calibrator.is_fitted()
 
 
 def test_gate_opens_once_enough_real_rounds():

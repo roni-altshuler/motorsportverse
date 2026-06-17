@@ -4,15 +4,17 @@ Implements the shared ``motorsport_data.sources.base.DataSource`` contract. The
 calendar and roster always come from :mod:`config`; the *results* come from a
 source selected at construction:
 
-- default (``F2_USE_LIVE_RESULTS`` unset/``"0"``): the deterministic synthetic
-  source — identical behaviour to Phase 1, so CI and tests stay reproducible;
-- live (``F2_USE_LIVE_RESULTS="1"``): a :class:`CompositeF2Source` that tries the
-  real feeds (FastF1 → official) and falls back to synthetic, recording per-race
-  provenance.
+- default (``F2_USE_LIVE_RESULTS`` unset/``"0"``): the **real** committed
+  snapshot (``data/official_2026.json``, scraped from fiaformula2.com by
+  :mod:`refresh`) for completed rounds, with the deterministic synthetic
+  generator behind it for any round the snapshot is missing — offline and
+  reproducible, so CI/tests stay deterministic while shipping real data;
+- live (``F2_USE_LIVE_RESULTS="1"``): a :class:`CompositeF2Source` that scrapes
+  the live FIA site first, then the snapshot, then synthetic.
 
-The public surface (``season`` / ``round`` / ``results`` / ``race_results_for_round``)
-is unchanged, so the pipeline, model, and export are agnostic to where results
-come from — the whole point of the source seam.
+The set of *completed* rounds is **derived from the feed** (the leading run of
+rounds that actually return results), not a hardcoded constant. Tests can inject
+a source directly via ``F2DataSource(source=...)``.
 """
 from __future__ import annotations
 
@@ -22,7 +24,7 @@ from motorsport_data.schema import Competitor, Result, Round, Season, Venue
 from motorsport_data.sources.base import DataSource
 
 from . import config
-from .sources import CompositeF2Source, SyntheticF2Source
+from .sources import CompositeF2Source
 
 
 def _live_enabled() -> bool:
@@ -32,11 +34,34 @@ def _live_enabled() -> bool:
 class F2DataSource(DataSource):
     sport = config.SPORT
 
-    def __init__(self, *, live: bool | None = None):
-        use_live = _live_enabled() if live is None else live
-        self._source = CompositeF2Source.default() if use_live else SyntheticF2Source()
+    def __init__(self, *, live: bool | None = None, source=None):
+        if source is not None:
+            self._source = source
+        elif _live_enabled() if live is None else live:
+            self._source = CompositeF2Source.live()
+        else:
+            self._source = CompositeF2Source.default()
+        self._completed_cache: dict[int, list[int]] = {}
 
     # ------------------------------------------------------------------ #
+    def completed_rounds(self, year: int = config.SEASON) -> list[int]:
+        """Rounds with published results — the leading run of scored rounds.
+
+        Derived from the feed: a round counts as completed once its feature race
+        returns a non-empty classification. F2 rounds complete in order, so we
+        stop at the first round with no results.
+        """
+        if year not in self._completed_cache:
+            done: list[int] = []
+            for rnd in range(1, len(config.CALENDAR) + 1):
+                res = self._source.results(year, rnd, race_index=1)
+                if res:
+                    done.append(rnd)
+                else:
+                    break
+            self._completed_cache[year] = done
+        return self._completed_cache[year]
+
     def season(self, year: int = config.SEASON) -> Season:
         return Season(
             sport=config.SPORT,
@@ -47,19 +72,19 @@ class F2DataSource(DataSource):
             ],
             teams=config.TEAMS,
             calendar=config.CALENDAR,
-            completed_rounds=list(range(1, config.COMPLETED_ROUNDS + 1)),
+            completed_rounds=self.completed_rounds(year),
         )
 
     def round(self, year: int, round: int) -> Round:
         venue = self._venue(round)
-        completed = round <= config.COMPLETED_ROUNDS
+        completed = round in self.completed_rounds(year)
         results = self.results(year, round) if completed else []
         return Round(season=year, round=round, venue=venue, completed=completed, results=results)
 
     def results(self, year: int, round: int, race_index: int = 1) -> list[Result]:
         """Classified order for a scored race. ``race_index`` 0 = sprint, 1 = feature.
         Returns ``[]`` for rounds not yet run (leakage-safe)."""
-        if round > config.COMPLETED_ROUNDS or round < 1:
+        if round < 1 or round > len(config.CALENDAR):
             return []
         res = self._source.results(year, round, race_index)
         return res if res is not None else []

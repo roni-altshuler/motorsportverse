@@ -33,6 +33,7 @@ the other signals before folding it into the pace blend.
 """
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -60,9 +61,11 @@ FEATURE_COLUMNS: list[str] = [
 
 def _slope(rounds: list[int], values: list[float]) -> float:
     """Least-squares slope of ``values`` over ``rounds`` (0.0 with < 2 points)."""
-    if len(values) < 2:
+    if len(values) < 2 or len(set(rounds)) < 2:
         return 0.0
-    return float(np.polyfit(np.asarray(rounds, dtype=float), np.asarray(values, dtype=float), 1)[0])
+    with warnings.catch_warnings():  # short series can be poorly conditioned — that's fine
+        warnings.simplefilter("ignore", np.exceptions.RankWarning)
+        return float(np.polyfit(np.asarray(rounds, dtype=float), np.asarray(values, dtype=float), 1)[0])
 
 
 def _per_driver_features(
