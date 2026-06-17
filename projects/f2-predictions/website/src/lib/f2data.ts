@@ -5,6 +5,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import type { CircuitGeometry, CircuitLibrary } from "@/types/circuit";
 import type {
   CalibrationSummary,
   F2Data,
@@ -78,6 +79,18 @@ export function getPromotionStatus(): PromotionStatus | null {
 // All calendar round numbers — for generateStaticParams on /race/[round].
 export function allRoundNumbers(): number[] {
   return getF2Data().calendar.map((c) => c.round);
+}
+
+// Circuit outline geometry (F1 fastest-lap telemetry, shared circuits), keyed by
+// venue key. Powers the SVG track map on the home + race pages, like the F1 site.
+let circuitCache: CircuitLibrary | null = null;
+export function getCircuits(): CircuitLibrary {
+  if (!circuitCache) circuitCache = readJson<CircuitLibrary>("circuits.json") ?? {};
+  return circuitCache;
+}
+export function getCircuit(venueKey: string | undefined | null): CircuitGeometry | null {
+  if (!venueKey) return null;
+  return getCircuits()[venueKey] ?? null;
 }
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";

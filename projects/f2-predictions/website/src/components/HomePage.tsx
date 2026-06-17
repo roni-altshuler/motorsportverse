@@ -13,7 +13,9 @@
  */
 import Link from "next/link";
 
-import { getF2Data, teamColor } from "@/lib/f2data";
+import CircuitMap from "@/components/race-detail/CircuitMap";
+import { getCircuit, getF2Data } from "@/lib/f2data";
+import { teamColor } from "@/lib/teams";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
@@ -31,6 +33,7 @@ export default function HomePage() {
   const data = getF2Data();
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
+  const nextGeometry = next ? getCircuit(next.venueKey) : null;
   const nextRound =
     data.calendar.find((c) => !c.completed)?.round ?? null;
   const nextCalendarRound = nextRound
@@ -78,13 +81,20 @@ export default function HomePage() {
                   R{next.round} · Sprint + Feature
                 </span>
               </div>
-              <div className="mb-8">
-                <p className="eyebrow mb-2">Next round · Predicted next</p>
-                <h2 className="display-md text-balance">{next.venueName}</h2>
-                <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
-                  {nextCalendarRound.country ?? "Round " + next.round} · two races,
-                  modelled separately — reversed-grid sprint and merit feature.
-                </p>
+              <div className="mb-8 flex items-start justify-between gap-6">
+                <div>
+                  <p className="eyebrow mb-2">Next round · Predicted next</p>
+                  <h2 className="display-md text-balance">{next.venueName}</h2>
+                  <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
+                    {nextCalendarRound.country ?? "Round " + next.round} · two races,
+                    modelled separately — reversed-grid sprint and merit feature.
+                  </p>
+                </div>
+                {nextGeometry && (
+                  <div className="hidden h-32 w-44 shrink-0 md:block" aria-hidden>
+                    <CircuitMap geometry={nextGeometry} accentColor="var(--accent)" showCorners={false} />
+                  </div>
+                )}
               </div>
               <div className="flex flex-wrap items-center gap-4">
                 <Link

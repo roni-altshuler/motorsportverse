@@ -6,17 +6,17 @@
 // imports `node:fs` for build-time loading, which must never reach the client.
 
 const TEAM_COLORS: Record<string, string> = {
-  "ART Grand Prix": "#3B3B3B",
-  "Prema Racing": "#E2001A",
-  "MP Motorsport": "#F47C20",
-  DAMS: "#0090D0",
-  "Campos Racing": "#1F3A93",
-  "Invicta Racing": "#8E44AD",
-  Hitech: "#101820",
-  "Rodin Motorsport": "#00A19A",
-  "Van Amersfoort Racing": "#FF5A00",
-  Trident: "#0050A0",
   "AIX Racing": "#C0392B",
+  "ART Grand Prix": "#5A5A5A",
+  "Campos Racing": "#1F3A93",
+  "DAMS Lucas Oil": "#0090D0",
+  "Hitech TGR": "#D4123A",
+  "Invicta Racing": "#8E44AD",
+  "MP Motorsport": "#F47C20",
+  "PREMA Racing": "#E2001A",
+  "Rodin Motorsport": "#00A19A",
+  TRIDENT: "#0050A0",
+  "Van Amersfoort Racing": "#FF5A00",
 };
 
 export function teamColor(team: string): string {
