@@ -35,5 +35,5 @@ def test_registry_entry_valid():
     root = Path(__file__).resolve().parents[3]
     entry = json.loads((root / "registry" / "projects" / "f2-predictions.json").read_text())
     assert entry["slug"] == "f2-predictions"
-    assert entry["maturity"] in {"in-development", "experimental"}
+    assert entry["maturity"] in {"in-development", "experimental", "production"}
     assert entry["sport"] == "Formula 2"

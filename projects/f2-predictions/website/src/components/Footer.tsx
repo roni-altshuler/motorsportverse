@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const NEWS_OUTLETS = [
   { name: "FIA Formula 2", url: "https://www.fiaformula2.com/" },
   { name: "Formula1.com · F2", url: "https://www.formula1.com/en/latest/tags/formula-2.4OmuxRDV7DiBObr5XHTYpv" },
@@ -20,9 +22,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <p className="wordmark mb-4">
-              RaceIQ <span style={{ color: "var(--accent-f1-red)" }}>F2</span>
-            </p>
+            <img
+              src={`${BASE_PATH}/brand/raceiq-f2-lockup.png`}
+              alt="RaceIQ F2"
+              width={387}
+              height={104}
+              className="mb-4 h-10 w-auto"
+            />
             <p className="body-sm" style={{ color: "var(--muted)" }}>
               Sprint, feature-race and championship forecasts for the FIA Formula 2 championship — a
               spec series where driver skill rules and the sprint runs a reversed grid. A
@@ -105,9 +111,13 @@ export default function Footer() {
               About this project →
             </a>
           </div>
-          <p className="wordmark" style={{ color: "var(--body)" }}>
-            RaceIQ F2
-          </p>
+          <img
+            src={`${BASE_PATH}/brand/raceiq-f2-lockup.png`}
+            alt="RaceIQ F2"
+            width={387}
+            height={104}
+            className="h-8 w-auto opacity-80"
+          />
         </div>
       </div>
     </footer>

@@ -30,7 +30,12 @@ The owner added a finished brand board — `website/public/brand/source/raceiq-c
 
 This is **Option B done well**: strong per-series identity (distinct silhouettes) bound by one visual language (shared wordmark, Orbitron, tagline, master mark, colour system). It keeps "this is RaceIQ" and "this is the series" both instantly legible.
 
-**Integration status:** the board is a single reference image (1639×959, no transparency) — not yet per-series web-ready assets. Wiring it onto the live sites needs individual exports (SVG preferred, or transparent/high-res PNG) for the master mark and each series lockup, to replace the placeholder `brand/logo.svg` / `brand/series/raceiq-*.svg`. Tracked as a launch follow-up (does not block the F2 *data* launch).
+**Integration status (done):** the board has been **sliced into per-series web assets**. Each series row was cropped on a clean cell boundary and the near-black background was luminance-keyed to true alpha (the board ships no native transparency), producing:
+
+- `website/public/brand/series/raceiq-<key>.png` — the **horizontal lockup** (silhouette + *RaceIQ `<Series>`* wordmark + per-series tagline) for **f1, f2, f3, formula-e, indycar, nascar, wec, wrc**.
+- `website/public/brand/sports/<key>.png` — the **car mark** alongside the existing square `*.svg` marks (the SVGs stay the catalog icon for small ≤48 px slots, where they read better; the PNG lockups are the new full per-series logos).
+
+The **RaceIQ F2 lockup is wired live** onto the F2 site (navbar + footer), mirrored at `projects/f2-predictions/website/public/brand/raceiq-f2-lockup.png`. The remaining series ship their lockups for their future sites (each reused exactly as F2 does). These are **raster** (PNG with alpha) per the owner's "slice the board now" direction; vectorising to SVG + switching the wordmark to Orbitron is the optional crispness upgrade. The high-res master `motorsportverse-logo.png` (1217×414) is already in use and was left intact.
 
 ---
 
