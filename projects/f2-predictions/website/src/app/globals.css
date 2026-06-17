@@ -15,9 +15,11 @@
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
 
-  /* Same family stack as the ecosystem shell + RaceIQ F1 (set in layout.tsx). */
+  /* Exact RaceIQ F1 type system (faces set via next/font in layout.tsx).
+   * display = Saira Condensed · body = EB Garamond (serif) · labels = JetBrains Mono. */
   --font-display: var(--font-saira), "Arial Narrow", system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-garamond), "EB Garamond", Garamond, "Times New Roman", serif;
+  --font-sans: var(--font-serif);
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
@@ -30,8 +32,9 @@ html {
 body {
   background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-sans);
-  line-height: 1.55;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   margin: 0;
 }
@@ -57,6 +60,26 @@ h1, h2, h3, h4 {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Typography utilities — mirror the F1 flagship so ported components resolve. */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
 }
 
 @media (prefers-reduced-motion: reduce) {

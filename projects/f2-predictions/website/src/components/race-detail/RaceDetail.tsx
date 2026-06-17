@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
+import { FinishProbabilityHeatmap } from "@/components/charts/FinishProbabilityHeatmap";
 import { HeadToHeadMatrix } from "@/components/charts/HeadToHeadMatrix";
-import { ProbabilityBars } from "@/components/charts/ProbabilityBars";
+import { PodiumProbabilityChart } from "@/components/charts/PodiumProbabilityChart";
 import { DriverHeadshot } from "@/components/ui/DriverHeadshot";
 import type { ProbabilitiesRound, RaceBlock, RoundDetail } from "@/types/f2";
 
@@ -56,29 +57,30 @@ export function RaceDetail({
         <summary className="cursor-pointer select-none px-5 py-4 text-sm font-semibold text-[var(--ink)]">
           Deep dive — model probabilities
         </summary>
-        <div className="space-y-8 border-t border-[var(--hairline)] px-5 py-6">
-          <div className="grid gap-8 lg:grid-cols-2">
-            <ProbabilityBars
-              title="Win probability"
-              rows={block.classification.slice(0, 10).map((e) => ({
-                code: e.code,
-                label: e.name,
-                team: e.team,
-                teamColor: e.teamColor,
-                probability: e.pWin,
-              }))}
-            />
-            <ProbabilityBars
-              title="Podium probability"
-              rows={block.classification.slice(0, 10).map((e) => ({
-                code: e.code,
-                label: e.name,
-                team: e.team,
-                teamColor: e.teamColor,
-                probability: e.pPodium,
-              }))}
-            />
-          </div>
+        <div className="space-y-10 border-t border-[var(--hairline)] px-5 py-6">
+          <PodiumProbabilityChart
+            rows={block.classification.slice(0, 12).map((e) => ({
+              code: e.code,
+              name: e.name,
+              team: e.team,
+              teamColor: e.teamColor,
+              pWin: e.pWin,
+              pPodium: e.pPodium,
+            }))}
+          />
+          <FinishProbabilityHeatmap
+            rows={block.classification.map((e) => ({
+              code: e.code,
+              name: e.name,
+              teamColor: e.teamColor,
+              meanFinish: e.meanFinish,
+              finishRangeLow: e.finishRangeLow,
+              finishRangeHigh: e.finishRangeHigh,
+              actualPosition: e.actualPosition,
+            }))}
+            maxPosition={block.classification.length}
+            completed={round.completed}
+          />
           {probs && (
             <div>
               <p className="eyebrow mb-3">Head-to-head — P(row beats column)</p>

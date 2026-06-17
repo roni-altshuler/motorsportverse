@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Saira_Condensed } from "next/font/google";
+import { EB_Garamond, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
 import "./globals.css";
 
-// Same three families as the MotorsportVerse ecosystem shell + RaceIQ F1, so F2
-// reads as part of one product family (display = Saira Condensed, body = Inter,
-// mono = JetBrains Mono).
+// The exact RaceIQ F1 type system, so F2 reads as part of one product family:
+// display = Saira Condensed (headlines + wordmark), body = EB Garamond (serif),
+// labels/buttons/captions = JetBrains Mono. F2 keeps its own electric-blue
+// identity (--accent:#1E9BD7) — only the typefaces are shared with F1.
 const saira = Saira_Condensed({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-saira",
   display: "swap",
 });
-const inter = Inter({
+const garamond = EB_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-inter",
+  variable: "--font-garamond",
   display: "swap",
 });
 const jetbrains = JetBrains_Mono({
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${saira.variable} ${garamond.variable} ${jetbrains.variable}`}>
       <body>
         <Navbar />
         <main className="min-h-[70vh]">{children}</main>

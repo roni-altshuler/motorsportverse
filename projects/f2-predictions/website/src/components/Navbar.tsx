@@ -19,11 +19,11 @@ export function Navbar() {
           >
             F2
           </span>
-          <span className="text-sm font-semibold tracking-tight text-[var(--ink)]">
+          <span className="font-display text-base font-semibold tracking-tight text-[var(--ink)]">
             Race<span style={{ color: "var(--accent)" }}>IQ</span> F2
           </span>
         </Link>
-        <div className="flex items-center gap-6 text-sm text-[var(--ink-muted)]">
+        <div className="font-mono flex items-center gap-6 text-xs uppercase tracking-[0.12em] text-[var(--ink-muted)]">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-[var(--ink)]">
               {l.label}
@@ -31,7 +31,7 @@ export function Navbar() {
           ))}
           <a
             href="https://motorsportverse.org"
-            className="rounded-full border border-[var(--hairline-strong)] px-3 py-1.5 text-xs text-[var(--ink)] hover:border-[var(--accent)]"
+            className="rounded-full border border-[var(--hairline-strong)] px-3 py-1.5 text-[11px] text-[var(--ink)] hover:border-[var(--accent)]"
           >
             MotorsportVerse
           </a>

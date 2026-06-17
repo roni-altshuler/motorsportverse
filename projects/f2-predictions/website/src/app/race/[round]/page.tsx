@@ -37,7 +37,9 @@ export default async function RacePage({ params }: { params: Promise<{ round: st
       <p className="eyebrow">
         Round {round.round} · {round.completed ? "Result + forecast" : "Upcoming forecast"}
       </p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--ink)]">{round.venueName}</h1>
+      <h1 className="font-display mt-2 text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
+        {round.venueName}
+      </h1>
       <p className="mt-2 text-[var(--ink-muted)]">
         {calRound?.country ?? round.country} · {round.completed ? "Completed" : "Upcoming"} ·
         forecasts from the F2 model on MotorsportVerse core.

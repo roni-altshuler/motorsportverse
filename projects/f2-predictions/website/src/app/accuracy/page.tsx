@@ -27,7 +27,10 @@ export default function AccuracyPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-[var(--ink)]">Model accuracy</h1>
+      <p className="eyebrow mb-3">Formula 2 · {data.season}</p>
+      <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
+        Model accuracy
+      </h1>
       <p className="mt-3 text-[var(--ink-muted)]">
         How the F2 model&rsquo;s leakage-safe pre-race forecasts have scored against the actual
         results, over {acc?.roundsScored ?? data.completedRounds} completed rounds of {data.season}.
@@ -140,8 +143,8 @@ export default function AccuracyPage() {
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface)] p-4">
-      <p className="text-xs uppercase tracking-wider text-[var(--ink-dim)]">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-[var(--ink)]">{value}</p>
+      <p className="mono-label">{label}</p>
+      <p className="font-display font-tabular mt-1 text-2xl font-bold text-[var(--ink)]">{value}</p>
     </div>
   );
 }

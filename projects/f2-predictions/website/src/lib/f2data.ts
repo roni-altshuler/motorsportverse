@@ -106,3 +106,89 @@ const TEAM_COLORS: Record<string, string> = {
 export function teamColor(team: string): string {
   return TEAM_COLORS[team] || "#1E9BD7";
 }
+
+// --------------------------------------------------------------------------- //
+// Points-progression reconstruction (for the standings projection chart).
+//
+// The season JSON carries only end-of-season-to-date totals, not a per-round
+// cumulative history. We rebuild cumulative points per driver/team from each
+// completed round's sprint + feature finishing order using the F2 points table,
+// then scale each entity's curve so its final value lands exactly on the known
+// standings total (absorbing pole / fastest-lap bonus points we can't attribute
+// per round). This keeps the chart's endpoint honest against the table.
+// --------------------------------------------------------------------------- //
+const F2_FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+const F2_SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+
+function pointsFor(position: number, table: number[]): number {
+  return position >= 1 && position <= table.length ? table[position - 1] : 0;
+}
+
+export interface PointsProgression {
+  /** Completed round numbers, e.g. [1,2,3,4,5,6,7]. */
+  rounds: number[];
+  /** Per-code cumulative points after each completed round. */
+  byCode: Record<string, number[]>;
+  /** Per-team cumulative points after each completed round. */
+  byTeam: Record<string, number[]>;
+}
+
+export function getPointsProgression(): PointsProgression {
+  const data = getF2Data();
+  const completed = data.calendar.filter((c) => c.completed).map((c) => c.round);
+
+  const codeTotals: Record<string, number[]> = {};
+  const teamByCode: Record<string, string> = {};
+  for (const d of data.driverStandings) {
+    codeTotals[d.code] = [];
+    teamByCode[d.code] = d.team;
+  }
+
+  let running: Record<string, number> = {};
+  for (const code of Object.keys(codeTotals)) running[code] = 0;
+
+  for (const round of completed) {
+    const rd = getRound(round);
+    if (rd) {
+      for (const block of [rd.sprint, rd.feature] as const) {
+        const table = block.raceType === "sprint" ? F2_SPRINT_POINTS : F2_FEATURE_POINTS;
+        const results = block.actualResults ?? [];
+        for (const res of results) {
+          if (running[res.code] == null) running[res.code] = 0;
+          running[res.code] += pointsFor(res.position, table);
+        }
+      }
+    }
+    for (const code of Object.keys(codeTotals)) {
+      codeTotals[code].push(running[code] ?? 0);
+    }
+  }
+
+  // Scale each driver's curve so the final value matches the known total.
+  const byCode: Record<string, number[]> = {};
+  for (const d of data.driverStandings) {
+    const curve = codeTotals[d.code] ?? [];
+    const last = curve[curve.length - 1] ?? 0;
+    const scale = last > 0 ? d.points / last : 0;
+    byCode[d.code] =
+      last > 0 ? curve.map((v) => v * scale) : curve.map(() => 0);
+    // Guarantee the endpoint is exactly the table value.
+    if (byCode[d.code].length) byCode[d.code][byCode[d.code].length - 1] = d.points;
+  }
+
+  // Team curves = sum of their drivers' (scaled) curves, then snapped to total.
+  const byTeam: Record<string, number[]> = {};
+  for (const t of data.teamStandings) byTeam[t.team] = completed.map(() => 0);
+  for (const d of data.driverStandings) {
+    const team = teamByCode[d.code];
+    const curve = byCode[d.code] ?? [];
+    if (!byTeam[team]) byTeam[team] = completed.map(() => 0);
+    for (let i = 0; i < curve.length; i++) byTeam[team][i] += curve[i] ?? 0;
+  }
+  for (const t of data.teamStandings) {
+    const curve = byTeam[t.team] ?? [];
+    if (curve.length) curve[curve.length - 1] = t.points;
+  }
+
+  return { rounds: completed, byCode, byTeam };
+}
