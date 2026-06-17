@@ -49,6 +49,11 @@ const RACE_ART: Record<string, RaceArt> = {
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Autodromo_aerea_poster.jpg/1280px-Autodromo_aerea_poster.jpg",
     credit: "Imola aerial · Wikimedia Commons",
   },
+  // 2026 R3 — Circuit Gilles-Villeneuve (Montréal) · SkySat aerial
+  montreal: {
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Circuit_Gilles-Villeneuve%2C_May_29%2C_2018_SkySat_%28cropped%29.jpg/1280px-Circuit_Gilles-Villeneuve%2C_May_29%2C_2018_SkySat_%28cropped%29.jpg",
+    credit: "Circuit Gilles-Villeneuve aerial · Planet Labs / Wikimedia Commons",
+  },
   // R5 — Circuit de Monaco · SkySat aerial
   monaco: {
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Circuit_de_Monaco%2C_April_1%2C_2018_SkySat_%28cropped%29.jpg/500px-Circuit_de_Monaco%2C_April_1%2C_2018_SkySat_%28cropped%29.jpg",
@@ -103,6 +108,7 @@ const ALIASES: Record<string, string> = {
   "saudi-arabia": "jeddah",
   saudi: "jeddah",
   australia: "melbourne",
+  canada: "montreal",
   "emilia-romagna": "imola",
   spain: "catalunya",
   barcelona: "catalunya",
