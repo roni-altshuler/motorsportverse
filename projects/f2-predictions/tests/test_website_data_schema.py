@@ -112,7 +112,7 @@ class RoundDetail(_Loose):
     venueKey: str
     venueName: str
     completed: bool
-    dataSource: str
+    dataSource: str | None  # real provenance for completed rounds, None for upcoming
     sprint: RaceBlock
     feature: RaceBlock
 
@@ -169,9 +169,14 @@ def test_probabilities_match_contract(data_dir):
         ProbabilitiesRound.model_validate(_load(f))
 
 
-def test_calibration_summary_is_honest_in_phase1(data_dir):
+def test_calibration_summary_is_honest(data_dir):
+    """With the real snapshot wired (>= MIN real rounds), calibration is applied
+    and trained on exactly the completed-round count — never claimed on nothing."""
     summary = _load(data_dir / "calibration_summary.json")
-    assert summary["applied"] is False  # synthetic data → not yet calibrated
+    if summary["applied"]:
+        assert summary["trainingRounds"] >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
+    else:
+        assert summary["trainingRounds"] < config.MIN_REAL_ROUNDS_FOR_CALIBRATION
 
 
 def test_model_health_matches_contract(data_dir):

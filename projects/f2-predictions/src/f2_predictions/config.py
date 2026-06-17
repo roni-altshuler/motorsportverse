@@ -13,19 +13,27 @@ from prior results only (leakage-safe).
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from motorsport_data.schema import Team, Venue
 
 SPORT = "Formula 2"
 SEASON = 2026
 
 # --------------------------------------------------------------------------- #
-# Calendar — shared F1 circuits used as F2 support rounds.
+# Calendar — the official 2026 FIA Formula 2 schedule (14 rounds), verified
+# against fiaformula2.com round titles and the 2026 F2 Championship calendar.
+# Keys match circuits.json / lib/raceArt.ts venue keys. Round order is the
+# official order (fly-aways Miami/Montréal are rounds 2-3, not appended late).
 # --------------------------------------------------------------------------- #
 CALENDAR: list[Venue] = [
     Venue(key="melbourne", name="Australia", country="Australia"),
+    Venue(key="miami", name="Miami", country="USA"),
+    Venue(key="montreal", name="Canada", country="Canada"),
     Venue(key="monaco", name="Monaco", country="Monaco"),
-    Venue(key="spielberg", name="Austria", country="Austria"),
     Venue(key="catalunya", name="Spain", country="Spain"),
+    Venue(key="spielberg", name="Austria", country="Austria"),
     Venue(key="silverstone", name="Great Britain", country="United Kingdom"),
     Venue(key="spa", name="Belgium", country="Belgium"),
     Venue(key="hungaroring", name="Hungary", country="Hungary"),
@@ -36,8 +44,43 @@ CALENDAR: list[Venue] = [
     Venue(key="yas-marina", name="Abu Dhabi", country="UAE"),
 ]
 
-# How many rounds are "in the books" — the rest are upcoming (predicted).
-COMPLETED_ROUNDS = 6
+# Per-round metadata (city + the official weekend dates). The feature date is the
+# Sunday; a round is "completed" once its results are published (the data layer
+# derives completion from the feed, not from the wall clock — see export.py).
+CALENDAR_META: dict[int, dict[str, str]] = {
+    1: {"city": "Melbourne", "sprint": "2026-03-07", "feature": "2026-03-08"},
+    2: {"city": "Miami", "sprint": "2026-05-02", "feature": "2026-05-03"},
+    3: {"city": "Montréal", "sprint": "2026-05-23", "feature": "2026-05-24"},
+    4: {"city": "Monte Carlo", "sprint": "2026-06-06", "feature": "2026-06-07"},
+    5: {"city": "Barcelona", "sprint": "2026-06-13", "feature": "2026-06-14"},
+    6: {"city": "Spielberg", "sprint": "2026-06-27", "feature": "2026-06-28"},
+    7: {"city": "Silverstone", "sprint": "2026-07-04", "feature": "2026-07-05"},
+    8: {"city": "Spa-Francorchamps", "sprint": "2026-07-18", "feature": "2026-07-19"},
+    9: {"city": "Budapest", "sprint": "2026-07-25", "feature": "2026-07-26"},
+    10: {"city": "Monza", "sprint": "2026-09-05", "feature": "2026-09-06"},
+    11: {"city": "Madrid", "sprint": "2026-09-12", "feature": "2026-09-13"},
+    12: {"city": "Baku", "sprint": "2026-09-25", "feature": "2026-09-26"},
+    13: {"city": "Lusail", "sprint": "2026-11-28", "feature": "2026-11-29"},
+    14: {"city": "Yas Island", "sprint": "2026-12-05", "feature": "2026-12-06"},
+}
+
+# How many rounds are "in the books". Derived from the committed real-data
+# snapshot (data/official_2026.json) so one `python -m f2_predictions.refresh`
+# advances the whole pipeline; falls back to a literal if the snapshot is absent.
+# The synthetic generator also fabricates exactly this many rounds, so synthetic
+# and real modes agree on which rounds are complete.
+def _completed_from_snapshot(default: int = 5) -> int:
+    snap_path = Path(__file__).resolve().parents[2] / "data" / "official_2026.json"
+    try:
+        snap = json.loads(snap_path.read_text(encoding="utf-8"))
+        if snap.get("season") == SEASON and "completedRounds" in snap:
+            return int(snap["completedRounds"])
+    except Exception:
+        pass
+    return default
+
+
+COMPLETED_ROUNDS = _completed_from_snapshot()
 
 # --------------------------------------------------------------------------- #
 # Teams (constructor-equivalent).

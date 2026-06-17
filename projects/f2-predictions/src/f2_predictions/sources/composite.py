@@ -13,7 +13,7 @@ from .synthetic import SOURCE_NAME as SYNTHETIC_NAME
 from .synthetic import SyntheticF2Source
 
 # Sources whose data counts as "real" for the honest calibration gate.
-REAL_SOURCES = frozenset({"fastf1", "official"})
+REAL_SOURCES = frozenset({"fastf1", "official", "fia", "snapshot"})
 
 
 class CompositeF2Source:
@@ -44,11 +44,22 @@ class CompositeF2Source:
 
     @staticmethod
     def default():
-        """Real feeds (FastF1 → official) with the synthetic fallback last."""
-        from .fastf1_source import FastF1F2Source
-        from .official_source import OfficialF2Source
+        """Offline real data first: the committed snapshot (real, deterministic),
+        then synthetic for upcoming rounds. This is the production default and
+        needs no network."""
+        from .snapshot import SnapshotF2Source
 
-        return CompositeF2Source([FastF1F2Source(), OfficialF2Source(), SyntheticF2Source()])
+        return CompositeF2Source([SnapshotF2Source(), SyntheticF2Source()])
+
+    @staticmethod
+    def live():
+        """Live network feed first (fresh FIA scrape), then the committed
+        snapshot, then synthetic. Used when ``F2_USE_LIVE_RESULTS=1`` — mainly to
+        refresh data; builds normally use :meth:`default` for reproducibility."""
+        from .fia_f2_source import FiaF2Source
+        from .snapshot import SnapshotF2Source
+
+        return CompositeF2Source([FiaF2Source(), SnapshotF2Source(), SyntheticF2Source()])
 
     @staticmethod
     def is_real(provenance: str) -> bool:

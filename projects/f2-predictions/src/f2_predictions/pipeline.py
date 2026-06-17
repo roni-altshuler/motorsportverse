@@ -20,6 +20,8 @@ from motorsport_core import championship, standings
 
 from . import config, model
 from .datasource import F2DataSource
+from .sources.composite import CompositeF2Source
+from .sources.snapshot import load_snapshot
 
 
 # --------------------------------------------------------------------------- #
@@ -35,11 +37,41 @@ def _completed_races(source: F2DataSource, year: int) -> tuple[list[dict], list[
     return sprints, features
 
 
+def official_standings(source: F2DataSource, year: int = config.SEASON) -> dict | None:
+    """The official snapshot, but only when the source is actually serving real
+    data (so synthetic-only unit tests fall back to computed standings).
+
+    Race classifications alone omit pole (+2) and fastest-lap (+1) bonuses, so
+    recomputed totals drift from the official table. The committed snapshot
+    carries the exact official totals + per-round breakdown — use them for the
+    public standings and the championship's current points so the headline
+    numbers match fiaformula2.com exactly.
+    """
+    snap = load_snapshot()
+    if not snap or snap.get("season") != year:
+        return None
+    try:
+        prov = source.provenance(year, 1, race_index=1)
+    except Exception:
+        prov = "unknown"
+    return snap if CompositeF2Source.is_real(prov) else None
+
+
 def driver_standings(source: F2DataSource, year: int = config.SEASON) -> list[standings.StandingRow]:
     sprints, features = _completed_races(source, year)
     sprint_tbl = standings.compute_driver_standings(sprints, config.SPRINT_POINTS)
     feature_tbl = standings.compute_driver_standings(features, config.FEATURE_POINTS)
     return standings.merge_standings(sprint_tbl, feature_tbl)
+
+
+def current_driver_points(source: F2DataSource, year: int = config.SEASON) -> dict[str, float]:
+    """Authoritative current driver points: official totals if the feed is real,
+    else recomputed from race results. Keeps the championship coherent with the
+    displayed standings."""
+    official = official_standings(source, year)
+    if official:
+        return {d["code"]: float(d["points"]) for d in official.get("driverStandings", [])}
+    return {row.key: row.points for row in driver_standings(source, year)}
 
 
 def team_standings(source: F2DataSource, year: int = config.SEASON) -> list[standings.StandingRow]:
@@ -113,8 +145,7 @@ def project_title(
     source: F2DataSource, year: int = config.SEASON, *, n_samples: int | None = None
 ) -> list[championship.TitleProjection]:
     """Project the drivers' championship over the remaining rounds."""
-    table = driver_standings(source, year)
-    current_points = {row.key: row.points for row in table}
+    current_points = current_driver_points(source, year)
     # Strength = skill estimated from everything raced so far.
     skill = model.estimate_skill(source, year, current_round=config.COMPLETED_ROUNDS + 1)
     remaining = len(config.CALENDAR) - config.COMPLETED_ROUNDS

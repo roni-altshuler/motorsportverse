@@ -28,12 +28,22 @@ def test_real_sources_defer_when_unavailable():
     assert OfficialF2Source().results(config.SEASON, 1, 1) is None
 
 
-def test_composite_falls_back_to_synthetic():
+def test_composite_default_serves_real_snapshot():
+    # The default composite is snapshot-first: completed rounds resolve to the
+    # committed real data (classified finishers only — retirements excluded).
     comp = CompositeF2Source.default()
+    res = comp.results(config.SEASON, 1, race_index=1)
+    assert 12 <= len(res) <= 22
+    assert comp.provenance(config.SEASON, 1, 1) == "snapshot"
+    assert CompositeF2Source.is_real("snapshot")
+    assert not CompositeF2Source.is_real("synthetic")
+
+
+def test_composite_falls_back_to_synthetic_without_real_sources():
+    comp = CompositeF2Source([SyntheticF2Source()])
     res = comp.results(config.SEASON, 1, race_index=1)
     assert len(res) == 22
     assert comp.provenance(config.SEASON, 1, 1) == "synthetic"
-    assert not CompositeF2Source.is_real("synthetic")
 
 
 def test_composite_prefers_a_real_source():
@@ -55,23 +65,23 @@ def test_composite_prefers_a_real_source():
     assert comp.provenance(config.SEASON, config.COMPLETED_ROUNDS + 1, 1) == "synthetic"
 
 
-def test_datasource_public_api_unchanged_by_default():
-    s = F2DataSource()  # live off by default
-    assert len(s.results(config.SEASON, 1)) == 22
-    assert s.results(config.SEASON, config.COMPLETED_ROUNDS + 1) == []
-    assert s.provenance(config.SEASON, 1, 1) == "synthetic"
+def test_datasource_serves_real_data_by_default():
+    s = F2DataSource()  # default = snapshot (real) + synthetic fallback
+    assert 12 <= len(s.results(config.SEASON, 1)) <= 22
+    assert s.results(config.SEASON, len(config.CALENDAR)) == []  # finale not yet run
+    assert s.provenance(config.SEASON, 1, 1) == "snapshot"
     races = s.race_results_for_round(config.SEASON, 1)
-    assert len(races["sprint"]) == 22 and len(races["feature"]) == 22
+    assert races["sprint"] and races["feature"]
 
 
-def test_live_mode_still_falls_back_safely():
-    # With no real feed wired, live mode resolves to synthetic — never breaks.
-    s = F2DataSource(live=True)
-    assert len(s.results(config.SEASON, 1)) == 22
-    assert s.provenance(config.SEASON, 1, 1) == "synthetic"
+def test_live_composite_priority_order():
+    # Live mode tries the network FIA scrape first, then the offline snapshot,
+    # then synthetic — verified structurally so the test stays offline.
+    comp = CompositeF2Source.live()
+    assert [src.name for src in comp._sources] == ["fia", "snapshot", "synthetic"]
 
 
 @pytest.mark.parametrize("race_index", [0, 1])
 def test_sprint_and_feature_indices_resolve(race_index):
     s = F2DataSource()
-    assert len(s.results(config.SEASON, 1, race_index=race_index)) == 22
+    assert 12 <= len(s.results(config.SEASON, 1, race_index=race_index)) <= 22

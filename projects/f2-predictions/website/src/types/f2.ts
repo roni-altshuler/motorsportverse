@@ -13,6 +13,9 @@ export interface CalendarRound {
   key: string;
   name: string;
   country: string | null;
+  city?: string;
+  sprintDate?: string;
+  featureDate?: string;
   completed: boolean;
   dataSource?: string | null;
 }
