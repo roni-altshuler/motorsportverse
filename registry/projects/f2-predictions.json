@@ -6,15 +6,15 @@
   "maturity": "experimental",
   "summary": "Sprint, feature-race, and championship forecasts for FIA Formula 2.",
   "description": "A purpose-built spec-series model: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history) routed through two race-type heads — a merit feature race and a reverse-grid sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, a sprint+feature-aware championship projection, forward-eval, and drift/promotion monitoring. Full website with per-round sprint/feature detail, head-to-head matrices, and an accuracy dashboard. ~75% reuses MotorsportVerse core. Phase 1 runs on a reproducible synthetic source; a live F2 feed lands in Phase 2.",
-  "repo": "https://github.com/motorsportverse/f2-predictions",
+  "repo": "https://github.com/roni-altshuler/motorsportverse",
   "website": "https://roni-altshuler.github.io/motorsportverse/projects/f2/",
-  "docs": "https://motorsportverse.org/docs",
+  "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
   "datasets": ["fiaformula2.com (official results, scraped)", "synthetic latent-pace (default)"],
   "models": ["driver-skill-elo", "reverse-grid-sprint", "plackett-luce", "championship-monte-carlo", "standings"],
   "tags": ["feeder-series", "spec-series", "reverse-grid", "calibrated-probabilities", "monte-carlo"],
   "icon": "/brand/sports/f2.svg",
   "accent": "#1E9BD7",
   "uses_core": ["calibration", "championship", "standings", "elo", "conformal", "eval", "drift", "promotion", "leakage", "interfaces"],
-  "maintainers": [{ "name": "MotorsportVerse", "github": "motorsportverse" }],
+  "maintainers": [{ "name": "MotorsportVerse", "github": "roni-altshuler" }],
   "added": "2026-06-15"
 }

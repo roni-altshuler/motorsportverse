@@ -38,7 +38,7 @@ export function Footer() {
           links={[
             { href: "/projects/f1-predictions", label: "RaceIQ F1" },
             { href: "/projects/f2-predictions", label: "RaceIQ F2" },
-            { href: "https://github.com/motorsportverse", label: "GitHub", external: true },
+            { href: "https://github.com/roni-altshuler/motorsportverse", label: "GitHub", external: true },
           ]}
         />
       </div>

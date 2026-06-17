@@ -9,27 +9,27 @@ const SECTIONS = [
   {
     title: "Architecture",
     body: "How motorsport-core and motorsport-data layer beneath each sport project.",
-    href: "https://github.com/motorsportverse/motorsportverse/blob/main/docs/architecture.md",
+    href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/architecture.md",
   },
   {
     title: "Adding a sport",
     body: "Scaffold a new prediction project from the template and wire it to the shared core.",
-    href: "https://github.com/motorsportverse/motorsportverse/blob/main/docs/adding-a-sport.md",
+    href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/adding-a-sport.md",
   },
   {
     title: "motorsport-core API",
     body: "Calibration, registry, drift, promotion, Elo, and evaluation reference.",
-    href: "https://github.com/motorsportverse/motorsportverse/blob/main/docs/core-api.md",
+    href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/core-api.md",
   },
   {
     title: "Data schema",
     body: "The canonical Season / Round / Competitor / Result / Prediction models.",
-    href: "https://github.com/motorsportverse/motorsportverse/blob/main/docs/data-schema.md",
+    href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/data-schema.md",
   },
   {
     title: "Design system",
     body: "Tokens, components, and the shared visual identity.",
-    href: "https://github.com/motorsportverse/motorsportverse/blob/main/docs/design-system.md",
+    href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/design-system.md",
   },
 ];
 

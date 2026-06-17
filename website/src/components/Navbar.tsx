@@ -1,16 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { NavProjectsMenu } from "@/components/NavProjectsMenu";
 import { PaletteButton } from "@/components/PaletteButton";
 import { asset } from "@/lib/asset";
+import { getProjects } from "@/lib/registry";
 
 const LINKS = [
-  { href: "/projects", label: "Projects" },
   { href: "/docs", label: "Docs" },
   { href: "/contribute", label: "Contribute" },
 ];
 
+// Surface the real (shipping) ecosystem projects in the header dropdown so
+// nothing nav-worthy lives only in the footer.
+function navProjects() {
+  const all = getProjects();
+  const shipping = all.filter((p) => p.maturity === "production" || p.maturity === "experimental");
+  return (shipping.length ? shipping : all.slice(0, 4)).map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    sport: p.sport,
+    maturity: p.maturity,
+    accent: p.accent,
+  }));
+}
+
 export function Navbar() {
+  const projects = navProjects();
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--glass)] backdrop-blur-xl backdrop-saturate-150">
       <nav className="shell flex items-center justify-between py-3">
@@ -30,6 +46,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-1 sm:gap-1.5">
           <div className="mr-1 hidden items-center sm:flex">
+            <NavProjectsMenu projects={projects} />
             {LINKS.map((l) => (
               <Link
                 key={l.href}
@@ -42,7 +59,7 @@ export function Navbar() {
           </div>
           <PaletteButton />
           <a
-            href="https://github.com/motorsportverse"
+            href="https://github.com/roni-altshuler/motorsportverse"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub organization"
