@@ -1,214 +1,201 @@
 "use client";
 
-import { useId } from "react";
+import type { ReactNode } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ReferenceLine,
+  ResponsiveContainer,
+} from "recharts";
 
-// Dependency-free SVG points-progression chart — the F2 analogue of RaceIQ F1's
-// recharts ProgressionChart. A solid cumulative line per entity up to the latest
-// completed round, then a dashed "projected at current pace" segment out to the
-// end of the season. Drawn with the shared design tokens so the static export
-// never needs a runtime charting library. Honours prefers-reduced-motion (the
-// draw-in is CSS and short-circuited by the global media query in globals.css).
-
+/**
+ * Shared points-progression chart (faithful port of the RaceIQ F1 recharts
+ * ProgressionChart). A solid cumulative line per entity up to the latest
+ * completed round, then a dashed "projected at current pace" segment from the
+ * live cursor out to the final round, landing on `projectedTotal` (the driver's
+ * projMean from championship[], or the sum of its drivers' projMeans for teams).
+ *
+ * The projection is a simple linear ramp from the current total to the projected
+ * end-of-season total across the remaining rounds — an honest "current pace"
+ * read, NOT a model forecast (per the tech-stack scrub policy the label stays
+ * "Projected at current pace").
+ */
 export interface ProgressionSeries {
-  /** Stable id (driver code or team name). */
+  /** Stable id used as the recharts dataKey (driver code or team tag). */
   key: string;
+  /** Short label shown in the tooltip + legend. */
   label: string;
+  /** Line colour (team colour for both drivers and teams). */
   color: string;
-  /** Cumulative points after each completed round (length === rounds.length). */
-  history: number[];
-  /** Projected end-of-season total for the dashed segment. */
+  /** Cumulative points after each completed round. */
+  history: readonly (number | null | undefined)[];
+  /** Projected end-of-season total for the dashed segment endpoint. */
   projectedTotal: number;
 }
 
 interface Props {
   series: ProgressionSeries[];
-  /** Completed round numbers, e.g. [1,2,3,4,5,6,7]. */
+  /** Completed rounds, e.g. [1,2,3,4,5,6,7]. */
   rounds: number[];
-  /** Total rounds in the season (extends the x-axis + dashed projection). */
-  totalRounds: number;
+  /** Total rounds in the season (e.g. 13). Extends the x-axis + projection. */
+  totalRounds?: number;
+  /** Entity legend (driver portraits or team swatches) appended below the
+   *  shared solid/dashed line-style key. */
+  legend?: ReactNode;
 }
 
-const W = 720;
-const H = 320;
-const PAD = { top: 16, right: 18, bottom: 28, left: 38 };
+type ChartRow = Record<string, number | string | null>;
 
-export default function ProgressionChart({ series, rounds, totalRounds }: Props) {
-  const uid = useId();
+function findLastNonNullIndex(arr: readonly (number | null | undefined)[]): number {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i] != null) return i;
+  }
+  return -1;
+}
+
+export default function ProgressionChart({ series, rounds, totalRounds = 13, legend }: Props) {
   if (!series.length || !rounds.length) return null;
 
-  const lastRound = rounds[rounds.length - 1] ?? rounds.length;
-  const maxY = Math.max(
-    1,
-    ...series.map((s) => Math.max(s.projectedTotal, ...(s.history.length ? s.history : [0]))),
-  );
-  // round the y-axis ceiling up to a nice number
-  const yCeil = Math.ceil(maxY / 50) * 50 || 50;
+  const maxCompleted = rounds[rounds.length - 1] ?? rounds.length;
+  const labelByKey = new Map(series.map((s) => [s.key, s.label]));
 
-  const innerW = W - PAD.left - PAD.right;
-  const innerH = H - PAD.top - PAD.bottom;
+  // Build one row per round across the FULL season scale (R1..R{totalRounds}).
+  // Each entity gets two series: `<key>_actual` (solid) and `<key>_forecast`
+  // (dashed). Null elsewhere so the lines break cleanly with connectNulls=false.
+  const chartData: ChartRow[] = [];
+  for (let r = 1; r <= totalRounds; r++) {
+    const row: ChartRow = { round: `R${r}` };
+    for (const s of series) {
+      const hist = s.history ?? [];
+      const lastIdx = findLastNonNullIndex(hist);
+      const completed = lastIdx + 1;
+      const current = hist[lastIdx] ?? 0;
+      const remaining = totalRounds - completed;
+      const actualKey = `${s.key}_actual`;
+      const forecastKey = `${s.key}_forecast`;
 
-  const x = (round: number) => PAD.left + ((round - 1) / (totalRounds - 1)) * innerW;
-  const y = (pts: number) => PAD.top + innerH - (pts / yCeil) * innerH;
-
-  const yTicks = Array.from({ length: 5 }, (_, i) => Math.round((yCeil / 4) * i));
-  const xTicks = Array.from({ length: totalRounds }, (_, i) => i + 1).filter(
-    (r) => r === 1 || r === totalRounds || r % 2 === 0,
-  );
+      if (r <= completed) {
+        row[actualKey] = hist[r - 1] ?? null;
+        // Bridge point: at r === completed, attach the dashed segment to the
+        // solid tip so the projection starts where the actual line ends.
+        row[forecastKey] = r === completed ? current : null;
+      } else {
+        row[actualKey] = null;
+        // Linear ramp from `current` (at round `completed`) to `projectedTotal`
+        // (at round `totalRounds`).
+        const t = remaining > 0 ? (r - completed) / remaining : 1;
+        row[forecastKey] = current + (s.projectedTotal - current) * t;
+      }
+    }
+    chartData.push(row);
+  }
 
   return (
     <div className="w-full">
-      <div className="mono-label mb-3 flex flex-wrap items-center gap-x-5 gap-y-1">
-        <span className="inline-flex items-center gap-2 text-[var(--ink-muted)]">
-          <svg width="22" height="6" aria-hidden>
-            <line x1="0" y1="3" x2="22" y2="3" stroke="currentColor" strokeWidth="2.5" />
-          </svg>
-          Current standings
-        </span>
-        <span className="inline-flex items-center gap-2 text-[var(--ink-muted)]">
-          <svg width="22" height="6" aria-hidden>
-            <line
-              x1="0"
-              y1="3"
-              x2="22"
-              y2="3"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray="4 4"
-              strokeOpacity="0.7"
-            />
-          </svg>
-          Projected at current pace
-        </span>
-      </div>
-
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="w-full"
-        style={{ height: "auto", maxHeight: 360 }}
-        role="img"
-        aria-label="Championship points progression and projection by round"
-      >
-        {/* y grid + labels */}
-        {yTicks.map((t) => (
-          <g key={`y-${t}`}>
-            <line
-              x1={PAD.left}
-              x2={W - PAD.right}
-              y1={y(t)}
-              y2={y(t)}
-              stroke="var(--hairline)"
-              strokeWidth="1"
-              strokeDasharray="3 3"
-            />
-            <text
-              x={PAD.left - 6}
-              y={y(t) + 3}
-              textAnchor="end"
-              className="font-tabular"
-              style={{ fontFamily: "var(--font-mono)", fontSize: 10, fill: "var(--ink-dim)" }}
-            >
-              {t}
-            </text>
-          </g>
-        ))}
-
-        {/* x labels */}
-        {xTicks.map((r) => (
-          <text
-            key={`x-${r}`}
-            x={x(r)}
-            y={H - 8}
-            textAnchor="middle"
-            style={{ fontFamily: "var(--font-mono)", fontSize: 10, fill: "var(--ink-dim)" }}
-          >
-            R{r}
-          </text>
-        ))}
-
-        {/* "NOW" cursor at the last completed round */}
-        <line
-          x1={x(lastRound)}
-          x2={x(lastRound)}
-          y1={PAD.top}
-          y2={PAD.top + innerH}
-          stroke="var(--accent)"
-          strokeWidth="1"
-          strokeDasharray="2 4"
-          opacity="0.8"
-        />
-        <text
-          x={x(lastRound)}
-          y={PAD.top - 4}
-          textAnchor="middle"
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 9,
-            letterSpacing: "0.18em",
-            fill: "var(--accent)",
-          }}
-        >
-          NOW
-        </text>
-
-        {/* one solid + one dashed polyline per entity */}
-        {series.map((s, idx) => {
-          const solidPts = s.history
-            .map((pts, i) => `${x(rounds[i])},${y(pts)}`)
-            .join(" ");
-          const tipRound = lastRound;
-          const tipPts = s.history[s.history.length - 1] ?? 0;
-          const dashed = `${x(tipRound)},${y(tipPts)} ${x(totalRounds)},${y(s.projectedTotal)}`;
-          return (
-            <g key={s.key} className="prog-line" style={{ animationDelay: `${idx * 60}ms` }}>
-              <polyline
-                points={solidPts}
-                fill="none"
-                stroke={s.color}
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <polyline
-                points={dashed}
-                fill="none"
-                stroke={s.color}
+      <div className="flex flex-col gap-2 mb-3 text-[11px] font-mono tracking-[0.12em] uppercase text-[color:var(--text-muted)]">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <span className="inline-flex items-center gap-2">
+            <svg width="24" height="6" aria-hidden>
+              <line x1="0" y1="3" x2="24" y2="3" stroke="currentColor" strokeWidth="2.5" />
+            </svg>
+            Current standings
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <svg width="24" height="6" aria-hidden>
+              <line
+                x1="0"
+                y1="3"
+                x2="24"
+                y2="3"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeDasharray="5 5"
-                strokeOpacity="0.5"
+                strokeOpacity="0.7"
               />
-              {/* endpoint dot + label */}
-              <circle cx={x(totalRounds)} cy={y(s.projectedTotal)} r="3" fill={s.color} />
-              <circle cx={x(tipRound)} cy={y(tipPts)} r="3.2" fill={s.color} />
-              <text
-                x={x(totalRounds) + 4}
-                y={y(s.projectedTotal) + 3}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 9.5,
-                  fill: s.color,
-                  fontWeight: 600,
-                }}
-              >
-                {s.key}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-
-      <style>{`
-        .prog-line {
-          opacity: 0;
-          animation: progFade var(--dur-slow, 520ms) var(--ease-launch, ease) forwards;
-        }
-        @keyframes progFade { to { opacity: 1; } }
-        @media (prefers-reduced-motion: reduce) {
-          .prog-line { animation: none; opacity: 1; }
-        }
-      `}</style>
-      <p key={uid} className="sr-only">
-        Points progression chart across {totalRounds} rounds.
-      </p>
+            </svg>
+            Projected at current pace · refreshes each round
+          </span>
+        </div>
+        {legend}
+      </div>
+      <div className="w-full h-80">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <XAxis
+              dataKey="round"
+              stroke="var(--text-muted)"
+              fontSize={12}
+              tickLine={false}
+              interval="preserveStartEnd"
+            />
+            <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--surface-card)",
+                border: "1px solid var(--hairline)",
+                borderRadius: 0,
+                color: "var(--ink)",
+                fontSize: "13px",
+                fontFamily: "var(--font-mono)",
+              }}
+              labelStyle={{ color: "var(--muted)", letterSpacing: "1px", textTransform: "uppercase" }}
+              formatter={(value, name) => {
+                if (value == null) return [null, null];
+                const key = String(name).replace(/_(actual|forecast)$/, "");
+                const isForecast = String(name).endsWith("_forecast");
+                const label = labelByKey.get(key) ?? key;
+                return [Math.round(Number(value)), isForecast ? `${label} (proj)` : label];
+              }}
+            />
+            <ReferenceLine
+              x={`R${maxCompleted}`}
+              stroke="var(--accent)"
+              strokeDasharray="2 4"
+              label={{
+                value: "NOW",
+                position: "top",
+                fill: "var(--accent)",
+                fontSize: 10,
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.18em",
+              }}
+            />
+            {series.map((s) => (
+              <Line
+                key={`${s.key}_actual`}
+                type="monotone"
+                dataKey={`${s.key}_actual`}
+                stroke={s.color}
+                strokeWidth={2.5}
+                dot={{ fill: s.color, r: 3 }}
+                activeDot={{ r: 5, strokeWidth: 0 }}
+                connectNulls={false}
+                isAnimationActive={false}
+              />
+            ))}
+            {series.map((s) => (
+              <Line
+                key={`${s.key}_forecast`}
+                type="monotone"
+                dataKey={`${s.key}_forecast`}
+                stroke={s.color}
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                strokeOpacity={0.55}
+                dot={false}
+                activeDot={{ r: 4, strokeWidth: 0 }}
+                connectNulls={false}
+                isAnimationActive={false}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

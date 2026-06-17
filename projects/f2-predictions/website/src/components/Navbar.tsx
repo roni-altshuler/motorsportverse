@@ -1,42 +1,459 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { ChevronDown, Github, Menu, X } from "lucide-react";
 
-const LINKS = [
-  { href: "/predictions", label: "Predictions" },
-  { href: "/standings", label: "Standings" },
-  { href: "/calendar", label: "Calendar" },
-  { href: "/accuracy", label: "Accuracy" },
-];
+import CountryFlag from "@/components/CountryFlag";
+import SeasonSwitcher from "@/components/SeasonSwitcher";
+import { Badge } from "@/components/ui/Badge";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
+import { getRoundLifecycle, getRoundStatusMeta, useF2Data } from "@/lib/f2client";
 
-export function Navbar() {
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const GITHUB_URL = "https://github.com/roni-altshuler/motorsportverse";
+
+const TONE_TO_BADGE_VARIANT = {
+  green: "positive",
+  amber: "live",
+  slate: "muted",
+} as const;
+type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
+
+/**
+ * Primary navigation — a faithful port of the RaceIQ F1 Navbar, adapted to the
+ * F2 data contract (f2.json). Hover-opening Races dropdown with a ~140ms grace
+ * timeout, Standings dropdown (drivers / teams / who-can-win) with computed
+ * anchor side, season switcher, accuracy chip, scroll-collapsing utility strip,
+ * and a mobile drawer.
+ */
+export default function Navbar() {
+  const pathname = usePathname();
+  const data = useF2Data();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [racesOpen, setRacesOpen] = useState(false);
+  const [standingsOpen, setStandingsOpen] = useState(false);
+  const [standingsAnchor, setStandingsAnchor] = useState<"left" | "right">("left");
+  const [utilityHidden, setUtilityHidden] = useState(false);
+  const racesRef = useRef<HTMLDivElement>(null);
+  const standingsRef = useRef<HTMLDivElement>(null);
+  const racesCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const standingsCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { scrollY } = useScroll();
+
+  const calendar = data?.calendar ?? [];
+  const completedRounds = data?.completedRounds ?? 0;
+  const acc = data?.seasonAccuracy;
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (racesRef.current && !racesRef.current.contains(e.target as Node)) setRacesOpen(false);
+      if (standingsRef.current && !standingsRef.current.contains(e.target as Node))
+        setStandingsOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setUtilityHidden(latest > 80);
+  });
+
+  const computeStandingsAnchor = (): "left" | "right" => {
+    const trigger = standingsRef.current;
+    if (!trigger || typeof window === "undefined") return "left";
+    const rect = trigger.getBoundingClientRect();
+    return rect.left + 440 > window.innerWidth - 12 ? "right" : "left";
+  };
+  const openStandings = () => {
+    if (standingsCloseTimerRef.current) {
+      clearTimeout(standingsCloseTimerRef.current);
+      standingsCloseTimerRef.current = null;
+    }
+    setStandingsAnchor(computeStandingsAnchor());
+    setStandingsOpen(true);
+  };
+  const toggleStandings = () => {
+    setStandingsOpen((open) => {
+      if (!open) setStandingsAnchor(computeStandingsAnchor());
+      return !open;
+    });
+  };
+
+  const openMenu = (ref: typeof racesCloseTimerRef, setOpen: (b: boolean) => void) => {
+    if (ref.current) {
+      clearTimeout(ref.current);
+      ref.current = null;
+    }
+    setOpen(true);
+  };
+  const scheduleClose = (ref: typeof racesCloseTimerRef, setOpen: (b: boolean) => void) => {
+    if (ref.current) clearTimeout(ref.current);
+    ref.current = setTimeout(() => setOpen(false), 140);
+  };
+  useEffect(
+    () => () => {
+      if (racesCloseTimerRef.current) clearTimeout(racesCloseTimerRef.current);
+      if (standingsCloseTimerRef.current) clearTimeout(standingsCloseTimerRef.current);
+    },
+    [],
+  );
+
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
+  const nextRound = useMemo(() => {
+    if (!calendar.length) return null;
+    return calendar.find((r) => !r.completed) ?? calendar[calendar.length - 1];
+  }, [calendar]);
+
+  const navLinkBase = "nav-link-text px-3 lg:px-4 py-2 inline-flex items-center gap-1.5 transition-colors";
+  const navLink = (href: string, label: string) => (
+    <Link
+      href={href}
+      aria-current={isActive(href) ? "page" : undefined}
+      className={`${navLinkBase} ${
+        isActive(href)
+          ? "text-[color:var(--ink)]"
+          : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+
+  const podiumPct =
+    acc?.podiumHitRate != null ? Math.round(acc.podiumHitRate * 100) : null;
+
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--hairline)] bg-[color-mix(in_srgb,var(--canvas)_85%,transparent)] backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span
-            className="flex h-7 w-7 items-center justify-center rounded-[var(--radius-sm)] text-sm font-black"
-            style={{ color: "var(--accent-ink)", backgroundColor: "var(--accent)" }}
-            aria-hidden
-          >
-            F2
-          </span>
-          <span className="font-display text-base font-semibold tracking-tight text-[var(--ink)]">
-            Race<span style={{ color: "var(--accent)" }}>IQ</span> F2
-          </span>
-        </Link>
-        <div className="font-mono flex items-center gap-6 text-xs uppercase tracking-[0.12em] text-[var(--ink-muted)]">
-          {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-[var(--ink)]">
-              {l.label}
+    <nav
+      className="sticky top-0 z-50"
+      aria-label="Primary"
+      style={{
+        background: "rgba(0, 0, 0, 0.85)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid var(--hairline)",
+      }}
+    >
+      {/* ── Row 1: utility strip (collapses on scroll) ─────────────── */}
+      <motion.div
+        initial={false}
+        animate={{ height: utilityHidden ? 0 : 32, opacity: utilityHidden ? 0 : 1 }}
+        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+        className="overflow-hidden border-b border-[color:var(--hairline)]/60"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-end gap-2 text-[10px]">
+          <SeasonSwitcher />
+          {podiumPct != null && acc && acc.roundsScored > 0 && (
+            <Link
+              href="/accuracy"
+              className="eyebrow inline-flex items-center gap-1.5 px-2 py-0.5 border transition-colors hover:text-[color:var(--ink)]"
+              style={{
+                borderColor:
+                  podiumPct >= 60 ? "var(--accent-f1-red-soft)" : "var(--hairline)",
+                color: "var(--muted)",
+              }}
+              title={`Season podium accuracy ${podiumPct}% across ${acc.roundsScored} scored round(s)`}
+            >
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full"
+                style={{ background: podiumPct >= 60 ? "var(--accent-f1-red)" : "var(--muted)" }}
+              />
+              {podiumPct}% · {acc.roundsScored}R
             </Link>
-          ))}
+          )}
           <a
-            href="https://motorsportverse.org"
-            className="rounded-full border border-[var(--hairline-strong)] px-3 py-1.5 text-[11px] text-[var(--ink)] hover:border-[var(--accent)]"
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="eyebrow inline-flex items-center gap-1 px-2 py-0.5 hover:text-[color:var(--ink)] text-[color:var(--muted)] transition-colors"
+            aria-label="GitHub repository"
           >
-            MotorsportVerse
+            <Github className="w-3 h-3" />
+            <span className="hidden sm:inline">GitHub</span>
           </a>
         </div>
-      </nav>
-    </header>
+      </motion.div>
+
+      {/* ── Row 2: primary nav ─────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center h-14 gap-2 sm:gap-4">
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden inline-flex items-center justify-center w-9 h-9 -ml-1.5"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5 text-[color:var(--ink)]" />
+          </button>
+
+          {/* wordmark */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0" aria-label="RaceIQ F2 home">
+            <span
+              className="inline-block w-1.5 h-6"
+              style={{ background: "var(--accent-f1-red)", boxShadow: "var(--glow-live)" }}
+              aria-hidden
+            />
+            <span className="wordmark">
+              RaceIQ <span style={{ color: "var(--accent-f1-red)" }}>F2</span>
+            </span>
+          </Link>
+
+          {/* primary nav cluster (desktop) */}
+          <div className="hidden md:flex items-center gap-0 ml-4">
+            {navLink("/", "Home")}
+
+            {/* Races dropdown */}
+            <div
+              ref={racesRef}
+              className="relative"
+              onMouseEnter={() => openMenu(racesCloseTimerRef, setRacesOpen)}
+              onMouseLeave={() => scheduleClose(racesCloseTimerRef, setRacesOpen)}
+            >
+              <button
+                onClick={() => setRacesOpen((open) => !open)}
+                onFocus={() => openMenu(racesCloseTimerRef, setRacesOpen)}
+                aria-haspopup="menu"
+                aria-expanded={racesOpen}
+                className={`${navLinkBase} ${
+                  isActive("/race") || isActive("/calendar")
+                    ? "text-[color:var(--ink)]"
+                    : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                }`}
+              >
+                Races
+                <ChevronDown className={`w-3 h-3 transition-transform ${racesOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {racesOpen && calendar.length > 0 && (
+                  <motion.div
+                    role="menu"
+                    data-lenis-prevent
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
+                    className="dropdown-menu absolute top-full left-0 mt-1 w-80 max-h-[70vh] overflow-y-auto overscroll-contain"
+                    style={{ scrollbarGutter: "stable" }}
+                  >
+                    <div className="p-2">
+                      <Link
+                        href="/calendar"
+                        onClick={() => setRacesOpen(false)}
+                        className="nav-link-text flex items-center gap-3 px-3 py-2.5 text-[color:var(--ink)] transition-colors hover:bg-[color:var(--surface-elevated)]"
+                      >
+                        Full Season Calendar
+                      </Link>
+                      <div className="h-px my-1" style={{ background: "var(--hairline)" }} />
+                      {calendar.map((race) => {
+                        const isNext = nextRound?.round === race.round;
+                        const meta = getRoundStatusMeta(getRoundLifecycle(race.completed, isNext));
+                        return (
+                          <Link
+                            key={race.round}
+                            href={`/race/${race.round}`}
+                            onClick={() => setRacesOpen(false)}
+                            role="menuitem"
+                            className="flex items-center gap-3 px-3 py-2 text-sm font-serif transition-colors hover:bg-[color:var(--surface-elevated)]"
+                            style={{ color: "var(--body)" }}
+                          >
+                            <CountryFlag country={race.country} size={20} />
+                            <span className="flex-1 truncate">{race.name}</span>
+                            <span className="eyebrow shrink-0">R{race.round}</span>
+                            <Badge variant={TONE_TO_BADGE_VARIANT[meta.tone as StatusTone] ?? "default"}>
+                              {meta.shortLabel}
+                            </Badge>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Standings dropdown */}
+            <div
+              ref={standingsRef}
+              className="relative"
+              onMouseEnter={openStandings}
+              onMouseLeave={() => scheduleClose(standingsCloseTimerRef, setStandingsOpen)}
+            >
+              <button
+                onClick={toggleStandings}
+                onFocus={openStandings}
+                aria-haspopup="menu"
+                aria-expanded={standingsOpen}
+                className={`${navLinkBase} ${
+                  isActive("/standings")
+                    ? "text-[color:var(--ink)]"
+                    : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+                }`}
+              >
+                Standings
+                <ChevronDown className={`w-3 h-3 transition-transform ${standingsOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {standingsOpen && (
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }}
+                    className={`dropdown-menu absolute top-full mt-1 p-3 w-[min(440px,calc(100vw-1.5rem))] ${
+                      standingsAnchor === "right" ? "right-0" : "left-0"
+                    }`}
+                  >
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { href: "/standings?tab=drivers", label: "Drivers", hint: "Per-driver totals" },
+                        { href: "/standings?tab=teams", label: "Teams", hint: "Team-by-team" },
+                        { href: "/standings?tab=wdc", label: "Who Can Still Win", hint: "Mathematical title race" },
+                      ].map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setStandingsOpen(false)}
+                          role="menuitem"
+                          className="block p-3 transition-colors hover:bg-[color:var(--surface-elevated)] border border-transparent hover:border-[color:var(--hairline)]"
+                        >
+                          <p className="title-sm text-[color:var(--ink)]">{item.label}</p>
+                          <p className="caption-uppercase mt-1 text-[10px] tracking-[0.14em]">{item.hint}</p>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {navLink("/accuracy", "Accuracy")}
+            {navLink("/about", "About")}
+          </div>
+
+          <div className="flex-1" />
+
+          {nextRound && (
+            <Link
+              href={`/race/${nextRound.round}`}
+              className="hidden sm:block"
+              aria-label={`Next race: ${nextRound.name}`}
+            >
+              <ShimmerButton
+                background="var(--accent-f1-red)"
+                shimmerColor="rgba(255,255,255,0.9)"
+                borderRadius="9999px"
+                className="button-label h-9 !py-0 !px-4 text-[12px]"
+              >
+                Next Race →
+              </ShimmerButton>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile drawer ─────────────────────────────────────────── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-40 bg-black/60"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              aria-hidden
+            />
+            <motion.aside
+              className="fixed top-0 right-0 bottom-0 z-50 w-[320px] max-w-[88vw] bg-[color:var(--canvas)] border-l border-[color:var(--hairline)] overflow-y-auto"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              role="dialog"
+              aria-label="Mobile navigation"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[color:var(--hairline)]">
+                <span className="wordmark">Menu</span>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                  className="inline-flex items-center justify-center w-9 h-9"
+                >
+                  <X className="w-5 h-5 text-[color:var(--ink)]" />
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-0 py-2">
+                {[
+                  { href: "/", label: "Home" },
+                  { href: "/calendar", label: "Season Calendar" },
+                  { href: "/standings", label: "Standings" },
+                  { href: "/accuracy", label: "Accuracy" },
+                  { href: "/about", label: "About" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    onClick={() => setMobileOpen(false)}
+                    className={`nav-link-text px-5 py-4 row-spec transition-colors ${
+                      isActive(item.href) ? "text-[color:var(--ink)]" : "text-[color:var(--muted)]"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+
+                {nextRound && (
+                  <div className="px-5 pt-4">
+                    <Link href={`/race/${nextRound.round}`} onClick={() => setMobileOpen(false)}>
+                      <ShimmerButton
+                        background="var(--accent-f1-red)"
+                        shimmerColor="rgba(255,255,255,0.9)"
+                        borderRadius="9999px"
+                        className="w-full button-label h-10 !py-0 !px-4 text-[12px]"
+                      >
+                        Next Race → {nextRound.name}
+                      </ShimmerButton>
+                    </Link>
+                  </div>
+                )}
+
+                {calendar.length > 0 && completedRounds > 0 && (
+                  <div className="pt-4">
+                    <p className="eyebrow px-5 pt-4 pb-2">Race Status</p>
+                    {calendar
+                      .filter((r) => r.completed || nextRound?.round === r.round)
+                      .map((race) => {
+                        const isNext = nextRound?.round === race.round;
+                        const meta = getRoundStatusMeta(getRoundLifecycle(race.completed, isNext));
+                        return (
+                          <Link
+                            key={race.round}
+                            href={`/race/${race.round}`}
+                            onClick={() => setMobileOpen(false)}
+                            className="px-5 py-3 row-spec text-sm flex items-center gap-2 justify-between font-serif transition-colors hover:text-[color:var(--ink)]"
+                            style={{ color: "var(--body)" }}
+                          >
+                            <span className="flex items-center gap-2">
+                              <CountryFlag country={race.country} size={18} />
+                              {race.name}
+                            </span>
+                            <Badge variant={TONE_TO_BADGE_VARIANT[meta.tone as StatusTone] ?? "default"}>
+                              {meta.shortLabel}
+                            </Badge>
+                          </Link>
+                        );
+                      })}
+                  </div>
+                )}
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 }

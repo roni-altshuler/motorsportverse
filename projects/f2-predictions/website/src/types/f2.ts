@@ -26,6 +26,9 @@ export interface DriverStanding {
   points: number;
   wins: number;
   podiums: number;
+  pointsHistory?: number[];
+  /** Optional per-driver headshot override; falls back to /headshots/<CODE>.webp. */
+  headshotUrl?: string | null;
 }
 
 export interface TeamStanding {
@@ -35,6 +38,7 @@ export interface TeamStanding {
   points: number;
   wins: number;
   podiums: number;
+  pointsHistory?: number[];
 }
 
 export interface TitleOdds {

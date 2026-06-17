@@ -63,6 +63,7 @@ const ROUTES = [
   ["predictions", "/predictions/"],
   ["race-1", "/race/1/"],
   ["accuracy", "/accuracy/"],
+  ["about", "/about/"],
 ];
 
 const server = serve();

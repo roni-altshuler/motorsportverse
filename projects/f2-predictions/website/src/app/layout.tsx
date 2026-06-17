@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { EB_Garamond, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
-import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 import "./globals.css";
 
@@ -44,11 +45,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${saira.variable} ${garamond.variable} ${jetbrains.variable}`}>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${saira.variable} ${garamond.variable} ${jetbrains.variable}`}
+    >
       <body>
-        <Navbar />
-        <main className="min-h-[70vh]">{children}</main>
-        <Footer />
+        <SmoothScrollProvider>
+          <Navbar />
+          <main className="min-h-[70vh]">{children}</main>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
