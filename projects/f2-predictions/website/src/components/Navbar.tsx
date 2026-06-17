@@ -187,16 +187,15 @@ export default function Navbar() {
             <Menu className="w-5 h-5 text-[color:var(--ink)]" />
           </button>
 
-          {/* wordmark */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0" aria-label="RaceIQ F2 home">
-            <span
-              className="inline-block w-1.5 h-6"
-              style={{ background: "var(--accent-f1-red)", boxShadow: "var(--glow-live)" }}
-              aria-hidden
+          {/* wordmark — RaceIQ F2 brand lockup (sliced from the master brand board) */}
+          <Link href="/" className="flex items-center group shrink-0" aria-label="RaceIQ F2 home">
+            <img
+              src={`${BASE_PATH}/brand/raceiq-f2-lockup.png`}
+              alt="RaceIQ F2"
+              width={387}
+              height={104}
+              className="h-9 w-auto"
             />
-            <span className="wordmark">
-              RaceIQ <span style={{ color: "var(--accent-f1-red)" }}>F2</span>
-            </span>
           </Link>
 
           {/* primary nav cluster (desktop) */}

@@ -14,7 +14,8 @@ MotorsportVerse projects advance through five maturity levels (defined in
 | **production** | Validated & live | Forward-eval over ≥1 season, a live website, and an automated update pipeline |
 | **archived** | Frozen / superseded | No longer maintained; kept for reference |
 
-Today: **F1 = production**, **F2 = in-development**, all others = **concept**.
+Today: **F1 = production**, **F2 = production** (real 2026 season, deployed site,
+scheduled refresh pipeline), all others = **concept**.
 
 ## Promotion rules
 

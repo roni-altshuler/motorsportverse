@@ -53,29 +53,29 @@ Cross-checked the regenerated `f2.json` calendar/standings against fiaformula2.c
 | **Data accuracy** | **9.5 / 10** | Calendar, completed-count, results, and standings match official sources exactly (snapshot reconciles to the published totals). −0.5: 2 of the newest venues lack aerial photos / circuit-map geometry (graceful fallback). |
 | **UI consistency** | **9 / 10** | F1-flagship design system 1:1, themed F2 blue; all pages render real data; "this is RaceIQ / this is F2" both legible. −1: Miami/Madrid/Lusail art gaps + a shared NumberTicker no-JS nicety. |
 | **Prediction readiness** | **7.5 / 10** | Honest calibration applied on 5 real rounds; real forward-eval/drift; championship MC off real points. −2.5: forecast accuracy is modest (winner hit-rate 0.2, mean position error ≈ 4.9) — inherent to a high-variance spec series this early in the season, and now *honestly reported* rather than hidden. |
-| **Production readiness** | **8 / 10** | Real data, deployed, CI green, reproducible pipeline, honest gating. −2: governance `production` flag not yet earned (see gates below); branding board not yet exported to per-series web assets. |
+| **Production readiness** | **9 / 10** | Real data, deployed, CI green, reproducible pipeline, honest gating, **scheduled refresh Action**, and the owner's brand board now sliced into per-series web assets and wired onto the F2 site. −1: the season-long forward-eval is still accruing (2026 is mid-season). |
 
-**Overall: launch-ready as a real-data RaceIQ F2 product (experimental maturity).** It is the first MotorsportVerse expansion running on a real series with honest, official-accurate data and F1-parity UX.
+**Overall: promoted to `production` maturity** — the first MotorsportVerse expansion running on a real series with honest, official-accurate data, F1-parity UX, an automated update pipeline, and a deployed site.
 
 ---
 
-## Maturity: why still `experimental` (and the path to `production`)
+## Maturity: promotion to `production`
 
 Per `GOVERNANCE.md`, `experimental → production` requires **all** of: forward-eval over **≥1 full season**, a **deployed website**, and a **scheduled update workflow**.
 
 | Gate | Met? | Note |
 |------|:----:|------|
 | Deployed website | ✅ | `deploy-website.yml` ships the F2 site under `/<repo>/projects/f2/` |
-| Forward-eval ≥ 1 season | ⬜ | 2026 is mid-season (5/14 rounds). Earn it by completing 2026, **or** backfill a full historical season (the scraper has a 2024 anchor) with that season's roster |
-| Scheduled update workflow | ⬜ | Add a cron Action running `refresh → export → eval` and committing the snapshot (closes the loop; the existing deploy then ships it) |
+| Scheduled update workflow | ✅ | `refresh-f2.yml` runs `refresh → export → eval → drift → promotion` weekly and commits the snapshot only when it changes (live scrape isolated; builds read the committed snapshot) |
+| Forward-eval ≥ 1 season | ◑ | 2026 is mid-season (5/14 rounds); the season-long stream is accruing automatically via the scheduled workflow. A completed-season retrospective can be produced on demand from the scraper's 2024 anchor if a published full-season report is wanted. |
 
-Flipping the flag is a one-line registry change + relaxing the `test_smoke.py` maturity assertion — deliberately **not** done here to avoid over-claiming. Recommended once the two open gates are met.
+The flag was flipped at the owner's direction (registry `maturity: production` + the `test_smoke.py` assertion relaxed). The deployment and automation gates are fully met; the season-long eval completes as 2026 runs — reported honestly rather than back-claimed.
 
-## Remaining follow-ups (none block the data launch)
+## Remaining follow-ups (none block production)
 
-1. **Branding integration** — export the owner's brand board (`brand/source/raceiq-combined-logos.png`) to per-series web assets (SVG) and swap them onto the existing paths; switch the wordmark font to Orbitron. (Visual pass; see BRANDING_RECOMMENDATION.)
+1. **Branding** — ✅ the owner's brand board (`brand/source/raceiq-combined-logos.png`) is now **sliced into per-series web assets** (`website/public/brand/series/raceiq-*.png` lockups + `sports/*.png` marks, alpha-keyed), and the **RaceIQ F2 lockup is wired onto the F2 site** (navbar + footer). Optional upgrade: vectorise the rasters to SVG and switch the wordmark font to Orbitron for crisp scaling. (See BRANDING_RECOMMENDATION.)
 2. **New-venue art** — aerial photos + circuit-map geometry for Miami, Madrid (Madring), Lusail when available (currently graceful fallbacks; Montréal added).
-3. **Automation** — the scheduled refresh workflow above (also unlocks the production gate).
+3. **Full-season eval report** — publish a completed-season retrospective (2024 backfill or end-of-2026) to close the eval gate with a formal artifact.
 4. **Scraper hardening** — already captures retirements; add a current-season fixture test for `_parse_session` and a car-number alignment check.
 
 ## Risk notes
