@@ -26,7 +26,7 @@ from pathlib import Path
 
 import numpy as np
 
-from motorsport_core import calibration, eval as core_eval
+from motorsport_core import calibration, eval as core_eval, standings
 
 from . import config, model, pipeline
 from .datasource import F2DataSource
@@ -310,9 +310,50 @@ def _season_accuracy(round_forecasts: dict[int, RoundForecastF2], source: F2Data
 # --------------------------------------------------------------------------- #
 # Top-level builders
 # --------------------------------------------------------------------------- #
+def _points_history(
+    source: F2DataSource, year: int
+) -> tuple[dict[str, list[float]], dict[str, list[float]]]:
+    """Cumulative driver- and team-points after each completed round.
+
+    Replays standings incrementally (rounds 1..r) so the website's progression
+    chart can draw an exact cumulative line per competitor — mirrors the F1
+    flagship's ``pointsHistory`` field. Sprint + feature points are both counted.
+    """
+    driver_codes = [d["code"] for d in config.DRIVERS]
+    teams = list(dict.fromkeys(config.TEAM_OF.values()))
+    driver_hist: dict[str, list[float]] = {c: [] for c in driver_codes}
+    team_hist: dict[str, list[float]] = {t: [] for t in teams}
+
+    sprints: list[dict[str, int]] = []
+    features: list[dict[str, int]] = []
+    for rnd in range(1, config.COMPLETED_ROUNDS + 1):
+        races = source.race_results_for_round(year, rnd)
+        sprints.append({r.competitor: r.position for r in races["sprint"]})
+        features.append({r.competitor: r.position for r in races["feature"]})
+
+        d_merged = standings.merge_standings(
+            standings.compute_driver_standings(sprints, config.SPRINT_POINTS),
+            standings.compute_driver_standings(features, config.FEATURE_POINTS),
+        )
+        d_points = {row.key: row.points for row in d_merged}
+        for c in driver_codes:
+            driver_hist[c].append(d_points.get(c, 0))
+
+        t_merged = standings.merge_standings(
+            standings.compute_team_standings(sprints, config.SPRINT_POINTS, config.TEAM_OF),
+            standings.compute_team_standings(features, config.FEATURE_POINTS, config.TEAM_OF),
+        )
+        t_points = {row.key: row.points for row in t_merged}
+        for t in teams:
+            team_hist[t].append(t_points.get(t, 0))
+
+    return driver_hist, team_hist
+
+
 def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSource, year: int) -> dict:
     driver_standings = pipeline.driver_standings(source, year)
     teams = pipeline.team_standings(source, year)
+    driver_hist, team_hist = _points_history(source, year)
 
     next_round = config.COMPLETED_ROUNDS + 1
     prediction = None
@@ -368,6 +409,7 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
                 "points": r.points,
                 "wins": r.wins,
                 "podiums": r.podiums,
+                "pointsHistory": driver_hist.get(r.key, []),
             }
             for i, r in enumerate(driver_standings, start=1)
         ],
@@ -379,6 +421,7 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
                 "points": r.points,
                 "wins": r.wins,
                 "podiums": r.podiums,
+                "pointsHistory": team_hist.get(r.key, []),
             }
             for i, r in enumerate(teams, start=1)
         ],
