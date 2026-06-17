@@ -22,39 +22,38 @@ SEASON = 2026
 # Calendar — shared F1 circuits used as F2 support rounds.
 # --------------------------------------------------------------------------- #
 CALENDAR: list[Venue] = [
-    Venue(key="sakhir", name="Bahrain", country="Bahrain"),
-    Venue(key="jeddah", name="Saudi Arabia", country="Saudi Arabia"),
     Venue(key="melbourne", name="Australia", country="Australia"),
-    Venue(key="imola", name="Emilia-Romagna", country="Italy"),
     Venue(key="monaco", name="Monaco", country="Monaco"),
-    Venue(key="catalunya", name="Spain", country="Spain"),
     Venue(key="spielberg", name="Austria", country="Austria"),
+    Venue(key="catalunya", name="Spain", country="Spain"),
     Venue(key="silverstone", name="Great Britain", country="United Kingdom"),
-    Venue(key="hungaroring", name="Hungary", country="Hungary"),
     Venue(key="spa", name="Belgium", country="Belgium"),
+    Venue(key="hungaroring", name="Hungary", country="Hungary"),
     Venue(key="monza", name="Italy", country="Italy"),
+    Venue(key="madrid", name="Spain (Madrid)", country="Spain"),
     Venue(key="baku", name="Azerbaijan", country="Azerbaijan"),
+    Venue(key="losail", name="Qatar", country="Qatar"),
     Venue(key="yas-marina", name="Abu Dhabi", country="UAE"),
 ]
 
 # How many rounds are "in the books" — the rest are upcoming (predicted).
-COMPLETED_ROUNDS = 7
+COMPLETED_ROUNDS = 6
 
 # --------------------------------------------------------------------------- #
 # Teams (constructor-equivalent).
 # --------------------------------------------------------------------------- #
 TEAMS: list[Team] = [
-    Team(name="ART Grand Prix", color="#3B3B3B"),
-    Team(name="Prema Racing", color="#E2001A"),
-    Team(name="MP Motorsport", color="#F47C20"),
-    Team(name="DAMS", color="#0090D0"),
-    Team(name="Campos Racing", color="#1F3A93"),
-    Team(name="Invicta Racing", color="#8E44AD"),
-    Team(name="Hitech", color="#101820"),
-    Team(name="Rodin Motorsport", color="#00A19A"),
-    Team(name="Van Amersfoort Racing", color="#FF5A00"),
-    Team(name="Trident", color="#0050A0"),
     Team(name="AIX Racing", color="#C0392B"),
+    Team(name="ART Grand Prix", color="#5A5A5A"),
+    Team(name="Campos Racing", color="#1F3A93"),
+    Team(name="DAMS Lucas Oil", color="#0090D0"),
+    Team(name="Hitech TGR", color="#D4123A"),
+    Team(name="Invicta Racing", color="#8E44AD"),
+    Team(name="MP Motorsport", color="#F47C20"),
+    Team(name="PREMA Racing", color="#E2001A"),
+    Team(name="Rodin Motorsport", color="#00A19A"),
+    Team(name="TRIDENT", color="#0050A0"),
+    Team(name="Van Amersfoort Racing", color="#FF5A00"),
 ]
 
 # --------------------------------------------------------------------------- #
@@ -62,28 +61,28 @@ TEAMS: list[Team] = [
 # --------------------------------------------------------------------------- #
 # (code, name, team, latent_pace)  — lower latent_pace = faster (seconds proxy).
 _ROSTER: list[tuple[str, str, str, float]] = [
-    ("MAR", "Andrea Kimi Antonelli", "Prema Racing", 89.20),
-    ("HAD", "Isack Hadjar", "Campos Racing", 89.35),
-    ("BOR", "Gabriel Bortoleto", "Invicta Racing", 89.28),
-    ("MAI", "Zane Maloney", "Rodin Motorsport", 89.55),
-    ("CRA", "Jak Crawford", "DAMS", 89.60),
-    ("ARO", "Paul Aron", "Hitech", 89.62),
-    ("VES", "Richard Verschoor", "Trident", 89.70),
-    ("HAU", "Roman Stanek", "Trident", 89.95),
-    ("FOR", "Oliver Goethe", "MP Motorsport", 89.75),
-    ("VID", "Dennis Hauger", "MP Motorsport", 89.50),
-    ("COR", "Joshua Duerksen", "AIX Racing", 90.10),
-    ("BEN", "Amaury Cordeel", "Hitech", 90.20),
-    ("MAS", "Pepe Marti", "Campos Racing", 89.85),
-    ("FIT", "Kush Maini", "DAMS", 89.90),
-    ("LEC", "Enzo Fittipaldi", "Van Amersfoort Racing", 90.05),
-    ("BRO", "Taylor Barnard", "AIX Racing", 89.80),
-    ("STA", "Victor Martins", "ART Grand Prix", 89.45),
-    ("NAK", "Sami Meguetounif", "ART Grand Prix", 90.15),
-    ("VAR", "Ritomo Miyata", "Rodin Motorsport", 90.25),
-    ("COL", "Franco Colapinto", "Van Amersfoort Racing", 89.65),
-    ("IWA", "Rafael Villagomez", "Invicta Racing", 90.30),
-    ("DUR", "John Bennett", "Prema Racing", 90.00),
+    ("MIN", "Gabriele Minì", "MP Motorsport", 89.32),
+    ("DUN", "Alex Dunne", "Rodin Motorsport", 89.40),
+    ("LEO", "Noel León", "Campos Racing", 89.51),
+    ("CAM", "Rafael Câmara", "Invicta Racing", 89.59),
+    ("TSO", "Nikola Tsolov", "Campos Racing", 89.61),
+    ("BEG", "Dino Beganovic", "DAMS Lucas Oil", 89.62),
+    ("STE", "Martinius Stenshorne", "Rodin Motorsport", 89.76),
+    ("MAI", "Kush Maini", "ART Grand Prix", 89.77),
+    ("VAN", "Laurens van Hoepen", "TRIDENT", 89.86),
+    ("INT", "Tasanapol Inthraphuvasak", "ART Grand Prix", 89.94),
+    ("MIY", "Ritomo Miyata", "Hitech TGR", 89.94),
+    ("DUR", "Joshua Dürksen", "Invicta Racing", 89.96),
+    ("MON", "Sebastián Montoya", "PREMA Racing", 90.01),
+    ("BIL", "Roman Bilinski", "DAMS Lucas Oil", 90.07),
+    ("GOE", "Oliver Goethe", "MP Motorsport", 90.12),
+    ("HER", "Cian Herta", "Hitech TGR", 90.15),
+    ("FIT", "Enzo Fittipaldi", "AIX Racing", 90.33),
+    ("VAR", "Nicola Varrone", "Van Amersfoort Racing", 90.36),
+    ("BOY", "Mari Boya", "PREMA Racing", 90.43),
+    ("BEN", "John Bennett", "TRIDENT", 90.52),
+    ("VIL", "Rafael Villagómez", "Van Amersfoort Racing", 90.53),
+    ("SHI", "Callum Shields", "AIX Racing", 90.82),
 ]
 
 DRIVERS: list[dict[str, str]] = [

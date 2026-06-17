@@ -1,29 +1,13 @@
 {
   "sport": "Formula 2",
   "season": 2026,
-  "generatedAt": "2026-06-17T07:53:45+00:00",
-  "completedRounds": 7,
-  "lastUpdatedRound": 7,
-  "totalRounds": 13,
+  "generatedAt": "2026-06-17T13:29:17+00:00",
+  "completedRounds": 6,
+  "lastUpdatedRound": 6,
+  "totalRounds": 12,
   "calendar": [
     {
       "round": 1,
-      "key": "sakhir",
-      "name": "Bahrain",
-      "country": "Bahrain",
-      "completed": true,
-      "dataSource": "synthetic"
-    },
-    {
-      "round": 2,
-      "key": "jeddah",
-      "name": "Saudi Arabia",
-      "country": "Saudi Arabia",
-      "completed": true,
-      "dataSource": "synthetic"
-    },
-    {
-      "round": 3,
       "key": "melbourne",
       "name": "Australia",
       "country": "Australia",
@@ -31,15 +15,7 @@
       "dataSource": "synthetic"
     },
     {
-      "round": 4,
-      "key": "imola",
-      "name": "Emilia-Romagna",
-      "country": "Italy",
-      "completed": true,
-      "dataSource": "synthetic"
-    },
-    {
-      "round": 5,
+      "round": 2,
       "key": "monaco",
       "name": "Monaco",
       "country": "Monaco",
@@ -47,15 +23,7 @@
       "dataSource": "synthetic"
     },
     {
-      "round": 6,
-      "key": "catalunya",
-      "name": "Spain",
-      "country": "Spain",
-      "completed": true,
-      "dataSource": "synthetic"
-    },
-    {
-      "round": 7,
+      "round": 3,
       "key": "spielberg",
       "name": "Austria",
       "country": "Austria",
@@ -63,15 +31,31 @@
       "dataSource": "synthetic"
     },
     {
-      "round": 8,
+      "round": 4,
+      "key": "catalunya",
+      "name": "Spain",
+      "country": "Spain",
+      "completed": true,
+      "dataSource": "synthetic"
+    },
+    {
+      "round": 5,
       "key": "silverstone",
       "name": "Great Britain",
       "country": "United Kingdom",
-      "completed": false,
-      "dataSource": null
+      "completed": true,
+      "dataSource": "synthetic"
     },
     {
-      "round": 9,
+      "round": 6,
+      "key": "spa",
+      "name": "Belgium",
+      "country": "Belgium",
+      "completed": true,
+      "dataSource": "synthetic"
+    },
+    {
+      "round": 7,
       "key": "hungaroring",
       "name": "Hungary",
       "country": "Hungary",
@@ -79,15 +63,7 @@
       "dataSource": null
     },
     {
-      "round": 10,
-      "key": "spa",
-      "name": "Belgium",
-      "country": "Belgium",
-      "completed": false,
-      "dataSource": null
-    },
-    {
-      "round": 11,
+      "round": 8,
       "key": "monza",
       "name": "Italy",
       "country": "Italy",
@@ -95,7 +71,15 @@
       "dataSource": null
     },
     {
-      "round": 12,
+      "round": 9,
+      "key": "madrid",
+      "name": "Spain (Madrid)",
+      "country": "Spain",
+      "completed": false,
+      "dataSource": null
+    },
+    {
+      "round": 10,
       "key": "baku",
       "name": "Azerbaijan",
       "country": "Azerbaijan",
@@ -103,7 +87,15 @@
       "dataSource": null
     },
     {
-      "round": 13,
+      "round": 11,
+      "key": "losail",
+      "name": "Qatar",
+      "country": "Qatar",
+      "completed": false,
+      "dataSource": null
+    },
+    {
+      "round": 12,
       "key": "yas-marina",
       "name": "Abu Dhabi",
       "country": "UAE",
@@ -114,372 +106,353 @@
   "driverStandings": [
     {
       "position": 1,
-      "code": "MAR",
-      "name": "Andrea Kimi Antonelli",
-      "team": "Prema Racing",
-      "teamColor": "#E2001A",
-      "points": 147.0,
+      "code": "MIN",
+      "name": "Gabriele Min\u00ec",
+      "team": "MP Motorsport",
+      "teamColor": "#F47C20",
+      "points": 135.0,
       "wins": 6,
-      "podiums": 7,
+      "podiums": 6,
       "pointsHistory": [
-        20.0,
-        38.0,
-        42.0,
-        68.0,
-        93.0,
-        128.0,
-        147.0
+        22.0,
+        40.0,
+        48.0,
+        74.0,
+        100.0,
+        135.0
       ]
     },
     {
       "position": 2,
-      "code": "VES",
-      "name": "Richard Verschoor",
-      "team": "Trident",
-      "teamColor": "#0050A0",
-      "points": 102.0,
-      "wins": 2,
-      "podiums": 4,
+      "code": "TSO",
+      "name": "Nikola Tsolov",
+      "team": "Campos Racing",
+      "teamColor": "#1F3A93",
+      "points": 90.0,
+      "wins": 0,
+      "podiums": 5,
       "pointsHistory": [
-        1.0,
-        23.0,
-        48.0,
-        53.0,
-        58.0,
-        69.0,
-        102.0
+        18.0,
+        26.0,
+        44.0,
+        68.0,
+        78.0,
+        90.0
       ]
     },
     {
       "position": 3,
-      "code": "STA",
-      "name": "Victor Martins",
-      "team": "ART Grand Prix",
-      "teamColor": "#3B3B3B",
-      "points": 100.0,
-      "wins": 1,
-      "podiums": 5,
+      "code": "STE",
+      "name": "Martinius Stenshorne",
+      "team": "Rodin Motorsport",
+      "teamColor": "#00A19A",
+      "points": 85.0,
+      "wins": 2,
+      "podiums": 3,
       "pointsHistory": [
-        14.0,
-        37.0,
-        62.0,
-        72.0,
+        2.0,
+        32.0,
+        57.0,
+        70.0,
         76.0,
-        80.0,
-        100.0
+        85.0
       ]
     },
     {
       "position": 4,
-      "code": "BOR",
-      "name": "Gabriel Bortoleto",
-      "team": "Invicta Racing",
-      "teamColor": "#8E44AD",
-      "points": 91.0,
-      "wins": 0,
-      "podiums": 7,
+      "code": "DUN",
+      "name": "Alex Dunne",
+      "team": "Rodin Motorsport",
+      "teamColor": "#00A19A",
+      "points": 72.0,
+      "wins": 2,
+      "podiums": 4,
       "pointsHistory": [
-        8.0,
-        14.0,
-        19.0,
-        39.0,
-        57.0,
-        83.0,
-        91.0
+        15.0,
+        27.0,
+        38.0,
+        46.0,
+        56.0,
+        72.0
       ]
     },
     {
       "position": 5,
-      "code": "CRA",
-      "name": "Jak Crawford",
-      "team": "DAMS",
-      "teamColor": "#0090D0",
-      "points": 78.0,
-      "wins": 1,
-      "podiums": 3,
+      "code": "LEO",
+      "name": "Noel Le\u00f3n",
+      "team": "Campos Racing",
+      "teamColor": "#1F3A93",
+      "points": 72.0,
+      "wins": 0,
+      "podiums": 5,
       "pointsHistory": [
-        18.0,
-        23.0,
-        33.0,
-        52.0,
-        58.0,
-        68.0,
-        78.0
+        8.0,
+        16.0,
+        21.0,
+        36.0,
+        46.0,
+        72.0
       ]
     },
     {
       "position": 6,
-      "code": "HAD",
-      "name": "Isack Hadjar",
-      "team": "Campos Racing",
-      "teamColor": "#1F3A93",
-      "points": 76.0,
-      "wins": 1,
-      "podiums": 4,
+      "code": "BEG",
+      "name": "Dino Beganovic",
+      "team": "DAMS Lucas Oil",
+      "teamColor": "#0090D0",
+      "points": 70.0,
+      "wins": 0,
+      "podiums": 2,
       "pointsHistory": [
+        11.0,
         15.0,
-        22.0,
-        30.0,
-        38.0,
-        48.0,
-        63.0,
-        76.0
+        34.0,
+        46.0,
+        66.0,
+        70.0
       ]
     },
     {
       "position": 7,
-      "code": "VID",
-      "name": "Dennis Hauger",
-      "team": "MP Motorsport",
-      "teamColor": "#F47C20",
-      "points": 62.0,
+      "code": "VAN",
+      "name": "Laurens van Hoepen",
+      "team": "TRIDENT",
+      "teamColor": "#0050A0",
+      "points": 56.0,
       "wins": 1,
       "podiums": 3,
       "pointsHistory": [
-        12.0,
-        37.0,
-        45.0,
-        59.0,
-        62.0,
-        62.0,
-        62.0
+        16.0,
+        22.0,
+        40.0,
+        51.0,
+        51.0,
+        56.0
       ]
     },
     {
       "position": 8,
-      "code": "ARO",
-      "name": "Paul Aron",
-      "team": "Hitech",
-      "teamColor": "#101820",
-      "points": 49.0,
+      "code": "MAI",
+      "name": "Kush Maini",
+      "team": "ART Grand Prix",
+      "teamColor": "#5A5A5A",
+      "points": 56.0,
       "wins": 0,
-      "podiums": 1,
+      "podiums": 2,
       "pointsHistory": [
-        2.0,
-        5.0,
-        18.0,
-        30.0,
-        44.0,
-        44.0,
-        49.0
+        0.0,
+        4.0,
+        22.0,
+        35.0,
+        41.0,
+        56.0
       ]
     },
     {
       "position": 9,
-      "code": "FOR",
-      "name": "Oliver Goethe",
-      "team": "MP Motorsport",
-      "teamColor": "#F47C20",
-      "points": 47.0,
-      "wins": 1,
+      "code": "CAM",
+      "name": "Rafael C\u00e2mara",
+      "team": "Invicta Racing",
+      "teamColor": "#8E44AD",
+      "points": 46.0,
+      "wins": 0,
       "podiums": 2,
       "pointsHistory": [
-        13.0,
-        17.0,
-        33.0,
-        43.0,
-        43.0,
-        47.0,
-        47.0
+        7.0,
+        22.0,
+        22.0,
+        28.0,
+        46.0,
+        46.0
       ]
     },
     {
       "position": 10,
-      "code": "DUR",
-      "name": "John Bennett",
-      "team": "Prema Racing",
-      "teamColor": "#E2001A",
-      "points": 40.0,
+      "code": "INT",
+      "name": "Tasanapol Inthraphuvasak",
+      "team": "ART Grand Prix",
+      "teamColor": "#5A5A5A",
+      "points": 30.0,
       "wins": 0,
-      "podiums": 2,
+      "podiums": 1,
       "pointsHistory": [
-        0.0,
-        2.0,
-        20.0,
-        20.0,
-        20.0,
-        40.0,
-        40.0
+        6.0,
+        24.0,
+        28.0,
+        30.0,
+        30.0,
+        30.0
       ]
     },
     {
       "position": 11,
-      "code": "MAI",
-      "name": "Zane Maloney",
-      "team": "Rodin Motorsport",
-      "teamColor": "#00A19A",
-      "points": 40.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        4.0,
-        16.0,
-        16.0,
-        16.0,
-        28.0,
-        28.0,
-        40.0
-      ]
-    },
-    {
-      "position": 12,
-      "code": "FIT",
-      "name": "Kush Maini",
-      "team": "DAMS",
-      "teamColor": "#0090D0",
-      "points": 34.0,
-      "wins": 0,
-      "podiums": 1,
-      "pointsHistory": [
-        0.0,
-        0.0,
-        2.0,
-        2.0,
-        24.0,
-        24.0,
-        34.0
-      ]
-    },
-    {
-      "position": 13,
-      "code": "COL",
-      "name": "Franco Colapinto",
-      "team": "Van Amersfoort Racing",
-      "teamColor": "#FF5A00",
+      "code": "MON",
+      "name": "Sebasti\u00e1n Montoya",
+      "team": "PREMA Racing",
+      "teamColor": "#E2001A",
       "points": 28.0,
-      "wins": 0,
+      "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        4.0,
-        7.0,
-        9.0,
-        10.0,
+        27.0,
+        28.0,
+        28.0,
         28.0,
         28.0,
         28.0
       ]
     },
     {
-      "position": 14,
-      "code": "MAS",
-      "name": "Pepe Marti",
-      "team": "Campos Racing",
-      "teamColor": "#1F3A93",
-      "points": 27.0,
-      "wins": 1,
+      "position": 12,
+      "code": "MIY",
+      "name": "Ritomo Miyata",
+      "team": "Hitech TGR",
+      "teamColor": "#D4123A",
+      "points": 23.0,
+      "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        26.0,
-        26.0,
-        26.0,
-        26.0,
-        26.0,
-        26.0,
-        27.0
+        4.0,
+        7.0,
+        7.0,
+        7.0,
+        17.0,
+        23.0
+      ]
+    },
+    {
+      "position": 13,
+      "code": "GOE",
+      "name": "Oliver Goethe",
+      "team": "MP Motorsport",
+      "teamColor": "#F47C20",
+      "points": 22.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        4.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        22.0
+      ]
+    },
+    {
+      "position": 14,
+      "code": "BIL",
+      "name": "Roman Bilinski",
+      "team": "DAMS Lucas Oil",
+      "teamColor": "#0090D0",
+      "points": 18.0,
+      "wins": 0,
+      "podiums": 1,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        18.0,
+        18.0
       ]
     },
     {
       "position": 15,
-      "code": "LEC",
-      "name": "Enzo Fittipaldi",
-      "team": "Van Amersfoort Racing",
-      "teamColor": "#FF5A00",
-      "points": 21.0,
+      "code": "DUR",
+      "name": "Joshua D\u00fcrksen",
+      "team": "Invicta Racing",
+      "teamColor": "#8E44AD",
+      "points": 14.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        3.0,
-        13.0,
-        13.0,
-        13.0,
-        13.0,
-        15.0,
-        21.0
+        0.0,
+        0.0,
+        8.0,
+        10.0,
+        14.0,
+        14.0
       ]
     },
     {
       "position": 16,
-      "code": "BRO",
-      "name": "Taylor Barnard",
-      "team": "AIX Racing",
-      "teamColor": "#C0392B",
-      "points": 17.0,
+      "code": "HER",
+      "name": "Cian Herta",
+      "team": "Hitech TGR",
+      "teamColor": "#D4123A",
+      "points": 9.0,
       "wins": 0,
-      "podiums": 1,
+      "podiums": 0,
       "pointsHistory": [
         0.0,
         0.0,
         0.0,
-        9.0,
-        10.0,
-        17.0,
-        17.0
+        4.0,
+        4.0,
+        9.0
       ]
     },
     {
       "position": 17,
-      "code": "HAU",
-      "name": "Roman Stanek",
-      "team": "Trident",
-      "teamColor": "#0050A0",
-      "points": 15.0,
+      "code": "FIT",
+      "name": "Enzo Fittipaldi",
+      "team": "AIX Racing",
+      "teamColor": "#C0392B",
+      "points": 5.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
         0.0,
-        0.0,
-        4.0,
-        4.0,
-        6.0,
-        12.0,
-        15.0
+        1.0,
+        5.0,
+        5.0,
+        5.0,
+        5.0
       ]
     },
     {
       "position": 18,
-      "code": "IWA",
-      "name": "Rafael Villagomez",
-      "team": "Invicta Racing",
-      "teamColor": "#8E44AD",
-      "points": 6.0,
+      "code": "VIL",
+      "name": "Rafael Villag\u00f3mez",
+      "team": "Van Amersfoort Racing",
+      "teamColor": "#FF5A00",
+      "points": 4.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
         0.0,
         0.0,
         0.0,
-        6.0,
-        6.0,
-        6.0,
-        6.0
+        4.0,
+        4.0,
+        4.0
       ]
     },
     {
       "position": 19,
-      "code": "COR",
-      "name": "Joshua Duerksen",
+      "code": "SHI",
+      "name": "Callum Shields",
       "team": "AIX Racing",
       "teamColor": "#C0392B",
-      "points": 0.0,
+      "points": 3.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
         0.0,
         0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        2.0,
+        2.0,
+        2.0,
+        3.0
       ]
     },
     {
       "position": 20,
       "code": "VAR",
-      "name": "Ritomo Miyata",
-      "team": "Rodin Motorsport",
-      "teamColor": "#00A19A",
-      "points": 0.0,
+      "name": "Nicola Varrone",
+      "team": "Van Amersfoort Racing",
+      "teamColor": "#FF5A00",
+      "points": 2.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -487,22 +460,20 @@
         0.0,
         0.0,
         0.0,
-        0.0,
-        0.0,
-        0.0
+        2.0,
+        2.0
       ]
     },
     {
       "position": 21,
-      "code": "NAK",
-      "name": "Sami Meguetounif",
-      "team": "ART Grand Prix",
-      "teamColor": "#3B3B3B",
+      "code": "BOY",
+      "name": "Mari Boya",
+      "team": "PREMA Racing",
+      "teamColor": "#E2001A",
       "points": 0.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        0.0,
         0.0,
         0.0,
         0.0,
@@ -514,14 +485,13 @@
     {
       "position": 22,
       "code": "BEN",
-      "name": "Amaury Cordeel",
-      "team": "Hitech",
-      "teamColor": "#101820",
+      "name": "John Bennett",
+      "team": "TRIDENT",
+      "teamColor": "#0050A0",
       "points": 0.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        0.0,
         0.0,
         0.0,
         0.0,
@@ -534,779 +504,768 @@
   "teamStandings": [
     {
       "position": 1,
-      "team": "Prema Racing",
-      "teamColor": "#E2001A",
-      "points": 187.0,
-      "wins": 6,
-      "podiums": 9,
+      "team": "Campos Racing",
+      "teamColor": "#1F3A93",
+      "points": 162.0,
+      "wins": 0,
+      "podiums": 10,
       "pointsHistory": [
-        20.0,
-        40.0,
-        62.0,
-        88.0,
-        113.0,
-        168.0,
-        187.0
+        26.0,
+        42.0,
+        65.0,
+        104.0,
+        124.0,
+        162.0
       ]
     },
     {
       "position": 2,
-      "team": "Trident",
-      "teamColor": "#0050A0",
-      "points": 117.0,
-      "wins": 2,
-      "podiums": 4,
+      "team": "MP Motorsport",
+      "teamColor": "#F47C20",
+      "points": 157.0,
+      "wins": 6,
+      "podiums": 6,
       "pointsHistory": [
-        1.0,
-        23.0,
-        52.0,
-        57.0,
+        26.0,
+        56.0,
         64.0,
-        81.0,
-        117.0
+        90.0,
+        116.0,
+        157.0
       ]
     },
     {
       "position": 3,
-      "team": "DAMS",
-      "teamColor": "#0090D0",
-      "points": 112.0,
-      "wins": 1,
-      "podiums": 4,
+      "team": "Rodin Motorsport",
+      "teamColor": "#00A19A",
+      "points": 157.0,
+      "wins": 4,
+      "podiums": 7,
       "pointsHistory": [
-        18.0,
-        23.0,
-        35.0,
-        54.0,
-        82.0,
-        92.0,
-        112.0
+        17.0,
+        59.0,
+        95.0,
+        116.0,
+        132.0,
+        157.0
       ]
     },
     {
       "position": 4,
-      "team": "MP Motorsport",
-      "teamColor": "#F47C20",
-      "points": 109.0,
-      "wins": 2,
-      "podiums": 5,
+      "team": "DAMS Lucas Oil",
+      "teamColor": "#0090D0",
+      "points": 88.0,
+      "wins": 0,
+      "podiums": 3,
       "pointsHistory": [
-        25.0,
-        54.0,
-        78.0,
-        102.0,
-        105.0,
-        109.0,
-        109.0
+        11.0,
+        15.0,
+        34.0,
+        46.0,
+        84.0,
+        88.0
       ]
     },
     {
       "position": 5,
-      "team": "Campos Racing",
-      "teamColor": "#1F3A93",
-      "points": 103.0,
-      "wins": 2,
-      "podiums": 5,
+      "team": "ART Grand Prix",
+      "teamColor": "#5A5A5A",
+      "points": 86.0,
+      "wins": 0,
+      "podiums": 3,
       "pointsHistory": [
-        41.0,
-        48.0,
-        56.0,
-        64.0,
-        74.0,
-        89.0,
-        103.0
+        6.0,
+        28.0,
+        50.0,
+        65.0,
+        71.0,
+        86.0
       ]
     },
     {
       "position": 6,
-      "team": "ART Grand Prix",
-      "teamColor": "#3B3B3B",
-      "points": 100.0,
-      "wins": 1,
-      "podiums": 5,
+      "team": "Invicta Racing",
+      "teamColor": "#8E44AD",
+      "points": 60.0,
+      "wins": 0,
+      "podiums": 2,
       "pointsHistory": [
-        14.0,
-        37.0,
-        62.0,
-        72.0,
-        76.0,
-        80.0,
-        100.0
+        7.0,
+        22.0,
+        30.0,
+        38.0,
+        60.0,
+        60.0
       ]
     },
     {
       "position": 7,
-      "team": "Invicta Racing",
-      "teamColor": "#8E44AD",
-      "points": 97.0,
-      "wins": 0,
-      "podiums": 7,
+      "team": "TRIDENT",
+      "teamColor": "#0050A0",
+      "points": 56.0,
+      "wins": 1,
+      "podiums": 3,
       "pointsHistory": [
-        8.0,
-        14.0,
-        19.0,
-        45.0,
-        63.0,
-        89.0,
-        97.0
+        16.0,
+        22.0,
+        40.0,
+        51.0,
+        51.0,
+        56.0
       ]
     },
     {
       "position": 8,
-      "team": "Van Amersfoort Racing",
-      "teamColor": "#FF5A00",
-      "points": 49.0,
+      "team": "Hitech TGR",
+      "teamColor": "#D4123A",
+      "points": 32.0,
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
+        4.0,
         7.0,
-        20.0,
-        22.0,
-        23.0,
-        41.0,
-        43.0,
-        49.0
+        7.0,
+        11.0,
+        21.0,
+        32.0
       ]
     },
     {
       "position": 9,
-      "team": "Hitech",
-      "teamColor": "#101820",
-      "points": 49.0,
-      "wins": 0,
+      "team": "PREMA Racing",
+      "teamColor": "#E2001A",
+      "points": 28.0,
+      "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        2.0,
-        5.0,
-        18.0,
-        30.0,
-        44.0,
-        44.0,
-        49.0
+        27.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0
       ]
     },
     {
       "position": 10,
-      "team": "Rodin Motorsport",
-      "teamColor": "#00A19A",
-      "points": 40.0,
+      "team": "AIX Racing",
+      "teamColor": "#C0392B",
+      "points": 8.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        4.0,
-        16.0,
-        16.0,
-        16.0,
-        28.0,
-        28.0,
-        40.0
+        0.0,
+        1.0,
+        7.0,
+        7.0,
+        7.0,
+        8.0
       ]
     },
     {
       "position": 11,
-      "team": "AIX Racing",
-      "teamColor": "#C0392B",
-      "points": 17.0,
+      "team": "Van Amersfoort Racing",
+      "teamColor": "#FF5A00",
+      "points": 6.0,
       "wins": 0,
-      "podiums": 1,
+      "podiums": 0,
       "pointsHistory": [
         0.0,
         0.0,
         0.0,
-        9.0,
-        10.0,
-        17.0,
-        17.0
+        4.0,
+        6.0,
+        6.0
       ]
     }
   ],
   "championship": [
     {
-      "code": "MAR",
-      "name": "Andrea Kimi Antonelli",
-      "team": "Prema Racing",
-      "pTitle": 1.0,
-      "currentPoints": 147.0,
-      "projMean": 302.198,
-      "projP10": 283.0,
-      "projP90": 322.0,
-      "maxAttainable": 375.0,
+      "code": "MIN",
+      "name": "Gabriele Min\u00ec",
+      "team": "MP Motorsport",
+      "pTitle": 0.9998,
+      "currentPoints": 135.0,
+      "projMean": 284.561,
+      "projP10": 264.0,
+      "projP90": 305.0,
+      "maxAttainable": 363.0,
       "canStillWin": true
     },
     {
-      "code": "HAD",
-      "name": "Isack Hadjar",
+      "code": "TSO",
+      "name": "Nikola Tsolov",
+      "team": "Campos Racing",
+      "pTitle": 0.0003,
+      "currentPoints": 90.0,
+      "projMean": 187.71975,
+      "projP10": 165.0,
+      "projP90": 211.0,
+      "maxAttainable": 318.0,
+      "canStillWin": true
+    },
+    {
+      "code": "DUN",
+      "name": "Alex Dunne",
+      "team": "Rodin Motorsport",
+      "pTitle": 0.0,
+      "currentPoints": 72.0,
+      "projMean": 165.7575,
+      "projP10": 143.0,
+      "projP90": 190.0,
+      "maxAttainable": 300.0,
+      "canStillWin": true
+    },
+    {
+      "code": "LEO",
+      "name": "Noel Le\u00f3n",
       "team": "Campos Racing",
       "pTitle": 0.0,
-      "currentPoints": 76.0,
-      "projMean": 164.17675,
-      "projP10": 142.0,
-      "projP90": 188.0,
-      "maxAttainable": 304.0,
+      "currentPoints": 72.0,
+      "projMean": 190.1955,
+      "projP10": 168.0,
+      "projP90": 213.0,
+      "maxAttainable": 300.0,
       "canStillWin": true
     },
     {
-      "code": "BOR",
-      "name": "Gabriel Bortoleto",
+      "code": "CAM",
+      "name": "Rafael C\u00e2mara",
       "team": "Invicta Racing",
       "pTitle": 0.0,
-      "currentPoints": 91.0,
-      "projMean": 214.819,
-      "projP10": 193.0,
-      "projP90": 237.0,
-      "maxAttainable": 319.0,
+      "currentPoints": 46.0,
+      "projMean": 83.0595,
+      "projP10": 64.90000000000003,
+      "projP90": 104.0,
+      "maxAttainable": 274.0,
+      "canStillWin": true
+    },
+    {
+      "code": "BEG",
+      "name": "Dino Beganovic",
+      "team": "DAMS Lucas Oil",
+      "pTitle": 0.0,
+      "currentPoints": 70.0,
+      "projMean": 140.57,
+      "projP10": 118.0,
+      "projP90": 164.0,
+      "maxAttainable": 298.0,
+      "canStillWin": true
+    },
+    {
+      "code": "STE",
+      "name": "Martinius Stenshorne",
+      "team": "Rodin Motorsport",
+      "pTitle": 0.0,
+      "currentPoints": 85.0,
+      "projMean": 154.3965,
+      "projP10": 133.0,
+      "projP90": 178.0,
+      "maxAttainable": 313.0,
       "canStillWin": true
     },
     {
       "code": "MAI",
-      "name": "Zane Maloney",
-      "team": "Rodin Motorsport",
+      "name": "Kush Maini",
+      "team": "ART Grand Prix",
       "pTitle": 0.0,
-      "currentPoints": 40.0,
-      "projMean": 63.79875,
-      "projP10": 48.0,
-      "projP90": 82.0,
-      "maxAttainable": 268.0,
+      "currentPoints": 56.0,
+      "projMean": 123.63625,
+      "projP10": 102.0,
+      "projP90": 147.0,
+      "maxAttainable": 284.0,
       "canStillWin": true
     },
     {
-      "code": "CRA",
-      "name": "Jak Crawford",
-      "team": "DAMS",
+      "code": "VAN",
+      "name": "Laurens van Hoepen",
+      "team": "TRIDENT",
       "pTitle": 0.0,
-      "currentPoints": 78.0,
-      "projMean": 140.77425,
-      "projP10": 119.0,
-      "projP90": 164.0,
-      "maxAttainable": 306.0,
+      "currentPoints": 56.0,
+      "projMean": 94.04525,
+      "projP10": 75.0,
+      "projP90": 115.0,
+      "maxAttainable": 284.0,
       "canStillWin": true
     },
     {
-      "code": "ARO",
-      "name": "Paul Aron",
-      "team": "Hitech",
+      "code": "INT",
+      "name": "Tasanapol Inthraphuvasak",
+      "team": "ART Grand Prix",
       "pTitle": 0.0,
-      "currentPoints": 49.0,
-      "projMean": 90.7925,
-      "projP10": 71.0,
-      "projP90": 112.0,
-      "maxAttainable": 277.0,
+      "currentPoints": 30.0,
+      "projMean": 38.7855,
+      "projP10": 30.0,
+      "projP90": 51.0,
+      "maxAttainable": 258.0,
       "canStillWin": true
     },
     {
-      "code": "VES",
-      "name": "Richard Verschoor",
-      "team": "Trident",
+      "code": "MIY",
+      "name": "Ritomo Miyata",
+      "team": "Hitech TGR",
       "pTitle": 0.0,
-      "currentPoints": 102.0,
-      "projMean": 203.83475,
-      "projP10": 181.0,
-      "projP90": 226.0,
-      "maxAttainable": 330.0,
+      "currentPoints": 23.0,
+      "projMean": 36.40675,
+      "projP10": 25.0,
+      "projP90": 51.0,
+      "maxAttainable": 251.0,
       "canStillWin": true
     },
     {
-      "code": "HAU",
-      "name": "Roman Stanek",
-      "team": "Trident",
+      "code": "DUR",
+      "name": "Joshua D\u00fcrksen",
+      "team": "Invicta Racing",
       "pTitle": 0.0,
-      "currentPoints": 15.0,
-      "projMean": 29.61325,
-      "projP10": 17.0,
-      "projP90": 45.0,
-      "maxAttainable": 243.0,
+      "currentPoints": 14.0,
+      "projMean": 32.89375,
+      "projP10": 19.0,
+      "projP90": 50.0,
+      "maxAttainable": 242.0,
       "canStillWin": true
     },
     {
-      "code": "FOR",
+      "code": "MON",
+      "name": "Sebasti\u00e1n Montoya",
+      "team": "PREMA Racing",
+      "pTitle": 0.0,
+      "currentPoints": 28.0,
+      "projMean": 33.35825,
+      "projP10": 28.0,
+      "projP90": 43.0,
+      "maxAttainable": 256.0,
+      "canStillWin": true
+    },
+    {
+      "code": "BIL",
+      "name": "Roman Bilinski",
+      "team": "DAMS Lucas Oil",
+      "pTitle": 0.0,
+      "currentPoints": 18.0,
+      "projMean": 28.617,
+      "projP10": 19.0,
+      "projP90": 42.0,
+      "maxAttainable": 246.0,
+      "canStillWin": true
+    },
+    {
+      "code": "GOE",
       "name": "Oliver Goethe",
       "team": "MP Motorsport",
       "pTitle": 0.0,
-      "currentPoints": 47.0,
-      "projMean": 73.103,
-      "projP10": 56.0,
-      "projP90": 92.0,
-      "maxAttainable": 275.0,
+      "currentPoints": 22.0,
+      "projMean": 34.632,
+      "projP10": 23.0,
+      "projP90": 49.0,
+      "maxAttainable": 250.0,
       "canStillWin": true
     },
     {
-      "code": "VID",
-      "name": "Dennis Hauger",
-      "team": "MP Motorsport",
+      "code": "HER",
+      "name": "Cian Herta",
+      "team": "Hitech TGR",
       "pTitle": 0.0,
-      "currentPoints": 62.0,
-      "projMean": 83.0065,
-      "projP10": 68.0,
-      "projP90": 101.0,
-      "maxAttainable": 290.0,
+      "currentPoints": 9.0,
+      "projMean": 18.90375,
+      "projP10": 9.0,
+      "projP90": 32.0,
+      "maxAttainable": 237.0,
       "canStillWin": true
     },
     {
-      "code": "COR",
-      "name": "Joshua Duerksen",
+      "code": "FIT",
+      "name": "Enzo Fittipaldi",
       "team": "AIX Racing",
       "pTitle": 0.0,
+      "currentPoints": 5.0,
+      "projMean": 7.211,
+      "projP10": 5.0,
+      "projP90": 13.0,
+      "maxAttainable": 233.0,
+      "canStillWin": true
+    },
+    {
+      "code": "VAR",
+      "name": "Nicola Varrone",
+      "team": "Van Amersfoort Racing",
+      "pTitle": 0.0,
+      "currentPoints": 2.0,
+      "projMean": 7.31025,
+      "projP10": 2.0,
+      "projP90": 17.0,
+      "maxAttainable": 230.0,
+      "canStillWin": true
+    },
+    {
+      "code": "BOY",
+      "name": "Mari Boya",
+      "team": "PREMA Racing",
+      "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 2.0395,
+      "projMean": 1.76375,
       "projP10": 0.0,
-      "projP90": 7.0,
+      "projP90": 6.0,
       "maxAttainable": 228.0,
       "canStillWin": true
     },
     {
       "code": "BEN",
-      "name": "Amaury Cordeel",
-      "team": "Hitech",
+      "name": "John Bennett",
+      "team": "TRIDENT",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 0.68725,
+      "projMean": 1.634,
       "projP10": 0.0,
-      "projP90": 2.0,
+      "projP90": 6.0,
       "maxAttainable": 228.0,
       "canStillWin": true
     },
     {
-      "code": "MAS",
-      "name": "Pepe Marti",
-      "team": "Campos Racing",
-      "pTitle": 0.0,
-      "currentPoints": 27.0,
-      "projMean": 39.22375,
-      "projP10": 28.0,
-      "projP90": 53.0,
-      "maxAttainable": 255.0,
-      "canStillWin": true
-    },
-    {
-      "code": "FIT",
-      "name": "Kush Maini",
-      "team": "DAMS",
-      "pTitle": 0.0,
-      "currentPoints": 34.0,
-      "projMean": 49.40425,
-      "projP10": 37.0,
-      "projP90": 65.0,
-      "maxAttainable": 262.0,
-      "canStillWin": true
-    },
-    {
-      "code": "LEC",
-      "name": "Enzo Fittipaldi",
+      "code": "VIL",
+      "name": "Rafael Villag\u00f3mez",
       "team": "Van Amersfoort Racing",
       "pTitle": 0.0,
-      "currentPoints": 21.0,
-      "projMean": 28.51125,
-      "projP10": 21.0,
-      "projP90": 40.0,
-      "maxAttainable": 249.0,
+      "currentPoints": 4.0,
+      "projMean": 9.295,
+      "projP10": 4.0,
+      "projP90": 19.0,
+      "maxAttainable": 232.0,
       "canStillWin": true
     },
     {
-      "code": "BRO",
-      "name": "Taylor Barnard",
+      "code": "SHI",
+      "name": "Callum Shields",
       "team": "AIX Racing",
       "pTitle": 0.0,
-      "currentPoints": 17.0,
-      "projMean": 28.288,
-      "projP10": 18.0,
-      "projP90": 42.0,
-      "maxAttainable": 245.0,
-      "canStillWin": true
-    },
-    {
-      "code": "STA",
-      "name": "Victor Martins",
-      "team": "ART Grand Prix",
-      "pTitle": 0.0,
-      "currentPoints": 100.0,
-      "projMean": 183.899,
-      "projP10": 161.0,
-      "projP90": 208.0,
-      "maxAttainable": 328.0,
-      "canStillWin": true
-    },
-    {
-      "code": "NAK",
-      "name": "Sami Meguetounif",
-      "team": "ART Grand Prix",
-      "pTitle": 0.0,
-      "currentPoints": 0.0,
-      "projMean": 2.7605,
-      "projP10": 0.0,
-      "projP90": 9.0,
-      "maxAttainable": 228.0,
-      "canStillWin": true
-    },
-    {
-      "code": "VAR",
-      "name": "Ritomo Miyata",
-      "team": "Rodin Motorsport",
-      "pTitle": 0.0,
-      "currentPoints": 0.0,
-      "projMean": 2.82375,
-      "projP10": 0.0,
-      "projP90": 10.0,
-      "maxAttainable": 228.0,
-      "canStillWin": true
-    },
-    {
-      "code": "COL",
-      "name": "Franco Colapinto",
-      "team": "Van Amersfoort Racing",
-      "pTitle": 0.0,
-      "currentPoints": 28.0,
-      "projMean": 49.08175,
-      "projP10": 34.0,
-      "projP90": 67.0,
-      "maxAttainable": 256.0,
-      "canStillWin": true
-    },
-    {
-      "code": "IWA",
-      "name": "Rafael Villagomez",
-      "team": "Invicta Racing",
-      "pTitle": 0.0,
-      "currentPoints": 6.0,
-      "projMean": 16.06525,
-      "projP10": 6.0,
-      "projP90": 30.0,
-      "maxAttainable": 234.0,
-      "canStillWin": true
-    },
-    {
-      "code": "DUR",
-      "name": "John Bennett",
-      "team": "Prema Racing",
-      "pTitle": 0.0,
-      "currentPoints": 40.0,
-      "projMean": 51.099,
-      "projP10": 41.0,
-      "projP90": 65.0,
-      "maxAttainable": 268.0,
+      "currentPoints": 3.0,
+      "projMean": 5.24775,
+      "projP10": 3.0,
+      "projP90": 11.0,
+      "maxAttainable": 231.0,
       "canStillWin": true
     }
   ],
   "seasonAccuracy": {
-    "roundsScored": 7,
-    "meanPositionError": 5.273,
+    "roundsScored": 6,
+    "meanPositionError": 4.667,
     "podiumHitRate": 0.3333,
-    "winnerHitRate": 0.2857
+    "winnerHitRate": 0.3333
   },
   "nextPrediction": {
     "season": 2026,
-    "round": 8,
-    "venueKey": "silverstone",
-    "venueName": "Great Britain",
+    "round": 7,
+    "venueKey": "hungaroring",
+    "venueName": "Hungary",
     "qualifying": [
       {
         "position": 1,
-        "code": "MAR",
-        "name": "Andrea Kimi Antonelli",
-        "team": "Prema Racing"
+        "code": "MIN",
+        "name": "Gabriele Min\u00ec",
+        "team": "MP Motorsport"
       },
       {
         "position": 2,
-        "code": "BOR",
-        "name": "Gabriel Bortoleto",
-        "team": "Invicta Racing"
-      },
-      {
-        "position": 3,
-        "code": "VES",
-        "name": "Richard Verschoor",
-        "team": "Trident"
-      },
-      {
-        "position": 4,
-        "code": "HAD",
-        "name": "Isack Hadjar",
+        "code": "LEO",
+        "name": "Noel Le\u00f3n",
         "team": "Campos Racing"
       },
       {
+        "position": 3,
+        "code": "TSO",
+        "name": "Nikola Tsolov",
+        "team": "Campos Racing"
+      },
+      {
+        "position": 4,
+        "code": "DUN",
+        "name": "Alex Dunne",
+        "team": "Rodin Motorsport"
+      },
+      {
         "position": 5,
-        "code": "STA",
-        "name": "Victor Martins",
-        "team": "ART Grand Prix"
+        "code": "BEG",
+        "name": "Dino Beganovic",
+        "team": "DAMS Lucas Oil"
       },
       {
         "position": 6,
-        "code": "CRA",
-        "name": "Jak Crawford",
-        "team": "DAMS"
+        "code": "STE",
+        "name": "Martinius Stenshorne",
+        "team": "Rodin Motorsport"
       },
       {
         "position": 7,
-        "code": "ARO",
-        "name": "Paul Aron",
-        "team": "Hitech"
+        "code": "MAI",
+        "name": "Kush Maini",
+        "team": "ART Grand Prix"
       },
       {
         "position": 8,
-        "code": "FOR",
+        "code": "VAN",
+        "name": "Laurens van Hoepen",
+        "team": "TRIDENT"
+      },
+      {
+        "position": 9,
+        "code": "CAM",
+        "name": "Rafael C\u00e2mara",
+        "team": "Invicta Racing"
+      },
+      {
+        "position": 10,
+        "code": "DUR",
+        "name": "Joshua D\u00fcrksen",
+        "team": "Invicta Racing"
+      },
+      {
+        "position": 11,
+        "code": "MIY",
+        "name": "Ritomo Miyata",
+        "team": "Hitech TGR"
+      },
+      {
+        "position": 12,
+        "code": "GOE",
         "name": "Oliver Goethe",
         "team": "MP Motorsport"
       },
       {
-        "position": 9,
-        "code": "MAI",
-        "name": "Zane Maloney",
-        "team": "Rodin Motorsport"
-      },
-      {
-        "position": 10,
-        "code": "COL",
-        "name": "Franco Colapinto",
-        "team": "Van Amersfoort Racing"
-      },
-      {
-        "position": 11,
-        "code": "VID",
-        "name": "Dennis Hauger",
-        "team": "MP Motorsport"
-      },
-      {
-        "position": 12,
-        "code": "FIT",
-        "name": "Kush Maini",
-        "team": "DAMS"
-      },
-      {
         "position": 13,
-        "code": "HAU",
-        "name": "Roman Stanek",
-        "team": "Trident"
+        "code": "BIL",
+        "name": "Roman Bilinski",
+        "team": "DAMS Lucas Oil"
       },
       {
         "position": 14,
-        "code": "MAS",
-        "name": "Pepe Marti",
-        "team": "Campos Racing"
+        "code": "HER",
+        "name": "Cian Herta",
+        "team": "Hitech TGR"
       },
       {
         "position": 15,
-        "code": "BRO",
-        "name": "Taylor Barnard",
-        "team": "AIX Racing"
+        "code": "INT",
+        "name": "Tasanapol Inthraphuvasak",
+        "team": "ART Grand Prix"
       },
       {
         "position": 16,
-        "code": "DUR",
-        "name": "John Bennett",
-        "team": "Prema Racing"
+        "code": "VIL",
+        "name": "Rafael Villag\u00f3mez",
+        "team": "Van Amersfoort Racing"
       },
       {
         "position": 17,
-        "code": "IWA",
-        "name": "Rafael Villagomez",
-        "team": "Invicta Racing"
+        "code": "MON",
+        "name": "Sebasti\u00e1n Montoya",
+        "team": "PREMA Racing"
       },
       {
         "position": 18,
-        "code": "LEC",
-        "name": "Enzo Fittipaldi",
+        "code": "VAR",
+        "name": "Nicola Varrone",
         "team": "Van Amersfoort Racing"
       },
       {
         "position": 19,
-        "code": "VAR",
-        "name": "Ritomo Miyata",
-        "team": "Rodin Motorsport"
+        "code": "FIT",
+        "name": "Enzo Fittipaldi",
+        "team": "AIX Racing"
       },
       {
         "position": 20,
-        "code": "NAK",
-        "name": "Sami Meguetounif",
-        "team": "ART Grand Prix"
+        "code": "SHI",
+        "name": "Callum Shields",
+        "team": "AIX Racing"
       },
       {
         "position": 21,
-        "code": "COR",
-        "name": "Joshua Duerksen",
-        "team": "AIX Racing"
+        "code": "BOY",
+        "name": "Mari Boya",
+        "team": "PREMA Racing"
       },
       {
         "position": 22,
         "code": "BEN",
-        "name": "Amaury Cordeel",
-        "team": "Hitech"
+        "name": "John Bennett",
+        "team": "TRIDENT"
       }
     ],
     "race": [
       {
         "position": 1,
-        "code": "MAR",
-        "name": "Andrea Kimi Antonelli",
-        "team": "Prema Racing",
-        "pWin": 0.358,
-        "pPodium": 0.791
+        "code": "MIN",
+        "name": "Gabriele Min\u00ec",
+        "team": "MP Motorsport",
+        "pWin": 0.3277,
+        "pPodium": 0.7458
       },
       {
         "position": 2,
-        "code": "BOR",
-        "name": "Gabriel Bortoleto",
-        "team": "Invicta Racing",
-        "pWin": 0.1787,
-        "pPodium": 0.558
+        "code": "LEO",
+        "name": "Noel Le\u00f3n",
+        "team": "Campos Racing",
+        "pWin": 0.1603,
+        "pPodium": 0.504
       },
       {
         "position": 3,
-        "code": "VES",
-        "name": "Richard Verschoor",
-        "team": "Trident",
-        "pWin": 0.1055,
-        "pPodium": 0.3762
+        "code": "TSO",
+        "name": "Nikola Tsolov",
+        "team": "Campos Racing",
+        "pWin": 0.1148,
+        "pPodium": 0.3665
       },
       {
         "position": 4,
-        "code": "HAD",
-        "name": "Isack Hadjar",
-        "team": "Campos Racing",
-        "pWin": 0.0882,
-        "pPodium": 0.2973
+        "code": "DUN",
+        "name": "Alex Dunne",
+        "team": "Rodin Motorsport",
+        "pWin": 0.1047,
+        "pPodium": 0.3342
       },
       {
         "position": 5,
-        "code": "STA",
-        "name": "Victor Martins",
-        "team": "ART Grand Prix",
-        "pWin": 0.0777,
-        "pPodium": 0.2672
+        "code": "BEG",
+        "name": "Dino Beganovic",
+        "team": "DAMS Lucas Oil",
+        "pWin": 0.0665,
+        "pPodium": 0.2193
       },
       {
         "position": 6,
-        "code": "CRA",
-        "name": "Jak Crawford",
-        "team": "DAMS",
-        "pWin": 0.0517,
-        "pPodium": 0.1752
+        "code": "MAI",
+        "name": "Kush Maini",
+        "team": "ART Grand Prix",
+        "pWin": 0.0628,
+        "pPodium": 0.2215
       },
       {
         "position": 7,
-        "code": "ARO",
-        "name": "Paul Aron",
-        "team": "Hitech",
-        "pWin": 0.0315,
-        "pPodium": 0.1118
+        "code": "STE",
+        "name": "Martinius Stenshorne",
+        "team": "Rodin Motorsport",
+        "pWin": 0.054,
+        "pPodium": 0.1978
       },
       {
         "position": 8,
-        "code": "FOR",
-        "name": "Oliver Goethe",
-        "team": "MP Motorsport",
-        "pWin": 0.0115,
-        "pPodium": 0.056
+        "code": "VAN",
+        "name": "Laurens van Hoepen",
+        "team": "TRIDENT",
+        "pWin": 0.0235,
+        "pPodium": 0.0975
       },
       {
         "position": 9,
-        "code": "MAI",
-        "name": "Zane Maloney",
-        "team": "Rodin Motorsport",
-        "pWin": 0.0138,
-        "pPodium": 0.056
+        "code": "CAM",
+        "name": "Rafael C\u00e2mara",
+        "team": "Invicta Racing",
+        "pWin": 0.0245,
+        "pPodium": 0.0882
       },
       {
         "position": 10,
-        "code": "VID",
-        "name": "Dennis Hauger",
-        "team": "MP Motorsport",
-        "pWin": 0.0105,
-        "pPodium": 0.046
+        "code": "DUR",
+        "name": "Joshua D\u00fcrksen",
+        "team": "Invicta Racing",
+        "pWin": 0.011,
+        "pPodium": 0.0428
       },
       {
         "position": 11,
-        "code": "COL",
-        "name": "Franco Colapinto",
-        "team": "Van Amersfoort Racing",
-        "pWin": 0.014,
-        "pPodium": 0.0527
+        "code": "MIY",
+        "name": "Ritomo Miyata",
+        "team": "Hitech TGR",
+        "pWin": 0.0085,
+        "pPodium": 0.0295
       },
       {
         "position": 12,
-        "code": "FIT",
-        "name": "Kush Maini",
-        "team": "DAMS",
-        "pWin": 0.0095,
-        "pPodium": 0.0328
+        "code": "GOE",
+        "name": "Oliver Goethe",
+        "team": "MP Motorsport",
+        "pWin": 0.008,
+        "pPodium": 0.0323
       },
       {
         "position": 13,
-        "code": "HAU",
-        "name": "Roman Stanek",
-        "team": "Trident",
-        "pWin": 0.009,
-        "pPodium": 0.0382
+        "code": "BIL",
+        "name": "Roman Bilinski",
+        "team": "DAMS Lucas Oil",
+        "pWin": 0.0083,
+        "pPodium": 0.022
       },
       {
         "position": 14,
-        "code": "MAS",
-        "name": "Pepe Marti",
-        "team": "Campos Racing",
-        "pWin": 0.0085,
-        "pPodium": 0.0305
+        "code": "HER",
+        "name": "Cian Herta",
+        "team": "Hitech TGR",
+        "pWin": 0.0055,
+        "pPodium": 0.0222
       },
       {
         "position": 15,
-        "code": "BRO",
-        "name": "Taylor Barnard",
-        "team": "AIX Racing",
-        "pWin": 0.006,
-        "pPodium": 0.0248
+        "code": "INT",
+        "name": "Tasanapol Inthraphuvasak",
+        "team": "ART Grand Prix",
+        "pWin": 0.0047,
+        "pPodium": 0.0173
       },
       {
         "position": 16,
-        "code": "DUR",
-        "name": "John Bennett",
-        "team": "Prema Racing",
-        "pWin": 0.0073,
-        "pPodium": 0.0243
+        "code": "VIL",
+        "name": "Rafael Villag\u00f3mez",
+        "team": "Van Amersfoort Racing",
+        "pWin": 0.0043,
+        "pPodium": 0.0155
       },
       {
         "position": 17,
-        "code": "IWA",
-        "name": "Rafael Villagomez",
-        "team": "Invicta Racing",
-        "pWin": 0.0085,
-        "pPodium": 0.0235
+        "code": "MON",
+        "name": "Sebasti\u00e1n Montoya",
+        "team": "PREMA Racing",
+        "pWin": 0.0043,
+        "pPodium": 0.0152
       },
       {
         "position": 18,
-        "code": "LEC",
-        "name": "Enzo Fittipaldi",
+        "code": "VAR",
+        "name": "Nicola Varrone",
         "team": "Van Amersfoort Racing",
-        "pWin": 0.0053,
-        "pPodium": 0.018
+        "pWin": 0.0043,
+        "pPodium": 0.0127
       },
       {
         "position": 19,
-        "code": "VAR",
-        "name": "Ritomo Miyata",
-        "team": "Rodin Motorsport",
-        "pWin": 0.0008,
+        "code": "SHI",
+        "name": "Callum Shields",
+        "team": "AIX Racing",
+        "pWin": 0.001,
         "pPodium": 0.0057
       },
       {
         "position": 20,
-        "code": "NAK",
-        "name": "Sami Meguetounif",
-        "team": "ART Grand Prix",
-        "pWin": 0.0022,
-        "pPodium": 0.0077
+        "code": "FIT",
+        "name": "Enzo Fittipaldi",
+        "team": "AIX Racing",
+        "pWin": 0.0005,
+        "pPodium": 0.004
       },
       {
         "position": 21,
-        "code": "COR",
-        "name": "Joshua Duerksen",
-        "team": "AIX Racing",
-        "pWin": 0.001,
-        "pPodium": 0.0045
+        "code": "BOY",
+        "name": "Mari Boya",
+        "team": "PREMA Racing",
+        "pWin": 0.0005,
+        "pPodium": 0.003
       },
       {
         "position": 22,
         "code": "BEN",
-        "name": "Amaury Cordeel",
-        "team": "Hitech",
-        "pWin": 0.0008,
-        "pPodium": 0.0025
+        "name": "John Bennett",
+        "team": "TRIDENT",
+        "pWin": 0.0005,
+        "pPodium": 0.003
       }
     ]
   }
