@@ -39,7 +39,7 @@ from motorsport_core import calibration, conformal, elo, leakage
 from motorsport_core.calibration import MarketProbabilities
 from motorsport_core.championship import TitleProjection
 
-from . import config
+from . import config, ml_skill
 from .datasource import F2DataSource
 
 SPRINT = "sprint"
@@ -234,11 +234,13 @@ def estimate_skill(
 ) -> dict[str, float]:
     """Per-driver latent pace (lower = faster) from leakage-safe prior signals.
 
-    Blends Elo (driver + a small team component), smoothed finishing history, and
-    an optional Bayesian prior — each standardised, oriented "higher = faster",
-    weighted by :data:`config.SKILL_WEIGHTS`, then mapped onto the pace scale the
-    Plackett-Luce sampler expects. With no prior rounds (round 1) every signal is
-    flat, so every driver gets the neutral pace.
+    Blends Elo (driver + a small team component), smoothed finishing history, an
+    optional gradient-boosted regressor (:mod:`.ml_skill` — the F1-parity learned
+    signal), and an optional Bayesian prior — each standardised, oriented "higher =
+    faster", weighted by :data:`config.SKILL_WEIGHTS`, then mapped onto the pace
+    scale the Plackett-Luce sampler expects. The two optional signals fold in only
+    when available and degrade silently to the Elo+history blend otherwise. With no
+    prior rounds (round 1) every signal is flat, so every driver gets neutral pace.
     """
     prior_rounds = [r for r in range(1, config.COMPLETED_ROUNDS + 1) if r < current_round]
     # Leakage guard at the boundary: the aggregation set must be prior-only.
@@ -256,11 +258,17 @@ def estimate_skill(
     # History oriented higher = faster (negate average position).
     history_signal = {c: -avg_pos.get(c, field_mean_pos) for c in codes}
     bayes_signal = _bayesian_skill(source, year, prior_rounds)
+    # Learned GBR+XGB signal predicts mean finishing position (lower = faster), so
+    # negate to orient higher = faster like the history signal. None when the ML
+    # path is off / deps missing / too little data — then it simply isn't blended.
+    ml_pred = ml_skill.predict_ml_skill(source, year, prior_rounds, driver_elo, field_mean_pos)
+    ml_signal = {c: -ml_pred[c] for c in codes} if ml_pred else None
 
     z_elo = _zscores(driver_elo)
     z_team = _zscores(team_elo)
     z_hist = _zscores(history_signal)
     z_bayes = _zscores(bayes_signal) if bayes_signal else None
+    z_ml = _zscores(ml_signal) if ml_signal else None
 
     w = config.SKILL_WEIGHTS
     pace: dict[str, float] = {}
@@ -268,6 +276,8 @@ def estimate_skill(
         merit = w["elo"] * z_elo[c] + w["history"] * z_hist[c] + w["team"] * z_team[c]
         if z_bayes is not None:
             merit += w.get("bayes", 0.5) * z_bayes[c]
+        if z_ml is not None:
+            merit += w.get("ml", 0.5) * z_ml[c]
         # Higher merit (faster) → lower pace.
         pace[c] = config.PACE_BASE - config.PACE_SPREAD * merit
     return pace

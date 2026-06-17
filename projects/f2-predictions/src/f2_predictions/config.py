@@ -119,8 +119,10 @@ PACE_SPREAD = 0.55         # seconds per unit of blended-skill z-score
 
 # Blend weights for the latent skill (relative; need not sum to 1). Driver-level
 # signals (elo, finishing history) dominate; the team component is deliberately
-# small because the spec chassis flattens constructor variance.
-SKILL_WEIGHTS = {"elo": 0.55, "history": 0.45, "team": 0.12}
+# small because the spec chassis flattens constructor variance. ``ml`` weights the
+# optional gradient-boosted regressor (see ``ml_skill.py``); ``bayes`` weights the
+# optional PyMC posterior. Both are folded in only when their signal is available.
+SKILL_WEIGHTS = {"elo": 0.55, "history": 0.45, "team": 0.12, "ml": 0.5, "bayes": 0.5}
 
 # Reverse-grid sprint: the sprint grid is the feature-quali top-N reversed. The
 # grid penalty makes a fast driver starting at the back have to overtake, which
@@ -141,6 +143,28 @@ DEFAULT_SAMPLES = 4000
 # driver-within-team posterior into the blend; otherwise it degrades to Elo +
 # history with no error (mirrors the F1 optional-LSTM pattern).
 USE_BAYESIAN_SKILL = False
+
+# Opt-in gradient-boosted skill regressor (f2_predictions.ml_skill) — the
+# F1-parity ensemble signal. ON by default but conservatively weighted: it folds
+# a learned GBR+XGB mapping from a richer prior-round feature vector into the
+# blend whenever scikit-learn/xgboost are importable and there is enough prior
+# data. It degrades silently to the Elo+history blend when the deps are missing,
+# there is too little data, or training fails — never breaking a forecast. The
+# weight is deliberately small on the synthetic source (where the linear blend
+# already saturates accuracy); it becomes load-bearing once real F2 results give
+# the trees feature interactions to exploit.
+USE_ML_SKILL = True
+ML_MIN_PRIOR_ROUNDS = 2     # need >= 2 prior rounds so features have variance / a trend
+ML_MIN_TRAIN_ROWS = 8       # minimum raced-driver rows before a fit is trustworthy
+ML_MIN_SPLIT_ROWS = 12      # below this, score weights in-sample instead of splitting
+
+# Per-lap Monte-Carlo race simulator (f2_predictions.train_race_pace) — a ready
+# seam, DORMANT today. F2 lap-by-lap telemetry is not available from any wired
+# source, so this stays OFF and the model uses the Plackett-Luce ordering. When a
+# lap feed lands (datasource gains a ``lap_data_for_round`` hook), flip this on and
+# the GBR+XGB lap-time ensemble + simulator activate without further plumbing.
+# Mirrors the F1 flagship's ``--use-race-simulator`` opt-in.
+USE_RACE_SIMULATOR = False
 
 # --------------------------------------------------------------------------- #
 # Phase 2 — real data feed + calibration.
