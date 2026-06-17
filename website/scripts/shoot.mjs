@@ -51,6 +51,7 @@ const ROUTES = [
   ["home", "/"],
   ["projects", "/projects/"],
   ["project-detail", "/projects/f1-predictions/"],
+  ["project-detail-f2", "/projects/f2-predictions/"],
   ["docs", "/docs/"],
   ["contribute", "/contribute/"],
 ];
@@ -69,7 +70,7 @@ for (const [vp, width, height] of [
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1 });
   const page = await ctx.newPage();
   for (const [name, route] of ROUTES) {
-    if (vp === "mobile" && name !== "home" && name !== "projects") continue;
+    if (vp === "mobile" && !["home", "projects", "project-detail"].includes(name)) continue;
     await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: "networkidle" });
     // Scroll through the page so IntersectionObserver-driven animations
     // (NumberTicker, reveals) fire, then return to top before capturing.

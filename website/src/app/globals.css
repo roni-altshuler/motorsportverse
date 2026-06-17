@@ -36,10 +36,22 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.55;
-  /* Ambient cinematic wash anchored to the top of the page. */
-  background-image: var(--gradient-hero), var(--gradient-aurora);
+  /* Ambient cinematic wash — restrained mesh anchored to the top. */
+  background-image: var(--mesh-1), var(--mesh-2), var(--mesh-3);
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink-strong);
+}
+
+/* Tasteful focus ring for keyboard users (palette, nav, chips). */
+:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 a {
@@ -59,11 +71,26 @@ h1, h2, h3, h4 {
 /* ---- Type utilities ---- */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--accent-bright);
+  letter-spacing: 0.26em;
+  /* Restrained by default — accent is reserved, not sprayed everywhere. */
+  color: var(--ink-dim);
+}
+/* Opt-in accented eyebrow with a leading tick, used sparingly. */
+.eyebrow-accent {
+  color: var(--accent-text);
+}
+.eyebrow-tick::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  margin-right: 0.7em;
+  vertical-align: middle;
+  background: currentColor;
+  opacity: 0.6;
 }
 
 .display {
@@ -149,6 +176,150 @@ h1, h2, h3, h4 {
 
 .hairline-top {
   border-top: 1px solid var(--hairline);
+}
+
+/* ============================================================
+ * v2 — elevated utility system (glass, premium cards, grids,
+ * scroll reveals, kbd). Used by the redesigned landing + chrome.
+ * ============================================================ */
+
+/* Glass chrome — for the navbar + command palette. */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+.glass-strong {
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border-strong);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+}
+
+/* Premium card — flatter, hairline-led, restrained hover. */
+.card-premium {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--canvas-deep) 140%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition:
+    transform var(--dur-base) var(--ease-premium),
+    border-color var(--dur-base) var(--ease-premium),
+    box-shadow var(--dur-base) var(--ease-premium);
+}
+.card-premium:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-lift-premium {
+  transition:
+    transform var(--dur-base) var(--ease-premium),
+    border-color var(--dur-base) var(--ease-premium),
+    box-shadow var(--dur-base) var(--ease-premium);
+}
+.hover-lift-premium:hover {
+  transform: translateY(-3px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+/* A top hairline that lights up with the accent on hover. */
+.edge-accent::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-premium);
+}
+.group:hover .edge-accent::before,
+.edge-accent:hover::before {
+  opacity: 1;
+}
+
+/* Subtle full-bleed hairline grid backdrop (CSS-only, cheap). */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--line-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-faint) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.bg-grid-fade {
+  -webkit-mask-image: radial-gradient(60% 55% at 50% 35%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(60% 55% at 50% 35%, #000 0%, transparent 100%);
+}
+
+/* Type helpers used by upgraded components. */
+.title-md {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.body-sm {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* Keyboard hint chip (⌘K). */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.4rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  box-shadow: var(--shadow-sm);
+}
+
+/* CSS-driven scroll reveal (no JS observer needed where used). */
+@keyframes mv-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mv-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.82); }
+}
+@keyframes mv-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--maturity-production);
+  animation: mv-pulse-dot 2.4s var(--ease-inout) infinite;
+}
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid var(--maturity-production);
+  opacity: 0.4;
 }
 
 @media (prefers-reduced-motion: reduce) {

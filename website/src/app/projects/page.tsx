@@ -12,7 +12,7 @@ export default function ProjectsPage() {
   const projects = getProjects();
   return (
     <div className="shell section">
-      <p className="eyebrow">The grid</p>
+      <p className="eyebrow eyebrow-accent eyebrow-tick">The grid</p>
       <h1 className="display mt-3 text-5xl">Project directory</h1>
       <p className="lead mt-4 max-w-2xl">
         Every motorsport in the ecosystem, from production projects to registered concepts. Filter

@@ -78,4 +78,61 @@
 
   /* Per-card accent default (overridden inline from registry) */
   --team-color: var(--accent);
+
+  /* ============================================================
+   * v2 — Linear/Vercel-grade refinement layer (additive).
+   * Restrained glass + hairline system, mesh gradients, tighter
+   * type scale, refined motion. Crimson stays the identity but is
+   * used sparingly; structure comes from layered neutrals.
+   * ============================================================ */
+
+  /* Glass / elevated translucent surfaces (nav, palette, rails) */
+  --glass: rgba(12, 17, 25, 0.62);
+  --glass-strong: rgba(10, 14, 22, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-border-strong: rgba(255, 255, 255, 0.12);
+
+  /* Hairline system — three weights for layering depth */
+  --line-faint: rgba(255, 255, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.13);
+
+  /* Refined accent usage */
+  --accent-line: rgba(231, 16, 47, 0.55);
+  --accent-glow-soft: rgba(231, 16, 47, 0.10);
+  --accent-text: #ff5168;
+
+  /* Mesh / ambient gradients (subtle, cinematic, restrained) */
+  --mesh-1: radial-gradient(50% 40% at 50% -8%, rgba(231, 16, 47, 0.10) 0%, transparent 60%);
+  --mesh-2: radial-gradient(40% 35% at 88% 8%, rgba(56, 225, 198, 0.06) 0%, transparent 55%);
+  --mesh-3: radial-gradient(45% 40% at 8% 28%, rgba(106, 166, 255, 0.045) 0%, transparent 55%);
+
+  /* Refined shadow stack — softer, more disciplined */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 30px -12px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 40px 80px -40px rgba(0, 0, 0, 0.85);
+  --shadow-glass: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 60px -32px rgba(0, 0, 0, 0.9);
+  --glow-accent-subtle: 0 0 0 1px var(--accent-line), 0 0 24px -8px rgba(231, 16, 47, 0.4);
+
+  /* Tighter, more deliberate type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: clamp(2.4rem, 4.5vw, 3.4rem);
+  --text-hero: clamp(2.8rem, 7.5vw, 6rem);
+
+  /* Refined motion easing — restrained, premium */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Aliases used by the upgraded bento + cards */
+  --surface-card: var(--surface);
+  --surface-elevated: var(--surface-3);
+  --muted: var(--ink-dim);
+  --body: var(--ink-muted);
+  --radius-card: var(--radius-lg);
 }

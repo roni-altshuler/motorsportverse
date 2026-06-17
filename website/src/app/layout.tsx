@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
+import { CommandPaletteProvider } from "@/components/CommandPaletteProvider";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="min-h-[70vh]">{children}</main>
         <Footer />
+        <CommandPaletteProvider />
       </body>
     </html>
   );

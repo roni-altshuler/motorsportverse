@@ -36,7 +36,7 @@ const STEPS = [
 export default function ContributePage() {
   return (
     <div className="shell section max-w-3xl">
-      <p className="eyebrow">Contribute</p>
+      <p className="eyebrow eyebrow-accent eyebrow-tick">Contribute</p>
       <h1 className="display mt-3 text-5xl">Add a sport</h1>
       <p className="lead mt-4">
         MotorsportVerse grows one sport at a time. The shared core does the heavy lifting — you

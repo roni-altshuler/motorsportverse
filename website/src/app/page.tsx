@@ -1,19 +1,26 @@
-import Image from "next/image";
 import Link from "next/link";
 
-import { ProjectCard } from "@/components/ProjectCard";
+import { CommandPaletteHint } from "@/components/landing/CommandPaletteHint";
+import { EcosystemDiagram } from "@/components/landing/EcosystemDiagram";
+import { FeatureBento } from "@/components/landing/FeatureBento";
+import { PredictionTicker } from "@/components/landing/PredictionTicker";
+import { Reveal } from "@/components/landing/Reveal";
+import { ShowcaseRail } from "@/components/landing/ShowcaseRail";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
-import { GridPattern } from "@/components/magicui/grid-pattern";
+import { VerseHero } from "@/components/hero/VerseHero";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { asset } from "@/lib/asset";
 import { getMaturityCounts, getProjects } from "@/lib/registry";
+import { synthTickerRows } from "@/lib/ticker";
 
 export default function HomePage() {
   const projects = getProjects();
   const counts = getMaturityCounts();
-  const featured = projects.filter(
+
+  const operational = projects.filter(
     (p) => p.maturity === "production" || p.maturity === "experimental",
   );
+  const tickerRows = synthTickerRows(projects);
+
   const marqueeItems = projects.map((p) => ({
     key: p.slug,
     sport: p.sport,
@@ -22,167 +29,144 @@ export default function HomePage() {
     maturity: p.maturity,
   }));
 
+  const nodeColors = projects.map((p) => p.accent || "#e7102f");
+
+  const diagramSports = projects
+    .slice()
+    .sort((a, b) => {
+      const rank = (m: string) => (m === "production" ? 0 : m === "experimental" ? 1 : 2);
+      return rank(a.maturity) - rank(b.maturity);
+    })
+    .map((p) => ({ slug: p.slug, sport: p.sport, icon: p.icon, accent: p.accent || "#e7102f" }));
+
+  const heroStats = [
+    { value: String(projects.length), label: "Projects" },
+    { value: String(counts.production ?? 0), label: "In production" },
+    { value: String(counts.experimental ?? 0), label: "Experimental" },
+    { value: "2", label: "Shared packages" },
+  ];
+
   return (
     <div>
-      {/* ====================== HERO ====================== */}
-      <section className="relative overflow-hidden">
-        <GridPattern
-          width={48}
-          height={48}
-          className="[mask-image:radial-gradient(60%_55%_at_50%_30%,white,transparent)] opacity-60"
-        />
-        <div className="shell relative flex flex-col items-center pt-24 pb-20 text-center sm:pt-32">
-          <Image
-            src={asset("/brand/motorsportverse-logo.png")}
-            alt="MotorsportVerse"
-            width={1217}
-            height={414}
-            priority
-            className="h-auto w-full max-w-[560px] drop-shadow-[0_8px_40px_rgba(231,16,47,0.25)]"
-          />
-          <p className="eyebrow mt-8">Open-source motorsport AI</p>
-          <h1 className="display mt-4 max-w-4xl">
-            <span className="text-gradient">Predict every race.</span>
-            <br />
-            <span className="text-gradient-accent">One unified ecosystem.</span>
-          </h1>
-          <p className="lead mt-6 max-w-2xl">
-            A family of open-source projects that forecast race outcomes across every category of
-            motorsport — built on one shared core of calibration, simulation, and data
-            infrastructure, extracted from the RaceIQ F1 flagship.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/projects" className="btn-accent px-6 py-3 text-sm font-semibold">
-              Explore projects
-            </Link>
-            <Link href="/docs" className="btn-ghost px-6 py-3 text-sm font-semibold">
-              Read the docs
-            </Link>
-          </div>
+      {/* ====================== WEBGL HERO ====================== */}
+      <VerseHero nodeColors={nodeColors} stats={heroStats} />
 
-          {/* stat strip */}
-          <div className="mt-16 grid w-full max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--hairline)] sm:grid-cols-4">
-            <Stat value={projects.length} label="Projects" />
-            <Stat value={counts.production ?? 0} label="In production" />
-            <Stat value={counts.experimental ?? 0} label="Experimental" />
-            <Stat value={2} label="Shared packages" />
-          </div>
-        </div>
-      </section>
+      {/* ====================== LIVE PREDICTION TICKER ====================== */}
+      <PredictionTicker rows={tickerRows} />
 
       {/* ====================== SERIES MARQUEE ====================== */}
-      <section className="py-12">
-        <p className="eyebrow shell mb-6 text-[var(--ink-dim)]">Spanning the grid</p>
+      <section className="py-14">
+        <p className="mono-label shell mb-6">Spanning the grid</p>
         <SeriesMarquee items={marqueeItems} />
       </section>
 
-      {/* ====================== FEATURED ====================== */}
-      <section className="section">
+      {/* ====================== ECOSYSTEM ARCHITECTURE ====================== */}
+      <section className="section pt-4">
         <div className="shell">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <Reveal className="mx-auto mb-12 max-w-2xl text-center">
+            <p className="eyebrow eyebrow-accent eyebrow-tick">The architecture</p>
+            <h2 className="mt-3 text-[length:var(--text-4xl)]">One core. Every motorsport.</h2>
+            <p className="lead mt-4">
+              Data sources flow through two shared packages into every sport. Nothing numerically
+              heavy is rebuilt — each project just adds a data adapter and a predictor.
+            </p>
+          </Reveal>
+          <EcosystemDiagram sports={diagramSports} />
+        </div>
+      </section>
+
+      {/* ====================== FEATURE BENTO ====================== */}
+      <section className="section pt-0">
+        <div className="shell">
+          <Reveal className="mb-10 max-w-2xl">
+            <p className="eyebrow eyebrow-accent eyebrow-tick">Built once, reused everywhere</p>
+            <h2 className="mt-3 text-[length:var(--text-4xl)]">The shared core</h2>
+            <p className="lead mt-4">
+              Calibration, simulation, drift detection, and a model registry — the hard parts,
+              solved once and pip-installable.
+            </p>
+          </Reveal>
+          <FeatureBento />
+        </div>
+      </section>
+
+      {/* ====================== LIVE PROJECT SHOWCASE ====================== */}
+      <section className="section pt-0">
+        <div className="shell">
+          <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="eyebrow">Live now</p>
-              <h2 className="mt-2 text-3xl sm:text-4xl">Featured projects</h2>
+              <p className="eyebrow eyebrow-accent eyebrow-tick">Live now</p>
+              <h2 className="mt-3 text-[length:var(--text-4xl)]">Operational projects</h2>
             </div>
-            <Link href="/projects" className="text-sm font-medium text-[var(--accent-bright)]">
+            <Link
+              href="/projects"
+              className="text-sm font-medium text-[var(--accent-text)] transition-colors hover:text-[var(--accent-bright)]"
+            >
               View all {projects.length} →
             </Link>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((p) => (
-              <ProjectCard key={p.slug} project={p} featured />
-            ))}
-          </div>
+          </Reveal>
+          <ShowcaseRail projects={operational} />
         </div>
       </section>
 
-      {/* ====================== PILLARS ====================== */}
+      {/* ====================== CREDIBILITY RAIL ====================== */}
       <section className="section pt-0">
         <div className="shell">
-          <div className="mb-10 max-w-2xl">
-            <p className="eyebrow">Built once, reused everywhere</p>
-            <h2 className="mt-2 text-3xl sm:text-4xl">One core. Every motorsport.</h2>
-            <p className="lead mt-4">
-              New sports don&apos;t start from scratch. Each implements a data source and a
-              predictor — everything numerically heavy is shared.
-            </p>
-          </div>
-          <div className="grid gap-5 md:grid-cols-3">
-            <Pillar
-              title="motorsport-core"
-              body="Plackett-Luce calibration, model registry, drift detection, A/B promotion, Elo, championship Monte Carlo, and forward-eval metrics — sport-agnostic and pip-installable."
-              tag="Python package"
-            />
-            <Pillar
-              title="motorsport-data"
-              body="A canonical schema, DuckDB history store, and ingestion adapters that every project shares, so calendars, results, and predictions speak one language."
-              tag="Python package"
-            />
-            <Pillar
-              title="One template, many sports"
-              body="RaceIQ F1 is the reference; F2 is the first operational expansion at ~74% reuse. F3, Formula E, IndyCar, NASCAR, WEC, Rally and more are on the grid."
-              tag="Scalable by design"
-            />
-          </div>
+          <Reveal className="card-premium grid grid-cols-2 gap-px overflow-hidden bg-[var(--line)] sm:grid-cols-4">
+            <CredStat value={projects.length} label="Sports registered" />
+            <CredStat value={74} suffix="%" label="Core reuse (F2)" />
+            <CredStat value={10} suffix="+" label="Shared modules" />
+            <CredStat value={2} label="Live dashboards" />
+          </Reveal>
         </div>
       </section>
 
-      {/* ====================== CTA ====================== */}
+      {/* ====================== FINAL CTA ====================== */}
       <section className="section pt-0">
         <div className="shell">
-          <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-[var(--hairline-strong)] bg-[var(--surface)] px-8 py-16 text-center sm:px-16">
-            {/* subtle red glow from the top, plus a faint grid */}
-            <GridPattern
-              width={42}
-              height={42}
-              className="[mask-image:radial-gradient(70%_60%_at_50%_0%,white,transparent)] opacity-40"
-            />
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{ background: "var(--gradient-hero)" }}
-              aria-hidden
-            />
-            <div className="relative">
-              <p className="eyebrow">Open to contributors</p>
-              <h2 className="mx-auto mt-3 max-w-2xl text-3xl sm:text-5xl">
-                Bring your sport to the grid.
-              </h2>
-              <p className="lead mx-auto mt-5 max-w-xl">
-                The shared core does the heavy lifting. You bring the data and the domain knowledge.
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link href="/contribute" className="btn-accent px-6 py-3 text-sm font-semibold">
-                  Start a project
-                </Link>
-                <Link href="/docs" className="btn-ghost px-6 py-3 text-sm font-semibold">
-                  Architecture
-                </Link>
+          <Reveal>
+            <div className="card-premium relative overflow-hidden px-8 py-20 text-center sm:px-16">
+              <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" />
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{ background: "var(--mesh-1)" }}
+                aria-hidden
+              />
+              <div className="relative">
+                <p className="eyebrow eyebrow-accent eyebrow-tick">Open to contributors</p>
+                <h2 className="mx-auto mt-4 max-w-2xl text-[length:var(--text-4xl)] sm:text-5xl">
+                  Bring your sport to the grid.
+                </h2>
+                <p className="lead mx-auto mt-5 max-w-xl">
+                  The shared core does the heavy lifting. You bring the data and the domain
+                  knowledge.
+                </p>
+                <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+                  <Link href="/contribute" className="btn-accent px-6 py-3 text-sm font-semibold">
+                    Start a project
+                  </Link>
+                  <Link href="/docs" className="btn-ghost px-6 py-3 text-sm font-semibold">
+                    Architecture
+                  </Link>
+                </div>
+                <CommandPaletteHint />
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </div>
   );
 }
 
-function Stat({ value, label }: { value: number; label: string }) {
+function CredStat({ value, label, suffix }: { value: number; label: string; suffix?: string }) {
   return (
-    <div className="bg-[var(--surface)] px-6 py-7 text-center">
+    <div className="bg-[var(--surface)] px-6 py-10 text-center">
       <div className="font-display text-4xl font-bold text-[var(--ink)]">
         <NumberTicker value={value} />
+        {suffix}
       </div>
-      <div className="mt-1 text-xs uppercase tracking-wider text-[var(--ink-dim)]">{label}</div>
-    </div>
-  );
-}
-
-function Pillar({ title, body, tag }: { title: string; body: string; tag: string }) {
-  return (
-    <div className="card-surface hover-lift p-7">
-      <p className="eyebrow text-[var(--ink-dim)]">{tag}</p>
-      <h3 className="mt-3 font-display text-xl font-semibold text-[var(--ink)]">{title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">{body}</p>
+      <div className="mono-label mt-2">{label}</div>
     </div>
   );
 }

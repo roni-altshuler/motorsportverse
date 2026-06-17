@@ -36,7 +36,7 @@ const SECTIONS = [
 export default function DocsPage() {
   return (
     <div className="shell section">
-      <p className="eyebrow">Documentation</p>
+      <p className="eyebrow eyebrow-accent eyebrow-tick">Documentation</p>
       <h1 className="display mt-3 text-5xl">Build on the core</h1>
       <p className="lead mt-4 max-w-2xl">
         Everything you need to understand the ecosystem and ship a new motorsport project on top of
