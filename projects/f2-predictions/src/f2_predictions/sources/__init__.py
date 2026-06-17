@@ -12,12 +12,14 @@ calibration gate can stay honest about which rounds are real.
 """
 from .composite import CompositeF2Source
 from .fastf1_source import FastF1F2Source
+from .fia_f2_source import FiaF2Source
 from .official_source import OfficialF2Source
 from .synthetic import SyntheticF2Source
 
 __all__ = [
     "SyntheticF2Source",
     "FastF1F2Source",
+    "FiaF2Source",
     "OfficialF2Source",
     "CompositeF2Source",
 ]

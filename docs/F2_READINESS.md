@@ -21,9 +21,10 @@ and what remains before production.
 | Website (home/race/standings/calendar/predictions/accuracy) | ✅ | `website/` static export | ecosystem design system |
 | Per-round data contract | ✅ | `export.py` fan-out + TS+pydantic mirror gate | data.schema |
 | Deployment | ✅ | `deploy-website.yml` ships F2 under `/<repo>/projects/f2` | — |
-| Real results feed | ◑ | `sources/` adapter (FastF1/official) + synthetic fallback; no live F2 API yet | data.sources |
+| Real results feed | ✅ | `FiaF2Source` scrapes fiaformula2.com (verified vs 2024); behind the source seam | data.sources |
 | Probability calibration | ◑ | fits once ≥`MIN_REAL_ROUNDS_FOR_CALIBRATION` real rounds exist (honest gate) | `core.calibration` |
-| Validated accuracy → production | ⬜ | needs a real feed + `core.eval` over a season | `core.eval` |
+| Real season in the live pipeline | ◑ | regenerate `config` roster/calendar from `FiaF2Source.entry_list()`/`calendar()` | — |
+| Validated accuracy → production | ⬜ | run `core.eval` over a real season once roster is repointed | `core.eval` |
 
 ## The unique F2 model
 
@@ -66,6 +67,29 @@ calibration (`export.build_calibrator`) fits a per-race-type
 `StratifiedProbabilityCalibrator` **only from real rounds**, and the website
 honestly reports `calibration.applied=false` until the gate trips — so running on
 synthetic data never claims calibration it hasn't earned.
+
+## Phase 3 — the real feed (built + verified)
+
+`f2_predictions.sources.FiaF2Source` scrapes **fiaformula2.com**, the official
+site, which serves each round's results as server-rendered HTML at
+`/Results?raceid=N` — full Feature + Sprint classifications with a 3-letter driver
+code and team per row, plus a season navigator that resolves every round's raceid
+from a single anchor. It uses only the stdlib + a lazy `requests` import (no
+lxml/bs4) and returns `None` on any failure, so it slots straight into the source
+seam. The parser is unit-tested offline against a saved fixture; the live path is
+the `f2_predictions.scrape` CLI:
+
+```text
+$ python -m f2_predictions.scrape --season 2024
+ 1 G. Bortoleto   Invicta Racing      211   ← real 2024 champion ✓
+ 2 I. Hadjar      Campos Racing       188
+ 3 P. Aron        Hitech Pulse-Eight  154
+```
+
+This produces the **real 2024 championship order** straight through
+`motorsport_core.standings`, proving the feed works end-to-end. (Pole/fastest-lap
+bonus points aren't on the race-classification table, so absolute totals differ
+slightly from official — the order is the real result; bonuses are a later refinement.)
 
 ## Tests
 

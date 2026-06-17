@@ -156,3 +156,19 @@ MIN_REAL_ROUNDS_FOR_CALIBRATION = 4
 # Optional official FIA F2 results URL template (used only when
 # F2_ENABLE_OFFICIAL_FETCH=1). Empty = the official source is disabled.
 OFFICIAL_F2_RESULTS_URL = ""
+
+# --------------------------------------------------------------------------- #
+# Real feed — fiaformula2.com scraper (see sources/fia_f2_source.py).
+#
+# The official site serves per-round results as server-rendered HTML at
+# /Results?raceid=N, including a 3-letter driver code and team per row, plus a
+# round navigator listing every raceid in the season. We only need one anchor
+# raceid per season; the scraper derives the rest from the navigator.
+# --------------------------------------------------------------------------- #
+FIA_F2_BASE_URL = "https://www.fiaformula2.com"
+
+# season -> any one raceid in that season (the scraper expands to all rounds).
+FIA_F2_SEASON_ANCHORS: dict[int, int] = {
+    2024: 1064,  # Round 1 Bahrain (… 1076 = R13 Qatar, 1077 = R14 Abu Dhabi)
+    2026: 1092,  # Round 1 Australia
+}
