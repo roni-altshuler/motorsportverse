@@ -167,11 +167,21 @@ def predict_ml_skill(
     if not config.USE_ML_SKILL or len(prior_rounds) < config.ML_MIN_PRIOR_ROUNDS:
         return None
     try:
+        # scikit-learn is a hard dependency of motorsport-core, so it is always
+        # present. xgboost is optional: with it we run the full GBR+XGB ensemble
+        # (F1 parity); without it we degrade to a GBR-only signal rather than
+        # dropping ML entirely — the signal stays real wherever sklearn exists.
         from sklearn.ensemble import GradientBoostingRegressor
         from sklearn.metrics import mean_absolute_error
         from sklearn.model_selection import train_test_split
         from sklearn.preprocessing import StandardScaler
-        from xgboost import XGBRegressor
+
+        try:
+            from xgboost import XGBRegressor
+
+            has_xgb = True
+        except Exception:
+            has_xgb = False
 
         rows = _per_driver_features(source, year, prior_rounds, driver_elo, field_mean)
         codes = list(rows.keys())
@@ -199,8 +209,15 @@ def predict_ml_skill(
             Xtr, Xte, ytr, yte = Xs_train, Xs_train, y_train, y_train
 
         gb = GradientBoostingRegressor(n_estimators=200, learning_rate=0.05, max_depth=2, random_state=42)
-        xgb = XGBRegressor(n_estimators=250, learning_rate=0.05, max_depth=2, random_state=42, verbosity=0)
         gb.fit(Xtr, ytr)
+
+        if not has_xgb:
+            # GBR-only signal — refit on all rows and predict.
+            gb.fit(Xs_train, y_train)
+            pred = gb.predict(Xs_all)
+            return {c: float(pred[i]) for i, c in enumerate(codes)}
+
+        xgb = XGBRegressor(n_estimators=250, learning_rate=0.05, max_depth=2, random_state=42, verbosity=0)
         xgb.fit(Xtr, ytr)
 
         inv_gb = 1.0 / max(mean_absolute_error(yte, gb.predict(Xte)), 1e-6)

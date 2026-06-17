@@ -20,6 +20,9 @@ jobs:
           pip install -e "packages/motorsport-core[dev]"
           pip install -e "packages/motorsport-data[dev]"
           pip install -e projects/f2-predictions --no-deps
+          # xgboost powers the full GBR+XGB skill ensemble; sklearn comes via core.
+          # Without it the model degrades to a GBR-only signal, so this is for parity.
+          pip install xgboost
 
       - name: Lint
         run: |

@@ -39,7 +39,7 @@ jobs:
 
       # --- Generate the F2 dataset the F2 site reads at build time ---
       - name: Install Python packages
-        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions
+        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions xgboost
       - name: Generate F2 data
         run: |
           python -m f2_predictions.export

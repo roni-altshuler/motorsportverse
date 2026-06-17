@@ -1,10 +1,11 @@
-"""The optional gradient-boosted skill signal: leakage-safe, degrades to None.
+"""The gradient-boosted skill signal: leakage-safe, gracefully degrading.
 
 These mirror the discipline the Bayesian path is held to: the ML signal must be
 prior-only, must produce a valid per-driver mapping when it activates, must leave
-the pace blend a sane (finite, in-range, lower=faster) signal, and must degrade
-silently to None — never raising — when its deps are absent or there is too
-little data.
+the pace blend a sane (finite, in-range, lower=faster) signal, must never raise,
+and must degrade gracefully — to a GBR-only signal when xgboost is absent
+(scikit-learn ships with motorsport-core), and to None when ML is disabled or
+there is too little data.
 """
 import sys
 
@@ -71,15 +72,19 @@ def test_ml_skill_features_use_prior_rounds_only(source, monkeypatch):
 
 
 # --------------------------------------------------------------------------- #
-# Degrades silently when the optional deps are missing
+# Optional deps: xgboost absent → GBR-only signal; sklearn always present (core)
 # --------------------------------------------------------------------------- #
-def test_ml_skill_degrades_to_none_without_xgboost(source, monkeypatch):
+def test_ml_skill_degrades_to_gbr_only_without_xgboost(source, monkeypatch):
     cr = config.COMPLETED_ROUNDS + 1
-    # Simulate xgboost being unimportable: the bare import inside predict_ml_skill
-    # must be caught and turned into a clean None, not an exception.
+    elo, _team = model._elo_skill(source, config.SEASON, cr)
+    # Simulate xgboost being unimportable: the import inside predict_ml_skill must
+    # be caught and the model must keep running as a GBR-only signal (scikit-learn
+    # ships with motorsport-core), never raising and never dropping ML entirely.
     monkeypatch.setitem(sys.modules, "xgboost", None)
-    pred = ml_skill.predict_ml_skill(source, config.SEASON, _prior_rounds(cr), {}, field_mean=11.0)
-    assert pred is None
+    pred = ml_skill.predict_ml_skill(source, config.SEASON, _prior_rounds(cr), elo, field_mean=11.0)
+    assert pred is not None, "without xgboost the signal should degrade to GBR-only, not None"
+    assert set(pred) == {d["code"] for d in config.DRIVERS}
+    assert all(0.0 < v < 30.0 for v in pred.values())
 
 
 # --------------------------------------------------------------------------- #
