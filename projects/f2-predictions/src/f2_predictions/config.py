@@ -102,3 +102,42 @@ FEATURE_POINTS = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10:
 SPRINT_POINTS = {1: 10, 2: 8, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 1}
 POLE_POINTS = 2          # feature-race pole
 FASTEST_LAP_POINTS = 1   # if classified in the top 10
+
+# --------------------------------------------------------------------------- #
+# F2 model parameters — the tuning knobs of the unique F2 model (see model.py).
+#
+# F2 is a *spec series*: identical machinery means driver skill dominates and the
+# team effect is minor, the opposite weighting from F1. The model blends three
+# leakage-safe driver signals into a per-driver "pace" the calibration sampler
+# consumes (lower = faster), then routes it through two race-type heads — a merit
+# feature race and a reverse-grid sprint.
+# --------------------------------------------------------------------------- #
+
+# Pace scale (a seconds-like proxy the Plackett-Luce sampler reads; lower = faster).
+PACE_BASE = 90.0           # neutral pace when there is no signal yet
+PACE_SPREAD = 0.55         # seconds per unit of blended-skill z-score
+
+# Blend weights for the latent skill (relative; need not sum to 1). Driver-level
+# signals (elo, finishing history) dominate; the team component is deliberately
+# small because the spec chassis flattens constructor variance.
+SKILL_WEIGHTS = {"elo": 0.55, "history": 0.45, "team": 0.12}
+
+# Reverse-grid sprint: the sprint grid is the feature-quali top-N reversed. The
+# grid penalty makes a fast driver starting at the back have to overtake, which
+# is what gives the F2 sprint its high-variance, overtaking-heavy character.
+REVERSE_GRID_SIZE = 10     # F2 reverses the top 10 of the feature-quali order
+SPRINT_GRID_PENALTY = 0.12  # seconds of pace cost per grid slot started back
+
+# A driver with fewer than this many prior race entries is treated as a rookie
+# (pooled toward the team mean by the Elo prior; used as a calibration stratum).
+ROOKIE_RACE_THRESHOLD = 3
+
+# Monte Carlo sample count for the per-round probability + championship layers.
+DEFAULT_SAMPLES = 4000
+
+# Opt-in Bayesian hierarchical skill prior (motorsport_core.hierarchical_bayes).
+# Off by default: PyMC is an optional, slow dependency and CI must stay
+# deterministic. When enabled and PyMC is importable the model folds the
+# driver-within-team posterior into the blend; otherwise it degrades to Elo +
+# history with no error (mirrors the F1 optional-LSTM pattern).
+USE_BAYESIAN_SKILL = False

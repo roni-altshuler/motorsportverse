@@ -7,7 +7,6 @@ harness that expects a ``Predictor``.
 """
 from __future__ import annotations
 
-from motorsport_core import calibration
 from motorsport_core.interfaces import Predictor, RoundForecast, Venue
 
 from . import config, pipeline
@@ -19,20 +18,22 @@ class F2Predictor(Predictor):
         self._fitted_upto: int | None = None
 
     def fit(self, source: F2DataSource, season: int, upto_round: int) -> None:
-        # Pace is estimated lazily per-round from prior results (leakage-safe in
-        # pipeline.estimate_pace), so "fitting" just records the boundary.
+        # Skill is estimated lazily per-round from prior results (leakage-safe in
+        # model.estimate_skill), so "fitting" just records the boundary.
         self._fitted_upto = upto_round
 
     def predict(self, source: F2DataSource, season: int, round: int) -> RoundForecast:
-        rp = pipeline.predict_round(source, season, round)
-        pace = pipeline.estimate_pace(source, season, round)
-        probs = calibration.plackett_luce_probabilities(pace, n_samples=2000)
-        order = {code: pos for pos, code in enumerate(rp.race_order, start=1)}
+        fc = pipeline.forecast_round(source, season, round)
+        order = {code: pos for pos, code in enumerate(fc.feature.order, start=1)}
         return RoundForecast(
             season=season,
             round=round,
-            venue=Venue(key=rp.venue_key, name=rp.venue_name),
+            venue=Venue(key=fc.venue_key, name=fc.venue_name),
             predicted_order=order,
-            probabilities=probs,
-            metadata={"sport": config.SPORT, "qualifying_order": rp.qualifying_order},
+            probabilities=fc.feature.markets,
+            metadata={
+                "sport": config.SPORT,
+                "qualifying_order": fc.feature.grid,
+                "sprint_order": fc.sprint.order,
+            },
         )

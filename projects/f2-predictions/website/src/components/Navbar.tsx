@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 const LINKS = [
+  { href: "/predictions", label: "Predictions" },
   { href: "/standings", label: "Standings" },
   { href: "/calendar", label: "Calendar" },
-  { href: "/predictions", label: "Predictions" },
+  { href: "/accuracy", label: "Accuracy" },
 ];
 
 export function Navbar() {

@@ -7,6 +7,7 @@ export default function HomePage() {
   const leader = data.championship[0];
   const topTitle = data.championship.slice(0, 5);
   const next = data.nextPrediction;
+  const acc = data.seasonAccuracy;
 
   return (
     <div className="mx-auto max-w-6xl px-6">
@@ -18,9 +19,10 @@ export default function HomePage() {
           Formula 2, forecast.
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--ink-muted)]">
-          Calibrated qualifying, race, and championship predictions for the FIA F2
-          championship — {data.completedRounds} of {data.totalRounds} rounds complete.
-          Built on the same MotorsportVerse core that powers RaceIQ F1.
+          Sprint, feature-race, and championship predictions for the FIA F2 championship — from a
+          model built for a spec series, where driver skill rules and the sprint runs a reversed
+          grid. {data.completedRounds} of {data.totalRounds} rounds complete. Same MotorsportVerse
+          core that powers RaceIQ F1.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
@@ -36,6 +38,14 @@ export default function HomePage() {
           >
             Championship standings
           </Link>
+          {acc && acc.roundsScored > 0 && (
+            <Link
+              href="/accuracy"
+              className="rounded-full border border-[var(--hairline-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--ink-muted)] hover:border-[var(--accent)] hover:text-[var(--ink)]"
+            >
+              Podium accuracy {acc.podiumHitRate != null ? `${(acc.podiumHitRate * 100).toFixed(0)}%` : "—"} →
+            </Link>
+          )}
         </div>
       </section>
 
@@ -81,8 +91,8 @@ export default function HomePage() {
             <h2 className="text-2xl font-semibold text-[var(--ink)]">
               Next up — Round {next.round}: {next.venueName}
             </h2>
-            <Link href="/predictions" className="text-sm text-[var(--accent)]">
-              Full prediction →
+            <Link href={`/race/${next.round}`} className="text-sm text-[var(--accent)]">
+              Sprint + feature detail →
             </Link>
           </div>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">

@@ -6,6 +6,8 @@ on:
     paths:
       - "website/**"
       - "registry/**"
+      - "projects/f2-predictions/**"
+      - "packages/**"
       - ".github/workflows/deploy-website.yml"
   workflow_dispatch:
 
@@ -18,25 +20,53 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# GitHub Pages serves one site per repo, so both the ecosystem hub and the
+# per-sport project sites ship in a single artifact: the hub at /<repo>/ and
+# each project under /<repo>/projects/<slug>/. Adding a sport = add a block here.
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: website
+    env:
+      BASE: /${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install
-      # prebuild regenerates public/data/registry.json from registry/projects/*
-      - run: npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # --- Generate the F2 dataset the F2 site reads at build time ---
+      - name: Install Python packages
+        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions
+      - name: Generate F2 data
+        run: |
+          python -m f2_predictions.export
+          python -m f2_predictions.forward_eval --season 2026 --allow-empty
+          python -m f2_predictions.drift_report --season 2026 --allow-empty
+          python -m f2_predictions.promotion_decision --season 2026 --allow-empty
+
+      # --- Ecosystem hub (root) ---
+      - name: Build ecosystem website
+        working-directory: website
+        run: npm install && npm run build # prebuild regenerates registry.json
         env:
-          # Project page served at https://<owner>.github.io/<repo>/ — assets
-          # must be prefixed with /<repo>. (For an org user-page repo named
-          # <org>.github.io, set this to "" instead.)
-          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          PAGES_BASE_PATH: ${{ env.BASE }}
+
+      # --- RaceIQ F2 project site (sub-path) ---
+      - name: Build F2 website
+        working-directory: projects/f2-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/f2
+
+      # --- Combine into one Pages artifact ---
+      - name: Assemble site tree
+        run: |
+          mkdir -p website/out/projects/f2
+          cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: website/out
