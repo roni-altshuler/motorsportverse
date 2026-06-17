@@ -24,11 +24,14 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
+
 from motorsport_core import calibration, eval as core_eval
 
 from . import config, model, pipeline
 from .datasource import F2DataSource
 from .model import RaceForecast, RoundForecastF2
+from .sources.composite import CompositeF2Source
 
 DEFAULT_OUT = Path(__file__).resolve().parents[2] / "website" / "public" / "data"
 
@@ -147,19 +150,41 @@ def _h2h_subset(race: RaceForecast) -> dict[str, dict[str, float]]:
     } if top_set else {}
 
 
-def _race_probabilities(race: RaceForecast) -> dict:
-    # calibrator=None in Phase 1 → probabilities pass through as raw, honestly.
-    markets = calibration.calibrate_market_probabilities(race.markets, None)
-    rounded = {
-        market: {
-            code: {"probability": round(v["probability"], 4), "rawProbability": round(v["rawProbability"], 4)}
-            for code, v in by_code.items()
-        }
-        for market, by_code in markets.items()
+_RAW_MARKET_KEYS = ("win", "podium", "top6", "top10")
+
+
+def _calibrate_markets(race: RaceForecast, calibrator) -> dict:
+    """Per-market probabilities, calibrated per race-type stratum when fitted.
+
+    Falls back to the raw Monte-Carlo probability when the (market, stratum) has
+    no fitted model — so the output is always honest about what was calibrated.
+    """
+    raw_by_market = {
+        "win": race.markets.p_win,
+        "podium": race.markets.p_podium,
+        "top6": race.markets.p_top6,
+        "top10": race.markets.p_top10,
     }
+    out: dict[str, dict[str, dict[str, float]]] = {}
+    for market in _RAW_MARKET_KEYS:
+        raw = raw_by_market[market]
+        codes = list(raw.keys())
+        raw_vals = np.array([raw[c] for c in codes], dtype=float)
+        if calibrator is not None and calibrator.is_fitted(market, race.race_type):
+            cal_vals = calibrator.transform(market, raw_vals, stratum=race.race_type)
+        else:
+            cal_vals = raw_vals
+        out[market] = {
+            c: {"probability": round(float(cal_vals[i]), 4), "rawProbability": round(float(raw_vals[i]), 4)}
+            for i, c in enumerate(codes)
+        }
+    return out
+
+
+def _race_probabilities(race: RaceForecast, calibrator) -> dict:
     return {
         "raceType": race.race_type,
-        "markets": rounded,
+        "markets": _calibrate_markets(race, calibrator),
         "h2h": _h2h_subset(race),
         "method": "monte-carlo",
         "monteCarloSamples": race.n_samples,
@@ -167,19 +192,52 @@ def _race_probabilities(race: RaceForecast) -> dict:
     }
 
 
-def probabilities_payload(fc: RoundForecastF2) -> dict:
+def probabilities_payload(fc: RoundForecastF2, calibrator, real_rounds: int) -> dict:
+    applied = calibrator is not None
+    reason = (
+        f"calibrated on {real_rounds} real round(s) of results"
+        if applied
+        else f"awaiting {config.MIN_REAL_ROUNDS_FOR_CALIBRATION} real rounds "
+        f"({real_rounds} so far); showing raw Monte-Carlo probabilities"
+    )
     return {
         "round": fc.round,
         "season": fc.season,
         "venueKey": fc.venue_key,
         "venueName": fc.venue_name,
-        "calibration": {
-            "applied": False,
-            "reason": "awaiting a real F2 results backfill (Phase 2) before calibrating",
-        },
-        "sprint": _race_probabilities(fc.sprint),
-        "feature": _race_probabilities(fc.feature),
+        "calibration": {"applied": applied, "reason": reason},
+        "sprint": _race_probabilities(fc.sprint, calibrator),
+        "feature": _race_probabilities(fc.feature, calibrator),
     }
+
+
+def build_calibrator(source: F2DataSource, year: int):
+    """Fit a per-race-type probability calibrator from *real* completed rounds.
+
+    Counts only rounds whose results came from a real feed (not synthetic). Below
+    ``config.MIN_REAL_ROUNDS_FOR_CALIBRATION`` it returns ``(None, count)`` so the
+    site honestly reports calibration as not-yet-applied — the F1 gate, ported.
+    """
+    real_rounds = [
+        r
+        for r in range(1, config.COMPLETED_ROUNDS + 1)
+        if CompositeF2Source.is_real(source.provenance(year, r, race_index=1))
+    ]
+    if len(real_rounds) < config.MIN_REAL_ROUNDS_FOR_CALIBRATION:
+        return None, len(real_rounds)
+
+    records: list[dict] = []
+    for rnd in real_rounds:
+        fc = pipeline.forecast_round(source, year, rnd)
+        for race, race_type in ((fc.feature, model.FEATURE), (fc.sprint, model.SPRINT)):
+            actual = _actual_map(source, year, rnd, race_type)
+            recs = calibration.collect_history_from_rounds({rnd: race.markets}, {rnd: actual})
+            for rec in recs:
+                rec["stratum"] = race_type
+            records.extend(recs)
+
+    calibrator = calibration.StratifiedProbabilityCalibrator().fit_from_history(records)
+    return (calibrator if calibrator.is_fitted() else None), len(real_rounds)
 
 
 # --------------------------------------------------------------------------- #
@@ -330,16 +388,25 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
     }
 
 
-def _calibration_summary() -> dict:
+def _calibration_summary(calibrator, real_rounds: int) -> dict:
+    applied = calibrator is not None
+    per_market = {m: 0 for m in calibration.MARKETS}
+    if applied:
+        counts = calibrator.sample_counts().get("global", {})
+        if isinstance(counts, dict):
+            per_market.update({m: int(counts.get(m, 0)) for m in calibration.MARKETS})
     return {
         "generatedAt": _now_iso(),
-        "applied": False,
-        "trainingRounds": 0,
+        "applied": applied,
+        "trainingRounds": real_rounds,
         "dataLimitation": (
-            "F2 runs on a synthetic latent-pace source in Phase 1; probability "
-            "calibration is enabled once a real results feed is backfilled (Phase 2)."
+            "Calibrated on real F2 results."
+            if applied
+            else "F2 runs on a synthetic source by default; probability calibration turns on "
+            f"once {config.MIN_REAL_ROUNDS_FOR_CALIBRATION} real rounds are backfilled "
+            "(set F2_USE_LIVE_RESULTS=1 with a live feed)."
         ),
-        "perMarket": {m: 0 for m in calibration.MARKETS},
+        "perMarket": per_market,
     }
 
 
@@ -353,6 +420,9 @@ def write(out_dir: Path) -> Path:
     source = F2DataSource()
     year = config.SEASON
 
+    # Honest calibration gate: fit only from real (non-synthetic) rounds.
+    calibrator, real_rounds = build_calibrator(source, year)
+
     # Forecast every round once (leakage-safe — each uses only prior rounds).
     round_forecasts: dict[int, RoundForecastF2] = {}
     for rnd in range(1, len(config.CALENDAR) + 1):
@@ -363,11 +433,11 @@ def write(out_dir: Path) -> Path:
             json.dumps(round_payload(fc, source, completed), indent=2) + "\n"
         )
         (probs_dir / f"round_{_pad2(rnd)}.json").write_text(
-            json.dumps(probabilities_payload(fc), indent=2) + "\n"
+            json.dumps(probabilities_payload(fc, calibrator, real_rounds), indent=2) + "\n"
         )
 
     (out_dir / "calibration_summary.json").write_text(
-        json.dumps(_calibration_summary(), indent=2) + "\n"
+        json.dumps(_calibration_summary(calibrator, real_rounds), indent=2) + "\n"
     )
 
     payload = build_payload(round_forecasts, source, year)

@@ -141,3 +141,18 @@ DEFAULT_SAMPLES = 4000
 # driver-within-team posterior into the blend; otherwise it degrades to Elo +
 # history with no error (mirrors the F1 optional-LSTM pattern).
 USE_BAYESIAN_SKILL = False
+
+# --------------------------------------------------------------------------- #
+# Phase 2 — real data feed + calibration.
+#
+# Results are selected at runtime (see datasource.py): the deterministic
+# synthetic source by default, or a real-feed composite when the environment
+# variable ``F2_USE_LIVE_RESULTS=1`` is set. Probability calibration only turns
+# on once enough *real* (non-synthetic) rounds have been observed — the honest
+# gate that keeps the website from claiming calibration it hasn't earned.
+# --------------------------------------------------------------------------- #
+MIN_REAL_ROUNDS_FOR_CALIBRATION = 4
+
+# Optional official FIA F2 results URL template (used only when
+# F2_ENABLE_OFFICIAL_FETCH=1). Empty = the official source is disabled.
+OFFICIAL_F2_RESULTS_URL = ""

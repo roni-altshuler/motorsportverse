@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-17T01:37:08+00:00",
+  "generatedAt": "2026-06-17T02:03:49+00:00",
   "applied": false,
   "trainingRounds": 0,
-  "dataLimitation": "F2 runs on a synthetic latent-pace source in Phase 1; probability calibration is enabled once a real results feed is backfilled (Phase 2).",
+  "dataLimitation": "F2 runs on a synthetic source by default; probability calibration turns on once 4 real rounds are backfilled (set F2_USE_LIVE_RESULTS=1 with a live feed).",
   "perMarket": {
     "win": 0,
     "podium": 0,
