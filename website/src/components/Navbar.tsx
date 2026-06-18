@@ -263,8 +263,8 @@ export default function Navbar() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${BASE_PATH}/brand/raceiq-logo.webp`}
-              alt="RaceIQ"
+              src={`${BASE_PATH}/brand/raceiq-f1-mark.svg`}
+              alt="RaceIQ F1"
               className="h-7 w-auto"
               style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))" }}
             />
