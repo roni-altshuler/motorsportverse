@@ -6,6 +6,7 @@ import { FeatureBento } from "@/components/landing/FeatureBento";
 import { PredictionTicker } from "@/components/landing/PredictionTicker";
 import { Reveal } from "@/components/landing/Reveal";
 import { ShowcaseRail } from "@/components/landing/ShowcaseRail";
+import { SplineShowcase } from "@/components/landing/SplineShowcase";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
 import { VerseHero } from "@/components/hero/VerseHero";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -75,6 +76,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ====================== 3D SPLINE SHOWCASE ====================== */}
+      <SplineShowcase />
+
       {/* ====================== FEATURE BENTO ====================== */}
       <section className="section pt-0">
         <div className="shell">
@@ -125,7 +129,7 @@ export default function HomePage() {
       <section className="section pt-0">
         <div className="shell">
           <Reveal>
-            <div className="card-premium relative overflow-hidden px-8 py-20 text-center sm:px-16">
+            <div className="liquid-glass-pane relative overflow-hidden px-8 py-20 text-center sm:px-16">
               <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" />
               <div
                 className="pointer-events-none absolute inset-0"

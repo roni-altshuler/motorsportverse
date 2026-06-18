@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import { Sparkline } from "@/components/charts/Sparkline";
 import {
   getCalibrationSummary,
@@ -54,6 +55,17 @@ export default function AccuracyPage() {
         />
         <Metric label="NDCG@5" value={season?.meanNdcgAt5 != null ? season.meanNdcgAt5.toFixed(2) : "—"} />
       </div>
+
+      {/* Per-round accuracy heatmap */}
+      {rounds.length > 0 && (
+        <section className="mt-12">
+          <h2 className="mb-4 text-xl font-semibold text-[var(--ink)]">Per-round accuracy</h2>
+          <p className="mb-4 text-sm text-[var(--ink-muted)]">
+            Podium-weighted feature-race accuracy per round. Tap a cell for the breakdown.
+          </p>
+          <RoundsHeatmap rounds={rounds} totalRounds={data.totalRounds} />
+        </section>
+      )}
 
       {/* Per-round table */}
       {rounds.length > 0 && (

@@ -17,11 +17,12 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import { asset } from "@/lib/asset";
+import { useWebGLMode } from "@/lib/useWebGLMode";
 
 const VerseCanvas = dynamic(() => import("./VerseCanvas"), { ssr: false });
+const ShaderBackground = dynamic(() => import("./ShaderBackground"), { ssr: false });
 
 interface VerseHeroProps {
   nodeColors: string[];
@@ -29,45 +30,13 @@ interface VerseHeroProps {
 }
 
 export function VerseHero({ nodeColors, stats }: VerseHeroProps) {
-  // "off" until we've confirmed the client can/should run WebGL.
-  const [mode, setMode] = useState<"static" | "webgl" | "reduced">("static");
-
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const evaluate = () => {
-      if (mql.matches) {
-        setMode("reduced");
-        return;
-      }
-      const wideEnough = window.innerWidth >= 768;
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      const cores = navigator.hardwareConcurrency ?? 4;
-      let webglOk = false;
-      try {
-        const c = document.createElement("canvas");
-        webglOk = !!c.getContext("webgl2");
-      } catch {
-        webglOk = false;
-      }
-      if (webglOk && wideEnough && finePointer && cores >= 4) {
-        setMode("webgl");
-      } else {
-        setMode("static");
-      }
-    };
-    evaluate();
-    mql.addEventListener("change", evaluate);
-    window.addEventListener("resize", evaluate, { passive: true });
-    return () => {
-      mql.removeEventListener("change", evaluate);
-      window.removeEventListener("resize", evaluate);
-    };
-  }, []);
+  // Shared capability gate: "static" (CSS only) | "webgl" (full) | "reduced".
+  const mode = useWebGLMode();
 
   return (
     <section className="relative isolate overflow-hidden">
       {/* Static, always-present backdrop (the fallback + the legibility base). */}
-      <div className="pointer-events-none absolute inset-0 -z-20">
+      <div className="pointer-events-none absolute inset-0 -z-30">
         <div className="bg-grid bg-grid-fade absolute inset-0 opacity-[0.5]" />
         <div
           className="absolute inset-0"
@@ -75,6 +44,13 @@ export function VerseHero({ nodeColors, stats }: VerseHeroProps) {
           aria-hidden
         />
       </div>
+
+      {/* Flowing aurora shader wash — behind the starfield, only when opted in. */}
+      {mode === "webgl" && (
+        <div className="pointer-events-none absolute inset-0 -z-20">
+          <ShaderBackground accent="#e7102f" />
+        </div>
+      )}
 
       {/* WebGL verse — only when the client opted in. */}
       {mode === "webgl" && (
@@ -95,7 +71,7 @@ export function VerseHero({ nodeColors, stats }: VerseHeroProps) {
 
       <div className="shell relative flex flex-col items-center pt-28 pb-24 text-center sm:pt-36">
         {/* live ecosystem pill */}
-        <div className="glass mb-10 inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5 text-xs text-[var(--ink-muted)]">
+        <div className="liquid-glass mb-10 inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5 text-xs text-[var(--ink-muted)]">
           <span className="live-dot" />
           <span className="font-mono tracking-wide">
             {stats[0]?.value ?? "—"} projects · {stats[1]?.value ?? "—"} live
@@ -135,7 +111,7 @@ export function VerseHero({ nodeColors, stats }: VerseHeroProps) {
         </div>
 
         {/* stat strip — hairline-led, restrained */}
-        <dl className="mt-16 grid w-full max-w-3xl grid-cols-2 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--glass)] backdrop-blur-xl sm:grid-cols-4">
+        <dl className="liquid-glass mt-16 grid w-full max-w-3xl grid-cols-2 overflow-hidden rounded-[var(--radius-lg)] sm:grid-cols-4">
           {stats.map((s, i) => (
             <div
               key={s.label}

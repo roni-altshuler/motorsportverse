@@ -197,6 +197,67 @@ h1, h2, h3, h4 {
   -webkit-backdrop-filter: blur(28px) saturate(150%);
 }
 
+/* ============================================================
+ * Liquid glass — refractive translucent surfaces with a specular
+ * top-edge sheen and an inset light line, evoking the depth of
+ * frosted/refracting glass (Apple "liquid glass" vocabulary).
+ * Static by design (no animation) so it never costs frames and stays
+ * legible. Degrades to a solid surface where backdrop-filter is absent.
+ * ============================================================ */
+.liquid-glass,
+.liquid-glass-strong,
+.liquid-glass-pane {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(165%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(165%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-spec-highlight),
+    inset 0 0 0 1px var(--glass-edge),
+    var(--shadow-md);
+}
+/* specular sheen along the top edge — the "lit glass" highlight */
+.liquid-glass::before,
+.liquid-glass-strong::before,
+.liquid-glass-pane::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    var(--glass-refraction) 0%,
+    transparent 42%
+  );
+  pointer-events: none;
+}
+.liquid-glass-strong {
+  background: var(--glass-strong);
+  border-color: var(--glass-border-strong);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(170%);
+}
+/* a large content card — slightly more opaque base for body copy on top */
+.liquid-glass-pane {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 26, 36, 0.66) 0%,
+    rgba(10, 14, 22, 0.82) 140%
+  );
+  border-color: var(--glass-border-strong);
+}
+/* solid-surface fallback for browsers without backdrop-filter (Firefox w/o flag, old Safari) */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .liquid-glass,
+  .liquid-glass-strong,
+  .liquid-glass-pane {
+    background: var(--glass-strong);
+  }
+}
+
 /* Premium card — flatter, hairline-led, restrained hover. */
 .card-premium {
   position: relative;

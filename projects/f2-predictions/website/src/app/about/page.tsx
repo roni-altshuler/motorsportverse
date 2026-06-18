@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
+import { MagicCard } from "@/components/magicui/magic-card";
+import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import { getF2Data } from "@/lib/f2data";
 
 export const metadata: Metadata = {
@@ -9,34 +12,62 @@ export const metadata: Metadata = {
     "How RaceIQ F2 forecasts the FIA Formula 2 championship — a spec series where driver skill rules and the sprint runs a reversed grid.",
 };
 
+// F2 electric-blue identity (mirrors the F1 flagship's gradient treatment).
+const F2_FROM = "#1E9BD7";
+const F2_TO = "#9FE2FF";
+
+const NAV = [
+  { href: "/", title: "Home", copy: "The next round up, the predicted podium, and a championship snapshot." },
+  { href: "/calendar", title: "Calendar", copy: "Every round at a glance — sprint and feature dates, status per round." },
+  { href: "/standings", title: "Standings", copy: "Drivers and teams, updated through the latest round, with title projections." },
+];
+
 export default function AboutPage() {
   const data = getF2Data();
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <p className="eyebrow mb-3">Formula 2 · {data.season}</p>
-      <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
-        About the model
-      </h1>
-      <p className="mt-4 text-lg leading-relaxed text-[var(--ink-muted)]">
-        RaceIQ F2 forecasts every round of the FIA Formula&nbsp;2 championship — both the Saturday
-        sprint and the Sunday feature race — and projects the title fight to the end of the season.
-        It&rsquo;s built on the same MotorsportVerse core that powers RaceIQ&nbsp;F1, tuned for what
-        makes Formula&nbsp;2 different.
-      </p>
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+      {/* ── Hero ── */}
+      <div className="text-center mb-20">
+        <p className="eyebrow mb-4">Formula 2 · {data.season}</p>
+        <h1 className="display-xl mb-6 [font-weight:700]">
+          The {data.season}{" "}
+          <AnimatedGradientText speed={10} colorFrom={F2_FROM} colorTo={F2_TO}>
+            Predictions Board
+          </AnimatedGradientText>
+        </h1>
+        <p className="body-md max-w-2xl mx-auto text-[color:var(--ink-muted)]">
+          RaceIQ&nbsp;F2 forecasts every round of the FIA Formula&nbsp;2 championship — both the
+          Saturday sprint and the Sunday feature race — and projects the title fight to the end of
+          the season. It&rsquo;s built on the same MotorsportVerse core that powers RaceIQ&nbsp;F1,
+          tuned for what makes Formula&nbsp;2 different.
+        </p>
+      </div>
 
+      {/* ── How it works — shared AnimatedBeam diagram ── */}
+      <section className="mb-20" aria-labelledby="about-how-heading">
+        <div className="text-center mb-10">
+          <p className="eyebrow mb-2">How it works</p>
+          <h2 id="about-how-heading" className="display-md">
+            Live data → Model → Forecast
+          </h2>
+        </div>
+        <HowItWorksDiagram variant="beam" />
+      </section>
+
+      {/* ── The F2-specific story ── */}
       <Section title="A spec series rewards the driver">
         Every team runs the same chassis, engine, and tyres, so the car barely separates the field —
         what you&rsquo;re really watching is driver quality. The forecast weights a driver&rsquo;s own
-        form and head-to-head record far more heavily than their team, the opposite of how a Formula&nbsp;1
-        model has to think.
+        form and head-to-head record far more heavily than their team, the opposite of how a
+        Formula&nbsp;1 model has to think.
       </Section>
 
       <Section title="Two very different races a weekend">
         The feature race starts from a merit grid: fastest in qualifying lines up first. The sprint
         flips the top ten of that grid, so the quickest drivers have to fight forward from the back.
-        RaceIQ models the two races separately — that reversed grid is exactly why the sprint is so much
-        more unpredictable, and the forecast reflects it.
+        RaceIQ models the two races separately — that reversed grid is exactly why the sprint is so
+        much more unpredictable, and the forecast reflects it.
       </Section>
 
       <Section title="What the numbers mean">
@@ -56,6 +87,29 @@ export default function AboutPage() {
         site never claims precision it hasn&rsquo;t earned.
       </Section>
 
+      {/* ── Navigation guide (MagicCard grid) ── */}
+      <section className="hairline-divider-top pt-12 mt-16 mb-16">
+        <p className="eyebrow mb-4">How to use this site</p>
+        <h2 className="display-md mb-8">Navigation</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {NAV.map((n) => (
+            <MagicCard
+              key={n.href}
+              gradientFrom={F2_FROM}
+              gradientTo={F2_TO}
+              gradientColor="#10202c"
+              className="border border-[color:var(--hairline)]"
+            >
+              <Link href={n.href} className="block p-5 h-full">
+                <p className="title-md mb-2 text-[color:var(--ink)]">{n.title}</p>
+                <p className="body-sm text-[color:var(--muted)]">{n.copy}</p>
+              </Link>
+            </MagicCard>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Part of MotorsportVerse ── */}
       <Section title="Part of MotorsportVerse">
         RaceIQ&nbsp;F2 is one project in the{" "}
         <a
@@ -70,20 +124,23 @@ export default function AboutPage() {
         runs RaceIQ&nbsp;F1; F2 adds only what the championship genuinely needs.
       </Section>
 
-      <div className="mt-12 flex flex-wrap gap-3">
-        <Link
-          href="/standings"
-          className="rounded-[var(--radius-pill)] bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--accent-ink,#04222e)]"
+      {/* ── Disclaimer ── */}
+      <section className="hairline-divider-top pt-12 mt-12">
+        <div
+          className="border rounded-[var(--radius-card)] p-6 sm:p-7"
+          style={{ borderColor: "rgba(212,160,23,0.4)" }}
         >
-          See the standings →
-        </Link>
-        <Link
-          href="/calendar"
-          className="rounded-[var(--radius-pill)] border border-[var(--hairline-strong)] px-5 py-2.5 text-sm font-medium text-[var(--ink)]"
-        >
-          Season calendar
-        </Link>
-      </div>
+          <p className="eyebrow mb-3" style={{ color: "var(--warning)" }}>
+            Disclaimer
+          </p>
+          <p className="body-md text-[color:var(--body)]">
+            This site is a personal project published for educational and entertainment purposes.
+            Forecasts are model outputs and should not be used for betting or any form of gambling.
+            The project is not affiliated with, endorsed by, or connected to Formula&nbsp;2, the FIA,
+            or any team.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import CircuitMap from "@/components/race-detail/CircuitMap";
 import { RaceDetail } from "@/components/race-detail/RaceDetail";
 import { allRoundNumbers, getCircuit, getF2Data, getProbabilities, getRound } from "@/lib/f2data";
 
@@ -34,31 +33,18 @@ export default async function RacePage({ params }: { params: Promise<{ round: st
   const calRound = data.calendar.find((c) => c.round === roundNum);
   const geometry = getCircuit(round.venueKey);
 
+  // Backfill country onto the round payload from the calendar when present
+  // (calendar country strings drive the flag lookup most reliably).
+  const enrichedRound = { ...round, country: calRound?.country ?? round.country };
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <div className="flex items-start justify-between gap-6">
-        <div>
-          <p className="eyebrow">
-            Round {round.round} · {round.completed ? "Result + forecast" : "Upcoming forecast"}
-          </p>
-          <h1 className="font-display mt-2 text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
-            {round.venueName}
-          </h1>
-          <p className="mt-2 text-[var(--ink-muted)]">
-            {calRound?.country ?? round.country} · {round.completed ? "Completed" : "Upcoming"} ·
-            forecasts from the F2 model on MotorsportVerse core.
-          </p>
-        </div>
-        {geometry && (
-          <div className="hidden h-28 w-40 shrink-0 sm:block" aria-hidden>
-            <CircuitMap geometry={geometry} accentColor="var(--accent)" showCorners={false} />
-          </div>
-        )}
-      </div>
-
-      <div className="mt-10">
-        <RaceDetail round={round} probabilities={probabilities} />
-      </div>
+      <RaceDetail
+        round={enrichedRound}
+        probabilities={probabilities}
+        geometry={geometry}
+        driverStandings={data.driverStandings}
+      />
     </div>
   );
 }

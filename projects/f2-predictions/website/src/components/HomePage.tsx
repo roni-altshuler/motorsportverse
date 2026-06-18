@@ -5,23 +5,30 @@
  * passes plain data into the (mostly client) sections. The marketing scaffold
  * (hero, trust, how-it-works, features, technical credibility, FAQ, final CTA)
  * always renders; the live product proof (race window, predicted podium,
- * championship bento) renders from the same build-time data.
+ * latest official result, championship bento, teams constellation) renders from
+ * the same build-time data.
  *
- * Adapted from F1: F2 has no per-round dates, no telemetry / weather / pit
- * strategy, no separate trust-stats JSON, no constructors constellation. Trust
- * numbers are derived from the season accuracy block.
+ * Adapted from F1: F2 has no per-round dates beyond sprint/feature dates, no
+ * telemetry / weather / pit strategy, and no separate trust-stats JSON. Trust
+ * numbers are derived from the season accuracy block. F2 is a spec series with
+ * no official constructors' championship, so the constellation is framed as the
+ * teams that run the grid, not a constructors' title.
  */
 import Link from "next/link";
 
 import CircuitMap from "@/components/race-detail/CircuitMap";
-import { getCircuit, getF2Data } from "@/lib/f2data";
+import { getCircuit, getF2Data, getRound } from "@/lib/f2data";
 import { teamColor } from "@/lib/teams";
+import type { RaceBlock } from "@/types/f2";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
+import HeroCountdown from "@/components/home/HeroCountdown";
 import PodiumStage from "@/components/home/PodiumStage";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import ChampionshipBento from "@/components/home/ChampionshipBento";
+import ConstructorsConstellation from "@/components/home/ConstructorsConstellation";
+import LatestResult, { type ResultRow } from "@/components/home/LatestResult";
 import TrustBand from "@/components/marketing/TrustBand";
 import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import FeatureOutcomes from "@/components/marketing/FeatureOutcomes";
@@ -42,7 +49,8 @@ export default function HomePage() {
   const roundsRemaining = data.totalRounds - data.completedRounds;
   const roundsScored = acc?.roundsScored ?? data.completedRounds;
 
-  // The predicted podium only teases when a next-round forecast exists.
+  // The predicted podium only teases when a next-round forecast exists — F2's
+  // honest analog of F1's qualifying gate (no forecast, no tease).
   const podiumEntries =
     next?.race?.slice(0, 3).map((r) => ({
       driver: r.code,
@@ -51,6 +59,54 @@ export default function HomePage() {
       teamColor: teamColor(r.team),
       winProbability: r.pWin * 100,
     })) ?? [];
+
+  // ── Latest Official Result — most recent completed round's FEATURE race ──
+  // Derive in the server component: find the latest completed calendar round,
+  // load its detail, map actualResults codes → driver names/teams via the
+  // round's own classification first (most authoritative), then the season
+  // standings, then the code itself.
+  const latestCompleted = [...data.calendar]
+    .filter((c) => c.completed)
+    .sort((a, b) => b.round - a.round)[0] ?? null;
+  const latestRound = latestCompleted ? getRound(latestCompleted.round) : null;
+
+  const nameByCode = new Map<string, { name: string; team: string; teamColor: string; headshotUrl?: string | null }>();
+  for (const d of data.driverStandings) {
+    nameByCode.set(d.code, {
+      name: d.name,
+      team: d.team,
+      teamColor: d.teamColor || teamColor(d.team),
+      headshotUrl: d.headshotUrl ?? null,
+    });
+  }
+
+  function mapResults(block: RaceBlock | undefined, limit: number): ResultRow[] {
+    if (!block?.actualResults?.length) return [];
+    // Round classification carries the richest per-driver metadata.
+    const byCode = new Map(
+      (block.classification ?? []).map((c) => [c.code, c] as const),
+    );
+    return [...block.actualResults]
+      .sort((a, b) => a.position - b.position)
+      .slice(0, limit)
+      .map((res) => {
+        const cls = byCode.get(res.code);
+        const fallback = nameByCode.get(res.code);
+        const team = cls?.team ?? fallback?.team ?? "—";
+        const tc = cls?.teamColor ?? fallback?.teamColor ?? teamColor(team);
+        return {
+          position: res.position,
+          code: res.code,
+          name: cls?.name ?? fallback?.name ?? res.code,
+          team,
+          teamColor: tc,
+          headshotUrl: cls?.headshotUrl ?? fallback?.headshotUrl ?? null,
+        } satisfies ResultRow;
+      });
+  }
+
+  const featureRows = mapResults(latestRound?.feature, 10);
+  const sprintRows = mapResults(latestRound?.sprint, 3);
 
   return (
     <div>
@@ -79,6 +135,12 @@ export default function HomePage() {
                 <Badge variant="live">Next up</Badge>
                 <span className="eyebrow">
                   R{next.round} · Sprint + Feature
+                  {nextCalendarRound.featureDate ? (
+                    <>
+                      {" · "}
+                      <HeroCountdown targetDate={nextCalendarRound.featureDate} />
+                    </>
+                  ) : null}
                 </span>
               </div>
               <div className="mb-8 flex items-start justify-between gap-6">
@@ -198,6 +260,31 @@ export default function HomePage() {
           </section>
         )}
 
+        {/* ── Latest official result — most recent completed feature race ── */}
+        {latestCompleted && featureRows.length >= 3 && (
+          <section aria-labelledby="latest-result-heading" className="section-bugatti">
+            <div className="flex items-baseline justify-between mb-8">
+              <div>
+                <p className="eyebrow mb-2">Race Control</p>
+                <h2 id="latest-result-heading" className="display-md">
+                  Latest Official Result
+                </h2>
+                <p className="body-md mt-3 text-[color:var(--muted)]">
+                  Round {latestCompleted.round} · {latestCompleted.name} feature race
+                  {latestCompleted.country ? ` · ${latestCompleted.country}` : ""}
+                </p>
+              </div>
+              <Link
+                href={`/race/${latestCompleted.round}`}
+                className="link-bugatti button-label"
+              >
+                Compare to prediction
+              </Link>
+            </div>
+            <LatestResult feature={featureRows} sprint={sprintRows} />
+          </section>
+        )}
+
         {/* ── Championship snapshot ── */}
         {data.driverStandings.length > 0 && (
           <section aria-labelledby="championship-heading" className="section-bugatti">
@@ -221,6 +308,32 @@ export default function HomePage() {
               totalRounds={data.totalRounds}
               seasonAccuracy={acc}
               roundsCompleted={roundsScored}
+            />
+          </section>
+        )}
+
+        {/* ── Teams constellation ── F2 is a spec series with no official
+            constructors' championship, so the copy is about the teams that run
+            the grid, not a constructors' title. */}
+        {data.teamStandings.length > 0 && (
+          <section
+            aria-labelledby="constellation-heading"
+            className="section-bugatti relative"
+          >
+            <div className="text-center mb-10">
+              <p className="eyebrow mb-2">Constellation</p>
+              <h2 id="constellation-heading" className="display-md">
+                The teams behind the grid
+              </h2>
+              <p className="body-md mt-3 max-w-xl mx-auto text-[color:var(--muted)]">
+                {data.teamStandings.length} teams run the {data.season} FIA Formula 2
+                field — every car on the grid, in orbit. F2 is a spec series, so it
+                is the drivers, not the machines, who decide the season.
+              </p>
+            </div>
+            <ConstructorsConstellation
+              teams={data.teamStandings}
+              seasonYear={data.season}
             />
           </section>
         )}

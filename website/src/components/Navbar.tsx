@@ -28,7 +28,7 @@ function navProjects() {
 export function Navbar() {
   const projects = navProjects();
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--glass)] backdrop-blur-xl backdrop-saturate-150">
+    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--glass)] backdrop-blur-2xl backdrop-saturate-[170%] shadow-[inset_0_1px_0_var(--glass-spec-highlight)]">
       <nav className="shell flex items-center justify-between py-3">
         <Link href="/" className="group flex items-center gap-2.5">
           <Image

@@ -92,6 +92,14 @@
   --glass-border: rgba(255, 255, 255, 0.07);
   --glass-border-strong: rgba(255, 255, 255, 0.12);
 
+  /* Liquid glass — refraction + specular highlight layers (Apple-style depth).
+     Consumed by .liquid-glass / .liquid-glass-strong / .liquid-glass-pane. */
+  --glass-refraction: rgba(255, 255, 255, 0.10);
+  --glass-spec-highlight: rgba(255, 255, 255, 0.14);
+  --glass-edge: rgba(255, 255, 255, 0.05);
+  --glass-blur: 20px;
+  --glass-blur-strong: 32px;
+
   /* Hairline system — three weights for layering depth */
   --line-faint: rgba(255, 255, 255, 0.05);
   --line: rgba(255, 255, 255, 0.08);

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EB_Garamond, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
 import Footer from "@/components/Footer";
+import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import Navbar from "@/components/Navbar";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
@@ -48,12 +49,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       data-theme="dark"
+      suppressHydrationWarning
       className={`${saira.variable} ${garamond.variable} ${jetbrains.variable}`}
     >
-      <body>
+      <body className="min-h-screen w-full flex flex-col antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-[color:var(--ink)] focus:px-3 focus:py-2 focus:text-[color:var(--canvas)]"
+        >
+          Skip to main content
+        </a>
         <SmoothScrollProvider>
           <Navbar />
-          <main className="min-h-[70vh]">{children}</main>
+          <LiveContextBand />
+          <main id="main-content" tabIndex={-1} className="flex-1 w-full min-h-[70vh]">
+            {children}
+          </main>
           <Footer />
         </SmoothScrollProvider>
       </body>
