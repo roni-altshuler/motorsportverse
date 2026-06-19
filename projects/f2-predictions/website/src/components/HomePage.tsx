@@ -16,7 +16,6 @@
  */
 import Link from "next/link";
 
-import CircuitMap from "@/components/race-detail/CircuitMap";
 import { getCircuit, getF2Data, getRound } from "@/lib/f2data";
 import { teamColor } from "@/lib/teams";
 import type { RaceBlock } from "@/types/f2";
@@ -110,7 +109,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <HeroParallax className="min-h-[78vh] flex items-center">
+      <HeroParallax className="min-h-[78vh] flex items-center" geometry={nextGeometry}>
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10 py-20">
           {/* ── Value proposition ── */}
           <div className="max-w-3xl">
@@ -143,20 +142,13 @@ export default function HomePage() {
                   ) : null}
                 </span>
               </div>
-              <div className="mb-8 flex items-start justify-between gap-6">
-                <div>
-                  <p className="eyebrow mb-2">Next round · Predicted next</p>
-                  <h2 className="display-md text-balance">{next.venueName}</h2>
-                  <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
-                    {nextCalendarRound.country ?? "Round " + next.round} · two races,
-                    modelled separately — reversed-grid sprint and merit feature.
-                  </p>
-                </div>
-                {nextGeometry && (
-                  <div className="hidden h-32 w-44 shrink-0 md:block" aria-hidden>
-                    <CircuitMap geometry={nextGeometry} accentColor="var(--accent)" showCorners={false} />
-                  </div>
-                )}
+              <div className="mb-8">
+                <p className="eyebrow mb-2">Next round · Predicted next</p>
+                <h2 className="display-md text-balance">{next.venueName}</h2>
+                <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
+                  {nextCalendarRound.country ?? "Round " + next.round} · two races,
+                  modelled separately — reversed-grid sprint and merit feature.
+                </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">
                 <Link
