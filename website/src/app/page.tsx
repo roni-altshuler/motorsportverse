@@ -6,7 +6,6 @@ import { FeatureBento } from "@/components/landing/FeatureBento";
 import { PredictionTicker } from "@/components/landing/PredictionTicker";
 import { Reveal } from "@/components/landing/Reveal";
 import { ShowcaseRail } from "@/components/landing/ShowcaseRail";
-import { SplineShowcase } from "@/components/landing/SplineShowcase";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
 import { VerseHero } from "@/components/hero/VerseHero";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -30,8 +29,6 @@ export default function HomePage() {
     maturity: p.maturity,
   }));
 
-  const nodeColors = projects.map((p) => p.accent || "#e7102f");
-
   const diagramSports = projects
     .slice()
     .sort((a, b) => {
@@ -49,8 +46,8 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* ====================== WEBGL HERO ====================== */}
-      <VerseHero nodeColors={nodeColors} stats={heroStats} />
+      {/* ====================== HERO ====================== */}
+      <VerseHero stats={heroStats} />
 
       {/* ====================== LIVE PREDICTION TICKER ====================== */}
       <PredictionTicker rows={tickerRows} />
@@ -75,9 +72,6 @@ export default function HomePage() {
           <EcosystemDiagram sports={diagramSports} />
         </div>
       </section>
-
-      {/* ====================== 3D SPLINE SHOWCASE ====================== */}
-      <SplineShowcase />
 
       {/* ====================== FEATURE BENTO ====================== */}
       <section className="section pt-0">

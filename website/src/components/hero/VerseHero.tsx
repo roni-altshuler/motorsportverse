@@ -1,73 +1,35 @@
-"use client";
-
 /**
- * VerseHero — the flagship WebGL hero ("the verse").
+ * VerseHero — the flagship hero.
  *
- * Loading + degradation strategy (per the static-export + a11y contract):
- *   - The WebGL canvas (VerseCanvas) is loaded via next/dynamic with
- *     ssr:false, so it never participates in `next build` / static export.
- *   - It only mounts after a capability check: WebGL2 present, viewport wide
- *     enough, not a coarse-pointer/low-core device, and not prefers-reduced-
- *     motion. Otherwise the layered CSS gradient + hairline grid backdrop is
- *     shown alone — a fully static, premium fallback.
- *   - Even when active, the canvas sits behind a static gradient wash so the
- *     foreground copy is always legible and the first paint is never blank.
+ * Fully static and server-renderable: the animated atmosphere now comes from
+ * the site-wide checkered-flag wave canvas (rendered in the root layout), so
+ * the hero just sits over it. A soft radial vignette behind the copy keeps the
+ * headline legible against the moving background; the wave shows through
+ * everywhere else.
  */
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
 import { asset } from "@/lib/asset";
-import { useWebGLMode } from "@/lib/useWebGLMode";
-
-const VerseCanvas = dynamic(() => import("./VerseCanvas"), { ssr: false });
-const ShaderBackground = dynamic(() => import("./ShaderBackground"), { ssr: false });
 
 interface VerseHeroProps {
-  nodeColors: string[];
   stats: { value: string; label: string }[];
 }
 
-export function VerseHero({ nodeColors, stats }: VerseHeroProps) {
-  // Shared capability gate: "static" (CSS only) | "webgl" (full) | "reduced".
-  const mode = useWebGLMode();
-
+export function VerseHero({ stats }: VerseHeroProps) {
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Static, always-present backdrop (the fallback + the legibility base). */}
-      <div className="pointer-events-none absolute inset-0 -z-30">
-        <div className="bg-grid bg-grid-fade absolute inset-0 opacity-[0.5]" />
-        <div
-          className="absolute inset-0"
-          style={{ background: "var(--mesh-1)" }}
-          aria-hidden
-        />
-      </div>
-
-      {/* Flowing aurora shader wash — behind the starfield, only when opted in. */}
-      {mode === "webgl" && (
-        <div className="pointer-events-none absolute inset-0 -z-20">
-          <ShaderBackground accent="#e7102f" />
-        </div>
-      )}
-
-      {/* WebGL verse — only when the client opted in. */}
-      {mode === "webgl" && (
-        <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute left-1/2 top-[42%] h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2">
-            <VerseCanvas nodeColors={nodeColors} />
-          </div>
-          {/* vignette so text stays crisp over the field */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(70% 60% at 50% 38%, transparent 0%, var(--canvas) 92%)",
-            }}
-          />
-        </div>
-      )}
+      {/* Legibility vignette only — transparent so the site-wide wave shows
+          through, with a soft canvas wash behind the headline for contrast. */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 55% at 50% 40%, color-mix(in srgb, var(--canvas) 70%, transparent) 0%, transparent 78%)",
+        }}
+        aria-hidden
+      />
 
       <div className="shell relative flex flex-col items-center pt-28 pb-24 text-center sm:pt-36">
         {/* live ecosystem pill */}

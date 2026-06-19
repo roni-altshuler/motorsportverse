@@ -244,6 +244,72 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 2;
 }
 
+/* Hero track ribbon — three-layer SVG path animation tracing the featured
+ * round's circuit (ported from the RaceIQ F1 flagship, tinted to F2 electric
+ * blue). A faint base stroke frames the loop; an animated dash sweeps a bright
+ * comet along it; a blurred trail behind creates the glow. Sits behind the
+ * scrim (z:1) and content (z:2). The global prefers-reduced-motion guard zeroes
+ * the animation duration, freezing the sweep. */
+.hero-track-ribbon {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 50%,
+    #000 0%,
+    #000 65%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 85% 90% at 50% 50%,
+    #000 0%,
+    #000 65%,
+    transparent 100%
+  );
+}
+.hero-track-ribbon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-track-ribbon .ribbon-base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.hero-track-ribbon .ribbon-sweep {
+  fill: none;
+  stroke: url(#hero-track-gradient);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 900 3200;
+  filter: drop-shadow(0 0 10px rgba(30, 155, 215, 0.75));
+  animation: hero-track-sweep 9s linear infinite;
+}
+.hero-track-ribbon .ribbon-sweep-trail {
+  fill: none;
+  stroke: rgba(30, 155, 215, 0.55);
+  stroke-width: 14;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 500 3600;
+  filter: blur(8px);
+  animation: hero-track-sweep 9s linear infinite;
+}
+@keyframes hero-track-sweep {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -4100;
+  }
+}
+
 /* Race-podium leader card — thin champagne accent line + corner pill. */
 .podium-leader-card {
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent-podium-1) 35%, transparent);
