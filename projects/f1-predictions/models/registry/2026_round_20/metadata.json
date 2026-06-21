@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Las Vegas",
+  "ensemble_weights": {
+    "gb": 0.5830389013362307,
+    "lstm": 0.0,
+    "xgb": 0.41696109866376924
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Las Vegas Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.11309794095355982,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.13874312950784573,
+      "R\u00b2": 0.9616552938837988
+    },
+    {
+      "MAE (s)": 0.1581454467773426,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.16584282211199602,
+      "R\u00b2": 0.9452132170168457
+    },
+    {
+      "MAE (s)": 0.10904303182751107,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.13139788852127904,
+      "R\u00b2": 0.9656078588972253
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 20,
+  "savedAt": "2026-05-24T12:01:19+00:00",
+  "season": 2026
+}

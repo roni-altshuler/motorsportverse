@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "China",
+  "ensemble_weights": {
+    "gb": 0.6086686158076869,
+    "lstm": 0.0,
+    "xgb": 0.39133138419231306
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Chinese Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.36256336148123014,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.518463163397264,
+      "R\u00b2": 0.5923917367527542
+    },
+    {
+      "MAE (s)": 0.5639234375000001,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.6064412814892731,
+      "R\u00b2": 0.44232049722128497
+    },
+    {
+      "MAE (s)": 0.44136282145395284,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.5346054885960889,
+      "R\u00b2": 0.5666148807207874
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 2,
+  "savedAt": "2026-05-24T11:48:23+00:00",
+  "season": 2026
+}

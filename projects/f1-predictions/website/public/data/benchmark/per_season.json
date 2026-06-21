@@ -1,0 +1,114 @@
+{
+  "variants": [
+    "baseline",
+    "elite_head_plus_hybrid",
+    "regime_routed_three_layer",
+    "regime_routed_with_weekend"
+  ],
+  "perSeason": {
+    "2024": {
+      "baseline": {
+        "rounds": 24,
+        "mae": 5.4742,
+        "rmse": 6.8636,
+        "spearman": 0.3974,
+        "ndcg_at_5": 0.4618,
+        "podium_hit_rate": 0.3472,
+        "winner_hit_rate": 0.1667,
+        "within_3_rate": 0.4123,
+        "within_5_rate": 0.5983
+      },
+      "elite_head_plus_hybrid": {
+        "rounds": 24,
+        "mae": 4.7145,
+        "rmse": 6.0927,
+        "spearman": 0.4245,
+        "ndcg_at_5": 0.5402,
+        "podium_hit_rate": 0.4306,
+        "winner_hit_rate": 0.2083,
+        "within_3_rate": 0.463,
+        "within_5_rate": 0.6638
+      },
+      "regime_routed_three_layer": {
+        "rounds": 24,
+        "mae": 4.7013,
+        "rmse": 6.096,
+        "spearman": 0.4236,
+        "ndcg_at_5": 0.5324,
+        "podium_hit_rate": 0.4444,
+        "winner_hit_rate": 0.2083,
+        "within_3_rate": 0.4651,
+        "within_5_rate": 0.6638,
+        "winner_log_loss": 2.3707,
+        "podium_log_loss": 0.3492,
+        "winner_calibration_error": 0.0177
+      },
+      "regime_routed_with_weekend": {
+        "rounds": 24,
+        "mae": 4.6724,
+        "rmse": 6.0302,
+        "spearman": 0.4361,
+        "ndcg_at_5": 0.5732,
+        "podium_hit_rate": 0.4722,
+        "winner_hit_rate": 0.2917,
+        "within_3_rate": 0.4651,
+        "within_5_rate": 0.666,
+        "winner_log_loss": 2.3428,
+        "podium_log_loss": 0.3244,
+        "winner_calibration_error": 0.0158
+      }
+    },
+    "2025": {
+      "baseline": {
+        "rounds": 24,
+        "mae": 6.2722,
+        "rmse": 7.6053,
+        "spearman": 0.2749,
+        "ndcg_at_5": 0.4683,
+        "podium_hit_rate": 0.3056,
+        "winner_hit_rate": 0.125,
+        "within_3_rate": 0.3362,
+        "within_5_rate": 0.5149
+      },
+      "elite_head_plus_hybrid": {
+        "rounds": 24,
+        "mae": 5.1809,
+        "rmse": 6.4953,
+        "spearman": 0.3121,
+        "ndcg_at_5": 0.6045,
+        "podium_hit_rate": 0.4861,
+        "winner_hit_rate": 0.2083,
+        "within_3_rate": 0.4511,
+        "within_5_rate": 0.6085
+      },
+      "regime_routed_three_layer": {
+        "rounds": 24,
+        "mae": 5.1725,
+        "rmse": 6.4934,
+        "spearman": 0.3125,
+        "ndcg_at_5": 0.6076,
+        "podium_hit_rate": 0.5,
+        "winner_hit_rate": 0.25,
+        "within_3_rate": 0.4511,
+        "within_5_rate": 0.6085,
+        "winner_log_loss": 2.0503,
+        "podium_log_loss": 0.2981,
+        "winner_calibration_error": 0.028
+      },
+      "regime_routed_with_weekend": {
+        "rounds": 24,
+        "mae": 5.1684,
+        "rmse": 6.4639,
+        "spearman": 0.3199,
+        "ndcg_at_5": 0.6142,
+        "podium_hit_rate": 0.5,
+        "winner_hit_rate": 0.25,
+        "within_3_rate": 0.4511,
+        "within_5_rate": 0.6085,
+        "winner_log_loss": 1.9268,
+        "podium_log_loss": 0.2709,
+        "winner_calibration_error": 0.014
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# F1 Predictions - Python Dependencies
+# Install with: pip install -r requirements.txt
+# Versions pinned compatible-release (~=); patch updates allowed, minor blocked.
+
+# Core data + ML
+fastf1~=3.8.1
+pandas~=2.3.3
+numpy~=2.4.2
+# Parquet I/O engine for the weekend-features pipeline
+# (extract_weekend_features.py + models/weekend_features.py). Without an
+# engine installed, pandas.{read,to}_parquet raise ImportError at runtime
+# and the Phase 7 weekend feature loader test suite fails.
+pyarrow~=18.1.0
+scikit-learn~=1.8.0
+xgboost~=3.2.0
+# LightGBM powers the learned race-projection head
+# (models/race_projection_head.py). Tested compatible with sklearn 1.8.0.
+lightgbm~=4.5.0
+
+# Viz
+matplotlib~=3.10.8
+seaborn~=0.13.2
+# Used by scripts/fetch_driver_headshots.py to convert openf1.org headshots to WebP.
+Pillow~=12.2.0
+
+# Notebook tooling (jupytext keeps .ipynb/.py in sync)
+ipykernel~=7.2.0
+jupytext~=1.19.1
+
+# CLI / progress
+tqdm~=4.67.3
+
+# Optional but referenced by code paths:
+#   - torch: install separately per platform (see https://pytorch.org/get-started/locally/).
+#            Without it, advanced_models.py LSTM path is skipped silently.
+#            We do NOT pin here because the CPU/CUDA wheel differs per host.
+#   - pymc + arviz: optional Bayesian hierarchical layer
+#            (models/hierarchical_bayes.py). When absent, the module imports
+#            cleanly but fit_hierarchical_skill_model() raises a clear error.
+#            Install with `pip install pymc arviz` to enable.

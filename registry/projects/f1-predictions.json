@@ -5,16 +5,40 @@
   "category": "open-wheel",
   "maturity": "production",
   "summary": "Calibrated race-outcome forecasts for every Formula 1 Grand Prix.",
-  "description": "The MotorsportVerse flagship. A three-pathway prediction engine — qualifying-pace regression, Plackett-Luce probability calibration, and a per-lap Monte Carlo race simulator — with continuous-learning infrastructure (model registry, drift detection, A/B promotion) and a live static-export dashboard. Reference implementation for all other projects.",
-  "repo": "https://github.com/roni-altshuler/f1_predictions",
-  "website": "https://roni-altshuler.github.io/f1_predictions/",
+  "description": "The MotorsportVerse flagship. A three-pathway prediction engine \u2014 qualifying-pace regression, Plackett-Luce probability calibration, and a per-lap Monte Carlo race simulator \u2014 with continuous-learning infrastructure (model registry, drift detection, A/B promotion) and a live static-export dashboard. Reference implementation for all other projects.",
+  "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/f1-predictions",
+  "website": "https://roni-altshuler.github.io/motorsportverse/projects/f1/",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-  "datasets": ["FastF1", "Jolpica/Ergast"],
-  "models": ["quali-regression", "plackett-luce", "race-simulator"],
-  "tags": ["calibrated-probabilities", "monte-carlo", "continuous-learning"],
-  "icon": "/brand/sports/f1.svg",
+  "datasets": [
+    "FastF1",
+    "Jolpica/Ergast"
+  ],
+  "models": [
+    "quali-regression",
+    "plackett-luce",
+    "race-simulator"
+  ],
+  "tags": [
+    "calibrated-probabilities",
+    "monte-carlo",
+    "continuous-learning"
+  ],
+  "icon": "/brand/sports/f1.png",
   "accent": "#E10600",
-  "uses_core": ["calibration", "registry", "drift", "promotion", "elo", "eval", "leakage"],
-  "maintainers": [{ "name": "MotorsportVerse", "github": "roni-altshuler" }],
+  "uses_core": [
+    "calibration",
+    "registry",
+    "drift",
+    "promotion",
+    "elo",
+    "eval",
+    "leakage"
+  ],
+  "maintainers": [
+    {
+      "name": "MotorsportVerse",
+      "github": "roni-altshuler"
+    }
+  ],
   "added": "2026-06-15"
 }

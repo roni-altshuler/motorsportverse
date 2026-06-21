@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Miami",
+  "ensemble_weights": {
+    "gb": 0.6878696854644326,
+    "lstm": 0.0,
+    "xgb": 0.3121303145355674
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Miami Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.28010102810215187,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.3515094928901701,
+      "R\u00b2": 0.8938605693769435
+    },
+    {
+      "MAE (s)": 0.6172838623046857,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.7545891929502494,
+      "R\u00b2": 0.5108705641927614
+    },
+    {
+      "MAE (s)": 0.2804791512097268,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.33075696368161867,
+      "R\u00b2": 0.9060232048588198
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 4,
+  "savedAt": "2026-05-24T11:49:23+00:00",
+  "season": 2026
+}

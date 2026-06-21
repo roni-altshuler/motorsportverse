@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "United States",
+  "ensemble_weights": {
+    "gb": 0.6122513598841114,
+    "lstm": 0.0,
+    "xgb": 0.38774864011588867
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "United States Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.11621234371087041,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.13461194842094387,
+      "R\u00b2": 0.9645127127671619
+    },
+    {
+      "MAE (s)": 0.1834981689453116,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.1994326756586691,
+      "R\u00b2": 0.9221070391049713
+    },
+    {
+      "MAE (s)": 0.10150890511682178,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.12752726574225093,
+      "R\u00b2": 0.9681498356735889
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 17,
+  "savedAt": "2026-05-24T11:58:40+00:00",
+  "season": 2026
+}
