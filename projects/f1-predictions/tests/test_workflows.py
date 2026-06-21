@@ -20,8 +20,17 @@ import pytest
 yaml = pytest.importorskip("yaml")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
+# F1 was merged into the MotorsportVerse monorepo (projects/f1-predictions/).
+# GitHub only runs workflows from the repo root, so the F1 cron/CI were
+# relocated there and renamed f1-*.yml. safe_push.sh stays nested with F1.
+MONOREPO_ROOT = REPO_ROOT.parent.parent
+WORKFLOWS_DIR = MONOREPO_ROOT / ".github" / "workflows"
 SAFE_PUSH = REPO_ROOT / ".github" / "scripts" / "safe_push.sh"
+
+# The relocated F1 cron workflows (renamed from update_predictions.yml /
+# backfill_history.yml when moved to the monorepo root).
+UPDATE_PREDICTIONS = "f1-update-predictions.yml"
+BACKFILL_HISTORY = "f1-backfill-history.yml"
 
 
 def _iter_steps(workflow: dict):
@@ -42,7 +51,7 @@ def test_safe_push_script_exists_and_executable():
     assert SAFE_PUSH.stat().st_mode & 0o111, "safe_push.sh is not executable"
 
 
-@pytest.mark.parametrize("path", sorted(WORKFLOWS_DIR.glob("*.yml")))
+@pytest.mark.parametrize("path", sorted(WORKFLOWS_DIR.glob("f1-*.yml")))
 def test_workflow_yaml_parses(path: Path):
     with path.open() as fh:
         data = yaml.safe_load(fh)
@@ -61,7 +70,7 @@ def test_cron_workflows_route_pushes_through_safe_push():
     leftover unstaged changes.  Make sure those scripts now invoke
     safe_push.sh instead.
     """
-    targets = ["update_predictions.yml", "backfill_history.yml"]
+    targets = [UPDATE_PREDICTIONS, BACKFILL_HISTORY]
     for name in targets:
         path = WORKFLOWS_DIR / name
         with path.open() as fh:
@@ -93,7 +102,7 @@ def test_update_predictions_stages_registry_metadata():
     historically broke the subsequent rebase.  safe_push.sh now stashes
     around that, but staging them is still the correct intent.
     """
-    path = WORKFLOWS_DIR / "update_predictions.yml"
+    path = WORKFLOWS_DIR / UPDATE_PREDICTIONS
     with path.open() as fh:
         workflow = yaml.safe_load(fh)
     scripts = "\n".join(_step_scripts(workflow))
