@@ -7,9 +7,14 @@ on:
       - "website/**"
       - "registry/**"
       - "projects/f2-predictions/**"
+      - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
   workflow_dispatch:
+  # Invoked by f1-update-predictions.yml after the race-weekend cron commits new
+  # F1 data, so the unified Pages site rebuilds (bot commits don't auto-trigger
+  # the push event above — GitHub's recursion guard).
+  workflow_call:
 
 permissions:
   contents: read
@@ -61,11 +66,21 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/f2
 
+      # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
+      #     race-weekend cron (f1-update-predictions.yml) commits, so no data
+      #     generation step is needed here — only a static build. ---
+      - name: Build F1 website
+        working-directory: projects/f1-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/f1
+
       # --- Combine into one Pages artifact ---
       - name: Assemble site tree
         run: |
-          mkdir -p website/out/projects/f2
+          mkdir -p website/out/projects/f2 website/out/projects/f1
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
+          cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
 
       - uses: actions/upload-pages-artifact@v3
         with:

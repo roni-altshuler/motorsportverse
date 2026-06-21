@@ -1,4 +1,4 @@
-name: Backfill History DB
+name: F1 — Backfill History DB
 
 # Populates ``data/history.duckdb`` so the probability calibrator has training
 # data.  Two tiers run sequentially:
@@ -34,15 +34,19 @@ permissions:
   contents: write
 
 env:
-  # Pipeline scripts live in src/; the importable packages (models/, features/)
-  # stay at the repo root. Put both on PYTHONPATH so the backfill entry points
-  # and their internal imports resolve.
-  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+  # Pipeline scripts live in projects/f1-predictions/src/; the importable
+  # packages (models/, features/) sit at the F1 project root. Put both on
+  # PYTHONPATH so the backfill entry points and their internal imports resolve.
+  PYTHONPATH: ${{ github.workspace }}/projects/f1-predictions/src:${{ github.workspace }}/projects/f1-predictions
 
 jobs:
   backfill:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    # F1 flagship lives in this subfolder; all run-steps below execute there.
+    defaults:
+      run:
+        working-directory: projects/f1-predictions
     concurrency:
       group: history-backfill
       cancel-in-progress: false
@@ -67,7 +71,7 @@ jobs:
       - name: Restore FastF1 cache
         uses: actions/cache@v5
         with:
-          path: f1_cache
+          path: projects/f1-predictions/f1_cache
           key: fastf1-backfill-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             fastf1-backfill-${{ runner.os }}-

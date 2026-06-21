@@ -1,4 +1,10 @@
-name: Update Race Predictions
+name: F1 — Update Race Predictions
+
+# Relocated from the standalone f1_predictions repo. The F1 flagship now lives at
+# projects/f1-predictions/; GitHub only runs workflows from the repo root, so the
+# predict job sets working-directory there and PYTHONPATH is scoped to the
+# subfolder. Post-commit, it calls the unified deploy-website.yml to rebuild the
+# combined Pages site.
 
 on:
   schedule:
@@ -46,16 +52,20 @@ permissions:
 
 env:
   F1_SEASON_YEAR: ${{ vars.F1_SEASON_YEAR }}
-  # Pipeline entry-point scripts live in src/; the importable packages
-  # (models/, features/) stay at the repo root. Putting both on PYTHONPATH lets
-  # `python src/<script>.py`, the inline `python -c` imports, and the scripts/
-  # helpers all resolve modules from either location.
-  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+  # Pipeline entry-point scripts live in projects/f1-predictions/src/; the
+  # importable packages (models/, features/) sit at the F1 project root. Putting
+  # both on PYTHONPATH lets `python src/<script>.py`, the inline `python -c`
+  # imports, and the scripts/ helpers all resolve modules from either location.
+  PYTHONPATH: ${{ github.workspace }}/projects/f1-predictions/src:${{ github.workspace }}/projects/f1-predictions
 
 jobs:
   predict:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    # F1 flagship lives in this subfolder; all run-steps below execute there.
+    defaults:
+      run:
+        working-directory: projects/f1-predictions
     concurrency:
       group: gp-weekend-${{ github.ref }}
       cancel-in-progress: false
@@ -132,7 +142,7 @@ jobs:
       - name: Restore FastF1 cache
         uses: actions/cache@v5
         with:
-          path: f1_cache
+          path: projects/f1-predictions/f1_cache
           key: fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-${{ github.run_id }}
           restore-keys: |
             fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-
@@ -327,13 +337,15 @@ jobs:
   deploy:
     needs: predict
     # Only rebuild + redeploy the site when the predict job actually pushed new
-    # data. A bot push using GITHUB_TOKEN does NOT auto-trigger deploy.yml's
-    # `push` event (GitHub's recursion guard), which is why deploy is wired here
-    # as needs:predict — but gated so no-op freshness polls skip the deploy.
+    # data. A bot push using GITHUB_TOKEN does NOT auto-trigger the deploy
+    # workflow's `push` event (GitHub's recursion guard), which is why deploy is
+    # wired here as needs:predict — but gated so no-op freshness polls skip it.
     if: needs.predict.outputs.committed == 'true'
-    # Absolute form keeps the GitHub Actions VS Code extension happy
-    # (relative `./.github/workflows/deploy.yml` paths trigger a false-
-    # positive "Unable to find reusable workflow" diagnostic).  GitHub
-    # Actions itself accepts both forms; deploy.yml declares
-    # `workflow_call:` so this is a valid reusable workflow.
-    uses: roni-altshuler/f1_predictions/.github/workflows/deploy.yml@main
+    # The unified Pages deploy rebuilds the whole site tree (hub + F1 + F2) into
+    # one artifact. It declares `workflow_call:` so this is a valid reusable
+    # workflow; the same-repo `./` path resolves to this branch's commit.
+    uses: ./.github/workflows/deploy-website.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

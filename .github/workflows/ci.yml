@@ -27,7 +27,9 @@ jobs:
       - name: Lint
         run: |
           pip install ruff
-          ruff check packages/motorsport-core packages/motorsport-data projects scripts
+          # projects/f1-predictions has its own ruff config + dedicated f1-ci.yml,
+          # so it is intentionally excluded here.
+          ruff check packages/motorsport-core packages/motorsport-data projects/f2-predictions scripts
 
       - name: Test motorsport-core
         run: pytest packages/motorsport-core -q
