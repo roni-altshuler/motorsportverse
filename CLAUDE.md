@@ -5,20 +5,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 MotorsportVerse is a scverse-style monorepo: a project catalog plus shared ML/data
-infrastructure for motorsport prediction. The **F1 flagship lives in a SEPARATE repo**
-at `/home/ronaltshuler/code/f1_predictions` and is the reference implementation —
-MotorsportVerse *extracts* reusable infrastructure from it; never modify F1 from here.
+infrastructure for motorsport prediction. The **F1 flagship now lives IN this repo**
+at `projects/f1-predictions/` (merged in from its former standalone repo, with full
+git history) and is the reference implementation. It keeps its own toolchain, ruff
+config, tests, and CLAUDE.md — treat it as a self-contained project; prefer reusing
+`motorsport-core`/`motorsport-data` over duplicating, but F1's internals are its own.
 Reusable code was lifted into two pip packages; each sport is a thin project on top.
 
 ```
-packages/motorsport-core   shared ML: calibration (Plackett-Luce), championship MC,
-                           standings, elo, conformal, eval, drift, promotion, registry, leakage
-packages/motorsport-data   canonical pydantic schema, DataSource ABC, DuckDB HistoryStore
-projects/f2-predictions    first sport on the core (backend + its own Next.js site)
-website/                   ecosystem hub: landing + project catalog (Next.js)
-registry/projects/*.json   the catalog — source of truth for which sports exist
-scripts/                   build_registry*.{py,mjs} (validate+emit catalog), new_project.py
+packages/motorsport-core    shared ML: calibration (Plackett-Luce), championship MC,
+                            standings, elo, conformal, eval, drift, promotion, registry, leakage
+packages/motorsport-data    canonical pydantic schema, DataSource ABC, DuckDB HistoryStore
+projects/f1-predictions     flagship & reference implementation (own pipeline + Next.js site)
+projects/f2-predictions     first sport on the core (backend + its own Next.js site)
+website/                    ecosystem hub: landing + project catalog (Next.js)
+registry/projects/*.json    the catalog — source of truth for which sports exist
+scripts/                    build_registry*.{py,mjs} (validate+emit catalog), new_project.py
 ```
+
+F1's CI, race-weekend cron, and history backfill were relocated to the monorepo
+root as `.github/workflows/f1-*.yml` (GitHub only runs root workflows); they run
+scoped to `projects/f1-predictions/` via `working-directory` + `PYTHONPATH`. The
+unified `deploy-website.yml` builds hub + F1 + F2 into one Pages artifact.
 
 ## Environment & commands
 
@@ -53,8 +61,11 @@ node scripts/shoot.mjs [/tmp/out]           # Playwright screenshot harness (per
 ```
 
 CI is `.github/workflows/ci.yml` (ruff + pytest on the two packages and f2, registry
-validation, website build); `deploy-website.yml` regenerates F2 data and ships both
-sites to GitHub Pages under `/<repo>/` and `/<repo>/projects/f2/`.
+validation, hub website build — it intentionally does NOT lint/test F1, which has its
+own `f1-ci.yml`). `deploy-website.yml` regenerates F2 data and ships hub + F1 + F2 to
+GitHub Pages under `/<repo>/`, `/<repo>/projects/f1/`, and `/<repo>/projects/f2/`. The
+relocated F1 automation is `f1-ci.yml`, `f1-update-predictions.yml` (race-weekend
+cron), and `f1-backfill-history.yml`.
 
 ## Architecture that spans files
 
