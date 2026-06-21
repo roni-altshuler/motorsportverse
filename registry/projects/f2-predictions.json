@@ -5,16 +5,47 @@
   "category": "open-wheel",
   "maturity": "production",
   "summary": "Sprint, feature-race, and championship forecasts for FIA Formula 2.",
-  "description": "A purpose-built spec-series model: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history) routed through two race-type heads — a merit feature race and a reverse-grid sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, a sprint+feature-aware championship projection, forward-eval, and drift/promotion monitoring. Full website with per-round sprint/feature detail, head-to-head matrices, and an accuracy dashboard. Runs on the real 2026 FIA Formula 2 season — official results are scraped into a committed, reviewable snapshot with model forecasts for upcoming rounds, refreshed on a schedule. ~75% reuses MotorsportVerse core.",
+  "description": "A purpose-built spec-series model: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history) routed through two race-type heads \u2014 a merit feature race and a reverse-grid sprint \u2014 with Monte Carlo win/podium probabilities, finishing-range intervals, a sprint+feature-aware championship projection, forward-eval, and drift/promotion monitoring. Full website with per-round sprint/feature detail, head-to-head matrices, and an accuracy dashboard. Runs on the real 2026 FIA Formula 2 season \u2014 official results are scraped into a committed, reviewable snapshot with model forecasts for upcoming rounds, refreshed on a schedule. ~75% reuses MotorsportVerse core.",
   "repo": "https://github.com/roni-altshuler/motorsportverse",
   "website": "https://roni-altshuler.github.io/motorsportverse/projects/f2/",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-  "datasets": ["fiaformula2.com (official results, scraped to a committed snapshot)", "synthetic latent-pace (offline fallback)"],
-  "models": ["driver-skill-elo", "reverse-grid-sprint", "plackett-luce", "championship-monte-carlo", "standings"],
-  "tags": ["feeder-series", "spec-series", "reverse-grid", "calibrated-probabilities", "monte-carlo"],
-  "icon": "/brand/sports/f2.svg",
+  "datasets": [
+    "fiaformula2.com (official results, scraped to a committed snapshot)",
+    "synthetic latent-pace (offline fallback)"
+  ],
+  "models": [
+    "driver-skill-elo",
+    "reverse-grid-sprint",
+    "plackett-luce",
+    "championship-monte-carlo",
+    "standings"
+  ],
+  "tags": [
+    "feeder-series",
+    "spec-series",
+    "reverse-grid",
+    "calibrated-probabilities",
+    "monte-carlo"
+  ],
+  "icon": "/brand/sports/f2.png",
   "accent": "#1E9BD7",
-  "uses_core": ["calibration", "championship", "standings", "elo", "conformal", "eval", "drift", "promotion", "leakage", "interfaces"],
-  "maintainers": [{ "name": "MotorsportVerse", "github": "roni-altshuler" }],
+  "uses_core": [
+    "calibration",
+    "championship",
+    "standings",
+    "elo",
+    "conformal",
+    "eval",
+    "drift",
+    "promotion",
+    "leakage",
+    "interfaces"
+  ],
+  "maintainers": [
+    {
+      "name": "MotorsportVerse",
+      "github": "roni-altshuler"
+    }
+  ],
   "added": "2026-06-15"
 }
