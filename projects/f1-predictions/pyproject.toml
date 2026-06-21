@@ -1,0 +1,77 @@
+# RaceIQ — Python project metadata + centralized tool configuration.
+#
+# The prediction pipeline runs as a set of entry-point scripts under src/ wired
+# into the CI workflows; this file does NOT change how those run. It exists to
+# (1) give the project real metadata and (2) centralize the configuration for
+# ruff, pytest, and mypy so the standards are declared in one place.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "raceiq"
+version = "1.0.0"
+description = "RaceIQ — a self-evaluating Formula 1 race-prediction platform."
+readme = "README.md"
+requires-python = ">=3.11"
+# Runtime dependencies are pinned in requirements.txt / requirements-dev.txt.
+dependencies = []
+
+[tool.setuptools]
+# Only the real importable packages are declared; the entry-point scripts under
+# src/ intentionally remain flat scripts (run by path), not package modules.
+packages = ["models", "features"]
+
+# ---------------------------------------------------------------------------
+# Ruff — linting. Run `ruff check .` (this is what CI runs).
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+    "races",                      # generated per-round scripts (one per GP)
+    "archive",                    # legacy notebook-derived framework, kept for history
+    "*.ipynb",
+    "scripts/archive",            # archived one-off analysis scripts
+    "website",                    # JS/TS project, linted by ESLint
+]
+
+[tool.ruff.lint]
+# E/F/W is the high-signal core. We keep all correctness-oriented F-rules and
+# the meaningful E-rules; the purely-stylistic line-shape rules below are
+# tolerated because this is a script-heavy research codebase.
+select = ["E", "F", "W"]
+ignore = [
+    "E402",  # module import not at top — common after sys.path / dotenv setup
+    "E501",  # line length — a formatter concern (use `ruff format`), not a lint gate
+    "E701",  # multiple statements on one line (colon)
+    "E702",  # multiple statements on one line (semicolon)
+    "E741",  # ambiguous single-letter names (pervasive in math-heavy code)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# These modules use `from <module> import *` for the legacy feature namespace,
+# which makes ruff unable to resolve downstream names (F403/F405). Converting
+# them to explicit imports is tracked in docs/ROADMAP.md; until then the
+# star-import rules are silenced only for these specific files.
+"src/export_website_data.py" = ["F403", "F405"]
+"src/f1_prediction_utils.py" = ["F403", "F405"]
+"src/report_results.py" = ["F403", "F405"]
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+python_files = ["test_*.py"]
+
+# ---------------------------------------------------------------------------
+# Mypy — type checking (advisory; not yet a CI gate).
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true
+exclude = "(races/|website/|archive/|scripts/archive/)"

@@ -1,0 +1,236 @@
+/*
+ * Design tokens — Bugatti redesign (dark-only).
+ *
+ * The site now follows the Bugatti DESIGN.md aesthetic: pure black canvas,
+ * white uppercase letterspaced display, serif body, monospace nav/buttons/
+ * captions. No accent color, no gradients, no shadows, no chrome. Photography
+ * (per-round track maps) is the only depth element.
+ *
+ * Existing variable NAMES are preserved (--bg, --surface, --accent-live,
+ * --text-primary, etc.) and re-pointed to Bugatti palette values so the rest
+ * of the codebase keeps compiling. New Bugatti-specific tokens (--canvas,
+ * --ink, --hairline, --link, --space-section, --font-display/serif/mono) are
+ * added alongside.
+ *
+ * Team-color block at the bottom is preserved as-is: team colors stay as the
+ * single chromatic exception (chart series, TeamColorBar stripe, team-stripe).
+ */
+
+:root,
+[data-theme="dark"] {
+  /* ── Bugatti palette ─────────────────────────────────────────────── */
+  --canvas:             #000000;
+  --surface-soft:       #0d0d0d;
+  --surface-card:       #141414;
+  --surface-elevated-b: #1f1f1f;
+  --hairline:           #262626;
+  --hairline-strong:    #3a3a3a;
+  --ink:                #ffffff;
+  --body:               #cccccc;
+  --body-strong:        #e6e6e6;
+  --muted:              #999999;
+  --muted-soft:         #666666;
+  --link:               #c3d9f3;
+  --on-primary:         #000000;
+  --on-photo:           #ffffff;
+  --warning:            #d4a017;
+  --success:            #5fa657;
+
+  /* ── Legacy semantic names re-pointed to Bugatti values ──────────── */
+  --bg:                 #000000;          /* page background = canvas */
+  --bg-elevated:        #0d0d0d;          /* surface-soft */
+  --surface:            #141414;          /* surface-card */
+  --surface-elevated:   #1f1f1f;          /* one notch off black */
+  --surface-overlay:    #141414;          /* no glassmorphism */
+
+  --border:             #262626;          /* hairline */
+  --border-strong:      #3a3a3a;          /* hairline-strong */
+  --border-accent:      #3a3a3a;          /* no orange accent border */
+
+  --text-primary:       #ffffff;          /* ink */
+  --text-secondary:     #e6e6e6;          /* body-strong */
+  --text-muted:         #999999;          /* muted */
+  --text-inverse:       #000000;
+
+  /* F1 red accent — restricted to live/CTA/negative semantics only. */
+  --accent-f1-red:        #E10600;
+  --accent-f1-red-hover:  #B80500;
+  --accent-f1-red-bright: #FF1A1A;        /* small-text WCAG (6.91:1 on black) */
+  --accent-f1-red-soft:   rgba(225, 6, 0, 0.12);
+
+  /* "active" semantics — now F1-red instead of white. */
+  --accent-live:        var(--accent-f1-red);
+  --accent-live-fg:     #ffffff;
+  --accent-live-hover:  var(--accent-f1-red-hover);
+  --accent-positive:    #5fa657;          /* success */
+  --accent-positive-fg: #000000;
+  --accent-negative:    var(--accent-f1-red); /* podium-miss arrows read red */
+  --accent-negative-fg: #ffffff;
+  --accent-info:        #c3d9f3;          /* link ice-blue */
+  --accent-info-fg:     #000000;
+  --accent-podium-1:    #FFD166;          /* positional chromatic signal — kept */
+  --accent-podium-2:    #C5CCD3;
+  --accent-podium-3:    #CD7F32;
+
+  /* ── Elevation — all shadows nuked ───────────────────────────────── */
+  --shadow-sm:  none;
+  --shadow:     none;
+  --shadow-lg:  none;
+  --shadow-elevated: none;
+  --shadow-hud:      none;
+
+  /* ── Glow stack — selectively re-armed for live + podium + team surfaces. */
+  --glow-accent:  none;                          /* kept off — Bugatti default */
+  --glow-purple:  none;
+  --glow-live:    0 0 14px rgba(225, 6, 0, 0.55), 0 0 32px rgba(225, 6, 0, 0.25);
+  --glow-podium:  0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-podium-gold: 0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-team:    0 0 18px color-mix(in srgb, var(--team-color, #ffffff) 50%, transparent);
+
+  /* ── Magic-UI HSL color triplets (used by gradient primitives) ────── */
+  --color-1: 0 100% 50%;     /* F1 red */
+  --color-2: 220 70% 55%;    /* broadcast blue */
+  --color-3: 45 100% 60%;    /* champagne gold */
+  --color-4: 175 84% 32%;    /* Mercedes-cyan */
+  --color-5: 28 100% 50%;    /* McLaren orange */
+
+  /* ── Gradients — decorative stack returned, sparing use ────────────── */
+  --gradient-paddock:   linear-gradient(180deg, rgba(225,6,0,0.10) 0%, transparent 55%);
+  --gradient-hud-frame: linear-gradient(180deg, var(--surface-soft), var(--surface-card));
+  --gradient-scanline:  repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+
+  /* ── Radius — Bugatti pill kept; cards get one notch of softness. ──── */
+  --radius-sm:   0px;
+  --radius:      0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  --radius-card: 4px;                             /* F1.com photo-card softness */
+
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+  --space-section: 120px;
+
+  /* Legacy aliases (used by older components). Keep mapped to the new scale. */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  40px;
+  --space-12: 64px;
+
+  /* ── HUD palette — most demoted to muted/link. Kept as token names
+   *    so components that reference --hud-* keep compiling. ────────── */
+  --hud-purple:        var(--muted);
+  --hud-purple-soft:   rgba(255, 255, 255, 0.06);
+  --hud-yellow:        var(--warning);
+  --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
+  --hud-red-light:     var(--accent-f1-red);
+  --hud-red-soft:      var(--accent-f1-red-soft);
+  --hud-green:         var(--success);
+  --hud-cyan:          var(--link);
+  --hud-champagne:     var(--accent-podium-1);
+
+  /* ── Motion tokens — kept (Bugatti permits restrained motion) ────── */
+  --dur-instant: 80ms;
+  --dur-snap:    180ms;
+  --dur-base:    320ms;
+  --dur-glide:   520ms;
+  --dur-cinema:  900ms;
+  --ease-pit:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Font bindings (resolved by next/font in layout.tsx) ─────────── */
+  --font-display: var(--font-saira-condensed, "Saira Condensed", "Impact", sans-serif);
+  --font-serif:   var(--font-eb-garamond, "EB Garamond", "Garamond", "Times New Roman", serif);
+  --font-mono:    var(--font-jetbrains-mono, "JetBrains Mono", ui-monospace, monospace);
+  /* Legacy names — point --font-sans at the display face so any caller
+   * that asks for "sans" gets the Bugatti display face. */
+  --font-sans:    var(--font-display);
+
+  /* ── shadcn aliases — preserved ─────────────────────────────────── */
+  --background:           var(--bg);
+  --foreground:           var(--text-primary);
+  --card:                 var(--surface);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--surface-elevated);
+  --popover-foreground:   var(--text-primary);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--on-primary);
+  --secondary:            var(--surface-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted-bg:             var(--surface-elevated);
+  --muted-foreground:     var(--text-muted);
+  --accent:               var(--surface-elevated);
+  --accent-foreground:    var(--text-primary);
+  --destructive:          var(--accent-negative);
+  --destructive-foreground: var(--accent-negative-fg);
+  --input:                var(--border);
+  --ring:                 var(--ink);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Team-color palette — KEEP AS-IS. The only chromatic exception in the
+ * Bugatti redesign. Resolved via `data-team="..."` attribute or inline
+ * `style={{ "--team-color": entry.teamColor }}`.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --team-ferrari:        #E8002D;
+  --team-mclaren:        #FF8000;
+  --team-redbull:        #3671C6;
+  --team-mercedes:       #27F4D2;
+  --team-aston:          #229971;
+  --team-alpine:         #FF87BC;
+  --team-williams:       #64C4FF;
+  --team-rb:             #6692FF;
+  --team-haas:           #B6BABD;
+  --team-audi:           #1E1E1E;
+  --team-cadillac:       #C0C0C0;
+}
+
+[data-team="Ferrari"]            { --team-color: var(--team-ferrari); }
+[data-team="McLaren"]            { --team-color: var(--team-mclaren); }
+[data-team="Red Bull Racing"]    { --team-color: var(--team-redbull); }
+[data-team="Mercedes"]           { --team-color: var(--team-mercedes); }
+[data-team="Aston Martin"]       { --team-color: var(--team-aston); }
+[data-team="Alpine"]             { --team-color: var(--team-alpine); }
+[data-team="Williams"]           { --team-color: var(--team-williams); }
+[data-team="Racing Bulls"]       { --team-color: var(--team-rb); }
+[data-team="Haas"]               { --team-color: var(--team-haas); }
+[data-team="Audi"]               { --team-color: var(--team-audi); }
+[data-team="Cadillac"]           { --team-color: var(--team-cadillac); }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Legacy-compat aliases. The old --bg-card / --text / etc. names used by
+ * a handful of utility classes still resolve through here.
+ * ───────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="dark"] {
+  --bg-card:        var(--surface-card);
+  --bg-card-solid:  var(--surface-card);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-card);
+  --text:           var(--text-primary);
+  --glass-border:   var(--hairline);
+  --glass-bg:       transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Tabular-figure utility for numeric / timing displays.
+ * ───────────────────────────────────────────────────────────────────── */
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}

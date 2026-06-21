@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Qatar",
+  "ensemble_weights": {
+    "gb": 0.621549843169701,
+    "lstm": 0.0,
+    "xgb": 0.37845015683029914
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Qatar Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.11509445879437977,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.12511179324651306,
+      "R\u00b2": 0.9599652138978623
+    },
+    {
+      "MAE (s)": 0.1890260620117175,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.19452209925160477,
+      "R\u00b2": 0.9032214947485036
+    },
+    {
+      "MAE (s)": 0.10824019477701938,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.1287761182626456,
+      "R\u00b2": 0.9575857614766976
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 21,
+  "savedAt": "2026-05-24T12:02:03+00:00",
+  "season": 2026
+}

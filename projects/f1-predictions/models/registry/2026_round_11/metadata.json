@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Hungary",
+  "ensemble_weights": {
+    "gb": 0.5724364743197511,
+    "lstm": 0.0,
+    "xgb": 0.42756352568024897
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Hungarian Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.11289974785125594,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.12315554422366251,
+      "R\u00b2": 0.9549311572223282
+    },
+    {
+      "MAE (s)": 0.15115399169922056,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.1731254370623963,
+      "R\u00b2": 0.9109384524744877
+    },
+    {
+      "MAE (s)": 0.10495811024824206,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.1186578703645218,
+      "R\u00b2": 0.9581629002560091
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 11,
+  "savedAt": "2026-05-24T11:54:10+00:00",
+  "season": 2026
+}

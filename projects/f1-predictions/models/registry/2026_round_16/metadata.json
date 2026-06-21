@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Singapore",
+  "ensemble_weights": {
+    "gb": 0.5958480984752795,
+    "lstm": 0.0,
+    "xgb": 0.40415190152472047
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Singapore Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.13918747091898354,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.1521909229020422,
+      "R\u00b2": 0.9568239016549812
+    },
+    {
+      "MAE (s)": 0.2052064819335925,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.21093244078966564,
+      "R\u00b2": 0.9170621736405484
+    },
+    {
+      "MAE (s)": 0.10507941853959721,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.14098054598359752,
+      "R\u00b2": 0.9629503363820456
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 16,
+  "savedAt": "2026-05-24T11:57:49+00:00",
+  "season": 2026
+}

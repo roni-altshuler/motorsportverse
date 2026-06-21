@@ -1,0 +1,117 @@
+{
+  "seasons": [
+    2024,
+    2025
+  ],
+  "variants": [
+    "baseline",
+    "elite_head_plus_hybrid",
+    "regime_routed_three_layer",
+    "regime_routed_with_weekend"
+  ],
+  "aggregate": {
+    "baseline": {
+      "rounds": 48,
+      "mae": 5.8732,
+      "rmse": 7.2345,
+      "spearman": 0.3362,
+      "ndcg_at_5": 0.465,
+      "podium_hit_rate": 0.3264,
+      "winner_hit_rate": 0.1458,
+      "within_3_rate": 0.3743,
+      "within_5_rate": 0.5567
+    },
+    "elite_head_plus_hybrid": {
+      "rounds": 48,
+      "mae": 4.9477,
+      "rmse": 6.294,
+      "spearman": 0.3683,
+      "ndcg_at_5": 0.5724,
+      "podium_hit_rate": 0.4583,
+      "winner_hit_rate": 0.2083,
+      "within_3_rate": 0.4571,
+      "within_5_rate": 0.6363
+    },
+    "regime_routed_three_layer": {
+      "rounds": 48,
+      "mae": 4.9369,
+      "rmse": 6.2947,
+      "spearman": 0.3681,
+      "ndcg_at_5": 0.57,
+      "podium_hit_rate": 0.4722,
+      "winner_hit_rate": 0.2292,
+      "within_3_rate": 0.4581,
+      "within_5_rate": 0.6363,
+      "winner_log_loss": 2.2105,
+      "podium_log_loss": 0.3237,
+      "winner_calibration_error": 0.0228
+    },
+    "regime_routed_with_weekend": {
+      "rounds": 48,
+      "mae": 4.9204,
+      "rmse": 6.2471,
+      "spearman": 0.378,
+      "ndcg_at_5": 0.5937,
+      "podium_hit_rate": 0.4861,
+      "winner_hit_rate": 0.2708,
+      "within_3_rate": 0.4581,
+      "within_5_rate": 0.6373,
+      "winner_log_loss": 2.2042,
+      "podium_log_loss": 0.3066,
+      "winner_calibration_error": 0.0137
+    }
+  },
+  "headlineVariant": "regime_routed_with_weekend",
+  "promotionVerdict": [
+    {
+      "variant": "elite_head_plus_hybrid",
+      "promote": true,
+      "reason": "MAE \u0394=15.8%, podium-hit \u0394=13.2pp, no \u226510% regressions"
+    },
+    {
+      "variant": "regime_routed_three_layer",
+      "promote": true,
+      "reason": "MAE \u0394=15.9%, podium-hit \u0394=14.6pp, no \u226510% regressions"
+    },
+    {
+      "variant": "regime_routed_with_weekend",
+      "promote": true,
+      "reason": "MAE \u0394=16.2%, podium-hit \u0394=16.0pp, no \u226510% regressions"
+    }
+  ],
+  "calibrationReliability": [
+    {
+      "bucket": 0,
+      "predicted_lo": 0.0,
+      "predicted_hi": 0.1,
+      "samples": 855,
+      "mean_predicted": 0.0375,
+      "empirical_win_rate": 0.0363
+    },
+    {
+      "bucket": 1,
+      "predicted_lo": 0.1,
+      "predicted_hi": 0.2,
+      "samples": 60,
+      "mean_predicted": 0.1356,
+      "empirical_win_rate": 0.2
+    },
+    {
+      "bucket": 2,
+      "predicted_lo": 0.2,
+      "predicted_hi": 0.3,
+      "samples": 26,
+      "mean_predicted": 0.2731,
+      "empirical_win_rate": 0.1923
+    },
+    {
+      "bucket": 3,
+      "predicted_lo": 0.3,
+      "predicted_hi": 0.4,
+      "samples": 2,
+      "mean_predicted": 0.3416,
+      "empirical_win_rate": 0.0
+    }
+  ],
+  "headlineMaeImprovement": 0.1622
+}

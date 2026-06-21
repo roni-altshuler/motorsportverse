@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Italy",
+  "ensemble_weights": {
+    "gb": 0.7015229238625008,
+    "lstm": 0.0,
+    "xgb": 0.2984770761374991
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Italian Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.10519027970931347,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.11947765317224417,
+      "R\u00b2": 0.961042645657634
+    },
+    {
+      "MAE (s)": 0.24723303222656057,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.2640611185757892,
+      "R\u00b2": 0.8097060390599491
+    },
+    {
+      "MAE (s)": 0.10898851654601742,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.1253546846802186,
+      "R\u00b2": 0.9571158085407149
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 13,
+  "savedAt": "2026-05-24T11:55:47+00:00",
+  "season": 2026
+}

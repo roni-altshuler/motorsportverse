@@ -1,0 +1,61 @@
+{
+  "season": 2026,
+  "round": 7,
+  "drivers_compared": 22,
+  "mean_position_error": 3.0,
+  "median_position_error": 2.0,
+  "rmse_position_error": 4.369314487526514,
+  "exact_matches": 4,
+  "within_3": 15,
+  "within_5": 19,
+  "winner_hit": true,
+  "podium_hits": 2,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.7628458498023716,
+  "ndcg_at_5": 0.9003208629091233,
+  "biggest_misses": [
+    {
+      "driver": "ANT",
+      "predicted": 3,
+      "actual": 16,
+      "delta": -13,
+      "absDelta": 13
+    },
+    {
+      "driver": "LEC",
+      "predicted": 6,
+      "actual": 15,
+      "delta": -9,
+      "absDelta": 9
+    },
+    {
+      "driver": "HUL",
+      "predicted": 12,
+      "actual": 20,
+      "delta": -8,
+      "absDelta": 8
+    },
+    {
+      "driver": "GAS",
+      "predicted": 11,
+      "actual": 7,
+      "delta": 4,
+      "absDelta": 4
+    },
+    {
+      "driver": "OCO",
+      "predicted": 17,
+      "actual": 13,
+      "delta": 4,
+      "absDelta": 4
+    }
+  ],
+  "baselines": {
+    "last_race_winner": {
+      "mean_position_error": 5.364,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "spearman_correlation": 0.2987012987012987
+    }
+  }
+}

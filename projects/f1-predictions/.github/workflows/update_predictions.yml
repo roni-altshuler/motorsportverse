@@ -1,0 +1,339 @@
+name: Update Race Predictions
+
+on:
+  schedule:
+    # The Python pipeline auto-detects whether to publish previews, refresh
+    # post-quali forecasts, or ingest official results. A cheap freshness gate
+    # (gp_weekend.py --check-work-pending) runs first on every poll and skips
+    # the heavy pipeline unless there is genuinely something new to publish, so
+    # tight Sat/Sun polling stays inexpensive while cutting result latency from
+    # hours to minutes.
+    # ── Pre-weekend: predictions + previews (coarse cadence is fine) ──
+    - cron: "0 0 * * 4"    # Thursday 00:00 UTC
+    - cron: "0 12 * * 4"   # Thursday 12:00 UTC
+    - cron: "0 0,6,12,18 * * 5"  # Friday every 6 hours
+    # ── Saturday qualifying: poll every 15 min across the global quali window
+    #    so post-quali forecasts refresh within ~15 min of the session ending. ──
+    - cron: "*/15 4-23 * * 6"
+    # ── Sunday race: poll every 15 min across the global race window so the
+    #    OFFICIAL Grand Prix result lands on the site within ~15 min, not hours. ──
+    - cron: "*/15 4-23 * * 0"
+    # ── Post-weekend safety net: recover anything stranded by a late-publishing
+    #    source or the weekend hand-off to the next round. ──
+    - cron: "0 */4 * * 1"   # Monday every 4 hours
+    - cron: "0 8,20 * * 2"  # Tuesday twice
+  workflow_dispatch:
+    inputs:
+      round:
+        description: "Round number, or 'next' for upcoming round"
+        required: true
+        default: "next"
+      phase:
+        description: "GP weekend phase"
+        type: choice
+        options:
+          - auto
+          - pre
+          - post-quali
+          - post-race
+          - full
+        default: "auto"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  F1_SEASON_YEAR: ${{ vars.F1_SEASON_YEAR }}
+  # Pipeline entry-point scripts live in src/; the importable packages
+  # (models/, features/) stay at the repo root. Putting both on PYTHONPATH lets
+  # `python src/<script>.py`, the inline `python -c` imports, and the scripts/
+  # helpers all resolve modules from either location.
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: gp-weekend-${{ github.ref }}
+      cancel-in-progress: false
+    outputs:
+      # Surfaced to the deploy job so a full Pages rebuild only happens when new
+      # data was actually pushed (not on every no-op freshness poll).
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine season, round and phase
+        id: config
+        run: |
+          # ── Determine season (auto-detect from the newest CALENDAR_<year>) ──
+          # The static vars.F1_SEASON_YEAR is an OPTIONAL override; when unset we
+          # derive the active season from the calendar, so adding CALENDAR_2027
+          # rolls the pipeline forward automatically.
+          SEASON="${F1_SEASON_YEAR:-$(python -c "from f1_prediction_utils import get_season_year; print(get_season_year())")}"
+          echo "F1_SEASON_YEAR=$SEASON" >> "$GITHUB_ENV"
+          echo "season=$SEASON" >> "$GITHUB_OUTPUT"
+
+          # ── Detect round ──
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.round }}" = "next" ]; then
+            ROUND=$(python -c "
+          import sys
+          sys.path.insert(0, '.')
+          from gp_weekend import detect_target_round
+          print(detect_target_round())
+          ")
+          else
+            ROUND="${{ github.event.inputs.round }}"
+          fi
+          echo "round=$ROUND" >> "$GITHUB_OUTPUT"
+
+          # ── Detect phase ──
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            PHASE="auto"
+          else
+            PHASE="${{ github.event.inputs.phase }}"
+            PHASE="${PHASE:-auto}"
+          fi
+          echo "phase=$PHASE" >> "$GITHUB_OUTPUT"
+
+          echo "Season: $SEASON  |  Round: $ROUND  |  Phase: $PHASE"
+
+      - name: Bootstrap next season calendar (auto)
+        run: |
+          # Once F1 publishes next year's schedule (typically mid-prior-year),
+          # this pulls it from FastF1 and writes generated_seasons/<year>.json,
+          # which f1_prediction_utils registers as CALENDAR_<year>. No-op until
+          # the schedule exists. The pre-staged calendar stays dormant — it does
+          # NOT become the active season until its first race date passes (see
+          # _default_season_year in f1_prediction_utils).
+          python scripts/bootstrap_next_season.py || echo "⚠️  bootstrap skipped (non-fatal)"
+
+      - name: Season rollover (auto)
+        run: |
+          # No-op until a newer season has actually STARTED while the website is
+          # still on the old one. When that holds, it archives the finished
+          # season into website/public/data/seasons/<year>/ and starts the new one.
+          python scripts/season_rollover.py --auto || echo "⚠️  rollover skipped (non-fatal)"
+
+      - name: Restore FastF1 cache
+        uses: actions/cache@v5
+        with:
+          path: f1_cache
+          key: fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-${{ github.run_id }}
+          restore-keys: |
+            fastf1-${{ runner.os }}-${{ steps.config.outputs.round }}-
+            fastf1-${{ runner.os }}-
+
+      - name: Freshness gate — should this poll do real work?
+        id: check
+        if: github.event_name == 'schedule'
+        run: |
+          ROUND="${{ steps.config.outputs.round }}"
+          IS_RACE_WEEKEND=$(python -c "
+          import sys
+          sys.path.insert(0, '.')
+          from gp_weekend import is_race_weekend
+          print('true' if is_race_weekend(int('$ROUND')) else 'false')
+          ")
+          echo "is_race_weekend=$IS_RACE_WEEKEND" >> "$GITHUB_OUTPUT"
+
+          # Only spin up the heavy pipeline when there is genuinely something
+          # new to publish — fresh quali/race data for the active round, or a
+          # prior round stranded without official results. This keeps the tight
+          # 15-min Sat/Sun polls cheap (most exit here in ~1-2 min) while still
+          # publishing official results within one poll interval of availability.
+          SHOULD_RUN=false
+          if [ "$IS_RACE_WEEKEND" = "true" ]; then
+            PENDING=$(python src/gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
+            echo "   Work pending for round $ROUND: $PENDING"
+            if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
+          fi
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          if [ "$SHOULD_RUN" != "true" ]; then
+            echo "⏭️  Nothing new to publish — skipping heavy pipeline this poll."
+          fi
+
+      - name: Run GP weekend pipeline
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        env:
+          PYTHONUNBUFFERED: "1"
+          # Required so the Layer 1 ensemble persists held-out residuals to
+          # data/conformal_residuals/<season>_round_<NN>.json. Without this,
+          # the conformal interval layer never accumulates calibration data.
+          F1_CURRENT_ROUND: ${{ steps.config.outputs.round }}
+        run: |
+          ROUND="${{ steps.config.outputs.round }}"
+          PHASE="${{ steps.config.outputs.phase }}"
+
+          # Recover any COMPLETED round still missing official results before
+          # touching the active round. Guards the weekend hand-off gap where
+          # detect_target_round has already advanced to the next race while a
+          # just-finished Grand Prix never got its results published (source
+          # lagged at poll time). No-op when nothing is stranded.
+          python src/gp_weekend.py --backfill-missing-results --no-build || \
+            echo "⚠️  stranded-results backfill skipped (non-fatal)"
+
+          # Ensure a race-pace ensemble is registered before the simulator runs.
+          # train_race_pace.py is a no-op when the registry already has a sentinel
+          # round 99 entry; only re-trains on cache miss. Failure is non-fatal —
+          # the simulator silently no-ops if no ensemble is registered.
+          python src/train_race_pace.py --seasons 2018-2025 || echo "⚠️  race-pace trainer skipped (see logs)"
+
+          if [ "$PHASE" = "full" ]; then
+            python src/gp_weekend.py --round "$ROUND" --full --no-build --use-race-simulator
+          elif [ "$PHASE" = "auto" ]; then
+            python src/gp_weekend.py --round "$ROUND" --no-build --use-race-simulator
+          else
+            python src/gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build --use-race-simulator
+          fi
+
+      - name: Generate labeled circuit maps for all rounds
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          python src/generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
+
+      - name: Forward-eval — score predictions vs actuals (A-P0.2)
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          mkdir -p website/public/data/forward_eval website/public/data/reliability_plots reports
+          # --allow-empty makes pre-race / pre-actuals runs a no-op exit 0.
+          # --probabilities-dir + --reliability-plots-dir emit per-market
+          # ECE/MCE/Brier into the season report plus PNG reliability diagrams.
+          # Both flags are no-ops when their inputs aren't yet present (e.g. on
+          # pre-race phases) so they don't break the existing --allow-empty path.
+          # All output paths under website/public/data/ are force-added by the
+          # commit step below.
+          python src/forward_eval.py \
+            --season "$SEASON_YEAR" \
+            --per-round-dir website/public/data/forward_eval \
+            --probabilities-dir website/public/data/probabilities \
+            --reliability-plots-dir website/public/data/reliability_plots \
+            --output "reports/forward_eval_${SEASON_YEAR}.json" \
+            --allow-empty
+
+      - name: Drift report — feature PSI + rolling-Brier (A-P1.2)
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          # --allow-empty so pre-race runs with no forward-eval data exit 0.
+          # model_health.json lands under website/public/data/ alongside
+          # the round + forward-eval JSONs; force-added by the commit step.
+          python src/drift_report.py \
+            --season "$SEASON_YEAR" \
+            --output website/public/data/model_health.json \
+            --allow-empty
+
+      - name: Championship simulator — WDC + WCC Monte Carlo forecast
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          # Generates website/public/data/championship_forecast.json.
+          # Reads the freshly-published standings.json + the latest
+          # round_NN.json probabilities and runs a Monte Carlo over the
+          # remaining season.  Force-added by the commit step.
+          python src/championship_simulator.py --samples 5000
+
+      - name: Promotion decision — production vs candidate (A-P1.3)
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          # --allow-empty so the step is a no-op until a candidate model
+          # has been scored.  When forward_eval_candidate/ starts producing
+          # files, this auto-promotes via the guarded rule in
+          # models/promotion.py.
+          # --apply appends "promote" recommendations to
+          # auto_promotion_log.json so CI history captures the chain of
+          # decisions. The flag does NOT swap registry artefacts on its
+          # own — that is intentionally left to a separate, gated step.
+          python src/promotion_decision.py \
+            --season "$SEASON_YEAR" \
+            --output website/public/data/promotion_status.json \
+            --apply \
+            --allow-empty
+
+      - name: Install test dependencies
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: pip install pytest pydantic
+
+      - name: Validate generated outputs
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          # Schema + sanity tests must pass against the freshly-generated JSON
+          # *before* we commit it.  This gates degenerate pushes (all-NaN, missing
+          # drivers, duplicate positions) from reaching GitHub Pages.
+          pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py -v --tb=short
+
+      - name: Commit updated data
+        id: commit
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
+          SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f website/public/data/ website/public/visualizations/
+          # Per-round registry metadata: binaries are gitignored but
+          # metadata.json IS committed (see CLAUDE.md).  Each pipeline run
+          # overwrites these tracked files; without staging them here they
+          # land as "unstaged changes" and break the rebase pre-check below.
+          git add -f models/registry/ 2>/dev/null || true
+          for f in "predicted_results_${SEASON_YEAR}.json" \
+                   "season_results_${SEASON_YEAR}.json" \
+                   "season_tracker_${SEASON_YEAR}.json"; do
+            if [ -f "$f" ]; then
+              git add -f "$f"
+            fi
+          done
+          git add races/ 2>/dev/null || true
+          # Pre-staged future-season calendars from bootstrap_next_season.py.
+          git add generated_seasons/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          ROUND="${{ steps.config.outputs.round }}"
+          PHASE="${{ steps.config.outputs.phase }}"
+          git commit -m "[$PHASE] Update round $ROUND ($(date -u +%Y-%m-%d))"
+          # Re-set the remote with an explicit token URL so the push does not
+          # depend on the persisted extraheader (which has been observed to go
+          # missing on rare runs and produce "could not read Username" failures).
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # backfill_history.yml also pushes to main on overlapping crons; the
+          # safe_push helper rebases (auto-stashing leftover working-tree
+          # changes the curated commit did not capture) and retries on transient
+          # failures.
+          bash .github/scripts/safe_push.sh
+          # Signal the deploy job that new data was actually pushed, so the tight
+          # 15-min polls don't trigger a full Pages rebuild when nothing changed.
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: predict
+    # Only rebuild + redeploy the site when the predict job actually pushed new
+    # data. A bot push using GITHUB_TOKEN does NOT auto-trigger deploy.yml's
+    # `push` event (GitHub's recursion guard), which is why deploy is wired here
+    # as needs:predict — but gated so no-op freshness polls skip the deploy.
+    if: needs.predict.outputs.committed == 'true'
+    # Absolute form keeps the GitHub Actions VS Code extension happy
+    # (relative `./.github/workflows/deploy.yml` paths trigger a false-
+    # positive "Unable to find reusable workflow" diagnostic).  GitHub
+    # Actions itself accepts both forms; deploy.yml declares
+    # `workflow_call:` so this is a valid reusable workflow.
+    uses: roni-altshuler/f1_predictions/.github/workflows/deploy.yml@main

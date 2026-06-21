@@ -1,0 +1,93 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Monaco",
+  "ensemble_weights": {
+    "gb": 0.5741357949370773,
+    "lstm": 0.18,
+    "xgb": 0.24586420506292264
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo"
+  ],
+  "gitSha": "e0a2eca4015aa56d1feb6896a843a5b313bd64de",
+  "gpName": "Monaco Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": true,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.15612636437350885,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.16814422891125666,
+      "R\u00b2": 0.9802345680858584
+    },
+    {
+      "MAE (s)": 0.36458228759765915,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.48308920934763283,
+      "R\u00b2": 0.8368462535468253
+    },
+    {
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.218628410601184,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.25578597991730084,
+      "R\u00b2": 0.9542600326997577
+    }
+  ],
+  "pythonVersion": "3.11.15",
+  "round": 6,
+  "savedAt": "2026-06-07T13:39:57+00:00",
+  "season": 2026
+}

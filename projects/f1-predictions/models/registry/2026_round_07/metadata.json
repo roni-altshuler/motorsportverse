@@ -1,0 +1,93 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Spain",
+  "ensemble_weights": {
+    "gb": 0.5504825822371313,
+    "lstm": 0.18,
+    "xgb": 0.2695174177628688
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo"
+  ],
+  "gitSha": "c8a36973680ff32e86af15b5e40a6c7413941b2b",
+  "gpName": "Barcelona-Catalunya Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": true,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.29137333870383203,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.4109423054901613,
+      "R\u00b2": 0.9155831736703058
+    },
+    {
+      "MAE (s)": 0.59512275390625,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.8290629367195379,
+      "R\u00b2": 0.6564085759789398
+    },
+    {
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.3117345322936217,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.48013543536508285,
+      "R\u00b2": 0.8847622332804649
+    }
+  ],
+  "pythonVersion": "3.11.15",
+  "round": 7,
+  "savedAt": "2026-06-14T13:41:14+00:00",
+  "season": 2026
+}

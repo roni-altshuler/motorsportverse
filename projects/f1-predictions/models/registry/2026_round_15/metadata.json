@@ -1,0 +1,80 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "Azerbaijan",
+  "ensemble_weights": {
+    "gb": 0.6527269841625498,
+    "lstm": 0.0,
+    "xgb": 0.3472730158374501
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "PreviousPosition",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead"
+  ],
+  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gpName": "Azerbaijan Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": false,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.10734129001988606,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.1345281741167647,
+      "R\u00b2": 0.9693701517270018
+    },
+    {
+      "MAE (s)": 0.20175640869140637,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.21350193472920453,
+      "R\u00b2": 0.9228524782127733
+    },
+    {
+      "MAE (s)": 0.11858317634651598,
+      "Model": "Ensemble (GBR + XGB)",
+      "RMSE (s)": 0.1432606078417685,
+      "R\u00b2": 0.9652646300296637
+    }
+  ],
+  "pythonVersion": "3.12.3",
+  "round": 15,
+  "savedAt": "2026-05-24T11:57:06+00:00",
+  "season": 2026
+}

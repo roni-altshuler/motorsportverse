@@ -1,0 +1,61 @@
+{
+  "season": 2026,
+  "round": 3,
+  "drivers_compared": 22,
+  "mean_position_error": 2.0,
+  "median_position_error": 2.0,
+  "rmse_position_error": 2.4308621740219887,
+  "exact_matches": 2,
+  "within_3": 19,
+  "within_5": 22,
+  "winner_hit": false,
+  "podium_hits": 2,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.9265951439864484,
+  "ndcg_at_5": 0.9734357930720486,
+  "biggest_misses": [
+    {
+      "driver": "BEA",
+      "predicted": 17,
+      "actual": 22,
+      "delta": -5,
+      "absDelta": 5
+    },
+    {
+      "driver": "HUL",
+      "predicted": 16,
+      "actual": 11,
+      "delta": 5,
+      "absDelta": 5
+    },
+    {
+      "driver": "HAD",
+      "predicted": 8,
+      "actual": 12,
+      "delta": -4,
+      "absDelta": 4
+    },
+    {
+      "driver": "BOT",
+      "predicted": 22,
+      "actual": 19,
+      "delta": 3,
+      "absDelta": 3
+    },
+    {
+      "driver": "LIN",
+      "predicted": 11,
+      "actual": 14,
+      "delta": -3,
+      "absDelta": 3
+    }
+  ],
+  "baselines": {
+    "last_race_winner": {
+      "mean_position_error": 5.0,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "spearman_correlation": 0.37210615471485037
+    }
+  }
+}

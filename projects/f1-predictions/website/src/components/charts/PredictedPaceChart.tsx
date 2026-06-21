@@ -1,0 +1,164 @@
+"use client";
+
+import { useMemo } from "react";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ErrorBar,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+import DriverPortrait from "@/components/standings/DriverPortrait";
+import type { ClassificationEntry } from "@/types";
+
+interface PredictedPaceChartProps {
+  classification: ClassificationEntry[];
+  /** Optional cap on number of drivers shown. */
+  limit?: number;
+}
+
+interface Row {
+  driver: string;
+  driverFullName: string;
+  team: string;
+  teamColor: string;
+  headshotUrl: string | null;
+  predictedTime: number;
+  gapMs: number;
+  /** [lower, upper] error-bar deltas in milliseconds, relative to gapMs. */
+  ciError?: [number, number];
+}
+
+function TooltipBody({ active, payload }: { active?: boolean; payload?: Array<{ payload: Row }> }) {
+  if (!active || !payload?.[0]) return null;
+  const row = payload[0].payload;
+  return (
+    <div
+      className="rounded-none border p-3"
+      style={{
+        background: "var(--surface-card)",
+        borderColor: "var(--hairline)",
+        fontFamily: "var(--font-mono)",
+      }}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <DriverPortrait
+          driver={row.driver}
+          driverFullName={row.driverFullName}
+          team={row.team}
+          teamColor={row.teamColor}
+          headshotUrl={row.headshotUrl}
+          size={20}
+        />
+        <span className="title-sm">{row.driver}</span>
+        <span className="eyebrow">{row.team}</span>
+      </div>
+      <div className="font-mono font-tabular text-xl text-[color:var(--ink)]">
+        {row.predictedTime.toFixed(3)}s
+      </div>
+      <div className="eyebrow mt-2">
+        Gap to leader: <span className="font-mono">+{(row.gapMs / 1000).toFixed(3)}s</span>
+      </div>
+    </div>
+  );
+}
+
+export default function PredictedPaceChart({ classification, limit = 14 }: PredictedPaceChartProps) {
+  const rows = useMemo<Row[]>(() => {
+    const ordered = [...classification].sort((a, b) => a.predictedTime - b.predictedTime).slice(0, limit);
+    const leader = ordered[0]?.predictedTime ?? 0;
+    return ordered.map((c) => {
+      const gapMs = Math.max(0, (c.predictedTime - leader) * 1000);
+      // 90% bootstrap interval, converted from absolute seconds to gap-domain
+      // milliseconds. Lower error = gap - (low - leader); upper = (high - leader) - gap.
+      let ciError: [number, number] | undefined;
+      if (c.predictionIntervalLow != null && c.predictionIntervalHigh != null) {
+        const lowMs = Math.max(0, (c.predictionIntervalLow - leader) * 1000);
+        const highMs = Math.max(0, (c.predictionIntervalHigh - leader) * 1000);
+        const lowerWhisker = Math.max(0, gapMs - lowMs);
+        const upperWhisker = Math.max(0, highMs - gapMs);
+        // Only attach when at least one whisker is non-trivial (>2ms).
+        if (lowerWhisker > 2 || upperWhisker > 2) {
+          ciError = [lowerWhisker, upperWhisker];
+        }
+      }
+      return {
+        driver: c.driver,
+        driverFullName: c.driverFullName,
+        team: c.team,
+        teamColor: c.teamColor || "#888",
+        headshotUrl: c.headshotUrl ?? null,
+        predictedTime: c.predictedTime,
+        gapMs,
+        ciError,
+      };
+    });
+  }, [classification, limit]);
+
+  if (rows.length === 0) return null;
+  const hasIntervals = rows.some((r) => r.ciError);
+
+  return (
+    <div style={{ width: "100%", height: "100%", minHeight: 320 }}>
+      {hasIntervals && (
+        <div className="mb-2 text-[10px] font-mono uppercase tracking-[0.18em] text-[color:var(--text-muted)] flex items-center gap-2">
+          <svg width="20" height="6" aria-hidden>
+            <line x1="2" y1="3" x2="18" y2="3" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="2" y1="1" x2="2" y2="5" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="18" y1="1" x2="18" y2="5" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          Whiskers · pace uncertainty range
+        </div>
+      )}
+      <ResponsiveContainer>
+        <BarChart data={rows} layout="vertical" margin={{ top: 8, right: 24, left: 8, bottom: 8 }}>
+          <defs>
+            {rows.map((row) => (
+              <linearGradient key={row.driver} id={`pace-${row.driver}`} x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stopColor={row.teamColor} stopOpacity={0.4} />
+                <stop offset="100%" stopColor={row.teamColor} stopOpacity={1} />
+              </linearGradient>
+            ))}
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" horizontal={false} />
+          <XAxis
+            type="number"
+            domain={[0, "dataMax"]}
+            tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+            tickFormatter={(v) => `+${(v / 1000).toFixed(2)}s`}
+            axisLine={{ stroke: "var(--border)" }}
+          />
+          <YAxis
+            type="category"
+            dataKey="driver"
+            tick={{ fill: "var(--text-secondary)", fontSize: 12, fontWeight: 700 }}
+            width={64}
+            axisLine={{ stroke: "var(--border)" }}
+          />
+          <Tooltip
+            content={<TooltipBody />}
+            cursor={{ fill: "color-mix(in srgb, var(--accent-live) 8%, transparent)" }}
+          />
+          <Bar dataKey="gapMs" radius={[0, 4, 4, 0]} animationDuration={900} animationEasing="ease-out">
+            {rows.map((row) => (
+              <Cell key={row.driver} fill={`url(#pace-${row.driver})`} />
+            ))}
+            {hasIntervals && (
+              <ErrorBar
+                dataKey="ciError"
+                width={5}
+                strokeWidth={1.25}
+                stroke="var(--text-muted)"
+                direction="x"
+              />
+            )}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
