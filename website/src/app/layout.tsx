@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
-import CheckeredFlagWaveLoader from "@/components/background/CheckeredFlagWaveLoader";
+import SpeedFieldLoader from "@/components/background/SpeedFieldLoader";
 import { CommandPaletteProvider } from "@/components/CommandPaletteProvider";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
@@ -46,9 +46,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}>
       <body>
-        {/* Site-wide animated checkered-flag background (fixed, z-0). Content
-            below is lifted above it so the wave shows through behind it. */}
-        <CheckeredFlagWaveLoader />
+        {/* Site-wide cinematic light-trail background (fixed, z-0). Content
+            below is lifted above it so the streaks show through behind it. */}
+        <SpeedFieldLoader />
         <Navbar />
         <main className="relative z-[1] min-h-[70vh]">{children}</main>
         <Footer />

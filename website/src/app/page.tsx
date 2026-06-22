@@ -4,6 +4,7 @@ import { CommandPaletteHint } from "@/components/landing/CommandPaletteHint";
 import { EcosystemDiagram } from "@/components/landing/EcosystemDiagram";
 import { FeatureBento } from "@/components/landing/FeatureBento";
 import { PredictionTicker } from "@/components/landing/PredictionTicker";
+import { ProductFilm } from "@/components/landing/ProductFilm";
 import { Reveal } from "@/components/landing/Reveal";
 import { ShowcaseRail } from "@/components/landing/ShowcaseRail";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
@@ -51,6 +52,9 @@ export default function HomePage() {
 
       {/* ====================== LIVE PREDICTION TICKER ====================== */}
       <PredictionTicker rows={tickerRows} />
+
+      {/* ====================== PRODUCT FILM (how it works) ====================== */}
+      <ProductFilm />
 
       {/* ====================== SERIES MARQUEE ====================== */}
       <section className="py-14">

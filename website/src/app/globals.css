@@ -121,6 +121,28 @@ h1, h2, h3, h4 {
   color: transparent;
 }
 
+/* Animated crimson sheen sweeping across a headline phrase. */
+.hero-sheen {
+  background: linear-gradient(
+    92deg,
+    var(--accent) 0%,
+    #ff7a8c 28%,
+    #ffffff 50%,
+    #ff7a8c 72%,
+    var(--accent) 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: mv-sheen-pan 7s linear infinite;
+}
+@keyframes mv-sheen-pan {
+  to {
+    background-position: 220% center;
+  }
+}
+
 /* ---- Layout helpers ---- */
 .section {
   padding-top: var(--section-pad);
