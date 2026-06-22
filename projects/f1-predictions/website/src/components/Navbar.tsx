@@ -254,21 +254,17 @@ export default function Navbar() {
             <Menu className="w-5 h-5 text-[color:var(--ink)]" />
           </button>
 
-          {/* wordmark */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0" aria-label="RaceIQ home">
-            <span
-              className="inline-block w-1.5 h-6"
-              style={{ background: "var(--accent-f1-red)", boxShadow: "var(--glow-live)" }}
-              aria-hidden
-            />
+          {/* wordmark — RaceIQ F1 car lockup (official series logo, not the chevron mark) */}
+          <Link href="/" className="flex items-center group shrink-0" aria-label="RaceIQ F1 home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`${BASE_PATH}/brand/raceiq-f1-mark.svg`}
+              src={`${BASE_PATH}/brand/raceiq-f1.png`}
               alt="RaceIQ F1"
-              className="h-7 w-auto"
+              width={378}
+              height={102}
+              className="h-9 w-auto"
               style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))" }}
             />
-            <span className="wordmark">RaceIQ</span>
           </Link>
 
           {/* primary nav cluster (desktop) */}
