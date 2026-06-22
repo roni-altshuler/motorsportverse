@@ -68,23 +68,43 @@ export default async function ProjectDetailPage({
 
           <div className="mt-8 flex flex-wrap items-start justify-between gap-6">
             <div className="flex items-center gap-5">
-              {project.icon && (
-                <span
-                  className="flex h-20 w-20 items-center justify-center rounded-[var(--radius-lg)] border"
-                  style={{
-                    borderColor: `color-mix(in srgb, ${accent} 35%, transparent)`,
-                    background: `color-mix(in srgb, ${accent} 10%, transparent)`,
-                  }}
-                >
-                  <Image src={asset(project.icon)} alt="" width={48} height={48} className="h-12 w-12" />
-                </span>
+              {project.logo ? (
+                <div>
+                  {/* full series wordmark lockup (e.g. RaceIQ MotoGP) */}
+                  <Image
+                    src={asset(project.logo)}
+                    alt={project.name}
+                    width={420}
+                    height={102}
+                    priority
+                    className="h-14 w-auto sm:h-[4.5rem]"
+                  />
+                  <h1 className="sr-only">{project.name}</h1>
+                  <p className="mono-label mt-3">
+                    {project.sport} · {project.category}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {project.icon && (
+                    <span
+                      className="flex h-20 w-20 items-center justify-center rounded-[var(--radius-lg)] border"
+                      style={{
+                        borderColor: `color-mix(in srgb, ${accent} 35%, transparent)`,
+                        background: `color-mix(in srgb, ${accent} 10%, transparent)`,
+                      }}
+                    >
+                      <Image src={asset(project.icon)} alt="" width={48} height={48} className="h-12 w-12" />
+                    </span>
+                  )}
+                  <div>
+                    <h1 className="display text-5xl">{project.name}</h1>
+                    <p className="mono-label mt-2">
+                      {project.sport} · {project.category}
+                    </p>
+                  </div>
+                </>
               )}
-              <div>
-                <h1 className="display text-5xl">{project.name}</h1>
-                <p className="mono-label mt-2">
-                  {project.sport} · {project.category}
-                </p>
-              </div>
             </div>
             <MaturityBadge maturity={project.maturity} />
           </div>

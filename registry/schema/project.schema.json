@@ -31,6 +31,7 @@
     "models": { "type": "array", "items": { "type": "string" } },
     "tags": { "type": "array", "items": { "type": "string" } },
     "icon": { "type": "string", "description": "Path to the sport mark, e.g. '/brand/sports/f1.svg'." },
+    "logo": { "type": "string", "description": "Path to the full series wordmark lockup, e.g. '/brand/series/raceiq-f1.png'." },
     "accent": { "type": "string", "pattern": "^#([0-9a-fA-F]{6})$", "description": "Hex accent color." },
     "uses_core": {
       "type": "array",

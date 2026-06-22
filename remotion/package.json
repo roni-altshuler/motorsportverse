@@ -1,0 +1,29 @@
+{
+  "name": "motorsportverse-remotion",
+  "version": "1.0.0",
+  "description": "Cinematic product film for MotorsportVerse — how the prediction engine works, start to finish. Renders to MP4, web-optimized into ../website/public/film/.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio index.ts",
+    "render": "remotion render index.ts MotorsportVerseFilm output/engine.mp4 --codec=h264 --crf=18",
+    "still": "remotion still index.ts MotorsportVerseFilm output/poster.png --frame=330 --scale=1",
+    "web": "remotion ffmpeg -y -i output/engine.mp4 -c:v libx264 -crf 21 -preset slow -pix_fmt yuv420p -movflags +faststart -an output/engine.web.mp4",
+    "sync": "mkdir -p ../website/public/film && cp output/engine.web.mp4 ../website/public/film/motorsportverse-engine.mp4 && cp output/poster.png ../website/public/film/engine-poster.png && echo 'Synced web-optimized film + poster → website/public/film/'",
+    "release": "npm run render && npm run still && npm run web && npm run sync",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.290",
+    "@remotion/cli": "^4.0.290",
+    "@remotion/renderer": "^4.0.290",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.290"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.5.0"
+  }
+}

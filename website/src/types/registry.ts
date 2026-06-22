@@ -36,6 +36,7 @@ export interface Project {
   models?: string[];
   tags?: string[];
   icon?: string;
+  logo?: string;
   accent?: string;
   uses_core?: string[];
   maintainers?: Maintainer[];
