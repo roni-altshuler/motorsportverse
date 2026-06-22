@@ -10,7 +10,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group card-surface hover-lift relative block overflow-hidden p-5"
+      className="group card-surface card-pop relative block overflow-hidden p-5"
       style={{ ["--team-color" as string]: accent }}
     >
       {/* accent top edge */}

@@ -55,8 +55,13 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
       animate={shown ? "visible" : "hidden"}
       ref={setContainer}
       className="card-premium relative mx-auto grid max-w-4xl grid-cols-3 items-center gap-6 overflow-hidden p-8 sm:p-12"
+      style={{
+        background: "linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%)",
+        borderColor: "var(--line-strong)",
+        boxShadow: "var(--shadow-lg)",
+      }}
     >
-      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" />
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" />
 
       {/* Column 1: data sources */}
       <div className="relative z-10 flex flex-col items-start gap-3">
@@ -95,7 +100,7 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
         duration={4}
         gradientStartColor="#6aa6ff"
         gradientStopColor="#38e1c6"
-        pathColor="rgba(255,255,255,0.06)"
+        pathColor="rgba(255,255,255,0.18)"
       />
       <AnimatedBeam
         containerRef={containerRef}
@@ -104,7 +109,7 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
         duration={3}
         gradientStartColor="#38e1c6"
         gradientStopColor="#ff5168"
-        pathColor="rgba(255,255,255,0.06)"
+        pathColor="rgba(255,255,255,0.18)"
       />
       {shownSports.map((s, i) => (
         <AnimatedBeam
@@ -117,7 +122,7 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
           curvature={(i - 2) * 22}
           gradientStartColor="#ff5168"
           gradientStopColor={s.accent}
-          pathColor="rgba(255,255,255,0.06)"
+          pathColor="rgba(255,255,255,0.18)"
         />
       ))}
     </motion.div>
@@ -148,7 +153,7 @@ function DiagramNode({
   return (
     <div
       ref={innerRef}
-      className="z-10 flex items-center gap-2 rounded-[var(--radius-md)] border bg-[var(--surface-2)] px-3 py-2 text-xs font-medium text-[var(--ink)] shadow-[var(--shadow-sm)]"
+      className="z-10 flex items-center gap-2 rounded-[var(--radius-md)] border bg-[var(--surface-3)] px-3 py-2 text-xs font-medium text-[var(--ink)] shadow-[var(--shadow-md)]"
       style={{
         borderColor: ring,
         boxShadow: strong ? "var(--glow-accent-subtle)" : "var(--shadow-sm)",

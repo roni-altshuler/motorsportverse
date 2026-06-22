@@ -309,6 +309,26 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-lg);
 }
 
+/* Card hover: a 3D pop toward the viewer + a per-card highlight hue glow.
+ * `--team-color` is set per card (defaults to the crimson accent). Reads on any
+ * card surface; the richer mouse-tracked tilt (TiltCard) composes on top of it. */
+.card-pop {
+  --pop-hue: var(--team-color, var(--accent));
+  transform-style: preserve-3d;
+  transition:
+    transform var(--dur-base) var(--ease-premium),
+    border-color var(--dur-base) var(--ease-premium),
+    box-shadow var(--dur-base) var(--ease-premium);
+}
+.card-pop:hover {
+  transform: translateY(-8px) scale(1.025);
+  border-color: color-mix(in srgb, var(--pop-hue) 55%, var(--line-strong));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--pop-hue) 45%, transparent),
+    0 30px 70px -26px color-mix(in srgb, var(--pop-hue) 48%, transparent),
+    0 14px 34px -18px rgba(0, 0, 0, 0.82);
+}
+
 /* A top hairline that lights up with the accent on hover. */
 .edge-accent::before {
   content: "";

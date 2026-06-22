@@ -9,11 +9,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useRef } from "react";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
 import { asset } from "@/lib/asset";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import { useCardTilt } from "@/lib/useCardTilt";
 import { useReveal } from "@/lib/useReveal";
 import type { Project } from "@/types/registry";
 
@@ -36,23 +36,16 @@ export function ShowcaseRail({ projects }: { projects: Project[] }) {
 
 function ShowcaseCard({ project, index }: { project: Project; index: number }) {
   const accent = project.accent || "var(--accent)";
-  const ref = useRef<HTMLDivElement>(null);
-
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    el.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
+  const tilt = useCardTilt();
 
   return (
-    <motion.div variants={fadeUp} custom={index}>
-      <div
-        ref={ref}
-        onMouseMove={onMove}
-        className="group card-premium edge-accent relative overflow-hidden p-7"
-        style={{ ["--team-color" as string]: accent }}
+    <motion.div variants={fadeUp} custom={index} style={{ perspective: 1000 }}>
+      <motion.div
+        onMouseMove={tilt.reduced ? undefined : tilt.onMouseMove}
+        onMouseEnter={tilt.reduced ? undefined : tilt.onMouseEnter}
+        onMouseLeave={tilt.reduced ? undefined : tilt.onMouseLeave}
+        style={{ ["--team-color" as string]: accent, ...(tilt.reduced ? {} : tilt.style) }}
+        className="group card-premium card-pop edge-accent relative overflow-hidden p-7"
       >
         {/* mouse spotlight */}
         <div
@@ -124,7 +117,7 @@ function ShowcaseCard({ project, index }: { project: Project; index: number }) {
             Case study →
           </Link>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

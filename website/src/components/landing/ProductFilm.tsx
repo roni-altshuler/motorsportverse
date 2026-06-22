@@ -1,17 +1,18 @@
 "use client";
 
 /**
- * ProductFilm — the "how it works" demo film.
+ * ProductFilm — the end-to-end "how the engine works" demo film.
  *
  * A self-contained, looping product walkthrough rendered entirely in the
- * browser (no video file): five cinematic scenes that trace a prediction from
- * raw timing data to a self-graded result. Framed like an official product
- * demo — player chrome, scene scrubber, autoplay-on-scroll via
- * IntersectionObserver (mirrors the FireFly product film), and a frozen first
- * frame under reduced motion.
+ * browser (no video file): six cinematic steps that trace a prediction from raw
+ * timing data, through the ML model engine, to a self-graded result — the whole
+ * pipeline, start to finish. Framed like an official product demo: player
+ * chrome, a live pipeline step-strip, autoplay-on-scroll via IntersectionObserver
+ * (mirrors the FireFly product film), and a frozen first frame under reduced
+ * motion.
  *
- * (Drop-in seam: if a recorded MP4 is ever produced, swap the <SceneStage/> for
- * a muted/loop/playsInline <video> — the surrounding chrome stays identical.)
+ * (Drop-in seam: if a recorded MP4 is ever produced, swap <SceneStage/> for a
+ * muted/loop/playsInline <video> — the chrome + step-strip stay identical.)
  */
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -22,31 +23,37 @@ const SCENE_MS = 4200;
 const SCENES = [
   {
     key: "ingest",
-    tag: "01 · Ingest",
+    step: "Ingest",
     title: "Every timing feed, one schema",
     blurb: "Official lap times and decades of race archives flow into one canonical store.",
   },
   {
+    key: "engine",
+    step: "Model engine",
+    title: "The ML engine turns pace into skill",
+    blurb: "Features stream into a gradient-boosted ensemble that scores every driver's true pace.",
+  },
+  {
     key: "calibrate",
-    tag: "02 · Calibrate",
+    step: "Calibrate",
     title: "Probabilities that tell the truth",
     blurb: "Raw model output is calibrated against history — confidence the data actually supports.",
   },
   {
     key: "simulate",
-    tag: "03 · Simulate",
+    step: "Simulate",
     title: "Thousands of races, one grid",
     blurb: "A Monte-Carlo race engine runs the weekend over and over to map every outcome.",
   },
   {
     key: "forecast",
-    tag: "04 · Forecast",
+    step: "Forecast",
     title: "A podium, with a confidence band",
     blurb: "The result: a predicted finishing order for every session, each with its own margin.",
   },
   {
     key: "grade",
-    tag: "05 · Self-grade",
+    step: "Self-grade",
     title: "It scores its own homework",
     blurb: "After the race, every prediction is graded against reality — round after round.",
   },
@@ -85,11 +92,10 @@ export function ProductFilm() {
     <section className="section pt-0" ref={sectionRef}>
       <div className="shell">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <p className="eyebrow eyebrow-accent eyebrow-tick justify-center">The film</p>
-          <h2 className="mt-3 text-[length:var(--text-4xl)]">See how a prediction is made</h2>
+          <h2 className="text-[length:var(--text-4xl)]">Watch the prediction engine run</h2>
           <p className="lead mt-4">
-            From a raw timing feed to a result that grades itself — the whole pipeline every
-            project on the grid inherits, in ninety seconds.
+            From a raw timing feed, through the AI&nbsp;model engine, to a result that grades itself
+            — the entire pipeline every project on the grid inherits, start to finish.
           </p>
         </div>
 
@@ -108,21 +114,9 @@ export function ProductFilm() {
                 MotorsportVerse — how it works
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              {SCENES.map((s, i) => (
-                <button
-                  key={s.key}
-                  onClick={() => setActive(i)}
-                  aria-label={`Scene ${i + 1}: ${s.title}`}
-                  className="h-1.5 rounded-full transition-all"
-                  style={{
-                    width: i === active ? 22 : 8,
-                    background: i === active ? ACCENT : "var(--hairline-strong)",
-                    boxShadow: i === active ? "0 0 10px var(--accent)" : "none",
-                  }}
-                />
-              ))}
-            </div>
+            <span className="font-mono text-[11px] text-[var(--ink-dim)]">
+              {String(active + 1).padStart(2, "0")} / {String(SCENES.length).padStart(2, "0")}
+            </span>
           </div>
 
           {/* ---- stage ---- */}
@@ -152,7 +146,9 @@ export function ProductFilm() {
                   transition={{ duration: 0.4 }}
                   className="max-w-md"
                 >
-                  <p className="mono-label text-[var(--accent-text)]">{scene.tag}</p>
+                  <p className="mono-label text-[var(--accent-text)]">
+                    Step {active + 1} · {scene.step}
+                  </p>
                   <h3 className="title-md mt-1.5 text-[length:var(--text-xl)] text-[var(--ink)]">
                     {scene.title}
                   </h3>
@@ -169,9 +165,38 @@ export function ProductFilm() {
               className="h-full"
               style={{ background: `linear-gradient(90deg, ${ACCENT}, ${TEAL})` }}
               initial={{ width: "0%" }}
-              animate={{ width: playing && !reduce ? "100%" : "12%" }}
+              animate={{ width: playing && !reduce ? "100%" : "16%" }}
               transition={{ duration: playing && !reduce ? SCENE_MS / 1000 : 0.4, ease: "linear" }}
             />
+          </div>
+
+          {/* ---- pipeline step-strip (start → finish) ---- */}
+          <div className="grid grid-cols-3 gap-px border-t border-[var(--line)] bg-[var(--line)] sm:grid-cols-6">
+            {SCENES.map((s, i) => (
+              <button
+                key={s.key}
+                onClick={() => setActive(i)}
+                className="group relative flex items-center gap-2 bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:bg-[var(--surface-2)]"
+                aria-label={`Step ${i + 1}: ${s.step}`}
+              >
+                <span
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-bold transition-all"
+                  style={{
+                    background: i === active ? ACCENT : "var(--surface-3)",
+                    color: i === active ? "#fff" : "var(--ink-dim)",
+                    boxShadow: i === active ? "0 0 12px var(--accent)" : "none",
+                  }}
+                >
+                  {i + 1}
+                </span>
+                <span
+                  className="truncate font-mono text-[10px] uppercase tracking-wider transition-colors"
+                  style={{ color: i === active ? "var(--ink)" : "var(--ink-dim)" }}
+                >
+                  {s.step}
+                </span>
+              </button>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -185,6 +210,8 @@ function SceneStage({ which, reduce }: { which: string; reduce: boolean }) {
   switch (which) {
     case "ingest":
       return <IngestScene reduce={reduce} />;
+    case "engine":
+      return <EngineScene reduce={reduce} />;
     case "calibrate":
       return <CalibrateScene reduce={reduce} />;
     case "simulate":
@@ -236,6 +263,72 @@ function IngestScene({ reduce }: { reduce: boolean }) {
             <span className="text-[var(--teal)]">{r[2]}</span>
           </motion.div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function EngineScene({ reduce }: { reduce: boolean }) {
+  const features = ["Quali pace", "Circuit type", "Driver form", "Tyre model", "Weather"];
+  const scores = [
+    ["VER", "0.94"],
+    ["NOR", "0.88"],
+    ["LEC", "0.85"],
+  ];
+  return (
+    <div className={`${panel} max-w-2xl`}>
+      <div className="mb-4 flex items-center justify-between">
+        <span className="mono-label">ML model engine</span>
+        <span className="font-mono text-[11px] text-[var(--ink-dim)]">GBR + XGB ensemble</span>
+      </div>
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+        {/* features in */}
+        <div className="space-y-1.5">
+          {features.map((f, i) => (
+            <motion.div
+              key={f}
+              initial={reduce ? false : { opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-md border border-[var(--line-faint)] bg-[var(--canvas-deep)] px-2.5 py-1.5 font-mono text-[11px] text-[var(--ink-muted)]"
+            >
+              {f}
+            </motion.div>
+          ))}
+        </div>
+        {/* engine core */}
+        <div className="relative flex h-24 w-24 items-center justify-center">
+          {[0, 1, 2].map((r) => (
+            <motion.span
+              key={r}
+              className="absolute rounded-full border"
+              style={{ borderColor: ACCENT, inset: r * 10 }}
+              animate={reduce ? { opacity: 0.5 } : { opacity: [0.25, 0.7, 0.25], scale: [0.9, 1.05, 0.9] }}
+              transition={{ duration: 2, delay: r * 0.25, repeat: reduce ? 0 : Infinity }}
+            />
+          ))}
+          <motion.span
+            className="h-9 w-9 rounded-full"
+            style={{ background: `radial-gradient(circle, ${ACCENT}, var(--accent-deep))`, boxShadow: "var(--glow-accent)" }}
+            animate={reduce ? undefined : { scale: [1, 1.15, 1] }}
+            transition={{ duration: 1.4, repeat: Infinity }}
+          />
+        </div>
+        {/* pace scores out */}
+        <div className="space-y-1.5">
+          {scores.map((s, i) => (
+            <motion.div
+              key={s[0]}
+              initial={reduce ? false : { opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + i * 0.15 }}
+              className="flex items-center justify-between rounded-md border border-[var(--line)] bg-[var(--canvas-deep)] px-2.5 py-1.5 font-mono text-[11px]"
+            >
+              <span className="font-semibold text-[var(--ink)]">{s[0]}</span>
+              <span className="text-[var(--teal)]">{s[1]}</span>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -294,9 +387,7 @@ function SimulateScene({ reduce }: { reduce: boolean }) {
             style={{ background: i < 3 ? ACCENT : "var(--surface-3)" }}
             initial={reduce ? false : { opacity: 0.3 }}
             animate={
-              reduce
-                ? { opacity: 1 }
-                : { opacity: [0.3, 1, 0.5, 1], scale: [1, 1.08, 1] }
+              reduce ? { opacity: 1 } : { opacity: [0.3, 1, 0.5, 1], scale: [1, 1.08, 1] }
             }
             transition={{ duration: 1.4, delay: (i % 10) * 0.05, repeat: reduce ? 0 : Infinity, repeatDelay: 1 }}
           />
@@ -391,7 +482,7 @@ function GradeScene({ reduce }: { reduce: boolean }) {
             style={{ filter: "drop-shadow(0 0 8px var(--teal))" }}
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center rotate-0">
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-display text-3xl font-bold text-[var(--ink)]">{pct}%</span>
           <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--ink-dim)]">
             podium-weighted

@@ -44,11 +44,20 @@ export default function DocsPage() {
       </p>
       <div className="mt-12 grid gap-5 sm:grid-cols-2">
         {SECTIONS.map((s) => (
-          <a key={s.title} href={s.href} className="card-surface hover-lift group p-6">
+          <a
+            key={s.title}
+            href={s.href}
+            target="_blank"
+            rel="noreferrer"
+            className="card-surface card-pop group p-6"
+          >
             <h2 className="font-display text-lg font-semibold text-[var(--ink)]">{s.title}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{s.body}</p>
-            <span className="mt-4 inline-block text-sm font-medium text-[var(--accent-bright)] transition-transform group-hover:translate-x-1">
-              Read →
+            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-bright)] transition-transform group-hover:translate-x-1">
+              Open in new tab
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </span>
           </a>
         ))}

@@ -134,12 +134,12 @@ export default function HomePage() {
                 style={{ background: "var(--mesh-1)" }}
                 aria-hidden
               />
-              <div className="relative">
+              <div className="relative flex flex-col items-center text-center">
                 <p className="eyebrow eyebrow-accent eyebrow-tick">Open to contributors</p>
-                <h2 className="mx-auto mt-4 max-w-2xl text-[length:var(--text-4xl)] sm:text-5xl">
+                <h2 className="mt-4 max-w-2xl text-[length:var(--text-4xl)] sm:text-5xl">
                   Bring your sport to the grid.
                 </h2>
-                <p className="lead mx-auto mt-5 max-w-xl">
+                <p className="lead mt-5 max-w-xl">
                   The shared core does the heavy lifting. You bring the data and the domain
                   knowledge.
                 </p>
