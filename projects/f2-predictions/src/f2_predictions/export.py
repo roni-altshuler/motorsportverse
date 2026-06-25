@@ -60,6 +60,14 @@ def _actual_map(source: F2DataSource, year: int, rnd: int, race_type: str) -> di
     return {r.competitor: r.position for r in results}
 
 
+def _next_round(source: F2DataSource, year: int) -> int | None:
+    """The upcoming round number (the first not-yet-completed round), or None if
+    the season is over. Feed-derived so it stays correct as rounds complete."""
+    completed = source.completed_rounds(year)
+    nxt = (max(completed) + 1) if completed else 1
+    return nxt if nxt <= len(config.CALENDAR) else None
+
+
 # --------------------------------------------------------------------------- #
 # Per-round detail (rounds/round_NN.json)
 # --------------------------------------------------------------------------- #
@@ -424,23 +432,36 @@ def _standings_lists(source: F2DataSource, year: int) -> tuple[list[dict], list[
     return driver_rows, team_rows
 
 
-def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSource, year: int) -> dict:
+def build_payload(
+    round_forecasts: dict[int, RoundForecastF2],
+    source: F2DataSource,
+    year: int,
+    known_grid: list[str] | None = None,
+) -> dict:
     completed = source.completed_rounds(year)
     n_completed = len(completed)
     driver_rows, team_rows = _standings_lists(source, year)
 
-    next_round = (max(completed) + 1) if completed else 1
+    next_round = _next_round(source, year)
     prediction = None
-    if next_round <= len(config.CALENDAR):
-        pred = pipeline.predict_round(source, year, next_round)
+    if next_round is not None:
+        # Reuse the round forecast already computed (conditioned on real qualifying
+        # when ``known_grid`` is set), so the season summary, the round detail page,
+        # and the post-quali grid all agree.
+        fc = round_forecasts[next_round]
+        feature = fc.feature
+        post_quali = bool(known_grid)
         prediction = {
-            "season": pred.season,
-            "round": pred.round,
-            "venueKey": pred.venue_key,
-            "venueName": pred.venue_name,
+            "season": fc.season,
+            "round": fc.round,
+            "venueKey": fc.venue_key,
+            "venueName": fc.venue_name,
+            # "post-quali" once the real grid is locked, else "pre" (predicted grid).
+            "phase": "post-quali" if post_quali else "pre",
+            "qualifyingActual": post_quali,
             "qualifying": [
                 {"position": i, "code": c, "name": config.DRIVER_NAME[c], "team": config.TEAM_OF[c]}
-                for i, c in enumerate(pred.qualifying_order, start=1)
+                for i, c in enumerate(feature.grid, start=1)
             ],
             "race": [
                 {
@@ -448,10 +469,10 @@ def build_payload(round_forecasts: dict[int, RoundForecastF2], source: F2DataSou
                     "code": c,
                     "name": config.DRIVER_NAME[c],
                     "team": config.TEAM_OF[c],
-                    "pWin": round(pred.p_win.get(c, 0.0), 4),
-                    "pPodium": round(pred.p_podium.get(c, 0.0), 4),
+                    "pWin": round(feature.markets.p_win.get(c, 0.0), 4),
+                    "pPodium": round(feature.markets.p_podium.get(c, 0.0), 4),
                 }
-                for i, c in enumerate(pred.race_order, start=1)
+                for i, c in enumerate(feature.order, start=1)
             ],
         }
 
@@ -520,10 +541,18 @@ def write(out_dir: Path) -> Path:
     # Honest calibration gate: fit only from real (non-synthetic) rounds.
     calibrator, real_rounds = build_calibrator(source, year)
 
+    # Post-quali seam: if the upcoming round's REAL qualifying is published, the
+    # next-round forecast is conditioned on the actual grid (feature + reverse-grid
+    # sprint). None pre-quali → predicted merit grid, unchanged.
+    next_round = _next_round(source, year)
+    known_grid = source.qualifying(year, next_round) if next_round else None
+
     # Forecast every round once (leakage-safe — each uses only prior rounds).
     round_forecasts: dict[int, RoundForecastF2] = {}
     for rnd in range(1, len(config.CALENDAR) + 1):
-        fc = pipeline.forecast_round(source, year, rnd)
+        fc = pipeline.forecast_round(
+            source, year, rnd, known_grid=known_grid if rnd == next_round else None
+        )
         round_forecasts[rnd] = fc
         completed = rnd <= config.COMPLETED_ROUNDS
         (rounds_dir / f"round_{_pad2(rnd)}.json").write_text(
@@ -537,7 +566,7 @@ def write(out_dir: Path) -> Path:
         json.dumps(_calibration_summary(calibrator, real_rounds), indent=2) + "\n"
     )
 
-    payload = build_payload(round_forecasts, source, year)
+    payload = build_payload(round_forecasts, source, year, known_grid=known_grid)
     path = out_dir / "f2.json"
     path.write_text(json.dumps(payload, indent=2) + "\n")
     return path

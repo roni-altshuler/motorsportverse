@@ -32,6 +32,11 @@ SOURCE_NAME = "fia"
 
 _SESSION_HEADING = {0: "Sprint Race", 1: "Feature Race"}
 
+# Headings the qualifying classification can appear under on a round page. F2 runs
+# a single qualifying session on Friday that sets the FEATURE grid (the sprint is
+# the reverse of its top 10), so this is the one session that drives both races.
+_QUALI_HEADINGS = ("Qualifying", "Qualifying Session", "Qualifying Result")
+
 # Row-level extractors (matched within a single <tr> block).
 _RE_POS = re.compile(r'<div class="pos">\s*(\d+)\s*</div>')
 _RE_CARNO = re.compile(r'<div class="car-no">\s*(\d+)\s*</div>')
@@ -86,6 +91,31 @@ class FiaF2Source:
                 )
                 for r in rows
             ]
+        except Exception:
+            return None
+
+    def qualifying(self, year: int, round: int) -> list[str] | None:
+        """Driver codes in qualifying order (P1 first) for a round, or ``None``.
+
+        Qualifying sets the feature-race grid; we expose just the order (the grid)
+        since the race tables carry no grid column. Returns ``None`` when the
+        session can't be fetched or parsed yet (pre-quali, site down, markup
+        changed) so the composite seam falls through and the model uses its
+        predicted merit grid instead — never breaking a forecast.
+        """
+        try:
+            raceid = self._round_map(year).get(round)
+            if raceid is None:
+                return None
+            page = self._page(raceid)
+            if page is None:
+                return None
+            for heading in _QUALI_HEADINGS:
+                rows = self._parse_session(page, heading)
+                if rows:
+                    self._record_entries(year, rows)
+                    return [r["code"] for r in rows]  # already position-sorted
+            return None
         except Exception:
             return None
 

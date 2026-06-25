@@ -172,6 +172,14 @@ SKILL_WEIGHTS = {"elo": 0.55, "history": 0.45, "team": 0.12, "ml": 0.5, "bayes":
 REVERSE_GRID_SIZE = 10     # F2 reverses the top 10 of the feature-quali order
 SPRINT_GRID_PENALTY = 0.12  # seconds of pace cost per grid slot started back
 
+# Feature race: when REAL qualifying is known (post-quali), the forecast conditions
+# on the actual grid. Track position matters in the feature too — pole is a genuine
+# advantage — but far less than in the reverse-grid sprint, because the feature grid
+# is already merit-aligned and F2 features are overtaking-heavy. A gentle per-slot
+# pace cost nudges the forecast toward the real grid without overpowering skill.
+# Unused until a real qualifying order is supplied (pre-quali keeps pure-pace merit).
+FEATURE_GRID_WEIGHT = 0.05  # seconds of pace cost per feature grid slot back
+
 # A driver with fewer than this many prior race entries is treated as a rookie
 # (pooled toward the team mean by the Elo prior; used as a calibration stratum).
 ROOKIE_RACE_THRESHOLD = 3

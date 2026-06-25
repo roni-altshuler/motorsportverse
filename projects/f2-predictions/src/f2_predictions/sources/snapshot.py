@@ -66,6 +66,19 @@ class SnapshotF2Source:
             for r in classified
         ]
 
+    def qualifying(self, year: int, round: int) -> list[str] | None:
+        """Real qualifying order (P1 first) captured in the snapshot, or ``None``.
+
+        ``refresh`` stores the scraped qualifying classification under
+        ``snapshot["qualifying"][str(round)]`` — including the *upcoming* round
+        once its Friday session has run but before the race. Returns ``None`` when
+        absent so the composite falls through to the live feed / predicted grid.
+        """
+        if not self._snap or year != self._snap.get("season"):
+            return None
+        order = self._snap.get("qualifying", {}).get(str(round))
+        return list(order) if order else None
+
     def completed_rounds(self, year: int) -> list[int]:
         if not self._snap or year != self._snap.get("season"):
             return []

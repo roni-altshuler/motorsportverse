@@ -95,10 +95,18 @@ def estimate_pace(source: F2DataSource, year: int, current_round: int) -> dict[s
 
 
 def forecast_round(
-    source: F2DataSource, year: int, round: int, *, n_samples: int | None = None
+    source: F2DataSource,
+    year: int,
+    round: int,
+    *,
+    n_samples: int | None = None,
+    known_grid: list[str] | None = None,
 ) -> model.RoundForecastF2:
-    """Full sprint + feature forecast for one round (the rich model output)."""
-    return model.forecast_round(source, year, round, n_samples=n_samples)
+    """Full sprint + feature forecast for one round (the rich model output).
+
+    ``known_grid`` (actual qualifying order) routes to the model's post-quali path.
+    """
+    return model.forecast_round(source, year, round, n_samples=n_samples, known_grid=known_grid)
 
 
 @dataclass

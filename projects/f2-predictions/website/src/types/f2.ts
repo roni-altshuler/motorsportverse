@@ -74,6 +74,11 @@ export interface NextPrediction {
   round: number;
   venueKey: string;
   venueName: string;
+  /** "post-quali" once real qualifying is published (grid is the actual order),
+   *  else "pre" (predicted merit grid). Mirrors the F1 flagship's weekend phase. */
+  phase?: "pre" | "post-quali";
+  /** True when `qualifying` is the real, scraped grid rather than the predicted one. */
+  qualifyingActual?: boolean;
   qualifying: QualiEntry[];
   race: RaceEntry[];
 }

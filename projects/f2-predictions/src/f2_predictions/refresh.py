@@ -10,6 +10,8 @@ Captured per season:
   * calendar   — 14 rounds (keys/names from config), with completed flags;
   * results    — per completed round, the sprint + feature classifications
                  (incl. retirements with status), from /Results?raceid=N;
+  * qualifying — per round whose Friday session has run (incl. the upcoming
+                 round, pre-race), the grid order — drives the post-quali forecast;
   * driverStandings / teamStandings — the **official** point totals and the
                  per-round score breakdown, from /Standings/{Driver,Team}.
 
@@ -131,6 +133,7 @@ def build_snapshot(season: int) -> dict:
     by_round = {c["round"]: c for c in cal}
 
     results: dict[str, dict] = {}
+    qualifying: dict[str, list[str]] = {}
     completed: list[int] = []
     for rnd in range(1, len(config.CALENDAR) + 1):
         entry = by_round.get(rnd)
@@ -139,6 +142,12 @@ def build_snapshot(season: int) -> dict:
         page = src._page(entry["raceid"])
         if not page:
             continue
+        # Capture qualifying whenever it is published — including the UPCOMING round
+        # (Friday quali runs before the race), so the post-quali forecast can
+        # condition on the real grid before any result exists.
+        quali = src.qualifying(season, rnd)
+        if quali:
+            qualifying[str(rnd)] = quali
         sprint = FiaF2Source._parse_session(page, "Sprint Race", include_unclassified=True)
         feature = FiaF2Source._parse_session(page, "Feature Race", include_unclassified=True)
         if not any(r.get("position") for r in feature):
@@ -186,6 +195,7 @@ def build_snapshot(season: int) -> dict:
         "driverStandings": drivers,
         "teamStandings": teams,
         "results": results,
+        "qualifying": qualifying,
     }
 
 
@@ -202,13 +212,45 @@ def _wins_podiums(results: dict, code: str) -> tuple[int, int]:
     return wins, podiums
 
 
+def _existing_completed(path: Path, season: int) -> int:
+    """completedRounds in the snapshot already on disk (0 if absent/unreadable)."""
+    try:
+        cur = json.loads(path.read_text(encoding="utf-8"))
+        return int(cur.get("completedRounds", 0)) if cur.get("season") == season else 0
+    except Exception:
+        return 0
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Refresh the F2 real-data snapshot from fiaformula2.com")
     ap.add_argument("--season", type=int, default=config.SEASON)
     ap.add_argument("--out", type=Path, default=_DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-regression",
+        action="store_true",
+        help="permit overwriting a snapshot with one that has FEWER completed rounds "
+        "(default: refuse — guards against a transient empty live scrape wiping real data)",
+    )
     args = ap.parse_args()
 
     snap = build_snapshot(args.season)
+
+    # Root-cause guard against the failure that shipped an empty snapshot to main:
+    # when the live site is briefly down or restructures, the scrape returns zero
+    # completed rounds. NEVER let that regress a healthy committed snapshot — a
+    # refresh can only ever add rounds, not lose them. The whole pipeline keys off
+    # completedRounds, so a regression silently wipes the standings + the site.
+    existing = _existing_completed(args.out, args.season)
+    fresh = int(snap.get("completedRounds", 0))
+    if fresh < existing and not args.allow_regression:
+        print(
+            f"⚠️  Refresh produced {fresh} completed round(s) but the existing snapshot "
+            f"has {existing} — refusing to regress (live scrape likely empty/transient). "
+            f"Keeping the committed snapshot. Use --allow-regression to override.",
+            flush=True,
+        )
+        raise SystemExit(0)
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(snap, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
