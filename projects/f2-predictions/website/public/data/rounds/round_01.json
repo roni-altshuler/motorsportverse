@@ -4,8 +4,8 @@
   "venueKey": "melbourne",
   "venueName": "Australia",
   "country": "Australia",
-  "completed": false,
-  "dataSource": null,
+  "completed": true,
+  "dataSource": "snapshot",
   "sprint": {
     "raceType": "sprint",
     "grid": [
@@ -159,7 +159,7 @@
         "finishRangeHigh": 7,
         "confidence": "High",
         "headshotUrl": "/headshots/INT.webp",
-        "actualPosition": null
+        "actualPosition": 4
       },
       {
         "position": 2,
@@ -177,7 +177,7 @@
         "finishRangeHigh": 8,
         "confidence": "High",
         "headshotUrl": "/headshots/VAN.webp",
-        "actualPosition": null
+        "actualPosition": 7
       },
       {
         "position": 3,
@@ -195,7 +195,7 @@
         "finishRangeHigh": 9,
         "confidence": "High",
         "headshotUrl": "/headshots/MAI.webp",
-        "actualPosition": null
+        "actualPosition": 12
       },
       {
         "position": 4,
@@ -213,7 +213,7 @@
         "finishRangeHigh": 10,
         "confidence": "High",
         "headshotUrl": "/headshots/STE.webp",
-        "actualPosition": null
+        "actualPosition": 10
       },
       {
         "position": 5,
@@ -231,7 +231,7 @@
         "finishRangeHigh": 11,
         "confidence": "High",
         "headshotUrl": "/headshots/BEG.webp",
-        "actualPosition": null
+        "actualPosition": 20
       },
       {
         "position": 6,
@@ -249,7 +249,7 @@
         "finishRangeHigh": 12,
         "confidence": "Medium",
         "headshotUrl": "/headshots/TSO.webp",
-        "actualPosition": null
+        "actualPosition": 17
       },
       {
         "position": 7,
@@ -267,7 +267,7 @@
         "finishRangeHigh": 13,
         "confidence": "Medium",
         "headshotUrl": "/headshots/CAM.webp",
-        "actualPosition": null
+        "actualPosition": 11
       },
       {
         "position": 8,
@@ -285,7 +285,7 @@
         "finishRangeHigh": 14,
         "confidence": "Medium",
         "headshotUrl": "/headshots/LEO.webp",
-        "actualPosition": null
+        "actualPosition": 2
       },
       {
         "position": 9,
@@ -303,7 +303,7 @@
         "finishRangeHigh": 15,
         "confidence": "Low",
         "headshotUrl": "/headshots/DUN.webp",
-        "actualPosition": null
+        "actualPosition": 3
       },
       {
         "position": 10,
@@ -321,7 +321,7 @@
         "finishRangeHigh": 15,
         "confidence": "Medium",
         "headshotUrl": "/headshots/MIN.webp",
-        "actualPosition": null
+        "actualPosition": 6
       },
       {
         "position": 11,
@@ -339,7 +339,7 @@
         "finishRangeHigh": 16,
         "confidence": "Medium",
         "headshotUrl": "/headshots/MIY.webp",
-        "actualPosition": null
+        "actualPosition": 5
       },
       {
         "position": 12,
@@ -357,7 +357,7 @@
         "finishRangeHigh": 17,
         "confidence": "Low",
         "headshotUrl": "/headshots/DUR.webp",
-        "actualPosition": null
+        "actualPosition": 1
       },
       {
         "position": 13,
@@ -375,7 +375,7 @@
         "finishRangeHigh": 18,
         "confidence": "Low",
         "headshotUrl": "/headshots/MON.webp",
-        "actualPosition": null
+        "actualPosition": 9
       },
       {
         "position": 14,
@@ -393,7 +393,7 @@
         "finishRangeHigh": 19,
         "confidence": "Low",
         "headshotUrl": "/headshots/BIL.webp",
-        "actualPosition": null
+        "actualPosition": 8
       },
       {
         "position": 15,
@@ -411,7 +411,7 @@
         "finishRangeHigh": 19,
         "confidence": "Medium",
         "headshotUrl": "/headshots/GOE.webp",
-        "actualPosition": null
+        "actualPosition": 18
       },
       {
         "position": 16,
@@ -429,7 +429,7 @@
         "finishRangeHigh": 20,
         "confidence": "Medium",
         "headshotUrl": "/headshots/HER.webp",
-        "actualPosition": null
+        "actualPosition": 16
       },
       {
         "position": 17,
@@ -447,7 +447,7 @@
         "finishRangeHigh": 21,
         "confidence": "Medium",
         "headshotUrl": "/headshots/FIT.webp",
-        "actualPosition": null
+        "actualPosition": 14
       },
       {
         "position": 18,
@@ -465,7 +465,7 @@
         "finishRangeHigh": 21,
         "confidence": "Medium",
         "headshotUrl": "/headshots/VAR.webp",
-        "actualPosition": null
+        "actualPosition": 21
       },
       {
         "position": 19,
@@ -501,7 +501,7 @@
         "finishRangeHigh": 22,
         "confidence": "High",
         "headshotUrl": "/headshots/BEN.webp",
-        "actualPosition": null
+        "actualPosition": 15
       },
       {
         "position": 21,
@@ -519,7 +519,7 @@
         "finishRangeHigh": 22,
         "confidence": "High",
         "headshotUrl": "/headshots/VIL.webp",
-        "actualPosition": null
+        "actualPosition": 13
       },
       {
         "position": 22,
@@ -537,9 +537,106 @@
         "finishRangeHigh": 22,
         "confidence": "High",
         "headshotUrl": "/headshots/SHI.webp",
-        "actualPosition": null
+        "actualPosition": 19
       }
-    ]
+    ],
+    "actualResults": [
+      {
+        "position": 1,
+        "code": "DUR"
+      },
+      {
+        "position": 2,
+        "code": "LEO"
+      },
+      {
+        "position": 3,
+        "code": "DUN"
+      },
+      {
+        "position": 4,
+        "code": "INT"
+      },
+      {
+        "position": 5,
+        "code": "MIY"
+      },
+      {
+        "position": 6,
+        "code": "MIN"
+      },
+      {
+        "position": 7,
+        "code": "VAN"
+      },
+      {
+        "position": 8,
+        "code": "BIL"
+      },
+      {
+        "position": 9,
+        "code": "MON"
+      },
+      {
+        "position": 10,
+        "code": "STE"
+      },
+      {
+        "position": 11,
+        "code": "CAM"
+      },
+      {
+        "position": 12,
+        "code": "MAI"
+      },
+      {
+        "position": 13,
+        "code": "VIL"
+      },
+      {
+        "position": 14,
+        "code": "FIT"
+      },
+      {
+        "position": 15,
+        "code": "BEN"
+      },
+      {
+        "position": 16,
+        "code": "HER"
+      },
+      {
+        "position": 17,
+        "code": "TSO"
+      },
+      {
+        "position": 18,
+        "code": "GOE"
+      },
+      {
+        "position": 19,
+        "code": "SHI"
+      },
+      {
+        "position": 20,
+        "code": "BEG"
+      },
+      {
+        "position": 21,
+        "code": "VAR"
+      }
+    ],
+    "accuracy": {
+      "n": 21,
+      "mean_position_error": 5.762,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 11,
+      "exact_matches": 1,
+      "spearman_correlation": 0.4116883116883117,
+      "ndcg_at_5": 0.6506070568594046
+    }
   },
   "feature": {
     "raceType": "feature",
@@ -694,7 +791,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/BIL.webp",
-        "actualPosition": null
+        "actualPosition": 12
       },
       {
         "position": 2,
@@ -712,7 +809,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/MIN.webp",
-        "actualPosition": null
+        "actualPosition": 8
       },
       {
         "position": 3,
@@ -730,7 +827,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/TSO.webp",
-        "actualPosition": null
+        "actualPosition": 1
       },
       {
         "position": 4,
@@ -748,7 +845,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/MIY.webp",
-        "actualPosition": null
+        "actualPosition": 5
       },
       {
         "position": 5,
@@ -766,7 +863,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/SHI.webp",
-        "actualPosition": null
+        "actualPosition": 19
       },
       {
         "position": 6,
@@ -802,7 +899,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/GOE.webp",
-        "actualPosition": null
+        "actualPosition": 4
       },
       {
         "position": 8,
@@ -820,7 +917,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/VAN.webp",
-        "actualPosition": null
+        "actualPosition": 3
       },
       {
         "position": 9,
@@ -838,7 +935,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/MAI.webp",
-        "actualPosition": null
+        "actualPosition": 16
       },
       {
         "position": 10,
@@ -856,7 +953,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/VIL.webp",
-        "actualPosition": null
+        "actualPosition": 11
       },
       {
         "position": 11,
@@ -874,7 +971,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/CAM.webp",
-        "actualPosition": null
+        "actualPosition": 2
       },
       {
         "position": 12,
@@ -892,7 +989,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/LEO.webp",
-        "actualPosition": null
+        "actualPosition": 14
       },
       {
         "position": 13,
@@ -910,7 +1007,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/INT.webp",
-        "actualPosition": null
+        "actualPosition": 6
       },
       {
         "position": 14,
@@ -928,7 +1025,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/VAR.webp",
-        "actualPosition": null
+        "actualPosition": 17
       },
       {
         "position": 15,
@@ -946,7 +1043,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/MON.webp",
-        "actualPosition": null
+        "actualPosition": 9
       },
       {
         "position": 16,
@@ -964,7 +1061,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/FIT.webp",
-        "actualPosition": null
+        "actualPosition": 15
       },
       {
         "position": 17,
@@ -982,7 +1079,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/BEN.webp",
-        "actualPosition": null
+        "actualPosition": 18
       },
       {
         "position": 18,
@@ -1000,7 +1097,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/DUR.webp",
-        "actualPosition": null
+        "actualPosition": 10
       },
       {
         "position": 19,
@@ -1036,7 +1133,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/HER.webp",
-        "actualPosition": null
+        "actualPosition": 7
       },
       {
         "position": 21,
@@ -1054,7 +1151,7 @@
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/BOY.webp",
-        "actualPosition": null
+        "actualPosition": 13
       },
       {
         "position": 22,
@@ -1074,6 +1171,95 @@
         "headshotUrl": "/headshots/STE.webp",
         "actualPosition": null
       }
-    ]
+    ],
+    "actualResults": [
+      {
+        "position": 1,
+        "code": "TSO"
+      },
+      {
+        "position": 2,
+        "code": "CAM"
+      },
+      {
+        "position": 3,
+        "code": "VAN"
+      },
+      {
+        "position": 4,
+        "code": "GOE"
+      },
+      {
+        "position": 5,
+        "code": "MIY"
+      },
+      {
+        "position": 6,
+        "code": "INT"
+      },
+      {
+        "position": 7,
+        "code": "HER"
+      },
+      {
+        "position": 8,
+        "code": "MIN"
+      },
+      {
+        "position": 9,
+        "code": "MON"
+      },
+      {
+        "position": 10,
+        "code": "DUR"
+      },
+      {
+        "position": 11,
+        "code": "VIL"
+      },
+      {
+        "position": 12,
+        "code": "BIL"
+      },
+      {
+        "position": 13,
+        "code": "BOY"
+      },
+      {
+        "position": 14,
+        "code": "LEO"
+      },
+      {
+        "position": 15,
+        "code": "FIT"
+      },
+      {
+        "position": 16,
+        "code": "MAI"
+      },
+      {
+        "position": 17,
+        "code": "VAR"
+      },
+      {
+        "position": 18,
+        "code": "BEN"
+      },
+      {
+        "position": 19,
+        "code": "SHI"
+      }
+    ],
+    "accuracy": {
+      "n": 19,
+      "mean_position_error": 5.684,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 9,
+      "exact_matches": 0,
+      "spearman_correlation": 0.2929824561403509,
+      "ndcg_at_5": 0.5960611207953741
+    }
   }
 }

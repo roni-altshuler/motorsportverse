@@ -11,7 +11,10 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 
+import pytest
+
 from f2_predictions import config, export, model, race_weekend as rw
+from f2_predictions import refresh as f2refresh
 from f2_predictions.datasource import F2DataSource
 from f2_predictions.sources.composite import CompositeF2Source
 from f2_predictions.sources.snapshot import SnapshotF2Source, load_snapshot
@@ -161,6 +164,25 @@ def test_phase_post_quali_then_post_race():
     assert rw.weekend_phase(NEXT, 2026, live=_StubLive(quali=quali)) == "post-quali"
     result = [type("R", (), {"competitor": c})() for c in CODES]
     assert rw.weekend_phase(NEXT, 2026, live=_StubLive(feature=result, quali=quali)) == "post-race"
+
+
+def test_refresh_refuses_to_regress_a_healthy_snapshot(tmp_path, monkeypatch):
+    """The exact failure that shipped an empty snapshot to main: a transient empty
+    live scrape must NOT overwrite a healthy committed snapshot."""
+    out = tmp_path / "official_2026.json"
+    good = {"season": 2026, "completedRounds": 5, "results": {"1": {}}, "driverStandings": [1]}
+    out.write_text(json.dumps(good))
+
+    # Simulate the live scrape coming back empty (site down / restructured).
+    monkeypatch.setattr(
+        f2refresh, "build_snapshot", lambda season: {"season": 2026, "completedRounds": 0, "results": {}}
+    )
+    monkeypatch.setattr("sys.argv", ["refresh", "--season", "2026", "--out", str(out)])
+    with pytest.raises(SystemExit) as exc:
+        f2refresh.main()
+    assert exc.value.code == 0
+    # The healthy snapshot survived untouched.
+    assert json.loads(out.read_text())["completedRounds"] == 5
 
 
 def test_work_pending_detects_fresh_quali_and_result():

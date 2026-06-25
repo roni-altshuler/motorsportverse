@@ -212,13 +212,45 @@ def _wins_podiums(results: dict, code: str) -> tuple[int, int]:
     return wins, podiums
 
 
+def _existing_completed(path: Path, season: int) -> int:
+    """completedRounds in the snapshot already on disk (0 if absent/unreadable)."""
+    try:
+        cur = json.loads(path.read_text(encoding="utf-8"))
+        return int(cur.get("completedRounds", 0)) if cur.get("season") == season else 0
+    except Exception:
+        return 0
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Refresh the F2 real-data snapshot from fiaformula2.com")
     ap.add_argument("--season", type=int, default=config.SEASON)
     ap.add_argument("--out", type=Path, default=_DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-regression",
+        action="store_true",
+        help="permit overwriting a snapshot with one that has FEWER completed rounds "
+        "(default: refuse — guards against a transient empty live scrape wiping real data)",
+    )
     args = ap.parse_args()
 
     snap = build_snapshot(args.season)
+
+    # Root-cause guard against the failure that shipped an empty snapshot to main:
+    # when the live site is briefly down or restructures, the scrape returns zero
+    # completed rounds. NEVER let that regress a healthy committed snapshot — a
+    # refresh can only ever add rounds, not lose them. The whole pipeline keys off
+    # completedRounds, so a regression silently wipes the standings + the site.
+    existing = _existing_completed(args.out, args.season)
+    fresh = int(snap.get("completedRounds", 0))
+    if fresh < existing and not args.allow_regression:
+        print(
+            f"⚠️  Refresh produced {fresh} completed round(s) but the existing snapshot "
+            f"has {existing} — refusing to regress (live scrape likely empty/transient). "
+            f"Keeping the committed snapshot. Use --allow-regression to override.",
+            flush=True,
+        )
+        raise SystemExit(0)
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(snap, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
