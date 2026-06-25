@@ -42,6 +42,22 @@ class CompositeF2Source:
             self.results(year, round, race_index)
         return self._provenance.get(key, "unknown")
 
+    def qualifying(self, year: int, round: int) -> list[str] | None:
+        """First real qualifying order across the source stack, or ``None``.
+
+        Only real sources (fia / snapshot) implement ``qualifying``; the synthetic
+        fallback has none, so a non-``None`` answer here is real by construction —
+        the same honesty contract the calibration gate relies on for results.
+        """
+        for source in self._sources:
+            q = getattr(source, "qualifying", None)
+            if q is None:
+                continue
+            order = q(year, round)
+            if order:
+                return list(order)
+        return None
+
     @staticmethod
     def default():
         """Offline real data first: the committed snapshot (real, deterministic),

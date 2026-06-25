@@ -302,6 +302,25 @@ def _reverse_grid(merit_order: list[str]) -> list[str]:
     return merit_order[:n][::-1] + merit_order[n:]
 
 
+def _complete_grid(known_grid: list[str], merit_order: list[str]) -> list[str]:
+    """Turn a real (possibly partial) qualifying order into a full grid permutation.
+
+    A live scrape can be incomplete (a missing row, a non-qualifier). Keep the real
+    order for the drivers it covers, drop unknown/duplicate codes, then append any
+    remaining drivers in predicted-merit order — so the grid is always a complete,
+    valid permutation that uses real data wherever it exists.
+    """
+    valid = set(merit_order)
+    seen: set[str] = set()
+    grid: list[str] = []
+    for code in known_grid:
+        if code in valid and code not in seen:
+            grid.append(code)
+            seen.add(code)
+    grid.extend(c for c in merit_order if c not in seen)
+    return grid
+
+
 def _race_forecast(
     race_type: str,
     grid: list[str],
@@ -341,19 +360,40 @@ def forecast_round(
     round: int,
     *,
     n_samples: int | None = None,
+    known_grid: list[str] | None = None,
 ) -> RoundForecastF2:
-    """Full sprint + feature forecast for one round."""
+    """Full sprint + feature forecast for one round.
+
+    ``known_grid`` is the **actual qualifying order** (P1 first) when it is already
+    published — the post-quali path. When given, the feature grid becomes the real
+    grid (with a gentle pole-favouring grid term) and the sprint reverse-grid is
+    derived from it, so the forecast is conditioned on qualifying exactly like the
+    F1 flagship's post-quali phase. When ``None`` (pre-quali), the feature grid is
+    the predicted merit order and the feature is sampled from pace alone — today's
+    behaviour, unchanged.
+    """
     n_samples = n_samples or config.DEFAULT_SAMPLES
     pace = estimate_skill(source, year, round)
     venue = source._venue(round)
 
-    # Feature: merit grid (fastest first), sampled from pace alone.
     merit_order = sorted(pace, key=lambda c: pace[c])
-    feature = _race_forecast(FEATURE, merit_order, pace, n_samples=n_samples)
+    if known_grid:
+        # Post-quali: condition the feature on the REAL grid. Pole is a genuine but
+        # modest advantage in the feature, so fold a small grid-position term into
+        # the pace the sampler reads (lower = faster).
+        feature_grid = _complete_grid(known_grid, merit_order)
+        f_pos = {c: i + 1 for i, c in enumerate(feature_grid)}
+        feature_score = {c: pace[c] + config.FEATURE_GRID_WEIGHT * f_pos[c] for c in pace}
+        feature = _race_forecast(FEATURE, feature_grid, feature_score, n_samples=n_samples)
+    else:
+        # Pre-quali: merit grid (fastest first), sampled from pace alone.
+        feature_grid = merit_order
+        feature = _race_forecast(FEATURE, feature_grid, pace, n_samples=n_samples)
 
-    # Sprint: reverse-grid start; a grid penalty makes track position matter so
-    # the fast drivers who line up at the back must overtake.
-    sprint_grid = _reverse_grid(merit_order)
+    # Sprint: reverse the top-N of the feature grid (real when known, else merit);
+    # a grid penalty makes track position matter so fast drivers starting at the
+    # back must overtake.
+    sprint_grid = _reverse_grid(feature_grid)
     grid_pos = {c: i + 1 for i, c in enumerate(sprint_grid)}
     sprint_score = {c: pace[c] + config.SPRINT_GRID_PENALTY * grid_pos[c] for c in pace}
     sprint = _race_forecast(SPRINT, sprint_grid, sprint_score, n_samples=n_samples)

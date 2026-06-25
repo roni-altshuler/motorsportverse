@@ -66,7 +66,7 @@ Per `GOVERNANCE.md`, `experimental → production` requires **all** of: forward-
 | Gate | Met? | Note |
 |------|:----:|------|
 | Deployed website | ✅ | `deploy-website.yml` ships the F2 site under `/<repo>/projects/f2/` |
-| Scheduled update workflow | ✅ | `refresh-f2.yml` runs `refresh → export → eval → drift → promotion` weekly and commits the snapshot only when it changes (live scrape isolated; builds read the committed snapshot) |
+| Scheduled update workflow | ✅ | `f2-update-predictions.yml` is the F1-parity race-weekend cron: it polls every 15 min across the Friday-quali / Saturday-sprint / Sunday-feature windows behind a cheap freshness gate (`race_weekend.py`), runs `refresh → export → eval → drift → promotion` only when fiaformula2.com has new data the snapshot lacks, then auto-deploys. The moment qualifying publishes it conditions the forecast on the real grid (post-quali); the moment a result publishes it pulls official standings + the model-vs-actual accuracy report — within one poll interval. (Live scrape isolated; builds read the committed snapshot.) |
 | Forward-eval ≥ 1 season | ◑ | 2026 is mid-season (5/14 rounds); the season-long stream is accruing automatically via the scheduled workflow. A completed-season retrospective can be produced on demand from the scraper's 2024 anchor if a published full-season report is wanted. |
 
 The flag was flipped at the owner's direction (registry `maturity: production` + the `test_smoke.py` assertion relaxed). The deployment and automation gates are fully met; the season-long eval completes as 2026 runs — reported honestly rather than back-claimed.

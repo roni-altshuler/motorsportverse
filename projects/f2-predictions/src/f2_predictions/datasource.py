@@ -96,6 +96,23 @@ class F2DataSource(DataSource):
             "feature": self.results(year, round, race_index=1),
         }
 
+    def qualifying(self, year: int, round: int) -> list[str] | None:
+        """Real qualifying order (P1 first) for a round, or ``None`` if not yet run.
+
+        Drives the post-quali forecast: once Friday qualifying is published the
+        feature grid is locked and the sprint reverse-grid is determined, so the
+        model conditions both race heads on the *actual* grid instead of its
+        predicted merit order. ``None`` (pre-quali / no real feed) keeps today's
+        predicted-grid behaviour — leakage-safe and never breaking.
+        """
+        if round < 1 or round > len(config.CALENDAR):
+            return None
+        q = getattr(self._source, "qualifying", None)
+        if q is None:
+            return None
+        order = q(year, round)
+        return list(order) if order else None
+
     def provenance(self, year: int, round: int, race_index: int = 1) -> str:
         """Which source served this race's results — 'synthetic' | 'fastf1' | 'official'.
 

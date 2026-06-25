@@ -10,6 +10,8 @@ Captured per season:
   * calendar   — 14 rounds (keys/names from config), with completed flags;
   * results    — per completed round, the sprint + feature classifications
                  (incl. retirements with status), from /Results?raceid=N;
+  * qualifying — per round whose Friday session has run (incl. the upcoming
+                 round, pre-race), the grid order — drives the post-quali forecast;
   * driverStandings / teamStandings — the **official** point totals and the
                  per-round score breakdown, from /Standings/{Driver,Team}.
 
@@ -131,6 +133,7 @@ def build_snapshot(season: int) -> dict:
     by_round = {c["round"]: c for c in cal}
 
     results: dict[str, dict] = {}
+    qualifying: dict[str, list[str]] = {}
     completed: list[int] = []
     for rnd in range(1, len(config.CALENDAR) + 1):
         entry = by_round.get(rnd)
@@ -139,6 +142,12 @@ def build_snapshot(season: int) -> dict:
         page = src._page(entry["raceid"])
         if not page:
             continue
+        # Capture qualifying whenever it is published — including the UPCOMING round
+        # (Friday quali runs before the race), so the post-quali forecast can
+        # condition on the real grid before any result exists.
+        quali = src.qualifying(season, rnd)
+        if quali:
+            qualifying[str(rnd)] = quali
         sprint = FiaF2Source._parse_session(page, "Sprint Race", include_unclassified=True)
         feature = FiaF2Source._parse_session(page, "Feature Race", include_unclassified=True)
         if not any(r.get("position") for r in feature):
@@ -186,6 +195,7 @@ def build_snapshot(season: int) -> dict:
         "driverStandings": drivers,
         "teamStandings": teams,
         "results": results,
+        "qualifying": qualifying,
     }
 
 
