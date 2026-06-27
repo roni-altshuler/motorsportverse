@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Austria",
   "ensemble_weights": {
-    "gb": 0.58409968331345,
-    "lstm": 0.0,
-    "xgb": 0.41590031668655
+    "gb": 0.634549343016103,
+    "lstm": 0.18,
+    "xgb": 0.1854506569838971
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -46,35 +46,48 @@
     "TeammateConflictRisk",
     "FieldPositionVolatility",
     "LocalBattleIntensity",
-    "DRSOvertakeProbAhead"
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
   "gpName": "Austrian Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.08833968408133046,
+      "MAE (s)": 0.05616481901344628,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.09478799636455147,
-      "R\u00b2": 0.9625846842838801
+      "RMSE (s)": 0.0779515307577492,
+      "R\u00b2": 0.996402511402621
     },
     {
-      "MAE (s)": 0.12406622314453272,
+      "MAE (s)": 0.19217698974609335,
       "Model": "XGBoost",
-      "RMSE (s)": 0.13517010611685223,
-      "R\u00b2": 0.9239141253804469
+      "RMSE (s)": 0.24237947370913263,
+      "R\u00b2": 0.9652190206635279
     },
     {
-      "MAE (s)": 0.06977258583921468,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.086374656746347,
-      "R\u00b2": 0.9689318497516023
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.05140533210121987,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.053791530749660636,
+      "R\u00b2": 0.9982869188492066
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.14",
   "round": 8,
-  "savedAt": "2026-05-24T11:52:10+00:00",
+  "savedAt": "2026-06-27T16:59:09+00:00",
   "season": 2026
 }

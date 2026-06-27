@@ -6,9 +6,9 @@
   ],
   "circuitKey": "United States",
   "ensemble_weights": {
-    "gb": 0.6122513598841114,
+    "gb": 0.6633775570261227,
     "lstm": 0.0,
-    "xgb": 0.38774864011588867
+    "xgb": 0.33662244297387733
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -46,35 +46,42 @@
     "TeammateConflictRisk",
     "FieldPositionVolatility",
     "LocalBattleIntensity",
-    "DRSOvertakeProbAhead"
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
   "gpName": "United States Grand Prix",
   "kind": "qualifying-time",
   "lstm_used": false,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.11621234371087041,
+      "MAE (s)": 0.0929806176040671,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.13461194842094387,
-      "R\u00b2": 0.9645127127671619
+      "RMSE (s)": 0.10869204916777235,
+      "R\u00b2": 0.9768633149915211
     },
     {
-      "MAE (s)": 0.1834981689453116,
+      "MAE (s)": 0.18323571777343658,
       "Model": "XGBoost",
-      "RMSE (s)": 0.1994326756586691,
-      "R\u00b2": 0.9221070391049713
+      "RMSE (s)": 0.19953372248616472,
+      "R\u00b2": 0.9220280868418032
     },
     {
-      "MAE (s)": 0.10150890511682178,
+      "MAE (s)": 0.07867421436250481,
       "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.12752726574225093,
-      "R\u00b2": 0.9681498356735889
+      "RMSE (s)": 0.10557495082969048,
+      "R\u00b2": 0.9781713259226276
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.14",
   "round": 17,
-  "savedAt": "2026-05-24T11:58:40+00:00",
+  "savedAt": "2026-06-27T17:07:54+00:00",
   "season": 2026
 }

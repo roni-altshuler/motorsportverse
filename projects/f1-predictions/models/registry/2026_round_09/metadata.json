@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Great Britain",
   "ensemble_weights": {
-    "gb": 0.60944427650003,
+    "gb": 0.7308541032187746,
     "lstm": 0.0,
-    "xgb": 0.3905557234999701
+    "xgb": 0.26914589678122547
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -46,35 +46,42 @@
     "TeammateConflictRisk",
     "FieldPositionVolatility",
     "LocalBattleIntensity",
-    "DRSOvertakeProbAhead"
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
   "gpName": "British Grand Prix",
   "kind": "qualifying-time",
   "lstm_used": false,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.11368588947985928,
+      "MAE (s)": 0.0522116327339603,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.12472904927302861,
-      "R\u00b2": 0.96410861602434
+      "RMSE (s)": 0.07141921089337903,
+      "R\u00b2": 0.9882324764575113
     },
     {
-      "MAE (s)": 0.17740161132812204,
+      "MAE (s)": 0.14177844238280954,
       "Model": "XGBoost",
-      "RMSE (s)": 0.19158681623824192,
-      "R\u00b2": 0.9153189524281446
+      "RMSE (s)": 0.15481862088674198,
+      "R\u00b2": 0.9447030255129174
     },
     {
-      "MAE (s)": 0.08910636319210426,
+      "MAE (s)": 0.06808969715038415,
       "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.10820598806249752,
-      "R\u00b2": 0.9729879483671204
+      "RMSE (s)": 0.08026819566818556,
+      "R\u00b2": 0.985135784864378
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.14",
   "round": 9,
-  "savedAt": "2026-05-24T11:52:45+00:00",
+  "savedAt": "2026-06-27T17:02:47+00:00",
   "season": 2026
 }

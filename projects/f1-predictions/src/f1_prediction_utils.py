@@ -1264,12 +1264,18 @@ def fetch_qualifying_data(year, grand_prix):
     no-time runners rather than silently optimistic estimates.  As a
     side-effect the official grid order is cached for ``get_last_qualifying_grid``.
     """
-    from datetime import date as _date
+    from datetime import date as _date, timedelta as _timedelta
     for info in CALENDAR.values():
         if grand_prix.lower() in info["name"].lower() or \
            grand_prix.lower() == info.get("gp_key", "").lower():
-            if _date.today() < _date.fromisoformat(info["date"]):
-                print(f"📅 Race date ({info['date']}) is in the future — "
+            # Qualifying sets the grid the day before the race (Saturday) in both
+            # normal and sprint formats. Skip only when qualifying day itself has
+            # not arrived yet — keying off the race date instead would force a
+            # Saturday post-quali run onto estimated times even though the real
+            # grid is already published.
+            quali_date = _date.fromisoformat(info["date"]) - _timedelta(days=1)
+            if _date.today() < quali_date:
+                print(f"📅 Qualifying day ({quali_date}) hasn't arrived — "
                       "skipping qualifying fetch.")
                 return None
             break
