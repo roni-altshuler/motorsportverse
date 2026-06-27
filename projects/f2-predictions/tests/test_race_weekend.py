@@ -155,7 +155,16 @@ class _StubLive:
         return self._quali if round == self._round else None
 
 
-def test_phase_pre_when_nothing_published():
+def test_phase_pre_when_nothing_published(monkeypatch):
+    # Hermetic: "pre" must hold when NEITHER the live feed NOR the committed
+    # snapshot carries this round's qualifying/result. Pin an empty snapshot so
+    # the assertion can't flip once a real post-quali weekend is committed to
+    # official_2026.json — weekend_phase falls back to the snapshot by design
+    # (the post-quali path is covered by test_phase_post_quali_then_post_race).
+    monkeypatch.setattr(
+        rw, "load_snapshot",
+        lambda: {"season": 2026, "calendar": [], "qualifying": {}, "results": {}},
+    )
     assert rw.weekend_phase(NEXT, 2026, live=_StubLive()) == "pre"
 
 
