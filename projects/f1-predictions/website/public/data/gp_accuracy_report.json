@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-27T17:07:57.769615Z",
+  "generatedAt": "2026-06-28T16:51:01.373701Z",
   "overallAccuracy": {
-    "seasonMeanError": 4.31,
-    "seasonAccuracyPct": 57.1,
-    "seasonPodiumAccuracyPct": 47.6,
-    "seasonPointsAccuracyPct": 71.4,
-    "roundsWithActual": 7,
+    "seasonMeanError": 4.06,
+    "seasonAccuracyPct": 57.0,
+    "seasonPodiumAccuracyPct": 45.8,
+    "seasonPointsAccuracyPct": 73.8,
+    "roundsWithActual": 8,
     "seasonMeanErrorClassified": 3.47,
     "seasonAccuracyPctClassified": 63.6,
     "seasonWithin5PctClassified": 79.7,
@@ -820,6 +820,122 @@
         {
           "team": "Mercedes",
           "meanError": 6.5,
+          "drivers": 2
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "name": "Austrian Grand Prix",
+      "comparedDrivers": 22,
+      "meanError": 2.27,
+      "medianError": 2.0,
+      "exactMatches": 3,
+      "within3": 19,
+      "within5": 22,
+      "winnerHit": true,
+      "podiumHits": 1,
+      "pointsHits": 9,
+      "pointsTotal": 10,
+      "podiumAccuracyPct": 33.3,
+      "pointsAccuracyPct": 90.0,
+      "accuracyPct": 56.0,
+      "biggestMisses": [
+        {
+          "driver": "HUL",
+          "team": "Audi",
+          "predicted": 17,
+          "actual": 12,
+          "delta": 5,
+          "absDelta": 5
+        },
+        {
+          "driver": "LEC",
+          "team": "Ferrari",
+          "predicted": 3,
+          "actual": 8,
+          "delta": -5,
+          "absDelta": 5
+        },
+        {
+          "driver": "SAI",
+          "team": "Williams",
+          "predicted": 16,
+          "actual": 20,
+          "delta": -4,
+          "absDelta": 4
+        },
+        {
+          "driver": "ALO",
+          "team": "Aston Martin",
+          "predicted": 21,
+          "actual": 18,
+          "delta": 3,
+          "absDelta": 3
+        },
+        {
+          "driver": "BOR",
+          "team": "Audi",
+          "predicted": 14,
+          "actual": 11,
+          "delta": 3,
+          "absDelta": 3
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "Racing Bulls",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "Mercedes",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "McLaren",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 3.0,
+          "drivers": 2
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 3.0,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 4.0,
           "drivers": 2
         }
       ]
