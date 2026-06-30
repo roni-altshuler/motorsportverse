@@ -166,12 +166,20 @@ jobs:
           # prior round stranded without official results. This keeps the tight
           # 15-min Sat/Sun polls cheap (most exit here in ~1-2 min) while still
           # publishing official results within one poll interval of availability.
+          #
+          # Ask work_pending() on EVERY poll, not only inside the race-weekend
+          # window: it already covers BOTH the active round's freshness AND any
+          # prior round stranded without official results. Gating the stranded
+          # sweep behind is_race_weekend left a dead gap — once a just-finished
+          # GP's +2-day window elapsed (or a transient outage made us miss it
+          # during the weekend), the off-weekend safety-net polls (Mon/Tue) could
+          # never recover it because the gate short-circuited before the sweep.
+          # work_pending() short-circuits on needs_update() first, so the extra
+          # stranded probe only runs when the active round has nothing pending.
           SHOULD_RUN=false
-          if [ "$IS_RACE_WEEKEND" = "true" ]; then
-            PENDING=$(python src/gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
-            echo "   Work pending for round $ROUND: $PENDING"
-            if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
-          fi
+          PENDING=$(python src/gp_weekend.py --round "$ROUND" --check-work-pending 2>/dev/null | tail -1)
+          echo "   Work pending for round $ROUND: $PENDING (race weekend: $IS_RACE_WEEKEND)"
+          if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
           echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
           if [ "$SHOULD_RUN" != "true" ]; then
             echo "⏭️  Nothing new to publish — skipping heavy pipeline this poll."

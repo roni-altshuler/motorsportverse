@@ -202,3 +202,39 @@ def test_work_pending_detects_fresh_quali_and_result():
     assert rw.check_work_pending(NEXT, 2026, live=_StubLive(feature=result))
     # Nothing fresh → no work.
     assert not rw.check_work_pending(NEXT, 2026, live=_StubLive())
+
+
+# --------------------------------------------------------------------------- #
+# Stranded-round recovery — the Austria case: the live feed lagged past the
+# race weekend, so the result was unscrapeable until the window had closed.
+# Without the sweep, detect_target_round advances and the result is lost forever.
+# --------------------------------------------------------------------------- #
+def test_stranded_round_detected_when_feed_lags_past_window(monkeypatch):
+    snap = {
+        "season": 2026,
+        "completedRounds": 5,
+        "calendar": [{"round": r, "completed": r <= 5} for r in range(1, len(config.CALENDAR) + 1)],
+        "results": {},
+        "qualifying": {},
+    }
+    monkeypatch.setattr(rw, "load_snapshot", lambda *a, **k: snap)
+    result = [type("R", (), {"competitor": c})() for c in CODES]
+    live = _StubLive(feature=result, round=6)  # feed now has round 6 (Austria)
+
+    # Day after round 6's weekend window closed: snapshot lacks it, feed has it.
+    after = datetime(2026, 7, 1, tzinfo=timezone.utc)
+    assert rw.stranded_rounds(2026, live=live, now=after) == [6]
+
+    # Before the race ran, a future round is never stranded (no network probe).
+    before = datetime(2026, 6, 1, tzinfo=timezone.utc)
+    assert rw.stranded_rounds(2026, live=live, now=before) == []
+
+
+def test_gate_fires_off_weekend_for_a_stranded_round(monkeypatch):
+    # Active round has nothing fresh, but a prior round is stranded → work pending,
+    # so the off-weekend safety-net poll spins up the heavy recovery pipeline.
+    monkeypatch.setattr(rw, "stranded_rounds", lambda *a, **k: [6])
+    assert rw.check_work_pending(NEXT, 2026, live=_StubLive())
+    # Nothing fresh and nothing stranded → genuinely no work.
+    monkeypatch.setattr(rw, "stranded_rounds", lambda *a, **k: [])
+    assert not rw.check_work_pending(NEXT, 2026, live=_StubLive())

@@ -135,14 +135,65 @@ def weekend_phase(round: int, year: int = config.SEASON, *, live=None) -> str:
     return "pre"
 
 
+def stranded_rounds(year: int = config.SEASON, *, live=None, now: datetime | None = None) -> list[int]:
+    """Completed rounds whose official feature result is missing from the snapshot.
+
+    The F2 counterpart of F1's stranded-results backfill: a round is stranded when
+    its feature race date has passed, the committed snapshot does not list it as
+    completed, and the live feed now carries the official result. This recovers a
+    round whose result the (flaky, often-lagging) fiaformula2.com feed did not yet
+    have during its weekend window — without it, once ``detect_target_round`` has
+    advanced to the next round, the missed result can never be picked up again.
+
+    Cheap by construction: the wall-clock + snapshot candidate filter runs first
+    with no network, and the live feed is only probed when a genuine candidate
+    exists (normally none, or the single just-finished round).
+    """
+    now = now or _now()
+    snap = load_snapshot()
+
+    # ── Network-free pre-filter: past-feature-date rounds not yet in the snapshot ──
+    candidates = []
+    for rnd in range(1, len(config.CALENDAR) + 1):
+        meta = config.CALENDAR_META.get(rnd, {})
+        feature = _parse_date(meta.get("feature", "")) or _parse_date(meta.get("sprint", ""))
+        if feature is None or now < feature:
+            continue  # race hasn't happened yet
+        if _snapshot_completed(snap, rnd):
+            continue  # already published
+        candidates.append(rnd)
+    if not candidates:
+        return []
+
+    # ── Only now (a candidate exists) touch the network to confirm the result is
+    #    actually available to ingest. ──
+    if live is None:
+        live = _live_source()
+    if live is None:
+        return []
+
+    stranded = []
+    for rnd in candidates:
+        try:
+            if live.results(year, rnd, race_index=1):
+                stranded.append(rnd)
+        except Exception:
+            continue
+    return stranded
+
+
 def check_work_pending(round: int, year: int = config.SEASON, *, live=None) -> bool:
     """Is there fresh live data the committed snapshot does not yet carry?
 
-    Two kinds of pending work, mirroring F1's quali/race phases:
+    Three kinds of pending work, mirroring F1's ``work_pending``:
       * post-race — the live feed has this round's official feature result but the
         snapshot does not list the round as completed;
       * post-quali — the live feed has this round's qualifying order and it differs
-        from (or is absent in) the snapshot.
+        from (or is absent in) the snapshot;
+      * stranded — ANY prior completed round whose official result the snapshot is
+        still missing but the live feed now carries (recovers a result the flaky
+        feed lacked during its own weekend window). This is what lets the
+        off-weekend safety-net polls heal a missed race.
 
     A live-probe failure (site down, anchor missing) yields False — the safety-net
     polls and the next interval retry, never a spurious heavy run.
@@ -168,6 +219,11 @@ def check_work_pending(round: int, year: int = config.SEASON, *, live=None) -> b
         snap_quali = snap.get("qualifying", {}).get(str(round))
         if list(live_quali) != list(snap_quali or []):
             return True
+
+    # Recover any prior round stranded without its official result. Reuses the
+    # same live probe so the sweep adds no extra source instantiation.
+    if stranded_rounds(year, live=live):
+        return True
 
     return False
 

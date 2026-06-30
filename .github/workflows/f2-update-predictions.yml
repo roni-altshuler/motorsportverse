@@ -93,15 +93,20 @@ jobs:
           fi
 
           IS_WEEKEND=$(python -m f2_predictions.race_weekend --round "$ROUND" --is-race-weekend)
-          echo "   Race weekend now: $IS_WEEKEND"
+          # Probe on EVERY poll, not only inside the weekend window. check_work_pending
+          # now also sweeps for a PRIOR round stranded without its official result —
+          # fiaformula2.com frequently lags past the race weekend, so the result often
+          # isn't scrapeable until after the window closes (exactly what happened to
+          # the Austrian feature race). Gating the sweep behind is_race_weekend left
+          # such a result unrecoverable once detect_target_round advanced to the next
+          # round; the off-weekend Mon/Tue safety nets could never heal it. The sweep
+          # is network-free unless a real candidate (a past race absent from the
+          # snapshot) exists, so idle off-weekend polls stay cheap.
+          PENDING=$(python -m f2_predictions.race_weekend --round "$ROUND" --check-work-pending | tail -1)
+          PHASE=$(python -m f2_predictions.race_weekend --round "$ROUND" --phase | tail -1)
+          echo "   Work pending for round $ROUND: $PENDING (phase: $PHASE, race weekend: $IS_WEEKEND)"
           SHOULD_RUN=false
-          if [ "$IS_WEEKEND" = "true" ]; then
-            # A single live probe of fiaformula2.com vs the committed snapshot.
-            PENDING=$(python -m f2_predictions.race_weekend --round "$ROUND" --check-work-pending | tail -1)
-            PHASE=$(python -m f2_predictions.race_weekend --round "$ROUND" --phase | tail -1)
-            echo "   Work pending for round $ROUND: $PENDING (phase: $PHASE)"
-            if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
-          fi
+          if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
           echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
           if [ "$SHOULD_RUN" != "true" ]; then
             echo "⏭️  Nothing new to publish — skipping the heavy pipeline this poll."

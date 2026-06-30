@@ -35,6 +35,16 @@ jobs:
       BASE: /${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Always build the current tip of the deploy branch. When this workflow
+          # is invoked via workflow_call from f1/f2-update-predictions.yml, the
+          # predict job has ALREADY pushed the freshly-ingested round data to
+          # main — but checkout's default ref is the run's *triggering* SHA (the
+          # pre-commit HEAD), so without this the new results are silently left
+          # out of the artifact and the site stays a race behind (it only catches
+          # up when some later push happens to re-trigger a deploy). Pinning the
+          # branch tip makes the just-pushed results go live in the same run.
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
