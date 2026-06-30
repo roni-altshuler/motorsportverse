@@ -1,68 +1,72 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 5,
+  "lastEvaluatedRound": 6,
   "featureDrift": [
     {
       "feature": "predictedValue",
-      "psi": 2.0693,
+      "psi": 0.8583,
       "severity": "alarm"
     },
     {
       "feature": "pWin",
-      "psi": 1.7045,
+      "psi": 1.8615,
       "severity": "alarm"
     },
     {
       "feature": "pPodium",
-      "psi": 2.3746,
+      "psi": 1.2809,
       "severity": "alarm"
     },
     {
       "feature": "meanFinish",
-      "psi": 2.1953,
+      "psi": 1.0691,
       "severity": "alarm"
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 2.3355,
+      "psi": 1.8137,
       "severity": "alarm"
     }
   ],
   "outputDrift": {
-    "rollingBrierRecent": 0.050236697142857126,
+    "rollingBrierRecent": 0.047733068947368416,
     "rollingBrierBaseline": null,
     "relativeChange": null,
     "severity": "ok",
-    "roundsCompared": 5
+    "roundsCompared": 6
   },
   "warnings": [],
   "alarms": [
-    "predictedValue: PSI 2.069 (significant drift vs baseline)",
-    "pWin: PSI 1.704 (significant drift vs baseline)",
-    "pPodium: PSI 2.375 (significant drift vs baseline)",
-    "meanFinish: PSI 2.195 (significant drift vs baseline)",
-    "finishRangeHigh: PSI 2.336 (significant drift vs baseline)"
+    "predictedValue: PSI 0.858 (significant drift vs baseline)",
+    "pWin: PSI 1.861 (significant drift vs baseline)",
+    "pPodium: PSI 1.281 (significant drift vs baseline)",
+    "meanFinish: PSI 1.069 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 1.814 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
       "round": 1,
-      "brier": 0.04957244526315789
+      "brier": 0.0495724452631579
     },
     {
       "round": 2,
-      "brier": 0.062357024
+      "brier": 0.062357024000000004
     },
     {
       "round": 3,
-      "brier": 0.07568987214285716
+      "brier": 0.07568987214285715
     },
     {
       "round": 4,
-      "brier": 0.05601371047619047
+      "brier": 0.05601371047619048
     },
     {
       "round": 5,
-      "brier": 0.050236697142857126
+      "brier": 0.05023669714285713
+    },
+    {
+      "round": 6,
+      "brier": 0.047733068947368416
     }
   ]
 }
