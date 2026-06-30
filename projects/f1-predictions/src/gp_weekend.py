@@ -419,6 +419,26 @@ def run_post_race(round_num, skip_build=False):
         round_data["trackerData"] = tracker_export
         if round_report:
             round_data["gpReport"] = round_report
+
+        # Populate the weekend "Grand Prix Result" session so the race-detail page
+        # shows the official classification instead of "Awaiting data". This path
+        # (post-race / stranded backfill) injects actualResults but does NOT run a
+        # fresh export, so the weekend race session — fetched independently and
+        # still "pending" when the round JSON was last built pre-race — would
+        # otherwise never get filled. _refresh_race_session_timing re-fetches the
+        # full timing from Jolpica with a position-only fallback from
+        # actualResults; if the round JSON predates any weekend results we build
+        # the full session set first so the race session entry exists to fill.
+        from export_website_data import _fetch_weekend_results, _refresh_race_session_timing
+        weekend = round_data.get("weekendResults")
+        has_race_session = isinstance(weekend, dict) and any(
+            s.get("key") == "grandPrix" for s in weekend.get("sessions", [])
+        )
+        if not has_race_session:
+            round_data["weekendResults"] = _fetch_weekend_results(round_num, info, _season_year())
+        if _refresh_race_session_timing(round_data, round_num, _season_year()):
+            print("   ✅ Grand Prix race session populated in weekendResults.")
+
         with open(round_path, "w") as f:
             json.dump(round_data, f, indent=2)
         print(f"   ✅ Actual results injected → {round_path}")
