@@ -3,7 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 2,
-    "concept": 9
+    "experimental": 1,
+    "concept": 8
   },
   "projects": [
     {
@@ -103,31 +104,54 @@
     },
     {
       "slug": "f3-predictions",
-      "name": "F3 Predictions",
+      "name": "RaceIQ F3",
       "sport": "Formula 3",
       "category": "open-wheel",
-      "maturity": "concept",
-      "summary": "Race forecasts for the FIA Formula 3 championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
-      "website": "",
+      "maturity": "experimental",
+      "summary": "Sprint, feature-race, and championship forecasts for FIA Formula 3.",
+      "description": "The third series on the MotorsportVerse core, built at RaceIQ F2 parity: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history + optional gradient-boosted signal) routed through two race-type heads — a merit feature race and a reverse-top-12 sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, and a sprint+feature-aware championship projection over the 30-car grid. Runs on the real 2026 FIA Formula 3 season: official results are scraped into a committed, reviewable snapshot via the shared FIA feeder-series source, with model forecasts for upcoming rounds. Experimental while forward accuracy accrues over real rounds.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/f3-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/f3/",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
-        "FastF1",
-        "Jolpica/Ergast"
+        "fiaformula3.com (official results, scraped to a committed snapshot)",
+        "synthetic latent-pace (offline fallback)"
       ],
-      "models": [],
+      "models": [
+        "driver-skill-elo",
+        "reverse-grid-sprint",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
       "tags": [
-        "concept"
+        "feeder-series",
+        "spec-series",
+        "reverse-grid",
+        "calibrated-probabilities",
+        "monte-carlo"
       ],
       "icon": "/brand/sports/f3.png",
-      "accent": "#C0C0C0",
+      "accent": "#D9A441",
       "uses_core": [
         "calibration",
-        "eval"
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
       ],
-      "maintainers": [],
-      "added": "2026-06-15"
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "roni-altshuler"
+        }
+      ],
+      "added": "2026-07-02"
     },
     {
       "slug": "formula-e-predictions",

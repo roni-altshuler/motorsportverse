@@ -1,0 +1,106 @@
+// Screenshot harness for the RaceIQ F3 website (MotorsportVerse).
+// Serves the static export in ./out and captures desktop + mobile shots of each
+// route, so visual regressions and broken components are caught after a build.
+//
+//   npm run build
+//   npm i -D playwright && npx playwright install chromium   # one-time
+//   node scripts/shoot.mjs [outdir]
+//
+// Default output: /tmp/f3-shots (kept out of the repo). Mirrors the host
+// ecosystem site's scripts/shoot.mjs pattern.
+
+import { createServer } from "node:http";
+import { readFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { join, extname } from "node:path";
+import { chromium } from "playwright";
+
+const ROOT = new URL("..", import.meta.url).pathname;
+const OUT = join(ROOT, "out");
+const SHOTS = process.argv[2] || "/tmp/f3-shots";
+const PORT = 4331;
+
+const MIME = {
+  ".html": "text/html",
+  ".css": "text/css",
+  ".js": "application/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".woff3": "font/woff3",
+};
+
+function serve() {
+  return createServer(async (req, res) => {
+    try {
+      const p = decodeURIComponent(req.url.split("?")[0]);
+      let file = join(OUT, p);
+      if (p.endsWith("/")) file = join(file, "index.html");
+      if (!existsSync(file) && existsSync(file + ".html")) file = file + ".html";
+      if (!existsSync(file) && existsSync(join(file, "index.html")))
+        file = join(file, "index.html");
+      const data = await readFile(file);
+      res.writeHead(200, {
+        "content-type": MIME[extname(file)] || "application/octet-stream",
+      });
+      res.end(data);
+    } catch {
+      res.writeHead(404);
+      res.end("not found");
+    }
+  });
+}
+
+// trailingSlash: true in next.config → every route is /route/index.html.
+const ROUTES = [
+  ["home", "/"],
+  ["calendar", "/calendar/"],
+  ["standings", "/standings/"],
+  ["predictions", "/predictions/"],
+  ["race-1", "/race/1/"],
+  ["accuracy", "/accuracy/"],
+  ["about", "/about/"],
+];
+
+const server = serve();
+await new Promise((r) => server.listen(PORT, r));
+const browser = await chromium.launch();
+await mkdir(SHOTS, { recursive: true });
+
+for (const [vp, width, height] of [
+  ["desktop", 1440, 900],
+  ["mobile", 390, 844],
+]) {
+  const ctx = await browser.newContext({
+    viewport: { width, height },
+    deviceScaleFactor: 1,
+  });
+  const page = await ctx.newPage();
+  for (const [name, route] of ROUTES) {
+    await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: "networkidle" });
+    // Scroll through so IntersectionObserver-driven reveals + the chart draw-in
+    // fire, then return to the top before capturing.
+    await page.evaluate(async () => {
+      const h = document.body.scrollHeight;
+      for (let y = 0; y <= h; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 90));
+      }
+      window.scrollTo(0, 0);
+      await new Promise((r) => setTimeout(r, 700));
+    });
+    await page.waitForTimeout(900);
+    const out = join(SHOTS, `${name}__${vp}.png`);
+    await page.screenshot({ path: out, fullPage: true });
+    console.log("shot", out);
+  }
+  await ctx.close();
+}
+
+await browser.close();
+server.close();
+console.log("done →", SHOTS);
