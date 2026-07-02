@@ -1,16 +1,30 @@
 # Adding a sport
 
 This walks through creating a new prediction project end-to-end. F2 is the
-worked example already in the repo (`projects/f2-predictions/`).
+worked example already in the repo (`projects/f2-predictions/`); F3
+(`projects/f3-predictions/`) shows how fast the second pass goes when the
+data platform is shared — its scraper is a ~30-line binding of
+`motorsport_data.sources.fia_feeder.FiaFeederSource`.
+
+Eight more series (IndyCar, WEC, MotoGP, Formula E, NASCAR, WRC, IMSA,
+Le Mans) are already scaffolded under `projects/` with curated registry
+entries at `in-development` — for those, skip step 1 and start at step 2.
 
 ## 1. Scaffold
 
 ```bash
-python scripts/new_project.py nascar-predictions \
-  --sport "NASCAR" --category stock \
-  --summary "Oval and road-course forecasts for the NASCAR Cup Series." \
-  --accent "#FFD659" --added 2026-06-15
+python scripts/new_project.py supercars-predictions \
+  --sport "Supercars" --category stock \
+  --summary "Forecasts for the Repco Supercars Championship." \
+  --accent "#FFD659" --added 2026-07-02
 python scripts/build_registry.py   # validate + rebuild the catalog index
+```
+
+If the catalog already carries a curated entry for the slug, scaffold the
+project tree only — the script refuses to overwrite curated entries:
+
+```bash
+python scripts/new_project.py <slug> --sport ... --summary ... --skip-registry
 ```
 
 This creates `projects/nascar-predictions/` from the template and a
