@@ -3,10 +3,10 @@
   "name": "Formula E Predictions",
   "sport": "Formula E",
   "category": "electric",
-  "maturity": "concept",
+  "maturity": "in-development",
   "summary": "Energy-aware race forecasts for the ABB FIA Formula E championship.",
-  "description": "Concept entry registered in the MotorsportVerse catalog. No code yet \u2014 built on motorsport-core + motorsport-data when development starts.",
-  "repo": "",
+  "description": "Scaffolded on the shared MotorsportVerse core: a Formula E project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+  "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
   "website": "",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
   "datasets": [
@@ -14,7 +14,7 @@
   ],
   "models": [],
   "tags": [
-    "concept"
+    "scaffolded"
   ],
   "icon": "/brand/sports/formula-e.png",
   "accent": "#1E1AF0",
