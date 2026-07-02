@@ -1,9 +1,10 @@
 "use client";
 
 /**
- * ShowcaseRail — premium "live demo" cards for the operational projects
- * (F1, F2). Each card links to the project's live dashboard and its detail
+ * ShowcaseRail — premium "live demo" cards for the operational products
+ * (F1, F2, F3). Each card links to the project's live dashboard and its detail
  * page, framed as a mini case study. Mouse-tracked spotlight on hover.
+ * Experimental products carry an honest "accuracy accruing" note.
  */
 
 import Image from "next/image";
@@ -12,6 +13,7 @@ import { motion } from "framer-motion";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
 import { asset } from "@/lib/asset";
+import { coreLabelShort, scrubTech } from "@/lib/labels";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import { useCardTilt } from "@/lib/useCardTilt";
 import { useReveal } from "@/lib/useReveal";
@@ -19,10 +21,21 @@ import type { Project } from "@/types/registry";
 
 export function ShowcaseRail({ projects }: { projects: Project[] }) {
   const { ref, shown } = useReveal();
+
+  if (!projects.length) {
+    return (
+      <p className="card-premium p-8 text-center text-sm text-[var(--ink-dim)]">
+        No live products registered yet — the registry drives this rail.
+      </p>
+    );
+  }
+
   return (
     <motion.div
       ref={ref}
-      className="grid gap-6 lg:grid-cols-2"
+      className={`grid gap-6 ${
+        projects.length >= 3 ? "md:grid-cols-2 xl:grid-cols-3" : "lg:grid-cols-2"
+      }`}
       variants={staggerContainer}
       initial="hidden"
       animate={shown ? "visible" : "hidden"}
@@ -39,13 +52,13 @@ function ShowcaseCard({ project, index }: { project: Project; index: number }) {
   const tilt = useCardTilt();
 
   return (
-    <motion.div variants={fadeUp} custom={index} style={{ perspective: 1000 }}>
+    <motion.div variants={fadeUp} custom={index} className="h-full" style={{ perspective: 1000 }}>
       <motion.div
         onMouseMove={tilt.reduced ? undefined : tilt.onMouseMove}
         onMouseEnter={tilt.reduced ? undefined : tilt.onMouseEnter}
         onMouseLeave={tilt.reduced ? undefined : tilt.onMouseLeave}
         style={{ ["--team-color" as string]: accent, ...(tilt.reduced ? {} : tilt.style) }}
-        className="group card-premium card-pop edge-accent relative overflow-hidden p-7"
+        className="group card-premium card-pop edge-accent relative flex h-full flex-col overflow-hidden p-7"
       >
         {/* mouse spotlight */}
         <div
@@ -78,8 +91,22 @@ function ShowcaseCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         <p className="relative mt-5 text-sm leading-relaxed text-[var(--ink-muted)]">
-          {project.summary}
+          {scrubTech(project.summary)}
         </p>
+
+        {project.maturity === "experimental" && (
+          <p
+            className="relative mt-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em]"
+            style={{ color: "var(--maturity-experimental)" }}
+          >
+            <span
+              className="live-dot !h-1.5 !w-1.5"
+              style={{ ["--dot-color" as string]: "var(--maturity-experimental)" }}
+              aria-hidden
+            />
+            forward accuracy accruing over live rounds
+          </p>
+        )}
 
         {project.uses_core && project.uses_core.length > 0 && (
           <div className="relative mt-5 flex flex-wrap gap-1.5">
@@ -89,13 +116,13 @@ function ShowcaseCard({ project, index }: { project: Project; index: number }) {
                 key={m}
                 className="rounded-full border border-[var(--line)] bg-[var(--surface-2)] px-2.5 py-0.5 text-[11px] text-[var(--ink-dim)]"
               >
-                {m}
+                {coreLabelShort(m)}
               </span>
             ))}
           </div>
         )}
 
-        <div className="relative mt-7 flex flex-wrap items-center gap-3">
+        <div className="relative mt-auto flex flex-wrap items-center gap-3 pt-7">
           {project.website && (
             <a
               href={project.website}

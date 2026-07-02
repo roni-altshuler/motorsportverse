@@ -62,11 +62,11 @@ export function VerseHero({ stats }: VerseHeroProps) {
           className="liquid-glass mb-10 inline-flex items-center gap-2.5 rounded-full px-3.5 py-1.5 text-xs text-[var(--ink-muted)]"
         >
           <span className="live-dot" />
-          <span className="font-mono tracking-wide">
-            {stats[0]?.value ?? "—"} projects · {stats[1]?.value ?? "—"} live
+          <span className="font-mono tracking-wide whitespace-nowrap">
+            {stats[0]?.value ?? "—"} series · {stats[1]?.value ?? "—"} live products
           </span>
-          <span className="text-[var(--ink-dim)]">·</span>
-          <span>one shared core</span>
+          <span className="hidden text-[var(--ink-dim)] sm:inline">·</span>
+          <span className="hidden sm:inline">one shared core</span>
         </motion.div>
 
         <motion.div
@@ -96,15 +96,15 @@ export function VerseHero({ stats }: VerseHeroProps) {
         </motion.div>
 
         <motion.h1 {...rise(0.16)} className="display mt-9 max-w-4xl text-[length:var(--text-hero)]">
-          <span className="text-gradient">Predict every race.</span>
+          <span className="text-gradient">Prediction infrastructure</span>
           <br />
-          <span className="hero-sheen">One unified ecosystem.</span>
+          <span className="hero-sheen">for every racing series.</span>
         </motion.h1>
 
         <motion.p {...rise(0.24)} className="lead mt-7 max-w-2xl text-balance">
-          A family of open-source projects that forecast race outcomes across every category of
-          motorsport — built on one shared core of calibration, simulation, and data
-          infrastructure, extracted from the RaceIQ&nbsp;F1 flagship.
+          One open-source core — calibrated probabilities, championship simulation,
+          continuous-learning guardrails — powering live forecast products for Formula&nbsp;1, 2,
+          and&nbsp;3 today, with the rest of the grid scaffolded on the same two seams.
         </motion.p>
 
         <motion.div {...rise(0.32)} className="mt-10 flex flex-wrap items-center justify-center gap-3">

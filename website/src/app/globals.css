@@ -144,9 +144,14 @@ h1, h2, h3, h4 {
 }
 
 /* ---- Layout helpers ---- */
-.section {
-  padding-top: var(--section-pad);
-  padding-bottom: var(--section-pad);
+/* In the components layer so Tailwind spacing utilities (pt-0, pb-0, …) can
+   override it — utilities are layered after components. Unlayered, this rule
+   silently beat every `section pt-0` on the site (double 140px gaps). */
+@layer components {
+  .section {
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+  }
 }
 
 .shell {
@@ -408,12 +413,14 @@ h1, h2, h3, h4 {
 }
 
 .live-dot {
+  /* Recolorable pulse dot: set `--dot-color` inline (e.g. amber for the
+     experimental state) — defaults to the production teal. */
   position: relative;
   display: inline-block;
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: var(--maturity-production);
+  background: var(--dot-color, var(--maturity-production));
   animation: mv-pulse-dot 2.4s var(--ease-inout) infinite;
 }
 .live-dot::after {
@@ -421,7 +428,7 @@ h1, h2, h3, h4 {
   position: absolute;
   inset: -4px;
   border-radius: 999px;
-  border: 1px solid var(--maturity-production);
+  border: 1px solid var(--dot-color, var(--maturity-production));
   opacity: 0.4;
 }
 

@@ -18,6 +18,8 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+import { useReveal } from "@/lib/useReveal";
+
 const SCENE_MS = 4200;
 
 const SCENES = [
@@ -31,7 +33,7 @@ const SCENES = [
     key: "engine",
     step: "Model engine",
     title: "The ML engine turns pace into skill",
-    blurb: "Features stream into a gradient-boosted ensemble that scores every driver's true pace.",
+    blurb: "Features stream into a machine-learned ensemble that scores every driver's true pace.",
   },
   {
     key: "calibrate",
@@ -43,7 +45,7 @@ const SCENES = [
     key: "simulate",
     step: "Simulate",
     title: "Thousands of races, one grid",
-    blurb: "A Monte-Carlo race engine runs the weekend over and over to map every outcome.",
+    blurb: "The race simulator runs the weekend thousands of times to map every outcome.",
   },
   {
     key: "forecast",
@@ -65,6 +67,9 @@ const TEAL = "var(--teal)";
 export function ProductFilm() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLDivElement>(null);
+  // Failsafe reveal for the player pane — never leaves it invisible
+  // (headless capture, prerender, engines without IntersectionObserver).
+  const { ref: paneRef, shown } = useReveal("-80px");
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(false);
 
@@ -100,9 +105,9 @@ export function ProductFilm() {
         </div>
 
         <motion.div
+          ref={paneRef}
           initial={reduce ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          animate={shown || reduce ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="liquid-glass-pane relative mx-auto max-w-5xl overflow-hidden rounded-[var(--radius-xl)]"
         >
@@ -120,7 +125,9 @@ export function ProductFilm() {
           </div>
 
           {/* ---- stage ---- */}
-          <div className="relative aspect-[16/10] sm:aspect-[16/9]">
+          {/* Taller on phones + caption space reserved below the scene so the
+              bottom-anchored caption never overlaps the scene panel. */}
+          <div className="relative aspect-[3/4] sm:aspect-[16/9]">
             <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" />
             <AnimatePresence mode="wait">
               <motion.div
@@ -129,7 +136,7 @@ export function ProductFilm() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={reduce ? undefined : { opacity: 0, scale: 1.01 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0 flex items-center justify-center p-6 sm:p-10"
+                className="absolute inset-0 flex items-center justify-center p-5 pb-40 sm:p-10 sm:pb-36"
               >
                 <SceneStage which={scene.key} reduce={!!reduce} />
               </motion.div>
@@ -279,7 +286,7 @@ function EngineScene({ reduce }: { reduce: boolean }) {
     <div className={`${panel} max-w-2xl`}>
       <div className="mb-4 flex items-center justify-between">
         <span className="mono-label">ML model engine</span>
-        <span className="font-mono text-[11px] text-[var(--ink-dim)]">GBR + XGB ensemble</span>
+        <span className="font-mono text-[11px] text-[var(--ink-dim)]">learned pace ensemble</span>
       </div>
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         {/* features in */}
@@ -376,7 +383,7 @@ function SimulateScene({ reduce }: { reduce: boolean }) {
   return (
     <div className={panel}>
       <div className="mb-4 flex items-center justify-between">
-        <span className="mono-label">Monte-Carlo race engine</span>
+        <span className="mono-label">Race simulation engine</span>
         <span className="font-mono text-[11px] text-[var(--ink-dim)]">5,000 runs</span>
       </div>
       <div className="grid grid-cols-10 gap-1.5">

@@ -38,6 +38,7 @@ export function Footer() {
           links={[
             { href: "/projects/f1-predictions", label: "RaceIQ F1" },
             { href: "/projects/f2-predictions", label: "RaceIQ F2" },
+            { href: "/projects/f3-predictions", label: "RaceIQ F3" },
             { href: "https://github.com/roni-altshuler/motorsportverse", label: "GitHub", external: true },
           ]}
         />

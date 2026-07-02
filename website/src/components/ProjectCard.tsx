@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
 import { asset } from "@/lib/asset";
+import { accentText } from "@/lib/color";
+import { scrubTech, tagLabel } from "@/lib/labels";
 import type { Project } from "@/types/registry";
 
 export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
@@ -55,7 +57,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
       </div>
 
       <p className="relative mt-4 text-sm leading-relaxed text-[var(--ink-muted)]">
-        {project.summary}
+        {scrubTech(project.summary)}
       </p>
 
       {project.tags && project.tags.length > 0 && (
@@ -65,7 +67,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
               key={t}
               className="rounded-full border border-[var(--hairline)] px-2 py-0.5 text-[11px] text-[var(--ink-dim)]"
             >
-              {t}
+              {tagLabel(t)}
             </span>
           ))}
         </div>
@@ -73,7 +75,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
 
       <span
         className="relative mt-5 inline-flex items-center gap-1 text-sm font-medium transition-transform group-hover:translate-x-1"
-        style={{ color: accent }}
+        style={{ color: accentText(accent) }}
       >
         Explore project
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>

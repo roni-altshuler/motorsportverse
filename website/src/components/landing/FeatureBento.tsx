@@ -36,8 +36,8 @@ export function FeatureBento() {
           <div>
             <h3 className="title-md text-[var(--ink)]">Calibrated probabilities, not point picks</h3>
             <p className="body-sm mt-2 max-w-md">
-              Plackett-Luce calibration + per-lap Monte Carlo turn raw pace into win, podium, and
-              finishing-range probabilities you can actually trust.
+              Field-strength calibration and a per-lap race simulator turn raw pace into win,
+              podium, and finishing-range probabilities you can actually trust.
             </p>
           </div>
         </div>
@@ -89,8 +89,8 @@ export function FeatureBento() {
           <div>
             <h3 className="title-md text-[var(--ink)]">Forward-only evaluation</h3>
             <p className="body-sm mt-2 max-w-md">
-              Strict temporal splits, conformal intervals, and shared leakage guards mean the
-              accuracy you see offline is the accuracy you get on race day.
+              Strict temporal splits, honest uncertainty intervals, and shared leakage guards mean
+              the accuracy you see offline is the accuracy you get on race day.
             </p>
           </div>
         </div>
