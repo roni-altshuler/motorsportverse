@@ -23,7 +23,9 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
-const PORT = 3001;
+// Default 3001; override with SHOOT_PORT when something else already owns
+// that port (the harness would otherwise screenshot the foreign server).
+const PORT = Number(process.env.SHOOT_PORT ?? 3001);
 const BASE = `http://localhost:${PORT}`;
 const PHASE = process.argv[2] ?? "scratch";
 const OUT_ROOT = path.resolve("scripts/screenshots", PHASE);
@@ -59,9 +61,7 @@ async function shoot(
   variant: "desktop" | "mobile" | "reduced",
 ): Promise<void> {
   const viewport =
-    variant === "mobile"
-      ? { width: 375, height: 812 }
-      : { width: 1440, height: 900 };
+    variant === "mobile" ? { width: 375, height: 812 } : { width: 1440, height: 900 };
 
   const context = await browser.newContext({
     viewport,

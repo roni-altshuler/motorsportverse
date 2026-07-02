@@ -12,26 +12,21 @@
  * 2026-05-21 redesign — flat surfaces, telemetry-orange accent.
  */
 import { useMemo } from "react";
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
-import type { DriverStanding } from "@/types";
+import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import KeyFactorBars from "@/components/race-detail/KeyFactorBars";
+import type { ClassificationEntry, DriverStanding } from "@/types";
 
 interface Props {
-  driver: string;                // 3-letter code, e.g. "VER"
+  driver: string; // 3-letter code, e.g. "VER"
   standings: DriverStanding[];
-  fullName?: string;             // override when classification has a richer name
+  fullName?: string; // override when classification has a richer name
+  /** Optional round classification entry — enables the "why this
+   * prediction" column (key factors + range + DNF risk). */
+  entry?: ClassificationEntry | null;
 }
 
-export default function DriverDetailSheet({ driver, standings, fullName }: Props) {
-  const record = useMemo(
-    () => standings.find((d) => d.driver === driver),
-    [driver, standings],
-  );
+export default function DriverDetailSheet({ driver, standings, fullName, entry }: Props) {
+  const record = useMemo(() => standings.find((d) => d.driver === driver), [driver, standings]);
 
   if (!record) {
     return (
@@ -45,9 +40,7 @@ export default function DriverDetailSheet({ driver, standings, fullName }: Props
   // per-round delta for a more legible "form" signal: 0 = no points scored
   // that round, ≥25 = a win.
   const history = record.pointsHistory ?? [];
-  const perRoundDelta = history.map((cum, i) =>
-    i === 0 ? cum : cum - history[i - 1],
-  );
+  const perRoundDelta = history.map((cum, i) => (i === 0 ? cum : cum - history[i - 1]));
   const chartData = perRoundDelta.map((delta, i) => ({
     round: `R${i + 1}`,
     delta,
@@ -55,10 +48,14 @@ export default function DriverDetailSheet({ driver, standings, fullName }: Props
 
   const teamColor = record.teamColor || "var(--accent-live)";
   const recentForm = perRoundDelta.slice(-3).reduce((a, b) => a + b, 0);
+  const hasFactors = (entry?.keyFactors?.length ?? 0) > 0;
+  const hasRisk = entry?.dnfProbability != null;
 
   return (
     <div
-      className="mt-2 mb-2 rounded-[10px] border border-[color:var(--border)] bg-[color:var(--surface-elevated)] p-4 grid gap-4 sm:grid-cols-[1fr_2fr] items-center"
+      className={`mt-2 mb-2 rounded-[10px] border border-[color:var(--border)] bg-[color:var(--surface-elevated)] p-4 grid gap-4 items-center ${
+        hasFactors || hasRisk ? "sm:grid-cols-[1fr_1.6fr_1fr]" : "sm:grid-cols-[1fr_2fr]"
+      }`}
       aria-label={`Season detail for ${record.driverFullName ?? driver}`}
     >
       {/* Left: identity + stats */}
@@ -80,25 +77,19 @@ export default function DriverDetailSheet({ driver, standings, fullName }: Props
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="rounded-[8px] border border-[color:var(--border)] py-2">
-            <div className="font-mono font-tabular text-lg font-bold">
-              {record.points}
-            </div>
+            <div className="font-mono font-tabular text-lg font-bold">{record.points}</div>
             <div className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--text-muted)] mt-0.5">
               points
             </div>
           </div>
           <div className="rounded-[8px] border border-[color:var(--border)] py-2">
-            <div className="font-mono font-tabular text-lg font-bold">
-              {record.wins}
-            </div>
+            <div className="font-mono font-tabular text-lg font-bold">{record.wins}</div>
             <div className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--text-muted)] mt-0.5">
               wins
             </div>
           </div>
           <div className="rounded-[8px] border border-[color:var(--border)] py-2">
-            <div className="font-mono font-tabular text-lg font-bold">
-              {record.podiums}
-            </div>
+            <div className="font-mono font-tabular text-lg font-bold">{record.podiums}</div>
             <div className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--text-muted)] mt-0.5">
               podiums
             </div>
@@ -129,10 +120,7 @@ export default function DriverDetailSheet({ driver, standings, fullName }: Props
         <div style={{ width: "100%", height: 64 }}>
           {chartData.length > 0 ? (
             <ResponsiveContainer>
-              <LineChart
-                data={chartData}
-                margin={{ top: 4, right: 8, left: 0, bottom: 0 }}
-              >
+              <LineChart data={chartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                 <XAxis
                   dataKey="round"
                   tick={{ fill: "var(--text-muted)", fontSize: 9 }}
@@ -152,12 +140,39 @@ export default function DriverDetailSheet({ driver, standings, fullName }: Props
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-xs text-[color:var(--text-muted)] py-4">
-              No race results yet.
-            </div>
+            <div className="text-xs text-[color:var(--text-muted)] py-4">No race results yet.</div>
           )}
         </div>
       </div>
+
+      {/* Right: why-this-prediction (key factors + risk) — only when the
+          round classification carries the data. */}
+      {(hasFactors || hasRisk) && (
+        <div className="min-w-0 sm:border-l sm:border-[color:var(--border)] sm:pl-4">
+          <div className="text-[11px] uppercase tracking-[0.1em] text-[color:var(--text-muted)] mb-2">
+            Why this prediction
+          </div>
+          {hasFactors && <KeyFactorBars factors={entry!.keyFactors!} compact />}
+          {hasRisk && (
+            <div className="mt-3 flex items-baseline justify-between gap-2">
+              <span className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--text-muted)]">
+                DNF risk
+              </span>
+              <span
+                className="font-mono font-tabular text-xs font-bold"
+                style={{
+                  color:
+                    (entry!.dnfProbability ?? 0) > 0.15
+                      ? "var(--accent-f1-red-bright)"
+                      : "var(--text-muted)",
+                }}
+              >
+                {((entry!.dnfProbability ?? 0) * 100).toFixed(0)}%
+              </span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

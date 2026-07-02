@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import TeamColorBar from "@/components/ui/TeamColorBar";
@@ -29,6 +30,13 @@ export default function PodiumPredictionTrio({
 }: PodiumPredictionTrioProps) {
   const reduced = useReducedMotion();
   const isOfficial = !!actualPodium && actualPodium.length >= 3;
+  // Scroll-reveal failsafe: whileInView can miss in headless/full-page
+  // renders and unusual viewports — never leave the podium invisible.
+  const [revealFailsafe, setRevealFailsafe] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setRevealFailsafe(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
 
   const items = isOfficial
     ? actualPodium!.slice(0, 3).map((a) => {
@@ -61,7 +69,7 @@ export default function PodiumPredictionTrio({
 
   // Visual ordering: P2 left, P1 (taller) centre, P3 right.
   const ordered: Array<{
-    entry: typeof items[number];
+    entry: (typeof items)[number];
     rank: 0 | 1 | 2;
     order: number;
   }> = [
@@ -90,14 +98,15 @@ export default function PodiumPredictionTrio({
             rank === 0
               ? "text-[color:var(--accent-podium-1)]"
               : rank === 1
-              ? "text-[color:var(--accent-podium-2)]"
-              : "text-[color:var(--accent-podium-3)]";
+                ? "text-[color:var(--accent-podium-2)]"
+                : "text-[color:var(--accent-podium-3)]";
           return (
             <motion.div
               key={`${entry.driver}-${rank}`}
               custom={idx}
               initial={reduced ? "visible" : "hidden"}
               whileInView="visible"
+              animate={reduced || revealFailsafe ? "visible" : undefined}
               viewport={{ once: true, margin: "0px 0px -10% 0px" }}
               variants={podiumReveal}
               style={{ order } as React.CSSProperties}
@@ -114,7 +123,10 @@ export default function PodiumPredictionTrio({
                 {isLeader && (
                   <>
                     <span aria-hidden className="podium-leader-accent" />
-                    <span className="podium-leader-pill" aria-label={isOfficial ? "Race winner" : "Projected winner"}>
+                    <span
+                      className="podium-leader-pill"
+                      aria-label={isOfficial ? "Race winner" : "Projected winner"}
+                    >
                       {isOfficial ? "Race Winner" : "Projected Winner"}
                     </span>
                   </>
@@ -129,7 +141,9 @@ export default function PodiumPredictionTrio({
                     size={isLeader ? 72 : 56}
                   />
                   <div>
-                    <span className={`font-mono uppercase tracking-[0.18em] text-[14px] ${rankColor}`}>
+                    <span
+                      className={`font-mono uppercase tracking-[0.18em] text-[14px] ${rankColor}`}
+                    >
                       {label}
                     </span>
                     <div className="mt-1">
@@ -143,7 +157,13 @@ export default function PodiumPredictionTrio({
                     </div>
                   </div>
                 </div>
-                <div className={isLeader ? "display-lg [font-weight:700]" : "display-md [font-weight:700]"}>{entry.driverFullName ?? entry.driver}</div>
+                <div
+                  className={
+                    isLeader ? "display-lg [font-weight:700]" : "display-md [font-weight:700]"
+                  }
+                >
+                  {entry.driverFullName ?? entry.driver}
+                </div>
                 <div className="body-sm text-[color:var(--muted)] mt-2 mb-6">{entry.team}</div>
                 {entry.winProbability != null && entry.winProbability > 0 && (
                   <>
@@ -163,11 +183,13 @@ export default function PodiumPredictionTrio({
                     Range P{entry.finishRangeLow}–P{entry.finishRangeHigh}
                   </p>
                 )}
-                {isOfficial && entry.predictedPosition != null && entry.predictedPosition !== entry.position && (
-                  <p className="eyebrow mt-2 text-[color:var(--link)]">
-                    Predicted P{entry.predictedPosition}
-                  </p>
-                )}
+                {isOfficial &&
+                  entry.predictedPosition != null &&
+                  entry.predictedPosition !== entry.position && (
+                    <p className="eyebrow mt-2 text-[color:var(--link)]">
+                      Predicted P{entry.predictedPosition}
+                    </p>
+                  )}
               </Card>
             </motion.div>
           );
