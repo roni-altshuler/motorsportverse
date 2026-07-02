@@ -50,6 +50,168 @@ TRACKER_EXPORT_FILE = os.path.join(DATA_DIR, "season_tracker.json")
 
 F1_CALENDAR_SOURCE_URL = "https://www.formula1.com/en/racing/2026"
 
+# ── Explainability: map the L1 feature columns to user-facing groups ──────
+# The GROUP LABELS below are USER-FACING plain language (tech-scrub policy:
+# never leak algorithm/feature names to the site).  They feed
+# motorsport_core.explain.explain_scores to turn per-driver feature values +
+# model importances into a short "why" list on each classification entry.
+KEY_FACTOR_GROUPS: dict[str, str] = {
+    # Qualifying / single-lap pace
+    "CleanAirPace": "Qualifying pace",
+    "BestLapTime": "Qualifying pace",
+    "LapTimeStd": "Qualifying pace",
+    "ConsistencyScore": "Qualifying pace",
+    "SectorBalance": "Qualifying pace",
+    "QualifyingRank": "Qualifying pace",
+    "GridAdvantage": "Qualifying pace",
+    "qualifying_elo": "Qualifying pace",
+    # Team performance
+    "TeamAdjustedPace": "Team performance",
+    "TeamPerformanceScore": "Team performance",
+    "TeamFormDelta": "Team performance",
+    "TeamPredictionBias": "Team performance",
+    "team_elo": "Team performance",
+    "teammate_delta_elo": "Team performance",
+    # Recent form / momentum
+    "CurrentForm": "Recent form",
+    "PreviousPosition": "Recent form",
+    "SeasonMomentum": "Recent form",
+    "PositionTrend": "Recent form",
+    "DriverPredictionBias": "Recent form",
+    "driver_elo": "Recent form",
+    "driver_form_elo": "Recent form",
+    # Circuit history / characteristics
+    "CircuitOvertaking": "Circuit history",
+    "CircuitSafetyCar": "Circuit history",
+    "CircuitGripPenalty": "Circuit history",
+    # Race strategy (pit / tyre / game-theory)
+    "PitTimeLoss": "Race strategy",
+    "TyreDegFactor": "Race strategy",
+    "ExpectedStopsFeature": "Race strategy",
+    "SprintWeekend": "Race strategy",
+    "DriverDegComposite": "Race strategy",
+    "DriverDegDeltaField": "Race strategy",
+    "UndercutEdgeAhead": "Race strategy",
+    "OvercutEdgeBehind": "Race strategy",
+    "TeamOrderPressure": "Race strategy",
+    "TeammateConflictRisk": "Race strategy",
+    "FieldPositionVolatility": "Race strategy",
+    "LocalBattleIntensity": "Race strategy",
+    "DRSOvertakeProbAhead": "Race strategy",
+    "racecraft_elo": "Race strategy",
+    # Weather
+    "RainProbability": "Weather",
+    "Temperature": "Weather",
+    "WeatherRiskScore": "Weather",
+    "wet_weather_elo": "Weather",
+    # Experience
+    "ExperienceFactor": "Experience",
+}
+
+# Features where a LOWER value is better (lap-times, grid positions, risk /
+# loss terms).  Used so explain_scores signs "advantage" vs "risk" correctly.
+KEY_FACTOR_LOWER_IS_BETTER: set[str] = {
+    "BestLapTime", "CleanAirPace", "LapTimeStd", "QualifyingRank",
+    "PreviousPosition", "PitTimeLoss", "TyreDegFactor", "WeatherRiskScore",
+    "CircuitGripPenalty", "TeammateConflictRisk", "FieldPositionVolatility",
+    "DriverDegComposite", "DriverDegDeltaField", "TeamOrderPressure",
+    "RainProbability",
+}
+
+
+def _build_key_factors(merged, feature_cols, gb_imp, xgb_imp, *, top_k=4):
+    """Per-driver plain-language key factors via motorsport_core.explain.
+
+    Returns ``{driver_code: [{factor, weight, direction}, ...]}`` keyed by the
+    ``Driver`` code column of ``merged``.  Degrades to ``{}`` (no crash) when
+    the shared module is unavailable or the feature matrix is missing — the
+    site simply omits keyFactors then.
+    """
+    try:
+        from motorsport_core.explain import explain_scores
+    except Exception:
+        return {}
+    try:
+        if "Driver" not in getattr(merged, "columns", []):
+            return {}
+        avg = (np.asarray(gb_imp, dtype=float) + np.asarray(xgb_imp, dtype=float)) / 2.0
+        importances = {
+            feature_cols[i]: float(avg[i])
+            for i in range(len(feature_cols))
+            if feature_cols[i] in KEY_FACTOR_GROUPS
+        }
+        if not importances:
+            return {}
+        feature_values: dict[str, dict[str, float]] = {}
+        for _, row in merged.iterrows():
+            code = str(row["Driver"])
+            vals: dict[str, float] = {}
+            for feat in importances:
+                if feat in merged.columns:
+                    v = row.get(feat)
+                    try:
+                        vals[feat] = float(v)
+                    except (TypeError, ValueError):
+                        vals[feat] = float("nan")
+            feature_values[code] = vals
+        return explain_scores(
+            importances,
+            feature_values,
+            KEY_FACTOR_GROUPS,
+            lower_is_better=KEY_FACTOR_LOWER_IS_BETTER,
+            top_k=top_k,
+        )
+    except Exception:
+        return {}
+
+
+def _attach_dnf_probabilities(classification_data, *, gp_key, season, current_round):
+    """Attach a per-driver ``dnfProbability`` to each classification entry.
+
+    Honest gating: only surfaces numbers when the DNF model can genuinely fit
+    on prior history (``data/history.duckdb`` present and enough rows).  When
+    the model falls back to a flat base rate for everyone — or can't run — the
+    field is left absent rather than publishing a fabricated uniform number.
+    """
+    try:
+        from models.dnf import DnfModelInputs, compute_dnf_probabilities
+    except Exception:
+        return
+    db_path = os.path.join(PROJECT_ROOT, "data", "history.duckdb")
+    if not os.path.exists(db_path):
+        return
+    inputs = [
+        DnfModelInputs(
+            driver=str(e.get("driver", "")),
+            predicted_position=int(e.get("position", 11) or 11),
+            circuit_key=str(gp_key),
+        )
+        for e in classification_data
+        if e.get("driver")
+    ]
+    if not inputs:
+        return
+    try:
+        probs = compute_dnf_probabilities(
+            history_db_path=db_path,
+            season=int(season),
+            current_round=int(current_round),
+            inputs=inputs,
+        )
+    except Exception:
+        return
+    if not probs:
+        return
+    # Fallback detection: if every driver got the identical value the model
+    # did not differentiate (cold-start base rate) — don't publish it.
+    distinct = {round(float(v), 6) for v in probs.values()}
+    if len(distinct) <= 1:
+        return
+    for e in classification_data:
+        p = probs.get(str(e.get("driver", "")))
+        if p is not None:
+            e["dnfProbability"] = round(float(p), 4)
+
 # Curated chart set (2026-05-21 UX refinement).  Cut from 17 charts to 6
 # — the most informative + eye-catching ones.  Dropped: feature_importance,
 # team_vs_pace, pace_vs_predicted, prediction_confidence, win_probability_board
@@ -684,6 +846,8 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                       persist_output=True,
                       generate_visualizations=True,
                       use_race_simulator=False,
+                      use_per_circuit=False,
+                      use_hybrid_blend=False,
                       prediction_phase="preview"):
     """Run prediction pipeline for one round; export JSON + visualisations.
     If return_merged=True, returns (round_data, merged_df) for advanced models.
@@ -786,6 +950,49 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         merged, circuit_key=gp_key, rain_probability=weather["rain"]
     )
     results["merged"] = merged
+
+    # ── Optional: hybrid historical/weekend blend (behind --use-hybrid-blend) ──
+    # Routes through the tested models.hybrid_blend policy.  Both anchor times
+    # are in seconds, so a phase/circuit-weighted average stays in-units and
+    # re-orders the field naturally.  RaceProjectionTime = the historically /
+    # game-theory-informed projection; PredictedLapTime = raw weekend pace.
+    # Default OFF; in "preview" phase the policy returns (1.0, 0.0) so this is
+    # a no-op even when enabled pre-qualifying.
+    hybrid_blend_config = {"applied": False}
+    if use_hybrid_blend and {"RaceProjectionTime", "PredictedLapTime"}.issubset(merged.columns):
+        try:
+            from models.hybrid_blend import blend_for
+            w = blend_for(gp_key, prediction_phase)
+            merged["RaceProjectionTime"] = (
+                w.historical * merged["RaceProjectionTime"].astype(float)
+                + w.weekend * merged["PredictedLapTime"].astype(float)
+            )
+            results["merged"] = merged
+            hybrid_blend_config = {
+                "applied": True,
+                "historicalWeight": round(float(w.historical), 4),
+                "weekendWeight": round(float(w.weekend), 4),
+                "phase": str(prediction_phase or "preview"),
+            }
+        except Exception as e:
+            print(f"  ⚠️  Hybrid blend failed: {e}")
+            hybrid_blend_config = {"applied": False, "reason": f"error: {e}"}
+
+    # ── Optional: per-circuit hierarchical head (behind --use-per-circuit) ──
+    # The tested models.per_circuit.PerCircuitHierarchicalModel needs a
+    # CROSS-circuit training frame (many circuits' historical rows) to fit its
+    # per-circuit heads.  That frame is not reachable in the single-round
+    # export path — `merged` holds only the current circuit's 22 drivers.  So
+    # the flag is honestly recorded as not-applied here with a reason, and
+    # A/B evaluation of the lever lives in benchmark_models.py (which builds
+    # the prior-round frames).  See models/per_circuit.py docstring.
+    per_circuit_config = {"applied": False}
+    if use_per_circuit:
+        per_circuit_config = {
+            "applied": False,
+            "reason": "requires cross-circuit training frame; A/B via benchmark_models.py",
+        }
+
     metrics_df      = evaluate_models(results)
     classification  = predicted_classification(merged, gp_name)
 
@@ -964,6 +1171,25 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         for i in np.argsort(avg_imp)[::-1]
     ]
 
+    # ── Explainability: per-driver plain-language key factors ──
+    # Uses the shared motorsport_core.explain generator over the L1 feature
+    # matrix (in `merged`) + model importances.  Degrades to absent when the
+    # module/matrix is unavailable.  Labels are user-facing (tech-scrub).
+    key_factors = _build_key_factors(merged, feat_cols, gb_imp, xgb_imp, top_k=4)
+    if key_factors:
+        for entry in classification_data:
+            factors = key_factors.get(str(entry.get("driver", "")))
+            if factors:
+                entry["keyFactors"] = factors[:4]
+
+    # ── Per-driver DNF probability (honest-gated) ──
+    _attach_dnf_probabilities(
+        classification_data,
+        gp_key=gp_key,
+        season=SEASON_YEAR,
+        current_round=round_num,
+    )
+
     # ── Derived helpers ──
     fastest_time = f"{classification_data[0]['predictedTime']:.3f}s"
     podium = [
@@ -1057,6 +1283,10 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                 if simulator_block
                 else {"applied": False}
             ),
+            # A/B levers (default OFF).  These record whether each optional
+            # model path ran so forward_eval / promotion can compare streams.
+            "hybridBlend": _json_safe(hybrid_blend_config),
+            "perCircuit": _json_safe(per_circuit_config),
         },
         "generatedAt": _utc_now_iso(),
         # Phase of the weekend the prediction was generated in. The UI
@@ -2413,6 +2643,14 @@ def main():
                              "and splice its market probabilities into the classification. "
                              "Silently no-ops when no race-pace model has been registered "
                              "(run train_race_pace.py first).")
+    parser.add_argument("--use-per-circuit", action="store_true",
+                        help="Route through the per-circuit hierarchical head "
+                             "(models/per_circuit.py). Default OFF. Recorded in "
+                             "modelConfig.perCircuit; A/B via benchmark_models.py.")
+    parser.add_argument("--use-hybrid-blend", action="store_true",
+                        help="Apply the phase/circuit-aware historical↔weekend "
+                             "blend policy (models/hybrid_blend.py). Default OFF. "
+                             "Recorded in modelConfig.hybridBlend.")
     args = parser.parse_args()
 
     if args.round:
@@ -2424,7 +2662,9 @@ def main():
                                                 enable_game_theory=not args.disable_game_theory,
                                                 game_theory_field_sims=args.game_theory_sims,
                                                 game_theory_neighbors=args.game_theory_neighbors,
-                                                use_race_simulator=args.use_race_simulator)
+                                                use_race_simulator=args.use_race_simulator,
+                                                use_per_circuit=args.use_per_circuit,
+                                                use_hybrid_blend=args.use_hybrid_blend)
         if args.fastf1:
             gp_key = CALENDAR[args.round]["gp_key"]
             extra = _generate_fastf1_viz(args.round, gp_key, args.fastf1_year)
@@ -2457,7 +2697,9 @@ def main():
                                                 use_telemetry=args.telemetry,
                                                 enable_game_theory=not args.disable_game_theory,
                                                 game_theory_field_sims=args.game_theory_sims,
-                                                game_theory_neighbors=args.game_theory_neighbors)
+                                                game_theory_neighbors=args.game_theory_neighbors,
+                                                use_per_circuit=args.use_per_circuit,
+                                                use_hybrid_blend=args.use_hybrid_blend)
                 if args.fastf1:
                     gp_key = CALENDAR[rnd]["gp_key"]
                     extra = _generate_fastf1_viz(rnd, gp_key, args.fastf1_year)

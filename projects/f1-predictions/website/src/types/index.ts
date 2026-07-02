@@ -59,6 +59,20 @@ export interface SeasonData {
   sourceUrl?: string;
 }
 
+/**
+ * A single plain-language "why" factor behind a driver's predicted result.
+ * Labels are user-facing (e.g. "Qualifying pace", "Recent form") — never
+ * algorithm names, per the tech-stack scrub policy.
+ */
+export interface KeyFactor {
+  /** User-facing group label, e.g. "Qualifying pace". */
+  factor: string;
+  /** Relative emphasis in [0, 1] (1 = this driver's strongest factor). */
+  weight: number;
+  /** Whether the factor helps or hurts this driver's predicted result. */
+  direction: "advantage" | "risk" | "neutral";
+}
+
 export interface ClassificationEntry {
   position: number;
   driver: string;
@@ -78,6 +92,8 @@ export interface ClassificationEntry {
   predictionIntervalHigh?: number;
   /** Per-driver probability of NOT classifying (DNF) in this race. */
   dnfProbability?: number;
+  /** Top 3-4 plain-language factors behind this driver's predicted result. */
+  keyFactors?: KeyFactor[];
   /** See {@link DriverInfo.headshotUrl}. */
   headshotUrl?: string | null;
 }

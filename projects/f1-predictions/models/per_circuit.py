@@ -19,6 +19,19 @@ times.
 Designed to live alongside the existing ensemble, not replace it.  Wire
 it into ``export_website_data.py`` after running the A/B benchmark in
 ``benchmark_per_circuit.py``.
+
+Wiring status (2026-07)
+-----------------------
+``export_website_data.py`` exposes a ``--use-per-circuit`` flag that threads
+through ``export_round_data(use_per_circuit=...)`` and records the outcome in
+``round_NN.json::modelConfig.perCircuit``.  The flag is currently recorded as
+``applied: false`` in the single-round export path: ``fit`` needs a
+CROSS-circuit training frame (many circuits' historical rows, each ≥
+``min_rows``), but the per-round ``merged`` frame holds only the current
+circuit's 22 drivers.  The tested A/B path that DOES build prior-round frames
+is ``src/benchmark_models.py::predict_per_circuit``.  Full single-round wiring
+is deferred until a per-round L1 feature-matrix export lands (so the head can
+be fit on prior rounds without leaking the current one).
 """
 from __future__ import annotations
 
