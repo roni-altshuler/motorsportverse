@@ -54,6 +54,9 @@ jobs:
       - name: Validate registry
         run: python scripts/build_registry.py
 
+      - name: Shared-UI drift check
+        run: node scripts/sync_shared_ui.mjs --check
+
   website:
     name: Website build
     runs-on: ubuntu-latest

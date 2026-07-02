@@ -81,8 +81,8 @@ export function ShimmerButton({
           "insert-0 absolute size-full",
           "rounded-[inherit] px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#ffffff12]",
           "transform-gpu transition-all duration-300 ease-in-out",
-          "group-hover:shadow-[inset_0_-6px_10px_#ffffff30]",
-          "group-active:shadow-[inset_0_-10px_10px_#ffffff30]",
+          "group-hover:shadow-[inset_0_-6px_10px_#ffffff20]",
+          "group-active:shadow-[inset_0_-10px_10px_#ffffff20]",
         )}
       />
 
