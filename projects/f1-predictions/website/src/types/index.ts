@@ -343,6 +343,38 @@ export interface RoundData {
     officialResultsSource?: string;
     weekendResultsSource?: string;
   };
+  /** Which optional model paths ran for this round (A/B levers, mostly OFF). */
+  modelConfig?: ModelConfig;
+}
+
+/** Records which optional model heads / levers ran when the round was
+ * generated. All levers default OFF; the production path is the quali-time
+ * regression. Permissive — additive fields won't break older consumers. */
+export interface ModelConfig {
+  lstmEnabled?: boolean;
+  ensembleWeights?: Record<string, number>;
+  raceSimulator?: { applied: boolean; [k: string]: unknown };
+  hybridBlend?: { applied: boolean; [k: string]: unknown };
+  perCircuit?: { applied: boolean; [k: string]: unknown };
+  /** Direct finishing-position head (models/position_model.py). When
+   * `applied`, the race order + win probabilities come from this head. */
+  positionModel?: PositionModelConfig;
+  [k: string]: unknown;
+}
+
+export interface PositionModelConfig {
+  applied: boolean;
+  /** Reason the head did not apply (e.g. too few prior rounds). */
+  reason?: string;
+  /** Prior rounds the head was trained on (strictly before this round). */
+  trainedRounds?: number[];
+  nTrainRows?: number;
+  minPriorRounds?: number;
+  priorRoundsAvailable?: number;
+  /** Rank-correlation of the predicted order with the base pace signal
+   * (healthy = positive; the head re-ranks around pace, never inverts it). */
+  monotonicSanity?: number | null;
+  features?: string[];
 }
 
 export interface SpeedTrapEntry {
@@ -708,6 +740,66 @@ export interface TrustStats {
   /** Freshness / provenance metadata for the credibility section. */
   provenance: {
     generatedAt: string | null;
+  };
+}
+
+/** Per-metric walk-forward aggregation (from motorsport_core.eval). */
+export interface WalkForwardMetric {
+  mean: number;
+  median: number;
+  min: number;
+  max: number;
+  last: number;
+  /** OLS slope across rounds; positive = metric rising over the season. */
+  trend: number | null;
+  n: number;
+}
+
+export interface WalkForwardBlock {
+  n_rounds: number;
+  metrics: Record<string, WalkForwardMetric>;
+}
+
+/** Schema for `forward_eval/summary.json` — the headline season-level
+ * validation surface. Model vs baseline walk-forward, side-by-side. */
+export interface ForwardEvalSummaryData {
+  season: number;
+  generatedAt: string;
+  roundsEvaluated: number;
+  walkForward: {
+    model: WalkForwardBlock;
+    baselines: Record<string, WalkForwardBlock>;
+  };
+}
+
+/** One round of the direct-position-model A/B backtest. */
+export interface PositionModelABRound {
+  round: number;
+  production: Record<string, unknown>;
+  positionModel: Record<string, unknown> & { applied: boolean };
+}
+
+/** Schema for `forward_eval/position_model_ab.json` — walk-forward A/B of the
+ * direct finishing-position head vs the production path. */
+export interface PositionModelABData {
+  season: number;
+  generatedAt: string | null;
+  minPriorRounds: number;
+  roundsScored: number;
+  roundsCompared: number;
+  rounds: PositionModelABRound[];
+  walkForward: {
+    positionModel: WalkForwardBlock;
+    production: WalkForwardBlock;
+  };
+  verdict: {
+    recommendation: string;
+    positionModelMeanError?: number | null;
+    productionMeanError?: number | null;
+    meanErrorDelta?: number | null;
+    positionModelWinnerHitRate?: number | null;
+    productionWinnerHitRate?: number | null;
+    reason?: string;
   };
 }
 

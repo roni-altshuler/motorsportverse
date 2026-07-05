@@ -6,6 +6,16 @@ actually cares about — per-driver position error, podium hit-rate, log-loss
 against baselines, NDCG / Spearman ranking metrics — *not* in-sample lap-time
 MAE.
 
+**This is the headline validation surface for the model.**  A season is scored
+by walking forward one completed round at a time, comparing each round's locked
+prediction to the actual result, and aggregating those per-round metrics into a
+walk-forward summary (mean / median / min / max / last / OLS-trend per metric,
+model *and* baseline side-by-side — see ``build_walk_forward_summary`` and
+``forward_eval/summary.json``).  It is emphatically **not** the within-race
+80/20 driver split inside ``train_ensemble`` — that split holds out 4-5 drivers
+from the *same* race purely to weight the GB/XGB ensemble, and must never be
+quoted as forward-time accuracy.
+
 Two operating modes:
 
 1. **Score existing predictions** (default).  Reads predicted_results_<season>.json
@@ -48,10 +58,12 @@ import argparse
 import json
 import math
 from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
 from leakage import LeakageError
+from motorsport_core.eval import walk_forward_summary
 from models.reliability import (
     MarketReliabilityReport,
     compute_market_report_from_probabilities,
@@ -644,6 +656,136 @@ def write_per_round_files(report: ForwardEvalReport, output_dir: Path) -> list[P
     return written
 
 
+# --------------------------------------------------------------------------- #
+# Walk-forward summary (headline validation surface)
+# --------------------------------------------------------------------------- #
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _round_eval_metrics(r: RoundEvaluation) -> dict[str, float | None]:
+    """Numeric per-round metric bundle for the walk-forward aggregation.
+
+    ``winner_hit`` (bool) is exposed as ``winnerHit`` (0/1) so it survives
+    ``walk_forward_summary``, which only aggregates non-bool numerics.
+    """
+    return {
+        "mean_position_error": r.mean_position_error,
+        "median_position_error": r.median_position_error,
+        "rmse_position_error": r.rmse_position_error,
+        "podium_hits": r.podium_hits,
+        "within_3": r.within_3,
+        "within_5": r.within_5,
+        "exact_matches": r.exact_matches,
+        "spearman_correlation": r.spearman_correlation,
+        "ndcg_at_5": r.ndcg_at_5,
+        "winnerHit": 1.0 if r.winner_hit else 0.0,
+    }
+
+
+def _baseline_round_metrics(entry: dict) -> dict[str, float | None]:
+    return {
+        "mean_position_error": entry.get("mean_position_error"),
+        "podium_hits": entry.get("podium_hits"),
+        "spearman_correlation": entry.get("spearman_correlation"),
+        "winnerHit": 1.0 if entry.get("winner_hit") else 0.0,
+    }
+
+
+def build_walk_forward_summary(report: ForwardEvalReport) -> dict:
+    """Aggregate every scored round into a model-vs-baseline walk-forward block.
+
+    Wraps ``motorsport_core.eval.walk_forward_summary`` over the season's
+    per-round metric dicts, keeping the model's summary and each baseline's
+    summary side-by-side so "is the model beating the trivial predictor over
+    time?" is a single read.  This is the season-level headline surface.
+    """
+    model_rounds = [_round_eval_metrics(r) for r in report.rounds]
+    model_summary = walk_forward_summary(model_rounds)
+
+    baseline_names: set[str] = set()
+    for r in report.rounds:
+        baseline_names.update(r.baselines.keys())
+    baselines: dict[str, dict] = {}
+    for name in sorted(baseline_names):
+        rows = [
+            _baseline_round_metrics(r.baselines[name])
+            for r in report.rounds
+            if name in r.baselines
+        ]
+        baselines[name] = walk_forward_summary(rows)
+
+    return {"model": model_summary, "baselines": baselines}
+
+
+def write_walk_forward_summary(
+    report: ForwardEvalReport, output_dir: Path
+) -> Path:
+    """Write ``<output_dir>/summary.json`` with the walk-forward summary block."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "season": report.season,
+        "generatedAt": _utc_now_iso(),
+        "roundsEvaluated": len(report.rounds),
+        "walkForward": build_walk_forward_summary(report),
+    }
+    target = output_dir / "summary.json"
+    target.write_text(json.dumps(payload, indent=2))
+    return target
+
+
+def _load_committed_rounds(rounds_dir: Path) -> dict[int, list[dict]]:
+    """Load each ``round_NN.json``'s ``classification`` list, keyed by round."""
+    if not rounds_dir.exists():
+        return {}
+    out: dict[int, list[dict]] = {}
+    for path in sorted(rounds_dir.glob("round_*.json")):
+        try:
+            payload = json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError):
+            continue
+        rnd = int(payload.get("round", 0) or 0)
+        if rnd == 0:
+            continue
+        out[rnd] = payload.get("classification") or []
+    return out
+
+
+def run_position_model_ab(
+    season: int,
+    rounds_dir: Path,
+    actual: dict[int, dict[str, int]],
+    output_dir: Path,
+    *,
+    min_prior_rounds: int = 3,
+) -> Path | None:
+    """Walk-forward A/B of the direct position head vs the production path.
+
+    Loads the committed ``round_NN.json`` classifications, retrains the position
+    model on ``<N`` for each completed round N, and writes the head-to-head
+    comparison to ``<output_dir>/position_model_ab.json``.  Returns the path, or
+    ``None`` when there are no completed rounds to score.
+    """
+    from models.position_model import run_backtest
+
+    rounds_by_round = _load_committed_rounds(rounds_dir)
+    if not rounds_by_round:
+        return None
+    result = run_backtest(
+        season,
+        rounds_by_round,
+        actual,
+        min_prior_rounds=min_prior_rounds,
+        generated_at=_utc_now_iso(),
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    target = output_dir / "position_model_ab.json"
+    target.write_text(json.dumps(result, indent=2))
+    return target
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--season", type=int, required=True)
@@ -669,6 +811,19 @@ def main() -> int:
                         help="Optional directory where reliability diagrams "
                         "are saved (one PNG per market). Only used when "
                         "--probabilities-dir is also set.")
+    parser.add_argument("--position-model-ab", action="store_true",
+                        help="Also run the direct finishing-position model "
+                        "walk-forward A/B (train on <N, predict N) against the "
+                        "production path and write position_model_ab.json into "
+                        "--per-round-dir (or --output's directory).")
+    parser.add_argument("--rounds-dir", type=Path, default=None,
+                        help="Directory of committed round_NN.json files used as "
+                        "the position-model feature source (default: "
+                        "website/public/data/rounds).")
+    parser.add_argument("--min-prior-rounds", type=int, default=3,
+                        help="Minimum prior completed rounds before the position "
+                        "model trains (default 3; below this it degrades to "
+                        "applied:false).")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
@@ -695,6 +850,7 @@ def main() -> int:
         json.dump(_report_to_jsonable(report), f, indent=2)
 
     per_round_written: list[Path] = []
+    summary_written: Path | None = None
     if args.per_round_dir is not None:
         per_round_dir = (
             args.per_round_dir
@@ -702,6 +858,31 @@ def main() -> int:
             else PROJECT_ROOT / args.per_round_dir
         )
         per_round_written = write_per_round_files(report, per_round_dir)
+        # Season-level walk-forward summary (headline validation surface).
+        summary_written = write_walk_forward_summary(report, per_round_dir)
+
+    # Direct finishing-position model A/B (opt-in; default OFF path).
+    position_ab_written: Path | None = None
+    if args.position_model_ab:
+        rounds_dir = (
+            args.rounds_dir
+            if args.rounds_dir is not None
+            else PROJECT_ROOT / "website" / "public" / "data" / "rounds"
+        )
+        if not rounds_dir.is_absolute():
+            rounds_dir = PROJECT_ROOT / rounds_dir
+        ab_output_dir = (
+            (args.per_round_dir if args.per_round_dir is not None else output_path.parent)
+        )
+        if not ab_output_dir.is_absolute():
+            ab_output_dir = PROJECT_ROOT / ab_output_dir
+        try:
+            position_ab_written = run_position_model_ab(
+                args.season, rounds_dir, actual, ab_output_dir,
+                min_prior_rounds=args.min_prior_rounds,
+            )
+        except Exception as e:  # never block the primary report
+            print(f"⚠️  Position-model A/B failed: {e}")
 
     calibration_summary: dict[str, object] | None = None
     plot_paths: list[Path] = []
@@ -751,6 +932,20 @@ def main() -> int:
         if per_round_written:
             print(f"📝 Wrote {len(per_round_written)} per-round file(s) to "
                   f"{args.per_round_dir}")
+        if summary_written is not None:
+            print(f"📝 Wrote walk-forward summary → {summary_written.name}")
+        if position_ab_written is not None:
+            try:
+                ab = json.loads(position_ab_written.read_text())
+                verdict = ab.get("verdict", {})
+                print(
+                    f"⚖️  Position-model A/B: {verdict.get('recommendation', '—')} "
+                    f"(PM meanErr={verdict.get('positionModelMeanError')} vs "
+                    f"PROD meanErr={verdict.get('productionMeanError')} over "
+                    f"{ab.get('roundsCompared', 0)} rounds) → {position_ab_written.name}"
+                )
+            except (OSError, json.JSONDecodeError):
+                print(f"📝 Wrote position-model A/B → {position_ab_written.name}")
         if calibration_summary is not None:
             markets = ", ".join(sorted(calibration_summary.keys()))
             print(f"📐 Calibration metrics computed for markets: {markets}")
