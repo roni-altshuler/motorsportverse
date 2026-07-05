@@ -137,6 +137,57 @@ class ProbabilityRoundData(_Loose):
     h2h: dict[str, dict[str, float]] = Field(default_factory=dict)
 
 
+class WalkForwardMetric(_Loose):
+    # Mirror of `WalkForwardMetric` in website/src/types/index.ts.
+    mean: float
+    median: float
+    min: float
+    max: float
+    last: float
+    trend: Optional[float] = None
+    n: int
+
+
+class WalkForwardBlock(_Loose):
+    n_rounds: int
+    metrics: dict[str, WalkForwardMetric]
+
+
+class ForwardEvalWalkForward(_Loose):
+    model: WalkForwardBlock
+    baselines: dict[str, WalkForwardBlock]
+
+
+class ForwardEvalSummaryData(_Loose):
+    """Schema for `forward_eval/summary.json` (headline validation surface)."""
+
+    season: int
+    generatedAt: str
+    roundsEvaluated: int
+    walkForward: ForwardEvalWalkForward
+
+
+class PositionModelABVerdict(_Loose):
+    recommendation: str
+
+
+class PositionModelABData(_Loose):
+    """Schema for `forward_eval/position_model_ab.json`."""
+
+    season: int
+    minPriorRounds: int
+    roundsScored: int
+    roundsCompared: int
+    rounds: list[dict]
+    walkForward: dict
+    verdict: PositionModelABVerdict
+
+
+class PositionModelConfig(_Loose):
+    # Mirror of `PositionModelConfig` in website/src/types/index.ts.
+    applied: bool
+
+
 def _load(path: Path) -> dict:
     with path.open() as f:
         return json.load(f)
@@ -203,6 +254,41 @@ def test_round_classification_drivers_unique():
         assert len(drivers) == len(set(drivers)), (
             f"{round_file.name} has duplicate drivers: {drivers}"
         )
+
+
+@pytest.mark.skipif(
+    not (WEBSITE_DATA / "forward_eval" / "summary.json").exists(),
+    reason="No forward_eval/summary.json generated yet",
+)
+def test_forward_eval_summary_matches_schema():
+    data = _load(WEBSITE_DATA / "forward_eval" / "summary.json")
+    ForwardEvalSummaryData(**data)
+
+
+@pytest.mark.skipif(
+    not (WEBSITE_DATA / "forward_eval" / "position_model_ab.json").exists(),
+    reason="No forward_eval/position_model_ab.json generated yet",
+)
+def test_position_model_ab_matches_schema():
+    data = _load(WEBSITE_DATA / "forward_eval" / "position_model_ab.json")
+    PositionModelABData(**data)
+
+
+def test_round_position_model_config_when_present():
+    """When a round carries modelConfig.positionModel, it must have `applied`."""
+    rounds_dir = WEBSITE_DATA / "rounds"
+    if not rounds_dir.exists():
+        pytest.skip("No rounds/ generated yet")
+    checked = 0
+    for round_file in rounds_dir.glob("round_*.json"):
+        data = _load(round_file)
+        block = (data.get("modelConfig") or {}).get("positionModel")
+        if not isinstance(block, dict):
+            continue
+        checked += 1
+        PositionModelConfig(**block)
+    if checked == 0:
+        pytest.skip("No rounds carry modelConfig.positionModel yet")
 
 
 def test_circuit_geometry_is_valid_when_present():

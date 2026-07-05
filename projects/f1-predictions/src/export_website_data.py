@@ -212,6 +212,131 @@ def _attach_dnf_probabilities(classification_data, *, gp_key, season, current_ro
         if p is not None:
             e["dnfProbability"] = round(float(p), 4)
 
+
+def _load_prior_committed_rounds(current_round):
+    """Load prior rounds' committed classification lists from ``rounds/``.
+
+    Returns ``{round_int: classification_list}`` for every ``round_MM.json`` with
+    ``MM < current_round``.  These committed snapshots are the leakage-safe
+    feature source for the direct position model (see models/position_model.py).
+    """
+    out = {}
+    for mm in range(1, int(current_round)):
+        payload = _safe_load_json(os.path.join(ROUNDS_DIR, f"round_{mm:02d}.json"))
+        if payload and payload.get("classification"):
+            out[mm] = payload["classification"]
+    return out
+
+
+def _load_actual_results_map():
+    """``{round_int: {driver: finishing_position}}`` from the season results file."""
+    raw = _safe_load_json(SEASON_RESULTS_FILE) or {}
+    out = {}
+    if isinstance(raw, dict):
+        for k, v in raw.items():
+            try:
+                rnd = int(k)
+            except (TypeError, ValueError):
+                continue
+            if isinstance(v, dict):
+                cleaned = {}
+                for drv, pos in v.items():
+                    val = pos.get("position") if isinstance(pos, dict) else pos
+                    try:
+                        cleaned[str(drv)] = int(val)
+                    except (TypeError, ValueError):
+                        continue
+                if cleaned:
+                    out[rnd] = cleaned
+    return out
+
+
+def _apply_position_model_reorder(classification_data, *, round_num, gp_key, season):
+    """Re-rank ``classification_data`` in place using the direct position model.
+
+    Opt-in (``--use-position-model``).  Trains on prior committed rounds only,
+    predicts finishing position for this round, re-orders the field, and
+    recomputes position / points / gap / finish-range / win-probability from the
+    position head (win-prob via the SAME Plackett-Luce layer, fed predicted
+    positions).  Returns the ``modelConfig.positionModel`` block either way;
+    ``applied: false`` (production order untouched) when the model can't train.
+    """
+    try:
+        from models.position_model import (
+            FEATURE_NAMES,
+            extract_round_features,
+            monotonic_sanity,
+            position_probabilities,
+            predicted_order,
+            train_position_model,
+        )
+    except Exception as e:
+        return {"applied": False, "reason": f"position model unavailable: {e}"}
+
+    rounds_by_round = _load_prior_committed_rounds(round_num)
+    actual = _load_actual_results_map()
+    prior_with_results = sorted(r for r in rounds_by_round if actual.get(r))
+    try:
+        model = train_position_model(
+            rounds_by_round, actual, round_num, season=season, min_prior_rounds=3
+        )
+    except Exception as e:
+        return {"applied": False, "reason": f"training failed: {e}",
+                "priorRoundsAvailable": len(prior_with_results)}
+    if model is None:
+        return {
+            "applied": False,
+            "reason": "fewer than 3 prior completed rounds with results",
+            "priorRoundsAvailable": len(prior_with_results),
+        }
+
+    feats = extract_round_features(classification_data)
+    if not feats:
+        return {"applied": False, "reason": "no current-round features"}
+    pred_pos = model.predict_positions(feats)
+    order = predicted_order(pred_pos)
+
+    by_driver = {e["driver"]: e for e in classification_data}
+    reordered = [by_driver[d] for d in order if d in by_driver]
+    for e in classification_data:  # defensive: keep any driver the model missed
+        if e["driver"] not in order:
+            reordered.append(e)
+
+    try:
+        p_win = position_probabilities(pred_pos).p_win
+    except Exception:
+        p_win = {}
+
+    n = len(reordered)
+    leader_time = reordered[0].get("predictedTime") if reordered else None
+    for i, e in enumerate(reordered):
+        pos = i + 1
+        e["position"] = pos
+        e["points"] = int(F1_POINTS.get(pos, 0))
+        t = e.get("predictedTime")
+        if isinstance(t, (int, float)) and isinstance(leader_time, (int, float)):
+            gap = round(float(t) - float(leader_time), 3)
+            e["gap"] = "LEADER" if pos == 1 else f"{gap:.3f}"
+        span = max(1, int(e.get("finishRangeHigh", pos)) - int(e.get("finishRangeLow", pos)))
+        half = max(1, span // 2)
+        e["finishRangeLow"] = max(1, pos - half)
+        e["finishRangeHigh"] = min(n, pos + half)
+        pw = p_win.get(e["driver"])
+        if pw is not None:
+            e["winProbability"] = round(float(pw) * 100, 1)
+    classification_data[:] = reordered
+
+    mono = monotonic_sanity(pred_pos, feats)
+    return {
+        "applied": True,
+        "trainedRounds": model.trained_rounds,
+        "nTrainRows": model.n_train_rows,
+        "minPriorRounds": 3,
+        "monotonicSanity": round(mono, 3) if mono is not None else None,
+        "features": list(FEATURE_NAMES),
+    }
+
+
 # Curated chart set (2026-05-21 UX refinement).  Cut from 17 charts to 6
 # — the most informative + eye-catching ones.  Dropped: feature_importance,
 # team_vs_pace, pace_vs_predicted, prediction_confidence, win_probability_board
@@ -848,6 +973,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                       use_race_simulator=False,
                       use_per_circuit=False,
                       use_hybrid_blend=False,
+                      use_position_model=False,
                       prediction_phase="preview"):
     """Run prediction pipeline for one round; export JSON + visualisations.
     If return_merged=True, returns (round_data, merged_df) for advanced models.
@@ -1190,6 +1316,33 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         current_round=round_num,
     )
 
+    # ── Optional: direct finishing-position model (A/B lever, default OFF) ──
+    # When --use-position-model is set and >= 3 prior rounds are available, the
+    # race ORDER + win probabilities come from a model trained to predict
+    # finishing position directly (leakage-safe), replacing the quali-time
+    # post-processing.  Recorded in modelConfig.positionModel either way.
+    position_model_config = {"applied": False}
+    if use_position_model:
+        try:
+            position_model_config = _apply_position_model_reorder(
+                classification_data,
+                round_num=round_num,
+                gp_key=gp_key,
+                season=SEASON_YEAR,
+            )
+            if position_model_config.get("applied"):
+                print(
+                    f"  🎯  Position model applied "
+                    f"(trained on {len(position_model_config.get('trainedRounds', []))} "
+                    f"prior round(s), {position_model_config.get('nTrainRows', 0)} rows)"
+                )
+            else:
+                print(f"  ℹ️  Position model not applied: "
+                      f"{position_model_config.get('reason', 'unknown')}")
+        except Exception as e:
+            print(f"  ⚠️  Position model failed: {e}")
+            position_model_config = {"applied": False, "reason": str(e)}
+
     # ── Derived helpers ──
     fastest_time = f"{classification_data[0]['predictedTime']:.3f}s"
     podium = [
@@ -1287,6 +1440,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             # model path ran so forward_eval / promotion can compare streams.
             "hybridBlend": _json_safe(hybrid_blend_config),
             "perCircuit": _json_safe(per_circuit_config),
+            "positionModel": _json_safe(position_model_config),
         },
         "generatedAt": _utc_now_iso(),
         # Phase of the weekend the prediction was generated in. The UI
@@ -1509,7 +1663,12 @@ def _export_visualizations(results, merged, classification, out_dir, gp_name):
         team_labels.append(team)
         team_colors_list.append(TEAM_COLOURS.get(team, "#888"))
 
-    bp = ax.boxplot(team_data, labels=team_labels, patch_artist=True, vert=True)
+    # matplotlib >= 3.9 renamed the boxplot ``labels=`` kwarg to ``tick_labels=``
+    # and removed the old alias.  Try the new name first, fall back for < 3.9.
+    try:
+        bp = ax.boxplot(team_data, tick_labels=team_labels, patch_artist=True, vert=True)
+    except TypeError:
+        bp = ax.boxplot(team_data, labels=team_labels, patch_artist=True, vert=True)
     for patch, color in zip(bp["boxes"], team_colors_list):
         patch.set_facecolor(color + "80")
         patch.set_edgecolor(color)
@@ -2651,6 +2810,14 @@ def main():
                         help="Apply the phase/circuit-aware historical↔weekend "
                              "blend policy (models/hybrid_blend.py). Default OFF. "
                              "Recorded in modelConfig.hybridBlend.")
+    parser.add_argument("--use-position-model", action="store_true",
+                        help="Take the race order + win probabilities from a "
+                             "model trained to predict finishing position directly "
+                             "(models/position_model.py) instead of the quali-time "
+                             "post-processing. Needs >= 3 prior completed rounds; "
+                             "degrades to applied:false otherwise. Default OFF. "
+                             "Recorded in modelConfig.positionModel; A/B via "
+                             "forward_eval.py --position-model-ab.")
     args = parser.parse_args()
 
     if args.round:
@@ -2664,7 +2831,8 @@ def main():
                                                 game_theory_neighbors=args.game_theory_neighbors,
                                                 use_race_simulator=args.use_race_simulator,
                                                 use_per_circuit=args.use_per_circuit,
-                                                use_hybrid_blend=args.use_hybrid_blend)
+                                                use_hybrid_blend=args.use_hybrid_blend,
+                                                use_position_model=args.use_position_model)
         if args.fastf1:
             gp_key = CALENDAR[args.round]["gp_key"]
             extra = _generate_fastf1_viz(args.round, gp_key, args.fastf1_year)
@@ -2699,7 +2867,8 @@ def main():
                                                 game_theory_field_sims=args.game_theory_sims,
                                                 game_theory_neighbors=args.game_theory_neighbors,
                                                 use_per_circuit=args.use_per_circuit,
-                                                use_hybrid_blend=args.use_hybrid_blend)
+                                                use_hybrid_blend=args.use_hybrid_blend,
+                                                use_position_model=args.use_position_model)
                 if args.fastf1:
                     gp_key = CALENDAR[rnd]["gp_key"]
                     extra = _generate_fastf1_viz(rnd, gp_key, args.fastf1_year)
