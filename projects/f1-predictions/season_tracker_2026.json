@@ -1474,10 +1474,27 @@
     },
     "9": {
       "predicted": {
-        "VER": {
+        "RUS": {
           "position": 1,
+          "team": "Mercedes"
+        },
+        "LEC": {
+          "position": 2,
+          "team": "Ferrari"
+        },
+        "HAM": {
+          "position": 3,
+          "team": "Ferrari"
+        },
+        "ANT": {
+          "position": 4,
+          "team": "Mercedes"
+        },
+        "VER": {
+          "position": 5,
           "team": "Red Bull Racing"
         },
+<<<<<<< HEAD
         "NOR": {
           "position": 2,
           "team": "McLaren"
@@ -1514,22 +1531,51 @@
           "position": 10,
           "team": "Williams"
         },
+=======
+        "PIA": {
+          "position": 6,
+          "team": "McLaren"
+        },
+        "NOR": {
+          "position": 7,
+          "team": "McLaren"
+        },
+>>>>>>> main
         "HAD": {
-          "position": 11,
+          "position": 8,
           "team": "Red Bull Racing"
         },
+<<<<<<< HEAD
         "ALB": {
           "position": 12,
           "team": "Williams"
+=======
+        "LAW": {
+          "position": 9,
+          "team": "Racing Bulls"
+        },
+        "LIN": {
+          "position": 10,
+          "team": "Racing Bulls"
+        },
+        "GAS": {
+          "position": 11,
+          "team": "Alpine"
+        },
+        "BOR": {
+          "position": 12,
+          "team": "Audi"
+>>>>>>> main
         },
         "GAS": {
           "position": 13,
           "team": "Alpine"
         },
         "BEA": {
-          "position": 14,
+          "position": 13,
           "team": "Haas"
         },
+<<<<<<< HEAD
         "ALO": {
           "position": 15,
           "team": "Aston Martin"
@@ -1542,28 +1588,113 @@
           "position": 17,
           "team": "Alpine"
         },
+=======
+        "COL": {
+          "position": 14,
+          "team": "Alpine"
+        },
+        "OCO": {
+          "position": 15,
+          "team": "Haas"
+        },
+>>>>>>> main
         "HUL": {
-          "position": 18,
+          "position": 16,
           "team": "Audi"
         },
-        "STR": {
+        "SAI": {
+          "position": 17,
+          "team": "Williams"
+        },
+        "ALB": {
+          "position": 18,
+          "team": "Williams"
+        },
+        "PER": {
           "position": 19,
-          "team": "Aston Martin"
-        },
-        "LIN": {
-          "position": 20,
-          "team": "Racing Bulls"
-        },
-        "BOT": {
-          "position": 21,
           "team": "Cadillac"
         },
-        "BOR": {
+        "BOT": {
+          "position": 20,
+          "team": "Cadillac"
+        },
+        "ALO": {
+          "position": 21,
+          "team": "Aston Martin"
+        },
+        "STR": {
           "position": 22,
-          "team": "Audi"
+          "team": "Aston Martin"
         }
       },
-      "actual": {}
+      "actual": {
+        "RUS": {
+          "position": 1
+        },
+        "VER": {
+          "position": 2
+        },
+        "ANT": {
+          "position": 3
+        },
+        "PIA": {
+          "position": 4
+        },
+        "HAM": {
+          "position": 5
+        },
+        "HAD": {
+          "position": 6
+        },
+        "NOR": {
+          "position": 7
+        },
+        "LEC": {
+          "position": 8
+        },
+        "LAW": {
+          "position": 9
+        },
+        "LIN": {
+          "position": 10
+        },
+        "BOR": {
+          "position": 11
+        },
+        "HUL": {
+          "position": 12
+        },
+        "GAS": {
+          "position": 13
+        },
+        "BEA": {
+          "position": 14
+        },
+        "COL": {
+          "position": 15
+        },
+        "OCO": {
+          "position": 16
+        },
+        "ALB": {
+          "position": 17
+        },
+        "ALO": {
+          "position": 18
+        },
+        "STR": {
+          "position": 19
+        },
+        "SAI": {
+          "position": 20
+        },
+        "PER": {
+          "position": 21
+        },
+        "BOT": {
+          "position": 22
+        }
+      }
     },
     "10": {
       "predicted": {
@@ -2967,6 +3098,25 @@
       "accuracy_pct_classified": 88.9,
       "within_5_pct_classified": 100.0,
       "dnf_count": 4
+<<<<<<< HEAD
+=======
+    },
+    "9": {
+      "mean_position_error": 1.82,
+      "median_position_error": 2.0,
+      "exact_matches": 4,
+      "within_3_positions": 20,
+      "within_5_positions": 21,
+      "total_drivers": 22,
+      "within_3_accuracy_pct": 90.9,
+      "podium_hits": 1,
+      "podium_total": 3,
+      "podium_accuracy_pct": 33.3,
+      "points_hits": 10,
+      "points_total": 10,
+      "points_accuracy_pct": 100.0,
+      "accuracy_pct": 60.0
+>>>>>>> main
     }
   }
 }
