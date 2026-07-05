@@ -66,15 +66,31 @@ def _save(fig, path):
 # 1. TRACK MAP WITH ANNOTATED CORNERS
 # ═══════════════════════════════════════════════════════════════════════════
 
-def plot_track_map(year, gp_key, out_dir):
+def _load_race_session(year, gp_key, expected_round=None, telemetry=False):
+    """Load the race session, verifying FastF1 resolved the requested event.
+
+    FastF1's fuzzy matcher silently "corrects" an event name to a different
+    (already-run) event when its schedule backend fails — that must never
+    render another circuit's charts under this round's directory.
+    """
+    session = fastf1.get_session(year, gp_key, "R")
+    if expected_round is not None and int(session.event["RoundNumber"]) != int(expected_round):
+        raise ValueError(
+            f"FastF1 resolved '{gp_key}' to round {session.event['RoundNumber']} "
+            f"({session.event.get('EventName', '?')}), not round {expected_round}"
+        )
+    session.load(laps=True, telemetry=telemetry, weather=False, messages=False)
+    return session
+
+
+def plot_track_map(year, gp_key, out_dir, expected_round=None):
     """Draw the circuit layout with corner numbers annotated.
 
     Based on: https://docs.fastf1.dev/gen_modules/examples_gallery/general/plot_annotate_corners.html
     """
     print(f"  🗺️  Track map: {year} {gp_key}")
     try:
-        session = fastf1.get_session(year, gp_key, "R")
-        session.load(laps=True, telemetry=True, weather=False, messages=False)
+        session = _load_race_session(year, gp_key, expected_round, telemetry=True)
 
         lap = session.laps.pick_fastest()
         tel = lap.get_telemetry()
@@ -138,15 +154,14 @@ def plot_track_map(year, gp_key, out_dir):
 # 2. DRIVER LAP TIME DISTRIBUTION
 # ═══════════════════════════════════════════════════════════════════════════
 
-def plot_laptime_distribution(year, gp_key, out_dir):
+def plot_laptime_distribution(year, gp_key, out_dir, expected_round=None):
     """Box plot of driver lap times (like fastest lap analysis).
 
     Based on: https://docs.fastf1.dev/gen_modules/examples_gallery/lap_times/plot_laptimes_distribution.html
     """
     print(f"  📊 Lap time distribution: {year} {gp_key}")
     try:
-        session = fastf1.get_session(year, gp_key, "R")
-        session.load(laps=True, telemetry=False, weather=False, messages=False)
+        session = _load_race_session(year, gp_key, expected_round)
 
         laps = session.laps.copy()
         laps["LapTimeSec"] = laps["LapTime"].dt.total_seconds()
@@ -213,15 +228,14 @@ def plot_laptime_distribution(year, gp_key, out_dir):
 # 3. TYRE STRATEGY OVERVIEW
 # ═══════════════════════════════════════════════════════════════════════════
 
-def plot_tyre_strategy(year, gp_key, out_dir):
+def plot_tyre_strategy(year, gp_key, out_dir, expected_round=None):
     """Visualize tyre compound usage and stint lengths.
 
     Shows which compounds each driver used and for how many laps.
     """
     print(f"  🔴🟡⚪ Tyre strategy: {year} {gp_key}")
     try:
-        session = fastf1.get_session(year, gp_key, "R")
-        session.load(laps=True, telemetry=False, weather=False, messages=False)
+        session = _load_race_session(year, gp_key, expected_round)
 
         laps = session.laps.copy()
         if "Compound" not in laps.columns:
@@ -302,10 +316,14 @@ def generate_all_for_circuit(gp_key, year=SEASON_YEAR, round_num=1):
 
     enable_cache()
 
+    # Round numbers are only meaningful against the season being loaded —
+    # the same circuit sits at a different round in historical seasons, so the
+    # wrong-event guard applies only to current-season loads.
+    check_round = round_num if int(year) == int(SEASON_YEAR) else None
     results = {
-        "track_map": plot_track_map(year, gp_key, out_dir),
-        "laptime_dist": plot_laptime_distribution(year, gp_key, out_dir),
-        "tyre_strategy": plot_tyre_strategy(year, gp_key, out_dir),
+        "track_map": plot_track_map(year, gp_key, out_dir, expected_round=check_round),
+        "laptime_dist": plot_laptime_distribution(year, gp_key, out_dir, expected_round=check_round),
+        "tyre_strategy": plot_tyre_strategy(year, gp_key, out_dir, expected_round=check_round),
     }
 
     success = sum(1 for v in results.values() if v)
