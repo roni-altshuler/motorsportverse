@@ -1,0 +1,176 @@
+name: F3 — Update Race Predictions
+
+# F3 race-weekend automation, brought to parity with the F1 flagship
+# (f1-update-predictions.yml). F3 runs on F1 weekends: qualifying Friday (sets the
+# feature grid + the reverse-top-12 sprint), sprint Saturday, feature race Sunday.
+#
+# A cheap freshness gate (race_weekend.py) runs first on every poll: it is a pure
+# wall-clock check off-weekend (no network), and a single live probe of
+# fiaformula3.com on-weekend. Only when the live feed has genuinely new data the
+# committed snapshot lacks — fresh qualifying (→ a post-quali forecast) or an
+# official result (→ post-race standings + the model-vs-actual accuracy report) —
+# does it run the heavy refresh → export → eval → deploy. This cuts F3's result
+# latency from a week (the old Monday-only refresh) to within one poll interval.
+#
+# Unlike F1 (flat src layout), F3 installs as editable pip packages, so every step
+# runs from the repo root as `python -m f3_predictions.*`; the snapshot + website
+# data paths resolve relative to the package regardless of CWD.
+
+on:
+  schedule:
+    # ── Friday: qualifying sets the grid. Poll across the global quali window so a
+    #    post-quali forecast publishes within ~15 min of the session. ──
+    - cron: "*/15 6-21 * * 5"
+    # ── Saturday: sprint race. ──
+    - cron: "*/15 4-23 * * 6"
+    # ── Sunday: feature race — the official result + accuracy report ASAP. ──
+    - cron: "*/15 4-23 * * 0"
+    # ── Post-weekend safety net for a late-publishing source. ──
+    - cron: "0 */4 * * 1"   # Monday every 4 hours
+    - cron: "0 8,20 * * 2"  # Tuesday twice
+  workflow_dispatch:
+    inputs:
+      round:
+        description: "Round number, or 'next' for the upcoming round"
+        required: true
+        default: "next"
+      force:
+        description: "Run the heavy pipeline even if the freshness gate says no work"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: f3-update-predictions
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      # Surfaced to the deploy job so a full Pages rebuild only happens when new
+      # data was actually pushed (not on every no-op freshness poll).
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f3-predictions xgboost
+
+      - name: Determine round
+        id: config
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.round }}" = "next" ]; then
+            ROUND=$(python -m f3_predictions.race_weekend --detect-round)
+          else
+            ROUND="${{ github.event.inputs.round }}"
+          fi
+          echo "round=$ROUND" >> "$GITHUB_OUTPUT"
+          echo "Active F3 round: $ROUND"
+
+      - name: Freshness gate — should this poll do real work?
+        id: check
+        run: |
+          ROUND="${{ steps.config.outputs.round }}"
+          FORCE="${{ github.event.inputs.force }}"
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "$FORCE" = "true" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual force-run — skipping the freshness gate."
+            exit 0
+          fi
+
+          IS_WEEKEND=$(python -m f3_predictions.race_weekend --round "$ROUND" --is-race-weekend)
+          # Probe on EVERY poll, not only inside the weekend window. check_work_pending
+          # now also sweeps for a PRIOR round stranded without its official result —
+          # fiaformula3.com frequently lags past the race weekend, so the result often
+          # isn't scrapeable until after the window closes (exactly what happened to
+          # the F2 Austrian feature race (same failure mode)). Gating the sweep behind is_race_weekend left
+          # such a result unrecoverable once detect_target_round advanced to the next
+          # round; the off-weekend Mon/Tue safety nets could never heal it. The sweep
+          # is network-free unless a real candidate (a past race absent from the
+          # snapshot) exists, so idle off-weekend polls stay cheap.
+          PENDING=$(python -m f3_predictions.race_weekend --round "$ROUND" --check-work-pending | tail -1)
+          PHASE=$(python -m f3_predictions.race_weekend --round "$ROUND" --phase | tail -1)
+          echo "   Work pending for round $ROUND: $PENDING (phase: $PHASE, race weekend: $IS_WEEKEND)"
+          SHOULD_RUN=false
+          if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          if [ "$SHOULD_RUN" != "true" ]; then
+            echo "⏭️  Nothing new to publish — skipping the heavy pipeline this poll."
+          fi
+
+      - name: Refresh the real snapshot from fiaformula3.com (live)
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          # Live scrape: pulls newly-published qualifying + results into the
+          # committed snapshot. Every downstream build reads the snapshot offline,
+          # so a flaky source can never ship wrong data — it just no-ops the run.
+          F3_USE_LIVE_RESULTS: "1"
+        run: python -m f3_predictions.refresh --season 2026
+
+      - name: Regenerate site dataset + continuous-learning artifacts
+        if: steps.check.outputs.should_run == 'true'
+        run: |
+          # Default (offline) mode: reads the freshly-committed snapshot, so the
+          # build is reproducible. export picks up real qualifying for the upcoming
+          # round (post-quali forecast) and any newly-completed round's results.
+          python -m f3_predictions.export
+          python -m f3_predictions.forward_eval --season 2026 --allow-empty
+          python -m f3_predictions.drift_report --season 2026 --allow-empty
+          python -m f3_predictions.promotion_decision --season 2026 --allow-empty
+
+      - name: Validate generated outputs
+        if: steps.check.outputs.should_run == 'true'
+        run: |
+          # Schema + sanity gate against the freshly-generated JSON before commit,
+          # so degenerate output (missing drivers, duplicate positions, broken
+          # contract) never reaches GitHub Pages. Mirrors the F1 flagship's gate.
+          cd projects/f3-predictions
+          PYTHONPATH=src python -m pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py -q
+
+      - name: Commit refreshed data if changed
+        id: commit
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f projects/f3-predictions/data/official_2026.json \
+                     projects/f3-predictions/website/public/data
+          if git diff --cached --quiet; then
+            echo "No data changes — snapshot already current."
+            exit 0
+          fi
+          ROUND="${{ steps.config.outputs.round }}"
+          git commit -m "[f3] Update round $ROUND ($(date -u +%Y-%m-%d))"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash .github/scripts/safe_push.sh
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: predict
+    # Only rebuild + redeploy when the predict job actually pushed new data. A bot
+    # push using GITHUB_TOKEN does NOT auto-trigger deploy-website.yml's `push`
+    # event (GitHub's recursion guard), so deploy is wired here as needs:predict —
+    # gated so no-op freshness polls skip it. Same pattern as the F1 flagship.
+    if: needs.predict.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy-website.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

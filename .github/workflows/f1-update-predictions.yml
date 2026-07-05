@@ -86,6 +86,11 @@ jobs:
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
+      - name: Install shared monorepo packages
+        # motorsport-core powers the keyFactors explainability export (and
+        # degrades to omitting the field when absent — install it so production
+        # data actually carries the factors).
+        run: pip install -e ../../packages/motorsport-core -e ../../packages/motorsport-data
 
       - name: Determine season, round and phase
         id: config

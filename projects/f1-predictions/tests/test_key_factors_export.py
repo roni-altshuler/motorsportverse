@@ -9,7 +9,14 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+import pytest
+
 import export_website_data as ewd
+
+# The factor generator lives in the shared monorepo package and the export
+# degrades to omitting keyFactors without it; these tests exercise the wired
+# path, so skip (rather than fail) in a standalone env without the package.
+pytest.importorskip("motorsport_core.explain")
 
 
 class _FakeModel:
