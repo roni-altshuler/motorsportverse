@@ -53,12 +53,23 @@ class SeasonData(_Loose):
     drivers: list[DriverInfo] = Field(default_factory=list)
 
 
+class KeyFactor(_Loose):
+    # Mirror of `KeyFactor` in website/src/types/index.ts.
+    factor: str
+    weight: float
+    direction: str
+
+
 class ClassificationEntry(_Loose):
     position: int
     driver: str
     team: str
     predictedTime: float
     points: int
+    # Mirror of `ClassificationEntry.dnfProbability` in website/src/types/index.ts.
+    dnfProbability: Optional[float] = None
+    # Mirror of `ClassificationEntry.keyFactors` in website/src/types/index.ts.
+    keyFactors: Optional[list[KeyFactor]] = None
     # Mirror of `ClassificationEntry.headshotUrl` in website/src/types/index.ts.
     headshotUrl: Optional[str] = None
 

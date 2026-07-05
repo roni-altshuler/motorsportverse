@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CommandPaletteHint } from "@/components/landing/CommandPaletteHint";
+import { CoverageWall, type CoverageItem } from "@/components/landing/CoverageWall";
 import { EcosystemDiagram } from "@/components/landing/EcosystemDiagram";
 import { FeatureBento } from "@/components/landing/FeatureBento";
 import { PredictionTicker } from "@/components/landing/PredictionTicker";
@@ -10,17 +11,26 @@ import { ShowcaseRail } from "@/components/landing/ShowcaseRail";
 import { SeriesMarquee } from "@/components/SeriesMarquee";
 import { VerseHero } from "@/components/hero/VerseHero";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { getMaturityCounts, getProjects } from "@/lib/registry";
+import { getProjects } from "@/lib/registry";
 import { synthTickerRows } from "@/lib/ticker";
+
+const maturityRank = (m: string) =>
+  m === "production" ? 0 : m === "experimental" ? 1 : m === "in-development" ? 2 : 3;
 
 export default function HomePage() {
   const projects = getProjects();
-  const counts = getMaturityCounts();
 
-  const operational = projects.filter(
-    (p) => p.maturity === "production" || p.maturity === "experimental",
-  );
+  const operational = projects
+    .filter((p) => p.maturity === "production" || p.maturity === "experimental")
+    .sort((a, b) => maturityRank(a.maturity) - maturityRank(b.maturity));
+  const inDevelopment = projects.filter((p) => p.maturity === "in-development");
   const tickerRows = synthTickerRows(projects);
+
+  // Registry-driven ecosystem numbers (computed once, at build time).
+  const seriesCovered = projects.length;
+  const liveProducts = operational.length;
+  const coreModules = new Set(projects.flatMap((p) => p.uses_core ?? [])).size;
+  const modelsShipping = projects.reduce((n, p) => n + (p.models?.length ?? 0), 0);
 
   const marqueeItems = projects.map((p) => ({
     key: p.slug,
@@ -30,18 +40,27 @@ export default function HomePage() {
     maturity: p.maturity,
   }));
 
+  const wallItems: CoverageItem[] = projects
+    .slice()
+    .sort((a, b) => maturityRank(a.maturity) - maturityRank(b.maturity))
+    .map((p) => ({
+      slug: p.slug,
+      sport: p.sport,
+      icon: p.icon,
+      accent: p.accent || "#e7102f",
+      maturity: p.maturity,
+      website: p.website || undefined,
+    }));
+
   const diagramSports = projects
     .slice()
-    .sort((a, b) => {
-      const rank = (m: string) => (m === "production" ? 0 : m === "experimental" ? 1 : 2);
-      return rank(a.maturity) - rank(b.maturity);
-    })
+    .sort((a, b) => maturityRank(a.maturity) - maturityRank(b.maturity))
     .map((p) => ({ slug: p.slug, sport: p.sport, icon: p.icon, accent: p.accent || "#e7102f" }));
 
   const heroStats = [
-    { value: String(projects.length), label: "Projects" },
-    { value: String(counts.production ?? 0), label: "In production" },
-    { value: String(counts.experimental ?? 0), label: "Experimental" },
+    { value: String(seriesCovered), label: "Racing series" },
+    { value: String(liveProducts), label: "Live products" },
+    { value: String(inDevelopment.length), label: "In build" },
     { value: "2", label: "Shared packages" },
   ];
 
@@ -56,8 +75,20 @@ export default function HomePage() {
       {/* ====================== PRODUCT FILM (how it works) ====================== */}
       <ProductFilm />
 
+      {/* ====================== ECOSYSTEM IN NUMBERS (registry-driven) ====================== */}
+      <section className="section pt-0">
+        <div className="shell">
+          <Reveal className="card-premium grid grid-cols-2 gap-px overflow-hidden bg-[var(--line)] sm:grid-cols-4">
+            <CredStat value={seriesCovered} label="Racing series covered" />
+            <CredStat value={liveProducts} label="Live prediction products" />
+            <CredStat value={coreModules} label="Shared core modules" />
+            <CredStat value={modelsShipping} label="Prediction models shipping" />
+          </Reveal>
+        </div>
+      </section>
+
       {/* ====================== SERIES MARQUEE ====================== */}
-      <section className="py-14">
+      <section className="pb-14">
         <p className="mono-label shell mb-6">Spanning the grid</p>
         <SeriesMarquee items={marqueeItems} />
       </section>
@@ -98,28 +129,36 @@ export default function HomePage() {
           <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="eyebrow eyebrow-accent eyebrow-tick">Live now</p>
-              <h2 className="mt-3 text-[length:var(--text-4xl)]">Operational projects</h2>
+              <h2 className="mt-3 text-[length:var(--text-4xl)]">
+                {liveProducts} products, forecasting real seasons
+              </h2>
             </div>
             <Link
               href="/projects"
               className="text-sm font-medium text-[var(--accent-text)] transition-colors hover:text-[var(--accent-bright)]"
             >
-              View all {projects.length} →
+              View all {seriesCovered} →
             </Link>
           </Reveal>
           <ShowcaseRail projects={operational} />
         </div>
       </section>
 
-      {/* ====================== CREDIBILITY RAIL ====================== */}
+      {/* ====================== SERIES COVERAGE WALL ====================== */}
       <section className="section pt-0">
         <div className="shell">
-          <Reveal className="card-premium grid grid-cols-2 gap-px overflow-hidden bg-[var(--line)] sm:grid-cols-4">
-            <CredStat value={projects.length} label="Sports registered" />
-            <CredStat value={74} suffix="%" label="Core reuse (F2)" />
-            <CredStat value={10} suffix="+" label="Shared modules" />
-            <CredStat value={2} label="Live dashboards" />
+          <Reveal className="mb-10 max-w-2xl">
+            <p className="eyebrow eyebrow-accent eyebrow-tick">Series coverage</p>
+            <h2 className="mt-3 text-[length:var(--text-4xl)]">
+              {seriesCovered} series. One playbook.
+            </h2>
+            <p className="lead mt-4">
+              {liveProducts} products publish calibrated forecasts today. Every other series is
+              already scaffolded on the same two seams — and inherits the shared core the day its
+              data feed lands.
+            </p>
           </Reveal>
+          <CoverageWall items={wallItems} />
         </div>
       </section>
 
@@ -163,7 +202,7 @@ export default function HomePage() {
 
 function CredStat({ value, label, suffix }: { value: number; label: string; suffix?: string }) {
   return (
-    <div className="bg-[var(--surface)] px-6 py-10 text-center">
+    <div className="bg-[var(--surface)] px-4 py-10 text-center sm:px-6">
       <div className="font-display text-4xl font-bold text-[var(--ink)]">
         <NumberTicker value={value} />
         {suffix}

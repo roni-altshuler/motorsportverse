@@ -1630,6 +1630,30 @@
         "BOT": {
           "position": 22
         }
+      },
+      "actualStatus": {
+        "RUS": "1",
+        "VER": "2",
+        "ANT": "3",
+        "PIA": "4",
+        "HAM": "5",
+        "HAD": "6",
+        "NOR": "7",
+        "LEC": "8",
+        "LAW": "9",
+        "LIN": "10",
+        "BOR": "11",
+        "HUL": "12",
+        "GAS": "13",
+        "BEA": "14",
+        "COL": "15",
+        "OCO": "16",
+        "ALB": "17",
+        "ALO": "18",
+        "STR": "19",
+        "SAI": "20",
+        "PER": "21",
+        "BOT": "22"
       }
     },
     "10": {
@@ -3049,7 +3073,15 @@
       "points_hits": 10,
       "points_total": 10,
       "points_accuracy_pct": 100.0,
-      "accuracy_pct": 60.0
+      "accuracy_pct": 60.0,
+      "mean_position_error_classified": 1.82,
+      "exact_matches_classified": 4,
+      "within_3_classified": 20,
+      "within_5_classified": 21,
+      "total_classified": 22,
+      "accuracy_pct_classified": 90.9,
+      "within_5_pct_classified": 95.5,
+      "dnf_count": 0
     }
   }
 }

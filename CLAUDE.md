@@ -15,9 +15,12 @@ Reusable code was lifted into two pip packages; each sport is a thin project on 
 ```
 packages/motorsport-core    shared ML: calibration (Plackett-Luce), championship MC,
                             standings, elo, conformal, eval, drift, promotion, registry, leakage
-packages/motorsport-data    canonical pydantic schema, DataSource ABC, DuckDB HistoryStore
+packages/motorsport-data    canonical pydantic schema, DataSource ABC, DuckDB HistoryStore,
+                            shared FIA feeder-series scraper (sources/fia_feeder.py)
 projects/f1-predictions     flagship & reference implementation (own pipeline + Next.js site)
 projects/f2-predictions     first sport on the core (backend + its own Next.js site)
+projects/f3-predictions     third series at F2 parity (real 2026 season; gold-themed site)
+projects/<8 more>           scaffolded series (in-development): DataSource+Predictor stubs
 website/                    ecosystem hub: landing + project catalog (Next.js)
 registry/projects/*.json    the catalog — source of truth for which sports exist
 scripts/                    build_registry*.{py,mjs} (validate+emit catalog), new_project.py
@@ -45,7 +48,7 @@ run its tests by adding `src/` to the path instead of installing it:
 # Packages
 PYTHONPATH=packages/motorsport-core/src  .venv/bin/python -m pytest packages/motorsport-core -q
 PYTHONPATH=packages/motorsport-data/src  .venv/bin/python -m pytest packages/motorsport-data -q
-# F2 (run from the project dir; src layout)
+# F2/F3 (run from the project dir; src layout — same pattern for both)
 cd projects/f2-predictions && PYTHONPATH=src ../../.venv/bin/python -m pytest -q
 PYTHONPATH=src ../../.venv/bin/python -m pytest tests/test_model_f2.py -q     # single file
 # Lint (what CI runs)
@@ -86,6 +89,15 @@ skill through two race-type heads: a **merit feature race** and a **reverse-grid
 `None`/GBR-only silently when deps are missing — `xgboost` is optional (CI installs it
 for the full ensemble; without it `ml_skill` falls back to GBR alone, since scikit-learn
 ships via `motorsport-core`).
+
+**The FIA feeder scraper is shared.** fiaformula2.com and fiaformula3.com run the
+same CMS, so the regex parser/calendar/entry-list machinery lives in
+`motorsport_data.sources.fia_feeder.FiaFeederSource`; `FiaF2Source`/`FiaF3Source`
+are thin bindings that inject base URL + season anchor raceids + session headings.
+F2's fixture-HTML tests are the parsing contract — never change the regexes
+without running them. F3-specific sporting facts (9-round 2026 calendar after the
+Sakhir cancellation, 30-car grid, reverse-top-12 sprint, sprint points 10..1)
+were verified against the live site and are encoded in F3's `config.py`.
 
 **F2 data source seam.** `datasource.py` picks `CompositeF2Source` when
 `F2_USE_LIVE_RESULTS=1` (real fiaformula2.com scrape via `sources/fia_f2_source.py`, with

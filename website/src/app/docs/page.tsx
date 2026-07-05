@@ -18,7 +18,7 @@ const SECTIONS = [
   },
   {
     title: "motorsport-core API",
-    body: "Calibration, registry, drift, promotion, Elo, and evaluation reference.",
+    body: "Calibration, model registry, drift, promotion, driver-skill ratings, and evaluation reference.",
     href: "https://github.com/roni-altshuler/motorsportverse/blob/main/docs/core-api.md",
   },
   {

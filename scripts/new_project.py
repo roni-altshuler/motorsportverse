@@ -8,6 +8,10 @@ Usage:
 Creates ``projects/<slug>/`` from the template (substituting placeholders) and a
 registry entry ``registry/projects/<slug>.json`` at maturity ``concept``. Run
 ``scripts/build_registry.py`` afterwards to validate + rebuild the index.
+
+Pass ``--skip-registry`` when the catalog already carries a curated entry for
+the slug — the scaffold then only creates the project tree and NEVER overwrites
+registry/projects/<slug>.json.
 """
 from __future__ import annotations
 
@@ -25,6 +29,16 @@ CATEGORIES = ["open-wheel", "stock", "endurance", "rally", "motorcycle", "electr
 
 def _pkg_name(slug: str) -> str:
     return slug.replace("-", "_")
+
+
+def _icon_path(slug: str) -> str:
+    """Prefer an existing brand icon (curated entries use .png) over a dead link."""
+    key = slug.removesuffix("-predictions")
+    brand = ROOT / "website" / "public" / "brand" / "sports"
+    for ext in ("png", "svg"):
+        if (brand / f"{key}.{ext}").exists():
+            return f"/brand/sports/{key}.{ext}"
+    return f"/brand/sports/{key}.svg"
 
 
 def _substitute(text: str, mapping: dict[str, str]) -> str:
@@ -60,7 +74,18 @@ def scaffold(args: argparse.Namespace) -> int:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(_substitute(src.read_text(), mapping))
 
-    # Registry entry (concept).
+    # Registry entry (concept). Never clobber a curated entry.
+    reg_path = REGISTRY / f"{slug}.json"
+    if args.skip_registry:
+        print(f"Created projects/{slug}/ (registry untouched: --skip-registry)")
+        print("Next: update the curated registry entry, then python scripts/build_registry.py")
+        return 0
+    if reg_path.exists():
+        print(
+            f"ERROR: {reg_path} already exists — refusing to overwrite a curated "
+            f"entry. Re-run with --skip-registry to scaffold the project tree only."
+        )
+        return 1
     entry = {
         "slug": slug,
         "name": mapping["__NAME__"],
@@ -75,13 +100,13 @@ def scaffold(args: argparse.Namespace) -> int:
         "datasets": [],
         "models": [],
         "tags": ["concept"],
-        "icon": f"/brand/sports/{slug.split('-')[0]}.svg",
+        "icon": _icon_path(slug),
         "accent": args.accent,
         "uses_core": ["calibration", "eval"],
         "maintainers": [],
         "added": args.added,
     }
-    (REGISTRY / f"{slug}.json").write_text(json.dumps(entry, indent=2) + "\n")
+    reg_path.write_text(json.dumps(entry, indent=2) + "\n")
 
     print(f"Created projects/{slug}/ and registry/projects/{slug}.json")
     print("Next: python scripts/build_registry.py")
@@ -97,6 +122,11 @@ def main() -> int:
     p.add_argument("--category", default="open-wheel", choices=CATEGORIES)
     p.add_argument("--accent", default="#38e1c6", help="Hex accent color")
     p.add_argument("--added", default="", help="ISO date registered (pass today's date)")
+    p.add_argument(
+        "--skip-registry",
+        action="store_true",
+        help="scaffold the project tree only; leave registry/projects/<slug>.json untouched",
+    )
     if not TEMPLATE.exists():
         print(f"ERROR: template missing at {TEMPLATE}", flush=True)
         return 1

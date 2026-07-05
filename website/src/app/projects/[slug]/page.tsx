@@ -5,7 +5,10 @@ import { notFound } from "next/navigation";
 
 import { MaturityBadge } from "@/components/MaturityBadge";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ArchitecturePreview } from "@/components/project/ArchitecturePreview";
 import { asset } from "@/lib/asset";
+import { accentText } from "@/lib/color";
+import { coreLabel, modelLabel, scrubTech, tagLabel } from "@/lib/labels";
 import { getProject, getProjects } from "@/lib/registry";
 
 export function generateStaticParams() {
@@ -20,7 +23,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return { title: "Project not found — MotorsportVerse" };
-  return { title: `${project.name} — MotorsportVerse`, description: project.summary };
+  return { title: `${project.name} — MotorsportVerse`, description: scrubTech(project.summary) };
 }
 
 export default async function ProjectDetailPage({
@@ -33,6 +36,8 @@ export default async function ProjectDetailPage({
   if (!project) notFound();
 
   const accent = project.accent || "var(--accent)";
+  const isScaffold = project.maturity === "in-development" || project.maturity === "concept";
+  const isExperimental = project.maturity === "experimental";
   const all = getProjects();
   const related = all
     .filter((p) => p.slug !== project.slug && p.category === project.category)
@@ -98,7 +103,7 @@ export default async function ProjectDetailPage({
                     </span>
                   )}
                   <div>
-                    <h1 className="display text-5xl">{project.name}</h1>
+                    <h1 className="display text-4xl sm:text-5xl">{project.name}</h1>
                     <p className="mono-label mt-2">
                       {project.sport} · {project.category}
                     </p>
@@ -110,8 +115,49 @@ export default async function ProjectDetailPage({
           </div>
 
           <p className="lead mt-8 max-w-3xl text-balance">
-            {project.description || project.summary}
+            {scrubTech(project.description || project.summary)}
           </p>
+
+          {isExperimental && (
+            <div
+              className="mt-6 flex max-w-3xl items-start gap-3 rounded-[var(--radius-md)] border px-4 py-3.5 text-sm leading-relaxed text-[var(--ink-muted)]"
+              style={{
+                borderColor: "color-mix(in srgb, var(--maturity-experimental) 35%, transparent)",
+                background: "color-mix(in srgb, var(--maturity-experimental) 7%, transparent)",
+              }}
+            >
+              <span
+                className="live-dot mt-1.5 shrink-0"
+                style={{ ["--dot-color" as string]: "var(--maturity-experimental)" }}
+                aria-hidden
+              />
+              <span>
+                <strong className="font-semibold text-[var(--maturity-experimental)]">
+                  Experimental.
+                </strong>{" "}
+                This product runs on the real season, but its forward accuracy is still accruing
+                over live rounds — read the forecasts with that track record in mind.
+              </span>
+            </div>
+          )}
+
+          {isScaffold && (
+            <div className="mt-6 flex max-w-3xl items-start gap-3 rounded-[var(--radius-md)] border border-[var(--line)] bg-[var(--surface)]/60 px-4 py-3.5 text-sm leading-relaxed text-[var(--ink-muted)]">
+              <span
+                className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full border"
+                style={{ borderColor: "var(--maturity-in-development)" }}
+                aria-hidden
+              />
+              <span>
+                <strong className="font-semibold text-[var(--maturity-in-development)]">
+                  Scaffolded.
+                </strong>{" "}
+                The project tree is real and lives in the monorepo — no forecasts publish until its
+                two seams are implemented. The architecture preview below shows exactly what it
+                inherits.
+              </span>
+            </div>
+          )}
 
           <div className="mt-8 flex flex-wrap gap-3">
             {project.website && (
@@ -128,26 +174,51 @@ export default async function ProjectDetailPage({
                 </svg>
               </a>
             )}
-            {project.repo && <LinkButton href={project.repo} label="Repository" accent={accent} />}
+            {project.repo && <LinkButton href={project.repo} label="Source" accent={accent} />}
             {project.docs && <LinkButton href={project.docs} label="Docs" accent={accent} />}
           </div>
         </div>
       </section>
 
+      {/* ====================== ARCHITECTURE PREVIEW (scaffolds) ====================== */}
+      {isScaffold && (
+        <section className="shell section pb-0">
+          <ArchitecturePreview
+            sport={project.sport}
+            accent={accent}
+            repo={project.repo}
+            docs={project.docs}
+            usesCore={project.uses_core}
+          />
+        </section>
+      )}
+
       {/* ====================== AT A GLANCE ====================== */}
-      <section className="shell section">
-        <div className="grid gap-px overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4">
+      <section className={`shell section ${isScaffold ? "pt-12" : ""}`}>
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4">
           <Glance label="Category" value={project.category} />
           <Glance label="Datasets" value={String((project.datasets ?? []).length)} />
-          <Glance label="Models" value={String((project.models ?? []).length)} />
+          {isScaffold ? (
+            <Glance label="Seams to implement" value="2" />
+          ) : (
+            <Glance label="Model components" value={String((project.models ?? []).length)} />
+          )}
           <Glance label="Core modules" value={String((project.uses_core ?? []).length)} />
         </div>
 
         <div className="mt-12 grid gap-5 lg:grid-cols-2">
           <MetaList title="Datasets" items={project.datasets} accent={accent} />
-          <MetaList title="Models" items={project.models} accent={accent} />
-          <MetaList title="Shared core modules" items={project.uses_core} accent={accent} mono />
-          <MetaList title="Tags" items={project.tags} accent={accent} />
+          <MetaList
+            title="Model components"
+            items={(project.models ?? []).map(modelLabel)}
+            accent={accent}
+          />
+          <MetaList
+            title="Shared core modules"
+            items={(project.uses_core ?? []).map(coreLabel)}
+            accent={accent}
+          />
+          <MetaList title="Tags" items={(project.tags ?? []).map(tagLabel)} accent={accent} />
         </div>
 
         {project.maintainers && project.maintainers.length > 0 && (
@@ -202,7 +273,10 @@ function LinkButton({ href, label, accent }: { href: string; label: string; acce
       target="_blank"
       rel="noreferrer"
       className="rounded-[var(--radius-pill)] border px-5 py-2.5 text-sm font-medium transition-colors"
-      style={{ color: accent, borderColor: `color-mix(in srgb, ${accent} 45%, transparent)` }}
+      style={{
+        color: accentText(accent),
+        borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
+      }}
     >
       {label} →
     </a>
@@ -222,12 +296,10 @@ function MetaList({
   title,
   items,
   accent,
-  mono = false,
 }: {
   title: string;
   items?: string[];
   accent: string;
-  mono?: boolean;
 }) {
   if (!items || items.length === 0) return null;
   return (
@@ -237,9 +309,7 @@ function MetaList({
         {items.map((it) => (
           <li
             key={it}
-            className={`rounded-full border bg-[var(--surface-2)] px-3 py-1 text-xs text-[var(--ink-muted)] ${
-              mono ? "font-mono tracking-wide" : ""
-            }`}
+            className="rounded-full border bg-[var(--surface-2)] px-3 py-1 text-xs text-[var(--ink-muted)]"
             style={{ borderColor: `color-mix(in srgb, ${accent} 24%, var(--line))` }}
           >
             {it}

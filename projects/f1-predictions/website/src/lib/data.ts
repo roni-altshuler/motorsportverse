@@ -7,6 +7,7 @@ import {
   RaceCalendarEntry,
   RoundLifecycle,
   ChampionshipForecast,
+  ProbabilityRoundData,
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -32,6 +33,25 @@ export async function fetchRoundData(round: number, base: string = BASE_PATH): P
   const res = await fetch(`${base}/rounds/round_${pad}.json`);
   if (!res.ok) throw new Error(`Failed to fetch round ${round} data`);
   return res.json();
+}
+
+/**
+ * Probability-layer output for one round (win/podium/top-6/top-10 markets +
+ * head-to-head matrix). Not every round has one — returns null instead of
+ * throwing so consumers can degrade gracefully.
+ */
+export async function fetchProbabilityData(
+  round: number,
+  base: string = BASE_PATH,
+): Promise<ProbabilityRoundData | null> {
+  try {
+    const pad = round.toString().padStart(2, "0");
+    const res = await fetch(`${base}/probabilities/round_${pad}.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchStandingsData(base: string = BASE_PATH): Promise<StandingsData> {
@@ -151,21 +171,24 @@ export function getRoundStatusMeta(status: RoundLifecycle): {
         label: "Postponed",
         shortLabel: "Postponed",
         tone: "amber",
-        description: "This Grand Prix has been postponed and will be updated once a new date is confirmed.",
+        description:
+          "This Grand Prix has been postponed and will be updated once a new date is confirmed.",
       };
     case "live-weekend":
       return {
         label: "Grand Prix Weekend Live",
         shortLabel: "Live Weekend",
         tone: "red",
-        description: "This race weekend is active. The page should showcase the latest forecast and live-ready analysis.",
+        description:
+          "This race weekend is active. The page should showcase the latest forecast and live-ready analysis.",
       };
     case "awaiting-results":
       return {
         label: "Results Syncing",
         shortLabel: "Syncing",
         tone: "amber",
-        description: "The race has run, and the site is waiting to publish the official finishing order.",
+        description:
+          "The race has run, and the site is waiting to publish the official finishing order.",
       };
     case "prediction-ready":
       return {
@@ -179,7 +202,8 @@ export function getRoundStatusMeta(status: RoundLifecycle): {
         label: "Preview Scheduled",
         shortLabel: "Upcoming",
         tone: "slate",
-        description: "This Grand Prix is on the calendar, and the model forecast will appear before the race weekend.",
+        description:
+          "This Grand Prix is on the calendar, and the model forecast will appear before the race weekend.",
       };
   }
 }
@@ -245,7 +269,9 @@ export async function fetchWeatherData(base: string = BASE_PATH): Promise<Weathe
   }
 }
 
-export async function fetchSeasonTrackerData(base: string = BASE_PATH): Promise<SeasonTrackerData | null> {
+export async function fetchSeasonTrackerData(
+  base: string = BASE_PATH,
+): Promise<SeasonTrackerData | null> {
   try {
     const res = await fetch(`${base}/season_tracker.json`);
     if (!res.ok) return null;
@@ -255,7 +281,9 @@ export async function fetchSeasonTrackerData(base: string = BASE_PATH): Promise<
   }
 }
 
-export async function fetchChampionshipForecast(base: string = BASE_PATH): Promise<ChampionshipForecast | null> {
+export async function fetchChampionshipForecast(
+  base: string = BASE_PATH,
+): Promise<ChampionshipForecast | null> {
   try {
     const res = await fetch(`${base}/championship_forecast.json`);
     if (!res.ok) return null;

@@ -42,6 +42,18 @@ export function NumberTicker({
     }).format(direction === "down" ? value : startValue),
   );
 
+  // Failsafe (mirrors useReveal): never leave the number stuck at its start
+  // value if the in-view trigger doesn't fire (headless capture, prerender,
+  // odd engines). Snaps straight to the final value — no animation.
+  useEffect(() => {
+    if (isInView) return;
+    const t = window.setTimeout(
+      () => motionValue.jump(direction === "down" ? startValue : value),
+      1500,
+    );
+    return () => window.clearTimeout(t);
+  }, [isInView, motionValue, direction, startValue, value]);
+
   useEffect(() => {
     if (!isInView) return;
     if (reduced) {

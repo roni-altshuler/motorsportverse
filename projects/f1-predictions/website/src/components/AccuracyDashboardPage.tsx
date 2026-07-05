@@ -10,6 +10,7 @@ import { getSeasonYear } from "@/lib/season";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
+import LoadingTire from "@/components/ui/LoadingTire";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 
@@ -26,37 +27,25 @@ export default function AccuracyDashboardPage() {
         else setTracker(d);
       })
       .catch(() => setError(true));
-    fetchSeasonData(basePath).then(setSeason).catch(() => {});
+    fetchSeasonData(basePath)
+      .then(setSeason)
+      .catch(() => {});
   }, [basePath]);
 
   if (error) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-        <h1
-          className="text-3xl font-black mb-4"
-          style={{ color: "var(--text)" }}
-        >
-          Accuracy Data Not Available
-        </h1>
-        <p className="mb-6" style={{ color: "var(--text-muted)" }}>
-          Run the pipeline with{" "}
-          <code
-            className="px-2 py-0.5 rounded text-xs font-mono"
-            style={{
-              background: "var(--bg-surface)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            --advanced
-          </code>{" "}
-          to generate prediction accuracy tracking data.
-        </p>
-        <Link
-          href="/"
-          className="text-f1-red hover:text-f1-accent font-medium transition-colors"
-        >
-          Back to Home
-        </Link>
+      <div className="max-w-3xl mx-auto px-4 py-20">
+        <div className="empty-state-hud">
+          <p className="eyebrow mb-4">Scoreboard offline</p>
+          <h1 className="display-md mb-4">Accuracy Data Not Available</h1>
+          <p className="body-md mb-8" style={{ color: "var(--text-muted)" }}>
+            Season accuracy tracking publishes automatically once the first Grand Prix of the season
+            has been graded against the official result.
+          </p>
+          <Link href="/" className="link-bugatti">
+            ← Back to Home
+          </Link>
+        </div>
       </div>
     );
   }
@@ -64,12 +53,7 @@ export default function AccuracyDashboardPage() {
   if (!tracker) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-3 border-f1-red border-t-transparent rounded-full animate-spin" />
-          <div className="text-lg" style={{ color: "var(--text-muted)" }}>
-            Loading accuracy data...
-          </div>
-        </div>
+        <LoadingTire label="Loading accuracy data" />
       </div>
     );
   }
@@ -95,17 +79,13 @@ export default function AccuracyDashboardPage() {
       >
         <p className="eyebrow mb-4">Model Performance</p>
         <h1 className="display-xl mb-4 [font-weight:700]">
-          <AnimatedGradientText
-            speed={10}
-            colorFrom="#E10600"
-            colorTo="#FFD166"
-          >
+          <AnimatedGradientText speed={10} colorFrom="#E10600" colorTo="#FFD166">
             Prediction Accuracy
           </AnimatedGradientText>
         </h1>
         <p className="body-md text-[color:var(--muted)]">
-          Track how our model predictions compare to actual race results
-          across the {seasonYear} season
+          Track how our model predictions compare to actual race results across the {seasonYear}{" "}
+          season
         </p>
       </motion.div>
 
@@ -123,7 +103,9 @@ export default function AccuracyDashboardPage() {
               const accPct = tracker.overallAccuracy.seasonAccuracyPct;
               const podiumPct = tracker.overallAccuracy.seasonPodiumAccuracyPct;
               const pointsPct = tracker.overallAccuracy.seasonPointsAccuracyPct;
-              const meanErr = tracker.overallAccuracy.seasonMeanErrorClassified ?? tracker.overallAccuracy.seasonMeanError;
+              const meanErr =
+                tracker.overallAccuracy.seasonMeanErrorClassified ??
+                tracker.overallAccuracy.seasonMeanError;
               const hasClassified = tracker.overallAccuracy.seasonMeanErrorClassified != null;
               return (
                 <>
@@ -136,8 +118,8 @@ export default function AccuracyDashboardPage() {
                           accPct >= 70
                             ? "var(--success)"
                             : accPct >= 50
-                            ? "var(--warning)"
-                            : "var(--accent-f1-red)",
+                              ? "var(--warning)"
+                              : "var(--accent-f1-red)",
                       }}
                     >
                       <NumberTicker value={accPct} decimalPlaces={0} />
@@ -163,8 +145,8 @@ export default function AccuracyDashboardPage() {
                           meanErr <= 2
                             ? "var(--success)"
                             : meanErr <= 4
-                            ? "var(--warning)"
-                            : "var(--accent-f1-red)",
+                              ? "var(--warning)"
+                              : "var(--accent-f1-red)",
                       }}
                     >
                       <NumberTicker value={meanErr} decimalPlaces={1} />
@@ -195,7 +177,12 @@ export default function AccuracyDashboardPage() {
             </div>
           </div>
           <p className="text-xs mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            Season accuracy is a <strong style={{ color: "var(--text)" }}>podium-weighted blend</strong> (60% podium, 40% points) of how often the model puts the <strong style={{ color: "var(--text)" }}>right drivers</strong> on the podium (top 3) and in the points (top 10) — a more meaningful benchmark than ordering all 22 cars. Mean position error and within-3 figures are shown alongside for full transparency.
+            Season accuracy is a{" "}
+            <strong style={{ color: "var(--text)" }}>podium-weighted blend</strong> (60% podium, 40%
+            points) of how often the model puts the{" "}
+            <strong style={{ color: "var(--text)" }}>right drivers</strong> on the podium (top 3)
+            and in the points (top 10) — a more meaningful benchmark than ordering all 22 cars. Mean
+            position error and within-3 figures are shown alongside for full transparency.
           </p>
         </motion.div>
       )}
@@ -211,8 +198,8 @@ export default function AccuracyDashboardPage() {
           <div className="mb-5">
             <h2 className="section-heading mb-1">Accuracy Per Round</h2>
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-              Each cell is a round of the season. Brighter green = better
-              prediction accuracy. Click a cell for race-specific details.
+              Each cell is a round of the season. Brighter green = better prediction accuracy. Click
+              a cell for race-specific details.
             </p>
           </div>
           <RoundsHeatmap rounds={tracker.rounds} season={season} />
@@ -232,7 +219,11 @@ export default function AccuracyDashboardPage() {
               .slice()
               .sort((a, b) => b.round - a.round)
               .map((report) => (
-                <Link key={`gp-report-${report.round}`} href={`/race/${report.round}`} className="block">
+                <Link
+                  key={`gp-report-${report.round}`}
+                  href={`/race/${report.round}`}
+                  className="block"
+                >
                   <div
                     className="hover-lift-premium p-4 rounded-xl"
                     style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}
@@ -244,7 +235,9 @@ export default function AccuracyDashboardPage() {
                       <span
                         className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full"
                         style={{
-                          background: report.winnerHit ? "rgba(0,210,190,0.12)" : "rgba(225,6,0,0.12)",
+                          background: report.winnerHit
+                            ? "rgba(0,210,190,0.12)"
+                            : "rgba(225,6,0,0.12)",
                           color: report.winnerHit ? "#00D2BE" : "#E10600",
                         }}
                       >
@@ -253,7 +246,8 @@ export default function AccuracyDashboardPage() {
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
                       <div style={{ color: "var(--text-muted)" }}>
-                        Mean Error: <span style={{ color: "var(--text)" }}>{report.meanError.toFixed(2)}</span>
+                        Mean Error:{" "}
+                        <span style={{ color: "var(--text)" }}>{report.meanError.toFixed(2)}</span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
                         Exact: <span style={{ color: "var(--text)" }}>{report.exactMatches}</span>
@@ -262,14 +256,21 @@ export default function AccuracyDashboardPage() {
                         Podium: <span style={{ color: "var(--text)" }}>{report.podiumHits}/3</span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
-                        Points: <span style={{ color: "var(--text)" }}>{report.pointsHits ?? "–"}/{report.pointsTotal ?? 10}</span>
+                        Points:{" "}
+                        <span style={{ color: "var(--text)" }}>
+                          {report.pointsHits ?? "–"}/{report.pointsTotal ?? 10}
+                        </span>
                       </div>
                       <div style={{ color: "var(--text-muted)" }}>
-                        Compared: <span style={{ color: "var(--text)" }}>{report.comparedDrivers}</span>
+                        Compared:{" "}
+                        <span style={{ color: "var(--text)" }}>{report.comparedDrivers}</span>
                       </div>
                     </div>
                     {report.biggestMisses?.length > 0 && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5 flex-wrap" style={{ color: "var(--text-muted)" }}>
+                      <p
+                        className="text-xs mt-2 flex items-center gap-1.5 flex-wrap"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Biggest miss:
                         <DriverPortrait
                           driver={report.biggestMisses[0].driver}
@@ -278,8 +279,11 @@ export default function AccuracyDashboardPage() {
                           size={18}
                           className="align-middle"
                         />
-                        <span style={{ color: "var(--text)" }}>{report.biggestMisses[0].driver}</span>
-                        (Pred P{report.biggestMisses[0].predicted} vs Actual P{report.biggestMisses[0].actual})
+                        <span style={{ color: "var(--text)" }}>
+                          {report.biggestMisses[0].driver}
+                        </span>
+                        (Pred P{report.biggestMisses[0].predicted} vs Actual P
+                        {report.biggestMisses[0].actual})
                       </p>
                     )}
                   </div>
@@ -329,38 +333,23 @@ export default function AccuracyDashboardPage() {
             </thead>
             <tbody>
               {tracker.rounds.map((r) => {
-                const statusColor = r.hasActual
-                  ? "#00D2BE"
-                  : "var(--text-muted)";
-                const statusText = r.hasActual
-                  ? "Compared"
-                  : "Predicted Only";
+                const statusColor = r.hasActual ? "#00D2BE" : "var(--text-muted)";
+                const statusText = r.hasActual ? "Compared" : "Predicted Only";
                 return (
                   <tr
                     key={r.round}
                     className="transition-colors cursor-pointer"
                     style={{ borderBottom: "1px solid var(--border)" }}
                     onMouseEnter={(e) =>
-                      (e.currentTarget.style.background =
-                        "var(--bg-card-hover)")
+                      (e.currentTarget.style.background = "var(--bg-card-hover)")
                     }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
-                    onClick={() =>
-                      (window.location.href = `/race/${r.round}`)
-                    }
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    onClick={() => (window.location.href = `/race/${r.round}`)}
                   >
-                    <td
-                      className="px-4 py-3 font-bold"
-                      style={{ color: "var(--text)" }}
-                    >
+                    <td className="px-4 py-3 font-bold" style={{ color: "var(--text)" }}>
                       {r.round}
                     </td>
-                    <td
-                      className="px-4 py-3"
-                      style={{ color: "var(--text)" }}
-                    >
+                    <td className="px-4 py-3" style={{ color: "var(--text)" }}>
                       {getRoundName(r.round)}
                     </td>
                     <td className="px-4 py-3">
@@ -372,9 +361,7 @@ export default function AccuracyDashboardPage() {
                             : "rgba(136, 136, 136, 0.1)",
                           color: statusColor,
                           border: `1px solid ${
-                            r.hasActual
-                              ? "rgba(0, 210, 190, 0.2)"
-                              : "rgba(136, 136, 136, 0.2)"
+                            r.hasActual ? "rgba(0, 210, 190, 0.2)" : "rgba(136, 136, 136, 0.2)"
                           }`,
                         }}
                       >
@@ -389,47 +376,37 @@ export default function AccuracyDashboardPage() {
                             ? r.accuracyPct >= 70
                               ? "#00D2BE"
                               : r.accuracyPct >= 50
-                              ? "#FF8000"
-                              : "#E10600"
+                                ? "#FF8000"
+                                : "#E10600"
                             : "var(--text-muted)",
                       }}
                     >
                       {r.accuracyPct != null ? `${r.accuracyPct}%` : "–"}
                     </td>
-                    <td
-                      className="px-4 py-3 font-mono"
-                      style={{ color: "var(--text)" }}
-                    >
+                    <td className="px-4 py-3 font-mono" style={{ color: "var(--text)" }}>
                       {r.meanError != null ? r.meanError.toFixed(1) : "–"}
                     </td>
-                    <td
-                      className="px-4 py-3 font-mono"
-                      style={{ color: "var(--text)" }}
-                    >
+                    <td className="px-4 py-3 font-mono" style={{ color: "var(--text)" }}>
                       {r.exactMatches ?? "–"}
                     </td>
-                    <td
-                      className="px-4 py-3 font-mono"
-                      style={{ color: "var(--text)" }}
-                    >
+                    <td className="px-4 py-3 font-mono" style={{ color: "var(--text)" }}>
                       {r.within3 ?? "–"}
                     </td>
                   </tr>
                 );
               })}
-              {roundsWithoutActual.length === 0 &&
-                tracker.rounds.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={7}
-                      className="px-4 py-8 text-center"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      No prediction data available yet. Run the pipeline with
-                      --advanced to generate tracking data.
-                    </td>
-                  </tr>
-                )}
+              {roundsWithoutActual.length === 0 && tracker.rounds.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="px-4 py-8 text-center"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    No prediction data available yet. Run the pipeline with --advanced to generate
+                    tracking data.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -443,21 +420,14 @@ export default function AccuracyDashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
         >
-          <h3
-            className="text-xl font-bold mb-2"
-            style={{ color: "var(--text)" }}
-          >
+          <h3 className="text-xl font-bold mb-2" style={{ color: "var(--text)" }}>
             Awaiting Actual Results
           </h3>
-          <p
-            className="text-sm max-w-lg mx-auto mb-4"
-            style={{ color: "var(--text-muted)" }}
-          >
+          <p className="text-sm max-w-lg mx-auto mb-4" style={{ color: "var(--text-muted)" }}>
             Predictions have been recorded for {tracker.rounds.length} round
-            {tracker.rounds.length !== 1 ? "s" : ""}. Once actual race results
-            are available, this dashboard will show detailed accuracy
-            comparisons including position error charts, exact match counts, and
-            trend analysis.
+            {tracker.rounds.length !== 1 ? "s" : ""}. Once actual race results are available, this
+            dashboard will show detailed accuracy comparisons including position error charts, exact
+            match counts, and trend analysis.
           </p>
           <div
             className="inline-block px-4 py-2 rounded-lg text-sm font-mono"
@@ -486,9 +456,8 @@ export default function AccuracyDashboardPage() {
               Podium &amp; Points Accuracy
             </h4>
             <p style={{ color: "var(--text-muted)" }}>
-              Our primary metric: a podium-weighted blend (60% podium, 40% points)
-              of how often the model puts the right drivers on the podium (top 3)
-              and in the points (top 10).
+              Our primary metric: a podium-weighted blend (60% podium, 40% points) of how often the
+              model puts the right drivers on the podium (top 3) and in the points (top 10).
             </p>
           </div>
           <div>
@@ -496,8 +465,8 @@ export default function AccuracyDashboardPage() {
               Mean Position Error
             </h4>
             <p style={{ color: "var(--text-muted)" }}>
-              Average absolute difference between predicted and actual finishing
-              positions across all drivers. Lower is better.
+              Average absolute difference between predicted and actual finishing positions across
+              all drivers. Lower is better.
             </p>
           </div>
           <div>
@@ -505,8 +474,8 @@ export default function AccuracyDashboardPage() {
               Within 3 Positions
             </h4>
             <p style={{ color: "var(--text-muted)" }}>
-              A transparency detail: the share of all drivers predicted within 3
-              positions of their actual result.
+              A transparency detail: the share of all drivers predicted within 3 positions of their
+              actual result.
             </p>
           </div>
         </div>

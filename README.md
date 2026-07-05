@@ -54,7 +54,10 @@ motorsportverse/
 │   └── motorsport-data      canonical schema + ingestion + history store (pip)
 ├── projects/
 │   ├── f1-predictions       RaceIQ F1 — the flagship & reference implementation
-│   └── f2-predictions       RaceIQ F2 — first expansion beyond F1
+│   ├── f2-predictions       RaceIQ F2 — first sport on the shared core
+│   ├── f3-predictions       RaceIQ F3 — third series, built at F2 parity
+│   └── <8 more>             scaffolded series (IndyCar, WEC, MotoGP, Formula E,
+│                            NASCAR, WRC, IMSA, Le Mans) — DataSource+Predictor seams
 ├── registry/                the project catalog (JSON + schema; source of truth)
 ├── docs/                    unified documentation
 ├── scripts/                 registry builder + new-project scaffolder
@@ -74,8 +77,9 @@ is **MotorsportVerse**.
 | Project | Sport | Maturity |
 |---|---|---|
 | [RaceIQ F1](projects/f1-predictions/) | Formula 1 | **production** |
-| [RaceIQ F2](projects/f2-predictions/) | Formula 2 | **experimental** (first operational expansion) |
-| F3 · Formula E · IndyCar · NASCAR · WEC · Le Mans · IMSA · WRC · MotoGP | — | concept |
+| [RaceIQ F2](projects/f2-predictions/) | Formula 2 | **production** |
+| [RaceIQ F3](projects/f3-predictions/) | Formula 3 | **experimental** (real 2026 season; accuracy accruing) |
+| [IndyCar](projects/indycar-predictions/) · [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [Formula E](projects/formula-e-predictions/) · [NASCAR](projects/nascar-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
 
 Browse them all on the [live catalog](https://roni-altshuler.github.io/motorsportverse/#projects)
 or under the website's `/projects` directory. See the
@@ -91,6 +95,7 @@ single artifact:
 | Ecosystem hub | https://roni-altshuler.github.io/motorsportverse/ |
 | RaceIQ F1 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f1/ |
 | RaceIQ F2 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f2/ |
+| RaceIQ F3 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f3/ |
 
 ## Quick start
 
@@ -108,19 +113,20 @@ cd website && npm install && npm run dev   # → http://localhost:3000
 # Run a project (the F1 flagship)
 cd projects/f1-predictions/website && npm install && npm run dev
 
-# Scaffold a new sport
-python scripts/new_project.py nascar-predictions --sport NASCAR \
-  --category stock --summary "NASCAR Cup Series forecasts." --added 2026-06-15
+# Scaffold a new sport (use --skip-registry if the catalog entry already exists)
+python scripts/new_project.py <slug>-predictions --sport "<Sport>" \
+  --category <category> --summary "<one-line blurb>" --added <ISO date>
 ```
 
-## Recommended next sport: Formula 2
+## How a series gets promoted
 
-F2 wins on all four axes — **data availability** (FastF1 supports F2; shares the
-Jolpica feed and identical circuits), **modelling potential** (same weekend
-structure, reusable track archetypes, feeder-series talent signal), **community
-interest** (F1-adjacent audience), and **ease of implementation** (~90% core
-reuse). It is the best proof that the shared template works. Ranked runner-ups:
-F3 → NASCAR → Formula E.
+Every sport moves through the same honest ladder: **scaffolded** (project tree +
+core seams) → **experimental** (runs end-to-end on real data, accuracy accruing)
+→ **production** (forward accuracy validated over real rounds). F2 proved the
+template; F3 followed it in a fraction of the time — the FIA feeder-series
+scraper, the spec-series skill model, and the entire probability/championship
+stack were reused outright. The eight scaffolded series are ready for the same
+path the moment a data feed is wired.
 
 ## Documentation
 

@@ -135,6 +135,132 @@ def last_order_baseline(previous_actual: Order) -> dict[str, int]:
     return {d: pos for d, pos in previous_actual.items()}
 
 
+def brier_score(
+    probs: Mapping[str, float], outcomes: Mapping[str, int | float | bool]
+) -> float | None:
+    """Mean squared error between predicted probabilities and binary outcomes.
+
+    ``probs`` maps a key (competitor, or any event id) to a predicted
+    probability in ``[0, 1]``; ``outcomes`` maps the same keys to the realised
+    outcome (``1``/``True`` = happened, ``0``/``False`` = did not). Only keys
+    present in *both* maps are scored. Lower is better; 0 is perfect.
+
+    Returns ``None`` when there are no shared keys. Probabilities are clamped to
+    ``[0, 1]`` defensively.
+    """
+    common = sorted(set(probs.keys()) & set(outcomes.keys()))
+    if not common:
+        return None
+    total = 0.0
+    for k in common:
+        p = min(1.0, max(0.0, float(probs[k])))
+        y = float(bool(outcomes[k])) if isinstance(outcomes[k], bool) else float(outcomes[k])
+        total += (p - y) ** 2
+    return total / len(common)
+
+
+def log_loss(
+    probs: Mapping[str, float],
+    outcomes: Mapping[str, int | float | bool],
+    eps: float = 1e-12,
+) -> float | None:
+    """Mean binary cross-entropy between predicted probabilities and outcomes.
+
+    Same input contract as :func:`brier_score`. Probabilities are clipped to
+    ``[eps, 1 - eps]`` so a confident miss stays finite. Lower is better.
+    Returns ``None`` when there are no shared keys.
+    """
+    common = sorted(set(probs.keys()) & set(outcomes.keys()))
+    if not common:
+        return None
+    total = 0.0
+    for k in common:
+        p = min(1.0 - eps, max(eps, float(probs[k])))
+        y = float(bool(outcomes[k])) if isinstance(outcomes[k], bool) else float(outcomes[k])
+        total += -(y * math.log(p) + (1.0 - y) * math.log(1.0 - p))
+    return total / len(common)
+
+
+def _linear_trend(values: list[float]) -> float | None:
+    """OLS slope of ``values`` against their index (0, 1, 2, ...).
+
+    Positive slope = the metric is rising across rounds. ``None`` for < 2
+    points or a degenerate x-variance.
+    """
+    n = len(values)
+    if n < 2:
+        return None
+    xs = list(range(n))
+    mean_x = sum(xs) / n
+    mean_y = sum(values) / n
+    cov = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, values))
+    var_x = sum((x - mean_x) ** 2 for x in xs)
+    if var_x <= 0:
+        return None
+    return cov / var_x
+
+
+def walk_forward_summary(per_round_metrics: list[Mapping[str, object]]) -> dict[str, object]:
+    """Aggregate a list of per-round metric dicts into a walk-forward summary.
+
+    This is the headline validation surface: given the per-round metric bundles
+    produced over a season (e.g. one :func:`score_round` output per round, or
+    any dicts sharing numeric metric keys), report per-metric ``mean``,
+    ``median``, ``min``, ``max``, ``last`` and ``trend`` (OLS slope over rounds,
+    positive = improving upward) across all rounds.
+
+    Only numeric (``int``/``float``, excluding ``bool``) metric values are
+    aggregated; ``None`` values are skipped per-metric so a metric that is
+    undefined in early rounds still summarises over the rounds where it exists.
+    Returns ``{"n_rounds": int, "metrics": {name: {...}}}``. Empty input yields
+    ``{"n_rounds": 0, "metrics": {}}``.
+    """
+    rounds = list(per_round_metrics)
+    if not rounds:
+        return {"n_rounds": 0, "metrics": {}}
+
+    # Collect ordered numeric series per metric key.
+    series: dict[str, list[float]] = {}
+    for rd in rounds:
+        for key, val in rd.items():
+            if isinstance(val, bool) or not isinstance(val, (int, float)):
+                continue
+            if val is None:
+                continue
+            series.setdefault(key, [])
+    # Second pass preserving round order, skipping missing/None per metric.
+    for key in series:
+        vals: list[float] = []
+        for rd in rounds:
+            v = rd.get(key)
+            if isinstance(v, bool) or not isinstance(v, (int, float)) or v is None:
+                continue
+            vals.append(float(v))
+        series[key] = vals
+
+    metrics: dict[str, object] = {}
+    for key, vals in series.items():
+        if not vals:
+            continue
+        ordered = sorted(vals)
+        mid = len(ordered) // 2
+        if len(ordered) % 2 == 1:
+            median = ordered[mid]
+        else:
+            median = (ordered[mid - 1] + ordered[mid]) / 2
+        metrics[key] = {
+            "mean": sum(vals) / len(vals),
+            "median": median,
+            "min": min(vals),
+            "max": max(vals),
+            "last": vals[-1],
+            "trend": _linear_trend(vals),
+            "n": len(vals),
+        }
+
+    return {"n_rounds": len(rounds), "metrics": metrics}
+
+
 __all__ = [
     "average_ranks",
     "spearman_correlation",
@@ -143,4 +269,7 @@ __all__ = [
     "within_n",
     "score_round",
     "last_order_baseline",
+    "brier_score",
+    "log_loss",
+    "walk_forward_summary",
 ]

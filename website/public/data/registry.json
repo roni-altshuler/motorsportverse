@@ -3,7 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 2,
-    "concept": 9
+    "experimental": 1,
+    "in-development": 8
   },
   "projects": [
     {
@@ -103,41 +104,64 @@
     },
     {
       "slug": "f3-predictions",
-      "name": "F3 Predictions",
+      "name": "RaceIQ F3",
       "sport": "Formula 3",
       "category": "open-wheel",
-      "maturity": "concept",
-      "summary": "Race forecasts for the FIA Formula 3 championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
-      "website": "",
+      "maturity": "experimental",
+      "summary": "Sprint, feature-race, and championship forecasts for FIA Formula 3.",
+      "description": "The third series on the MotorsportVerse core, built at RaceIQ F2 parity: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history + optional gradient-boosted signal) routed through two race-type heads — a merit feature race and a reverse-top-12 sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, and a sprint+feature-aware championship projection over the 30-car grid. Runs on the real 2026 FIA Formula 3 season: official results are scraped into a committed, reviewable snapshot via the shared FIA feeder-series source, with model forecasts for upcoming rounds. Experimental while forward accuracy accrues over real rounds.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/f3-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/f3/",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
-        "FastF1",
-        "Jolpica/Ergast"
+        "fiaformula3.com (official results, scraped to a committed snapshot)",
+        "synthetic latent-pace (offline fallback)"
       ],
-      "models": [],
+      "models": [
+        "driver-skill-elo",
+        "reverse-grid-sprint",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
       "tags": [
-        "concept"
+        "feeder-series",
+        "spec-series",
+        "reverse-grid",
+        "calibrated-probabilities",
+        "monte-carlo"
       ],
       "icon": "/brand/sports/f3.png",
-      "accent": "#C0C0C0",
+      "accent": "#D9A441",
       "uses_core": [
         "calibration",
-        "eval"
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
       ],
-      "maintainers": [],
-      "added": "2026-06-15"
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "roni-altshuler"
+        }
+      ],
+      "added": "2026-07-02"
     },
     {
       "slug": "formula-e-predictions",
       "name": "Formula E Predictions",
       "sport": "Formula E",
       "category": "electric",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Energy-aware race forecasts for the ABB FIA Formula E championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a Formula E project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -145,7 +169,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/formula-e.png",
       "accent": "#1E1AF0",
@@ -161,10 +185,10 @@
       "name": "IMSA Predictions",
       "sport": "IMSA",
       "category": "endurance",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Multi-class forecasts for the IMSA SportsCar Championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a IMSA project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/imsa-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -172,7 +196,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/imsa.png",
       "accent": "#0A2A5E",
@@ -188,10 +212,10 @@
       "name": "IndyCar Predictions",
       "sport": "IndyCar",
       "category": "open-wheel",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Race forecasts for the NTT IndyCar Series (road, street, oval).",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a IndyCar project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/indycar-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -199,7 +223,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/indycar.png",
       "accent": "#D31217",
@@ -215,10 +239,10 @@
       "name": "Le Mans Predictions",
       "sport": "24h of Le Mans",
       "category": "endurance",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Dedicated forecasting for the 24 Hours of Le Mans.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a 24h of Le Mans project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/lemans-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -227,7 +251,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/lemans.png",
       "accent": "#1A6B3C",
@@ -243,10 +267,10 @@
       "name": "MotoGP Predictions",
       "sport": "MotoGP",
       "category": "motorcycle",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Race forecasts for the MotoGP world championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a MotoGP project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/motogp-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -254,7 +278,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/motogp.png",
       "accent": "#CC0000",
@@ -271,10 +295,10 @@
       "name": "NASCAR Predictions",
       "sport": "NASCAR",
       "category": "stock",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Oval and road-course forecasts for the NASCAR Cup Series.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a NASCAR project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/nascar-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -282,7 +306,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/nascar.png",
       "accent": "#FFD659",
@@ -298,10 +322,10 @@
       "name": "WEC Predictions",
       "sport": "WEC",
       "category": "endurance",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Multi-class endurance forecasts for the FIA World Endurance Championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a WEC project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/wec-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -309,7 +333,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/wec.png",
       "accent": "#E8002D",
@@ -325,10 +349,10 @@
       "name": "WRC Predictions",
       "sport": "WRC",
       "category": "rally",
-      "maturity": "concept",
+      "maturity": "in-development",
       "summary": "Stage-time forecasts for the FIA World Rally Championship.",
-      "description": "Concept entry registered in the MotorsportVerse catalog. No code yet — built on motorsport-core + motorsport-data when development starts.",
-      "repo": "",
+      "description": "Scaffolded on the shared MotorsportVerse core: a WRC project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/wrc-predictions",
       "website": "",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
       "datasets": [
@@ -336,7 +360,7 @@
       ],
       "models": [],
       "tags": [
-        "concept"
+        "scaffolded"
       ],
       "icon": "/brand/sports/wrc.png",
       "accent": "#0F62FE",

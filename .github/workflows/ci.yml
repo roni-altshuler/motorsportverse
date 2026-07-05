@@ -20,6 +20,7 @@ jobs:
           pip install -e "packages/motorsport-core[dev]"
           pip install -e "packages/motorsport-data[dev]"
           pip install -e projects/f2-predictions --no-deps
+          pip install -e projects/f3-predictions --no-deps
           # xgboost powers the full GBR+XGB skill ensemble; sklearn comes via core.
           # Without it the model degrades to a GBR-only signal, so this is for parity.
           pip install xgboost
@@ -29,7 +30,8 @@ jobs:
           pip install ruff
           # projects/f1-predictions has its own ruff config + dedicated f1-ci.yml,
           # so it is intentionally excluded here.
-          ruff check packages/motorsport-core packages/motorsport-data projects/f2-predictions scripts
+          ruff check packages/motorsport-core packages/motorsport-data scripts \
+            $(ls -d projects/*/ | grep -v f1-predictions)
 
       - name: Test motorsport-core
         run: pytest packages/motorsport-core -q
@@ -40,8 +42,20 @@ jobs:
       - name: Test f2-predictions
         run: pytest projects/f2-predictions -q
 
+      - name: Test f3-predictions
+        run: pytest projects/f3-predictions -q
+
+      - name: Test scaffolded series projects
+        run: |
+          for p in indycar wec motogp formula-e nascar wrc imsa lemans; do
+            (cd "projects/${p}-predictions" && PYTHONPATH=src pytest -q)
+          done
+
       - name: Validate registry
         run: python scripts/build_registry.py
+
+      - name: Shared-UI drift check
+        run: node scripts/sync_shared_ui.mjs --check
 
   website:
     name: Website build
