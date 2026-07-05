@@ -129,14 +129,41 @@ def _detect_next_round():
     return detect_target_round()
 
 
-def _session_available(year, gp_key, session_type):
-    """Check if a FastF1 session has data (qualifying or race happened)."""
+def _event_matches_round(session, round_num):
+    """True when a FastF1 session's resolved event is the requested round.
+
+    FastF1's fuzzy event matcher never fails — when its schedule backend is
+    down it silently "corrects" the requested GP to whichever event is closest
+    (it once resolved 'Great Britain' to the Austrian GP on British GP race
+    morning, which published Austria's classification as Silverstone's official
+    result). A loaded session is therefore NOT proof the requested race exists
+    or has run: the resolved round must be verified before trusting any data.
+    """
+    try:
+        return int(session.event["RoundNumber"]) == int(round_num)
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _session_available(year, gp_key, session_type, expected_round=None):
+    """Check if a FastF1 session has data (qualifying or race happened).
+
+    ``expected_round`` guards against FastF1's fuzzy event matching resolving
+    to a different (already-run) event — see ``_event_matches_round``.
+    """
     try:
         import fastf1
         import concurrent.futures
 
         def _probe():
             s = fastf1.get_session(year, gp_key, session_type)
+            if expected_round is not None and not _event_matches_round(s, expected_round):
+                print(
+                    f"   ⚠️  FastF1 resolved '{gp_key}' to a different event "
+                    f"(round {s.event.get('RoundNumber', '?')}) — treating round "
+                    f"{expected_round} {session_type} as unavailable."
+                )
+                return False
             s.load(laps=True, telemetry=False, weather=False, messages=False)
             return len(s.laps) > 0
 
@@ -163,7 +190,12 @@ def _jolpica_session_available(year, round_num, kind):
         with urlopen(url, timeout=20) as response:
             payload = json.load(response)
         races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
-        return bool(races and races[0].get(field))
+        if not (races and races[0].get(field)):
+            return False
+        # A round-scoped query must echo the round back; anything else means a
+        # cache/proxy served a different race — never treat that as available.
+        returned = races[0].get("round")
+        return returned is None or str(returned) == str(int(round_num))
     except Exception:
         return False
 
@@ -201,7 +233,7 @@ def _detect_phase(round_num):
         season_year = _season_year()
         # Prefer Jolpica (timely) and fall back to a FastF1 probe.
         if _jolpica_session_available(season_year, round_num, "results") or \
-           _session_available(season_year, gp_key, "R"):
+           _session_available(season_year, gp_key, "R", expected_round=round_num):
             print("   ✅ Race data available → post-race")
             return "post-race"
 
@@ -211,7 +243,7 @@ def _detect_phase(round_num):
         # Jolpica publishes classified qualifying hours before FastF1 telemetry
         # lands — check it first so the prediction isn't stuck on estimates.
         if _jolpica_session_available(season_year, round_num, "qualifying") or \
-           _session_available(season_year, gp_key, "Q"):
+           _session_available(season_year, gp_key, "Q", expected_round=round_num):
             print("   ✅ Qualifying data available → post-quali")
             return "post-quali"
 
@@ -487,6 +519,13 @@ def _fetch_actual_race_results(round_num, gp_key, year=None):
 
         def _load():
             s = fastf1.get_session(season_year, gp_key, "R")
+            if not _event_matches_round(s, round_num):
+                raise ValueError(
+                    f"FastF1 resolved '{gp_key}' to round "
+                    f"{s.event.get('RoundNumber', '?')} "
+                    f"({s.event.get('EventName', '?')}), not round {round_num} — "
+                    f"refusing to ingest another race's classification"
+                )
             s.load(laps=False, telemetry=False, weather=False, messages=False)
             return s
 

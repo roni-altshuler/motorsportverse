@@ -2191,6 +2191,16 @@ def _fetch_live_round_actual_results(round_num, season_year=SEASON_YEAR):
     if not races:
         return None
 
+    # A round-scoped query must echo the requested round back; a mismatch
+    # means a cache/proxy served a different race's classification.
+    returned_round = races[0].get("round")
+    if returned_round is not None and str(returned_round) != str(int(round_num)):
+        print(
+            f"  ⚠️  Jolpica returned round {returned_round} for a round-{round_num} "
+            f"results query — ignoring."
+        )
+        return None
+
     results_rows = races[0].get("Results", [])
     if not results_rows:
         return None
@@ -2365,6 +2375,14 @@ def _fetch_fastf1_sprint_qualifying(round_num, gp_key, season_year):
         import fastf1
         fastf1.Cache.enable_cache(os.path.join(PROJECT_ROOT, "f1_cache"))
         session = fastf1.get_session(season_year, resolve_historical_gp_key(gp_key), "Sprint Qualifying")
+        # FastF1 fuzzy-matches event names and silently resolves to a DIFFERENT
+        # event when its schedule backend fails — never publish another
+        # weekend's session under this round.
+        if int(session.event["RoundNumber"]) != int(round_num):
+            raise ValueError(
+                f"FastF1 resolved '{gp_key}' to round {session.event['RoundNumber']}, "
+                f"not round {round_num}"
+            )
         session.load(laps=True, telemetry=False, weather=False, messages=False)
     except Exception as e:
         return {
