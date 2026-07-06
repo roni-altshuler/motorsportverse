@@ -179,12 +179,14 @@ def _jolpica_session_available(year, round_num, kind):
     FastF1 telemetry for the live weekend lags hours behind Jolpica's
     classified results, so we treat Jolpica as the authoritative availability
     signal (it's the same source the website's results tables already use).
-    ``kind`` is ``"qualifying"`` or ``"results"`` (race).
+    ``kind`` is ``"qualifying"``, ``"sprint"``, or ``"results"`` (race).
     """
     from urllib.request import urlopen
 
-    endpoint = "qualifying" if kind == "qualifying" else "results"
-    field = "QualifyingResults" if kind == "qualifying" else "Results"
+    endpoint, field = {
+        "qualifying": ("qualifying", "QualifyingResults"),
+        "sprint": ("sprint", "SprintResults"),
+    }.get(kind, ("results", "Results"))
     try:
         url = f"https://api.jolpi.ca/ergast/f1/{year}/{int(round_num)}/{endpoint}.json"
         with urlopen(url, timeout=20) as response:
@@ -461,13 +463,24 @@ def run_post_race(round_num, skip_build=False):
         # full timing from Jolpica with a position-only fallback from
         # actualResults; if the round JSON predates any weekend results we build
         # the full session set first so the race session entry exists to fill.
-        from export_website_data import _fetch_weekend_results, _refresh_race_session_timing
-        weekend = round_data.get("weekendResults")
-        has_race_session = isinstance(weekend, dict) and any(
-            s.get("key") == "grandPrix" for s in weekend.get("sessions", [])
+        from export_website_data import (
+            _fetch_weekend_results,
+            _merge_weekend_sessions,
+            _refresh_race_session_timing,
         )
-        if not has_race_session:
-            round_data["weekendResults"] = _fetch_weekend_results(round_num, info, _season_year())
+        # Re-fetch EVERY weekend session (qualifying, sprint, sprint quali,
+        # race), not just the Grand Prix result. The round JSON is never
+        # rebuilt after actuals land, so any session still "pending" from the
+        # final pre-race build (sources publish on their own schedules across
+        # the weekend) must be healed here or it shows "Awaiting data" forever.
+        # The merge is upgrade-only — published rows are never overwritten.
+        round_data["weekendResults"] = _merge_weekend_sessions(
+            round_data.get("weekendResults"),
+            _fetch_weekend_results(round_num, info, _season_year()),
+        )
+        filled = round_data["weekendResults"].get("loadedSessions", 0)
+        total = len(round_data["weekendResults"].get("sessions", []))
+        print(f"   📋 Weekend sessions populated: {filled}/{total}")
         if _refresh_race_session_timing(round_data, round_num, _season_year()):
             print("   ✅ Grand Prix race session populated in weekendResults.")
 
@@ -701,6 +714,51 @@ def _stranded_rounds(today=None, probe_jolpica=True):
     return stranded
 
 
+# Weekend-session keys the sweep can verify against Jolpica. Sprint qualifying
+# is deliberately absent: it comes from FastF1 timing (Jolpica has no SQ
+# endpoint), so there is no cheap availability probe — it retries whenever the
+# round is re-ingested for any other reason and otherwise stays honestly
+# pending.
+_SESSION_PROBE_KIND = {"qualifying": "qualifying", "sprint": "sprint", "grandPrix": "results"}
+
+
+def _rounds_with_pending_sessions(today=None):
+    """Published rounds whose weekend sessions are still empty at the source's
+    own pace — e.g. qualifying/sprint rows that hadn't landed when the round
+    was last written, on a weekend whose sessions publish at different times.
+
+    Only returns a round when Jolpica verifiably has data for at least one of
+    its empty sessions, so the cron never spins on genuinely-unpublished data.
+    """
+    cal = _load_calendar()
+    today = today or _utc_today()
+    season_year = _season_year()
+    stale = []
+    for rnd in sorted(cal.keys()):
+        info = cal[rnd]
+        if info.get("postponed", False):
+            continue
+        if date.fromisoformat(info["date"]) > today:
+            continue
+        state = _committed_round_state(rnd)
+        if not _has_committed_actuals(state):
+            continue  # not published yet — that's _stranded_rounds' job
+        weekend = state.get("weekendResults") or {}
+        pending = [
+            s.get("key")
+            for s in weekend.get("sessions", [])
+            if isinstance(s, dict) and not s.get("rows") and s.get("key") in _SESSION_PROBE_KIND
+        ]
+        if not pending:
+            continue
+        if any(
+            _jolpica_session_available(season_year, rnd, _SESSION_PROBE_KIND[key])
+            for key in pending
+        ):
+            stale.append(rnd)
+    return stale
+
+
 def work_pending(round_num):
     """True when *any* publishable update is outstanding.
 
@@ -710,7 +768,7 @@ def work_pending(round_num):
     """
     if needs_update(round_num):
         return True
-    return bool(_stranded_rounds())
+    return bool(_stranded_rounds()) or bool(_rounds_with_pending_sessions())
 
 
 def backfill_missing_results(today=None):
@@ -724,8 +782,14 @@ def backfill_missing_results(today=None):
     """
     cal = _load_calendar()
     updated = []
-    for rnd in _stranded_rounds(today=today):
-        print(f"\n🔧 Backfilling stranded official results for Round {rnd}: {cal[rnd]['name']}")
+    # Missing actuals first, then published rounds whose qualifying/sprint
+    # sessions are still empty although the source now has them (each weekend
+    # session publishes on its own schedule — never assume one fetch moment
+    # catches them all). Both heal through the same idempotent post-race path.
+    targets = _stranded_rounds(today=today)
+    targets += [r for r in _rounds_with_pending_sessions(today=today) if r not in targets]
+    for rnd in targets:
+        print(f"\n🔧 Backfilling official results/sessions for Round {rnd}: {cal[rnd]['name']}")
         try:
             result = run_post_race(rnd, skip_build=True)
             if result:

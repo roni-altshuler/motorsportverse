@@ -131,7 +131,7 @@
     {
       "round": 9,
       "hasActual": true,
-      "meanError": 3.82,
+      "meanError": 3.73,
       "exactMatches": 2,
       "within3": 14,
       "accuracyPct": 88.0,
@@ -354,7 +354,7 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 4.03,
+    "seasonMeanError": 4.02,
     "seasonAccuracyPct": 60.5,
     "seasonPodiumAccuracyPct": 51.9,
     "seasonPointsAccuracyPct": 73.3,
@@ -1297,7 +1297,7 @@
       "round": 9,
       "name": "British Grand Prix",
       "comparedDrivers": 22,
-      "meanError": 3.82,
+      "meanError": 3.73,
       "medianError": 3.0,
       "exactMatches": 2,
       "within3": 14,
@@ -1322,9 +1322,9 @@
           "driver": "ANT",
           "team": "Mercedes",
           "predicted": 4,
-          "actual": 16,
-          "delta": -12,
-          "absDelta": 12
+          "actual": 15,
+          "delta": -11,
+          "absDelta": 11
         },
         {
           "driver": "HUL",
@@ -1343,23 +1343,28 @@
           "absDelta": 5
         },
         {
-          "driver": "PIA",
-          "team": "McLaren",
-          "predicted": 6,
-          "actual": 11,
-          "delta": -5,
+          "driver": "PER",
+          "team": "Cadillac",
+          "predicted": 19,
+          "actual": 14,
+          "delta": 5,
           "absDelta": 5
         }
       ],
       "teamMeanError": [
         {
-          "team": "Haas",
+          "team": "Ferrari",
           "meanError": 0.5,
           "drivers": 2
         },
         {
-          "team": "Ferrari",
-          "meanError": 0.5,
+          "team": "Williams",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 1.5,
           "drivers": 2
         },
         {
@@ -1378,18 +1383,13 @@
           "drivers": 2
         },
         {
-          "team": "Cadillac",
-          "meanError": 3.5,
-          "drivers": 2
-        },
-        {
-          "team": "Williams",
-          "meanError": 4.0,
-          "drivers": 2
-        },
-        {
           "team": "McLaren",
           "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 4.5,
           "drivers": 2
         },
         {
@@ -1399,7 +1399,7 @@
         },
         {
           "team": "Mercedes",
-          "meanError": 6.5,
+          "meanError": 6.0,
           "drivers": 2
         },
         {
@@ -1410,5 +1410,5 @@
       ]
     }
   ],
-  "generatedAt": "2026-07-05T17:54:50.389640Z"
+  "generatedAt": "2026-07-06T09:06:48.598684Z"
 }

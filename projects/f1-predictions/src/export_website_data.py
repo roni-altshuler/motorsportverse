@@ -2480,6 +2480,44 @@ def _fetch_weekend_results(round_num, info, season_year=SEASON_YEAR):
     }
 
 
+def _merge_weekend_sessions(existing, fresh):
+    """Merge a freshly-fetched weekend session set into the committed one.
+
+    Upgrade-only: a committed session that is still empty (pending) is replaced
+    by a fresh session that carries rows, and session types missing from the
+    committed set are appended — but published rows are never clobbered by a
+    transient empty re-fetch. This is what lets qualifying/sprint sessions that
+    were "pending" at the final pre-race build heal at post-race ingestion time
+    (the round is never rebuilt after actuals land, so without this merge those
+    sessions would show "Awaiting data" forever).
+    """
+    if not isinstance(existing, dict) or not existing.get("sessions"):
+        return fresh
+    if not isinstance(fresh, dict) or not fresh.get("sessions"):
+        return existing
+
+    fresh_by_key = {s.get("key"): s for s in fresh.get("sessions", []) if isinstance(s, dict)}
+    sessions = []
+    seen = set()
+    for cur in existing.get("sessions", []):
+        key = cur.get("key") if isinstance(cur, dict) else None
+        seen.add(key)
+        new = fresh_by_key.get(key)
+        if new is not None and new.get("rows") and not cur.get("rows"):
+            sessions.append(new)
+        else:
+            sessions.append(cur)
+    for key, new in fresh_by_key.items():
+        if key not in seen:
+            sessions.append(new)
+
+    merged = dict(existing)
+    merged["generatedAt"] = fresh.get("generatedAt") or existing.get("generatedAt")
+    merged["sessions"] = sessions
+    merged["loadedSessions"] = sum(1 for s in sessions if s.get("rows"))
+    return merged
+
+
 # Standard F1 points by finishing position (fastest-lap bonus not reconstructed).
 _RACE_POINTS_BY_POSITION = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
 
