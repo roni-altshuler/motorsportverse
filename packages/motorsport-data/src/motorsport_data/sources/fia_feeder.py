@@ -31,6 +31,19 @@ import re
 
 from ..schema import Result
 
+class WrongEventError(RuntimeError):
+    """A fetched round page's event identity does not match the request.
+
+    The FIA CMS is fronted by a cache/proxy and (like FastF1's fuzzy event
+    matcher) can silently serve a *different* round's page for a requested
+    ``raceid`` when its backend hiccups. A round page whose title says a
+    different round — or a different country than the caller's calendar expects
+    — must never be ingested as the requested round's classification. Raising
+    this (rather than parsing the page anyway) is what turns a wrong-event
+    response into a refusal instead of a corrupted snapshot.
+    """
+
+
 DEFAULT_SESSION_HEADINGS: dict[int, str] = {0: "Sprint Race", 1: "Feature Race"}
 
 # Headings the qualifying classification can appear under on a round page. F2/F3
@@ -87,6 +100,79 @@ class FiaFeederSource:
         self._entries: dict[int, dict[str, dict[str, str]]] = {}
 
     # ------------------------------------------------------------------ #
+    # Event-identity guards
+    # ------------------------------------------------------------------ #
+    @staticmethod
+    def _normalise_country(value: str) -> str:
+        """Fold a country label for comparison: lowercase, drop any
+        parenthetical qualifier (``"Spain (Madrid)"`` → ``"spain"``), collapse
+        whitespace. Lets a caller's calendar name match the FIA title even when
+        one side disambiguates a repeated country."""
+        value = _html.unescape(value or "")
+        value = re.sub(r"\(.*?\)", " ", value)  # strip "(Madrid)" etc.
+        value = re.sub(r"[^0-9a-z]+", " ", value.lower())
+        return value.strip()
+
+    @classmethod
+    def parse_event_identity(cls, page: str | None) -> dict | None:
+        """``{round, country, city, dates}`` from a round page's title, or ``None``.
+
+        Returns ``None`` when the page is falsy or carries no parseable round
+        title — the shape of a truncated/garbage response whose identity cannot
+        be confirmed.
+        """
+        if not page:
+            return None
+        m = _RE_TITLE_ROUND.search(page)
+        if not m:
+            return None
+        return {
+            "round": int(m.group(1)),
+            "country": _html.unescape(m.group(2)).strip(),
+            "city": _html.unescape(m.group(3)).strip(),
+            "dates": m.group(4).strip(),
+        }
+
+    @classmethod
+    def verify_page_identity(
+        cls,
+        page: str | None,
+        *,
+        expected_round: int,
+        expected_country: str | None = None,
+    ) -> dict:
+        """Assert ``page`` is the requested round (and, if given, country).
+
+        Returns the parsed identity on success; raises :class:`WrongEventError`
+        when the page has no recognisable round title (garbage/truncated), when
+        its round differs from ``expected_round``, or when ``expected_country``
+        is supplied and does not match the page's title country. This is the one
+        gate that stands between a wrong-event response and a snapshot write.
+        """
+        identity = cls.parse_event_identity(page)
+        if identity is None:
+            raise WrongEventError(
+                f"round page carries no parseable round title — refusing to trust "
+                f"it as round {expected_round} (truncated/garbage response?)"
+            )
+        if identity["round"] != int(expected_round):
+            raise WrongEventError(
+                f"requested round {expected_round} but the page is round "
+                f"{identity['round']} ({identity['country']}) — refusing to ingest "
+                f"another round's classification"
+            )
+        if expected_country is not None:
+            want = cls._normalise_country(expected_country)
+            got = cls._normalise_country(identity["country"])
+            if want and got and want != got:
+                raise WrongEventError(
+                    f"round {expected_round} expected country '{expected_country}' "
+                    f"but the page's title says '{identity['country']}' — refusing "
+                    f"to ingest a different event"
+                )
+        return identity
+
+    # ------------------------------------------------------------------ #
     # Public contract
     # ------------------------------------------------------------------ #
     def results(self, year: int, round: int, race_index: int = 1) -> list[Result] | None:
@@ -97,6 +183,14 @@ class FiaFeederSource:
                 return None
             page = self._page(raceid)
             if page is None:
+                return None
+            # A round-scoped fetch must come back as the requested round; a cache/
+            # proxy serving a different race's page would otherwise be ingested
+            # under this round. A mismatch (or an identity-less page) → defer.
+            try:
+                self.verify_page_identity(page, expected_round=round)
+            except WrongEventError as exc:
+                print(f"  ⚠️  {exc}")
                 return None
             rows = self._parse_session(page, self._session_headings[race_index])
             if not rows:
@@ -131,6 +225,11 @@ class FiaFeederSource:
             page = self._page(raceid)
             if page is None:
                 return None
+            try:
+                self.verify_page_identity(page, expected_round=round)
+            except WrongEventError as exc:
+                print(f"  ⚠️  {exc}")
+                return None
             for heading in self._quali_headings:
                 rows = self._parse_session(page, heading)
                 if rows:
@@ -155,20 +254,10 @@ class FiaFeederSource:
         out: list[dict] = []
         for raceid in self._season_raceids(year):
             page = self._page(raceid)
-            if not page:
+            identity = self.parse_event_identity(page)
+            if identity is None:
                 continue
-            m = _RE_TITLE_ROUND.search(page)
-            if not m:
-                continue
-            out.append(
-                {
-                    "round": int(m.group(1)),
-                    "raceid": raceid,
-                    "country": _html.unescape(m.group(2)).strip(),
-                    "city": _html.unescape(m.group(3)).strip(),
-                    "dates": m.group(4).strip(),
-                }
-            )
+            out.append({**identity, "raceid": raceid})
         out.sort(key=lambda r: r["round"])
         self._calendar_cache[year] = out
         return out
