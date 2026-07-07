@@ -1,12 +1,21 @@
 """Promotion gate for F3 — thin CLI over motorsport_core.promotion.
 
-Compares a production model's per-round error stream against a candidate's and
+Compares the production model's per-round error stream against a candidate's and
 recommends promote / hold / demote via :func:`motorsport_core.promotion.evaluate_promotion`.
 
-In Phase 1 there is a single (production) variant and a synthetic data source, so
-this honestly reports ``hold`` for want of a candidate / enough real rounds. The
-machinery is wired now so Phase 2 only has to supply candidate scores — it writes
-``website/public/data/promotion_status.json`` either way.
+The candidate is the **direct finishing-position head** (:mod:`.position_head`,
+F1-parity port of commit 189db5b, A/B-gated by ``F3_USE_POSITION_HEAD`` and OFF
+by default). Its walk-forward evidence is the ``forward_eval/position_model_ab.json``
+artifact written by ``python -m f3_predictions.forward_eval --position-model-ab``:
+per completed round N the head retrains on rounds ``< N`` and is scored against
+the same actuals as the production replay. This module aligns the two per-round
+feature-race error streams (matching the production stream's definition below),
+applies the shared conservative promotion rule, and folds the A/B's own
+data-driven verdict into ``website/public/data/promotion_status.json`` —
+additively, the original keys are unchanged.
+
+Without the A/B artifact this honestly reports ``hold`` for want of a candidate,
+exactly like the Phase-1 behaviour.
 
 Run:  python -m f3_predictions.promotion_decision --season 2026 [--allow-empty]
 """
@@ -21,6 +30,8 @@ from motorsport_core import promotion
 from . import config
 
 DEFAULT_DATA = Path(__file__).resolve().parents[2] / "website" / "public" / "data"
+
+CANDIDATE_NAME = "position-head"
 
 
 def _load_production_scores(data_dir: Path) -> list[tuple[int, float]]:
@@ -37,12 +48,39 @@ def _load_production_scores(data_dir: Path) -> list[tuple[int, float]]:
     return scores
 
 
+def _load_candidate_scores(data_dir: Path) -> tuple[list[tuple[int, float]], dict | None]:
+    """Candidate per-round scores + A/B verdict from ``position_model_ab.json``.
+
+    The candidate score mirrors the production stream's definition — the
+    feature-race mean position error of the walk-forward position head — so
+    :func:`evaluate_promotion` compares like with like. Rounds where the head
+    could not train (``applied: false``) are excluded; the promotion rule's
+    minimum-overlap guard then does the honest thing.
+    """
+    ab_path = data_dir / "forward_eval" / "position_model_ab.json"
+    if not ab_path.exists():
+        return [], None
+    try:
+        ab = json.loads(ab_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return [], None
+    scores: list[tuple[int, float]] = []
+    for entry in ab.get("rounds", []):
+        head = entry.get("positionHead") or {}
+        if not head.get("applied"):
+            continue
+        mpe = (head.get("feature") or {}).get("mean_position_error")
+        if mpe is not None:
+            scores.append((int(entry["round"]), float(mpe)))
+    return scores, ab.get("verdict")
+
+
 def build_status(data_dir: Path) -> dict:
     production = _load_production_scores(data_dir)
-    # Phase 1: no candidate stream yet → empty, which the gate reports as "hold".
-    candidate: list[tuple[int, float]] = []
+    candidate, ab_verdict = _load_candidate_scores(data_dir)
     decision = promotion.evaluate_promotion(production, candidate)
     return {
+        # Original shape — the website reads these keys; never rename/remove.
         "decision": decision.decision,
         "reason": decision.reason,
         "roundsCompared": decision.rounds_compared,
@@ -50,6 +88,12 @@ def build_status(data_dir: Path) -> dict:
         "meanCandidate": decision.mean_candidate,
         "relativeChange": decision.relative_change,
         "hasCandidate": bool(candidate),
+        # Additive: which candidate was compared and what its walk-forward A/B
+        # concluded (the F1-parity data-driven verdict; the env flag stays OFF
+        # unless this says the head wins AND the gate above agrees).
+        "candidate": CANDIDATE_NAME if candidate else None,
+        "candidateFlag": "F3_USE_POSITION_HEAD",
+        "abVerdict": ab_verdict,
     }
 
 
@@ -63,6 +107,13 @@ def main() -> int:
     out = args.data / "promotion_status.json"
     out.write_text(json.dumps(status, indent=2) + "\n")
     print(f"promotion_decision: {status['decision']} — {status['reason']}")
+    if status["abVerdict"]:
+        v = status["abVerdict"]
+        print(
+            f"promotion_decision: A/B verdict — {v.get('recommendation')} "
+            f"(head meanErr={v.get('positionHeadMeanError')} vs "
+            f"prod meanErr={v.get('productionMeanError')})"
+        )
     return 0
 
 
