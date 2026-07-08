@@ -111,6 +111,24 @@ report Brier / log-loss with any meaningful confidence interval, so the
 calibration summary writes `null` for those metrics when the sample count is
 below threshold. Quoted numbers will land once the historical backfill is in.
 
+**2026-07-08 freeze-correctness overhaul.** A forensic audit found that six of
+the first nine 2026 rounds never received a genuine real-grid post-qualifying
+prediction (estimated-quali guard bug R1-5; wrong-event grid R9), because the
+one-shot freeze gate could not self-correct. Every published prediction now
+records `gridProvenance` (`real-quali-verified` / `estimated` / `stale`); the
+post-quali gate re-publishes until a round-verified real-grid freeze exists and
+then goes idempotent. Rounds 1-9 were retroactively regenerated with a
+leakage-safe walk-forward replay (round N sees data through N-1 plus round N's
+real qualifying only; enforced with `assert_prior_only`); the previous state is
+archived under `website/public/data/archive/pre-overhaul/`. The published
+model additionally ships the A/B-promoted candidate re-ranker
+(`models/candidate_model.py`: qualifying gap in seconds + data-derived circuit
+grid-trust priors from 2022-2025 history) — promoted on the walk-forward
+headline comparison in `promotion_status.json`. Every stream is benchmarked
+against the qualifying grid-order, pole-sitter, and points-leader baselines
+(`gp_accuracy_report.json::baselines`); the grid-order baseline is the bar
+that matters post-qualifying.
+
 ---
 
 ## Known limitations

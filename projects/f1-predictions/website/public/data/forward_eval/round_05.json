@@ -2,52 +2,53 @@
   "season": 2026,
   "round": 5,
   "drivers_compared": 22,
-  "mean_position_error": 5.363636363636363,
+  "mean_position_error": 5.090909090909091,
   "median_position_error": 4.0,
-  "rmse_position_error": 6.980492298346351,
-  "exact_matches": 2,
-  "within_3": 8,
-  "within_5": 14,
+  "rmse_position_error": 6.775624761532393,
+  "exact_matches": 1,
+  "within_3": 10,
+  "within_5": 15,
   "winner_hit": false,
-  "podium_hits": 0,
+  "podium_hits": 1,
+  "top10_overlap": 6,
   "log_loss_uniform_baseline": 3.091042453358316,
-  "spearman_correlation": 0.39469226425748166,
-  "ndcg_at_5": 0.4769651736270822,
+  "spearman_correlation": 0.42970073404856013,
+  "ndcg_at_5": 0.541686948938977,
   "biggest_misses": [
     {
-      "driver": "NOR",
+      "driver": "RUS",
       "predicted": 1,
-      "actual": 18,
-      "delta": -17,
-      "absDelta": 17
+      "actual": 19,
+      "delta": -18,
+      "absDelta": 18
     },
     {
-      "driver": "RUS",
-      "predicted": 2,
-      "actual": 19,
-      "delta": -17,
-      "absDelta": 17
+      "driver": "NOR",
+      "predicted": 3,
+      "actual": 18,
+      "delta": -15,
+      "absDelta": 15
     },
     {
       "driver": "LIN",
-      "predicted": 11,
+      "predicted": 9,
       "actual": 22,
-      "delta": -11,
-      "absDelta": 11
+      "delta": -13,
+      "absDelta": 13
     },
     {
-      "driver": "PIA",
-      "predicted": 3,
-      "actual": 11,
-      "delta": -8,
-      "absDelta": 8
+      "driver": "BEA",
+      "predicted": 16,
+      "actual": 10,
+      "delta": 6,
+      "absDelta": 6
     },
     {
-      "driver": "GAS",
-      "predicted": 15,
-      "actual": 8,
-      "delta": 7,
-      "absDelta": 7
+      "driver": "BOT",
+      "predicted": 22,
+      "actual": 16,
+      "delta": 6,
+      "absDelta": 6
     }
   ],
   "baselines": {
@@ -55,7 +56,22 @@
       "mean_position_error": 6.0,
       "winner_hit": true,
       "podium_hits": 1,
+      "top10_overlap": 6,
       "spearman_correlation": 0.16431394692264256
+    },
+    "grid_order": {
+      "mean_position_error": 5.273,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "top10_overlap": 6,
+      "spearman_correlation": 0.40372670807453415
+    },
+    "standings_order": {
+      "mean_position_error": 4.909,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "top10_overlap": 7,
+      "spearman_correlation": 0.5042348955392434
     }
   }
 }

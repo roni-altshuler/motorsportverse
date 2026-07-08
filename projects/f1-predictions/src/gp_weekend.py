@@ -663,6 +663,38 @@ def _has_committed_actuals(state):
     return isinstance(state.get("actualResults"), dict) and bool(state["actualResults"])
 
 
+def _is_verified_post_quali(state):
+    """True when the committed prediction is a FINAL, real-grid post-quali freeze.
+
+    A verified freeze is one published in the post-quali (or post-race) phase on
+    a round-verified real qualifying grid (``gridProvenance == 'real-quali-verified'``).
+    For rounds published before ``gridProvenance`` existed, an explicit
+    ``qualifyingDataAvailable`` flag is accepted as the legacy equivalent so the
+    gate does not needlessly re-freeze historical real-grid rounds.
+    """
+    if state.get("predictionPhase") not in ("post-quali", "post-race"):
+        return False
+    provenance = state.get("gridProvenance")
+    if provenance == "real-quali-verified":
+        return True
+    # Legacy rounds predate the provenance field: trust the older availability flag.
+    return provenance is None and bool(state.get("qualifyingDataAvailable", False))
+
+
+def _post_quali_needs_refreeze(state):
+    """Self-correcting post-quali gate.
+
+    Returns True whenever a *verified* post-quali freeze has not yet been
+    published — i.e. the committed prediction is a preview, an estimated-grid
+    post-quali publish, or a stale/wrong-event freeze. Because this branch is
+    only reached when the phase detector has confirmed round-verified qualifying
+    is available, an upgradeable prediction is always replaceable here. A
+    prediction that is already ``real-quali-verified`` returns False, so the
+    15-min cron converges to a single final freeze and stops re-publishing.
+    """
+    return not _is_verified_post_quali(state)
+
+
 def needs_update(round_num):
     """True when the best available official data isn't published yet.
 
@@ -681,9 +713,9 @@ def needs_update(round_num):
     if phase == "post-race":
         return not _has_committed_actuals(state)
     if phase == "post-quali":
-        # Publish if we haven't advanced past the preview yet.
-        return state.get("predictionPhase") not in ("post-quali", "post-race") \
-            or not state.get("qualifyingDataAvailable", False)
+        # Self-correcting: publish until a real-grid, round-verified post-quali
+        # freeze exists; then stop (idempotent — the cron converges).
+        return _post_quali_needs_refreeze(state)
     # pre — only (re)publish if nothing has ever been generated for this round.
     return not state
 

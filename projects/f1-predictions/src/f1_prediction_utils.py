@@ -1201,18 +1201,37 @@ def _parse_laptime_to_seconds(value):
         return None
 
 
-def _fetch_qualifying_from_jolpica(year, grand_prix):
+def _fastf1_session_matches_round(session, expected_round):
+    """True when a FastF1 session's resolved event round matches ``expected_round``.
+
+    Mirrors ``gp_weekend._event_matches_round`` so the low-level qualifying fetch
+    enforces the same wrong-event guard the phase detector already applies.
+    """
+    try:
+        return int(session.event["RoundNumber"]) == int(expected_round)
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=None):
     """Fetch official qualifying times from Jolpica/Ergast as a FastF1 fallback.
 
     Returns ``{driver_code: best_lap_seconds}`` for drivers who set a valid lap
     (best of Q3 → Q2 → Q1), and — as a side-effect — caches the full classified
     grid order (incl. no-time drivers at the back) for ``get_last_qualifying_grid``.
     Returns ``None`` when Jolpica has no qualifying data for the round yet.
+
+    The Jolpica endpoint is round-scoped by URL, so it cannot fuzzy-match a
+    wrong event the way FastF1 can. As defence-in-depth we still verify the
+    round the payload echoes back matches ``expected_round`` when supplied.
     """
     from urllib.request import urlopen
 
     rnd = _resolve_round_number(grand_prix)
     if rnd is None:
+        return None
+    if expected_round is not None and int(rnd) != int(expected_round):
+        # The name→round resolution itself disagrees with the caller — refuse.
         return None
     try:
         url = f"{_JOLPICA_BASE_URL}/{year}/{int(rnd)}/qualifying.json"
@@ -1221,6 +1240,15 @@ def _fetch_qualifying_from_jolpica(year, grand_prix):
         races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
         if not races:
             return None
+        if expected_round is not None:
+            try:
+                echoed = int(races[0].get("round"))
+            except (TypeError, ValueError):
+                echoed = None
+            if echoed != int(expected_round):
+                print(f"🛑 Jolpica qualifying echoed round {echoed}, expected "
+                      f"{expected_round} — rejecting.")
+                return None
         results = races[0].get("QualifyingResults", [])
         if not results:
             return None
@@ -1255,7 +1283,34 @@ def _fetch_qualifying_from_jolpica(year, grand_prix):
     return None
 
 
-def fetch_qualifying_data(year, grand_prix):
+# ── Verified-qualifying override (walk-forward regeneration seam) ──────────
+# regenerate_post_quali.py injects each round's OFFICIAL qualifying data here,
+# sourced from the committed round JSON's weekendResults (round-scoped by
+# construction, originally ingested from Jolpica/FastF1 with round guards).
+# This keeps the leakage-safe replay deterministic and offline-safe without
+# hammering FastF1's rate limit. Keyed "<year>:<gp_key>".
+_QUALI_TIMES_OVERRIDE: dict = {}
+
+
+def set_qualifying_override(year, grand_prix, times, grid=None):
+    """Inject verified official qualifying data for ``(year, grand_prix)``.
+
+    ``times``: {driver_code: best_lap_seconds}; ``grid``: {driver_code: position}.
+    Only call this with round-verified official data — the override is treated
+    as real qualifying (``real-quali-verified`` provenance) downstream.
+    """
+    key = f"{int(year)}:{grand_prix}"
+    _QUALI_TIMES_OVERRIDE[key] = dict(times)
+    if grid:
+        _QUALI_GRID_CACHE[key] = dict(grid)
+
+
+def clear_qualifying_overrides():
+    """Remove all injected qualifying overrides (test/regeneration hygiene)."""
+    _QUALI_TIMES_OVERRIDE.clear()
+
+
+def fetch_qualifying_data(year, grand_prix, expected_round=None):
     """Try to fetch qualifying data from FastF1 (with date guard + timeout).
 
     Returns a ``{driver: best_lap_seconds}`` dict for drivers who set a valid
@@ -1263,7 +1318,21 @@ def fetch_qualifying_data(year, grand_prix):
     are deliberately **excluded** so downstream logic can treat them as
     no-time runners rather than silently optimistic estimates.  As a
     side-effect the official grid order is cached for ``get_last_qualifying_grid``.
+
+    ``expected_round`` closes the wrong-event class of failure (2026-07-05
+    British-GP incident, commit ``09d607f``): FastF1's fuzzy event matcher can
+    silently resolve one GP's name to a *different, already-run* event and hand
+    back that event's qualifying. When ``expected_round`` is supplied, the
+    resolved FastF1 session's ``RoundNumber`` must match it or the FastF1 result
+    is rejected outright (falling through to the round-scoped Jolpica endpoint,
+    which is inherently round-safe). This guarantees a wrong-event grid can never
+    be promoted to ``real-quali-verified`` provenance.
     """
+    override = _QUALI_TIMES_OVERRIDE.get(f"{int(year)}:{grand_prix}")
+    if override:
+        print("🏁 Using INJECTED official qualifying data (regeneration override).")
+        return dict(override)
+
     from datetime import date as _date, timedelta as _timedelta
     for info in CALENDAR.values():
         if grand_prix.lower() in info["name"].lower() or \
@@ -1291,6 +1360,19 @@ def fetch_qualifying_data(year, grand_prix):
             return s
         with concurrent.futures.ThreadPoolExecutor(1) as ex:
             session = ex.submit(_load).result(timeout=15)
+        # Round-verification guard: reject a fuzzy-matched wrong event before
+        # trusting a single lap of its data. Jolpica (round-scoped URL) is the
+        # safe fallback.
+        if expected_round is not None and not _fastf1_session_matches_round(session, expected_round):
+            resolved = None
+            try:
+                resolved = session.event.get("RoundNumber")
+            except Exception:
+                resolved = "?"
+            print(f"🛑 FastF1 resolved {grand_prix} qualifying to round {resolved}, "
+                  f"expected round {expected_round} — rejecting wrong-event data, "
+                  "trying Jolpica fallback…")
+            return _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=expected_round)
         laps = session.laps.copy()
         laps["Q (s)"] = laps["LapTime"].dt.total_seconds()
         best = laps.groupby("Driver")["Q (s)"].min().to_dict()
@@ -1305,11 +1387,11 @@ def fetch_qualifying_data(year, grand_prix):
             print(f"✅ Qualifying data fetched — {len(best)} drivers with valid laps.")
             return best
         print("ℹ️  FastF1 returned no timed laps — trying Jolpica fallback…")
-        return _fetch_qualifying_from_jolpica(year, grand_prix)
+        return _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=expected_round)
     except Exception as exc:
         print(f"⚠️  FastF1 qualifying unavailable: {type(exc).__name__} — "
               "trying Jolpica fallback…")
-        return _fetch_qualifying_from_jolpica(year, grand_prix)
+        return _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=expected_round)
 
 
 # Seconds inserted between consecutive no-time drivers when seating them
@@ -1762,9 +1844,14 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
     return merged
 
 
-def get_qualifying_or_estimates(year, grand_prix, estimates):
-    """Auto-fetch qualifying or fall back to estimates."""
-    actual = fetch_qualifying_data(year, grand_prix)
+def get_qualifying_or_estimates(year, grand_prix, estimates, expected_round=None):
+    """Auto-fetch qualifying or fall back to estimates.
+
+    ``expected_round`` is forwarded to :func:`fetch_qualifying_data` so a
+    wrong-event grid is rejected at the source and the caller falls back to
+    (honestly labelled) estimates rather than a mislabelled real grid.
+    """
+    actual = fetch_qualifying_data(year, grand_prix, expected_round=expected_round)
     if actual is not None:
         print("🏁 Using ACTUAL qualifying data.")
         return actual

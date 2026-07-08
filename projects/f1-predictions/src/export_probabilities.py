@@ -47,6 +47,7 @@ from models.calibration import (
     log_loss,
     plackett_luce_probabilities,
     reliability_diagram,
+    renormalize_market_struct,
 )
 from models.registry import ModelRegistry, registry_enabled
 
@@ -64,11 +65,12 @@ ROUND_FILE_RE = re.compile(r"round_(\d+)\.json$")
 TRAINING_SEASONS: list[int] = []
 
 DATA_LIMITATION_NOTE = (
-    "Only Round 4 of 2026 has actual results; no multi-season historical "
-    "(predicted, observed) pairs are available in-repo. Isotonic calibration "
-    "requires materially more data (target: 2023+2024+2025 backfilled) before "
-    "calibration.applied can be set to true. Until then, exported probabilities "
-    "are raw Plackett-Luce Monte Carlo outputs."
+    "Isotonic calibration is gated on --min-completed-rounds distinct races of "
+    "(predicted, observed) history (in-repo season results + the multi-season "
+    "history DB). When the gate has not tripped, exported probabilities are raw "
+    "Plackett-Luce Monte Carlo outputs and calibration.applied is false. "
+    "Calibrated probabilities are renormalized per market (win sums to 1, "
+    "podium to 3, top6 to 6, top10 to 10)."
 )
 
 
@@ -450,6 +452,10 @@ def run(
     effective_calibrator = calibrator if calibration_applied else ProbabilityCalibrator()
     for rnd, (raw_payload, mp) in raw_round_payloads.items():
         market_struct = calibrate_market_probabilities(mp, effective_calibrator)
+        # Coherence: per-driver isotonic breaks the market sums (win must sum
+        # to 1, podium to 3, …). Water-fill back to the set size — a no-op for
+        # uncalibrated (raw Plackett-Luce) numbers.
+        market_struct = renormalize_market_struct(market_struct)
         markets_payload = {m: _sort_market_entries(market_struct[m]) for m in MARKETS}
         # Preserve any non-MARKETS extras the first pass injected (notably
         # `dnf` from _build_dnf_market) — those don't get re-calibrated, they

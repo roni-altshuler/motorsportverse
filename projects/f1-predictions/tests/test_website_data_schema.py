@@ -81,6 +81,9 @@ class RoundData(_Loose):
     date: str
     sprint: bool
     classification: list[ClassificationEntry] = Field(default_factory=list)
+    # How the prediction's grid was obtained (2026-07 freeze-correctness
+    # overhaul). Optional: rounds published before the field exist without it.
+    gridProvenance: Optional[str] = None
 
 
 class SeasonTrackerRound(_Loose):
@@ -335,6 +338,81 @@ def test_circuit_geometry_is_valid_when_present():
 def test_probabilities_round_json_matches_schema(prob_file: Path):
     data = _load(prob_file)
     ProbabilityRoundData(**data)
+
+
+def test_grid_provenance_values_are_valid():
+    """gridProvenance, when present, must be one of the three contract values."""
+    rounds_dir = WEBSITE_DATA / "rounds"
+    if not rounds_dir.exists():
+        pytest.skip("No rounds/ generated yet")
+    allowed = {"real-quali-verified", "estimated", "stale"}
+    checked = 0
+    for round_file in rounds_dir.glob("round_*.json"):
+        data = _load(round_file)
+        prov = data.get("gridProvenance")
+        if prov is None:
+            continue
+        checked += 1
+        assert prov in allowed, f"{round_file.name}: bad gridProvenance {prov!r}"
+    if checked == 0:
+        pytest.skip("No rounds carry gridProvenance yet")
+
+
+def test_probability_markets_are_coherent():
+    """No market's probabilities may exceed its set size (win 1, podium 3,
+    top6 6, top10 10) beyond numerical tolerance — the audit found published
+    win markets summing to 1.17-1.94."""
+    probs_dir = WEBSITE_DATA / "probabilities"
+    if not probs_dir.exists():
+        pytest.skip("No probabilities/ generated yet")
+    targets = {"win": 1.0, "podium": 3.0, "top6": 6.0, "top10": 10.0}
+    checked = 0
+    for prob_file in sorted(probs_dir.glob("round_*.json")):
+        if "_candidate" in prob_file.stem:
+            continue
+        data = _load(prob_file)
+        for market, target in targets.items():
+            entries = (data.get("markets") or {}).get(market) or []
+            if not entries:
+                continue
+            total = sum(float(e.get("probability", 0.0)) for e in entries)
+            checked += 1
+            assert total <= target * 1.02 + 1e-9, (
+                f"{prob_file.name}: {market} sums to {total:.3f} > {target}"
+            )
+            for e in entries:
+                assert -1e-9 <= float(e["probability"]) <= 1.0 + 1e-9, (
+                    f"{prob_file.name}: {market} {e['driver']} probability out of [0,1]"
+                )
+    if checked == 0:
+        pytest.skip("No probability markets generated yet")
+
+
+class BaselineSeasonBlock(_Loose):
+    roundsScored: int
+
+
+class BaselineBlock(_Loose):
+    label: str
+    season: BaselineSeasonBlock
+    perRound: dict[str, dict] = Field(default_factory=dict)
+
+
+@pytest.mark.skipif(
+    not (WEBSITE_DATA / "gp_accuracy_report.json").exists(),
+    reason="No gp_accuracy_report.json generated yet",
+)
+def test_gp_accuracy_report_baselines_block():
+    """The naive-baseline block (grid-order / pole-sitter / points-leader) is
+    additive but, when present, must carry all three streams so the site can
+    always render model-vs-baseline."""
+    data = _load(WEBSITE_DATA / "gp_accuracy_report.json")
+    baselines = data.get("baselines")
+    if baselines is None:
+        pytest.skip("gp_accuracy_report.json pre-dates the baselines block")
+    for key in ("gridOrder", "poleSitter", "pointsLeader"):
+        assert key in baselines, f"baselines missing {key!r}"
+        BaselineBlock(**baselines[key])
 
 
 @pytest.mark.parametrize(

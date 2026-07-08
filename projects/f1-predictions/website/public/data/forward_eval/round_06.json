@@ -2,16 +2,17 @@
   "season": 2026,
   "round": 6,
   "drivers_compared": 22,
-  "mean_position_error": 5.545454545454546,
-  "median_position_error": 4.5,
-  "rmse_position_error": 7.292586522065966,
+  "mean_position_error": 5.363636363636363,
+  "median_position_error": 4.0,
+  "rmse_position_error": 7.223698372843248,
   "exact_matches": 2,
   "within_3": 10,
   "within_5": 14,
   "winner_hit": true,
   "podium_hits": 2,
+  "top10_overlap": 6,
   "log_loss_uniform_baseline": 3.091042453358316,
-  "spearman_correlation": 0.339356295878035,
+  "spearman_correlation": 0.35177865612648224,
   "ndcg_at_5": 0.6444502988835386,
   "biggest_misses": [
     {
@@ -55,7 +56,22 @@
       "mean_position_error": 6.091,
       "winner_hit": true,
       "podium_hits": 2,
+      "top10_overlap": 5,
       "spearman_correlation": 0.18464144551101072
+    },
+    "grid_order": {
+      "mean_position_error": 5.091,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "top10_overlap": 6,
+      "spearman_correlation": 0.37210615471485037
+    },
+    "standings_order": {
+      "mean_position_error": 6.636,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "top10_overlap": 4,
+      "spearman_correlation": 0.22755505364201017
     }
   }
 }

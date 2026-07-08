@@ -1,0 +1,61 @@
+{
+  "season": 2026,
+  "round": 6,
+  "drivers_compared": 22,
+  "mean_position_error": 5.545454545454546,
+  "median_position_error": 4.5,
+  "rmse_position_error": 7.292586522065966,
+  "exact_matches": 2,
+  "within_3": 10,
+  "within_5": 14,
+  "winner_hit": true,
+  "podium_hits": 2,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.339356295878035,
+  "ndcg_at_5": 0.6444502988835386,
+  "biggest_misses": [
+    {
+      "driver": "VER",
+      "predicted": 2,
+      "actual": 22,
+      "delta": -20,
+      "absDelta": 20
+    },
+    {
+      "driver": "LEC",
+      "predicted": 4,
+      "actual": 17,
+      "delta": -13,
+      "absDelta": 13
+    },
+    {
+      "driver": "NOR",
+      "predicted": 8,
+      "actual": 19,
+      "delta": -11,
+      "absDelta": 11
+    },
+    {
+      "driver": "ALO",
+      "predicted": 20,
+      "actual": 10,
+      "delta": 10,
+      "absDelta": 10
+    },
+    {
+      "driver": "LIN",
+      "predicted": 15,
+      "actual": 6,
+      "delta": 9,
+      "absDelta": 9
+    }
+  ],
+  "baselines": {
+    "last_race_winner": {
+      "mean_position_error": 6.091,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "spearman_correlation": 0.18464144551101072
+    }
+  }
+}

@@ -19,6 +19,10 @@ setup section in the README](../README.md#local-development-setup).
 | `F1_GAME_THEORY_UNCERTAINTY_SCALE` | No | inherits `F1_GAME_THEORY_POSTPROCESS_SCALE` (clamped to `[0.0, 2.5]`) | `f1_prediction_utils.py::apply_race_postprocessing`, `benchmark_game_theory_upgrades.py` |
 | `F1_WEEKEND_TODAY` | No (test only) | `date.today()` | `gp_weekend.py::_utc_today` |
 | `F1_WEEKEND_NOW_UTC` | No (test only) | `datetime.utcnow()` | `gp_weekend.py::_utc_now` |
+| `F1_CANDIDATE_MODEL` | No | `0` (off) | `models/candidate_model.py` via `export_website_data.py` — enables the A/B candidate re-ranker (quali gap in seconds + data-derived circuit grid-trust + DNF-first Monte Carlo composition). Must stay OFF in production until `promotion_decision.py` recommends promote. |
+| `F1_CANDIDATE_ABLATION` | No | `quali_gap,circuit_priors` (the promoted A2 config; `dnf` is opt-in — rejected by the walk-forward ablation) | `models/candidate_model.py` — comma list of enabled candidate components (walk-forward ablation harness). |
+| `F1_CANDIDATE_DNF_DAMP` | No | `1.0` (clamped to `[0, 1]`) | `models/candidate_model.py` — shrinks per-driver P(DNF) spread toward the field mean before the Monte Carlo composition. |
+| `F1_CURRENT_ROUND` | No | — | leakage boundary hint for per-round replay/regeneration (`regenerate_post_quali.py`) and conformal residual persistence. |
 
 ---
 

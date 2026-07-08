@@ -618,11 +618,35 @@ def _write_gp_accuracy_report(tracker_export):
     """Write detailed per-GP accuracy report for website + markdown archive."""
     gp_reports = tracker_export.get("gpReports", []) if isinstance(tracker_export, dict) else []
 
+    # Naive baselines (grid-order / pole-sitter / points-leader) — the honest
+    # bar the model must clear. Emitted alongside the model numbers so the site
+    # (and any evaluator) can always show model-vs-baseline. Additive: never
+    # touches existing keys, so the frontend contract stays backward-compatible.
+    baselines = None
+    try:
+        from baselines import compute_season_baselines
+        baselines = compute_season_baselines(DATA_DIR, SEASON_YEAR)
+    except Exception as exc:  # never let baseline math break the report write
+        print(f"  ⚠️  Baseline computation skipped: {exc}")
+
+    overall = tracker_export.get("overallAccuracy") if isinstance(tracker_export, dict) else None
+    # Additive headline: season winner-hit rate (predicted P1 == actual P1),
+    # derived from the per-GP reports so the site can show it next to the blend.
+    if isinstance(overall, dict) and gp_reports:
+        scored = [r for r in gp_reports if r.get("winnerHit") is not None]
+        if scored:
+            hits = sum(1 for r in scored if r.get("winnerHit"))
+            overall = dict(overall)
+            overall["seasonWinnerHits"] = hits
+            overall["seasonWinnerHitPct"] = round(hits / len(scored) * 100, 1)
+
     json_payload = {
         "generatedAt": tracker_export.get("generatedAt") if isinstance(tracker_export, dict) else None,
-        "overallAccuracy": tracker_export.get("overallAccuracy") if isinstance(tracker_export, dict) else None,
+        "overallAccuracy": overall,
         "gpReports": gp_reports,
     }
+    if baselines is not None:
+        json_payload["baselines"] = baselines
     _write_json(os.path.join(DATA_DIR, "gp_accuracy_report.json"), json_payload)
 
     reports_dir = os.path.join(PROJECT_ROOT, "reports")
@@ -642,7 +666,9 @@ def _write_gp_accuracy_report(tracker_export):
             "## Season Summary",
             "",
             f"- Mean position error: **{overall.get('seasonMeanError', 'n/a')}**",
-            f"- Within 3 positions accuracy: **{overall.get('seasonAccuracyPct', 'n/a')}%**",
+            # seasonAccuracyPct is the podium-weighted classification blend
+            # (0.6 x podium set% + 0.4 x points set%), NOT within-3 positions.
+            f"- Podium & points accuracy (blend): **{overall.get('seasonAccuracyPct', 'n/a')}%**",
             f"- Rounds with official results: **{overall.get('roundsWithActual', 'n/a')}**",
             "",
         ])
@@ -1023,7 +1049,15 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                                              current_round=round_num,
                                              sprint=info.get("sprint", False))
     quali_estimates = generate_qualifying_estimates(gp_key)
-    quali           = get_qualifying_or_estimates(SEASON_YEAR, gp_key, quali_estimates)
+    quali           = get_qualifying_or_estimates(SEASON_YEAR, gp_key, quali_estimates,
+                                                  expected_round=round_num)
+    # Grid provenance: how the grid this prediction rests on was obtained.
+    #   real-quali-verified — real, round-verified qualifying times/grid
+    #   estimated           — model estimates (qualifying not run / not fetched)
+    # A third value, ``stale`` (a previously-published grid that no longer
+    # matches the official one), is set by the freeze gate, never here — a fresh
+    # export always uses the best data available *now*.
+    grid_provenance = "real-quali-verified" if quali is not quali_estimates else "estimated"
     # Official grid (incl. no-time drivers at the back) captured during the
     # qualifying fetch — used to seat DNS / deleted-lap drivers correctly.
     quali_grid      = get_last_qualifying_grid(SEASON_YEAR, gp_key)
@@ -1076,6 +1110,35 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         merged, circuit_key=gp_key, rain_probability=weather["rain"]
     )
     results["merged"] = merged
+
+    # ── Candidate model stream (A/B-gated; F1_CANDIDATE_MODEL=1, never default) ──
+    # Compositional re-ranker on top of the production score: quali gap in
+    # seconds, data-derived circuit grid-trust, DNF-first Monte Carlo. Promotion
+    # is decided by the walk-forward A/B (promotion_decision.py) — this flag
+    # must stay OFF in production until the candidate wins that comparison.
+    candidate_config = {"applied": False}
+    try:
+        from models.candidate_model import candidate_enabled, apply_candidate_reranking
+        if candidate_enabled():
+            from f1_prediction_utils import circuit_grid_dynamics, CIRCUIT_CHARACTERISTICS
+            char = CIRCUIT_CHARACTERISTICS.get(gp_key, {})
+            hand_pole_lock, _ = circuit_grid_dynamics(
+                char.get("overtaking", 0.5),
+                char.get("safety_car_likelihood", 0.4),
+                weather["rain"],
+            )
+            merged, candidate_config = apply_candidate_reranking(
+                merged,
+                round_num=round_num,
+                gp_key=gp_key,
+                rain_probability=weather["rain"],
+                hand_pole_lock=hand_pole_lock,
+            )
+            results["merged"] = merged
+            print(f"  🧪 Candidate re-ranking applied: {candidate_config.get('components')}")
+    except Exception as e:
+        candidate_config = {"applied": False, "reason": f"error: {e}"}
+        print(f"  ⚠️  Candidate re-ranking failed: {e}")
 
     # ── Optional: hybrid historical/weekend blend (behind --use-hybrid-blend) ──
     # Routes through the tested models.hybrid_blend policy.  Both anchor times
@@ -1441,6 +1504,9 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
             "hybridBlend": _json_safe(hybrid_blend_config),
             "perCircuit": _json_safe(per_circuit_config),
             "positionModel": _json_safe(position_model_config),
+            # A/B candidate stream (F1_CANDIDATE_MODEL). Additive field; the
+            # production cron never sets the flag until promotion is earned.
+            "candidate": _json_safe(candidate_config),
         },
         "generatedAt": _utc_now_iso(),
         # Phase of the weekend the prediction was generated in. The UI
@@ -1451,6 +1517,11 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         # with the freshness of its underlying signals.
         "predictionPhase": str(prediction_phase or "preview"),
         "qualifyingDataAvailable": bool(quali is not quali_estimates),
+        # How the grid underlying this prediction was obtained. Persisted so the
+        # freeze gate can tell an upgradeable (estimated/stale) prediction from a
+        # final (real-quali-verified) one, and so downstream evaluation can
+        # honestly separate genuine post-quali predictions from estimated ones.
+        "gridProvenance": grid_provenance,
         "dataFreshness": {
             "weatherSource": weather_full.get("source", "static") if weather_full else "static",
             "qualifyingSource": "FastF1" if quali is not quali_estimates else "model estimate",
