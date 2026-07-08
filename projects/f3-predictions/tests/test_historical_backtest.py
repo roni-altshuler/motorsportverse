@@ -8,7 +8,14 @@ from __future__ import annotations
 
 import json
 
-from f3_predictions import config, historical_backtest as hb
+import pytest
+
+# The backtest renders reliability PNGs; matplotlib is not a core dependency
+# (CI installs core+data+xgboost only), so skip honestly instead of failing
+# collection where it is absent.
+pytest.importorskip("matplotlib")
+
+from f3_predictions import config, historical_backtest as hb  # noqa: E402
 
 
 # --------------------------------------------------------------------------- #

@@ -22,5 +22,31 @@
     "exact_matches": 0,
     "spearman_correlation": 0.2929824561403509,
     "ndcg_at_5": 0.5960611207953742
+  },
+  "markets": {
+    "sprint": {
+      "win": {
+        "brier": 0.052177,
+        "logLoss": 0.257878
+      },
+      "podium": {
+        "brier": 0.16223,
+        "logLoss": 0.508059
+      }
+    },
+    "feature": {
+      "win": {
+        "brier": 0.049573,
+        "logLoss": 0.202857
+      },
+      "podium": {
+        "brier": 0.134153,
+        "logLoss": 0.441131
+      }
+    }
+  },
+  "baselines": {
+    "sprint": null,
+    "feature": null
   }
 }

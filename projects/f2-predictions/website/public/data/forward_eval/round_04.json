@@ -22,5 +22,51 @@
     "exact_matches": 1,
     "spearman_correlation": 0.5493506493506494,
     "ndcg_at_5": 0.6993399959219936
+  },
+  "markets": {
+    "sprint": {
+      "win": {
+        "brier": 0.049922,
+        "logLoss": 0.187487
+      },
+      "podium": {
+        "brier": 0.127469,
+        "logLoss": 0.577465
+      }
+    },
+    "feature": {
+      "win": {
+        "brier": 0.056011,
+        "logLoss": 0.272572
+      },
+      "podium": {
+        "brier": 0.156566,
+        "logLoss": 0.476902
+      }
+    }
+  },
+  "baselines": {
+    "sprint": {
+      "n": 15,
+      "mean_position_error": 4.2,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "within_3": 7,
+      "within_5": 11,
+      "exact_matches": 2,
+      "spearman_correlation": 0.39285714285714285,
+      "ndcg_at_5": 0.6550263844535696
+    },
+    "feature": {
+      "n": 13,
+      "mean_position_error": 6.615,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 3,
+      "within_5": 7,
+      "exact_matches": 1,
+      "spearman_correlation": 0.005494505494505495,
+      "ndcg_at_5": 0.5741240141276852
+    }
   }
 }

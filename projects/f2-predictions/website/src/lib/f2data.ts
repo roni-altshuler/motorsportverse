@@ -11,6 +11,7 @@ import type {
   F2Data,
   ForwardEvalRound,
   ForwardEvalSeason,
+  HistoricalBacktest,
   ModelHealth,
   ProbabilitiesRound,
   PromotionStatus,
@@ -74,6 +75,10 @@ export function getModelHealth(): ModelHealth | null {
 
 export function getPromotionStatus(): PromotionStatus | null {
   return readJson<PromotionStatus>("promotion_status.json");
+}
+
+export function getHistoricalBacktest(): HistoricalBacktest | null {
+  return readJson<HistoricalBacktest>("historical_backtest", "summary.json");
 }
 
 // All calendar round numbers — for generateStaticParams on /race/[round].

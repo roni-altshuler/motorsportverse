@@ -1,9 +1,20 @@
 {
   "decision": "hold",
-  "reason": "insufficient overlap (0 common rounds; need >= 5)",
-  "roundsCompared": 0,
+  "reason": "insufficient overlap (4 common rounds; need >= 5)",
+  "roundsCompared": 4,
   "meanProduction": null,
   "meanCandidate": null,
   "relativeChange": null,
-  "hasCandidate": false
+  "hasCandidate": true,
+  "candidate": "position-head",
+  "candidateFlag": "F2_USE_POSITION_HEAD",
+  "abVerdict": {
+    "recommendation": "production-better",
+    "basis": "pooled (sprint+feature) mean_position_error",
+    "positionHeadMeanError": 6.2685,
+    "productionMeanError": 5.456,
+    "meanErrorDelta": 0.8125,
+    "positionHeadWinnerHitRate": 0.0,
+    "productionWinnerHitRate": 0.0
+  }
 }

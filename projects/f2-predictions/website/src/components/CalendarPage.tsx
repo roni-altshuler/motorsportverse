@@ -6,6 +6,7 @@ import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import { useSeasonF2Data } from "@/lib/f2client";
 import { getRaceArt } from "@/lib/raceArt";
 import type { CalendarRound } from "@/types/f2";
 
@@ -22,13 +23,23 @@ interface CalendarPageProps {
  * season-stats row, and a hairline-divided round list. Adapted to the leaner F2
  * CalendarRound shape (no per-round circuit/laps/date — F2 weekends are a
  * reversed-grid sprint + a feature race at the same circuits as F1).
+ *
+ * Multi-season: the page is baked with the CURRENT season's data (static
+ * export); when the SeasonSwitcher selects an archived season, that season's
+ * f2.json overlays the baked props client-side (mirrors F1's useSeason wiring).
  */
 export default function CalendarPage({
-  season,
-  totalRounds,
-  completedRounds,
-  calendar,
+  season: baseSeason,
+  totalRounds: baseTotalRounds,
+  completedRounds: baseCompletedRounds,
+  calendar: baseCalendar,
 }: CalendarPageProps) {
+  const { data: seasonData, isArchived } = useSeasonF2Data();
+  const overlay = isArchived && seasonData ? seasonData : null;
+  const season = overlay?.season ?? baseSeason;
+  const totalRounds = overlay?.totalRounds ?? baseTotalRounds;
+  const completedRounds = overlay?.completedRounds ?? baseCompletedRounds;
+  const calendar = overlay?.calendar ?? baseCalendar;
   const remaining = totalRounds - completedRounds;
   const lastCompleted = calendar.filter((r) => r.completed).reduce((m, r) => Math.max(m, r.round), 0);
   const nextRound = calendar.find((r) => !r.completed)?.round;
