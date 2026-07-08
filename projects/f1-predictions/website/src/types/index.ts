@@ -174,6 +174,17 @@ export interface GrandPrixPerformanceReport {
   teamMeanError: GrandPrixTeamError[];
 }
 
+/**
+ * Provenance of the starting grid behind a round's published prediction.
+ *   "real-quali-verified" — prediction frozen post-qualifying on the
+ *                           round-verified official grid
+ *   "estimated"           — grid estimated (qualifying not yet run or
+ *                           lap times unavailable)
+ *   "stale"               — grid data present but could not be re-verified
+ * Open string union: additive backend values must not break the UI.
+ */
+export type GridProvenance = "real-quali-verified" | "estimated" | "stale" | string;
+
 export type WeekendSessionKey = "sprintQualifying" | "sprint" | "qualifying" | "grandPrix" | string;
 export type WeekendSessionKind = "qualifying" | "race" | "sprint" | string;
 export type WeekendSessionStatus = "official" | "timing" | "pending" | "unavailable" | string;
@@ -242,6 +253,9 @@ export interface RoundData {
   predictionPhase?: "preview" | "post-quali" | "post-race";
   /** True when qualifying lap times are real (not synthetic estimates). */
   qualifyingDataAvailable?: boolean;
+  /** How the starting grid behind this prediction was sourced/verified.
+   * Absent on pre-overhaul round JSONs and preview-phase rounds. */
+  gridProvenance?: GridProvenance | null;
   classification: ClassificationEntry[];
   metrics: ModelMetrics;
   featureImportance: FeatureImportance[];
@@ -491,21 +505,120 @@ export interface SeasonTrackerRound {
   dnfCount?: number | null;
 }
 
+/** Season-rolling accuracy aggregate shared by `season_tracker.json` and
+ * `gp_accuracy_report.json` (`overallAccuracy` block in both). */
+export interface SeasonOverallAccuracy {
+  seasonMeanError: number;
+  seasonAccuracyPct: number;
+  seasonPodiumAccuracyPct?: number;
+  seasonPointsAccuracyPct?: number;
+  roundsWithActual: number;
+  seasonMeanErrorClassified?: number;
+  seasonAccuracyPctClassified?: number;
+  seasonWithin5PctClassified?: number;
+  totalDnfsExcluded?: number;
+  /** Rounds where the model's predicted P1 actually won the race. */
+  seasonWinnerHits?: number;
+  /** seasonWinnerHits / roundsWithActual, as a percentage. */
+  seasonWinnerHitPct?: number;
+}
+
 export interface SeasonTrackerData {
   rounds: SeasonTrackerRound[];
-  overallAccuracy: {
-    seasonMeanError: number;
-    seasonAccuracyPct: number;
-    seasonPodiumAccuracyPct?: number;
-    seasonPointsAccuracyPct?: number;
-    roundsWithActual: number;
-    seasonMeanErrorClassified?: number;
-    seasonAccuracyPctClassified?: number;
-    seasonWithin5PctClassified?: number;
-    totalDnfsExcluded?: number;
-  } | null;
+  overallAccuracy: SeasonOverallAccuracy | null;
   gpReports?: GrandPrixPerformanceReport[];
   generatedAt?: string;
+}
+
+// =========================================================================
+// Honest-scoreboard types (gp_accuracy_report baselines + promotion headline)
+// =========================================================================
+
+/** Season-level stats for one naive baseline (or the model itself) in the
+ * `gp_accuracy_report.json::baselines` block. Order-producing baselines
+ * (grid order) carry the full set; winner-only baselines (pole-sitter,
+ * points-leader) carry just the winner-hit fields. */
+export interface AccuracyBaselineSeasonStats {
+  roundsScored: number;
+  winnerHits: number;
+  winnerHitRate: number;
+  podiumSetPct?: number;
+  pointsSetPct?: number;
+  blendPct?: number;
+  meanError?: number;
+}
+
+export interface AccuracyBaselinePerRound {
+  winnerHit: boolean;
+  predictedWinner?: string;
+  podiumHits?: number;
+  podiumTotal?: number;
+  top10Overlap?: number;
+  meanError?: number;
+  podiumAccuracyPct?: number;
+  pointsAccuracyPct?: number;
+  blendPct?: number;
+}
+
+export interface AccuracyBaselineBlock {
+  label: string;
+  description: string;
+  season: AccuracyBaselineSeasonStats;
+  perRound?: Record<string, AccuracyBaselinePerRound>;
+}
+
+/** `gp_accuracy_report.json::baselines` — the naive strategies the model is
+ * honestly scored against. All keys optional: pre-overhaul/archived seasons
+ * lack the block entirely. */
+export interface AccuracyBaselines {
+  gridOrder?: AccuracyBaselineBlock;
+  poleSitter?: AccuracyBaselineBlock;
+  pointsLeader?: AccuracyBaselineBlock;
+}
+
+/** Full schema for `gp_accuracy_report.json`. */
+export interface GpAccuracyReportData {
+  generatedAt?: string;
+  overallAccuracy?: SeasonOverallAccuracy | null;
+  gpReports?: GrandPrixPerformanceReport[];
+  baselines?: AccuracyBaselines | null;
+}
+
+/** One side (production or candidate) of the promotion headline block. */
+export interface PromotionHeadlineStats {
+  rounds: number;
+  winnerHits: number;
+  winnerHitPct: number;
+  podiumSetPct?: number;
+  pointsSetPct?: number;
+  blendPct?: number;
+  meanError?: number;
+}
+
+/** `promotion_status.json::headline` — human-readable verdict of the
+ * production-vs-candidate shadow comparison. */
+export interface PromotionHeadline {
+  roundsCompared: number;
+  commonRounds?: number[];
+  production: PromotionHeadlineStats;
+  candidate: PromotionHeadlineStats;
+  verdict: "candidate-better" | "production-better" | "parity" | string;
+}
+
+/** Schema for `promotion_status.json` (additive — snake_case fields come
+ * straight from the Python promotion gate). */
+export interface PromotionStatusData {
+  decision: string;
+  reason?: string;
+  rounds_compared?: number;
+  mean_production?: number;
+  mean_candidate?: number;
+  relative_change?: number;
+  worst_round_regression?: number;
+  blocked_by_per_round_guard?: boolean;
+  season?: number;
+  scoreKey?: string;
+  headline?: PromotionHeadline | null;
 }
 
 export type RoundLifecycle =

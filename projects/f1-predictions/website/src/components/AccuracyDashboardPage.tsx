@@ -3,13 +3,25 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { SeasonTrackerData, SeasonData } from "@/types";
-import { fetchSeasonTrackerData, fetchSeasonData } from "@/lib/data";
+import {
+  SeasonTrackerData,
+  SeasonData,
+  GpAccuracyReportData,
+  PromotionStatusData,
+} from "@/types";
+import {
+  fetchSeasonTrackerData,
+  fetchSeasonData,
+  fetchGpAccuracyReport,
+  fetchPromotionStatus,
+} from "@/lib/data";
 import { useSeason } from "@/lib/SeasonProvider";
 import { getSeasonYear } from "@/lib/season";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
+import BaselineComparisonPanel from "@/components/accuracy/BaselineComparisonPanel";
+import CandidateModelPanel from "@/components/accuracy/CandidateModelPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
@@ -17,6 +29,8 @@ import { resolveDriverHeadshot } from "@/lib/headshots";
 export default function AccuracyDashboardPage() {
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
+  const [gpAccuracyReport, setGpAccuracyReport] = useState<GpAccuracyReportData | null>(null);
+  const [promotionStatus, setPromotionStatus] = useState<PromotionStatusData | null>(null);
   const [error, setError] = useState(false);
   const { basePath } = useSeason();
 
@@ -29,6 +43,14 @@ export default function AccuracyDashboardPage() {
       .catch(() => setError(true));
     fetchSeasonData(basePath)
       .then(setSeason)
+      .catch(() => {});
+    // Both are optional surfaces: archived seasons may lack the baselines
+    // block / promotion file entirely — the panels hide themselves.
+    fetchGpAccuracyReport(basePath)
+      .then(setGpAccuracyReport)
+      .catch(() => {});
+    fetchPromotionStatus(basePath)
+      .then(setPromotionStatus)
       .catch(() => {});
   }, [basePath]);
 
@@ -62,6 +84,21 @@ export default function AccuracyDashboardPage() {
   const hasActualResults = tracker.rounds.some((r) => r.hasActual);
   const gpReports = tracker.gpReports || [];
   const seasonYear = getSeasonYear(season);
+
+  // Winner-hit headline: prefer the explicit season tally on the accuracy
+  // report; fall back to counting the per-GP winnerHit flags so archived
+  // seasons without the new fields still show the stat.
+  const reportOverall = gpAccuracyReport?.overallAccuracy;
+  const winnerHitRounds =
+    reportOverall?.roundsWithActual ?? tracker.overallAccuracy?.roundsWithActual ?? 0;
+  const winnerHits =
+    reportOverall?.seasonWinnerHits ??
+    (gpReports.length > 0 ? gpReports.filter((r) => r.winnerHit).length : null);
+  const winnerHitPct =
+    reportOverall?.seasonWinnerHitPct ??
+    (winnerHits != null && winnerHitRounds > 0
+      ? Number(((winnerHits / winnerHitRounds) * 100).toFixed(1))
+      : null);
 
   const getRoundName = (round: number) => {
     if (!season) return `Round ${round}`;
@@ -98,7 +135,36 @@ export default function AccuracyDashboardPage() {
           transition={{ duration: 0.4, delay: 0.1 }}
         >
           <h2 className="section-heading">Season Overview</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 ${
+              winnerHits != null && winnerHitPct != null ? "lg:grid-cols-4" : "lg:grid-cols-3"
+            } gap-4`}
+          >
+            {winnerHits != null && winnerHitPct != null && (
+              <div className="metric-card text-center">
+                <p className="eyebrow mb-2">Winner Called</p>
+                <p
+                  className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
+                  style={{
+                    color:
+                      winnerHitPct >= 70
+                        ? "var(--success)"
+                        : winnerHitPct >= 50
+                          ? "var(--warning)"
+                          : "var(--accent-f1-red)",
+                  }}
+                >
+                  <NumberTicker value={winnerHits} decimalPlaces={0} />
+                  <span className="text-2xl" style={{ color: "var(--text-muted)" }}>
+                    /{winnerHitRounds}
+                  </span>
+                </p>
+                <p className="caption-uppercase text-[10px] mt-2">race winner predicted</p>
+                <p className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
+                  {winnerHitPct.toFixed(1)}% of graded rounds
+                </p>
+              </div>
+            )}
             {(() => {
               const accPct = tracker.overallAccuracy.seasonAccuracyPct;
               const podiumPct = tracker.overallAccuracy.seasonPodiumAccuracyPct;
@@ -177,13 +243,27 @@ export default function AccuracyDashboardPage() {
             </div>
           </div>
           <p className="text-xs mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            Season accuracy is a{" "}
+            <strong style={{ color: "var(--text)" }}>Winner called</strong> counts the rounds where
+            the driver the model put on top actually won the race — the most direct test of the
+            forecast. Season accuracy is a{" "}
             <strong style={{ color: "var(--text)" }}>podium-weighted blend</strong> (60% podium, 40%
             points) of how often the model puts the{" "}
             <strong style={{ color: "var(--text)" }}>right drivers</strong> on the podium (top 3)
             and in the points (top 10) — a more meaningful benchmark than ordering all 22 cars. Mean
             position error and within-3 figures are shown alongside for full transparency.
           </p>
+        </motion.div>
+      )}
+
+      {/* Honest scoreboard: model vs naive baselines */}
+      {gpAccuracyReport?.baselines && (
+        <motion.div
+          className="card p-6 sm:p-8 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+        >
+          <BaselineComparisonPanel report={gpAccuracyReport} />
         </motion.div>
       )}
 
@@ -295,6 +375,18 @@ export default function AccuracyDashboardPage() {
               Last tracker sync: {new Date(tracker.generatedAt).toLocaleString()}
             </p>
           )}
+        </motion.div>
+      )}
+
+      {/* Shadow candidate model status (current season only) */}
+      {promotionStatus?.headline && (
+        <motion.div
+          className="card p-6 sm:p-8 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.28 }}
+        >
+          <CandidateModelPanel status={promotionStatus} />
         </motion.div>
       )}
 
@@ -450,7 +542,16 @@ export default function AccuracyDashboardPage() {
         transition={{ duration: 0.4, delay: 0.4 }}
       >
         <h2 className="section-heading">How Accuracy Is Measured</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+          <div>
+            <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
+              Winner Called
+            </h4>
+            <p style={{ color: "var(--text-muted)" }}>
+              The share of graded rounds where the driver the model predicted to win actually won
+              the race. The most direct, hardest-to-fudge test of the forecast.
+            </p>
+          </div>
           <div>
             <h4 className="font-bold mb-2" style={{ color: "var(--text)" }}>
               Podium &amp; Points Accuracy

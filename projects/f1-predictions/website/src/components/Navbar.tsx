@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { ChevronDown, Github, Menu, X } from "lucide-react";
 
-import { SeasonData, SeasonTrackerData } from "@/types";
+import { GpAccuracyReportData, SeasonData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
@@ -25,6 +25,10 @@ const GITHUB_URL = "https://github.com/roni-altshuler/f1_predictions";
 interface AccuracySummary {
   accuracyPct: number;
   roundsWithActual: number;
+  /** Rounds where the model's predicted winner actually won. Absent on
+   * archived seasons that predate the winner-hit tally. */
+  winnerHits: number | null;
+  winnerHitPct: number | null;
 }
 
 function useAccuracySummary(base: string): AccuracySummary | null {
@@ -32,15 +36,30 @@ function useAccuracySummary(base: string): AccuracySummary | null {
   useEffect(() => {
     fetch(`${base}/gp_accuracy_report.json`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
+      .then((d: GpAccuracyReportData | null) => {
         if (!d?.overallAccuracy) {
           setSummary(null);
           return;
         }
+        const overall = d.overallAccuracy;
+        // Prefer the explicit winner-hit tally; fall back to counting the
+        // per-GP winnerHit flags so older season archives still resolve.
+        const winnerHits =
+          overall.seasonWinnerHits ??
+          (d.gpReports && d.gpReports.length > 0
+            ? d.gpReports.filter((r) => r.winnerHit).length
+            : null);
+        const rounds = overall.roundsWithActual ?? 0;
         setSummary({
-          // Headline = podium-weighted (60/40) exact-position accuracy.
-          accuracyPct: d.overallAccuracy.seasonAccuracyPct ?? 0,
-          roundsWithActual: d.overallAccuracy.roundsWithActual ?? 0,
+          // Blend = podium-weighted (60/40) set-membership accuracy.
+          accuracyPct: overall.seasonAccuracyPct ?? 0,
+          roundsWithActual: rounds,
+          winnerHits,
+          winnerHitPct:
+            overall.seasonWinnerHitPct ??
+            (winnerHits != null && rounds > 0
+              ? Number(((winnerHits / rounds) * 100).toFixed(1))
+              : null),
         });
       })
       .catch(() => {});
@@ -198,27 +217,35 @@ export default function Navbar() {
           <SeasonSwitcher />
           {accuracy && accuracy.roundsWithActual > 0 && (
             <Link
-              href="/about#methodology"
+              href="/accuracy"
               className="eyebrow inline-flex items-center gap-1.5 px-2 py-0.5 border transition-colors hover:text-[color:var(--ink)]"
               style={{
                 borderColor:
-                  accuracy.accuracyPct >= 80
+                  (accuracy.winnerHitPct ?? accuracy.accuracyPct) >= 70
                     ? "var(--accent-f1-red-soft)"
-                    : accuracy.accuracyPct < 60
+                    : (accuracy.winnerHitPct ?? accuracy.accuracyPct) < 50
                       ? "rgba(212,160,23,0.4)"
                       : "var(--hairline)",
                 color: "var(--muted)",
               }}
-              title={`Season podium & points accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} completed round(s)`}
+              title={
+                accuracy.winnerHits != null && accuracy.winnerHitPct != null
+                  ? `Race winner correctly predicted in ${accuracy.winnerHits} of ${accuracy.roundsWithActual} graded rounds (${accuracy.winnerHitPct.toFixed(1)}%). Podium & points accuracy blend: ${accuracy.accuracyPct.toFixed(1)}%. Full scoreboard on the Accuracy page.`
+                  : `Season podium & points accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} graded round(s). Full scoreboard on the Accuracy page.`
+              }
             >
               <span
                 className="inline-block w-1.5 h-1.5 rounded-full"
                 style={{
                   background:
-                    accuracy.accuracyPct >= 80 ? "var(--accent-f1-red)" : "var(--muted)",
+                    (accuracy.winnerHitPct ?? accuracy.accuracyPct) >= 70
+                      ? "var(--accent-f1-red)"
+                      : "var(--muted)",
                 }}
               />
-              {accuracy.accuracyPct.toFixed(0)}% · {accuracy.roundsWithActual}R
+              {accuracy.winnerHits != null
+                ? `Winners called ${accuracy.winnerHits}/${accuracy.roundsWithActual}`
+                : `${accuracy.accuracyPct.toFixed(0)}% podium+points · ${accuracy.roundsWithActual}R`}
             </Link>
           )}
           {process.env.NODE_ENV === "development" && (
