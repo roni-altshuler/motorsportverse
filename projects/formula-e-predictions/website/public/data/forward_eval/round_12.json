@@ -1,0 +1,52 @@
+{
+  "round": 12,
+  "venueName": "Shanghai",
+  "venueKind": "circuit",
+  "race": {
+    "n": 20,
+    "mean_position_error": 5.9,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 7,
+    "within_5": 9,
+    "exact_matches": 0,
+    "spearman_correlation": 0.30526315789473685,
+    "ndcg_at_5": 0.5550843984473899
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.0603,
+        "logLoss": 0.272606
+      },
+      "podium": {
+        "brier": 0.153072,
+        "logLoss": 0.461249
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 15,
+      "mean_position_error": 4.467,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 11,
+      "exact_matches": 1,
+      "spearman_correlation": 0.325,
+      "ndcg_at_5": 0.746714391429142
+    },
+    "gridOrder": {
+      "n": 20,
+      "mean_position_error": 4.2,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "within_3": 9,
+      "within_5": 13,
+      "exact_matches": 5,
+      "spearman_correlation": 0.544360902255639,
+      "ndcg_at_5": 0.9073061065753278
+    }
+  }
+}

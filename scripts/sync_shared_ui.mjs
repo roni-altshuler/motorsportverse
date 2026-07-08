@@ -23,6 +23,7 @@ const CANONICAL = join(ROOT, "projects/f1-predictions/website/src/components");
 const TARGETS = [
   join(ROOT, "projects/f2-predictions/website/src/components"),
   join(ROOT, "projects/f3-predictions/website/src/components"),
+  join(ROOT, "projects/formula-e-predictions/website/src/components"),
 ];
 
 // Directories synced wholesale (every canonical file is managed).

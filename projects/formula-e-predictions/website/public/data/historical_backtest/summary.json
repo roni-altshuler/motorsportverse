@@ -1,0 +1,3753 @@
+{
+  "season": 2026,
+  "seasons": [
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "generatedAt": "2026-07-08T08:12:35Z",
+  "source": "leakage-safe replay of the FE model over the committed Pulselive snapshots",
+  "scoring": "pre-race forecast vs official classification, finishers-only",
+  "finishersOnly": true,
+  "roundsEvaluated": 61,
+  "totalRows": 1121,
+  "pooledSummary": {
+    "rounds_evaluated": 61,
+    "season_mean_error": 5.406,
+    "season_median_error": 5.0,
+    "winner_hit_rate": 0.164,
+    "podium_hit_rate": 0.328,
+    "exact_match_rate": 0.063,
+    "within_3_rate": 0.393,
+    "within_5_rate": 0.563,
+    "mean_spearman": 0.365,
+    "mean_ndcg_at_5": 0.715
+  },
+  "perSeason": [
+    {
+      "season": 2023,
+      "summary": {
+        "rounds_evaluated": 16,
+        "season_mean_error": 5.29,
+        "season_median_error": 4.75,
+        "winner_hit_rate": 0.25,
+        "podium_hit_rate": 0.438,
+        "exact_match_rate": 0.052,
+        "within_3_rate": 0.406,
+        "within_5_rate": 0.577,
+        "mean_spearman": 0.381,
+        "mean_ndcg_at_5": 0.745
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "venueName": "Mexico City",
+          "drivers_compared": 18,
+          "mean_position_error": 5.056,
+          "median_position_error": 5.0,
+          "rmse_position_error": 5.73,
+          "exact_matches": 1,
+          "within_3": 5,
+          "within_5": 11,
+          "winner_hit": true,
+          "podium_hits": 1,
+          "spearman_correlation": 0.6140350877192983,
+          "ndcg_at_5": 0.8290620916069346,
+          "biggest_misses": [
+            {
+              "driver": "RAS",
+              "predicted": 7,
+              "actual": 18,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BUE",
+              "predicted": 15,
+              "actual": 6,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "LOT",
+              "predicted": 12,
+              "actual": 4,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "GUE",
+              "predicted": 18,
+              "actual": 11,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "VAN",
+              "predicted": 3,
+              "actual": 10,
+              "delta": -7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "venueName": "Diriyah",
+          "drivers_compared": 19,
+          "mean_position_error": 5.263,
+          "median_position_error": 5.0,
+          "rmse_position_error": 6.358,
+          "exact_matches": 0,
+          "within_3": 8,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.4614035087719298,
+          "ndcg_at_5": 0.8045232367930116,
+          "biggest_misses": [
+            {
+              "driver": "RAS",
+              "predicted": 19,
+              "actual": 5,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DAC",
+              "predicted": 6,
+              "actual": 18,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DIG",
+              "predicted": 3,
+              "actual": 13,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 22,
+              "actual": 14,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BIR",
+              "predicted": 9,
+              "actual": 3,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "venueName": "Diriyah",
+          "drivers_compared": 20,
+          "mean_position_error": 4.4,
+          "median_position_error": 3.5,
+          "rmse_position_error": 5.745,
+          "exact_matches": 1,
+          "within_3": 10,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.5789473684210527,
+          "ndcg_at_5": 0.9664323661190845,
+          "biggest_misses": [
+            {
+              "driver": "FEN",
+              "predicted": 21,
+              "actual": 8,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "RAS",
+              "predicted": 13,
+              "actual": 3,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 20,
+              "actual": 10,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "VAN",
+              "predicted": 10,
+              "actual": 20,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "CAS",
+              "predicted": 7,
+              "actual": 13,
+              "delta": -6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "venueName": "Hyderabad",
+          "drivers_compared": 16,
+          "mean_position_error": 7.625,
+          "median_position_error": 7.5,
+          "rmse_position_error": 9.014,
+          "exact_matches": 0,
+          "within_3": 5,
+          "within_5": 5,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": -0.2088235294117647,
+          "ndcg_at_5": 0.3372279842160283,
+          "biggest_misses": [
+            {
+              "driver": "SET",
+              "predicted": 21,
+              "actual": 5,
+              "delta": 16,
+              "absDelta": 16
+            },
+            {
+              "driver": "DEN",
+              "predicted": 1,
+              "actual": 16,
+              "delta": -15,
+              "absDelta": 15
+            },
+            {
+              "driver": "ROW",
+              "predicted": 20,
+              "actual": 6,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "JEV",
+              "predicted": 13,
+              "actual": 1,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "BUE",
+              "predicted": 5,
+              "actual": 15,
+              "delta": -10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "venueName": "Cape Town",
+          "drivers_compared": 13,
+          "mean_position_error": 5.692,
+          "median_position_error": 5.0,
+          "rmse_position_error": 6.445,
+          "exact_matches": 1,
+          "within_3": 4,
+          "within_5": 7,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": -0.13736263736263737,
+          "ndcg_at_5": 0.3993068153576917,
+          "biggest_misses": [
+            {
+              "driver": "DAC",
+              "predicted": 11,
+              "actual": 1,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 16,
+              "actual": 6,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DEN",
+              "predicted": 4,
+              "actual": 13,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "JEV",
+              "predicted": 10,
+              "actual": 2,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "HUG",
+              "predicted": 3,
+              "actual": 10,
+              "delta": -7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "venueName": "Sao Paulo",
+          "drivers_compared": 17,
+          "mean_position_error": 3.588,
+          "median_position_error": 2.0,
+          "rmse_position_error": 4.857,
+          "exact_matches": 1,
+          "within_3": 11,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.7205882352941176,
+          "ndcg_at_5": 0.8150693287764973,
+          "biggest_misses": [
+            {
+              "driver": "GUE",
+              "predicted": 22,
+              "actual": 11,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "EVA",
+              "predicted": 10,
+              "actual": 1,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "VAN",
+              "predicted": 15,
+              "actual": 6,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "WEH",
+              "predicted": 1,
+              "actual": 7,
+              "delta": -6,
+              "absDelta": 6
+            },
+            {
+              "driver": "RAS",
+              "predicted": 4,
+              "actual": 9,
+              "delta": -5,
+              "absDelta": 5
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "venueName": "Berlin",
+          "drivers_compared": 18,
+          "mean_position_error": 5.111,
+          "median_position_error": 4.0,
+          "rmse_position_error": 6.489,
+          "exact_matches": 1,
+          "within_3": 5,
+          "within_5": 12,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.44891640866873067,
+          "ndcg_at_5": 0.8799285088495977,
+          "biggest_misses": [
+            {
+              "driver": "GUE",
+              "predicted": 21,
+              "actual": 3,
+              "delta": 18,
+              "absDelta": 18
+            },
+            {
+              "driver": "DEN",
+              "predicted": 9,
+              "actual": 18,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "RAS",
+              "predicted": 8,
+              "actual": 17,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "ROW",
+              "predicted": 18,
+              "actual": 10,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BUE",
+              "predicted": 10,
+              "actual": 4,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "venueName": "Berlin",
+          "drivers_compared": 22,
+          "mean_position_error": 6.455,
+          "median_position_error": 6.0,
+          "rmse_position_error": 8.124,
+          "exact_matches": 3,
+          "within_3": 9,
+          "within_5": 11,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.18012422360248448,
+          "ndcg_at_5": 0.6491626412665732,
+          "biggest_misses": [
+            {
+              "driver": "BIR",
+              "predicted": 1,
+              "actual": 19,
+              "delta": -18,
+              "absDelta": 18
+            },
+            {
+              "driver": "BUE",
+              "predicted": 7,
+              "actual": 20,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MOR",
+              "predicted": 9,
+              "actual": 22,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 21,
+              "actual": 9,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "LOT",
+              "predicted": 10,
+              "actual": 21,
+              "delta": -11,
+              "absDelta": 11
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "venueName": "Monaco",
+          "drivers_compared": 18,
+          "mean_position_error": 5.5,
+          "median_position_error": 5.5,
+          "rmse_position_error": 6.579,
+          "exact_matches": 1,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.40970072239422084,
+          "ndcg_at_5": 0.7873545350895716,
+          "biggest_misses": [
+            {
+              "driver": "TIC",
+              "predicted": 17,
+              "actual": 6,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BIR",
+              "predicted": 6,
+              "actual": 16,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DAC",
+              "predicted": 5,
+              "actual": 15,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "FEN",
+              "predicted": 14,
+              "actual": 4,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "FRI",
+              "predicted": 21,
+              "actual": 13,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "venueName": "Jakarta",
+          "drivers_compared": 21,
+          "mean_position_error": 5.81,
+          "median_position_error": 4.0,
+          "rmse_position_error": 7.111,
+          "exact_matches": 0,
+          "within_3": 9,
+          "within_5": 11,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.33116883116883117,
+          "ndcg_at_5": 0.8776436523764927,
+          "biggest_misses": [
+            {
+              "driver": "BIR",
+              "predicted": 7,
+              "actual": 20,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "FRI",
+              "predicted": 22,
+              "actual": 9,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BUE",
+              "predicted": 9,
+              "actual": 21,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "MOR",
+              "predicted": 18,
+              "actual": 6,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "GUE",
+              "predicted": 13,
+              "actual": 3,
+              "delta": 10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "venueName": "Jakarta",
+          "drivers_compared": 18,
+          "mean_position_error": 5.222,
+          "median_position_error": 3.5,
+          "rmse_position_error": 7.226,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 12,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.19504643962848298,
+          "ndcg_at_5": 0.4845671608901963,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 1,
+              "actual": 18,
+              "delta": -17,
+              "absDelta": 17
+            },
+            {
+              "driver": "FEN",
+              "predicted": 18,
+              "actual": 4,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "JEV",
+              "predicted": 4,
+              "actual": 16,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "NAT",
+              "predicted": 17,
+              "actual": 5,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "GUE",
+              "predicted": 8,
+              "actual": 1,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "venueName": "Portland",
+          "drivers_compared": 19,
+          "mean_position_error": 5.158,
+          "median_position_error": 5.0,
+          "rmse_position_error": 5.804,
+          "exact_matches": 0,
+          "within_3": 5,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.5333333333333333,
+          "ndcg_at_5": 0.8892964600995622,
+          "biggest_misses": [
+            {
+              "driver": "DIG",
+              "predicted": 18,
+              "actual": 7,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "FRI",
+              "predicted": 20,
+              "actual": 10,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "HUG",
+              "predicted": 9,
+              "actual": 18,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BUE",
+              "predicted": 13,
+              "actual": 5,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "NAT",
+              "predicted": 15,
+              "actual": 9,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "venueName": "Rome",
+          "drivers_compared": 13,
+          "mean_position_error": 4.846,
+          "median_position_error": 3.0,
+          "rmse_position_error": 6.183,
+          "exact_matches": 1,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": true,
+          "podium_hits": 1,
+          "spearman_correlation": 0.6758241758241759,
+          "ndcg_at_5": 0.9150208992270621,
+          "biggest_misses": [
+            {
+              "driver": "SET",
+              "predicted": 21,
+              "actual": 8,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 17,
+              "actual": 6,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "MER",
+              "predicted": 22,
+              "actual": 12,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "WEH",
+              "predicted": 3,
+              "actual": 9,
+              "delta": -6,
+              "absDelta": 6
+            },
+            {
+              "driver": "FEN",
+              "predicted": 14,
+              "actual": 10,
+              "delta": 4,
+              "absDelta": 4
+            }
+          ]
+        },
+        {
+          "round": 14,
+          "venueName": "Rome",
+          "drivers_compared": 16,
+          "mean_position_error": 5.125,
+          "median_position_error": 4.5,
+          "rmse_position_error": 6.235,
+          "exact_matches": 0,
+          "within_3": 8,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.2323529411764706,
+          "ndcg_at_5": 0.6694760736114891,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 3,
+              "actual": 14,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BIR",
+              "predicted": 13,
+              "actual": 3,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "NAT",
+              "predicted": 11,
+              "actual": 2,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "JEV",
+              "predicted": 7,
+              "actual": 15,
+              "delta": -8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 15,
+          "venueName": "London",
+          "drivers_compared": 16,
+          "mean_position_error": 5.062,
+          "median_position_error": 5.5,
+          "rmse_position_error": 6.047,
+          "exact_matches": 3,
+          "within_3": 5,
+          "within_5": 8,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.4676470588235294,
+          "ndcg_at_5": 0.7308417742105706,
+          "biggest_misses": [
+            {
+              "driver": "DAC",
+              "predicted": 6,
+              "actual": 16,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 17,
+              "actual": 7,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DIG",
+              "predicted": 15,
+              "actual": 6,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BIR",
+              "predicted": 12,
+              "actual": 4,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "GUE",
+              "predicted": 5,
+              "actual": 12,
+              "delta": -7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 16,
+          "venueName": "London",
+          "drivers_compared": 22,
+          "mean_position_error": 4.727,
+          "median_position_error": 4.0,
+          "rmse_position_error": 5.721,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 3,
+          "spearman_correlation": 0.5934500282326369,
+          "ndcg_at_5": 0.8834293732455176,
+          "biggest_misses": [
+            {
+              "driver": "JEV",
+              "predicted": 8,
+              "actual": 22,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "GUE",
+              "predicted": 5,
+              "actual": 14,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "RAS",
+              "predicted": 20,
+              "actual": 12,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "SET",
+              "predicted": 21,
+              "actual": 13,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "NAT",
+              "predicted": 11,
+              "actual": 4,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2024,
+      "summary": {
+        "rounds_evaluated": 16,
+        "season_mean_error": 5.197,
+        "season_median_error": 4.0,
+        "winner_hit_rate": 0.125,
+        "podium_hit_rate": 0.396,
+        "exact_match_rate": 0.07,
+        "within_3_rate": 0.415,
+        "within_5_rate": 0.591,
+        "mean_spearman": 0.449,
+        "mean_ndcg_at_5": 0.767
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "venueName": "Mexico City",
+          "drivers_compared": 18,
+          "mean_position_error": 5.444,
+          "median_position_error": 5.5,
+          "rmse_position_error": 6.848,
+          "exact_matches": 3,
+          "within_3": 5,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.3684210526315789,
+          "ndcg_at_5": 0.7921422708460395,
+          "biggest_misses": [
+            {
+              "driver": "HUG",
+              "predicted": 22,
+              "actual": 7,
+              "delta": 15,
+              "absDelta": 15
+            },
+            {
+              "driver": "JEV",
+              "predicted": 20,
+              "actual": 6,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DEV",
+              "predicted": 6,
+              "actual": 15,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DEN",
+              "predicted": 2,
+              "actual": 9,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "FEN",
+              "predicted": 19,
+              "actual": 12,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "venueName": "Diriyah",
+          "drivers_compared": 21,
+          "mean_position_error": 3.857,
+          "median_position_error": 3.0,
+          "rmse_position_error": 5.269,
+          "exact_matches": 2,
+          "within_3": 12,
+          "within_5": 16,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.6545454545454545,
+          "ndcg_at_5": 0.7866496308233442,
+          "biggest_misses": [
+            {
+              "driver": "BIR",
+              "predicted": 18,
+              "actual": 4,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "SET",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BUE",
+              "predicted": 3,
+              "actual": 12,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "JEV",
+              "predicted": 9,
+              "actual": 2,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "VAN",
+              "predicted": 7,
+              "actual": 14,
+              "delta": -7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "venueName": "Diriyah",
+          "drivers_compared": 18,
+          "mean_position_error": 5.667,
+          "median_position_error": 5.5,
+          "rmse_position_error": 6.325,
+          "exact_matches": 1,
+          "within_3": 6,
+          "within_5": 9,
+          "winner_hit": true,
+          "podium_hits": 1,
+          "spearman_correlation": 0.43653250773993807,
+          "ndcg_at_5": 0.7371495421623682,
+          "biggest_misses": [
+            {
+              "driver": "ROW",
+              "predicted": 14,
+              "actual": 3,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "DEN",
+              "predicted": 3,
+              "actual": 12,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "FEN",
+              "predicted": 15,
+              "actual": 6,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "EVA",
+              "predicted": 2,
+              "actual": 10,
+              "delta": -8,
+              "absDelta": 8
+            },
+            {
+              "driver": "FRI",
+              "predicted": 10,
+              "actual": 2,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "venueName": "S\u00e3o Paulo",
+          "drivers_compared": 18,
+          "mean_position_error": 4.667,
+          "median_position_error": 3.5,
+          "rmse_position_error": 6.092,
+          "exact_matches": 2,
+          "within_3": 9,
+          "within_5": 11,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.49226006191950467,
+          "ndcg_at_5": 0.7295730534292687,
+          "biggest_misses": [
+            {
+              "driver": "FRI",
+              "predicted": 4,
+              "actual": 18,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "BIR",
+              "predicted": 11,
+              "actual": 1,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DAC",
+              "predicted": 16,
+              "actual": 6,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "ROW",
+              "predicted": 12,
+              "actual": 3,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DIG",
+              "predicted": 20,
+              "actual": 13,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "venueName": "Tokyo",
+          "drivers_compared": 19,
+          "mean_position_error": 6.474,
+          "median_position_error": 6.0,
+          "rmse_position_error": 7.473,
+          "exact_matches": 0,
+          "within_3": 4,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.1456140350877193,
+          "ndcg_at_5": 0.5640632901060368,
+          "biggest_misses": [
+            {
+              "driver": "BIR",
+              "predicted": 5,
+              "actual": 19,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "EVA",
+              "predicted": 2,
+              "actual": 15,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 19,
+              "actual": 7,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DAC",
+              "predicted": 14,
+              "actual": 4,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "NAT",
+              "predicted": 15,
+              "actual": 6,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "venueName": "Misano",
+          "drivers_compared": 17,
+          "mean_position_error": 5.588,
+          "median_position_error": 4.0,
+          "rmse_position_error": 7.207,
+          "exact_matches": 0,
+          "within_3": 7,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.2769607843137255,
+          "ndcg_at_5": 0.6822542721551594,
+          "biggest_misses": [
+            {
+              "driver": "TIC",
+              "predicted": 22,
+              "actual": 4,
+              "delta": 18,
+              "absDelta": 18
+            },
+            {
+              "driver": "WEH",
+              "predicted": 2,
+              "actual": 16,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DIG",
+              "predicted": 20,
+              "actual": 10,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "NAT",
+              "predicted": 15,
+              "actual": 7,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "FRI",
+              "predicted": 11,
+              "actual": 17,
+              "delta": -6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "venueName": "Misano",
+          "drivers_compared": 17,
+          "mean_position_error": 5.882,
+          "median_position_error": 5.0,
+          "rmse_position_error": 7.162,
+          "exact_matches": 2,
+          "within_3": 5,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.41911764705882354,
+          "ndcg_at_5": 0.8599302328151668,
+          "biggest_misses": [
+            {
+              "driver": "DAR",
+              "predicted": 22,
+              "actual": 9,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 17,
+              "actual": 4,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "SET",
+              "predicted": 18,
+              "actual": 6,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DAC",
+              "predicted": 8,
+              "actual": 17,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 11,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "venueName": "Monaco",
+          "drivers_compared": 20,
+          "mean_position_error": 4.7,
+          "median_position_error": 3.5,
+          "rmse_position_error": 6.419,
+          "exact_matches": 3,
+          "within_3": 10,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.5097744360902255,
+          "ndcg_at_5": 0.765102069556257,
+          "biggest_misses": [
+            {
+              "driver": "DEN",
+              "predicted": 2,
+              "actual": 19,
+              "delta": -17,
+              "absDelta": 17
+            },
+            {
+              "driver": "DEV",
+              "predicted": 22,
+              "actual": 12,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 23,
+              "actual": 13,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DAC",
+              "predicted": 16,
+              "actual": 7,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DIG",
+              "predicted": 20,
+              "actual": 11,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "venueName": "Berlin",
+          "drivers_compared": 18,
+          "mean_position_error": 3.556,
+          "median_position_error": 3.0,
+          "rmse_position_error": 4.534,
+          "exact_matches": 1,
+          "within_3": 10,
+          "within_5": 14,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.7874097007223942,
+          "ndcg_at_5": 0.9912153840006495,
+          "biggest_misses": [
+            {
+              "driver": "BAR",
+              "predicted": 19,
+              "actual": 10,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "MOR",
+              "predicted": 17,
+              "actual": 8,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "NAT",
+              "predicted": 11,
+              "actual": 18,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "TIC",
+              "predicted": 21,
+              "actual": 14,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DAR",
+              "predicted": 22,
+              "actual": 17,
+              "delta": 5,
+              "absDelta": 5
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "venueName": "Berlin",
+          "drivers_compared": 20,
+          "mean_position_error": 4.55,
+          "median_position_error": 3.0,
+          "rmse_position_error": 5.929,
+          "exact_matches": 0,
+          "within_3": 11,
+          "within_5": 14,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.5578947368421052,
+          "ndcg_at_5": 0.8966420979519593,
+          "biggest_misses": [
+            {
+              "driver": "DAR",
+              "predicted": 22,
+              "actual": 7,
+              "delta": 15,
+              "absDelta": 15
+            },
+            {
+              "driver": "VAN",
+              "predicted": 8,
+              "actual": 20,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DAC",
+              "predicted": 10,
+              "actual": 1,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 11,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "SET",
+              "predicted": 20,
+              "actual": 13,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "venueName": "Shanghai",
+          "drivers_compared": 21,
+          "mean_position_error": 4.333,
+          "median_position_error": 2.0,
+          "rmse_position_error": 5.851,
+          "exact_matches": 1,
+          "within_3": 13,
+          "within_5": 15,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.564935064935065,
+          "ndcg_at_5": 0.9672037033140191,
+          "biggest_misses": [
+            {
+              "driver": "DEV",
+              "predicted": 21,
+              "actual": 7,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "GUE",
+              "predicted": 7,
+              "actual": 21,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DAC",
+              "predicted": 8,
+              "actual": 18,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BIR",
+              "predicted": 10,
+              "actual": 17,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "SET",
+              "predicted": 20,
+              "actual": 13,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "venueName": "Shanghai",
+          "drivers_compared": 21,
+          "mean_position_error": 5.238,
+          "median_position_error": 4.0,
+          "rmse_position_error": 7.003,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 15,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.37922077922077924,
+          "ndcg_at_5": 0.6933516888806045,
+          "biggest_misses": [
+            {
+              "driver": "NAT",
+              "predicted": 19,
+              "actual": 3,
+              "delta": 16,
+              "absDelta": 16
+            },
+            {
+              "driver": "WEH",
+              "predicted": 4,
+              "actual": 20,
+              "delta": -16,
+              "absDelta": 16
+            },
+            {
+              "driver": "HUG",
+              "predicted": 16,
+              "actual": 2,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DAC",
+              "predicted": 9,
+              "actual": 1,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "ROW",
+              "predicted": 2,
+              "actual": 10,
+              "delta": -8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "venueName": "Portland",
+          "drivers_compared": 21,
+          "mean_position_error": 6.857,
+          "median_position_error": 6.0,
+          "rmse_position_error": 8.095,
+          "exact_matches": 1,
+          "within_3": 4,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.15194805194805194,
+          "ndcg_at_5": 0.5457425603349673,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 1,
+              "actual": 19,
+              "delta": -18,
+              "absDelta": 18
+            },
+            {
+              "driver": "FRI",
+              "predicted": 15,
+              "actual": 2,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MOR",
+              "predicted": 17,
+              "actual": 4,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 16,
+              "actual": 5,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "HUG",
+              "predicted": 11,
+              "actual": 21,
+              "delta": -10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 14,
+          "venueName": "Portland",
+          "drivers_compared": 18,
+          "mean_position_error": 4.944,
+          "median_position_error": 5.5,
+          "rmse_position_error": 5.691,
+          "exact_matches": 2,
+          "within_3": 5,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.5706914344685242,
+          "ndcg_at_5": 0.7595607962105219,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 2,
+              "actual": 13,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "DAR",
+              "predicted": 20,
+              "actual": 12,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "FEN",
+              "predicted": 11,
+              "actual": 18,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "FRI",
+              "predicted": 9,
+              "actual": 2,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "NAT",
+              "predicted": 14,
+              "actual": 7,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 15,
+          "venueName": "London",
+          "drivers_compared": 18,
+          "mean_position_error": 6.833,
+          "median_position_error": 7.0,
+          "rmse_position_error": 8.093,
+          "exact_matches": 0,
+          "within_3": 7,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.19504643962848298,
+          "ndcg_at_5": 0.6507008626231868,
+          "biggest_misses": [
+            {
+              "driver": "DEV",
+              "predicted": 18,
+              "actual": 4,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "JEV",
+              "predicted": 3,
+              "actual": 17,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "ROW",
+              "predicted": 2,
+              "actual": 15,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BUE",
+              "predicted": 15,
+              "actual": 3,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DEN",
+              "predicted": 7,
+              "actual": 16,
+              "delta": -9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 16,
+          "venueName": "London",
+          "drivers_compared": 16,
+          "mean_position_error": 4.562,
+          "median_position_error": 3.5,
+          "rmse_position_error": 5.728,
+          "exact_matches": 2,
+          "within_3": 8,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.6676470588235294,
+          "ndcg_at_5": 0.8564267978707341,
+          "biggest_misses": [
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BUE",
+              "predicted": 13,
+              "actual": 4,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DAC",
+              "predicted": 4,
+              "actual": 13,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "SET",
+              "predicted": 20,
+              "actual": 11,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "TIC",
+              "predicted": 22,
+              "actual": 14,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2025,
+      "summary": {
+        "rounds_evaluated": 16,
+        "season_mean_error": 5.666,
+        "season_median_error": 5.5,
+        "winner_hit_rate": 0.125,
+        "podium_hit_rate": 0.229,
+        "exact_match_rate": 0.066,
+        "within_3_rate": 0.359,
+        "within_5_rate": 0.535,
+        "mean_spearman": 0.339,
+        "mean_ndcg_at_5": 0.674
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "venueName": "S\u00e3o Paulo",
+          "drivers_compared": 15,
+          "mean_position_error": 5.867,
+          "median_position_error": 7.0,
+          "rmse_position_error": 7.303,
+          "exact_matches": 1,
+          "within_3": 6,
+          "within_5": 7,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.18214285714285713,
+          "ndcg_at_5": 0.6779461407802541,
+          "biggest_misses": [
+            {
+              "driver": "TIC",
+              "predicted": 22,
+              "actual": 8,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DEV",
+              "predicted": 18,
+              "actual": 6,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "CAS",
+              "predicted": 4,
+              "actual": 15,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BIR",
+              "predicted": 13,
+              "actual": 4,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BAR",
+              "predicted": 11,
+              "actual": 3,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "venueName": "Mexico City",
+          "drivers_compared": 20,
+          "mean_position_error": 6.9,
+          "median_position_error": 6.5,
+          "rmse_position_error": 8.044,
+          "exact_matches": 2,
+          "within_3": 4,
+          "within_5": 7,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.11278195488721804,
+          "ndcg_at_5": 0.671743356831225,
+          "biggest_misses": [
+            {
+              "driver": "ROW",
+              "predicted": 17,
+              "actual": 1,
+              "delta": 16,
+              "absDelta": 16
+            },
+            {
+              "driver": "BIR",
+              "predicted": 5,
+              "actual": 18,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MOR",
+              "predicted": 7,
+              "actual": 19,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "BAR",
+              "predicted": 3,
+              "actual": 14,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BUE",
+              "predicted": 8,
+              "actual": 17,
+              "delta": -9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "venueName": "Jeddah",
+          "drivers_compared": 19,
+          "mean_position_error": 5.579,
+          "median_position_error": 5.0,
+          "rmse_position_error": 7.049,
+          "exact_matches": 0,
+          "within_3": 6,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.33157894736842103,
+          "ndcg_at_5": 0.42147721098107366,
+          "biggest_misses": [
+            {
+              "driver": "EVA",
+              "predicted": 1,
+              "actual": 19,
+              "delta": -18,
+              "absDelta": 18
+            },
+            {
+              "driver": "WEH",
+              "predicted": 3,
+              "actual": 15,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "MOR",
+              "predicted": 18,
+              "actual": 7,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "HUG",
+              "predicted": 13,
+              "actual": 5,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BAR",
+              "predicted": 10,
+              "actual": 3,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "venueName": "Jeddah",
+          "drivers_compared": 19,
+          "mean_position_error": 3.526,
+          "median_position_error": 2.0,
+          "rmse_position_error": 4.936,
+          "exact_matches": 3,
+          "within_3": 11,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.7280701754385965,
+          "ndcg_at_5": 0.8940635586341954,
+          "biggest_misses": [
+            {
+              "driver": "TIC",
+              "predicted": 21,
+              "actual": 9,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "CAS",
+              "predicted": 16,
+              "actual": 5,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "DEV",
+              "predicted": 7,
+              "actual": 13,
+              "delta": -6,
+              "absDelta": 6
+            },
+            {
+              "driver": "DIG",
+              "predicted": 22,
+              "actual": 16,
+              "delta": 6,
+              "absDelta": 6
+            },
+            {
+              "driver": "HUG",
+              "predicted": 9,
+              "actual": 3,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "venueName": "Miami",
+          "drivers_compared": 20,
+          "mean_position_error": 7.45,
+          "median_position_error": 6.0,
+          "rmse_position_error": 9.014,
+          "exact_matches": 0,
+          "within_3": 5,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": -0.11278195488721804,
+          "ndcg_at_5": 0.5411796263725294,
+          "biggest_misses": [
+            {
+              "driver": "DIG",
+              "predicted": 22,
+              "actual": 2,
+              "delta": 20,
+              "absDelta": 20
+            },
+            {
+              "driver": "BAR",
+              "predicted": 2,
+              "actual": 20,
+              "delta": -18,
+              "absDelta": 18
+            },
+            {
+              "driver": "NAT",
+              "predicted": 19,
+              "actual": 6,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "GUE",
+              "predicted": 5,
+              "actual": 17,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "TIC",
+              "predicted": 18,
+              "actual": 7,
+              "delta": 11,
+              "absDelta": 11
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "venueName": "Monaco",
+          "drivers_compared": 21,
+          "mean_position_error": 4.429,
+          "median_position_error": 4.0,
+          "rmse_position_error": 5.214,
+          "exact_matches": 0,
+          "within_3": 8,
+          "within_5": 14,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.6428571428571429,
+          "ndcg_at_5": 0.8250018919282391,
+          "biggest_misses": [
+            {
+              "driver": "HUG",
+              "predicted": 5,
+              "actual": 16,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "TIC",
+              "predicted": 16,
+              "actual": 7,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DEV",
+              "predicted": 10,
+              "actual": 2,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "FRI",
+              "predicted": 15,
+              "actual": 8,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "BIR",
+              "predicted": 17,
+              "actual": 11,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "venueName": "Monaco",
+          "drivers_compared": 20,
+          "mean_position_error": 4.3,
+          "median_position_error": 2.5,
+          "rmse_position_error": 6.261,
+          "exact_matches": 1,
+          "within_3": 12,
+          "within_5": 15,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.48270676691729325,
+          "ndcg_at_5": 0.8585454937520586,
+          "biggest_misses": [
+            {
+              "driver": "BUE",
+              "predicted": 20,
+              "actual": 1,
+              "delta": 19,
+              "absDelta": 19
+            },
+            {
+              "driver": "CAS",
+              "predicted": 16,
+              "actual": 3,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MAL",
+              "predicted": 22,
+              "actual": 14,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "HUG",
+              "predicted": 10,
+              "actual": 17,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DEN",
+              "predicted": 3,
+              "actual": 9,
+              "delta": -6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "venueName": "Tokyo",
+          "drivers_compared": 19,
+          "mean_position_error": 5.316,
+          "median_position_error": 5.0,
+          "rmse_position_error": 6.436,
+          "exact_matches": 1,
+          "within_3": 7,
+          "within_5": 11,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.45614035087719296,
+          "ndcg_at_5": 0.6550231255120799,
+          "biggest_misses": [
+            {
+              "driver": "BAR",
+              "predicted": 16,
+              "actual": 3,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BUE",
+              "predicted": 15,
+              "actual": 4,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "WEH",
+              "predicted": 3,
+              "actual": 13,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "TIC",
+              "predicted": 14,
+              "actual": 5,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "VAN",
+              "predicted": 10,
+              "actual": 1,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "venueName": "Tokyo",
+          "drivers_compared": 18,
+          "mean_position_error": 4.944,
+          "median_position_error": 4.0,
+          "rmse_position_error": 6.604,
+          "exact_matches": 4,
+          "within_3": 8,
+          "within_5": 11,
+          "winner_hit": true,
+          "podium_hits": 1,
+          "spearman_correlation": 0.41589267285861714,
+          "ndcg_at_5": 0.8710687479451062,
+          "biggest_misses": [
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 5,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "TIC",
+              "predicted": 15,
+              "actual": 3,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "BIR",
+              "predicted": 18,
+              "actual": 8,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DEV",
+              "predicted": 5,
+              "actual": 15,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BEC",
+              "predicted": 22,
+              "actual": 13,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "venueName": "Shanghai",
+          "drivers_compared": 21,
+          "mean_position_error": 6.333,
+          "median_position_error": 7.0,
+          "rmse_position_error": 7.26,
+          "exact_matches": 1,
+          "within_3": 6,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.34155844155844156,
+          "ndcg_at_5": 0.6288894988066517,
+          "biggest_misses": [
+            {
+              "driver": "DEN",
+              "predicted": 3,
+              "actual": 17,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "NAT",
+              "predicted": 18,
+              "actual": 6,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DAC",
+              "predicted": 2,
+              "actual": 13,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BIR",
+              "predicted": 17,
+              "actual": 7,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BAR",
+              "predicted": 12,
+              "actual": 3,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "venueName": "Shanghai",
+          "drivers_compared": 21,
+          "mean_position_error": 6.238,
+          "median_position_error": 6.0,
+          "rmse_position_error": 7.694,
+          "exact_matches": 2,
+          "within_3": 8,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.22077922077922077,
+          "ndcg_at_5": 0.6805102758309272,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 16,
+              "actual": 1,
+              "delta": 15,
+              "absDelta": 15
+            },
+            {
+              "driver": "HUG",
+              "predicted": 19,
+              "actual": 4,
+              "delta": 15,
+              "absDelta": 15
+            },
+            {
+              "driver": "ROW",
+              "predicted": 1,
+              "actual": 13,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DEN",
+              "predicted": 6,
+              "actual": 17,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "MAL",
+              "predicted": 22,
+              "actual": 11,
+              "delta": 11,
+              "absDelta": 11
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "venueName": "Jakarta",
+          "drivers_compared": 18,
+          "mean_position_error": 6.722,
+          "median_position_error": 6.5,
+          "rmse_position_error": 7.465,
+          "exact_matches": 1,
+          "within_3": 2,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.32714138286893707,
+          "ndcg_at_5": 0.5934898208579669,
+          "biggest_misses": [
+            {
+              "driver": "BUE",
+              "predicted": 15,
+              "actual": 3,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "MOR",
+              "predicted": 14,
+              "actual": 2,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "JEV",
+              "predicted": 4,
+              "actual": 15,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "TIC",
+              "predicted": 12,
+              "actual": 1,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "BIR",
+              "predicted": 16,
+              "actual": 8,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "venueName": "Berlin",
+          "drivers_compared": 18,
+          "mean_position_error": 4.5,
+          "median_position_error": 4.0,
+          "rmse_position_error": 6.311,
+          "exact_matches": 2,
+          "within_3": 8,
+          "within_5": 11,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.44685242518059853,
+          "ndcg_at_5": 0.7445852960660854,
+          "biggest_misses": [
+            {
+              "driver": "EVA",
+              "predicted": 20,
+              "actual": 1,
+              "delta": 19,
+              "absDelta": 19
+            },
+            {
+              "driver": "DAC",
+              "predicted": 1,
+              "actual": 10,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BUE",
+              "predicted": 14,
+              "actual": 7,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "MOR",
+              "predicted": 10,
+              "actual": 3,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "BIR",
+              "predicted": 17,
+              "actual": 11,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 14,
+          "venueName": "Berlin",
+          "drivers_compared": 18,
+          "mean_position_error": 6.722,
+          "median_position_error": 6.5,
+          "rmse_position_error": 7.721,
+          "exact_matches": 0,
+          "within_3": 4,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.2549019607843137,
+          "ndcg_at_5": 0.6541391788372969,
+          "biggest_misses": [
+            {
+              "driver": "DRU",
+              "predicted": 20,
+              "actual": 7,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "WEH",
+              "predicted": 2,
+              "actual": 15,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "DEN",
+              "predicted": 13,
+              "actual": 2,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "EVA",
+              "predicted": 16,
+              "actual": 5,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "SET",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 15,
+          "venueName": "London",
+          "drivers_compared": 17,
+          "mean_position_error": 6.0,
+          "median_position_error": 6.0,
+          "rmse_position_error": 6.808,
+          "exact_matches": 0,
+          "within_3": 6,
+          "within_5": 7,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.2647058823529412,
+          "ndcg_at_5": 0.49248207435938657,
+          "biggest_misses": [
+            {
+              "driver": "DAC",
+              "predicted": 2,
+              "actual": 14,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "NAT",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "ROW",
+              "predicted": 1,
+              "actual": 11,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BEC",
+              "predicted": 21,
+              "actual": 12,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BAR",
+              "predicted": 5,
+              "actual": 13,
+              "delta": -8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 16,
+          "venueName": "London",
+          "drivers_compared": 17,
+          "mean_position_error": 5.824,
+          "median_position_error": 5.0,
+          "rmse_position_error": 7.264,
+          "exact_matches": 2,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.3284313725490196,
+          "ndcg_at_5": 0.5676274041419069,
+          "biggest_misses": [
+            {
+              "driver": "JEV",
+              "predicted": 2,
+              "actual": 15,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BUE",
+              "predicted": 15,
+              "actual": 3,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "BEC",
+              "predicted": 21,
+              "actual": 10,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "DIG",
+              "predicted": 20,
+              "actual": 9,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "EVA",
+              "predicted": 16,
+              "actual": 5,
+              "delta": 11,
+              "absDelta": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2026,
+      "summary": {
+        "rounds_evaluated": 13,
+        "season_mean_error": 5.487,
+        "season_median_error": 5.5,
+        "winner_hit_rate": 0.154,
+        "podium_hit_rate": 0.231,
+        "exact_match_rate": 0.064,
+        "within_3_rate": 0.391,
+        "within_5_rate": 0.545,
+        "mean_spearman": 0.275,
+        "mean_ndcg_at_5": 0.665
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "venueName": "S\u00e3o Paulo",
+          "drivers_compared": 13,
+          "mean_position_error": 5.077,
+          "median_position_error": 4.0,
+          "rmse_position_error": 5.857,
+          "exact_matches": 0,
+          "within_3": 6,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.3131868131868132,
+          "ndcg_at_5": 0.7814396323731659,
+          "biggest_misses": [
+            {
+              "driver": "MAL",
+              "predicted": 20,
+              "actual": 10,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "MUE",
+              "predicted": 15,
+              "actual": 5,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DEN",
+              "predicted": 10,
+              "actual": 1,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DEV",
+              "predicted": 2,
+              "actual": 9,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "ERI",
+              "predicted": 13,
+              "actual": 7,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "venueName": "Mexico City",
+          "drivers_compared": 17,
+          "mean_position_error": 3.765,
+          "median_position_error": 4.0,
+          "rmse_position_error": 5.041,
+          "exact_matches": 4,
+          "within_3": 8,
+          "within_5": 14,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.6446078431372549,
+          "ndcg_at_5": 0.9626838806016774,
+          "biggest_misses": [
+            {
+              "driver": "BAR",
+              "predicted": 18,
+              "actual": 4,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "MAR",
+              "predicted": 15,
+              "actual": 7,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "GUE",
+              "predicted": 6,
+              "actual": 12,
+              "delta": -6,
+              "absDelta": 6
+            },
+            {
+              "driver": "BUE",
+              "predicted": 12,
+              "actual": 17,
+              "delta": -5,
+              "absDelta": 5
+            },
+            {
+              "driver": "DIG",
+              "predicted": 17,
+              "actual": 13,
+              "delta": 4,
+              "absDelta": 4
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "venueName": "Miami",
+          "drivers_compared": 19,
+          "mean_position_error": 6.947,
+          "median_position_error": 6.0,
+          "rmse_position_error": 7.887,
+          "exact_matches": 0,
+          "within_3": 4,
+          "within_5": 8,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.04912280701754386,
+          "ndcg_at_5": 0.49344254914169045,
+          "biggest_misses": [
+            {
+              "driver": "CAS",
+              "predicted": 1,
+              "actual": 16,
+              "delta": -15,
+              "absDelta": 15
+            },
+            {
+              "driver": "EVA",
+              "predicted": 14,
+              "actual": 1,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "ERI",
+              "predicted": 16,
+              "actual": 4,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "BUE",
+              "predicted": 17,
+              "actual": 7,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "ROW",
+              "predicted": 2,
+              "actual": 12,
+              "delta": -10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "venueName": "Jeddah",
+          "drivers_compared": 18,
+          "mean_position_error": 4.0,
+          "median_position_error": 4.0,
+          "rmse_position_error": 5.0,
+          "exact_matches": 3,
+          "within_3": 8,
+          "within_5": 13,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "spearman_correlation": 0.5933952528379773,
+          "ndcg_at_5": 0.9645867897261228,
+          "biggest_misses": [
+            {
+              "driver": "ROW",
+              "predicted": 6,
+              "actual": 17,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "ERI",
+              "predicted": 10,
+              "actual": 18,
+              "delta": -8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BUE",
+              "predicted": 14,
+              "actual": 7,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "JEV",
+              "predicted": 15,
+              "actual": 8,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DAC",
+              "predicted": 11,
+              "actual": 5,
+              "delta": 6,
+              "absDelta": 6
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "venueName": "Jeddah II",
+          "drivers_compared": 20,
+          "mean_position_error": 6.0,
+          "median_position_error": 6.5,
+          "rmse_position_error": 7.294,
+          "exact_matches": 2,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.2,
+          "ndcg_at_5": 0.6210391692699279,
+          "biggest_misses": [
+            {
+              "driver": "DEV",
+              "predicted": 6,
+              "actual": 20,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "MUE",
+              "predicted": 3,
+              "actual": 16,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "DEN",
+              "predicted": 7,
+              "actual": 19,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "TIC",
+              "predicted": 15,
+              "actual": 5,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "CAS",
+              "predicted": 5,
+              "actual": 14,
+              "delta": -9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "venueName": "Madrid",
+          "drivers_compared": 20,
+          "mean_position_error": 4.1,
+          "median_position_error": 3.5,
+          "rmse_position_error": 4.919,
+          "exact_matches": 1,
+          "within_3": 10,
+          "within_5": 12,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.6360902255639098,
+          "ndcg_at_5": 0.9224164666353535,
+          "biggest_misses": [
+            {
+              "driver": "ROW",
+              "predicted": 7,
+              "actual": 16,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "CAS",
+              "predicted": 9,
+              "actual": 17,
+              "delta": -8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BAR",
+              "predicted": 12,
+              "actual": 19,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DEN",
+              "predicted": 13,
+              "actual": 6,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 12,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "venueName": "Berlin",
+          "drivers_compared": 19,
+          "mean_position_error": 5.0,
+          "median_position_error": 5.0,
+          "rmse_position_error": 6.262,
+          "exact_matches": 0,
+          "within_3": 8,
+          "within_5": 13,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.4105263157894737,
+          "ndcg_at_5": 0.5514885107464942,
+          "biggest_misses": [
+            {
+              "driver": "WEH",
+              "predicted": 1,
+              "actual": 19,
+              "delta": -18,
+              "absDelta": 18
+            },
+            {
+              "driver": "CAS",
+              "predicted": 11,
+              "actual": 2,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BAR",
+              "predicted": 15,
+              "actual": 8,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "DEV",
+              "predicted": 16,
+              "actual": 9,
+              "delta": 7,
+              "absDelta": 7
+            },
+            {
+              "driver": "ROW",
+              "predicted": 10,
+              "actual": 3,
+              "delta": 7,
+              "absDelta": 7
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "venueName": "Berlin II",
+          "drivers_compared": 18,
+          "mean_position_error": 5.778,
+          "median_position_error": 5.5,
+          "rmse_position_error": 6.968,
+          "exact_matches": 0,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.23426212590299278,
+          "ndcg_at_5": 0.5569482380486055,
+          "biggest_misses": [
+            {
+              "driver": "DAC",
+              "predicted": 3,
+              "actual": 18,
+              "delta": -15,
+              "absDelta": 15
+            },
+            {
+              "driver": "NAT",
+              "predicted": 18,
+              "actual": 5,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "MUE",
+              "predicted": 4,
+              "actual": 13,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "TIC",
+              "predicted": 5,
+              "actual": 14,
+              "delta": -9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DRU",
+              "predicted": 17,
+              "actual": 9,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "venueName": "Monaco",
+          "drivers_compared": 18,
+          "mean_position_error": 7.389,
+          "median_position_error": 7.0,
+          "rmse_position_error": 8.727,
+          "exact_matches": 1,
+          "within_3": 4,
+          "within_5": 6,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": -0.16821465428276575,
+          "ndcg_at_5": 0.4519031123450941,
+          "biggest_misses": [
+            {
+              "driver": "MOR",
+              "predicted": 2,
+              "actual": 17,
+              "delta": -15,
+              "absDelta": 15
+            },
+            {
+              "driver": "WEH",
+              "predicted": 3,
+              "actual": 18,
+              "delta": -15,
+              "absDelta": 15
+            },
+            {
+              "driver": "DEV",
+              "predicted": 15,
+              "actual": 1,
+              "delta": 14,
+              "absDelta": 14
+            },
+            {
+              "driver": "DRU",
+              "predicted": 16,
+              "actual": 4,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 8,
+              "delta": 11,
+              "absDelta": 11
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "venueName": "Monaco II",
+          "drivers_compared": 18,
+          "mean_position_error": 5.556,
+          "median_position_error": 3.5,
+          "rmse_position_error": 6.807,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 10,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.20743034055727555,
+          "ndcg_at_5": 0.6809769886173751,
+          "biggest_misses": [
+            {
+              "driver": "BUE",
+              "predicted": 4,
+              "actual": 17,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "DRU",
+              "predicted": 15,
+              "actual": 2,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 9,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "MAL",
+              "predicted": 20,
+              "actual": 10,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "CAS",
+              "predicted": 10,
+              "actual": 18,
+              "delta": -8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "venueName": "Sanya",
+          "drivers_compared": 15,
+          "mean_position_error": 5.267,
+          "median_position_error": 6.0,
+          "rmse_position_error": 6.17,
+          "exact_matches": 1,
+          "within_3": 5,
+          "within_5": 7,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.42142857142857143,
+          "ndcg_at_5": 0.8046719611032503,
+          "biggest_misses": [
+            {
+              "driver": "GUE",
+              "predicted": 16,
+              "actual": 6,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "DIG",
+              "predicted": 19,
+              "actual": 10,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "JEV",
+              "predicted": 17,
+              "actual": 8,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "MAL",
+              "predicted": 20,
+              "actual": 11,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "DEV",
+              "predicted": 11,
+              "actual": 3,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "venueName": "Shanghai",
+          "drivers_compared": 20,
+          "mean_position_error": 5.9,
+          "median_position_error": 6.0,
+          "rmse_position_error": 6.797,
+          "exact_matches": 0,
+          "within_3": 7,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": 0.30526315789473685,
+          "ndcg_at_5": 0.5550843984473899,
+          "biggest_misses": [
+            {
+              "driver": "MOR",
+              "predicted": 2,
+              "actual": 15,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "JEV",
+              "predicted": 17,
+              "actual": 6,
+              "delta": 11,
+              "absDelta": 11
+            },
+            {
+              "driver": "MAR",
+              "predicted": 3,
+              "actual": 14,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "MAL",
+              "predicted": 20,
+              "actual": 11,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "WEH",
+              "predicted": 10,
+              "actual": 1,
+              "delta": 9,
+              "absDelta": 9
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "venueName": "Shanghai II",
+          "drivers_compared": 18,
+          "mean_position_error": 6.556,
+          "median_position_error": 5.5,
+          "rmse_position_error": 8.452,
+          "exact_matches": 2,
+          "within_3": 8,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "spearman_correlation": -0.2672858617131063,
+          "ndcg_at_5": 0.29725229346111576,
+          "biggest_misses": [
+            {
+              "driver": "DIG",
+              "predicted": 20,
+              "actual": 1,
+              "delta": 19,
+              "absDelta": 19
+            },
+            {
+              "driver": "DEV",
+              "predicted": 5,
+              "actual": 18,
+              "delta": -13,
+              "absDelta": 13
+            },
+            {
+              "driver": "DAC",
+              "predicted": 2,
+              "actual": 14,
+              "delta": -12,
+              "absDelta": 12
+            },
+            {
+              "driver": "JEV",
+              "predicted": 14,
+              "actual": 2,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "MOR",
+              "predicted": 4,
+              "actual": 16,
+              "delta": -12,
+              "absDelta": 12
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "perDriver": [
+    {
+      "driver": "ARO",
+      "rounds": 2,
+      "mae": 2.5,
+      "within_3_rate": 0.5
+    },
+    {
+      "driver": "KIN",
+      "rounds": 2,
+      "mae": 2.5,
+      "within_3_rate": 1.0
+    },
+    {
+      "driver": "VDL",
+      "rounds": 4,
+      "mae": 2.75,
+      "within_3_rate": 0.75
+    },
+    {
+      "driver": "LOT",
+      "rounds": 11,
+      "mae": 4.273,
+      "within_3_rate": 0.364
+    },
+    {
+      "driver": "EVA",
+      "rounds": 50,
+      "mae": 4.36,
+      "within_3_rate": 0.54
+    },
+    {
+      "driver": "VAN",
+      "rounds": 44,
+      "mae": 4.409,
+      "within_3_rate": 0.455
+    },
+    {
+      "driver": "JEV",
+      "rounds": 58,
+      "mae": 4.534,
+      "within_3_rate": 0.569
+    },
+    {
+      "driver": "WEH",
+      "rounds": 59,
+      "mae": 4.831,
+      "within_3_rate": 0.492
+    },
+    {
+      "driver": "BEC",
+      "rounds": 13,
+      "mae": 4.846,
+      "within_3_rate": 0.308
+    },
+    {
+      "driver": "FRI",
+      "rounds": 33,
+      "mae": 4.879,
+      "within_3_rate": 0.424
+    },
+    {
+      "driver": "FEN",
+      "rounds": 27,
+      "mae": 4.889,
+      "within_3_rate": 0.407
+    },
+    {
+      "driver": "MAR",
+      "rounds": 11,
+      "mae": 4.909,
+      "within_3_rate": 0.455
+    },
+    {
+      "driver": "DEN",
+      "rounds": 53,
+      "mae": 5.094,
+      "within_3_rate": 0.453
+    },
+    {
+      "driver": "GUE",
+      "rounds": 47,
+      "mae": 5.106,
+      "within_3_rate": 0.447
+    },
+    {
+      "driver": "NAT",
+      "rounds": 54,
+      "mae": 5.148,
+      "within_3_rate": 0.389
+    },
+    {
+      "driver": "MUE",
+      "rounds": 46,
+      "mae": 5.326,
+      "within_3_rate": 0.348
+    },
+    {
+      "driver": "DAR",
+      "rounds": 13,
+      "mae": 5.385,
+      "within_3_rate": 0.308
+    },
+    {
+      "driver": "CAS",
+      "rounds": 55,
+      "mae": 5.4,
+      "within_3_rate": 0.473
+    },
+    {
+      "driver": "MER",
+      "rounds": 5,
+      "mae": 5.4,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "MAL",
+      "rounds": 26,
+      "mae": 5.462,
+      "within_3_rate": 0.308
+    },
+    {
+      "driver": "ERI",
+      "rounds": 14,
+      "mae": 5.5,
+      "within_3_rate": 0.286
+    },
+    {
+      "driver": "HUG",
+      "rounds": 37,
+      "mae": 5.649,
+      "within_3_rate": 0.378
+    },
+    {
+      "driver": "BAR",
+      "rounds": 30,
+      "mae": 5.667,
+      "within_3_rate": 0.433
+    },
+    {
+      "driver": "ROW",
+      "rounds": 45,
+      "mae": 5.689,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "MOR",
+      "rounds": 45,
+      "mae": 5.822,
+      "within_3_rate": 0.356
+    },
+    {
+      "driver": "DAC",
+      "rounds": 51,
+      "mae": 5.843,
+      "within_3_rate": 0.353
+    },
+    {
+      "driver": "BUE",
+      "rounds": 55,
+      "mae": 5.945,
+      "within_3_rate": 0.309
+    },
+    {
+      "driver": "DRU",
+      "rounds": 15,
+      "mae": 6.067,
+      "within_3_rate": 0.267
+    },
+    {
+      "driver": "RAS",
+      "rounds": 14,
+      "mae": 6.143,
+      "within_3_rate": 0.286
+    },
+    {
+      "driver": "DIG",
+      "rounds": 51,
+      "mae": 6.176,
+      "within_3_rate": 0.314
+    },
+    {
+      "driver": "TIC",
+      "rounds": 53,
+      "mae": 6.245,
+      "within_3_rate": 0.302
+    },
+    {
+      "driver": "DEV",
+      "rounds": 35,
+      "mae": 6.286,
+      "within_3_rate": 0.314
+    },
+    {
+      "driver": "SET",
+      "rounds": 29,
+      "mae": 6.517,
+      "within_3_rate": 0.138
+    },
+    {
+      "driver": "BIR",
+      "rounds": 32,
+      "mae": 6.594,
+      "within_3_rate": 0.312
+    },
+    {
+      "driver": "COL",
+      "rounds": 2,
+      "mae": 7,
+      "within_3_rate": 0.0
+    }
+  ],
+  "markets": {
+    "win": {
+      "brier": 0.052436,
+      "logLoss": 0.213469,
+      "samples": 1121,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0234,
+          "empirical": 0.0447,
+          "count": 963
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1384,
+          "empirical": 0.1111,
+          "count": 99
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2356,
+          "empirical": 0.125,
+          "count": 40
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.34,
+          "empirical": 0.1333,
+          "count": 15
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4566,
+          "empirical": 0,
+          "count": 4
+        }
+      ],
+      "plot": "reliability_plots/reliability_win.png"
+    },
+    "podium": {
+      "brier": 0.132596,
+      "logLoss": 0.433566,
+      "samples": 1121,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0335,
+          "empirical": 0.0899,
+          "count": 656
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.142,
+          "empirical": 0.1667,
+          "count": 198
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2432,
+          "empirical": 0.3118,
+          "count": 93
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3476,
+          "empirical": 0.3333,
+          "count": 60
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4443,
+          "empirical": 0.3261,
+          "count": 46
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5562,
+          "empirical": 0.4167,
+          "count": 24
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6381,
+          "empirical": 0.4091,
+          "count": 22
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7488,
+          "empirical": 0.4118,
+          "count": 17
+        },
+        {
+          "binLo": 0.8,
+          "binHi": 0.9,
+          "meanPred": 0.8605,
+          "empirical": 0.2,
+          "count": 5
+        }
+      ],
+      "plot": "reliability_plots/reliability_podium.png"
+    },
+    "top6": {
+      "brier": 0.217892,
+      "logLoss": 0.67083,
+      "samples": 1121,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0448,
+          "empirical": 0.1562,
+          "count": 416
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1452,
+          "empirical": 0.3314,
+          "count": 175
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2512,
+          "empirical": 0.3721,
+          "count": 129
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3504,
+          "empirical": 0.2889,
+          "count": 90
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4477,
+          "empirical": 0.527,
+          "count": 74
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5492,
+          "empirical": 0.5,
+          "count": 52
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6532,
+          "empirical": 0.5435,
+          "count": 46
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7484,
+          "empirical": 0.537,
+          "count": 54
+        },
+        {
+          "binLo": 0.8,
+          "binHi": 0.9,
+          "meanPred": 0.8586,
+          "empirical": 0.6486,
+          "count": 37
+        },
+        {
+          "binLo": 0.9,
+          "binHi": 1.0,
+          "meanPred": 0.9468,
+          "empirical": 0.5417,
+          "count": 48
+        }
+      ],
+      "plot": "reliability_plots/reliability_top6.png"
+    },
+    "top10": {
+      "brier": 0.261569,
+      "logLoss": 0.880413,
+      "samples": 1121,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0503,
+          "empirical": 0.2611,
+          "count": 180
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.149,
+          "empirical": 0.3797,
+          "count": 158
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.245,
+          "empirical": 0.5417,
+          "count": 120
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3494,
+          "empirical": 0.5682,
+          "count": 88
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4491,
+          "empirical": 0.5733,
+          "count": 75
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5508,
+          "empirical": 0.6588,
+          "count": 85
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6487,
+          "empirical": 0.5694,
+          "count": 72
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7542,
+          "empirical": 0.7397,
+          "count": 73
+        },
+        {
+          "binLo": 0.8,
+          "binHi": 0.9,
+          "meanPred": 0.8494,
+          "empirical": 0.6579,
+          "count": 76
+        },
+        {
+          "binLo": 0.9,
+          "binHi": 1.0,
+          "meanPred": 0.9682,
+          "empirical": 0.7423,
+          "count": 194
+        }
+      ],
+      "plot": "reliability_plots/reliability_top10.png"
+    }
+  }
+}

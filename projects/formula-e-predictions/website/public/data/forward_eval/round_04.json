@@ -1,0 +1,52 @@
+{
+  "round": 4,
+  "venueName": "Jeddah",
+  "venueKind": "street",
+  "race": {
+    "n": 18,
+    "mean_position_error": 4.0,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 8,
+    "within_5": 13,
+    "exact_matches": 3,
+    "spearman_correlation": 0.5933952528379773,
+    "ndcg_at_5": 0.9645867897261228
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.039276,
+        "logLoss": 0.13086
+      },
+      "podium": {
+        "brier": 0.072707,
+        "logLoss": 0.239732
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 17,
+      "mean_position_error": 4.529,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 8,
+      "within_5": 13,
+      "exact_matches": 1,
+      "spearman_correlation": 0.49264705882352944,
+      "ndcg_at_5": 0.833022432222465
+    },
+    "gridOrder": {
+      "n": 18,
+      "mean_position_error": 3.722,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 10,
+      "within_5": 13,
+      "exact_matches": 3,
+      "spearman_correlation": 0.564499484004128,
+      "ndcg_at_5": 0.748349253435784
+    }
+  }
+}

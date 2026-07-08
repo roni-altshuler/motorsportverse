@@ -1,0 +1,42 @@
+{
+  "round": 1,
+  "venueName": "S\u00e3o Paulo",
+  "venueKind": "street",
+  "race": {
+    "n": 13,
+    "mean_position_error": 5.077,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 6,
+    "within_5": 8,
+    "exact_matches": 0,
+    "spearman_correlation": 0.3131868131868132,
+    "ndcg_at_5": 0.7814396323731659
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.07359,
+        "logLoss": 0.288584
+      },
+      "podium": {
+        "brier": 0.158553,
+        "logLoss": 0.479535
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": null,
+    "gridOrder": {
+      "n": 13,
+      "mean_position_error": 5.846,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 4,
+      "within_5": 7,
+      "exact_matches": 2,
+      "spearman_correlation": 0.29120879120879123,
+      "ndcg_at_5": 0.7270513422948658
+    }
+  }
+}

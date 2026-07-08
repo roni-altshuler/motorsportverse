@@ -1,0 +1,617 @@
+{
+  "season": 2026,
+  "generatedAt": "2026-07-08T08:12:21Z",
+  "minPriorRounds": 3,
+  "roundsScored": 13,
+  "roundsCompared": 10,
+  "rounds": [
+    {
+      "round": 1,
+      "production": {
+        "n": 13,
+        "mean_position_error": 5.077,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.3131868131868132,
+        "ndcg_at_5": 0.7814396323731659
+      },
+      "positionHead": {
+        "applied": false,
+        "reason": "fewer than 3 prior completed rounds"
+      }
+    },
+    {
+      "round": 2,
+      "production": {
+        "n": 17,
+        "mean_position_error": 3.765,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 8,
+        "within_5": 14,
+        "exact_matches": 4,
+        "spearman_correlation": 0.6446078431372549,
+        "ndcg_at_5": 0.9626838806016774
+      },
+      "positionHead": {
+        "applied": false,
+        "reason": "fewer than 3 prior completed rounds"
+      }
+    },
+    {
+      "round": 3,
+      "production": {
+        "n": 19,
+        "mean_position_error": 6.947,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 4,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.04912280701754386,
+        "ndcg_at_5": 0.49344254914169045
+      },
+      "positionHead": {
+        "applied": false,
+        "reason": "fewer than 3 prior completed rounds"
+      }
+    },
+    {
+      "round": 4,
+      "production": {
+        "n": 18,
+        "mean_position_error": 4.0,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 8,
+        "within_5": 13,
+        "exact_matches": 3,
+        "spearman_correlation": 0.5933952528379773,
+        "ndcg_at_5": 0.9645867897261228
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3
+        ],
+        "monotonicSanity": 0.5593984962406015,
+        "race": {
+          "n": 18,
+          "mean_position_error": 5.0,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "within_3": 10,
+          "within_5": 12,
+          "exact_matches": 1,
+          "spearman_correlation": 0.24664602683178535,
+          "ndcg_at_5": 0.706437061661837
+        }
+      }
+    },
+    {
+      "round": 5,
+      "production": {
+        "n": 20,
+        "mean_position_error": 6.0,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 2,
+        "spearman_correlation": 0.2,
+        "ndcg_at_5": 0.6210391692699279
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "monotonicSanity": 0.8571428571428571,
+        "race": {
+          "n": 20,
+          "mean_position_error": 5.4,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "within_3": 7,
+          "within_5": 11,
+          "exact_matches": 2,
+          "spearman_correlation": 0.3548872180451128,
+          "ndcg_at_5": 0.6617797628264698
+        }
+      }
+    },
+    {
+      "round": 6,
+      "production": {
+        "n": 20,
+        "mean_position_error": 4.1,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 10,
+        "within_5": 12,
+        "exact_matches": 1,
+        "spearman_correlation": 0.6360902255639098,
+        "ndcg_at_5": 0.9224164666353535
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "monotonicSanity": 0.48270676691729325,
+        "race": {
+          "n": 20,
+          "mean_position_error": 6.1,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "within_3": 6,
+          "within_5": 10,
+          "exact_matches": 2,
+          "spearman_correlation": 0.16090225563909774,
+          "ndcg_at_5": 0.691933374811123
+        }
+      }
+    },
+    {
+      "round": 7,
+      "production": {
+        "n": 19,
+        "mean_position_error": 5.0,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 8,
+        "within_5": 13,
+        "exact_matches": 0,
+        "spearman_correlation": 0.4105263157894737,
+        "ndcg_at_5": 0.5514885107464942
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "monotonicSanity": 0.7308270676691729,
+        "race": {
+          "n": 19,
+          "mean_position_error": 4.947,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "within_3": 10,
+          "within_5": 12,
+          "exact_matches": 1,
+          "spearman_correlation": 0.3929824561403509,
+          "ndcg_at_5": 0.6500632962872784
+        }
+      }
+    },
+    {
+      "round": 8,
+      "production": {
+        "n": 18,
+        "mean_position_error": 5.778,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 0,
+        "spearman_correlation": 0.23426212590299278,
+        "ndcg_at_5": 0.5569482380486055
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "monotonicSanity": 0.7383458646616541,
+        "race": {
+          "n": 18,
+          "mean_position_error": 4.778,
+          "winner_hit": true,
+          "podium_hits": 1,
+          "within_3": 8,
+          "within_5": 11,
+          "exact_matches": 3,
+          "spearman_correlation": 0.4262125902992776,
+          "ndcg_at_5": 0.8894559933922143
+        }
+      }
+    },
+    {
+      "round": 9,
+      "production": {
+        "n": 18,
+        "mean_position_error": 7.389,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 4,
+        "within_5": 6,
+        "exact_matches": 1,
+        "spearman_correlation": -0.16821465428276575,
+        "ndcg_at_5": 0.4519031123450941
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "monotonicSanity": 0.6766917293233082,
+        "race": {
+          "n": 18,
+          "mean_position_error": 7.222,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "within_3": 4,
+          "within_5": 6,
+          "exact_matches": 0,
+          "spearman_correlation": -0.15789473684210525,
+          "ndcg_at_5": 0.4209158707797581
+        }
+      }
+    },
+    {
+      "round": 10,
+      "production": {
+        "n": 18,
+        "mean_position_error": 5.556,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 9,
+        "within_5": 10,
+        "exact_matches": 1,
+        "spearman_correlation": 0.20743034055727555,
+        "ndcg_at_5": 0.6809769886173751
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "monotonicSanity": 0.6511278195488722,
+        "race": {
+          "n": 18,
+          "mean_position_error": 6.278,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "within_3": 7,
+          "within_5": 7,
+          "exact_matches": 1,
+          "spearman_correlation": 0.09597523219814241,
+          "ndcg_at_5": 0.5739306036136047
+        }
+      }
+    },
+    {
+      "round": 11,
+      "production": {
+        "n": 15,
+        "mean_position_error": 5.267,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 5,
+        "within_5": 7,
+        "exact_matches": 1,
+        "spearman_correlation": 0.42142857142857143,
+        "ndcg_at_5": 0.8046719611032503
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "monotonicSanity": 0.7353383458646616,
+        "race": {
+          "n": 15,
+          "mean_position_error": 6.267,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "within_3": 4,
+          "within_5": 6,
+          "exact_matches": 0,
+          "spearman_correlation": 0.2357142857142857,
+          "ndcg_at_5": 0.7901553942879158
+        }
+      }
+    },
+    {
+      "round": 12,
+      "production": {
+        "n": 20,
+        "mean_position_error": 5.9,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 0,
+        "spearman_correlation": 0.30526315789473685,
+        "ndcg_at_5": 0.5550843984473899
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "monotonicSanity": 0.9593984962406015,
+        "race": {
+          "n": 20,
+          "mean_position_error": 5.1,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "within_3": 8,
+          "within_5": 11,
+          "exact_matches": 1,
+          "spearman_correlation": 0.4030075187969925,
+          "ndcg_at_5": 0.603319869105229
+        }
+      }
+    },
+    {
+      "round": 13,
+      "production": {
+        "n": 18,
+        "mean_position_error": 6.556,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 8,
+        "within_5": 9,
+        "exact_matches": 2,
+        "spearman_correlation": -0.2672858617131063,
+        "ndcg_at_5": 0.29725229346111576
+      },
+      "positionHead": {
+        "applied": true,
+        "trainedRounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "monotonicSanity": 0.9112781954887218,
+        "race": {
+          "n": 18,
+          "mean_position_error": 7.389,
+          "winner_hit": false,
+          "podium_hits": 0,
+          "within_3": 7,
+          "within_5": 9,
+          "exact_matches": 0,
+          "spearman_correlation": -0.39525283797729616,
+          "ndcg_at_5": 0.2629284514982492
+        }
+      }
+    }
+  ],
+  "walkForward": {
+    "positionHead": {
+      "race": {
+        "n_rounds": 10,
+        "metrics": {
+          "mean_position_error": {
+            "mean": 5.8481000000000005,
+            "median": 5.75,
+            "min": 4.778,
+            "max": 7.389,
+            "last": 7.389,
+            "trend": 0.16165454545454547,
+            "n": 10
+          },
+          "winnerHit": {
+            "mean": 0.1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 1.0,
+            "last": 0.0,
+            "trend": -0.006060606060606061,
+            "n": 10
+          },
+          "podium_hits": {
+            "mean": 0.5,
+            "median": 0.5,
+            "min": 0.0,
+            "max": 1.0,
+            "last": 0.0,
+            "trend": 0.030303030303030304,
+            "n": 10
+          },
+          "within_3": {
+            "mean": 7.1,
+            "median": 7.0,
+            "min": 4.0,
+            "max": 10.0,
+            "last": 7.0,
+            "trend": -0.2606060606060606,
+            "n": 10
+          },
+          "within_5": {
+            "mean": 9.5,
+            "median": 10.5,
+            "min": 6.0,
+            "max": 12.0,
+            "last": 9.0,
+            "trend": -0.40606060606060607,
+            "n": 10
+          },
+          "exact_matches": {
+            "mean": 1.1,
+            "median": 1.0,
+            "min": 0.0,
+            "max": 3.0,
+            "last": 0.0,
+            "trend": -0.17575757575757575,
+            "n": 10
+          },
+          "spearman_correlation": {
+            "mean": 0.17631800088456434,
+            "median": 0.24118015627303552,
+            "min": -0.39525283797729616,
+            "max": 0.4262125902992776,
+            "last": -0.39525283797729616,
+            "trend": -0.03964434258551906,
+            "n": 10
+          },
+          "ndcg_at_5": {
+            "mean": 0.625091967826368,
+            "median": 0.6559215295568741,
+            "min": 0.2629284514982492,
+            "max": 0.8894559933922143,
+            "last": 0.2629284514982492,
+            "trend": -0.027918938489518114,
+            "n": 10
+          }
+        }
+      }
+    },
+    "production": {
+      "race": {
+        "n_rounds": 10,
+        "metrics": {
+          "mean_position_error": {
+            "mean": 5.5546,
+            "median": 5.667,
+            "min": 4.0,
+            "max": 7.389,
+            "last": 6.556,
+            "trend": 0.19041212121212125,
+            "n": 10
+          },
+          "winnerHit": {
+            "mean": 0.1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 1.0,
+            "last": 0.0,
+            "trend": -0.05454545454545454,
+            "n": 10
+          },
+          "podium_hits": {
+            "mean": 0.6,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 2.0,
+            "last": 0.0,
+            "trend": -0.1696969696969697,
+            "n": 10
+          },
+          "within_3": {
+            "mean": 7.3,
+            "median": 7.5,
+            "min": 4.0,
+            "max": 10.0,
+            "last": 8.0,
+            "trend": -0.15151515151515152,
+            "n": 10
+          },
+          "within_5": {
+            "mean": 9.7,
+            "median": 9.0,
+            "min": 6.0,
+            "max": 13.0,
+            "last": 9.0,
+            "trend": -0.44242424242424244,
+            "n": 10
+          },
+          "exact_matches": {
+            "mean": 1.1,
+            "median": 1.0,
+            "min": 0.0,
+            "max": 3.0,
+            "last": 2.0,
+            "trend": -0.11515151515151516,
+            "n": 10
+          },
+          "spearman_correlation": {
+            "mean": 0.25728954739790655,
+            "median": 0.2697626418988648,
+            "min": -0.2672858617131063,
+            "max": 0.6360902255639098,
+            "last": -0.2672858617131063,
+            "trend": -0.055117338801549336,
+            "n": 10
+          },
+          "ndcg_at_5": {
+            "mean": 0.6406367928400729,
+            "median": 0.5889937036592667,
+            "min": 0.29725229346111576,
+            "max": 0.9645867897261228,
+            "last": 0.29725229346111576,
+            "trend": -0.04104846110238917,
+            "n": 10
+          }
+        }
+      }
+    }
+  },
+  "verdict": {
+    "recommendation": "production-better",
+    "basis": "race mean_position_error",
+    "positionHeadMeanError": 5.8481,
+    "productionMeanError": 5.5546,
+    "meanErrorDelta": 0.2935,
+    "positionHeadWinnerHitRate": 0.1,
+    "productionWinnerHitRate": 0.1
+  }
+}

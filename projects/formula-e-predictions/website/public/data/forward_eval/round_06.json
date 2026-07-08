@@ -1,0 +1,52 @@
+{
+  "round": 6,
+  "venueName": "Madrid",
+  "venueKind": "circuit",
+  "race": {
+    "n": 20,
+    "mean_position_error": 4.1,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 12,
+    "exact_matches": 1,
+    "spearman_correlation": 0.6360902255639098,
+    "ndcg_at_5": 0.9224164666353535
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.048035,
+        "logLoss": 0.165114
+      },
+      "podium": {
+        "brier": 0.078519,
+        "logLoss": 0.239915
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 20,
+      "mean_position_error": 4.6,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 15,
+      "exact_matches": 1,
+      "spearman_correlation": 0.49022556390977445,
+      "ndcg_at_5": 0.8118640895906524
+    },
+    "gridOrder": {
+      "n": 20,
+      "mean_position_error": 6.7,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 4,
+      "within_5": 10,
+      "exact_matches": 1,
+      "spearman_correlation": 0.05413533834586466,
+      "ndcg_at_5": 0.4547154278324346
+    }
+  }
+}

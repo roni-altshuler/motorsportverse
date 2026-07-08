@@ -1,0 +1,20 @@
+{
+  "decision": "hold",
+  "reason": "per-round guard tripped (worst regression 48.8% > 20%)",
+  "roundsCompared": 10,
+  "meanProduction": 5.5546,
+  "meanCandidate": 5.8481,
+  "relativeChange": 0.0528,
+  "hasCandidate": true,
+  "candidate": "position-head",
+  "candidateFlag": "FE_USE_POSITION_HEAD",
+  "abVerdict": {
+    "recommendation": "production-better",
+    "basis": "race mean_position_error",
+    "positionHeadMeanError": 5.8481,
+    "productionMeanError": 5.5546,
+    "meanErrorDelta": 0.2935,
+    "positionHeadWinnerHitRate": 0.1,
+    "productionWinnerHitRate": 0.1
+  }
+}
