@@ -1,0 +1,63 @@
+{
+  "round": 3,
+  "venueName": "Circuit of The Americas",
+  "trackType": "road",
+  "race": {
+    "n": 37,
+    "mean_position_error": 10.486,
+    "winner_hit": true,
+    "podium_hits": 1,
+    "within_3": 6,
+    "within_5": 15,
+    "exact_matches": 1,
+    "spearman_correlation": 0.2541488857278331,
+    "ndcg_at_5": 0.8028192372065122
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 8.973,
+    "winner_hit": true,
+    "podium_hits": 1,
+    "within_3": 11,
+    "within_5": 14,
+    "exact_matches": 4,
+    "spearman_correlation": 0.3494547178757705,
+    "ndcg_at_5": 0.6718244245698599
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.018636,
+        "logLoss": 0.067355
+      },
+      "podium": {
+        "brier": 0.056761,
+        "logLoss": 0.205985
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 11.694,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 10,
+      "within_5": 13,
+      "exact_matches": 2,
+      "spearman_correlation": -0.0066924066924066924,
+      "ndcg_at_5": 0.41810627366371667
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 9.405,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 16,
+      "exact_matches": 2,
+      "spearman_correlation": 0.3264580369843528,
+      "ndcg_at_5": 0.6034676395929252
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "round": 17,
+  "venueName": "San Diego Street Course",
+  "trackType": "road",
+  "race": {
+    "n": 39,
+    "mean_position_error": 10.154,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 14,
+    "exact_matches": 4,
+    "spearman_correlation": 0.35344129554655873,
+    "ndcg_at_5": 0.6648576799916487
+  },
+  "racePostQuali": {
+    "n": 39,
+    "mean_position_error": 9.692,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 10,
+    "within_5": 11,
+    "exact_matches": 0,
+    "spearman_correlation": 0.4117408906882591,
+    "ndcg_at_5": 0.4686199341909134
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.028387,
+        "logLoss": 0.160671
+      },
+      "podium": {
+        "brier": 0.089846,
+        "logLoss": 0.328465
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.222,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 12,
+      "within_5": 15,
+      "exact_matches": 2,
+      "spearman_correlation": 0.3521235521235521,
+      "ndcg_at_5": 0.5462665391626975
+    },
+    "gridOrder": {
+      "n": 39,
+      "mean_position_error": 9.949,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 12,
+      "exact_matches": 2,
+      "spearman_correlation": 0.3611336032388664,
+      "ndcg_at_5": 0.47090376970685527
+    }
+  }
+}

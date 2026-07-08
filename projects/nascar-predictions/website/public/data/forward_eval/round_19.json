@@ -1,0 +1,63 @@
+{
+  "round": 19,
+  "venueName": "Chicagoland Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 38,
+    "mean_position_error": 8.526,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 9,
+    "within_5": 18,
+    "exact_matches": 2,
+    "spearman_correlation": 0.4721523142575774,
+    "ndcg_at_5": 0.6376988403530915
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 7.947,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 12,
+    "within_5": 19,
+    "exact_matches": 0,
+    "spearman_correlation": 0.5461210198052303,
+    "ndcg_at_5": 0.7097659372009567
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.025946,
+        "logLoss": 0.101772
+      },
+      "podium": {
+        "brier": 0.055624,
+        "logLoss": 0.205047
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.75,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 17,
+      "exact_matches": 3,
+      "spearman_correlation": 0.2332046332046332,
+      "ndcg_at_5": 0.6188549776086569
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 8.368,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 14,
+      "exact_matches": 0,
+      "spearman_correlation": 0.5080424554108764,
+      "ndcg_at_5": 0.6303685261603239
+    }
+  }
+}

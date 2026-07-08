@@ -1,0 +1,63 @@
+{
+  "round": 7,
+  "venueName": "Martinsville Speedway",
+  "trackType": "short",
+  "race": {
+    "n": 37,
+    "mean_position_error": 6.595,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 16,
+    "within_5": 23,
+    "exact_matches": 2,
+    "spearman_correlation": 0.6277856804172594,
+    "ndcg_at_5": 0.8413061970923347
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 4.973,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 17,
+    "within_5": 26,
+    "exact_matches": 3,
+    "spearman_correlation": 0.7942152678994784,
+    "ndcg_at_5": 0.8768300231580958
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.027745,
+        "logLoss": 0.113921
+      },
+      "podium": {
+        "brier": 0.07868,
+        "logLoss": 0.284429
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 6.5,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 20,
+      "within_5": 21,
+      "exact_matches": 4,
+      "spearman_correlation": 0.602059202059202,
+      "ndcg_at_5": 0.7042352557804771
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 5.459,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 17,
+      "within_5": 22,
+      "exact_matches": 1,
+      "spearman_correlation": 0.7700331910858227,
+      "ndcg_at_5": 0.9142957629760922
+    }
+  }
+}

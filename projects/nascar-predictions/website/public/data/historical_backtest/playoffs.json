@@ -1,0 +1,820 @@
+{
+  "generatedAt": "2026-07-08T11:01:52Z",
+  "format": "elimination-2017-2025",
+  "seasons": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "checkpoints": {
+    "mid_season": 13,
+    "pre_playoffs": 26,
+    "round_of_8": 32
+  },
+  "nSims": 2000,
+  "summary": {
+    "mid_season": {
+      "seasons": 7,
+      "meanChampionPTitle": 0.0427,
+      "meanChampionPercentile": 0.8504,
+      "meanUniformRatio": 0.6834,
+      "meanChampionPMakePlayoffs": 0.8236
+    },
+    "pre_playoffs": {
+      "seasons": 7,
+      "meanChampionPTitle": 0.0823,
+      "meanChampionPercentile": 0.8956,
+      "meanUniformRatio": 1.3166,
+      "meanChampionPMakePlayoffs": 1.0
+    },
+    "round_of_8": {
+      "seasons": 7,
+      "meanChampionPTitle": 0.1167,
+      "meanChampionPercentile": 0.9464,
+      "meanUniformRatio": 1.8674,
+      "meanChampionPMakePlayoffs": 1.0
+    }
+  },
+  "gate": {
+    "pass": true,
+    "basis": "pre_playoffs checkpoint",
+    "minMeanChampionPercentile": 0.75,
+    "minMeanUniformRatio": 1.2,
+    "observedMeanChampionPercentile": 0.8956,
+    "observedMeanUniformRatio": 1.3166
+  },
+  "caveats": [
+    "Qualification replay uses the simulator's win-and-in rule; the 'attempted every race / top-30 in points' fine print is out of scope.",
+    "2018-2019 feeds carry no playoff-point rows; those banks are reconstructed as 5 per win (stage-win playoff points are missing pre-2020 \u2014 stage results start in the 2020 feeds).",
+    "The cacher archive starts at 2018, so 2017 (the first stage/playoff season) cannot be replayed."
+  ],
+  "perSeason": [
+    {
+      "season": 2018,
+      "champion": "JOLOGANO",
+      "championName": "Joey Logano",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 16,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.061,
+          "championRank": 6,
+          "championPercentile": 0.9123,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.976,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.2485
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.209
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.149
+            },
+            {
+              "code": "KUBUSCH",
+              "pTitle": 0.088
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.0865
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.0445,
+          "championRank": 7,
+          "championPercentile": 0.9118,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.712,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.267
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.2115
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.1285
+            },
+            {
+              "code": "ERJONES",
+              "pTitle": 0.091
+            },
+            {
+              "code": "KUBUSCH",
+              "pTitle": 0.072
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.134,
+          "championRank": 3,
+          "championPercentile": 0.9722,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 2.144,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.2415
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.224
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.134
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.1335
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.109
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2019,
+      "champion": "KYBUSCH",
+      "championName": "Kyle Busch",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 15,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.108,
+          "championRank": 4,
+          "championPercentile": 0.9434,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 1.728,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.2315
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.21
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.139
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.108
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.074
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.0345,
+          "championRank": 9,
+          "championPercentile": 0.8667,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.552,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.2925
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.178
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.169
+            },
+            {
+              "code": "CLBOWYER",
+              "pTitle": 0.082
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.0535
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.2065,
+          "championRank": 2,
+          "championPercentile": 0.9839,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 3.304,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.2865
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.2065
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.2
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.194
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.0385
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2020,
+      "champion": "CHELLIOTT",
+      "championName": "Chase Elliott",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 16,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.0275,
+          "championRank": 8,
+          "championPercentile": 0.8571,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.44,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "RYBLANEY",
+              "pTitle": 0.226
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.2145
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.167
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.076
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.067
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.043,
+          "championRank": 6,
+          "championPercentile": 0.9057,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.688,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.3105
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.244
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.1845
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.05
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.046
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.1205,
+          "championRank": 3,
+          "championPercentile": 0.963,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 1.928,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.3005
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.2315
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.1205
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.108
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.0865
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2021,
+      "champion": "KYLARSON",
+      "championName": "Kyle Larson",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 15,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.0345,
+          "championRank": 10,
+          "championPercentile": 0.8393,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.552,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.1825
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.166
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.152
+            },
+            {
+              "code": "RYBLANEY",
+              "pTitle": 0.0895
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.0735
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.229,
+          "championRank": 2,
+          "championPercentile": 0.9846,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 3.664,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "RYBLANEY",
+              "pTitle": 0.243
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.229
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.092
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.0835
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.0795
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.2125,
+          "championRank": 2,
+          "championPercentile": 0.9848,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 3.4,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.2755
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.2125
+            },
+            {
+              "code": "RYBLANEY",
+              "pTitle": 0.115
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.0995
+            },
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.0925
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2022,
+      "champion": "JOLOGANO",
+      "championName": "Joey Logano",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 15,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.0395,
+          "championRank": 10,
+          "championPercentile": 0.8235,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.632,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "KYBUSCH",
+              "pTitle": 0.233
+            },
+            {
+              "code": "ALBOWMAN",
+              "pTitle": 0.127
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.113
+            },
+            {
+              "code": "CHBELL",
+              "pTitle": 0.1115
+            },
+            {
+              "code": "ROCHASTAIN",
+              "pTitle": 0.064
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.2195,
+          "championRank": 2,
+          "championPercentile": 0.9833,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 3.512,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.33
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.2195
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.1105
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.1045
+            },
+            {
+              "code": "AUDILLON",
+              "pTitle": 0.06
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.108,
+          "championRank": 4,
+          "championPercentile": 0.9508,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 1.728,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.2235
+            },
+            {
+              "code": "CHBELL",
+              "pTitle": 0.177
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.173
+            },
+            {
+              "code": "JOLOGANO",
+              "pTitle": 0.108
+            },
+            {
+              "code": "TYREDDICK",
+              "pTitle": 0.1035
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2023,
+      "champion": "RYBLANEY",
+      "championName": "Ryan Blaney",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 15,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.0285,
+          "championRank": 7,
+          "championPercentile": 0.8846,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.456,
+          "championPMakePlayoffs": 0.565,
+          "top5": [
+            {
+              "code": "WIBYRON",
+              "pTitle": 0.319
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.2065
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.101
+            },
+            {
+              "code": "ALBOWMAN",
+              "pTitle": 0.0915
+            },
+            {
+              "code": "KEHARVICK",
+              "pTitle": 0.0545
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.0015,
+          "championRank": 13,
+          "championPercentile": 0.8033,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.024,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.2715
+            },
+            {
+              "code": "CHBUESCHER",
+              "pTitle": 0.2
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.14
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.1075
+            },
+            {
+              "code": "WIBYRON",
+              "pTitle": 0.0965
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.0245,
+          "championRank": 8,
+          "championPercentile": 0.8871,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.392,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "WIBYRON",
+              "pTitle": 0.4035
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.1625
+            },
+            {
+              "code": "CHBELL",
+              "pTitle": 0.1425
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.0905
+            },
+            {
+              "code": "CHBUESCHER",
+              "pTitle": 0.086
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": 2024,
+      "champion": "JOLOGANO",
+      "championName": "Joey Logano",
+      "fieldReconstruction": {
+        "actualFieldSize": 16,
+        "reconstructedFieldSize": 16,
+        "overlap": 15,
+        "championInReconstructedField": true
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "mid_season",
+          "throughRound": 13,
+          "championPTitle": 0.0,
+          "championRank": 17,
+          "championPercentile": 0.6923,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.0,
+          "championPMakePlayoffs": 0.2005,
+          "top5": [
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.266
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.212
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.103
+            },
+            {
+              "code": "MATRUEX",
+              "pTitle": 0.1005
+            },
+            {
+              "code": "WIBYRON",
+              "pTitle": 0.1005
+            }
+          ]
+        },
+        {
+          "checkpoint": "pre_playoffs",
+          "throughRound": 26,
+          "championPTitle": 0.004,
+          "championRank": 12,
+          "championPercentile": 0.8136,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.064,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "CHBELL",
+              "pTitle": 0.2445
+            },
+            {
+              "code": "TYREDDICK",
+              "pTitle": 0.2315
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.1605
+            },
+            {
+              "code": "TYGIBBS",
+              "pTitle": 0.089
+            },
+            {
+              "code": "BRKESELOWSKI",
+              "pTitle": 0.086
+            }
+          ]
+        },
+        {
+          "checkpoint": "round_of_8",
+          "throughRound": 32,
+          "championPTitle": 0.011,
+          "championRank": 8,
+          "championPercentile": 0.8833,
+          "uniformBaseline": 0.0625,
+          "uniformRatio": 0.176,
+          "championPMakePlayoffs": 1.0,
+          "top5": [
+            {
+              "code": "CHBELL",
+              "pTitle": 0.3105
+            },
+            {
+              "code": "KYLARSON",
+              "pTitle": 0.217
+            },
+            {
+              "code": "CHELLIOTT",
+              "pTitle": 0.1205
+            },
+            {
+              "code": "WIBYRON",
+              "pTitle": 0.116
+            },
+            {
+              "code": "DEHAMLIN",
+              "pTitle": 0.102
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

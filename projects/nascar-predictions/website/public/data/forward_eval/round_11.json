@@ -1,0 +1,63 @@
+{
+  "round": 11,
+  "venueName": "Texas Motor Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 38,
+    "mean_position_error": 8.579,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 10,
+    "within_5": 17,
+    "exact_matches": 3,
+    "spearman_correlation": 0.45595798227377177,
+    "ndcg_at_5": 0.8594911137968483
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 9.0,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 12,
+    "within_5": 16,
+    "exact_matches": 2,
+    "spearman_correlation": 0.40628077470182733,
+    "ndcg_at_5": 0.875579104050615
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.024502,
+        "logLoss": 0.087227
+      },
+      "podium": {
+        "brier": 0.063469,
+        "logLoss": 0.237158
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 37,
+      "mean_position_error": 10.081,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 13,
+      "exact_matches": 1,
+      "spearman_correlation": 0.38217164532954007,
+      "ndcg_at_5": 0.8703971823562979
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 10.0,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 9,
+      "within_5": 13,
+      "exact_matches": 2,
+      "spearman_correlation": 0.3200568990042674,
+      "ndcg_at_5": 0.8506468590159371
+    }
+  }
+}

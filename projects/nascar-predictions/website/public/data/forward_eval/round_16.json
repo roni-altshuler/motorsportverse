@@ -1,0 +1,63 @@
+{
+  "round": 16,
+  "venueName": "Pocono Raceway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 38,
+    "mean_position_error": 7.579,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 15,
+    "within_5": 18,
+    "exact_matches": 3,
+    "spearman_correlation": 0.5940474887843309,
+    "ndcg_at_5": 0.9258005384337423
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 6.684,
+    "winner_hit": true,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 18,
+    "exact_matches": 2,
+    "spearman_correlation": 0.6975599080862239,
+    "ndcg_at_5": 0.9000014303473042
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.009243,
+        "logLoss": 0.037875
+      },
+      "podium": {
+        "brier": 0.048124,
+        "logLoss": 0.182755
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 8.889,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 16,
+      "exact_matches": 2,
+      "spearman_correlation": 0.40746460746460744,
+      "ndcg_at_5": 0.8201361150141766
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 6.895,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 20,
+      "exact_matches": 4,
+      "spearman_correlation": 0.6702046175730386,
+      "ndcg_at_5": 0.8876520004204204
+    }
+  }
+}

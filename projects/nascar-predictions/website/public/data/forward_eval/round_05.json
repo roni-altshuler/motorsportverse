@@ -1,0 +1,63 @@
+{
+  "round": 5,
+  "venueName": "Las Vegas Motor Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 36,
+    "mean_position_error": 6.778,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 19,
+    "exact_matches": 3,
+    "spearman_correlation": 0.5881595881595881,
+    "ndcg_at_5": 0.8501285999950887
+  },
+  "racePostQuali": {
+    "n": 36,
+    "mean_position_error": 5.167,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 20,
+    "within_5": 25,
+    "exact_matches": 2,
+    "spearman_correlation": 0.7593307593307593,
+    "ndcg_at_5": 0.8470377962463144
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.027439,
+        "logLoss": 0.096738
+      },
+      "podium": {
+        "brier": 0.080162,
+        "logLoss": 0.251715
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 35,
+      "mean_position_error": 9.086,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 7,
+      "within_5": 16,
+      "exact_matches": 0,
+      "spearman_correlation": 0.41904761904761906,
+      "ndcg_at_5": 0.8209895696896339
+    },
+    "gridOrder": {
+      "n": 36,
+      "mean_position_error": 5.556,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 14,
+      "within_5": 22,
+      "exact_matches": 1,
+      "spearman_correlation": 0.7662805662805663,
+      "ndcg_at_5": 0.9362257371012029
+    }
+  }
+}
