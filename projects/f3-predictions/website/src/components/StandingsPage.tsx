@@ -15,9 +15,11 @@ import ChampionshipKPIs from "@/components/standings/ChampionshipKPIs";
 import WhoCanWinLanes from "@/components/standings/WhoCanWinLanes";
 import ConstructorsForecastLanes from "@/components/standings/ConstructorsForecastLanes";
 import { NumberTicker } from "@/components/magicui/number-ticker";
+import { useSeasonF3Data } from "@/lib/f3client";
 import { teamColor as teamColorFor } from "@/lib/teams";
 import type {
   DriverStanding,
+  F3Data,
   SeasonAccuracy,
   TeamStanding,
   TitleOdds,
@@ -54,19 +56,71 @@ export default function StandingsPage(props: StandingsPageProps) {
   );
 }
 
-function StandingsPageInner({
-  season,
-  completedRounds,
-  totalRounds,
-  lastUpdatedRound,
-  drivers,
-  teams,
-  championship,
-  seasonAccuracy,
-  rounds,
-  driverSeries,
-  teamSeries,
-}: StandingsPageProps) {
+// Rebuild the props the server page bakes at build time, from an archived
+// season's f3.json (client-side). Uses each row's exported pointsHistory —
+// the same fallback the server page's series builder uses.
+function propsFromSeasonData(data: F3Data): StandingsPageProps {
+  const TOP_DRIVERS = 6;
+  const TOP_TEAMS = 5;
+  const projByCode: Record<string, number> = {};
+  const projByTeam: Record<string, number> = {};
+  for (const c of data.championship) {
+    projByCode[c.code] = c.projMean;
+    projByTeam[c.team] = (projByTeam[c.team] ?? 0) + c.projMean;
+  }
+  const rounds = data.calendar.filter((c) => c.completed).map((c) => c.round);
+  const driverSeries: ProgressionSeries[] = data.driverStandings
+    .slice(0, TOP_DRIVERS)
+    .map((d) => ({
+      key: d.code,
+      label: d.code,
+      color: d.teamColor || teamColorFor(d.team),
+      history: d.pointsHistory ?? [],
+      projectedTotal: projByCode[d.code] ?? d.points,
+    }))
+    .filter((s) => s.history.length > 0);
+  const teamSeries: ProgressionSeries[] = data.teamStandings
+    .slice(0, TOP_TEAMS)
+    .map((t) => ({
+      key: t.team.slice(0, 3).toUpperCase(),
+      label: t.team,
+      color: t.teamColor || teamColorFor(t.team),
+      history: t.pointsHistory ?? [],
+      projectedTotal: projByTeam[t.team] ?? t.points,
+    }))
+    .filter((s) => s.history.length > 0);
+  return {
+    season: data.season,
+    completedRounds: data.completedRounds,
+    totalRounds: data.totalRounds,
+    lastUpdatedRound: data.lastUpdatedRound ?? data.completedRounds,
+    drivers: data.driverStandings,
+    teams: data.teamStandings,
+    championship: data.championship,
+    seasonAccuracy: data.seasonAccuracy,
+    rounds,
+    driverSeries,
+    teamSeries,
+  };
+}
+
+function StandingsPageInner(baked: StandingsPageProps) {
+  // Multi-season: baked props carry the CURRENT season (static export); an
+  // archived season selected via the SeasonSwitcher overlays them client-side.
+  const { data: seasonData, isArchived } = useSeasonF3Data();
+  const {
+    season,
+    completedRounds,
+    totalRounds,
+    lastUpdatedRound,
+    drivers,
+    teams,
+    championship,
+    seasonAccuracy,
+    rounds,
+    driverSeries,
+    teamSeries,
+  } = isArchived && seasonData ? propsFromSeasonData(seasonData) : baked;
   const searchParams = useSearchParams();
   const activeTab = parseTab(searchParams.get("tab"));
   const remainingRounds = Math.max(0, totalRounds - completedRounds);

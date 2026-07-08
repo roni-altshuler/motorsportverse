@@ -1,42 +1,93 @@
 "use client";
 
-// Client-side loader for f3.json. The Navbar and other client components need
-// the calendar + accuracy at runtime; the static export serves the JSON from
-// /data/f3.json under the basePath. Mirrors the F1 flagship's fetchSeasonData.
+// Client-side loaders for the F3 dataset. The Navbar and other client
+// components need the calendar + accuracy at runtime; the static export serves
+// the JSON from /data (current season) or /data/seasons/<year> (archives).
+// Mirrors the F1 flagship's fetchSeasonData + season-aware base paths.
 import { useEffect, useState } from "react";
 
-import type { F3Data } from "@/types/f3";
+import type { F3Data, ProbabilitiesRound, RoundDetail } from "@/types/f3";
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { useSeason } from "./SeasonProvider";
+import { BASE_PATH } from "./seasons";
 
-let cached: F3Data | null = null;
-let inflight: Promise<F3Data | null> | null = null;
+const cache = new Map<string, F3Data | null>();
+const inflight = new Map<string, Promise<F3Data | null>>();
 
-export function fetchF3Data(): Promise<F3Data | null> {
-  if (cached) return Promise.resolve(cached);
-  if (inflight) return inflight;
-  inflight = fetch(`${BASE_PATH}/data/f3.json`)
+export function fetchF3Data(base: string = BASE_PATH): Promise<F3Data | null> {
+  if (cache.has(base)) return Promise.resolve(cache.get(base) ?? null);
+  const pending = inflight.get(base);
+  if (pending) return pending;
+  const p = fetch(`${base}/f3.json`)
     .then((r) => (r.ok ? (r.json() as Promise<F3Data>) : null))
     .then((d) => {
-      cached = d;
+      cache.set(base, d);
+      inflight.delete(base);
       return d;
     })
-    .catch(() => null);
-  return inflight;
+    .catch(() => {
+      inflight.delete(base);
+      return null;
+    });
+  inflight.set(base, p);
+  return p;
 }
 
-export function useF3Data(): F3Data | null {
-  const [data, setData] = useState<F3Data | null>(cached);
+/** f3.json for a data root (defaults to the CURRENT season's root). */
+export function useF3Data(base: string = BASE_PATH): F3Data | null {
+  const [data, setData] = useState<F3Data | null>(cache.get(base) ?? null);
   useEffect(() => {
     let active = true;
-    fetchF3Data().then((d) => {
+    fetchF3Data(base).then((d) => {
       if (active) setData(d);
     });
     return () => {
       active = false;
     };
-  }, []);
+  }, [base]);
   return data;
+}
+
+/**
+ * f3.json for the season selected in the SeasonProvider. `isArchived` is true
+ * only when a non-current season is selected — pages baked with the current
+ * season's data at build time overlay `data` in that case.
+ */
+export function useSeasonF3Data(): { data: F3Data | null; isArchived: boolean } {
+  const { basePath, year, index } = useSeason();
+  const data = useF3Data(basePath);
+  const isArchived = !!index && year !== index.current;
+  return { data, isArchived };
+}
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+/** Per-round detail for a data root; null instead of throwing (graceful degrade). */
+export async function fetchRoundDetail(
+  round: number,
+  base: string = BASE_PATH,
+): Promise<RoundDetail | null> {
+  try {
+    const res = await fetch(`${base}/rounds/round_${pad2(round)}.json`);
+    return res.ok ? ((await res.json()) as RoundDetail) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Per-round probabilities for a data root; null instead of throwing. */
+export async function fetchRoundProbabilities(
+  round: number,
+  base: string = BASE_PATH,
+): Promise<ProbabilitiesRound | null> {
+  try {
+    const res = await fetch(`${base}/probabilities/round_${pad2(round)}.json`);
+    return res.ok ? ((await res.json()) as ProbabilitiesRound) : null;
+  } catch {
+    return null;
+  }
 }
 
 // ── Round lifecycle (mirrors F1's getRoundLifecycle / getRoundStatusMeta) ──

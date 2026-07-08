@@ -10,7 +10,8 @@ import CountryFlag from "@/components/CountryFlag";
 import SeasonSwitcher from "@/components/SeasonSwitcher";
 import { Badge } from "@/components/ui/Badge";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
-import { getRoundLifecycle, getRoundStatusMeta, useF3Data } from "@/lib/f3client";
+import { getRoundLifecycle, getRoundStatusMeta, useSeasonF3Data } from "@/lib/f3client";
+import { useSeason } from "@/lib/SeasonProvider";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const GITHUB_URL = "https://github.com/roni-altshuler/motorsportverse";
@@ -31,7 +32,14 @@ type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
  */
 export default function Navbar() {
   const pathname = usePathname();
-  const data = useF3Data();
+  // Season-aware: reflects the season selected in the navbar's SeasonSwitcher.
+  const { data, isArchived } = useSeasonF3Data();
+  const { year } = useSeason();
+
+  // Append ?season=<year> to in-app links when viewing a non-current season so
+  // deep links land on the right archive (mirrors the F1 flagship's Navbar).
+  const withSeason = (href: string) =>
+    isArchived ? `${href}${href.includes("?") ? "&" : "?"}season=${year}` : href;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [racesOpen, setRacesOpen] = useState(false);
   const [standingsOpen, setStandingsOpen] = useState(false);
@@ -111,7 +119,7 @@ export default function Navbar() {
   const navLinkBase = "nav-link-text px-3 lg:px-4 py-2 inline-flex items-center gap-1.5 transition-colors";
   const navLink = (href: string, label: string) => (
     <Link
-      href={href}
+      href={withSeason(href)}
       aria-current={isActive(href) ? "page" : undefined}
       className={`${navLinkBase} ${
         isActive(href)
@@ -147,7 +155,7 @@ export default function Navbar() {
           <SeasonSwitcher />
           {podiumPct != null && acc && acc.roundsScored > 0 && (
             <Link
-              href="/accuracy"
+              href={withSeason("/accuracy")}
               className="eyebrow inline-flex items-center gap-1.5 px-2 py-0.5 border transition-colors hover:text-[color:var(--ink)]"
               style={{
                 borderColor:
@@ -237,7 +245,7 @@ export default function Navbar() {
                   >
                     <div className="p-2">
                       <Link
-                        href="/calendar"
+                        href={withSeason("/calendar")}
                         onClick={() => setRacesOpen(false)}
                         className="nav-link-text flex items-center gap-3 px-3 py-2.5 text-[color:var(--ink)] transition-colors hover:bg-[color:var(--surface-elevated)]"
                       >
@@ -250,7 +258,7 @@ export default function Navbar() {
                         return (
                           <Link
                             key={race.round}
-                            href={`/race/${race.round}`}
+                            href={withSeason(`/race/${race.round}`)}
                             onClick={() => setRacesOpen(false)}
                             role="menuitem"
                             className="flex items-center gap-3 px-3 py-2 text-sm font-serif transition-colors hover:bg-[color:var(--surface-elevated)]"
@@ -312,7 +320,7 @@ export default function Navbar() {
                       ].map((item) => (
                         <Link
                           key={item.href}
-                          href={item.href}
+                          href={withSeason(item.href)}
                           onClick={() => setStandingsOpen(false)}
                           role="menuitem"
                           className="block p-3 transition-colors hover:bg-[color:var(--surface-elevated)] border border-transparent hover:border-[color:var(--hairline)]"
@@ -335,7 +343,7 @@ export default function Navbar() {
 
           {nextRound && (
             <Link
-              href={`/race/${nextRound.round}`}
+              href={withSeason(`/race/${nextRound.round}`)}
               className="hidden sm:block"
               aria-label={`Next race: ${nextRound.name}`}
             >
@@ -394,7 +402,7 @@ export default function Navbar() {
                 ].map((item) => (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={withSeason(item.href)}
                     aria-current={isActive(item.href) ? "page" : undefined}
                     onClick={() => setMobileOpen(false)}
                     className={`nav-link-text px-5 py-4 row-spec transition-colors ${
@@ -407,7 +415,7 @@ export default function Navbar() {
 
                 {nextRound && (
                   <div className="px-5 pt-4">
-                    <Link href={`/race/${nextRound.round}`} onClick={() => setMobileOpen(false)}>
+                    <Link href={withSeason(`/race/${nextRound.round}`)} onClick={() => setMobileOpen(false)}>
                       <ShimmerButton
                         background="var(--accent-f1-red)"
                         shimmerColor="rgba(255,255,255,0.9)"
@@ -431,7 +439,7 @@ export default function Navbar() {
                         return (
                           <Link
                             key={race.round}
-                            href={`/race/${race.round}`}
+                            href={withSeason(`/race/${race.round}`)}
                             onClick={() => setMobileOpen(false)}
                             className="px-5 py-3 row-spec text-sm flex items-center gap-2 justify-between font-serif transition-colors hover:text-[color:var(--ink)]"
                             style={{ color: "var(--body)" }}

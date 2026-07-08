@@ -148,6 +148,22 @@ class PromotionStatus(_Loose):
     roundsCompared: int
 
 
+class SeasonIndexEntry(_Loose):
+    year: int
+    isCurrent: bool
+    path: str
+    label: str
+
+
+class SeasonsIndex(_Loose):
+    """Mirror of ``website/src/lib/seasons.ts`` (SeasonsIndex)."""
+
+    current: int
+    available: list[int]
+    archived: list[int]
+    seasons: list[SeasonIndexEntry]
+
+
 # --------------------------------------------------------------------------- #
 # Tests
 # --------------------------------------------------------------------------- #
@@ -185,3 +201,10 @@ def test_model_health_matches_contract(data_dir):
 
 def test_promotion_status_matches_contract(data_dir):
     PromotionStatus.model_validate(_load(data_dir / "promotion_status.json"))
+
+
+def test_seasons_index_matches_contract(data_dir):
+    """export.write() also emits the multi-season index the frontend reads."""
+    idx = SeasonsIndex.model_validate(_load(data_dir / "seasons.json"))
+    assert idx.current == config.SEASON
+    assert config.SEASON in idx.available

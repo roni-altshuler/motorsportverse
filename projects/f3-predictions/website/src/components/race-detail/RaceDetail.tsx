@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { FinishProbabilityHeatmap } from "@/components/charts/FinishProbabilityHeatmap";
@@ -13,6 +13,8 @@ import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
 import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
 import { DriverHeadshot } from "@/components/ui/DriverHeadshot";
 import HUDPanel from "@/components/ui/HUDPanel";
+import { fetchF3Data, fetchRoundDetail, fetchRoundProbabilities } from "@/lib/f3client";
+import { useSeason } from "@/lib/SeasonProvider";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import type { CircuitGeometry } from "@/types/circuit";
 import type {
@@ -26,10 +28,10 @@ import type {
 type RaceKey = "feature" | "sprint";
 
 export function RaceDetail({
-  round,
-  probabilities,
+  round: bakedRound,
+  probabilities: bakedProbabilities,
   geometry = null,
-  driverStandings = [],
+  driverStandings: bakedStandings = [],
 }: {
   round: RoundDetail;
   probabilities: ProbabilitiesRound | null;
@@ -40,6 +42,45 @@ export function RaceDetail({
   const [tab, setTab] = useState<RaceKey>("feature");
   // Which classification row's detail sheet is open (driver code).
   const [openDriver, setOpenDriver] = useState<string | null>(null);
+
+  // Multi-season: the page is baked with the CURRENT season's round data
+  // (static export). When the SeasonSwitcher selects an archived season, that
+  // season's round + probabilities + standings overlay the baked props
+  // client-side (mirrors F1's RaceDetailPage useSeason wiring). Geometry stays
+  // baked — circuits.json is season-independent.
+  const { basePath, year, index } = useSeason();
+  const isArchived = !!index && year !== index.current;
+  const [overlay, setOverlay] = useState<{
+    round: RoundDetail;
+    probabilities: ProbabilitiesRound | null;
+    driverStandings: DriverStanding[];
+  } | null>(null);
+
+  useEffect(() => {
+    if (!isArchived) {
+      setOverlay(null);
+      return;
+    }
+    let active = true;
+    Promise.all([
+      fetchRoundDetail(bakedRound.round, basePath),
+      fetchRoundProbabilities(bakedRound.round, basePath),
+      fetchF3Data(basePath),
+    ]).then(([r, p, d]) => {
+      if (!active) return;
+      setOverlay(
+        r ? { round: r, probabilities: p, driverStandings: d?.driverStandings ?? [] } : null
+      );
+    });
+    return () => {
+      active = false;
+    };
+  }, [isArchived, basePath, bakedRound.round]);
+
+  const round = (isArchived && overlay?.round) || bakedRound;
+  const probabilities = isArchived && overlay ? overlay.probabilities : bakedProbabilities;
+  const driverStandings =
+    isArchived && overlay ? overlay.driverStandings : bakedStandings;
 
   const block = round[tab];
   const probs = probabilities?.[tab] ?? null;
