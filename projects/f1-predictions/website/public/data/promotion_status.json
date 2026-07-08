@@ -1,0 +1,46 @@
+{
+  "decision": "hold",
+  "reason": "candidate within \u00b12% of production (mean change -0.1%)",
+  "rounds_compared": 9,
+  "mean_production": 5.228,
+  "mean_candidate": 5.2232,
+  "relative_change": -0.0009,
+  "worst_round_regression": 0.0052,
+  "blocked_by_per_round_guard": false,
+  "season": 2026,
+  "candidateSource": "/home/ronaltshuler/code/motorsportverse/projects/f1-predictions/website/public/data/forward_eval_candidate",
+  "scoreKey": "rmse_position_error",
+  "headline": {
+    "roundsCompared": 9,
+    "commonRounds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "production": {
+      "rounds": 9,
+      "winnerHits": 7,
+      "winnerHitPct": 77.8,
+      "podiumSetPct": 51.9,
+      "pointsSetPct": 74.4,
+      "blendPct": 60.9,
+      "meanError": 3.87
+    },
+    "candidate": {
+      "rounds": 9,
+      "winnerHits": 7,
+      "winnerHitPct": 77.8,
+      "podiumSetPct": 51.9,
+      "pointsSetPct": 74.4,
+      "blendPct": 60.9,
+      "meanError": 3.87
+    },
+    "verdict": "parity"
+  }
+}

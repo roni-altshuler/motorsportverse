@@ -92,9 +92,12 @@ class RoundEvaluation:
     within_5: int
     winner_hit: bool
     podium_hits: int  # 0..3, how many of predicted top-3 were in actual top-3
-    log_loss_uniform_baseline: float | None
-    spearman_correlation: float | None  # rank correlation, [-1, 1]; None if too few drivers
-    ndcg_at_5: float | None             # ranking quality of predicted top-5 vs actual, [0, 1]
+    top10_overlap: int = 0  # 0..10, |predicted top-10 ∩ actual top-10| (points set)
+    log_loss_uniform_baseline: float | None = None
+    # rank correlation, [-1, 1]; None if too few drivers
+    spearman_correlation: float | None = None
+    # ranking quality of predicted top-5 vs actual, [0, 1]
+    ndcg_at_5: float | None = None
     biggest_misses: list[dict] = field(default_factory=list)
     # Baselines: same scoring against trivial / market predictors.  Keys are
     # baseline names; missing keys mean "not enough data to compute this round".
@@ -154,6 +157,7 @@ def score_round(
     predicted: dict[str, int],
     actual: dict[str, int],
     prior_round_actual: dict[str, int] | None = None,
+    extra_baselines: dict[str, dict[str, int]] | None = None,
 ) -> RoundEvaluation:
     """Compute one round's evaluation metrics.
 
@@ -202,6 +206,8 @@ def score_round(
     act_sorted = sorted(actual.items(), key=lambda kv: kv[1])
     pred_top3 = {drv for drv, _ in pred_sorted[:3]}
     act_top3 = {drv for drv, _ in act_sorted[:3]}
+    pred_top10 = {drv for drv, _ in pred_sorted[:10]}
+    act_top10 = {drv for drv, _ in act_sorted[:10]}
     pred_winner = pred_sorted[0][0] if pred_sorted else None
     act_winner = act_sorted[0][0] if act_sorted else None
 
@@ -232,6 +238,11 @@ def score_round(
     baselines: dict[str, dict] = {}
     if prior_round_actual:
         baselines["last_race_winner"] = _baseline_score(prior_round_actual, actual)
+    # Additional order baselines (grid_order / standings_order — see
+    # src/baselines.py::baseline_order_streams). Additive keys per docstring.
+    for name, order in (extra_baselines or {}).items():
+        if order:
+            baselines[name] = _baseline_score(order, actual)
 
     return RoundEvaluation(
         season=season,
@@ -245,6 +256,7 @@ def score_round(
         within_5=w5,
         winner_hit=(pred_winner is not None and pred_winner == act_winner),
         podium_hits=len(pred_top3 & act_top3),
+        top10_overlap=len(pred_top10 & act_top10),
         log_loss_uniform_baseline=uniform_log_loss,
         spearman_correlation=spearman,
         ndcg_at_5=ndcg,
@@ -357,6 +369,8 @@ def _baseline_score(
     act_winner = act_sorted[0][0] if act_sorted else None
     pred_top3 = {drv for drv, _ in pred_sorted[:3]}
     act_top3 = {drv for drv, _ in act_sorted[:3]}
+    pred_top10 = {drv for drv, _ in pred_sorted[:10]}
+    act_top10 = {drv for drv, _ in act_sorted[:10]}
     spearman = _spearman_correlation(
         [baseline_predicted[d] for d in common],
         [actual[d] for d in common],
@@ -365,6 +379,7 @@ def _baseline_score(
         "mean_position_error": round(sum(errors) / len(errors), 3),
         "winner_hit": bool(pred_winner is not None and pred_winner == act_winner),
         "podium_hits": len(pred_top3 & act_top3),
+        "top10_overlap": len(pred_top10 & act_top10),
         "spearman_correlation": spearman,
     }
 
@@ -384,6 +399,7 @@ def evaluate_season(
     predicted: dict[int, dict[str, int]],
     actual: dict[int, dict[str, int]],
     rounds: Iterable[int] | None = None,
+    baseline_streams: dict[str, dict[int, dict[str, int]]] | None = None,
 ) -> ForwardEvalReport:
     """Walk forward over rounds and score each one.
 
@@ -415,8 +431,14 @@ def evaluate_season(
             if candidate:
                 prior_actual = candidate
                 break
+        extra = {
+            name: stream.get(rnd)
+            for name, stream in (baseline_streams or {}).items()
+            if stream.get(rnd)
+        }
         evaluated.append(
-            score_round(season, rnd, pred_round, act_round, prior_round_actual=prior_actual)
+            score_round(season, rnd, pred_round, act_round,
+                        prior_round_actual=prior_actual, extra_baselines=extra)
         )
 
     return ForwardEvalReport(
@@ -682,6 +704,7 @@ def _round_eval_metrics(r: RoundEvaluation) -> dict[str, float | None]:
         "spearman_correlation": r.spearman_correlation,
         "ndcg_at_5": r.ndcg_at_5,
         "winnerHit": 1.0 if r.winner_hit else 0.0,
+        "top10_overlap": r.top10_overlap,
     }
 
 
@@ -691,6 +714,7 @@ def _baseline_round_metrics(entry: dict) -> dict[str, float | None]:
         "podium_hits": entry.get("podium_hits"),
         "spearman_correlation": entry.get("spearman_correlation"),
         "winnerHit": 1.0 if entry.get("winner_hit") else 0.0,
+        "top10_overlap": entry.get("top10_overlap"),
     }
 
 
@@ -837,11 +861,24 @@ def main() -> int:
         print(msg)
         return 0 if args.allow_empty else 1
 
+    # Naive order baselines (grid_order = the strong post-quali bar,
+    # standings_order = pre-race championship order / points-leader winner).
+    # Additive to each round's ``baselines`` block; failure never blocks scoring.
+    baseline_streams: dict[str, dict[int, dict[str, int]]] = {}
+    try:
+        from baselines import baseline_order_streams
+        baseline_streams = baseline_order_streams(
+            str(PROJECT_ROOT / "website" / "public" / "data"), args.season
+        )
+    except Exception as e:
+        print(f"⚠️  Baseline order streams unavailable: {e}")
+
     report = evaluate_season(
         season=args.season,
         predicted=predicted,
         actual=actual,
         rounds=_parse_rounds(args.rounds),
+        baseline_streams=baseline_streams,
     )
 
     output_path = args.output if args.output.is_absolute() else (PROJECT_ROOT / args.output)

@@ -29,6 +29,7 @@ import DriverComparison from "@/components/race-detail/DriverComparison";
 import PredictedClassificationTable from "@/components/race-detail/PredictedClassificationTable";
 import CircuitMap from "@/components/race-detail/CircuitMap";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
+import GridProvenanceBadge from "@/components/race-detail/GridProvenanceBadge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import HUDPanel from "@/components/ui/HUDPanel";
@@ -580,6 +581,7 @@ export default function RaceDetailPage({ round }: Props) {
                         ? "Final Prediction · Post-Qualifying"
                         : liveMeta?.label || "Prediction Published"}
                 </Badge>
+                <GridProvenanceBadge provenance={data.gridProvenance} />
                 <RaceVolatilityBadge classification={data.classification ?? []} />
               </div>
             </div>

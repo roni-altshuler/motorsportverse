@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 
+import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
+import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
+import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
+import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
 import { Sparkline } from "@/components/charts/Sparkline";
 import {
   getCalibrationSummary,
   getF3Data,
   getForwardEvalRounds,
   getForwardEvalSeason,
+  getHistoricalBacktest,
   getModelHealth,
+  getPromotionStatus,
 } from "@/lib/f3data";
 
 export const metadata: Metadata = { title: "Accuracy — RaceIQ F3" };
@@ -16,12 +22,18 @@ function pct(v: number | null | undefined): string {
   return v == null ? "—" : `${(v * 100).toFixed(0)}%`;
 }
 
+function fmt(v: number | null | undefined, digits = 2): string {
+  return v == null ? "—" : v.toFixed(digits);
+}
+
 export default function AccuracyPage() {
   const data = getF3Data();
   const season = getForwardEvalSeason();
   const rounds = getForwardEvalRounds();
   const health = getModelHealth();
   const calibration = getCalibrationSummary();
+  const promotion = getPromotionStatus();
+  const backtest = getHistoricalBacktest();
 
   const acc = data.seasonAccuracy;
   const brierSeries = (health?.brierByRound ?? []).map((b) => b.brier);
@@ -35,15 +47,8 @@ export default function AccuracyPage() {
       <p className="mt-3 text-[var(--ink-muted)]">
         How the F3 model&rsquo;s leakage-safe pre-race forecasts have scored against the actual
         results, over {acc?.roundsScored ?? data.completedRounds} completed rounds of {data.season}.
+        Every number is scored finishers-only, using only data available before each race.
       </p>
-
-      {/* Honest calibration banner — mirrors F1's gate. */}
-      {calibration && !calibration.applied && (
-        <div className="mt-8 rounded-[var(--radius-md)] border border-[color-mix(in_srgb,var(--accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] px-4 py-3 text-sm text-[var(--ink-muted)]">
-          <span className="font-semibold text-[var(--ink)]">Calibration pending.</span>{" "}
-          {calibration.dataLimitation}
-        </div>
-      )}
 
       {/* Headline metrics */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -67,11 +72,11 @@ export default function AccuracyPage() {
         </section>
       )}
 
-      {/* Per-round table */}
+      {/* Per-round table with probability quality */}
       {rounds.length > 0 && (
         <section className="mt-12">
           <h2 className="mb-4 text-xl font-semibold text-[var(--ink)]">Per round (feature race)</h2>
-          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)]">
+          <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--hairline)]">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--surface-2)] text-left text-xs uppercase tracking-wider text-[var(--ink-dim)]">
@@ -80,35 +85,58 @@ export default function AccuracyPage() {
                   <th className="px-4 py-3 font-medium">Podium hits</th>
                   <th className="px-4 py-3 font-medium">Mean error</th>
                   <th className="hidden px-4 py-3 font-medium sm:table-cell">NDCG@5</th>
+                  <th className="hidden px-4 py-3 font-medium sm:table-cell">Win Brier</th>
                 </tr>
               </thead>
               <tbody>
-                {rounds.map((r) => (
-                  <tr key={r.round} className="border-t border-[var(--hairline)] bg-[var(--surface)]">
-                    <td className="px-4 py-3 text-[var(--ink)]">
-                      R{r.round} · {r.venueName}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span style={{ color: r.feature.winner_hit ? "var(--accent)" : "var(--ink-dim)" }}>
-                        {r.feature.winner_hit ? "✓ hit" : "miss"}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
-                      {r.feature.podium_hits ?? 0}/3
-                    </td>
-                    <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
-                      {r.feature.mean_position_error ?? "—"}
-                    </td>
-                    <td className="hidden px-4 py-3 tabular-nums text-[var(--ink-muted)] sm:table-cell">
-                      {r.feature.ndcg_at_5 != null ? r.feature.ndcg_at_5.toFixed(2) : "—"}
-                    </td>
-                  </tr>
-                ))}
+                {rounds.map((r) => {
+                  const winBrier = r.markets?.feature?.win?.brier;
+                  return (
+                    <tr key={r.round} className="border-t border-[var(--hairline)] bg-[var(--surface)]">
+                      <td className="px-4 py-3 text-[var(--ink)]">
+                        R{r.round} · {r.venueName}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span style={{ color: r.feature.winner_hit ? "var(--accent)" : "var(--ink-dim)" }}>
+                          {r.feature.winner_hit ? "✓ hit" : "miss"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
+                        {r.feature.podium_hits ?? 0}/3
+                      </td>
+                      <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
+                        {r.feature.mean_position_error ?? "—"}
+                      </td>
+                      <td className="hidden px-4 py-3 tabular-nums text-[var(--ink-muted)] sm:table-cell">
+                        {r.feature.ndcg_at_5 != null ? r.feature.ndcg_at_5.toFixed(2) : "—"}
+                      </td>
+                      <td className="hidden px-4 py-3 tabular-nums text-[var(--ink-muted)] sm:table-cell">
+                        {fmt(winBrier, 4)}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
+          <p className="mt-2 text-xs text-[var(--ink-dim)]">
+            Win Brier scores the model&rsquo;s win probabilities against who actually won — lower is
+            sharper and better calibrated.
+          </p>
         </section>
       )}
+
+      {/* Walk-forward: model vs the trivial last-race baseline */}
+      <WalkForwardPanel season={season} />
+
+      {/* Candidate model A/B status */}
+      <CandidateModelCard status={promotion} />
+
+      {/* Calibration status */}
+      <CalibrationPanel summary={calibration} />
+
+      {/* Historical backtest dashboard */}
+      {backtest && backtest.roundsEvaluated > 0 && <HistoricalBacktestPanel data={backtest} />}
 
       {/* Model health */}
       {health && (
@@ -129,7 +157,7 @@ export default function AccuracyPage() {
               ) : (
                 <ul className="space-y-1 text-sm">
                   {health.alarms.map((a) => (
-                    <li key={a} style={{ color: "var(--maturity-experimental)" }}>
+                    <li key={a} style={{ color: "var(--warning)" }}>
                       ⚠ {a}
                     </li>
                   ))}
@@ -141,8 +169,8 @@ export default function AccuracyPage() {
                 </ul>
               )}
               <p className="mt-3 text-xs text-[var(--ink-dim)]">
-                Phase 1 runs on a synthetic source while the model warms up, so early-season
-                distribution shift is expected.
+                Feature drift and rolling-Brier are tracked round-to-round; a spike flags where the
+                field behaved unlike the rounds the model learned from.
               </p>
             </div>
           </div>

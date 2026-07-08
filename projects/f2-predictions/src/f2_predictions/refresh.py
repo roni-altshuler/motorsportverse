@@ -28,7 +28,9 @@ from . import config
 from .sources.fia_f2_source import FiaF2Source
 
 _DATA_DIR = Path(__file__).resolve().parents[2] / "data"
-_DEFAULT_OUT = _DATA_DIR / "official_2026.json"
+# Season-parameterised snapshot name: official_<SEASON>.json. For the default
+# 2026 season this is byte-identical to the historical "official_2026.json".
+_DEFAULT_OUT = _DATA_DIR / f"official_{config.SEASON}.json"
 
 # Standings-page row extractors.
 _RE_POS = re.compile(r'class="pos">\s*(\d+)\s*<')
@@ -116,10 +118,13 @@ def _parse_team_standings(page: str) -> list[dict]:
         name = _RE_TEAMNAME.search(tr)
         if not (pos and total and name):
             continue
+        raw_team = name.group(1).strip()
         out.append(
             {
                 "position": int(pos.group(1)),
-                "team": name.group(1).strip(),
+                # Standings pages can abbreviate entrant names — normalise
+                # through config.TEAM_ALIASES so they match config.TEAMS/TEAM_OF.
+                "team": config.TEAM_ALIASES.get(raw_team, raw_team),
                 "points": float(total.group(1)),
                 "perRound": _score_pairs(tr),
             }
@@ -142,6 +147,18 @@ def build_snapshot(season: int) -> dict:
         page = src._page(entry["raceid"])
         if not page:
             continue
+        # Wrong-event guard: cross-check the scraped page against the human-verified
+        # calendar in config (an independent source of truth from the scrape). If the
+        # FIA CMS serves a different round's page for this raceid — or a truncated
+        # page with no identity — refuse rather than ingest another event's results
+        # under this round. Raising here aborts build_snapshot before main() writes,
+        # so a mismatch can never mutate the committed snapshot. (F1 shipped Austria's
+        # classification as the British GP result from exactly this class of bug.)
+        # NB: compare against Venue.country — page titles say "United Kingdom",
+        # while the config display name is "Great Britain".
+        FiaF2Source.verify_page_identity(
+            page, expected_round=rnd, expected_country=config.CALENDAR[rnd - 1].country
+        )
         # Capture qualifying whenever it is published — including the UPCOMING round
         # (Friday quali runs before the race), so the post-quali forecast can
         # condition on the real grid before any result exists.

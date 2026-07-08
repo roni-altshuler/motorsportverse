@@ -525,6 +525,61 @@ def calibrate_market_probabilities(
     return out
 
 
+# Each market's probabilities must sum to the size of the set it describes:
+# exactly one winner, three podium slots, six top-6 slots, ten top-10 slots.
+MARKET_TARGET_SUM: dict[str, float] = {"win": 1.0, "podium": 3.0, "top6": 6.0, "top10": 10.0}
+
+
+def renormalize_market_struct(
+    market_struct: dict[str, dict[str, dict[str, float]]],
+) -> dict[str, dict[str, dict[str, float]]]:
+    """Restore probabilistic coherence after per-driver isotonic calibration.
+
+    Isotonic calibration maps each driver's probability independently, so a
+    market no longer sums to its set size (the 2026-07-07 audit measured
+    published win markets summing to 1.17-1.94). This water-fills each market
+    back to its target sum: scale everyone, cap at 1.0, redistribute the
+    excess over the uncapped drivers. Raw Plackett-Luce probabilities are
+    empirical MC frequencies and already coherent — for them this is a
+    numerical no-op. ``rawProbability`` is left untouched.
+    """
+    out: dict[str, dict[str, dict[str, float]]] = {}
+    for market, drivers in market_struct.items():
+        target = MARKET_TARGET_SUM.get(market)
+        if target is None or not drivers:
+            out[market] = drivers
+            continue
+        names = list(drivers.keys())
+        probs = np.array(
+            [max(float(drivers[d]["probability"]), 0.0) for d in names],
+            dtype=np.float64,
+        )
+        if probs.sum() <= 0:
+            out[market] = drivers
+            continue
+        capped = np.zeros(len(names), dtype=bool)
+        for _ in range(len(names)):
+            free = ~capped
+            remaining = target - float(capped.sum())  # capped drivers hold 1.0
+            free_sum = probs[free].sum()
+            if remaining <= 0 or free_sum <= 0:
+                break
+            probs[free] = probs[free] * (remaining / free_sum)
+            overflow = free & (probs > 1.0)
+            if not overflow.any():
+                break
+            probs[overflow] = 1.0
+            capped |= overflow
+        out[market] = {
+            d: {
+                "probability": float(probs[i]),
+                "rawProbability": float(drivers[d]["rawProbability"]),
+            }
+            for i, d in enumerate(names)
+        }
+    return out
+
+
 def collect_history_from_rounds(
     round_predictions: Mapping[int, MarketProbabilities],
     round_actuals: Mapping[int, Mapping[str, int]],

@@ -154,6 +154,21 @@ export interface RaceBlock {
   accuracy?: RaceAccuracy;
 }
 
+/** A/B lever provenance for the finishing-position head (F2_USE_POSITION_HEAD,
+ *  default OFF). Mirrors F1's `modelConfig.positionModel` block. */
+export interface PositionModelConfig {
+  applied: boolean;
+  /** Prior completed rounds the head trained on (leakage-safe), when applied. */
+  trainedRounds?: number[];
+  trainRows?: number;
+  /** Graceful-degradation reason when the head could not train. */
+  reason?: string;
+}
+
+export interface RoundModelConfig {
+  positionModel: PositionModelConfig;
+}
+
 export interface RoundDetail {
   round: number;
   season: number;
@@ -162,6 +177,8 @@ export interface RoundDetail {
   country: string | null;
   completed: boolean;
   dataSource: string;
+  /** Optional for older baked data; always emitted by current exports. */
+  modelConfig?: RoundModelConfig;
   sprint: RaceBlock;
   feature: RaceBlock;
 }
@@ -209,11 +226,43 @@ export interface CalibrationSummary {
 // --------------------------------------------------------------------------- //
 // Continuous-learning outputs (forward_eval / drift / promotion CLIs)
 // --------------------------------------------------------------------------- //
+/** Per-market probability quality (Brier + log-loss) for one scored race. */
+export interface MarketScore {
+  brier: number | null;
+  logLoss: number | null;
+}
+
 export interface ForwardEvalRound {
   round: number;
   venueName: string;
   sprint: RaceAccuracy;
   feature: RaceAccuracy;
+  /** Additive: raceType → market → {brier, logLoss} (win/podium). */
+  markets?: Record<string, Record<string, MarketScore>>;
+  /** Additive: last-race baseline re-scored, per race type (null for round 1). */
+  baselines?: Record<string, RaceAccuracy | null>;
+}
+
+/** One metric's walk-forward summary (mean/median/min/max/last/trend over rounds). */
+export interface WalkForwardMetric {
+  mean: number;
+  median: number;
+  min: number;
+  max: number;
+  last: number;
+  trend: number;
+  n: number;
+}
+
+export interface WalkForwardBlock {
+  n_rounds: number;
+  metrics: Record<string, WalkForwardMetric>;
+}
+
+/** Model vs baselines walk-forward summary for one race type. */
+export interface WalkForwardRaceType {
+  model: WalkForwardBlock;
+  baselines: Record<string, WalkForwardBlock>;
 }
 
 export interface ForwardEvalSeason {
@@ -223,6 +272,10 @@ export interface ForwardEvalSeason {
   meanNdcgAt5: number | null;
   winnerHitRate: number | null;
   podiumHitRate: number | null;
+  /** Additive: walk-forward headline block (F1 parity), race type → summary. */
+  generatedAt?: string;
+  finishersOnly?: boolean;
+  walkForward?: Record<string, WalkForwardRaceType>;
 }
 
 export interface FeatureDrift {
@@ -249,6 +302,17 @@ export interface ModelHealth {
   brierByRound: { round: number; brier: number }[];
 }
 
+/** Position-head A/B verdict (additive to promotion_status.json). */
+export interface AbVerdict {
+  recommendation: string;
+  basis: string;
+  positionHeadMeanError: number | null;
+  productionMeanError: number | null;
+  meanErrorDelta: number | null;
+  positionHeadWinnerHitRate: number | null;
+  productionWinnerHitRate: number | null;
+}
+
 export interface PromotionStatus {
   decision: "promote" | "hold" | "demote";
   reason: string;
@@ -257,4 +321,92 @@ export interface PromotionStatus {
   meanCandidate: number | null;
   relativeChange: number | null;
   hasCandidate: boolean;
+  /** Additive: which candidate model + its env flag, from the position-head A/B. */
+  candidate?: string;
+  candidateFlag?: string;
+  abVerdict?: AbVerdict | null;
+}
+
+// --------------------------------------------------------------------------- //
+// Historical backtest — public/data/historical_backtest/summary.json
+// --------------------------------------------------------------------------- //
+export interface BacktestMiss {
+  driver: string;
+  predicted: number;
+  actual: number;
+  delta: number;
+  absDelta: number;
+}
+
+export interface BacktestRoundEntry {
+  round: number;
+  venueName: string;
+  drivers_compared: number;
+  mean_position_error: number | null;
+  median_position_error: number | null;
+  rmse_position_error: number | null;
+  exact_matches: number;
+  within_3: number;
+  within_5: number;
+  winner_hit: boolean;
+  podium_hits: number;
+  spearman_correlation: number | null;
+  ndcg_at_5: number | null;
+  biggest_misses?: BacktestMiss[];
+}
+
+export interface BacktestSeasonSummary {
+  rounds_evaluated: number;
+  season_mean_error: number | null;
+  season_median_error: number | null;
+  winner_hit_rate: number | null;
+  podium_hit_rate: number | null;
+  exact_match_rate: number | null;
+  within_3_rate: number | null;
+  within_5_rate: number | null;
+  mean_spearman: number | null;
+  mean_ndcg_at_5: number | null;
+}
+
+export interface BacktestSeasonBlock {
+  season: number;
+  summary: BacktestSeasonSummary;
+  rounds: BacktestRoundEntry[];
+}
+
+export interface BacktestDriverEntry {
+  driver: string;
+  rounds: number;
+  mae: number;
+  within_3_rate: number;
+}
+
+export interface ReliabilityBin {
+  binLo: number;
+  binHi: number;
+  meanPred: number;
+  empirical: number;
+  count: number;
+}
+
+export interface MarketReliability {
+  brier: number | null;
+  logLoss: number | null;
+  samples: number;
+  reliability: ReliabilityBin[];
+  plot: string;
+}
+
+export interface HistoricalBacktest {
+  season: number;
+  seasons: number[];
+  generatedAt: string;
+  source: string;
+  scoring: string;
+  finishersOnly: boolean;
+  roundsEvaluated: number;
+  totalRows: number;
+  perSeason: BacktestSeasonBlock[];
+  perDriver: BacktestDriverEntry[];
+  markets: Record<string, MarketReliability>;
 }

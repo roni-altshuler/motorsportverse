@@ -2,7 +2,9 @@
 
 import builtins
 
-from motorsport_data.sources.fia_feeder import FiaFeederSource
+import pytest
+
+from motorsport_data.sources.fia_feeder import FiaFeederSource, WrongEventError
 
 _MINI_PAGE = """
 <html><body>
@@ -85,3 +87,102 @@ def test_custom_session_headings():
         session_headings={0: "Race 1", 1: "Race 2"},
     )
     assert src._session_headings == {0: "Race 1", 1: "Race 2"}
+
+
+# ── Wrong-event ingestion guards ────────────────────────────────────────────
+# A cache/proxy/CMS hiccup can serve a DIFFERENT round's page for a requested
+# raceid; the page's own title is the identity that must match before any
+# classification is parsed (see the F1 wrong-event incident of 2026-07-05).
+
+_ROUND2_PAGE = _MINI_PAGE.replace(
+    "Round 1 : Bahrain , Sakhir", "Round 2 : Australia , Melbourne"
+)
+
+
+def _primed_source(round_num, page):
+    """Source with caches primed (no network): ``round_num`` → raceid 999 → page."""
+    src = _source()
+    src._round_map_cache[2026] = {round_num: 999}
+    src._page_cache[999] = page
+    return src
+
+
+def test_parse_event_identity_reads_the_title():
+    identity = FiaFeederSource.parse_event_identity(_MINI_PAGE)
+    assert identity == {
+        "round": 1,
+        "country": "Bahrain",
+        "city": "Sakhir",
+        "dates": "01-03 March 2026",
+    }
+    assert FiaFeederSource.parse_event_identity("<html>no title</html>") is None
+    assert FiaFeederSource.parse_event_identity(None) is None
+
+
+def test_verify_page_identity_accepts_matching_round_and_country():
+    identity = FiaFeederSource.verify_page_identity(
+        _MINI_PAGE, expected_round=1, expected_country="Bahrain"
+    )
+    assert identity["round"] == 1
+
+
+def test_verify_page_identity_rejects_round_mismatch():
+    with pytest.raises(WrongEventError, match="round 2"):
+        FiaFeederSource.verify_page_identity(_ROUND2_PAGE, expected_round=1)
+
+
+def test_verify_page_identity_rejects_country_mismatch():
+    with pytest.raises(WrongEventError, match="Bahrain"):
+        FiaFeederSource.verify_page_identity(
+            _MINI_PAGE, expected_round=1, expected_country="Australia"
+        )
+
+
+def test_verify_page_identity_folds_parenthetical_country_variants():
+    page = _MINI_PAGE.replace("Bahrain", "Spain")
+    FiaFeederSource.verify_page_identity(
+        page, expected_round=1, expected_country="Spain (Madrid)"
+    )
+
+
+def test_verify_page_identity_rejects_titleless_page():
+    with pytest.raises(WrongEventError, match="no parseable round title"):
+        FiaFeederSource.verify_page_identity(
+            "<html><span>Feature Race</span></html>", expected_round=1
+        )
+
+
+def test_results_defer_when_page_is_another_round():
+    # Raceid resolves for round 1, but the served page is round 2's — the
+    # scraper must return None (composite defers), never round 2's rows.
+    src = _primed_source(1, _ROUND2_PAGE)
+    assert src.results(2026, 1, race_index=1) is None
+    assert src.entry_list(2026) == {}  # nothing leaked from the wrong page
+
+
+def test_results_defer_when_page_has_no_identity():
+    titleless = _MINI_PAGE.replace(
+        "<h1>Formula X Round 1 : Bahrain , Sakhir 01-03 March 2026</h1>", ""
+    )
+    # The results table still parses — identity, not table shape, admits a page.
+    assert FiaFeederSource._parse_session(titleless, "Feature Race")
+    src = _primed_source(1, titleless)
+    assert src.results(2026, 1, race_index=1) is None
+
+
+def test_results_accept_the_requested_round():
+    src = _primed_source(1, _MINI_PAGE)
+    rows = src.results(2026, 1, race_index=1)
+    assert [r.competitor for r in rows] == ["AAA", "BBB"]
+
+
+def test_qualifying_defers_when_page_is_another_round():
+    quali_page = _ROUND2_PAGE.replace("Feature Race", "Qualifying")
+    src = _primed_source(1, quali_page)
+    assert src.qualifying(2026, 1) is None
+
+
+def test_qualifying_accepts_the_requested_round():
+    quali_page = _MINI_PAGE.replace("Feature Race", "Qualifying")
+    src = _primed_source(1, quali_page)
+    assert src.qualifying(2026, 1) == ["AAA", "BBB"]

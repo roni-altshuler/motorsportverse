@@ -8,6 +8,8 @@ import {
   RoundLifecycle,
   ChampionshipForecast,
   ProbabilityRoundData,
+  GpAccuracyReportData,
+  PromotionStatusData,
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -274,6 +276,41 @@ export async function fetchSeasonTrackerData(
 ): Promise<SeasonTrackerData | null> {
   try {
     const res = await fetch(`${base}/season_tracker.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Season-rolling accuracy report (headline blend, winner-hit tally, and the
+ * honest baselines block). Archived seasons may predate the `baselines` /
+ * winner-hit fields — consumers must treat every new field as optional.
+ * Returns null instead of throwing so panels can hide gracefully.
+ */
+export async function fetchGpAccuracyReport(
+  base: string = BASE_PATH,
+): Promise<GpAccuracyReportData | null> {
+  try {
+    const res = await fetch(`${base}/gp_accuracy_report.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Shadow/A-B promotion decision for the candidate model stream. Only the
+ * active season publishes this file — archived seasons return null and the
+ * candidate panel stays hidden.
+ */
+export async function fetchPromotionStatus(
+  base: string = BASE_PATH,
+): Promise<PromotionStatusData | null> {
+  try {
+    const res = await fetch(`${base}/promotion_status.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {

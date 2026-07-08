@@ -57,6 +57,17 @@ env:
   # both on PYTHONPATH lets `python src/<script>.py`, the inline `python -c`
   # imports, and the scripts/ helpers all resolve modules from either location.
   PYTHONPATH: ${{ github.workspace }}/projects/f1-predictions/src:${{ github.workspace }}/projects/f1-predictions
+  # SHIPPED 2026-07-08 after the walk-forward A/B over 2026 R1-9 (honest
+  # post-quali replay): candidate re-ranker (quali gap in seconds +
+  # data-derived circuit grid-trust; models/candidate_model.py) beat production
+  # on the headline metrics — winner-hit 7/9 vs 5/9, blend 60.9 vs 60.5, MAE
+  # 3.87 vs 3.91 (promotion_status.json::headline, verdict candidate-better).
+  # The DNF-composition component stays OFF (F1_CANDIDATE_ABLATION default) —
+  # it traded a winner call for podium gains. Revisit after ~5 more rounds.
+  F1_CANDIDATE_MODEL: "1"
+  # xgboost hangs under parallel OpenMP load on some runners; the ensemble is
+  # small enough that single-threaded training is not a bottleneck.
+  OMP_NUM_THREADS: "1"
 
 jobs:
   predict:
@@ -229,6 +240,18 @@ jobs:
         run: |
           SEASON_YEAR="${F1_SEASON_YEAR:-$(date -u +%Y)}"
           python src/generate_fastf1_viz.py --all-circuits --year "$SEASON_YEAR"
+
+      - name: Probability layer — Plackett-Luce markets + calibration (audit fix)
+        if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
+        run: |
+          # Regenerates website/public/data/probabilities/round_NN.json +
+          # calibration_summary.json from the freshly-published round JSONs.
+          # This step was MISSING from the cron — published probabilities went
+          # stale (rounds 8-9 absent, round 6 frozen pre-Monaco-quali) and
+          # calibrated win markets summed to >1. Markets are now renormalized
+          # per set size and refreshed on every publishing poll. Non-fatal: a
+          # probability failure must never block point predictions or results.
+          python src/export_probabilities.py || echo "⚠️  probability export skipped (non-fatal)"
 
       - name: Forward-eval — score predictions vs actuals (A-P0.2)
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'

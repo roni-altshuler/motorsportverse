@@ -68,7 +68,14 @@ class RaceForecast:
 
 @dataclass
 class RoundForecastF3:
-    """Both scored races for one round, plus venue metadata."""
+    """Both scored races for one round, plus venue metadata.
+
+    ``position_head`` records whether the opt-in finishing-position head
+    (:mod:`.position_head`, A/B-gated by the ``F3_USE_POSITION_HEAD`` env flag,
+    default OFF) re-ranked this forecast: ``None`` = gate off (production path
+    byte-identical), else a dict with ``applied`` plus either ``trainedRounds``
+    or a graceful-degradation ``reason``.
+    """
 
     season: int
     round: int
@@ -77,6 +84,7 @@ class RoundForecastF3:
     country: str | None
     sprint: RaceForecast
     feature: RaceForecast
+    position_head: dict | None = None
 
 
 # --------------------------------------------------------------------------- #
@@ -361,6 +369,7 @@ def forecast_round(
     *,
     n_samples: int | None = None,
     known_grid: list[str] | None = None,
+    use_position_head: bool | None = None,
 ) -> RoundForecastF3:
     """Full sprint + feature forecast for one round.
 
@@ -371,6 +380,15 @@ def forecast_round(
     F1 flagship's post-quali phase. When ``None`` (pre-quali), the feature grid is
     the predicted merit order and the feature is sampled from pace alone — today's
     behaviour, unchanged.
+
+    ``use_position_head`` is the A/B gate for the opt-in finishing-position head
+    (F1-parity, commit 189db5b): ``None`` (default) defers to the
+    ``F3_USE_POSITION_HEAD`` env flag — **OFF by default**, so the production
+    path is untouched; ``True``/``False`` force it explicitly (the walk-forward
+    A/B harness pins ``False`` for its production arm). When enabled and enough
+    prior rounds exist, both race heads are re-ranked by
+    :func:`position_head.maybe_rerank_round` through the same probability layer;
+    otherwise the forecast degrades gracefully to production.
     """
     n_samples = n_samples or config.DEFAULT_SAMPLES
     pace = estimate_skill(source, year, round)
@@ -398,7 +416,7 @@ def forecast_round(
     sprint_score = {c: pace[c] + config.SPRINT_GRID_PENALTY * grid_pos[c] for c in pace}
     sprint = _race_forecast(SPRINT, sprint_grid, sprint_score, n_samples=n_samples)
 
-    return RoundForecastF3(
+    result = RoundForecastF3(
         season=year,
         round=round,
         venue_key=venue.key,
@@ -407,6 +425,20 @@ def forecast_round(
         sprint=sprint,
         feature=feature,
     )
+
+    # Opt-in finishing-position head (A/B-gated, default OFF). Imported lazily so
+    # the production path never pays for it; any failure degrades silently to the
+    # production forecast — the same contract as the other optional signals.
+    from . import position_head as _position_head
+
+    if _position_head.head_enabled(use_position_head):
+        try:
+            result = _position_head.maybe_rerank_round(
+                source, year, round, result, n_samples=n_samples
+            )
+        except Exception:  # pragma: no cover - optional path, never breaks a forecast
+            pass
+    return result
 
 
 # --------------------------------------------------------------------------- #

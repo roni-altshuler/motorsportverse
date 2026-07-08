@@ -20,12 +20,62 @@ assumed from prior seasons.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from motorsport_data.schema import Team, Venue
 
 SPORT = "Formula 3"
-SEASON = 2026
+
+# --------------------------------------------------------------------------- #
+# Season selection (multi-season rollover support — see season_rollover.py).
+#
+# The literal tables below describe the 2026 season. A future season becomes
+# active when ``season_rollover.py --start`` drops a marker file
+# (``data/active_season.json``) after ``bootstrap_next_season.py`` has written
+# an announced-calendar file (``data/announced_seasons/<year>.json``) — the F3
+# analog of F1's ``generated_seasons/<year>.json`` (F3 calendars are announced
+# late, so the bootstrap carries the current season forward as a placeholder
+# until the real calendar lands). With no marker and no ``F3_SEASON_YEAR`` env
+# override, this module behaves exactly as it always has (the 2026 literals).
+# --------------------------------------------------------------------------- #
+_DEFAULT_SEASON = 2026
+# ``F3_DATA_DIR`` is a test seam only; unset in production.
+_DATA_DIR = Path(os.environ.get("F3_DATA_DIR") or Path(__file__).resolve().parents[2] / "data")
+
+
+def _active_season(default: int = _DEFAULT_SEASON) -> int:
+    env = os.environ.get("F3_SEASON_YEAR", "").strip()
+    if env.isdigit():
+        return int(env)
+    try:
+        marker = json.loads((_DATA_DIR / "active_season.json").read_text(encoding="utf-8"))
+        return int(marker["season"])
+    except Exception:
+        return default
+
+
+SEASON = _active_season()
+
+
+def _load_announced_season(year: int) -> dict | None:
+    """The announced-calendar payload for ``year`` (None when absent/invalid)."""
+    path = _DATA_DIR / "announced_seasons" / f"{year}.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if int(payload.get("season", 0)) != year or not payload.get("calendar"):
+        return None
+    return payload
+
+
+_ANNOUNCED: dict | None = None if SEASON == _DEFAULT_SEASON else _load_announced_season(SEASON)
+if SEASON != _DEFAULT_SEASON and _ANNOUNCED is None:
+    raise RuntimeError(
+        f"F3 season {SEASON} is active but data/announced_seasons/{SEASON}.json is missing or "
+        "invalid — run `python -m f3_predictions.bootstrap_next_season` first."
+    )
 
 # --------------------------------------------------------------------------- #
 # Calendar — the official 2026 FIA Formula 3 schedule (9 rounds after the
@@ -59,13 +109,29 @@ CALENDAR_META: dict[int, dict[str, str]] = {
     9: {"city": "Madrid", "sprint": "2026-09-12", "feature": "2026-09-13"},
 }
 
+# Announced (post-2026) seasons override the literal calendar from the payload
+# written by bootstrap_next_season.py / a human-installed announced calendar.
+if _ANNOUNCED:
+    CALENDAR = [
+        Venue(key=e["key"], name=e["name"], country=e["country"])
+        for e in _ANNOUNCED["calendar"]
+    ]
+    CALENDAR_META = {
+        int(e.get("round", i)): {
+            "city": e.get("city", ""),
+            "sprint": e.get("sprint", ""),
+            "feature": e.get("feature", ""),
+        }
+        for i, e in enumerate(_ANNOUNCED["calendar"], start=1)
+    }
+
 # How many rounds are "in the books". Derived from the committed real-data
 # snapshot (data/official_2026.json) so one `python -m f3_predictions.refresh`
 # advances the whole pipeline; falls back to a literal if the snapshot is absent.
 # The synthetic generator also fabricates exactly this many rounds, so synthetic
 # and real modes agree on which rounds are complete.
 def _completed_from_snapshot(default: int = 4) -> int:
-    snap_path = Path(__file__).resolve().parents[2] / "data" / "official_2026.json"
+    snap_path = _DATA_DIR / f"official_{SEASON}.json"
     try:
         snap = json.loads(snap_path.read_text(encoding="utf-8"))
         if snap.get("season") == SEASON and "completedRounds" in snap:
@@ -75,7 +141,8 @@ def _completed_from_snapshot(default: int = 4) -> int:
     return default
 
 
-COMPLETED_ROUNDS = _completed_from_snapshot()
+# A freshly started (announced) season has no snapshot yet — 0 rounds complete.
+COMPLETED_ROUNDS = _completed_from_snapshot(default=4 if SEASON == _DEFAULT_SEASON else 0)
 
 # --------------------------------------------------------------------------- #
 # Teams (constructor-equivalent) — the ten 2026 FIA Formula 3 entrants.
@@ -98,6 +165,9 @@ TEAMS: list[Team] = [
 TEAM_ALIASES: dict[str, str] = {
     "Hitech": "Hitech TGR",
 }
+
+if _ANNOUNCED and _ANNOUNCED.get("teams"):
+    TEAMS = [Team(name=t["name"], color=t.get("color", "#888888")) for t in _ANNOUNCED["teams"]]
 
 # --------------------------------------------------------------------------- #
 # Driver roster — code, name, team. Three per team (30-car grid), as raced at
@@ -138,6 +208,13 @@ _ROSTER: list[tuple[str, str, str, float]] = [
     ("DAV", "Y. David", "AIX Racing", 90.85),
 ]
 
+# An announced season carries its own (provisional) roster forward.
+if _ANNOUNCED and _ANNOUNCED.get("roster"):
+    _ROSTER = [
+        (r["code"], r["name"], r["team"], float(r.get("pace", 90.0)))
+        for r in _ANNOUNCED["roster"]
+    ]
+
 DRIVERS: list[dict[str, str]] = [
     {"code": c, "name": n, "team": t} for (c, n, t, _) in _ROSTER
 ]
@@ -152,6 +229,13 @@ FORMER_DRIVERS: dict[str, dict[str, str]] = {
     "HEU": {"name": "P. Heuzenroeder", "team": "Campos Racing"},
     "CAR": {"name": "J. Carrasquedo", "team": "AIX Racing"},
 }
+
+# The 2026 mid-season changes don't carry into a future announced season.
+if _ANNOUNCED:
+    FORMER_DRIVERS = {
+        code: {"name": d.get("name", code), "team": d.get("team", "")}
+        for code, d in (_ANNOUNCED.get("former_drivers") or {}).items()
+    }
 
 TEAM_OF: dict[str, str] = {c: t for (c, _, t, _) in _ROSTER} | {
     c: d["team"] for c, d in FORMER_DRIVERS.items()

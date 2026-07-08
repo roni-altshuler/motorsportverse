@@ -87,6 +87,101 @@ def decision_to_jsonable(
     return payload
 
 
+# Headline metric keys inside the per-round forward_eval JSONs. winner_hit is
+# a bool; podium_hits is 0..3; top10_overlap is 0..10 (added 2026-07).
+_HEADLINE_KEYS = ("winner_hit", "podium_hits", "top10_overlap", "mean_position_error")
+
+
+def _load_per_round_headline(directory: Path) -> dict[int, dict]:
+    out: dict[int, dict] = {}
+    if not directory.exists():
+        return out
+    for path in sorted(directory.glob("round_*.json")):
+        try:
+            rnd = int(path.stem.split("_")[-1])
+        except ValueError:
+            continue
+        try:
+            with path.open("r", encoding="utf-8") as fh:
+                payload = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            continue
+        out[rnd] = {k: payload.get(k) for k in _HEADLINE_KEYS}
+    return out
+
+
+def _summarize_headline(rows: list[dict]) -> dict:
+    n = len(rows)
+    if n == 0:
+        return {"rounds": 0}
+    winner_hits = sum(1 for r in rows if r.get("winner_hit"))
+    podium = [r.get("podium_hits") for r in rows if r.get("podium_hits") is not None]
+    top10 = [r.get("top10_overlap") for r in rows if r.get("top10_overlap") is not None]
+    mae = [r.get("mean_position_error") for r in rows if r.get("mean_position_error") is not None]
+    podium_pct = round(sum(podium) / (3 * len(podium)) * 100, 1) if podium else None
+    points_pct = round(sum(top10) / (10 * len(top10)) * 100, 1) if top10 else None
+    blend = (
+        round(0.6 * podium_pct + 0.4 * points_pct, 1)
+        if podium_pct is not None and points_pct is not None
+        else None
+    )
+    return {
+        "rounds": n,
+        "winnerHits": winner_hits,
+        "winnerHitPct": round(winner_hits / n * 100, 1),
+        "podiumSetPct": podium_pct,
+        "pointsSetPct": points_pct,
+        "blendPct": blend,
+        "meanError": round(sum(mae) / len(mae), 2) if mae else None,
+    }
+
+
+def build_headline_comparison(production_dir: Path, candidate_dir: Path) -> dict | None:
+    """Walk-forward headline metrics (winner-hit + podium/points blend) for the
+    production and candidate streams over their COMMON rounds, plus a verdict.
+
+    The site's headline metrics are winner-hit and the 0.6*podium + 0.4*points
+    blend — the guarded RMSE rule alone can hold a candidate that dramatically
+    improves winner calls, so this block surfaces the comparison that actually
+    decides shipping (candidate must beat production on BOTH headline metrics).
+    Additive to promotion_status.json.
+    """
+    prod = _load_per_round_headline(production_dir)
+    cand = _load_per_round_headline(candidate_dir)
+    common = sorted(set(prod) & set(cand))
+    if not common:
+        return None
+    prod_summary = _summarize_headline([prod[r] for r in common])
+    cand_summary = _summarize_headline([cand[r] for r in common])
+    wins_winner = (
+        prod_summary.get("winnerHitPct") is not None
+        and cand_summary.get("winnerHitPct") is not None
+        and cand_summary["winnerHitPct"] > prod_summary["winnerHitPct"]
+    )
+    ties_winner = cand_summary.get("winnerHitPct") == prod_summary.get("winnerHitPct")
+    wins_blend = (
+        prod_summary.get("blendPct") is not None
+        and cand_summary.get("blendPct") is not None
+        and cand_summary["blendPct"] > prod_summary["blendPct"]
+    )
+    ties_blend = cand_summary.get("blendPct") == prod_summary.get("blendPct")
+    if (wins_winner and (wins_blend or ties_blend)) or (ties_winner and wins_blend):
+        verdict = "candidate-better"
+    elif ties_winner and ties_blend:
+        verdict = "parity"
+    elif wins_winner or wins_blend:
+        verdict = "mixed"
+    else:
+        verdict = "production-better"
+    return {
+        "roundsCompared": len(common),
+        "commonRounds": common,
+        "production": prod_summary,
+        "candidate": cand_summary,
+        "verdict": verdict,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Apply the promotion rule to production vs candidate "
@@ -172,18 +267,21 @@ def main(argv: list[str] | None = None) -> int:
         trailing_window=args.trailing_window,
     )
 
+    payload = decision_to_jsonable(
+        decision, season=args.season, candidate_dir=args.candidate_dir
+    )
+    # Headline walk-forward comparison (winner-hit + podium/points blend) —
+    # the metric family that actually decides shipping. Additive field.
+    headline = build_headline_comparison(args.production_dir, args.candidate_dir)
+    if headline is not None:
+        payload["headline"] = headline
+
     output_path = (
         args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w") as fh:
-        json.dump(
-            decision_to_jsonable(
-                decision, season=args.season, candidate_dir=args.candidate_dir
-            ),
-            fh,
-            indent=2,
-        )
+        json.dump(payload, fh, indent=2)
 
     if args.apply and decision.decision == "promote":
         from datetime import datetime, timezone

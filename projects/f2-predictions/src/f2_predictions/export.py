@@ -11,6 +11,7 @@ flagship's fan-out shape so the two sites can share components 1:1:
                                   and (for completed rounds) actual results + accuracy
       probabilities/round_NN.json per-race market probabilities + H2H + calibration state
       calibration_summary.json    honest calibration status (Phase 1: not yet applied)
+      seasons.json                multi-season index (current + archives under seasons/<year>/)
 
 The continuous-learning files (forward_eval/, model_health.json, promotion_status.json)
 are written by the sibling CLIs, which need real actuals to be meaningful.
@@ -34,6 +35,55 @@ from .model import RaceForecast, RoundForecastF2
 from .sources.composite import CompositeF2Source
 
 DEFAULT_OUT = Path(__file__).resolve().parents[2] / "website" / "public" / "data"
+
+
+def out_dir_for_season(year: int, base: Path = DEFAULT_OUT) -> Path:
+    """Data root for a season's website files.
+
+    The ACTIVE season lives at the top level of ``website/public/data`` (so the
+    current-season contract never moves); ARCHIVED seasons live under
+    ``seasons/<year>/`` (created by ``season_rollover.py``). Mirrors the F1
+    flagship's multi-season layout.
+    """
+    return base if int(year) == int(config.SEASON) else base / "seasons" / str(year)
+
+
+def write_seasons_index(out_dir: Path = DEFAULT_OUT, current: int | None = None) -> dict:
+    """Write ``seasons.json`` — the multi-season index the website reads to know
+    which seasons exist and which is current.
+
+    Archived years are discovered by scanning ``<out_dir>/seasons/``; the frontend
+    resolves a season's base path as ``/data`` when current, else
+    ``/data/seasons/<year>`` (same schema as the F1 flagship's seasons.json).
+    """
+    cur = int(current if current is not None else config.SEASON)
+    seasons_dir = out_dir / "seasons"
+    archived = sorted(
+        int(p.name)
+        for p in (seasons_dir.iterdir() if seasons_dir.is_dir() else [])
+        if p.is_dir() and p.name.isdigit() and int(p.name) != cur
+    )
+    available = sorted(set(archived) | {cur})
+    index = {
+        "current": cur,
+        "available": available,
+        "archived": archived,
+        "lastUpdated": _now_iso(),
+        "seasons": [
+            {
+                "year": y,
+                "isCurrent": y == cur,
+                # base path the frontend appends after its data root
+                "path": "" if y == cur else f"seasons/{y}",
+                "label": str(y),
+            }
+            for y in available
+        ],
+    }
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "seasons.json").write_text(json.dumps(index, indent=2) + "\n")
+    return index
+
 
 # Single source of truth for team colours — straight from config, never duplicated.
 TEAM_COLOR: dict[str, str] = {t.name: t.color for t in config.TEAMS}
@@ -130,6 +180,26 @@ def _race_block(
     return block
 
 
+def _model_config(fc: RoundForecastF2) -> dict:
+    """A/B lever provenance for the round — mirrors F1's ``modelConfig`` block.
+
+    ``positionModel`` records whether the opt-in finishing-position head
+    (:mod:`.position_head`, gated by ``F2_USE_POSITION_HEAD``, default OFF)
+    re-ranked this forecast: ``applied: false`` on the production path, else
+    ``applied: true`` plus the leakage-safe ``trainedRounds`` it fit on.
+    """
+    head = fc.position_head
+    position: dict = {"applied": bool(head.get("applied", False)) if head else False}
+    if head:
+        if head.get("trainedRounds") is not None:
+            position["trainedRounds"] = [int(r) for r in head["trainedRounds"]]
+        if head.get("trainRows") is not None:
+            position["trainRows"] = int(head["trainRows"])
+        if head.get("reason"):
+            position["reason"] = str(head["reason"])
+    return {"positionModel": position}
+
+
 def round_payload(fc: RoundForecastF2, source: F2DataSource, completed: bool) -> dict:
     data_source = source.provenance(fc.season, fc.round, race_index=1) if completed else None
     return {
@@ -140,6 +210,7 @@ def round_payload(fc: RoundForecastF2, source: F2DataSource, completed: bool) ->
         "country": fc.country,
         "completed": completed,
         "dataSource": data_source,  # real provenance: "snapshot"/"fia" (real) or "synthetic"
+        "modelConfig": _model_config(fc),
         "sprint": _race_block(fc.sprint, source, fc.season, fc.round, completed),
         "feature": _race_block(fc.feature, source, fc.season, fc.round, completed),
     }
@@ -569,6 +640,9 @@ def write(out_dir: Path) -> Path:
     payload = build_payload(round_forecasts, source, year, known_grid=known_grid)
     path = out_dir / "f2.json"
     path.write_text(json.dumps(payload, indent=2) + "\n")
+
+    # Multi-season index (current season + any archives under seasons/<year>/).
+    write_seasons_index(out_dir, current=year)
     return path
 
 

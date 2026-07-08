@@ -145,6 +145,18 @@ def build_snapshot(season: int) -> dict:
         page = src._page(entry["raceid"])
         if not page:
             continue
+        # Wrong-event guard: cross-check the scraped page against the human-verified
+        # calendar in config (an independent source of truth from the scrape). If the
+        # FIA CMS serves a different round's page for this raceid — or a truncated
+        # page with no identity — refuse rather than ingest another event's results
+        # under this round. Raising here aborts build_snapshot before main() writes,
+        # so a mismatch can never mutate the committed snapshot. (F1 shipped Austria's
+        # classification as the British GP result from exactly this class of bug.)
+        # NB: compare against Venue.country — page titles say "United Kingdom",
+        # while the config display name is "Great Britain".
+        FiaF3Source.verify_page_identity(
+            page, expected_round=rnd, expected_country=config.CALENDAR[rnd - 1].country
+        )
         # Capture qualifying whenever it is published — including the UPCOMING round
         # (Friday quali runs before the race), so the post-quali forecast can
         # condition on the real grid before any result exists.

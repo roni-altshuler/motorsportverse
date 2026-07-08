@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import Navbar from "@/components/Navbar";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import { SeasonProvider } from "@/lib/SeasonProvider";
 
 import "./globals.css";
 
@@ -59,14 +60,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
-        <SmoothScrollProvider>
-          <Navbar />
-          <LiveContextBand />
-          <main id="main-content" tabIndex={-1} className="flex-1 w-full min-h-[70vh]">
-            {children}
-          </main>
-          <Footer />
-        </SmoothScrollProvider>
+        <SeasonProvider>
+          <SmoothScrollProvider>
+            <Navbar />
+            <LiveContextBand />
+            <main id="main-content" tabIndex={-1} className="flex-1 w-full min-h-[70vh]">
+              {children}
+            </main>
+            <Footer />
+          </SmoothScrollProvider>
+        </SeasonProvider>
       </body>
     </html>
   );

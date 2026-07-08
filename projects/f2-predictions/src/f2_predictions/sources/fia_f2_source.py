@@ -14,6 +14,7 @@ from __future__ import annotations
 from motorsport_data.sources.fia_feeder import (
     _RE_TITLE_ROUND,  # noqa: F401 — re-exported for tests/tools that verify titles
     FiaFeederSource,
+    WrongEventError,  # noqa: F401 — re-exported for the wrong-event guard tests
 )
 
 from .. import config

@@ -1,0 +1,735 @@
+{
+  "season": 2026,
+  "seasons": [
+    2026
+  ],
+  "generatedAt": "2026-07-08T07:44:44Z",
+  "source": "leakage-safe replay of the F2 model over data/official_2026.json",
+  "scoring": "pre-race forecast vs official classification, finishers-only",
+  "finishersOnly": true,
+  "roundsEvaluated": 6,
+  "totalRows": 109,
+  "perSeason": [
+    {
+      "season": 2026,
+      "summary": {
+        "rounds_evaluated": 6,
+        "season_mean_error": 5.538,
+        "season_median_error": 5.0,
+        "winner_hit_rate": 0.0,
+        "podium_hit_rate": 0.5,
+        "exact_match_rate": 0.064,
+        "within_3_rate": 0.413,
+        "within_5_rate": 0.587,
+        "mean_spearman": 0.348,
+        "mean_ndcg_at_5": 0.683
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "venueName": "Australia",
+          "drivers_compared": 19,
+          "mean_position_error": 5.684,
+          "median_position_error": 6.0,
+          "rmse_position_error": 6.959,
+          "exact_matches": 0,
+          "within_3": 8,
+          "within_5": 9,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.2929824561403509,
+          "ndcg_at_5": 0.5960611207953742,
+          "biggest_misses": [
+            {
+              "driver": "SHI",
+              "predicted": 5,
+              "actual": 19,
+              "delta": -14,
+              "absDelta": 14
+            },
+            {
+              "driver": "HER",
+              "predicted": 20,
+              "actual": 7,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BIL",
+              "predicted": 1,
+              "actual": 12,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "CAM",
+              "predicted": 11,
+              "actual": 2,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "BOY",
+              "predicted": 21,
+              "actual": 13,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "venueName": "Miami",
+          "drivers_compared": 15,
+          "mean_position_error": 6.8,
+          "median_position_error": 7.0,
+          "rmse_position_error": 8.091,
+          "exact_matches": 1,
+          "within_3": 3,
+          "within_5": 6,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.14285714285714285,
+          "ndcg_at_5": 0.569385747423224,
+          "biggest_misses": [
+            {
+              "driver": "BEG",
+              "predicted": 20,
+              "actual": 2,
+              "delta": 18,
+              "absDelta": 18
+            },
+            {
+              "driver": "MAI",
+              "predicted": 17,
+              "actual": 5,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "INT",
+              "predicted": 5,
+              "actual": 15,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BOY",
+              "predicted": 16,
+              "actual": 7,
+              "delta": 9,
+              "absDelta": 9
+            },
+            {
+              "driver": "VAN",
+              "predicted": 3,
+              "actual": 11,
+              "delta": -8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "venueName": "Canada",
+          "drivers_compared": 14,
+          "mean_position_error": 7.286,
+          "median_position_error": 8.0,
+          "rmse_position_error": 8.561,
+          "exact_matches": 0,
+          "within_3": 3,
+          "within_5": 6,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.002197802197802198,
+          "ndcg_at_5": 0.6346099734809265,
+          "biggest_misses": [
+            {
+              "driver": "SHI",
+              "predicted": 22,
+              "actual": 5,
+              "delta": 17,
+              "absDelta": 17
+            },
+            {
+              "driver": "VAR",
+              "predicted": 19,
+              "actual": 6,
+              "delta": 13,
+              "absDelta": 13
+            },
+            {
+              "driver": "BOY",
+              "predicted": 18,
+              "actual": 8,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "CAM",
+              "predicted": 4,
+              "actual": 14,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "MON",
+              "predicted": 14,
+              "actual": 4,
+              "delta": 10,
+              "absDelta": 10
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "venueName": "Monaco",
+          "drivers_compared": 21,
+          "mean_position_error": 4.905,
+          "median_position_error": 4.0,
+          "rmse_position_error": 6.02,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 14,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "spearman_correlation": 0.5493506493506494,
+          "ndcg_at_5": 0.6993399959219936,
+          "biggest_misses": [
+            {
+              "driver": "MAI",
+              "predicted": 16,
+              "actual": 4,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "TSO",
+              "predicted": 13,
+              "actual": 1,
+              "delta": 12,
+              "absDelta": 12
+            },
+            {
+              "driver": "MIN",
+              "predicted": 1,
+              "actual": 11,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "BIL",
+              "predicted": 18,
+              "actual": 10,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "FIT",
+              "predicted": 15,
+              "actual": 7,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "venueName": "Spain",
+          "drivers_compared": 21,
+          "mean_position_error": 4.714,
+          "median_position_error": 3.0,
+          "rmse_position_error": 6.673,
+          "exact_matches": 4,
+          "within_3": 13,
+          "within_5": 14,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.42337662337662335,
+          "ndcg_at_5": 0.6693155140673832,
+          "biggest_misses": [
+            {
+              "driver": "STE",
+              "predicted": 1,
+              "actual": 17,
+              "delta": -16,
+              "absDelta": 16
+            },
+            {
+              "driver": "BEN",
+              "predicted": 22,
+              "actual": 7,
+              "delta": 15,
+              "absDelta": 15
+            },
+            {
+              "driver": "MIY",
+              "predicted": 7,
+              "actual": 18,
+              "delta": -11,
+              "absDelta": 11
+            },
+            {
+              "driver": "VIL",
+              "predicted": 21,
+              "actual": 11,
+              "delta": 10,
+              "absDelta": 10
+            },
+            {
+              "driver": "CAM",
+              "predicted": 9,
+              "actual": 1,
+              "delta": 8,
+              "absDelta": 8
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "venueName": "Austria",
+          "drivers_compared": 19,
+          "mean_position_error": 3.842,
+          "median_position_error": 4.0,
+          "rmse_position_error": 4.64,
+          "exact_matches": 1,
+          "within_3": 9,
+          "within_5": 15,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "spearman_correlation": 0.6754385964912281,
+          "ndcg_at_5": 0.9294493354983417,
+          "biggest_misses": [
+            {
+              "driver": "STE",
+              "predicted": 9,
+              "actual": 19,
+              "delta": -10,
+              "absDelta": 10
+            },
+            {
+              "driver": "GOE",
+              "predicted": 11,
+              "actual": 3,
+              "delta": 8,
+              "absDelta": 8
+            },
+            {
+              "driver": "BEG",
+              "predicted": 6,
+              "actual": 13,
+              "delta": -7,
+              "absDelta": 7
+            },
+            {
+              "driver": "BEN",
+              "predicted": 17,
+              "actual": 11,
+              "delta": 6,
+              "absDelta": 6
+            },
+            {
+              "driver": "FIT",
+              "predicted": 19,
+              "actual": 14,
+              "delta": 5,
+              "absDelta": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "perDriver": [
+    {
+      "driver": "DUN",
+      "rounds": 4,
+      "mae": 1.5,
+      "within_3_rate": 0.75
+    },
+    {
+      "driver": "MIY",
+      "rounds": 5,
+      "mae": 3.2,
+      "within_3_rate": 0.8
+    },
+    {
+      "driver": "LEO",
+      "rounds": 6,
+      "mae": 3.833,
+      "within_3_rate": 0.5
+    },
+    {
+      "driver": "MIN",
+      "rounds": 6,
+      "mae": 4.167,
+      "within_3_rate": 0.5
+    },
+    {
+      "driver": "MON",
+      "rounds": 5,
+      "mae": 4.4,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "FIT",
+      "rounds": 5,
+      "mae": 4.6,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "GOE",
+      "rounds": 3,
+      "mae": 4.667,
+      "within_3_rate": 0.667
+    },
+    {
+      "driver": "BIL",
+      "rounds": 5,
+      "mae": 4.8,
+      "within_3_rate": 0.6
+    },
+    {
+      "driver": "DUR",
+      "rounds": 6,
+      "mae": 5,
+      "within_3_rate": 0.167
+    },
+    {
+      "driver": "VIL",
+      "rounds": 3,
+      "mae": 5,
+      "within_3_rate": 0.333
+    },
+    {
+      "driver": "INT",
+      "rounds": 5,
+      "mae": 5,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "VAR",
+      "rounds": 6,
+      "mae": 5.333,
+      "within_3_rate": 0.5
+    },
+    {
+      "driver": "TSO",
+      "rounds": 5,
+      "mae": 5.4,
+      "within_3_rate": 0.6
+    },
+    {
+      "driver": "VAN",
+      "rounds": 5,
+      "mae": 5.8,
+      "within_3_rate": 0.2
+    },
+    {
+      "driver": "CAM",
+      "rounds": 5,
+      "mae": 5.8,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "HER",
+      "rounds": 6,
+      "mae": 5.833,
+      "within_3_rate": 0.333
+    },
+    {
+      "driver": "BEN",
+      "rounds": 5,
+      "mae": 6.2,
+      "within_3_rate": 0.2
+    },
+    {
+      "driver": "BOY",
+      "rounds": 5,
+      "mae": 6.6,
+      "within_3_rate": 0.4
+    },
+    {
+      "driver": "MAI",
+      "rounds": 6,
+      "mae": 6.833,
+      "within_3_rate": 0.167
+    },
+    {
+      "driver": "BEG",
+      "rounds": 4,
+      "mae": 7.5,
+      "within_3_rate": 0.5
+    },
+    {
+      "driver": "SHI",
+      "rounds": 5,
+      "mae": 8,
+      "within_3_rate": 0.2
+    },
+    {
+      "driver": "STE",
+      "rounds": 4,
+      "mae": 9.25,
+      "within_3_rate": 0.25
+    }
+  ],
+  "markets": {
+    "win": {
+      "brier": 0.05358,
+      "logLoss": 0.236426,
+      "samples": 223,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0275,
+          "empirical": 0.0549,
+          "count": 182
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1307,
+          "empirical": 0.0556,
+          "count": 36
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2567,
+          "empirical": 0,
+          "count": 4
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3187,
+          "empirical": 0,
+          "count": 1
+        }
+      ],
+      "plot": "reliability_plots/reliability_win.png"
+    },
+    "podium": {
+      "brier": 0.135073,
+      "logLoss": 0.493994,
+      "samples": 223,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0204,
+          "empirical": 0.0721,
+          "count": 111
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1445,
+          "empirical": 0.2381,
+          "count": 42
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2582,
+          "empirical": 0.1923,
+          "count": 26
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3398,
+          "empirical": 0.2593,
+          "count": 27
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4385,
+          "empirical": 0.3333,
+          "count": 9
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5306,
+          "empirical": 0.25,
+          "count": 4
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6629,
+          "empirical": 0.5,
+          "count": 2
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7386,
+          "empirical": 0.5,
+          "count": 2
+        }
+      ],
+      "plot": "reliability_plots/reliability_podium.png"
+    },
+    "top6": {
+      "brier": 0.228692,
+      "logLoss": 0.78518,
+      "samples": 223,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.0274,
+          "empirical": 0.1724,
+          "count": 87
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1379,
+          "empirical": 0.3158,
+          "count": 19
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.2626,
+          "empirical": 0.4,
+          "count": 30
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3661,
+          "empirical": 0.5556,
+          "count": 9
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.443,
+          "empirical": 0.3077,
+          "count": 13
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5501,
+          "empirical": 0.5,
+          "count": 20
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6393,
+          "empirical": 0.3182,
+          "count": 22
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7366,
+          "empirical": 0.4,
+          "count": 10
+        },
+        {
+          "binLo": 0.8,
+          "binHi": 0.9,
+          "meanPred": 0.8369,
+          "empirical": 0.6667,
+          "count": 9
+        },
+        {
+          "binLo": 0.9,
+          "binHi": 1.0,
+          "meanPred": 0.9555,
+          "empirical": 0.75,
+          "count": 4
+        }
+      ],
+      "plot": "reliability_plots/reliability_top6.png"
+    },
+    "top10": {
+      "brier": 0.291562,
+      "logLoss": 1.027832,
+      "samples": 223,
+      "reliability": [
+        {
+          "binLo": 0.0,
+          "binHi": 0.1,
+          "meanPred": 0.033,
+          "empirical": 0.3167,
+          "count": 60
+        },
+        {
+          "binLo": 0.1,
+          "binHi": 0.2,
+          "meanPred": 0.1408,
+          "empirical": 0.3529,
+          "count": 17
+        },
+        {
+          "binLo": 0.2,
+          "binHi": 0.3,
+          "meanPred": 0.243,
+          "empirical": 0.6667,
+          "count": 15
+        },
+        {
+          "binLo": 0.3,
+          "binHi": 0.4,
+          "meanPred": 0.3489,
+          "empirical": 0.5,
+          "count": 8
+        },
+        {
+          "binLo": 0.4,
+          "binHi": 0.5,
+          "meanPred": 0.4541,
+          "empirical": 0.6207,
+          "count": 29
+        },
+        {
+          "binLo": 0.5,
+          "binHi": 0.6,
+          "meanPred": 0.5535,
+          "empirical": 0.75,
+          "count": 4
+        },
+        {
+          "binLo": 0.6,
+          "binHi": 0.7,
+          "meanPred": 0.6414,
+          "empirical": 0.8333,
+          "count": 6
+        },
+        {
+          "binLo": 0.7,
+          "binHi": 0.8,
+          "meanPred": 0.7618,
+          "empirical": 0.5,
+          "count": 6
+        },
+        {
+          "binLo": 0.8,
+          "binHi": 0.9,
+          "meanPred": 0.8535,
+          "empirical": 0.6,
+          "count": 15
+        },
+        {
+          "binLo": 0.9,
+          "binHi": 1.0,
+          "meanPred": 0.96,
+          "empirical": 0.6825,
+          "count": 63
+        }
+      ],
+      "plot": "reliability_plots/reliability_top10.png"
+    }
+  }
+}
