@@ -180,6 +180,26 @@ def _race_block(
     return block
 
 
+def _model_config(fc: RoundForecastF3) -> dict:
+    """A/B lever provenance for the round — mirrors F1's ``modelConfig`` block.
+
+    ``positionModel`` records whether the opt-in finishing-position head
+    (:mod:`.position_head`, gated by ``F3_USE_POSITION_HEAD``, default OFF)
+    re-ranked this forecast: ``applied: false`` on the production path, else
+    ``applied: true`` plus the leakage-safe ``trainedRounds`` it fit on.
+    """
+    head = fc.position_head
+    position: dict = {"applied": bool(head.get("applied", False)) if head else False}
+    if head:
+        if head.get("trainedRounds") is not None:
+            position["trainedRounds"] = [int(r) for r in head["trainedRounds"]]
+        if head.get("trainRows") is not None:
+            position["trainRows"] = int(head["trainRows"])
+        if head.get("reason"):
+            position["reason"] = str(head["reason"])
+    return {"positionModel": position}
+
+
 def round_payload(fc: RoundForecastF3, source: F3DataSource, completed: bool) -> dict:
     data_source = source.provenance(fc.season, fc.round, race_index=1) if completed else None
     return {
@@ -190,6 +210,7 @@ def round_payload(fc: RoundForecastF3, source: F3DataSource, completed: bool) ->
         "country": fc.country,
         "completed": completed,
         "dataSource": data_source,  # real provenance: "snapshot"/"fia" (real) or "synthetic"
+        "modelConfig": _model_config(fc),
         "sprint": _race_block(fc.sprint, source, fc.season, fc.round, completed),
         "feature": _race_block(fc.feature, source, fc.season, fc.round, completed),
     }

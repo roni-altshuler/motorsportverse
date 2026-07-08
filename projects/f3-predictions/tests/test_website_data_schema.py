@@ -107,12 +107,23 @@ class RaceBlock(_Loose):
     classification: list[ClassificationEntry]
 
 
+class PositionModelConfig(_Loose):
+    applied: bool
+
+
+class RoundModelConfig(_Loose):
+    """Mirror of ``RoundModelConfig`` in f3.ts — A/B lever provenance."""
+
+    positionModel: PositionModelConfig
+
+
 class RoundDetail(_Loose):
     round: int
     venueKey: str
     venueName: str
     completed: bool
     dataSource: str | None  # real provenance for completed rounds, None for upcoming
+    modelConfig: RoundModelConfig
     sprint: RaceBlock
     feature: RaceBlock
 
@@ -176,6 +187,23 @@ def test_round_detail_matches_contract(data_dir):
     assert len(files) == len(config.CALENDAR)
     for f in files:
         RoundDetail.model_validate(_load(f))
+
+
+def test_model_config_position_head_is_honest(data_dir):
+    """Every round records the position-head A/B lever. With the gate OFF
+    (default in tests) the production path must report ``applied: false``;
+    when applied it must carry the leakage-safe ``trainedRounds`` evidence."""
+    import os
+
+    gate_on = os.environ.get("F3_USE_POSITION_HEAD", "0") == "1"
+    for f in sorted((data_dir / "rounds").glob("round_*.json")):
+        payload = _load(f)
+        position = payload["modelConfig"]["positionModel"]
+        assert isinstance(position["applied"], bool)
+        if not gate_on:
+            assert position["applied"] is False
+        if position["applied"]:
+            assert position.get("trainedRounds"), "applied head must record trainedRounds"
 
 
 def test_probabilities_match_contract(data_dir):

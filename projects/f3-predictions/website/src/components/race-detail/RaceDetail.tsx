@@ -3,14 +3,21 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+import ChartContainer from "@/components/charts/ChartContainer";
 import { FinishProbabilityHeatmap } from "@/components/charts/FinishProbabilityHeatmap";
 import { HeadToHeadMatrix } from "@/components/charts/HeadToHeadMatrix";
 import { PodiumProbabilityChart } from "@/components/charts/PodiumProbabilityChart";
+import { PredictedVsActualSlope } from "@/components/charts/PredictedVsActualSlope";
+import { SprintGridFlip } from "@/components/charts/SprintGridFlip";
+import WinProbabilityChart, {
+  type WinProbabilityTrend,
+} from "@/components/charts/WinProbabilityChart";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
 import TrackMapWithOverlay from "@/components/race-detail/TrackMapWithOverlay";
+import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
 import { DriverHeadshot } from "@/components/ui/DriverHeadshot";
 import HUDPanel from "@/components/ui/HUDPanel";
 import { fetchF3Data, fetchRoundDetail, fetchRoundProbabilities } from "@/lib/f3client";
@@ -23,6 +30,7 @@ import type {
   ProbabilitiesRound,
   RaceBlock,
   RoundDetail,
+  TitleOdds,
 } from "@/types/f3";
 
 type RaceKey = "feature" | "sprint";
@@ -32,11 +40,17 @@ export function RaceDetail({
   probabilities: bakedProbabilities,
   geometry = null,
   driverStandings: bakedStandings = [],
+  championship: bakedChampionship = [],
+  winTrend = null,
 }: {
   round: RoundDetail;
   probabilities: ProbabilitiesRound | null;
   geometry?: CircuitGeometry | null;
   driverStandings?: DriverStanding[];
+  championship?: TitleOdds[];
+  /** Win-market-by-round trend baked from the CURRENT season's probability
+   *  files (built server-side in the page); hidden on archived-season overlay. */
+  winTrend?: WinProbabilityTrend | null;
 }) {
   const reduced = useReducedMotion();
   const [tab, setTab] = useState<RaceKey>("feature");
@@ -54,6 +68,7 @@ export function RaceDetail({
     round: RoundDetail;
     probabilities: ProbabilitiesRound | null;
     driverStandings: DriverStanding[];
+    championship: TitleOdds[];
   } | null>(null);
 
   useEffect(() => {
@@ -69,7 +84,14 @@ export function RaceDetail({
     ]).then(([r, p, d]) => {
       if (!active) return;
       setOverlay(
-        r ? { round: r, probabilities: p, driverStandings: d?.driverStandings ?? [] } : null
+        r
+          ? {
+              round: r,
+              probabilities: p,
+              driverStandings: d?.driverStandings ?? [],
+              championship: d?.championship ?? [],
+            }
+          : null
       );
     });
     return () => {
@@ -81,6 +103,10 @@ export function RaceDetail({
   const probabilities = isArchived && overlay ? overlay.probabilities : bakedProbabilities;
   const driverStandings =
     isArchived && overlay ? overlay.driverStandings : bakedStandings;
+  const championship = isArchived && overlay ? overlay.championship : bakedChampionship;
+  // The trend is baked from the current season's files only — never show it
+  // against an archived season's rounds.
+  const trend = isArchived ? null : winTrend;
 
   const block = round[tab];
   const probs = probabilities?.[tab] ?? null;
@@ -123,12 +149,20 @@ export function RaceDetail({
         ))}
       </div>
 
+      {/* Auto-generated "what the model sees" bullets for the active race. */}
+      <RaceNarrativeCard round={round} race={tab} championship={championship} />
+
+      {/* Reverse-grid sprint explainer — quali order vs sprint start vs the
+          model's predicted recovery (and the actual result post-race). */}
       {tab === "sprint" && (
-        <p className="mb-5 rounded-[var(--radius-md)] border border-[var(--hairline)] bg-[var(--surface-2)] px-4 py-3 text-sm text-[var(--ink-muted)]">
-          The sprint grid is the feature-qualifying top {Math.min(10, block.grid.length)} reversed,
-          so the quickest drivers start at the back and have to carve through — that&rsquo;s why the
-          sprint is the more open race.
-        </p>
+        <div className="mb-6">
+          <SprintGridFlip
+            featureGrid={round.feature.grid}
+            sprintGrid={round.sprint.grid}
+            sprintClassification={round.sprint.classification}
+            completed={round.completed}
+          />
+        </div>
       )}
 
       {/* Predicted (or official) podium trio for the active race. */}
@@ -150,6 +184,9 @@ export function RaceDetail({
               teamColor: e.teamColor,
               pWin: e.pWin,
               pPodium: e.pPodium,
+              pTop6: e.pTop6,
+              pTop10: e.pTop10,
+              meanFinish: e.meanFinish,
             }))}
           />
         </HUDPanel>
@@ -257,8 +294,31 @@ export function RaceDetail({
                   teamColor: e.teamColor,
                   pWin: e.pWin,
                   pPodium: e.pPodium,
+                  pTop6: e.pTop6,
+                  pTop10: e.pTop10,
+                  meanFinish: e.meanFinish,
                 }))}
               />
+              {trend && trend.series.length > 0 && (
+                <div>
+                  <p className="eyebrow mb-3">Win market by round — feature race</p>
+                  <ChartContainer height={440}>
+                    <WinProbabilityChart trend={trend} />
+                  </ChartContainer>
+                </div>
+              )}
+              {round.completed && (
+                <PredictedVsActualSlope
+                  title={`Predicted vs actual — ${raceLabel.toLowerCase()}`}
+                  rows={block.classification.map((e) => ({
+                    code: e.code,
+                    name: e.name,
+                    teamColor: e.teamColor,
+                    predicted: e.position,
+                    actual: e.actualPosition,
+                  }))}
+                />
+              )}
               <FinishProbabilityHeatmap
                 rows={block.classification.map((e) => ({
                   code: e.code,
