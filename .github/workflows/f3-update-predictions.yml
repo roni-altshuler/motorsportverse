@@ -81,6 +81,21 @@ jobs:
           echo "round=$ROUND" >> "$GITHUB_OUTPUT"
           echo "Active F3 round: $ROUND"
 
+      - name: Bootstrap next season calendar (auto)
+        run: |
+          # Writes data/announced_seasons/<year>.json as a carry-forward
+          # placeholder (F3 has no schedule feed; install the real calendar
+          # with --from-file when announced). Idempotent; the pre-staged
+          # season stays dormant until rollover --auto starts it.
+          python -m f3_predictions.bootstrap_next_season || echo "⚠️  bootstrap skipped (non-fatal)"
+
+      - name: Season rollover (auto)
+        run: |
+          # No-op until the active season is complete AND the announced next
+          # season's first race date has passed. Then it archives the finished
+          # season into website/public/data/seasons/<year>/ and starts the new one.
+          python -m f3_predictions.season_rollover --auto || echo "⚠️  rollover skipped (non-fatal)"
+
       - name: Freshness gate — should this poll do real work?
         id: check
         run: |
@@ -150,8 +165,11 @@ jobs:
           echo "committed=false" >> "$GITHUB_OUTPUT"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f projects/f3-predictions/data/official_2026.json \
+          git add -f projects/f3-predictions/data/official_*.json \
                      projects/f3-predictions/website/public/data
+          # Multi-season state: pre-staged calendars + the active-season marker.
+          git add projects/f3-predictions/data/announced_seasons \
+                  projects/f3-predictions/data/active_season.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No data changes — snapshot already current."
             exit 0
