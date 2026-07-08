@@ -1,0 +1,9 @@
+# Raw Wikipedia response cache (regenerable; large) — do NOT commit
+data/raw_cache/
+
+# DuckDB load-check artifact (regenerable from the committed JSON)
+data/*.duckdb
+
+# The committed source-of-truth data files are kept in VCS:
+#   data/history_*.json, data/calendar_*.json, data/driver_aliases.json,
+#   data/CURATION_REPORT.md, data/SOURCES.md
