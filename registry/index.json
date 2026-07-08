@@ -3,8 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 2,
-    "experimental": 1,
-    "in-development": 8
+    "experimental": 2,
+    "in-development": 7
   },
   "projects": [
     {
@@ -103,6 +103,52 @@
       "added": "2026-06-15"
     },
     {
+      "slug": "formula-e-predictions",
+      "name": "Formula E Predictions",
+      "sport": "Formula E",
+      "category": "electric",
+      "maturity": "experimental",
+      "summary": "Race and championship forecasts for the ABB FIA Formula E World Championship.",
+      "description": "The first all-electric series on the MotorsportVerse core: a driver-forward skill blend (Elo seeded from 2019+ seasons + finishing history + optional gradient-boosted signal) with post-qualifying grid conditioning, Monte Carlo win/podium probabilities calibrated separately for street and permanent circuits, and a championship projection that accounts for pole and fastest-lap bonus points. Runs on the real 2025-26 season: official results flow from the live Formula E API into a committed, reviewable snapshot, with doubleheader weekends modeled as separate rounds. Backfilled and backtested across twelve seasons of series history. Experimental while forward accuracy accrues over real rounds.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/formula-e/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Formula E API (official results, snapshotted to a committed file)",
+        "Series history 2014-15 onward (backfilled archive)"
+      ],
+      "models": [
+        "driver-skill-elo",
+        "post-quali-grid-conditioning",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "electric",
+        "street-circuits",
+        "doubleheaders",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/formula-e.png",
+      "accent": "#1E1AF0",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
       "slug": "f3-predictions",
       "name": "RaceIQ F3",
       "sport": "Formula 3",
@@ -152,33 +198,6 @@
         }
       ],
       "added": "2026-07-02"
-    },
-    {
-      "slug": "formula-e-predictions",
-      "name": "Formula E Predictions",
-      "sport": "Formula E",
-      "category": "electric",
-      "maturity": "in-development",
-      "summary": "Energy-aware race forecasts for the ABB FIA Formula E championship.",
-      "description": "Scaffolded on the shared MotorsportVerse core: a Formula E project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
-      "website": "",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "FIA Formula E timing"
-      ],
-      "models": [],
-      "tags": [
-        "scaffolded"
-      ],
-      "icon": "/brand/sports/formula-e.png",
-      "accent": "#1E1AF0",
-      "uses_core": [
-        "calibration",
-        "eval"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
     },
     {
       "slug": "imsa-predictions",

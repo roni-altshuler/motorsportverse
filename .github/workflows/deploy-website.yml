@@ -8,6 +8,7 @@ on:
       - "registry/**"
       - "projects/f2-predictions/**"
       - "projects/f3-predictions/**"
+      - "projects/formula-e-predictions/**"
       - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
@@ -55,7 +56,10 @@ jobs:
 
       # --- Generate the F2/F3 datasets their sites read at build time ---
       - name: Install Python packages
-        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions -e projects/f3-predictions xgboost
+        run: |
+          pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions -e projects/f3-predictions xgboost
+          pip install -e projects/formula-e-predictions --no-deps
+          pip install requests numpy matplotlib
       - name: Generate F2 data
         run: |
           python -m f2_predictions.export
@@ -68,6 +72,12 @@ jobs:
           python -m f3_predictions.forward_eval --season 2026 --allow-empty
           python -m f3_predictions.drift_report --season 2026 --allow-empty
           python -m f3_predictions.promotion_decision --season 2026 --allow-empty
+      - name: Generate Formula E data
+        run: |
+          python -m formula_e_predictions.export
+          python -m formula_e_predictions.forward_eval --season 2026 --allow-empty
+          python -m formula_e_predictions.drift_report --season 2026 --allow-empty
+          python -m formula_e_predictions.promotion_decision --season 2026 --allow-empty
 
       # --- Ecosystem hub (root) ---
       - name: Build ecosystem website
@@ -90,6 +100,13 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/f3
 
+      # --- RaceIQ Formula E project site (sub-path) ---
+      - name: Build Formula E website
+        working-directory: projects/formula-e-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/formula-e
+
       # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
       #     race-weekend cron (f1-update-predictions.yml) commits, so no data
       #     generation step is needed here — only a static build. ---
@@ -102,10 +119,11 @@ jobs:
       # --- Combine into one Pages artifact ---
       - name: Assemble site tree
         run: |
-          mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1
+          mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 website/out/projects/formula-e
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
           cp -r projects/f3-predictions/website/out/. website/out/projects/f3/
           cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
+          cp -r projects/formula-e-predictions/website/out/. website/out/projects/formula-e/
 
       - uses: actions/upload-pages-artifact@v3
         with:
