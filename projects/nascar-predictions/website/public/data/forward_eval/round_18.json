@@ -1,0 +1,63 @@
+{
+  "round": 18,
+  "venueName": "Sonoma Raceway",
+  "trackType": "road",
+  "race": {
+    "n": 36,
+    "mean_position_error": 9.667,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 12,
+    "within_5": 15,
+    "exact_matches": 3,
+    "spearman_correlation": 0.20205920205920205,
+    "ndcg_at_5": 0.44453708345841614
+  },
+  "racePostQuali": {
+    "n": 36,
+    "mean_position_error": 8.333,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 12,
+    "within_5": 15,
+    "exact_matches": 1,
+    "spearman_correlation": 0.4731016731016731,
+    "ndcg_at_5": 0.8014151362368773
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.030175,
+        "logLoss": 0.190496
+      },
+      "podium": {
+        "brier": 0.08614,
+        "logLoss": 0.334256
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 11.5,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 9,
+      "within_5": 11,
+      "exact_matches": 0,
+      "spearman_correlation": 0.10373230373230373,
+      "ndcg_at_5": 0.59133317751454
+    },
+    "gridOrder": {
+      "n": 36,
+      "mean_position_error": 7.778,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 17,
+      "exact_matches": 2,
+      "spearman_correlation": 0.5523809523809524,
+      "ndcg_at_5": 0.8600827743239068
+    }
+  }
+}

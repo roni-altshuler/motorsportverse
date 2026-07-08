@@ -1,0 +1,63 @@
+{
+  "round": 10,
+  "venueName": "Talladega Superspeedway",
+  "trackType": "superspeedway",
+  "race": {
+    "n": 40,
+    "mean_position_error": 14.2,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 7,
+    "within_5": 10,
+    "exact_matches": 0,
+    "spearman_correlation": -0.06885553470919324,
+    "ndcg_at_5": 0.7204213112723193
+  },
+  "racePostQuali": {
+    "n": 40,
+    "mean_position_error": 13.475,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 6,
+    "within_5": 9,
+    "exact_matches": 1,
+    "spearman_correlation": 0.011632270168855536,
+    "ndcg_at_5": 0.5567611266269364
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.026027,
+        "logLoss": 0.11344
+      },
+      "podium": {
+        "brier": 0.07856,
+        "logLoss": 0.306689
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 13.75,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 8,
+      "exact_matches": 2,
+      "spearman_correlation": -0.05688545688545688,
+      "ndcg_at_5": 0.3243379301483717
+    },
+    "gridOrder": {
+      "n": 40,
+      "mean_position_error": 13.65,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 5,
+      "within_5": 8,
+      "exact_matches": 0,
+      "spearman_correlation": -0.004315196998123828,
+      "ndcg_at_5": 0.4024454782595394
+    }
+  }
+}

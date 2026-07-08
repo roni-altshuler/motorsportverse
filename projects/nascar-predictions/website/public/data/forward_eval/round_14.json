@@ -1,0 +1,63 @@
+{
+  "round": 14,
+  "venueName": "Nashville Superspeedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 38,
+    "mean_position_error": 9.526,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 9,
+    "within_5": 15,
+    "exact_matches": 1,
+    "spearman_correlation": 0.4261954261954262,
+    "ndcg_at_5": 0.8336333172229166
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 8.632,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 18,
+    "exact_matches": 2,
+    "spearman_correlation": 0.45289418973629497,
+    "ndcg_at_5": 0.8234505288078655
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.020858,
+        "logLoss": 0.065108
+      },
+      "podium": {
+        "brier": 0.070999,
+        "logLoss": 0.252078
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 37,
+      "mean_position_error": 8.324,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 15,
+      "within_5": 17,
+      "exact_matches": 3,
+      "spearman_correlation": 0.4518729255571361,
+      "ndcg_at_5": 0.7558405771264498
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 8.632,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 14,
+      "within_5": 17,
+      "exact_matches": 2,
+      "spearman_correlation": 0.45442608600503337,
+      "ndcg_at_5": 0.8410886962482456
+    }
+  }
+}

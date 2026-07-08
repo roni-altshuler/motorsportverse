@@ -1,0 +1,63 @@
+{
+  "round": 15,
+  "venueName": "Michigan International Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 37,
+    "mean_position_error": 11.838,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 3,
+    "spearman_correlation": 0.0602181128496918,
+    "ndcg_at_5": 0.43374169273972846
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 10.162,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 2,
+    "spearman_correlation": 0.26149834044570885,
+    "ndcg_at_5": 0.4566488290493942
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.017851,
+        "logLoss": 0.058753
+      },
+      "podium": {
+        "brier": 0.071355,
+        "logLoss": 0.269842
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 13.0,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 6,
+      "within_5": 8,
+      "exact_matches": 3,
+      "spearman_correlation": -0.014157014157014158,
+      "ndcg_at_5": 0.5721965240434487
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 9.784,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 10,
+      "within_5": 14,
+      "exact_matches": 3,
+      "spearman_correlation": 0.3105737316263632,
+      "ndcg_at_5": 0.7160413059579886
+    }
+  }
+}

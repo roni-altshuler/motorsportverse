@@ -4,17 +4,35 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nascar-predictions"
-version = "0.1.0"
-description = "Oval and road-course forecasts for the NASCAR Cup Series."
+version = "0.2.0"
+description = "Oval and road-course forecasts for the NASCAR Cup Series — fifth series on the MotorsportVerse core."
+readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-dependencies = ["motorsport-core", "motorsport-data", "numpy>=1.26"]
+authors = [{ name = "MotorsportVerse" }]
+dependencies = [
+    "motorsport-core",
+    "motorsport-data",
+    "requests>=2.31",
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4", "ruff>=0.4"]
+# scikit-learn arrives transitively via motorsport-core; xgboost is optional
+# and upgrades the GBR-only skill signal to the full GBR+XGB ensemble
+# (F1 parity — run it with OMP_NUM_THREADS=1 for determinism). duckdb powers
+# the backfill HistoryStore.
+ml = ["xgboost>=2.0"]
+store = ["duckdb>=0.10"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

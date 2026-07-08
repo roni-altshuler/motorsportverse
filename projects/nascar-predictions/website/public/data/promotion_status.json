@@ -1,0 +1,20 @@
+{
+  "decision": "hold",
+  "reason": "candidate within \u00b12% of production (mean change -1.9%)",
+  "roundsCompared": 10,
+  "meanProduction": 10.1935,
+  "meanCandidate": 10.0033,
+  "relativeChange": -0.0187,
+  "hasCandidate": true,
+  "candidate": "position-head",
+  "candidateFlag": "NASCAR_USE_POSITION_HEAD",
+  "abVerdict": {
+    "recommendation": "production-better",
+    "basis": "race mean_position_error",
+    "positionHeadMeanError": 9.4514,
+    "productionMeanError": 9.3419,
+    "meanErrorDelta": 0.1096,
+    "positionHeadWinnerHitRate": 0.125,
+    "productionWinnerHitRate": 0.1875
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "round": 8,
+  "venueName": "Bristol Motor Speedway",
+  "trackType": "short",
+  "race": {
+    "n": 37,
+    "mean_position_error": 8.757,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 11,
+    "exact_matches": 0,
+    "spearman_correlation": 0.5061640587956378,
+    "ndcg_at_5": 0.7512071958790523
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 6.162,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 11,
+    "within_5": 20,
+    "exact_matches": 1,
+    "spearman_correlation": 0.7110004741583689,
+    "ndcg_at_5": 0.9282750831821722
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.023721,
+        "logLoss": 0.087135
+      },
+      "podium": {
+        "brier": 0.062166,
+        "logLoss": 0.199043
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 35,
+      "mean_position_error": 9.486,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 7,
+      "within_5": 11,
+      "exact_matches": 0,
+      "spearman_correlation": 0.3487394957983193,
+      "ndcg_at_5": 0.6262598607828918
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 6.162,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 21,
+      "exact_matches": 1,
+      "spearman_correlation": 0.7008060692271219,
+      "ndcg_at_5": 0.9111283537852025
+    }
+  }
+}

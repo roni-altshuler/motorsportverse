@@ -1,0 +1,63 @@
+{
+  "round": 12,
+  "venueName": "Watkins Glen International",
+  "trackType": "road",
+  "race": {
+    "n": 38,
+    "mean_position_error": 10.789,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 6,
+    "within_5": 12,
+    "exact_matches": 0,
+    "spearman_correlation": 0.30670751723383305,
+    "ndcg_at_5": 0.7007574147611677
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 8.263,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 17,
+    "exact_matches": 2,
+    "spearman_correlation": 0.5227048911259438,
+    "ndcg_at_5": 0.9439194977414096
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.028814,
+        "logLoss": 0.13588
+      },
+      "podium": {
+        "brier": 0.093817,
+        "logLoss": 0.336778
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 12.361,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 8,
+      "exact_matches": 1,
+      "spearman_correlation": 0.03268983268983269,
+      "ndcg_at_5": 0.5343495821725667
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 8.053,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "within_3": 13,
+      "within_5": 21,
+      "exact_matches": 3,
+      "spearman_correlation": 0.5008206587153956,
+      "ndcg_at_5": 0.8211825174438576
+    }
+  }
+}

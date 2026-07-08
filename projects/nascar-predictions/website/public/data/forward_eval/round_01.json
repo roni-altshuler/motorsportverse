@@ -1,0 +1,53 @@
+{
+  "round": 1,
+  "venueName": "Daytona International Speedway",
+  "trackType": "superspeedway",
+  "race": {
+    "n": 41,
+    "mean_position_error": 15.0,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 6,
+    "within_5": 8,
+    "exact_matches": 2,
+    "spearman_correlation": -0.03937282229965157,
+    "ndcg_at_5": 0.5166047537200609
+  },
+  "racePostQuali": {
+    "n": 41,
+    "mean_position_error": 13.39,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 14,
+    "exact_matches": 0,
+    "spearman_correlation": 0.0475609756097561,
+    "ndcg_at_5": 0.7171316886857684
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.023818,
+        "logLoss": 0.110468
+      },
+      "podium": {
+        "brier": 0.071003,
+        "logLoss": 0.275608
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": null,
+    "gridOrder": {
+      "n": 41,
+      "mean_position_error": 12.927,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 12,
+      "within_5": 14,
+      "exact_matches": 2,
+      "spearman_correlation": 0.06533101045296168,
+      "ndcg_at_5": 0.6125570586675984
+    }
+  }
+}
