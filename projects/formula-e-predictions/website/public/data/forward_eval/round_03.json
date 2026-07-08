@@ -1,0 +1,52 @@
+{
+  "round": 3,
+  "venueName": "Miami",
+  "venueKind": "circuit",
+  "race": {
+    "n": 19,
+    "mean_position_error": 6.947,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 4,
+    "within_5": 8,
+    "exact_matches": 0,
+    "spearman_correlation": 0.04912280701754386,
+    "ndcg_at_5": 0.49344254914169045
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.060732,
+        "logLoss": 0.309438
+      },
+      "podium": {
+        "brier": 0.188018,
+        "logLoss": 0.584204
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 17,
+      "mean_position_error": 6.706,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 4,
+      "within_5": 7,
+      "exact_matches": 1,
+      "spearman_correlation": 0.00980392156862745,
+      "ndcg_at_5": 0.3412303236106029
+    },
+    "gridOrder": {
+      "n": 19,
+      "mean_position_error": 6.316,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 7,
+      "within_5": 9,
+      "exact_matches": 0,
+      "spearman_correlation": 0.07543859649122807,
+      "ndcg_at_5": 0.639783007910679
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "round": 10,
+  "venueName": "Monaco II",
+  "venueKind": "street",
+  "race": {
+    "n": 18,
+    "mean_position_error": 5.556,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 9,
+    "within_5": 10,
+    "exact_matches": 1,
+    "spearman_correlation": 0.20743034055727555,
+    "ndcg_at_5": 0.6809769886173751
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.06788,
+        "logLoss": 0.27035
+      },
+      "podium": {
+        "brier": 0.193834,
+        "logLoss": 0.610907
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 16,
+      "mean_position_error": 5.5,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 8,
+      "within_5": 9,
+      "exact_matches": 1,
+      "spearman_correlation": 0.09705882352941177,
+      "ndcg_at_5": 0.6665668871321291
+    },
+    "gridOrder": {
+      "n": 18,
+      "mean_position_error": 5.333,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 10,
+      "exact_matches": 2,
+      "spearman_correlation": 0.28173374613003094,
+      "ndcg_at_5": 0.5917395856782209
+    }
+  }
+}

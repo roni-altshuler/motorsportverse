@@ -1,0 +1,52 @@
+{
+  "round": 11,
+  "venueName": "Sanya",
+  "venueKind": "street",
+  "race": {
+    "n": 15,
+    "mean_position_error": 5.267,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 5,
+    "within_5": 7,
+    "exact_matches": 1,
+    "spearman_correlation": 0.42142857142857143,
+    "ndcg_at_5": 0.8046719611032503
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.063471,
+        "logLoss": 0.252755
+      },
+      "podium": {
+        "brier": 0.154897,
+        "logLoss": 0.466441
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 14,
+      "mean_position_error": 4.071,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 7,
+      "within_5": 10,
+      "exact_matches": 0,
+      "spearman_correlation": 0.3978021978021978,
+      "ndcg_at_5": 0.7497705332304597
+    },
+    "gridOrder": {
+      "n": 15,
+      "mean_position_error": 6.8,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 3,
+      "within_5": 6,
+      "exact_matches": 1,
+      "spearman_correlation": 0.02142857142857143,
+      "ndcg_at_5": 0.7026795528626338
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "round": 2,
+  "venueName": "Mexico City",
+  "venueKind": "circuit",
+  "race": {
+    "n": 17,
+    "mean_position_error": 3.765,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 8,
+    "within_5": 14,
+    "exact_matches": 4,
+    "spearman_correlation": 0.6446078431372549,
+    "ndcg_at_5": 0.9626838806016774
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.045043,
+        "logLoss": 0.154939
+      },
+      "podium": {
+        "brier": 0.100457,
+        "logLoss": 0.315156
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 11,
+      "mean_position_error": 4.818,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 4,
+      "within_5": 6,
+      "exact_matches": 0,
+      "spearman_correlation": 0.5818181818181818,
+      "ndcg_at_5": 0.8226273606802156
+    },
+    "gridOrder": {
+      "n": 17,
+      "mean_position_error": 5.294,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 12,
+      "exact_matches": 0,
+      "spearman_correlation": 0.2034313725490196,
+      "ndcg_at_5": 0.5006669241677763
+    }
+  }
+}

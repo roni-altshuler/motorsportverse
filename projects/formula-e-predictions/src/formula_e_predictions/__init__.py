@@ -1,4 +1,4 @@
-"""Formula E Predictions — Formula E forecasting on MotorsportVerse core."""
+"""Formula E Predictions — E-Prix forecasting on the MotorsportVerse core."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 SPORT = "Formula E"

@@ -1,0 +1,52 @@
+{
+  "round": 7,
+  "venueName": "Berlin",
+  "venueKind": "street",
+  "race": {
+    "n": 19,
+    "mean_position_error": 5.0,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 13,
+    "exact_matches": 0,
+    "spearman_correlation": 0.4105263157894737,
+    "ndcg_at_5": 0.5514885107464942
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.055529,
+        "logLoss": 0.215019
+      },
+      "podium": {
+        "brier": 0.193217,
+        "logLoss": 0.591924
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 19,
+      "mean_position_error": 6.316,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 10,
+      "exact_matches": 1,
+      "spearman_correlation": 0.03684210526315789,
+      "ndcg_at_5": 0.5982930372645877
+    },
+    "gridOrder": {
+      "n": 19,
+      "mean_position_error": 4.842,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 12,
+      "exact_matches": 2,
+      "spearman_correlation": 0.39473684210526316,
+      "ndcg_at_5": 0.767148136531652
+    }
+  }
+}

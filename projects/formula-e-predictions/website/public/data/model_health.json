@@ -1,0 +1,101 @@
+{
+  "season": 2026,
+  "lastEvaluatedRound": 13,
+  "featureDrift": [
+    {
+      "feature": "predictedValue",
+      "psi": 0.1738,
+      "severity": "warn"
+    },
+    {
+      "feature": "pWin",
+      "psi": 0.4859,
+      "severity": "alarm"
+    },
+    {
+      "feature": "pPodium",
+      "psi": 0.7637,
+      "severity": "alarm"
+    },
+    {
+      "feature": "meanFinish",
+      "psi": 0.0948,
+      "severity": "ok"
+    },
+    {
+      "feature": "finishRangeHigh",
+      "psi": 0.1218,
+      "severity": "warn"
+    }
+  ],
+  "outputDrift": {
+    "rollingBrierRecent": 0.0628,
+    "rollingBrierBaseline": 0.0485,
+    "relativeChange": 0.2948,
+    "severity": "alarm",
+    "roundsCompared": 13
+  },
+  "warnings": [
+    "predictedValue: PSI 0.174 (moderate drift vs baseline)",
+    "finishRangeHigh: PSI 0.122 (moderate drift vs baseline)"
+  ],
+  "alarms": [
+    "pWin: PSI 0.486 (significant drift vs baseline)",
+    "pPodium: PSI 0.764 (significant drift vs baseline)",
+    "rolling Brier regression +29.5% (significant)"
+  ],
+  "brierByRound": [
+    {
+      "round": 1,
+      "brier": 0.07358244615384615
+    },
+    {
+      "round": 2,
+      "brier": 0.045038104117647054
+    },
+    {
+      "round": 3,
+      "brier": 0.06072766894736842
+    },
+    {
+      "round": 4,
+      "brier": 0.039274798888888886
+    },
+    {
+      "round": 5,
+      "brier": 0.0554229615
+    },
+    {
+      "round": 6,
+      "brier": 0.048036551999999996
+    },
+    {
+      "round": 7,
+      "brier": 0.0555277452631579
+    },
+    {
+      "round": 8,
+      "brier": 0.044180675
+    },
+    {
+      "round": 9,
+      "brier": 0.06394446388888889
+    },
+    {
+      "round": 10,
+      "brier": 0.06788285611111111
+    },
+    {
+      "round": 11,
+      "brier": 0.06347159066666667
+    },
+    {
+      "round": 12,
+      "brier": 0.06029911450000001
+    },
+    {
+      "round": 13,
+      "brier": 0.05832061888888889
+    }
+  ]
+}
