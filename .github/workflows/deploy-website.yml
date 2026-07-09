@@ -9,6 +9,8 @@ on:
       - "projects/f2-predictions/**"
       - "projects/f3-predictions/**"
       - "projects/formula-e-predictions/**"
+      - "projects/nascar-predictions/**"
+      - "projects/indycar-predictions/**"
       - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
@@ -59,6 +61,8 @@ jobs:
         run: |
           pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f2-predictions -e projects/f3-predictions xgboost
           pip install -e projects/formula-e-predictions --no-deps
+          pip install -e projects/nascar-predictions --no-deps
+          pip install -e projects/indycar-predictions --no-deps
           pip install requests numpy matplotlib
       - name: Generate F2 data
         run: |
@@ -78,6 +82,18 @@ jobs:
           python -m formula_e_predictions.forward_eval --season 2026 --allow-empty
           python -m formula_e_predictions.drift_report --season 2026 --allow-empty
           python -m formula_e_predictions.promotion_decision --season 2026 --allow-empty
+      - name: Generate NASCAR data
+        run: |
+          python -m nascar_predictions.export
+          python -m nascar_predictions.forward_eval --season 2026 --allow-empty
+          python -m nascar_predictions.drift_report --season 2026 --allow-empty
+          python -m nascar_predictions.promotion_decision --season 2026 --allow-empty
+      - name: Generate IndyCar data
+        run: |
+          python -m indycar_predictions.export
+          python -m indycar_predictions.forward_eval --season 2026 --allow-empty
+          python -m indycar_predictions.drift_report --season 2026 --allow-empty
+          python -m indycar_predictions.promotion_decision --season 2026 --allow-empty
 
       # --- Ecosystem hub (root) ---
       - name: Build ecosystem website
@@ -107,6 +123,20 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/formula-e
 
+      # --- RaceIQ NASCAR project site (sub-path) ---
+      - name: Build NASCAR website
+        working-directory: projects/nascar-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/nascar
+
+      # --- RaceIQ IndyCar project site (sub-path) ---
+      - name: Build IndyCar website
+        working-directory: projects/indycar-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/indycar
+
       # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
       #     race-weekend cron (f1-update-predictions.yml) commits, so no data
       #     generation step is needed here — only a static build. ---
@@ -119,11 +149,14 @@ jobs:
       # --- Combine into one Pages artifact ---
       - name: Assemble site tree
         run: |
-          mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 website/out/projects/formula-e
+          mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 \
+                   website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
           cp -r projects/f3-predictions/website/out/. website/out/projects/f3/
           cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
           cp -r projects/formula-e-predictions/website/out/. website/out/projects/formula-e/
+          cp -r projects/nascar-predictions/website/out/. website/out/projects/nascar/
+          cp -r projects/indycar-predictions/website/out/. website/out/projects/indycar/
 
       - uses: actions/upload-pages-artifact@v3
         with:

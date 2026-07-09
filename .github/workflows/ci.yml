@@ -24,6 +24,8 @@ jobs:
           # --no-deps like F2/F3 (core/data are the editable installs above);
           # FE's remaining direct deps are installed explicitly.
           pip install -e projects/formula-e-predictions --no-deps
+          pip install -e projects/nascar-predictions --no-deps
+          pip install -e projects/indycar-predictions --no-deps
           pip install requests numpy matplotlib
           # xgboost powers the full GBR+XGB skill ensemble; sklearn comes via core.
           # Without it the model degrades to a GBR-only signal, so this is for parity.
@@ -52,9 +54,15 @@ jobs:
       - name: Test formula-e-predictions
         run: pytest projects/formula-e-predictions -q
 
+      - name: Test nascar-predictions
+        run: pytest projects/nascar-predictions -q
+
+      - name: Test indycar-predictions
+        run: pytest projects/indycar-predictions -q
+
       - name: Test scaffolded series projects
         run: |
-          for p in indycar wec motogp nascar wrc imsa lemans; do
+          for p in wec motogp wrc imsa lemans; do
             (cd "projects/${p}-predictions" && PYTHONPATH=src pytest -q)
           done
 
