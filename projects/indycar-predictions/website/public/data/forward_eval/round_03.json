@@ -1,0 +1,64 @@
+{
+  "round": 3,
+  "venueName": "Streets of Arlington",
+  "trackType": "street",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 5.2,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 12,
+    "exact_matches": 1,
+    "spearman_correlation": 0.6392307692307693,
+    "ndcg_at_5": 0.9184458259485625
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 4.72,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 14,
+    "exact_matches": 2,
+    "spearman_correlation": 0.6476923076923077,
+    "ndcg_at_5": 0.9216020677615657
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.031497,
+        "logLoss": 0.109704
+      },
+      "podium": {
+        "brier": 0.08716,
+        "logLoss": 0.332365
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 6.56,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 12,
+      "exact_matches": 1,
+      "spearman_correlation": 0.32846153846153847,
+      "ndcg_at_5": 0.7400313411884959
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 5.6,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 10,
+      "within_5": 15,
+      "exact_matches": 2,
+      "spearman_correlation": 0.4976923076923077,
+      "ndcg_at_5": 0.8644606455214525
+    }
+  }
+}

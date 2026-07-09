@@ -1,0 +1,64 @@
+{
+  "round": 11,
+  "venueName": "Mid-Ohio Sports Car Course",
+  "trackType": "road",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 5.2,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 11,
+    "within_5": 15,
+    "exact_matches": 3,
+    "spearman_correlation": 0.546923076923077,
+    "ndcg_at_5": 0.9370172241273704
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 3.52,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 16,
+    "within_5": 20,
+    "exact_matches": 4,
+    "spearman_correlation": 0.7615384615384615,
+    "ndcg_at_5": 0.9438875450906659
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.046064,
+        "logLoss": 0.183108
+      },
+      "podium": {
+        "brier": 0.082285,
+        "logLoss": 0.241153
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 8.0,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 4,
+      "within_5": 8,
+      "exact_matches": 1,
+      "spearman_correlation": 0.20846153846153845,
+      "ndcg_at_5": 0.8337218234579633
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 3.52,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 15,
+      "within_5": 20,
+      "exact_matches": 5,
+      "spearman_correlation": 0.7653846153846153,
+      "ndcg_at_5": 0.9341483224465625
+    }
+  }
+}

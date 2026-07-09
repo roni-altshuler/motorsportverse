@@ -128,13 +128,17 @@ class IndycarDataSource(DataSource):
         """Codes entered at a round (pre-race public info: the entry list).
 
         For a completed round the recorded rows ARE the entry list (IndyCar
-        classifies every car). For an upcoming round: the full-season roster,
-        plus the Indy-500-only entries when the round is the 500 (the
-        traditional 33-car field).
+        classifies every car) — returned in deterministic sorted order, NOT
+        classification order: the entry list is pre-race information and the
+        round's own finishing order must never reach the model, not even as a
+        float-summation ordering effect (the leakage twin-source test catches
+        exactly that). For an upcoming round: the full-season roster, plus the
+        Indy-500-only entries when the round is the 500 (the traditional
+        33-car field).
         """
         rows = self.race_rows(year, round)
         if rows:
-            return [r["code"] for r in rows]
+            return sorted(r["code"] for r in rows)
         codes = [d["code"] for d in self.roster(year)]
         if year == config.SEASON and config.is_indy500_round(round):
             codes += [c for c in config.INDY500_ONLY_DRIVERS if c not in codes]

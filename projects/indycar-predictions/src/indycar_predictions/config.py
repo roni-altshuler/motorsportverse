@@ -22,10 +22,13 @@ Monte Carlo of future rounds.
 
 Indy 500 double points: the 2026 curated data shows the 500's winner earned
 **60 points** (50 base + qualifying/lap bonuses), NOT ~100 — so the 500 does
-NOT pay double points in 2026 (double points last appeared in the 2014-2015
-curated seasons: e.g. 2014 round 5 winner 126). Encoded below as
-``INDY500_DOUBLE_POINTS = False``; the championship projection therefore needs
-no extra-race fold.
+NOT pay double points in 2026. The curated winner-points series across every
+season: 54-55 (2012-13, standard), **101-137 (2014-2022, the double-points
+era, May qualifying points included)**, back to 51-61 from 2023 on. Encoded
+below as ``INDY500_DOUBLE_POINTS = False``; the championship projection
+therefore needs no extra-race fold. Historical standings are unaffected either
+way — they are always the points AS AWARDED in the curated files, never
+re-derived from the base table.
 """
 from __future__ import annotations
 
@@ -365,9 +368,17 @@ PACE_BASE = 90.0
 PACE_SPREAD = 0.50
 
 # Blend weights for the latent skill (relative; need not sum to 1).
+# ``track_elo`` is deliberately the LARGEST single weight: the 2026 walk-forward
+# ablation (11 real rounds) showed the dual oval/road-street split is the
+# model's edge — dropping it to 0 cost winner-hit 27.3%→18.2% and MAE
+# 6.27→6.45, and raising it 0.50→0.90 improved podium-hit 39.4%→42.4% and MAE
+# 6.27→6.11 with winner-hit held (1.10 kept shaving MAE but gave the
+# winner-hit back — 0.90 is the knee). 0.90 is also the level at which a true
+# oval specialist out-ranks a road specialist on an oval round
+# (test_oval_specialist_ranked_higher_on_ovals).
 SKILL_WEIGHTS = {
     "elo": 0.40,        # overall driver Elo (all track types)
-    "track_elo": 0.50,  # DUAL oval / road-street Elo for this round's group (dominant)
+    "track_elo": 0.90,  # DUAL oval / road-street Elo for this round's group (dominant)
     "history": 0.35,    # smoothed current-season finishing history
     "team": 0.15,       # racing-team Elo (equipment / engineering)
     "engine": 0.10,     # engine-manufacturer Elo (Chevrolet / Honda)
@@ -425,6 +436,11 @@ MIN_REAL_ROUNDS_FOR_CALIBRATION = 6
 EXPECTED_CAR_COUNT = (24, 28)
 INDY500_CAR_COUNT = (30, 35)
 ROSTER_WHITELIST_MIN_FRACTION = 0.8
+# A round that finished within this many days may legitimately have no
+# classification on the page yet (editors lag the chequered flag) — the
+# refresh defers (no-op) instead of flagging a dirty parse. An OLDER uncovered
+# round is a genuine parse gap and stays a hard refusal.
+RESULT_PUBLICATION_GRACE_DAYS = 6
 
 WIKIPEDIA_API = "https://en.wikipedia.org/w/api.php"
 INDYCAR_USER_AGENT = (

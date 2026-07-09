@@ -1,0 +1,54 @@
+{
+  "round": 1,
+  "venueName": "Streets of St. Petersburg",
+  "trackType": "street",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 6.16,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 11,
+    "within_5": 14,
+    "exact_matches": 4,
+    "spearman_correlation": 0.30538461538461537,
+    "ndcg_at_5": 0.6554556338307461
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 4.88,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 12,
+    "within_5": 17,
+    "exact_matches": 3,
+    "spearman_correlation": 0.5746153846153846,
+    "ndcg_at_5": 0.9169804250118913
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.01212,
+        "logLoss": 0.051381
+      },
+      "podium": {
+        "brier": 0.061385,
+        "logLoss": 0.207922
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": null,
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 5.6,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 14,
+      "exact_matches": 1,
+      "spearman_correlation": 0.5646153846153846,
+      "ndcg_at_5": 0.8668553446259136
+    }
+  }
+}

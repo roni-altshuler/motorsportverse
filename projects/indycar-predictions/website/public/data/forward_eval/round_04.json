@@ -1,0 +1,64 @@
+{
+  "round": 4,
+  "venueName": "Barber Motorsports Park",
+  "trackType": "road",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 4.48,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 16,
+    "exact_matches": 3,
+    "spearman_correlation": 0.6215384615384615,
+    "ndcg_at_5": 0.8308147179915536
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 3.12,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 16,
+    "within_5": 23,
+    "exact_matches": 2,
+    "spearman_correlation": 0.8538461538461538,
+    "ndcg_at_5": 0.9461499119736949
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.036183,
+        "logLoss": 0.116224
+      },
+      "podium": {
+        "brier": 0.105696,
+        "logLoss": 0.378128
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 5.44,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 14,
+      "exact_matches": 2,
+      "spearman_correlation": 0.5676923076923077,
+      "ndcg_at_5": 0.7787886421406867
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 2.96,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "within_3": 17,
+      "within_5": 21,
+      "exact_matches": 5,
+      "spearman_correlation": 0.8351606232581944,
+      "ndcg_at_5": 0.9679721254006899
+    }
+  }
+}

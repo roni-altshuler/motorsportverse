@@ -302,14 +302,31 @@ class IndycarScraperSource:
                 f"{len(schedule)}-round schedule"
             )
         # An uncovered tail is only acceptable when it is genuinely
-        # future-dated (an in-progress season); otherwise the parse is dirty.
+        # future-dated (an in-progress season) or freshly run within the
+        # publication grace window (the page lags the chequered flag by hours,
+        # sometimes a day or two — that is a defer, not a dirty parse). An
+        # OLDER gap means the results table mis-parsed — dirty.
         if clean and rnd < len(schedule):
             nxt = schedule[rnd].get("date")
-            if not (nxt and nxt > self._today_iso()):
+            if nxt:
+                from datetime import date as _date, timedelta as _timedelta
+
+                grace_floor = (
+                    _date.fromisoformat(self._today_iso())
+                    - _timedelta(days=config.RESULT_PUBLICATION_GRACE_DAYS)
+                ).isoformat()
+            if not (nxt and nxt >= grace_floor):
                 clean = False
                 notes.append(
                     f"rounds {rnd + 1}..{len(schedule)} have no parsed classification "
-                    "but are not future-dated — parse gap"
+                    "but are not future-dated (beyond the "
+                    f"{config.RESULT_PUBLICATION_GRACE_DAYS}-day publication grace) "
+                    "— parse gap"
+                )
+            elif nxt <= self._today_iso():
+                notes.append(
+                    f"round {rnd + 1} ran on {nxt} but its classification is not on "
+                    "the page yet — deferring within the publication grace window"
                 )
 
         state = {

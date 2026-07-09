@@ -1,0 +1,64 @@
+{
+  "round": 5,
+  "venueName": "Streets of Long Beach",
+  "trackType": "street",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 6.4,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 11,
+    "within_5": 14,
+    "exact_matches": 0,
+    "spearman_correlation": 0.34307692307692306,
+    "ndcg_at_5": 0.7056792300662421
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 5.28,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 17,
+    "exact_matches": 1,
+    "spearman_correlation": 0.5307692307692308,
+    "ndcg_at_5": 0.8421560713916549
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.028589,
+        "logLoss": 0.092958
+      },
+      "podium": {
+        "brier": 0.109326,
+        "logLoss": 0.373939
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 7.12,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 7,
+      "within_5": 11,
+      "exact_matches": 1,
+      "spearman_correlation": 0.24846153846153846,
+      "ndcg_at_5": 0.7773220284164338
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 4.16,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 16,
+      "within_5": 18,
+      "exact_matches": 2,
+      "spearman_correlation": 0.676923076923077,
+      "ndcg_at_5": 0.9597769142170242
+    }
+  }
+}
