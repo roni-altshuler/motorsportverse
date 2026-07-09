@@ -26,7 +26,7 @@ function teamInitials(team: string): string {
 }
 
 /**
- * FE team mark. No team-logo assets ship for Formula E yet, so this renders a polished
+ * Cup team mark. No team-logo assets ship for the Cup garage yet, so this renders a polished
  * team-coloured initials chip (port of the RaceIQ F1 TeamBadge, minus the logo
  * image path — per the "don't add new image URLs" rule). The team colour comes
  * through as the ring; a uniform light field keeps the initials legible.

@@ -16,8 +16,8 @@ interface HeroParallaxProps {
 }
 
 /**
- * Hero band for RaceIQ Formula E. Ported from the F1 HeroParallax. Formula E's
- * street E-Prix layouts ship no published lap-telemetry geometry, so the
+ * Hero band for RaceIQ NASCAR. Ported from the F1 HeroParallax. Cup ovals
+ * ship no published lap-telemetry geometry, so the
  * animated track-ribbon sweep only renders when a circuit outline exists in
  * public/data/circuits.json — otherwise the hero rests on the electric-blue
  * radial backdrop and dot-pattern substrate alone. The global

@@ -1,13 +1,13 @@
 "use client";
 
 /**
- * Race-weekend live context band — Formula E port of the F1 flagship's band.
+ * Race-weekend live context band — NASCAR port of the F1 flagship's band.
  *
  * Sticky strip just below the navbar that surfaces the next round's context.
- * FE has no live-timing or weather feed (data reality), so this is a thinned
- * version: it shows the next upcoming E-Prix with a countdown, its venue kind
- * (street vs circuit) and a freshness indicator, driven by the client-side
- * nascar.json loader.
+ * The Cup snapshot has no live-timing or weather feed (data reality), so this
+ * is a thinned version: it shows the next upcoming Cup race with a countdown,
+ * its track type (superspeedway / intermediate / short / road) and a freshness
+ * indicator, driven by the client-side nascar.json loader.
  *
  * Visibility: renders whenever the season still has an upcoming round; returns
  * null once every round is completed (or before data has loaded).
@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { useNascarData } from "@/lib/nascarclient";
+import { trackTypeLabel } from "@/lib/track";
 import type { CalendarRound } from "@/types/nascar";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -83,7 +84,7 @@ export default function LiveContextBand() {
         </span>
 
         <span className="hidden text-[color:var(--text-muted)] md:inline">
-          {nextRound.kind === "street" ? "Street Circuit" : "Permanent Circuit"}
+          {trackTypeLabel(nextRound.trackType)}
         </span>
 
         <div className="ml-auto flex items-center gap-2 text-[color:var(--text-muted)]">

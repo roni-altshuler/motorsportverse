@@ -27,7 +27,7 @@ interface ChampionshipBentoProps {
 }
 
 /**
- * Bento mosaic snapshot of the Formula E championship state. Ported from
+ * Bento mosaic snapshot of the Cup championship state. Ported from
  * RaceIQ F1's ChampionshipBento. FE has no sprint format (so the "sprints
  * remaining" tile becomes a title-odds tile sourced from the driver
  * championship odds). The accuracy tile uses the season podium hit-rate, since

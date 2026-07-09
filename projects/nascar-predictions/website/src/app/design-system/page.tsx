@@ -1,8 +1,8 @@
 /**
  * /design-system — visual showcase of the design tokens + UI primitives.
  *
- * Living style guide (ported from the RaceIQ F1 flagship, themed Formula E
- * championship gold). Open this page to verify a token change cascades to every
+ * Living style guide (ported from the RaceIQ F1 flagship, themed NASCAR
+ * victory-lane yellow). Open this page to verify a token change cascades to every
  * primitive. Not linked from the main navigation — internal QA surface only.
  */
 import type { Metadata } from "next";
@@ -21,7 +21,7 @@ import { Stat } from "@/components/ui/Stat";
 import MagicUIGallery from "@/components/design-system/MagicUIGallery";
 
 export const metadata: Metadata = {
-  title: "Design System · RaceIQ Formula E",
+  title: "Design System · RaceIQ NASCAR",
   description: "Internal showcase of design tokens, palette, typography, and UI primitives.",
 };
 
@@ -56,10 +56,10 @@ export default function DesignSystemPage() {
       <header className="space-y-3">
         <Badge variant="live">Internal · QA</Badge>
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight">
-          RaceIQ Formula E · Design System
+          RaceIQ NASCAR · Design System
         </h1>
         <p className="text-[color:var(--text-secondary)] max-w-2xl">
-          The RaceIQ design system, themed in Formula E electric blue. Every surface, accent,
+          The RaceIQ design system, themed in NASCAR victory-lane yellow. Every surface, accent,
           and chart hue should follow from these tokens.
         </p>
       </header>
@@ -74,7 +74,7 @@ export default function DesignSystemPage() {
           <TokenSwatch label="Border" cssVar="--border" />
           <TokenSwatch label="Text primary" cssVar="--text-primary" />
           <TokenSwatch label="Text muted" cssVar="--text-muted" />
-          <TokenSwatch label="Accent" cssVar="--accent" value="electric blue" />
+          <TokenSwatch label="Accent" cssVar="--accent" value="NASCAR yellow" />
           <TokenSwatch label="Accent · live" cssVar="--accent-live" />
           <TokenSwatch label="Accent · positive" cssVar="--accent-positive" />
           <TokenSwatch label="Accent · negative" cssVar="--accent-negative" />
@@ -88,10 +88,10 @@ export default function DesignSystemPage() {
         <div className={SECTION_LABEL_CLS}>2 · Typography</div>
         <div className="space-y-3">
           <div className="font-sans text-4xl font-extrabold tracking-tight">
-            E-Prix · Saturday
+            Daytona 500 · Sunday
           </div>
           <div className="font-sans text-xl font-semibold text-[color:var(--text-secondary)]">
-            Street circuit · racing between the walls
+            Superspeedway · pack racing in the draft
           </div>
           <div className="font-sans text-sm text-[color:var(--text-muted)]">
             Saira Condensed (display) + EB Garamond (body), loaded via next/font. Body copy at
@@ -114,8 +114,8 @@ export default function DesignSystemPage() {
           <Badge variant="live">Live</Badge>
           <Badge variant="positive">+0.18s</Badge>
           <Badge variant="negative">-0.41s</Badge>
-          <Badge variant="info">Street</Badge>
-          <Badge variant="muted">Circuit</Badge>
+          <Badge variant="info">Superspeedway</Badge>
+          <Badge variant="muted">Short Track</Badge>
           <Badge variant="outline">DNF</Badge>
         </div>
       </section>
@@ -156,10 +156,10 @@ export default function DesignSystemPage() {
           <Card>
             <CardHeader>
               <Badge variant="live" className="self-start">
-                Round 6 · E-Prix
+                Round 6 · Cup Race
               </Badge>
-              <CardTitle>Formula E · Round 6</CardTitle>
-              <CardDescription>Street circuit · forecast updated recently</CardDescription>
+              <CardTitle>NASCAR Cup · Round 6</CardTitle>
+              <CardDescription>Intermediate oval · forecast updated recently</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="font-mono font-tabular text-3xl font-extrabold">

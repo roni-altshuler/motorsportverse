@@ -13,7 +13,7 @@ export const dynamic = "force-static";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://motorsportverse.org/projects/formula-e-predictions";
+  "https://motorsportverse.org/projects/nascar-predictions";
 
 const BASE = SITE_URL.replace(/\/$/, "");
 

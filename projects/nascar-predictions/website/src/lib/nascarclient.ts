@@ -1,6 +1,6 @@
 "use client";
 
-// Client-side loaders for the Formula E dataset. The Navbar and other client
+// Client-side loaders for the NASCAR dataset. The Navbar and other client
 // components need the calendar + accuracy at runtime; the static export serves
 // the JSON from /data (current season) or /data/seasons/<year> (archives).
 // Mirrors the F1 flagship's fetchSeasonData + season-aware base paths.

@@ -18,7 +18,7 @@ interface ChampionshipKPIsProps {
 
 /**
  * Championship-state KPI strip (port of the RaceIQ F1 ChampionshipKPIs bento).
- * Adapted to Formula E: cells are championship leader (with title odds), gap to P2,
+ * Adapted to NASCAR: cells are championship leader (with title odds), gap to P2,
  * rounds remaining, leader wins, field spread, and a forecast-accuracy cell
  * sourced from seasonAccuracy. Tech-stack-scrubbed copy throughout.
  */

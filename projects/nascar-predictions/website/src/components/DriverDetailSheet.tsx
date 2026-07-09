@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Driver detail sheet (Formula E pop-out).
+ * Driver detail sheet (NASCAR pop-out).
  *
  * A modal that opens when a classification table row is clicked. It shows the
  * driver's per-race forecast markets (win / podium / top-6 / top-10), their

@@ -20,7 +20,7 @@ import {
 interface SeasonContextValue {
   /** Selected season year (defaults to the current season). */
   year: number;
-  /** Data root for the selected season — pass to the feclient fetchers. */
+  /** Data root for the selected season — pass to the nascarclient fetchers. */
   basePath: string;
   /** The full multi-season index (null until loaded). */
   index: SeasonsIndex | null;

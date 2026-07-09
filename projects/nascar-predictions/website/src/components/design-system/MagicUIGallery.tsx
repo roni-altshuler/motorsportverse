@@ -18,15 +18,15 @@ import { Spotlight } from "@/components/magicui/spotlight";
 const SECTION_LABEL =
   "text-[11px] font-mono uppercase tracking-[0.18em] text-[color:var(--muted)] mb-4";
 
-// FE electric-blue identity (mirrors the F1 gallery, themed for Formula E).
-const FE_BLUE = "#4B48FF";
+// NASCAR victory-lane-yellow identity (mirrors the F1 gallery, themed for the Cup).
+const NASCAR_YELLOW = "#FFD659";
 
 const SAMPLE_AVATARS = [
-  { initials: "P1", teamColor: FE_BLUE },
+  { initials: "P1", teamColor: NASCAR_YELLOW },
   { initials: "P2", teamColor: "#27A8E0" },
   { initials: "P3", teamColor: "#3FB6EA" },
   { initials: "P4", teamColor: "#5AC4F0" },
-  { initials: "P5", teamColor: "#7BD2F6" },
+  { initials: "P5", teamColor: "#FFDF80" },
 ];
 
 export default function MagicUIGallery() {
@@ -44,9 +44,9 @@ export default function MagicUIGallery() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* BorderBeam */}
         <div className="relative rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6 overflow-hidden">
-          <BorderBeam size={1} duration={8} colorFrom={FE_BLUE} colorTo="#7BD2F6" />
+          <BorderBeam size={1} duration={8} colorFrom={NASCAR_YELLOW} colorTo="#FFDF80" />
           <p className={SECTION_LABEL}>BorderBeam</p>
-          <p className="title-md text-[color:var(--ink)]">Electric-blue gradient stroke</p>
+          <p className="title-md text-[color:var(--ink)]">Victory-yellow gradient stroke</p>
           <p className="body-sm text-[color:var(--muted)] mt-2">
             1px animated gradient stroke that traces the card perimeter.
           </p>
@@ -72,7 +72,7 @@ export default function MagicUIGallery() {
             >
               Next Round →
             </ShimmerButton>
-            <PulsatingButton pulseColor={FE_BLUE}>Live</PulsatingButton>
+            <PulsatingButton pulseColor={NASCAR_YELLOW}>Live</PulsatingButton>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ export default function MagicUIGallery() {
         <div className="rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6">
           <p className={SECTION_LABEL}>AnimatedGradientText</p>
           <p className="display-md [font-weight:700]">
-            <AnimatedGradientText speed={8} colorFrom={FE_BLUE} colorTo="#7BD2F6">
+            <AnimatedGradientText speed={8} colorFrom={NASCAR_YELLOW} colorTo="#FFDF80">
               Predictions Board
             </AnimatedGradientText>
           </p>
@@ -168,7 +168,7 @@ export default function MagicUIGallery() {
           </span>
         </OrbitingCircles>
         <OrbitingCircles radius={170} duration={28} reverse>
-          <span className="w-10 h-10 rounded-full bg-[#7BD2F6] text-black text-xs flex items-center justify-center font-mono">
+          <span className="w-10 h-10 rounded-full bg-[#FFDF80] text-black text-xs flex items-center justify-center font-mono">
             P3
           </span>
         </OrbitingCircles>

@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Spotlight } from "@/components/magicui/spotlight";
 import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 import { getRaceArt } from "@/lib/raceArt";
+import { trackTypeLabel } from "@/lib/track";
 
 type Lifecycle = "completed" | "next" | "upcoming";
 
@@ -140,7 +141,7 @@ export default function RaceCardCarousel({
                   {race.name}
                 </h3>
                 <p className="caption-uppercase mt-2 text-[10px] tracking-[0.18em] text-[color:var(--body-strong)]">
-                  {meta.label} · {race.kind === "street" ? "Street Circuit" : "Permanent Circuit"}
+                  {meta.label} · {trackTypeLabel(race.trackType)}
                 </p>
               </div>
               <span className="caption-uppercase shrink-0 text-[10px] text-[color:var(--ink)]">

@@ -1,4 +1,4 @@
-// Screenshot harness for the RaceIQ Formula E website (MotorsportVerse).
+// Screenshot harness for the RaceIQ NASCAR website (MotorsportVerse).
 // Serves the static export in ./out and captures desktop + mobile shots of each
 // route, so visual regressions and broken components are caught after a build.
 //
@@ -6,7 +6,7 @@
 //   npm i -D playwright && npx playwright install chromium   # one-time
 //   node scripts/shoot.mjs [outdir]
 //
-// Default output: /tmp/fe-shots (kept out of the repo). Mirrors the host
+// Default output: /tmp/nascar-shots (kept out of the repo). Mirrors the host
 // ecosystem site's scripts/shoot.mjs pattern.
 
 import { createServer } from "node:http";
@@ -17,8 +17,8 @@ import { chromium } from "playwright";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const OUT = join(ROOT, "out");
-const SHOTS = process.argv[2] || "/tmp/fe-shots";
-const PORT = 4331;
+const SHOTS = process.argv[2] || "/tmp/nascar-shots";
+const PORT = 4335;
 
 const MIME = {
   ".html": "text/html",
@@ -61,10 +61,12 @@ const ROUTES = [
   ["calendar", "/calendar/"],
   ["standings", "/standings/"],
   ["predictions", "/predictions/"],
-  // R13 Shanghai II — completed round (won from P19; narrative + slope test).
-  ["race-13", "/race/13/"],
-  // R14 Tokyo — the next upcoming E-Prix (pre-race forecast state).
-  ["race-14", "/race/14/"],
+  // Standings — The Chase tab (playoff cut line + ladder + title odds).
+  ["standings-chase", "/standings/?tab=wdc"],
+  // R19 — most recent completed round (stage results + pDnf risk + slope test).
+  ["race-19", "/race/19/"],
+  // R20 — the next upcoming Cup race (pre-race forecast state).
+  ["race-20", "/race/20/"],
   ["accuracy", "/accuracy/"],
   ["about", "/about/"],
 ];

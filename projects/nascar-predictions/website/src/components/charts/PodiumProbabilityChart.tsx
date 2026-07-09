@@ -1,6 +1,6 @@
 "use client";
 
-// Dependency-free podium/win probability board — the FE analogue of RaceIQ F1's
+// Dependency-free podium/win probability board — the NASCAR analogue of RaceIQ F1's
 // visx PodiumProbabilityChart. For each driver, a faded full-width bar shows
 // podium probability with a prominent inset bar for win probability, so the two
 // markets read in one glance. Drawn with shared tokens + team colours.

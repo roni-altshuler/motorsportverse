@@ -1,5 +1,5 @@
 /**
- * Per-race volatility scoring (Formula E).
+ * Per-race volatility scoring (NASCAR).
  *
  * Each driver in a round's classification carries a finish-range
  * (`finishRangeLow`, `finishRangeHigh`) representing how wide the model's

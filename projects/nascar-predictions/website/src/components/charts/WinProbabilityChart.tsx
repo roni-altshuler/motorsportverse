@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 /**
- * Win-market-by-round chart — the Formula E adaptation of the F1 flagship's
+ * Win-market-by-round chart — the NASCAR adaptation of the F1 flagship's
  * WinProbabilityChart, reshaped around the data FE actually has.
  *
  * F1 charts a single round's win market as bars (it has per-round quali-time

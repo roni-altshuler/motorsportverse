@@ -8,7 +8,7 @@ import { cn } from "@/components/ui/cn";
  * F1.com-style circular driver portrait — ported verbatim from RaceIQ F1.
  * Shows /headshots/<CODE>.webp when available; otherwise renders a team-tinted
  * conic backdrop with a diagonal stripe + the 3-letter code. Same outer
- * dimensions in both states (no CLS). No real headshots ship for Formula E yet, so
+ * dimensions in both states (no CLS). No real headshots ship for the Cup garage yet, so
  * the polished fallback IS the headshot; drop-in .webp's appear automatically.
  */
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";

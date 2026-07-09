@@ -1,5 +1,5 @@
 // Default-season helper — ported from the F1 flagship's lib/season.ts.
-// NOTE: Formula E seasons are split-year ("2025-26"); `season` is the END year.
+// NOTE: NASCAR seasons are single calendar years; `season` == the label year.
 import type { NascarData } from "@/types/nascar";
 
 const envSeasonYear = process.env.NEXT_PUBLIC_NASCAR_SEASON_YEAR;

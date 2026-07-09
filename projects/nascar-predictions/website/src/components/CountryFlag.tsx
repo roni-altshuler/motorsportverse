@@ -5,7 +5,7 @@ import Image from "next/image";
 /**
  * CountryFlag — renders a flag image from flagcdn.com instead of emoji
  * (emoji flags render as two-letter abbreviations on Windows). Ported from
- * RaceIQ F1, extended with the country-name strings the FE export emits
+ * RaceIQ F1, extended with the country-name strings the NASCAR export emits
  * (e.g. "United Kingdom", "UAE").
  */
 const COUNTRY_CODES: Record<string, string> = {

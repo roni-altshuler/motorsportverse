@@ -23,7 +23,7 @@ interface LatestResultProps {
 
 /**
  * "Latest Official Result" — the most recent completed round's race result.
- * Ported from RaceIQ F1's Latest Official Result table, adapted to Formula E's
+ * Ported from RaceIQ F1's Latest Official Result table, adapted to NASCAR's
  * single-race weekends (no times/grid). Fed plain rows as props (never the fs
  * loader). Reveal is animate-on-mount with a reduced-motion fallback so content
  * is never permanently invisible.

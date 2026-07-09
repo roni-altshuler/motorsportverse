@@ -17,7 +17,7 @@ const OUTER_RATIO = 0.45;
 
 /**
  * Team orbital constellation. Ported from RaceIQ F1's ConstructorsConstellation.
- * Formula E's manufacturers each bring their own powertrain, so the teams'
+ * Cup teams align with the three manufacturers, so the teams'
  * championship is a real title fight. Each team gets a circular badge orbiting
  * at one of two radii (split across two rings to avoid collisions); container is
  * responsive so badges never spill the viewport on narrow screens. Themed to the

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 /**
  * The RaceIQ F1 flagship has no standalone /predictions page — the next-round
- * forecast lives on the home page and the race-detail page. To keep Formula E a 1-of-1
+ * forecast lives on the home page and the race-detail page. To keep NASCAR a 1-of-1
  * structural mimic without 404-ing any inbound links, /predictions now bounces
  * to the next round's race detail (or standings if the season is complete).
  */
