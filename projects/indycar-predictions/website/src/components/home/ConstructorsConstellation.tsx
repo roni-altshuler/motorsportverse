@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import type { TeamStanding } from "@/types/nascar";
+import type { TeamStanding } from "@/types/indycar";
 import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
 import { teamColor as resolveTeamColor } from "@/lib/teams";
 
@@ -17,11 +17,11 @@ const OUTER_RATIO = 0.45;
 
 /**
  * Team orbital constellation. Ported from RaceIQ F1's ConstructorsConstellation.
- * Cup teams align with the three manufacturers, so the teams'
+ * IndyCar teams align with the two engine suppliers, so the teams'
  * championship is a real title fight. Each team gets a circular badge orbiting
  * at one of two radii (split across two rings to avoid collisions); container is
  * responsive so badges never spill the viewport on narrow screens. Themed to the
- * NASCAR gold accent.
+ * IndyCar red accent.
  *
  * Client component (orbiting-circles animates) — fed plain props only, never the
  * fs-based loader.

@@ -16,10 +16,10 @@ interface HeroParallaxProps {
 }
 
 /**
- * Hero band for RaceIQ NASCAR. Ported from the F1 HeroParallax. Cup ovals
- * ship no published lap-telemetry geometry, so the
+ * Hero band for RaceIQ Indy. Ported from the F1 HeroParallax. IndyCar
+ * publishes no lap-telemetry geometry, so the
  * animated track-ribbon sweep only renders when a circuit outline exists in
- * public/data/circuits.json — otherwise the hero rests on the gold
+ * public/data/circuits.json — otherwise the hero rests on the red
  * radial backdrop and dot-pattern substrate alone. The global
  * `prefers-reduced-motion` guard in globals.css neutralises the motion.
  */
