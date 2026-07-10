@@ -1,0 +1,64 @@
+{
+  "round": 9,
+  "venueName": "World Wide Technology Raceway",
+  "trackType": "oval",
+  "trackGroup": "oval",
+  "race": {
+    "n": 25,
+    "mean_position_error": 7.04,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 0,
+    "spearman_correlation": 0.27,
+    "ndcg_at_5": 0.6819084362905123
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 6.88,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 1,
+    "spearman_correlation": 0.2946153846153846,
+    "ndcg_at_5": 0.6591024046572144
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.044487,
+        "logLoss": 0.234473
+      },
+      "podium": {
+        "brier": 0.156174,
+        "logLoss": 0.726892
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 9.44,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 2,
+      "within_5": 7,
+      "exact_matches": 0,
+      "spearman_correlation": -0.11,
+      "ndcg_at_5": 0.49507645466481265
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 6.32,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 10,
+      "within_5": 12,
+      "exact_matches": 1,
+      "spearman_correlation": 0.42230769230769233,
+      "ndcg_at_5": 0.6234663265427384
+    }
+  }
+}

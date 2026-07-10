@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-07-09T10:10:52+00:00",
+  "applied": true,
+  "trainingRounds": 11,
+  "strata": {
+    "street": [
+      "podium",
+      "top10",
+      "top6",
+      "win"
+    ],
+    "oval": [
+      "podium",
+      "top10",
+      "top6",
+      "win"
+    ],
+    "road": [
+      "podium",
+      "top10",
+      "top6",
+      "win"
+    ]
+  },
+  "dataLimitation": "Calibrated on real IndyCar results, stratified by track type (oval / road / street).",
+  "perMarket": {
+    "win": 283,
+    "podium": 283,
+    "top6": 283,
+    "top10": 283
+  }
+}

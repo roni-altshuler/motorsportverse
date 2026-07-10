@@ -55,9 +55,12 @@ motorsportverse/
 ├── projects/
 │   ├── f1-predictions       RaceIQ F1 — the flagship & reference implementation
 │   ├── f2-predictions       RaceIQ F2 — first sport on the shared core
-│   ├── f3-predictions       RaceIQ F3 — third series, built at F2 parity
-│   └── <8 more>             scaffolded series (IndyCar, WEC, MotoGP, Formula E,
-│                            NASCAR, WRC, IMSA, Le Mans) — DataSource+Predictor seams
+│   ├── f3-predictions       RaceIQ F3 — the golden-template new-series clone
+│   ├── formula-e-predictions RaceIQ Formula E — live product (pulselive API)
+│   ├── nascar-predictions   RaceIQ NASCAR — live product (DNF hazard, Chase title MC)
+│   ├── indycar-predictions  RaceIQ Indy — live product (curated history, dual-surface form)
+│   └── <5 more>             scaffolded series (WEC, MotoGP, WRC, IMSA, Le Mans)
+│                            — DataSource+Predictor seams ready to implement
 ├── registry/                the project catalog (JSON + schema; source of truth)
 ├── docs/                    unified documentation
 ├── scripts/                 registry builder + new-project scaffolder
@@ -79,7 +82,10 @@ is **MotorsportVerse**.
 | [RaceIQ F1](projects/f1-predictions/) | Formula 1 | **production** |
 | [RaceIQ F2](projects/f2-predictions/) | Formula 2 | **production** |
 | [RaceIQ F3](projects/f3-predictions/) | Formula 3 | **experimental** (real 2026 season; accuracy accruing) |
-| [IndyCar](projects/indycar-predictions/) · [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [Formula E](projects/formula-e-predictions/) · [NASCAR](projects/nascar-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
+| [RaceIQ Formula E](projects/formula-e-predictions/) | Formula E | **experimental** (site live; accuracy accruing) |
+| [RaceIQ NASCAR](projects/nascar-predictions/) | NASCAR Cup | **experimental** (site live; accuracy accruing) |
+| [RaceIQ Indy](projects/indycar-predictions/) | IndyCar | **experimental** (site live; accuracy accruing) |
+| [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
 
 Browse them all on the [live catalog](https://roni-altshuler.github.io/motorsportverse/#projects)
 or under the website's `/projects` directory. See the
@@ -96,6 +102,9 @@ single artifact:
 | RaceIQ F1 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f1/ |
 | RaceIQ F2 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f2/ |
 | RaceIQ F3 dashboard | https://roni-altshuler.github.io/motorsportverse/projects/f3/ |
+| RaceIQ Formula E dashboard | https://roni-altshuler.github.io/motorsportverse/projects/formula-e/ |
+| RaceIQ NASCAR dashboard | https://roni-altshuler.github.io/motorsportverse/projects/nascar/ |
+| RaceIQ Indy dashboard | https://roni-altshuler.github.io/motorsportverse/projects/indycar/ |
 
 ## Quick start
 
@@ -125,8 +134,10 @@ core seams) → **experimental** (runs end-to-end on real data, accuracy accruin
 → **production** (forward accuracy validated over real rounds). F2 proved the
 template; F3 followed it in a fraction of the time — the FIA feeder-series
 scraper, the spec-series skill model, and the entire probability/championship
-stack were reused outright. The eight scaffolded series are ready for the same
-path the moment a data feed is wired.
+stack were reused outright. Formula E, NASCAR and IndyCar each cloned that
+recipe onto a very different data reality (a live API, an unofficial JSON
+feed, and a hand-verified committed archive). The five scaffolded series are
+ready for the same path the moment a data feed is wired.
 
 ## Documentation
 

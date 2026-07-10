@@ -1,0 +1,64 @@
+{
+  "round": 10,
+  "venueName": "Road America",
+  "trackType": "road",
+  "trackGroup": "road_street",
+  "race": {
+    "n": 25,
+    "mean_position_error": 6.4,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 9,
+    "within_5": 13,
+    "exact_matches": 2,
+    "spearman_correlation": 0.34692307692307695,
+    "ndcg_at_5": 0.8507518581282503
+  },
+  "racePostQuali": {
+    "n": 25,
+    "mean_position_error": 6.24,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 8,
+    "within_5": 13,
+    "exact_matches": 3,
+    "spearman_correlation": 0.36,
+    "ndcg_at_5": 0.7144377785775293
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.04279,
+        "logLoss": 0.144821
+      },
+      "podium": {
+        "brier": 0.128729,
+        "logLoss": 0.443421
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 25,
+      "mean_position_error": 7.28,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 8,
+      "within_5": 13,
+      "exact_matches": 3,
+      "spearman_correlation": 0.09384615384615384,
+      "ndcg_at_5": 0.30997771304475463
+    },
+    "gridOrder": {
+      "n": 25,
+      "mean_position_error": 6.88,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 13,
+      "exact_matches": 2,
+      "spearman_correlation": 0.2569230769230769,
+      "ndcg_at_5": 0.7086022475230361
+    }
+  }
+}

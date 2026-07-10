@@ -3,8 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 2,
-    "experimental": 2,
-    "in-development": 7
+    "experimental": 4,
+    "in-development": 5
   },
   "projects": [
     {
@@ -149,6 +149,99 @@
       "added": "2026-06-15"
     },
     {
+      "slug": "indycar-predictions",
+      "name": "IndyCar Predictions",
+      "sport": "IndyCar",
+      "category": "open-wheel",
+      "maturity": "experimental",
+      "summary": "Race and championship forecasts for the NTT IndyCar Series.",
+      "description": "American open-wheel racing on the MotorsportVerse core, built snapshot-first: fifteen seasons of hand-verified historical data are the committed source of truth, and live updates land only behind strict parse-validation gates. The model's signature is a dual rating system that scores oval and road/street ability separately - validated to materially beat a single rating in walk-forward testing - alongside attrition modeling tuned to oval risk and Chevrolet/Honda engine effects. Covers the full 2026 season including the Indianapolis 500's 33-car field. Experimental while forward accuracy accrues over real rounds.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/indycar-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/indycar/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Hand-verified season archives 2012-2026 (committed, standings-checked)",
+        "indycar.com / Wikipedia race classifications (validated refresh path)"
+      ],
+      "models": [
+        "dual-surface-elo",
+        "dnf-hazard-composition",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "open-wheel",
+        "ovals",
+        "indy-500",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/indycar.png",
+      "accent": "#D31217",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "nascar-predictions",
+      "name": "NASCAR Predictions",
+      "sport": "NASCAR",
+      "category": "stock",
+      "maturity": "experimental",
+      "summary": "Race, stage, and Chase championship forecasts for the NASCAR Cup Series.",
+      "description": "Stock-car racing on the MotorsportVerse core: a field-relative driver-skill blend with per-track-type ratings (superspeedway, intermediate, short track, road course), attrition modeled as a first-class component of every forecast, and manufacturer effects. Title odds run through a format-aware championship simulator that encodes the 2026 Chase and the 2017-2025 elimination playoffs for historical backtesting, with the playoff projection gated on a passing seven-season backtest. Runs on the real 2026 Cup season: official results flow from NASCAR's public feeds into a committed, reviewable snapshot with per-stage results captured. Experimental while forward accuracy accrues over real rounds.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/nascar-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/nascar/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "NASCAR official feeds (results + stages, snapshotted to committed files)",
+        "Cup Series history 2018 onward (backfilled archive)"
+      ],
+      "models": [
+        "driver-skill-elo",
+        "track-type-ratings",
+        "dnf-hazard-composition",
+        "chase-championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "stock-car",
+        "ovals",
+        "stage-racing",
+        "chase-playoffs",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/nascar.png",
+      "accent": "#FFD659",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
       "slug": "f3-predictions",
       "name": "RaceIQ F3",
       "sport": "Formula 3",
@@ -227,33 +320,6 @@
       "added": "2026-06-15"
     },
     {
-      "slug": "indycar-predictions",
-      "name": "IndyCar Predictions",
-      "sport": "IndyCar",
-      "category": "open-wheel",
-      "maturity": "in-development",
-      "summary": "Race forecasts for the NTT IndyCar Series (road, street, oval).",
-      "description": "Scaffolded on the shared MotorsportVerse core: a IndyCar project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/indycar-predictions",
-      "website": "",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "IndyCar timing"
-      ],
-      "models": [],
-      "tags": [
-        "scaffolded"
-      ],
-      "icon": "/brand/sports/indycar.png",
-      "accent": "#D31217",
-      "uses_core": [
-        "calibration",
-        "eval"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
-    },
-    {
       "slug": "lemans-predictions",
       "name": "Le Mans Predictions",
       "sport": "24h of Le Mans",
@@ -308,33 +374,6 @@
       "maintainers": [],
       "added": "2026-06-15",
       "logo": "/brand/series/raceiq-motogp.png"
-    },
-    {
-      "slug": "nascar-predictions",
-      "name": "NASCAR Predictions",
-      "sport": "NASCAR",
-      "category": "stock",
-      "maturity": "in-development",
-      "summary": "Oval and road-course forecasts for the NASCAR Cup Series.",
-      "description": "Scaffolded on the shared MotorsportVerse core: a NASCAR project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/nascar-predictions",
-      "website": "",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "NASCAR API"
-      ],
-      "models": [],
-      "tags": [
-        "scaffolded"
-      ],
-      "icon": "/brand/sports/nascar.png",
-      "accent": "#FFD659",
-      "uses_core": [
-        "calibration",
-        "eval"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
     },
     {
       "slug": "wec-predictions",

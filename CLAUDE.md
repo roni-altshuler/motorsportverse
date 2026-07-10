@@ -20,24 +20,24 @@ projects/f1-predictions      flagship (flat src/ layout; post-quali overhaul: gr
 projects/f2-predictions      full product ("golden template" parity; reverse-top-10 sprint)
 projects/f3-predictions      full product — THE GOLDEN TEMPLATE new series clone
 projects/formula-e-predictions  full product, LIVE (pulselive API, doubleheaders, street/circuit strata)
-projects/nascar-predictions  backend complete (cf.nascar.com, DNF-composition model, 2026 Chase
-                             title MC + 2017-25 elimination format for backtests); website WIP
-projects/indycar-predictions curated verified history 2012-2026 committed; snapshot-primary
-                             pipeline WIP (no public API — committed data files are ground truth)
+projects/nascar-predictions  full product (cf.nascar.com, DNF-composition model, 2026 Chase
+                             title MC + 2017-25 elimination format for backtests)
+projects/indycar-predictions full product — snapshot-primary (no public API: curated verified
+                             history 2012-2026 IS the ground truth), dual oval/road-street form
 projects/<5 more>            scaffolded stubs (wec, motogp, wrc, imsa, lemans)
 website/                     ecosystem hub: landing + registry-driven catalog (Next.js)
 registry/projects/*.json     the catalog — source of truth for which sports exist + maturity
 scripts/                     build_registry*.{py,mjs}, sync_shared_ui.mjs (drift gate), new_project.py
 ```
 
-**Buildout status (2026-07-08):** the "complete the universe" effort is mid-flight on
-branch `feat/universe-phase0-f3-f2-parity`. Merged to main + live: F1 overhaul
-(winner-hit 77.8% w/ baselines), F2/F3 parity, Formula E (site + cron), NASCAR backend,
-IndyCar curated history. WIP commits on the feature branch (labeled `wip(...)`, tests
-partially failing by design): NASCAR website (~FE clone, retheme unfinished), IndyCar
-pipeline (src written, tests partial). Remaining after those: NASCAR CI wiring +
-registry (copy the Formula E recipe, commit `cfbbe0c`), IndyCar website + CI, docs
-refresh. Session-resume details live in the user's Claude memory.
+**Buildout status (2026-07-10):** Phase 0 ("complete the universe") is DONE on branch
+`feat/universe-phase0-f3-f2-parity`: F1 overhaul, F2/F3 parity, Formula E, NASCAR and
+IndyCar are all full products (backend + website + CI/cron wiring + registry), six
+sites ship in one Pages artifact. All seven test suites green; drift gate + registry
+validated. Next phases (user-directed): (1) drive every implemented project from
+experimental to production maturity per GOVERNANCE.md as forward accuracy accrues;
+(2) themed just-for-fun simulated projects (Cars-movie-inspired, kart-racer-inspired)
+with interactive synthetic data — no real series, clearly labeled.
 
 ## Environment & commands
 
@@ -94,8 +94,8 @@ from core (`calibration.plackett_luce_probabilities` / `sample_finishing_orders`
 `championship.project_championship`). **Leakage discipline is enforced at boundaries**:
 multi-round aggregation must call `motorsport_core.leakage.assert_prior_only(...)`.
 
-**The golden-template module set** (F3 is canonical; FE/NASCAR are the newest clones —
-prefer them as reference for single-race series): `config / datasource / model /
+**The golden-template module set** (F3 is canonical; NASCAR/IndyCar are the newest
+clones — prefer them as reference for single-race series; IndyCar for snapshot-primary): `config / datasource / model /
 ml_skill / position_head / pipeline / predict / export / refresh / race_weekend /
 forward_eval / historical_backtest / drift_report / promotion_decision / backfill /
 season_rollover / bootstrap_next_season` + `sources/{<live>_source,snapshot,synthetic,

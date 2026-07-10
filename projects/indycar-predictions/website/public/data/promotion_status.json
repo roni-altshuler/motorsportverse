@@ -1,0 +1,20 @@
+{
+  "decision": "hold",
+  "reason": "candidate within \u00b12% of production (mean change +1.1%)",
+  "roundsCompared": 8,
+  "meanProduction": 6.2364,
+  "meanCandidate": 6.3034,
+  "relativeChange": 0.0107,
+  "hasCandidate": true,
+  "candidate": "position-head",
+  "candidateFlag": "INDYCAR_USE_POSITION_HEAD",
+  "abVerdict": {
+    "recommendation": "production-better",
+    "basis": "race mean_position_error",
+    "positionHeadMeanError": 6.3034,
+    "productionMeanError": 6.2364,
+    "meanErrorDelta": 0.067,
+    "positionHeadWinnerHitRate": 0.125,
+    "productionWinnerHitRate": 0.125
+  }
+}

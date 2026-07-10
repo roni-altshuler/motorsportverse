@@ -1,0 +1,257 @@
+/*
+ * Design tokens — RaceIQ Indy (dark-only), a faithful port of the RaceIQ
+ * F1 flagship's Bugatti design system, re-themed to IndyCar's racing-red
+ * identity (registry accent #D31217).
+ *
+ * The one chromatic swap from F1: the F1 red accent (#E10600) becomes the
+ * IndyCar red (#D31217). Everything else mirrors F1 — pure-black canvas,
+ * white uppercase letterspaced display, serif body, monospace nav/buttons/
+ * captions, the glow stack, gradients, scanlines, motion tokens.
+ *
+ * #D31217 is a DEEP accent on a black canvas — the same problem family as
+ * FE's deep blue, the opposite of NASCAR's near-white yellow. The derived
+ * tokens follow: `-hover` and `-bright` LIFT the base (a deep red darkened
+ * further disappears into black), small accent text renders in the `-bright`
+ * variant for WCAG headroom, and every "text on accent" foreground
+ * (--accent-ink, --accent-live-fg) is white — light text on red.
+ *
+ * Variable NAMES are preserved verbatim from F1 (incl. the legacy
+ * --accent-f1-red family, re-pointed to IndyCar red) so the ported
+ * components keep compiling without edits. The team-color block at the
+ * bottom is the 2026 IndyCar paddock.
+ */
+
+:root,
+[data-theme="dark"] {
+  /* ── Bugatti palette ─────────────────────────────────────────────── */
+  --canvas:             #000000;
+  --surface-soft:       #0d0d0d;
+  --surface-card:       #141414;
+  --surface-elevated-b: #1f1f1f;
+  --hairline:           #262626;
+  --hairline-strong:    #3a3a3a;
+  --ink:                #ffffff;
+  --body:               #cccccc;
+  --body-strong:        #e6e6e6;
+  --muted:              #999999;
+  --muted-soft:         #666666;
+  --link:               #c3d9f3;
+  --on-primary:         #000000;
+  --on-photo:           #ffffff;
+  --warning:            #d4a017;
+  --success:            #5fa657;
+
+  /* ── Legacy semantic names re-pointed to Bugatti values ──────────── */
+  --bg:                 #000000;          /* page background = canvas */
+  --bg-elevated:        #0d0d0d;          /* surface-soft */
+  --surface:            #141414;          /* surface-card */
+  --surface-elevated:   #1f1f1f;          /* one notch off black */
+  --surface-overlay:    #141414;          /* no glassmorphism */
+
+  --border:             #262626;          /* hairline */
+  --border-strong:      #3a3a3a;          /* hairline-strong */
+  --border-accent:      #3a3a3a;
+
+  --text-primary:       #ffffff;          /* ink */
+  --text-secondary:     #e6e6e6;          /* body-strong */
+  --text-muted:         #999999;          /* muted */
+  --text-inverse:       #000000;
+
+  /* IndyCar red accent — the single chromatic swap from F1's red.
+   * The --accent-f1-red family NAMES are kept so ported F1 components resolve;
+   * the VALUES are the registry's IndyCar red (#D31217). A deep accent on
+   * black: hover LIFTS, and text placed ON the accent is white. */
+  --accent-f1-red:        #D31217;        /* IndyCar red (registry accent) */
+  --accent-f1-red-hover:  #EF3B40;        /* hover lifts — darkening a deep red vanishes */
+  --accent-f1-red-bright: #FF6B6E;        /* small-text rendition — WCAG headroom on black */
+  --accent-f1-red-soft:   rgba(211, 18, 23, 0.18);
+
+  /* Mirror under neutral names too (some ported markup uses --accent). */
+  --accent:             var(--accent-f1-red);
+  --accent-strong:      var(--accent-f1-red-hover);
+  --accent-ink:         #ffffff;          /* white text on red — never dark */
+
+  /* "active" semantics — IndyCar red, F1-style. Foregrounds stay white:
+   * red chips carry light text. */
+  --accent-live:        var(--accent-f1-red);
+  --accent-live-fg:     #ffffff;
+  --accent-live-hover:  var(--accent-f1-red-hover);
+  --accent-positive:    #5fa657;          /* success */
+  --accent-positive-fg: #000000;
+  --accent-negative:    var(--accent-f1-red); /* podium-miss arrows read red */
+  --accent-negative-fg: #ffffff;
+  --accent-info:        #c3d9f3;          /* link ice-blue */
+  --accent-info-fg:     #000000;
+  --accent-podium-1:    #FFD166;          /* positional chromatic signal — kept */
+  --accent-podium-2:    #C5CCD3;
+  --accent-podium-3:    #CD7F32;
+
+  /* ── Elevation — all shadows nuked (Bugatti default) ─────────────── */
+  --shadow-sm:  none;
+  --shadow:     none;
+  --shadow-lg:  none;
+  --shadow-elevated: none;
+  --shadow-hud:      none;
+
+  /* ── Glow stack — re-armed for live + podium + team surfaces (red). */
+  --glow-accent:  none;
+  --glow-purple:  none;
+  --glow-live:    0 0 14px rgba(211, 18, 23, 0.50), 0 0 32px rgba(211, 18, 23, 0.25);
+  --glow-podium:  0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-podium-gold: 0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-team:    0 0 18px color-mix(in srgb, var(--team-color, #ffffff) 50%, transparent);
+
+  /* ── Magic-UI HSL color triplets (used by gradient primitives) ────── */
+  --color-1: 358 84% 45%;    /* IndyCar red (#D31217) */
+  --color-2: 358 100% 71%;   /* red, lifted */
+  --color-3: 28 92% 55%;     /* papaya (McLaren orange) */
+  --color-4: 213 85% 55%;    /* speedway blue */
+  --color-5: 150 70% 45%;    /* victory-lane green */
+
+  /* ── Gradients — decorative stack (red scrim) ────────────── */
+  --gradient-paddock:   linear-gradient(180deg, rgba(211,18,23,0.12) 0%, transparent 55%);
+  --gradient-hud-frame: linear-gradient(180deg, var(--surface-soft), var(--surface-card));
+  --gradient-scanline:  repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+
+  /* ── Radius — Bugatti flat; cards get one notch of softness. ──────── */
+  --radius-sm:   0px;
+  --radius:      0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  --radius-card: 4px;
+  /* Some pre-existing F3 markup uses --radius-md; keep it flat. */
+  --radius-md:   4px;
+
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+  --space-section: 120px;
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  40px;
+  --space-12: 64px;
+
+  /* ── HUD palette ─────────────────────────────────────────────────── */
+  --hud-purple:        var(--muted);
+  --hud-purple-soft:   rgba(255, 255, 255, 0.06);
+  --hud-yellow:        var(--warning);
+  --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
+  --hud-red-light:     var(--accent-f1-red-bright);
+  --hud-red-soft:      var(--accent-f1-red-soft);
+  --hud-green:         var(--success);
+  --hud-cyan:          var(--link);
+  --hud-champagne:     var(--accent-podium-1);
+
+  /* ── Motion tokens ───────────────────────────────────────────────── */
+  --dur-instant: 80ms;
+  --dur-snap:    180ms;
+  --dur-base:    320ms;
+  --dur-glide:   520ms;
+  --dur-cinema:  900ms;
+  --ease-pit:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Font bindings (resolved by next/font in layout.tsx) ─────────── */
+  --font-display: var(--font-saira), "Saira Condensed", "Impact", sans-serif;
+  --font-serif:   var(--font-garamond), "EB Garamond", "Garamond", "Times New Roman", serif;
+  --font-mono:    var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:    var(--font-display);
+
+  /* ── shadcn aliases ─────────────────────────────────────────────── */
+  --background:           var(--bg);
+  --foreground:           var(--text-primary);
+  --card:                 var(--surface);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--surface-elevated);
+  --popover-foreground:   var(--text-primary);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--on-primary);
+  --secondary:            var(--surface-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted-bg:             var(--surface-elevated);
+  --muted-foreground:     var(--text-muted);
+  --accent-foreground:    var(--accent-ink);
+  --destructive:          var(--accent-negative);
+  --destructive-foreground: var(--accent-negative-fg);
+  --input:                var(--border);
+  --ring:                 var(--ink);
+
+  /* Pre-existing ecosystem token names — kept mapped so older markup
+   * (page.tsx, StandingsTabs.tsx, etc.) that used --ink-muted/--ink-dim/
+   * --surface-2/--surface-3 keeps resolving during the port. */
+  --ink-muted:   var(--body);
+  --ink-dim:     var(--muted);
+  --surface-2:   var(--surface-elevated);
+  --surface-3:   var(--surface-elevated-b);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Team-color palette — the 2026 IndyCar paddock. The only chromatic
+ * exception. Resolved via `data-team="..."` attribute or inline
+ * `style={{ "--team-color": entry.teamColor }}`. Values come from the
+ * IndyCar export's per-driver/team `teamColor` (config.TEAMS); these match.
+ * Engine-supplier accents (Chevrolet gold / Honda red) ship in the data's
+ * engineStandings and lib/teams.ts.
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  --team-ganassi:     #D31217;
+  --team-penske:      #FFD100;
+  --team-mclaren:     #FF8000;
+  --team-andretti:    #0A66C2;
+  --team-shank:       #E5398D;
+  --team-rll:         #1D449B;
+  --team-ecr:         #8626EC;
+  --team-foyt:        #B22222;
+  --team-coyne:       #5A5A5A;
+  --team-juncos:      #00A19C;
+  --team-dreyer:      #777777;
+  --team-abel:        #2E8B57;
+  --team-hmd:         #101820;
+}
+
+[data-team="Chip Ganassi Racing"]             { --team-color: var(--team-ganassi); }
+[data-team="Team Penske"]                     { --team-color: var(--team-penske); }
+[data-team="Arrow McLaren"]                   { --team-color: var(--team-mclaren); }
+[data-team="Andretti Global"]                 { --team-color: var(--team-andretti); }
+[data-team="Meyer Shank Racing"]              { --team-color: var(--team-shank); }
+[data-team="Rahal Letterman Lanigan Racing"]  { --team-color: var(--team-rll); }
+[data-team="ECR"]                             { --team-color: var(--team-ecr); }
+[data-team="A.J. Foyt Enterprises"]           { --team-color: var(--team-foyt); }
+[data-team="Dale Coyne Racing"]               { --team-color: var(--team-coyne); }
+[data-team="Juncos Hollinger Racing"]         { --team-color: var(--team-juncos); }
+[data-team="Dreyer & Reinbold Racing"]        { --team-color: var(--team-dreyer); }
+[data-team="Abel Motorsports"]                { --team-color: var(--team-abel); }
+[data-team="HMD Motorsports"]                 { --team-color: var(--team-hmd); }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Legacy-compat aliases.
+ * ───────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-card:        var(--surface-card);
+  --bg-card-solid:  var(--surface-card);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-card);
+  --text:           var(--text-primary);
+  --glass-border:   var(--hairline);
+  --glass-bg:       transparent;
+}
+
+/* Tabular-figure utility for numeric / timing displays. */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}

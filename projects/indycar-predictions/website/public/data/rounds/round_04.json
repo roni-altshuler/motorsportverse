@@ -1,0 +1,823 @@
+{
+  "round": 4,
+  "season": 2026,
+  "venueKey": "barber-motorsports-park",
+  "venueName": "Barber Motorsports Park",
+  "raceName": "Children's of Alabama Indy Grand Prix",
+  "country": "United States",
+  "trackType": "road",
+  "trackGroup": "road_street",
+  "isIndy500": false,
+  "raceDate": "2026-03-29",
+  "completed": true,
+  "dataSource": "snapshot",
+  "modelConfig": {
+    "positionModel": {
+      "applied": false
+    },
+    "dnfComposition": {
+      "applied": true
+    },
+    "dualTrackElo": {
+      "applied": true,
+      "group": "road_street"
+    }
+  },
+  "race": {
+    "raceType": "race",
+    "grid": [
+      {
+        "position": 1,
+        "code": "KYKIRKWOOD",
+        "name": "Kyle Kirkwood",
+        "team": "Andretti Global"
+      },
+      {
+        "position": 2,
+        "code": "ALPALOU",
+        "name": "\u00c1lex Palou",
+        "team": "Chip Ganassi Racing"
+      },
+      {
+        "position": 3,
+        "code": "PAWARD",
+        "name": "Pato O'Ward",
+        "team": "Arrow McLaren"
+      },
+      {
+        "position": 4,
+        "code": "CHLUNDGAARD",
+        "name": "Christian Lundgaard",
+        "team": "Arrow McLaren"
+      },
+      {
+        "position": 5,
+        "code": "SCMCLAUGHLIN",
+        "name": "Scott McLaughlin",
+        "team": "Team Penske"
+      },
+      {
+        "position": 6,
+        "code": "MAERICSSON",
+        "name": "Marcus Ericsson",
+        "team": "Andretti Global"
+      },
+      {
+        "position": 7,
+        "code": "DAMALUKAS",
+        "name": "David Malukas",
+        "team": "Team Penske"
+      },
+      {
+        "position": 8,
+        "code": "MAARMSTRONG",
+        "name": "Marcus Armstrong",
+        "team": "Meyer Shank Racing"
+      },
+      {
+        "position": 9,
+        "code": "JONEWGARDEN",
+        "name": "Josef Newgarden",
+        "team": "Team Penske"
+      },
+      {
+        "position": 10,
+        "code": "ALROSSI",
+        "name": "Alexander Rossi",
+        "team": "ECR"
+      },
+      {
+        "position": 11,
+        "code": "WIPOWER",
+        "name": "Will Power",
+        "team": "Andretti Global"
+      },
+      {
+        "position": 12,
+        "code": "SCDIXON",
+        "name": "Scott Dixon",
+        "team": "Chip Ganassi Racing"
+      },
+      {
+        "position": 13,
+        "code": "DEHAUGER",
+        "name": "Dennis Hauger",
+        "team": "Dale Coyne Racing"
+      },
+      {
+        "position": 14,
+        "code": "CACOLLET",
+        "name": "Caio Collet",
+        "team": "A.J. Foyt Enterprises"
+      },
+      {
+        "position": 15,
+        "code": "FEROSENQVIST",
+        "name": "Felix Rosenqvist",
+        "team": "Meyer Shank Racing"
+      },
+      {
+        "position": 16,
+        "code": "RIVEEKAY",
+        "name": "Rinus VeeKay",
+        "team": "Juncos Hollinger Racing"
+      },
+      {
+        "position": 17,
+        "code": "LOFOSTER",
+        "name": "Louis Foster",
+        "team": "Rahal Letterman Lanigan Racing"
+      },
+      {
+        "position": 18,
+        "code": "KYSIMPSON",
+        "name": "Kyffin Simpson",
+        "team": "Chip Ganassi Racing"
+      },
+      {
+        "position": 19,
+        "code": "GRRAHAL",
+        "name": "Graham Rahal",
+        "team": "Rahal Letterman Lanigan Racing"
+      },
+      {
+        "position": 20,
+        "code": "SAFERRUCCI",
+        "name": "Santino Ferrucci",
+        "team": "A.J. Foyt Enterprises"
+      },
+      {
+        "position": 21,
+        "code": "ROGROSJEAN",
+        "name": "Romain Grosjean",
+        "team": "Dale Coyne Racing"
+      },
+      {
+        "position": 22,
+        "code": "CHRASMUSSEN",
+        "name": "Christian Rasmussen",
+        "team": "ECR"
+      },
+      {
+        "position": 23,
+        "code": "STROBB",
+        "name": "Sting Ray Robb",
+        "team": "Juncos Hollinger Racing"
+      },
+      {
+        "position": 24,
+        "code": "NOSIEGEL",
+        "name": "Nolan Siegel",
+        "team": "Arrow McLaren"
+      },
+      {
+        "position": 25,
+        "code": "MISCHUMACHER",
+        "name": "Mick Schumacher",
+        "team": "Rahal Letterman Lanigan Racing"
+      }
+    ],
+    "classification": [
+      {
+        "position": 1,
+        "code": "KYKIRKWOOD",
+        "name": "Kyle Kirkwood",
+        "team": "Andretti Global",
+        "engine": "Honda",
+        "teamColor": "#0A66C2",
+        "predictedValue": 88.015,
+        "pWin": 0.3752,
+        "pPodium": 0.739,
+        "pTop6": 0.8745,
+        "pTop10": 0.886,
+        "pDnf": 0.1131,
+        "meanFinish": 4.6,
+        "finishRangeLow": 1,
+        "finishRangeHigh": 22,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/KYKIRKWOOD.webp",
+        "actualPosition": 5
+      },
+      {
+        "position": 2,
+        "code": "PAWARD",
+        "name": "Pato O'Ward",
+        "team": "Arrow McLaren",
+        "engine": "Chevrolet",
+        "teamColor": "#FF8000",
+        "predictedValue": 88.569,
+        "pWin": 0.1207,
+        "pPodium": 0.4143,
+        "pTop6": 0.7535,
+        "pTop10": 0.8965,
+        "pDnf": 0.099,
+        "meanFinish": 5.98,
+        "finishRangeLow": 1,
+        "finishRangeHigh": 11,
+        "confidence": "High",
+        "headshotUrl": "/headshots/PAWARD.webp",
+        "actualPosition": 17
+      },
+      {
+        "position": 3,
+        "code": "ALPALOU",
+        "name": "\u00c1lex Palou",
+        "team": "Chip Ganassi Racing",
+        "engine": "Honda",
+        "teamColor": "#D31217",
+        "predictedValue": 88.455,
+        "pWin": 0.144,
+        "pPodium": 0.4567,
+        "pTop6": 0.7765,
+        "pTop10": 0.8678,
+        "pDnf": 0.1272,
+        "meanFinish": 6.23,
+        "finishRangeLow": 1,
+        "finishRangeHigh": 22,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/ALPALOU.webp",
+        "actualPosition": 1
+      },
+      {
+        "position": 4,
+        "code": "CHLUNDGAARD",
+        "name": "Christian Lundgaard",
+        "team": "Arrow McLaren",
+        "engine": "Chevrolet",
+        "teamColor": "#FF8000",
+        "predictedValue": 88.811,
+        "pWin": 0.0823,
+        "pPodium": 0.2903,
+        "pTop6": 0.6358,
+        "pTop10": 0.885,
+        "pDnf": 0.099,
+        "meanFinish": 6.67,
+        "finishRangeLow": 2,
+        "finishRangeHigh": 11,
+        "confidence": "High",
+        "headshotUrl": "/headshots/CHLUNDGAARD.webp",
+        "actualPosition": 2
+      },
+      {
+        "position": 5,
+        "code": "DAMALUKAS",
+        "name": "David Malukas",
+        "team": "Team Penske",
+        "engine": "Chevrolet",
+        "teamColor": "#FFD100",
+        "predictedValue": 89.085,
+        "pWin": 0.046,
+        "pPodium": 0.1678,
+        "pTop6": 0.4417,
+        "pTop10": 0.7953,
+        "pDnf": 0.1131,
+        "meanFinish": 8.37,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 21,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/DAMALUKAS.webp",
+        "actualPosition": 4
+      },
+      {
+        "position": 6,
+        "code": "SCMCLAUGHLIN",
+        "name": "Scott McLaughlin",
+        "team": "Team Penske",
+        "engine": "Chevrolet",
+        "teamColor": "#FFD100",
+        "predictedValue": 88.947,
+        "pWin": 0.053,
+        "pPodium": 0.2125,
+        "pTop6": 0.5172,
+        "pTop10": 0.8,
+        "pDnf": 0.1412,
+        "meanFinish": 8.37,
+        "finishRangeLow": 2,
+        "finishRangeHigh": 23,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/SCMCLAUGHLIN.webp",
+        "actualPosition": 16
+      },
+      {
+        "position": 7,
+        "code": "MAARMSTRONG",
+        "name": "Marcus Armstrong",
+        "team": "Meyer Shank Racing",
+        "engine": "Honda",
+        "teamColor": "#E5398D",
+        "predictedValue": 89.157,
+        "pWin": 0.0343,
+        "pPodium": 0.151,
+        "pTop6": 0.4148,
+        "pTop10": 0.783,
+        "pDnf": 0.099,
+        "meanFinish": 8.5,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 15,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/MAARMSTRONG.webp",
+        "actualPosition": 6
+      },
+      {
+        "position": 8,
+        "code": "MAERICSSON",
+        "name": "Marcus Ericsson",
+        "team": "Andretti Global",
+        "engine": "Honda",
+        "teamColor": "#0A66C2",
+        "predictedValue": 89.067,
+        "pWin": 0.0467,
+        "pPodium": 0.1847,
+        "pTop6": 0.4525,
+        "pTop10": 0.768,
+        "pDnf": 0.1412,
+        "meanFinish": 8.79,
+        "finishRangeLow": 2,
+        "finishRangeHigh": 23,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/MAERICSSON.webp",
+        "actualPosition": 9
+      },
+      {
+        "position": 9,
+        "code": "JONEWGARDEN",
+        "name": "Josef Newgarden",
+        "team": "Team Penske",
+        "engine": "Chevrolet",
+        "teamColor": "#FFD100",
+        "predictedValue": 89.428,
+        "pWin": 0.0238,
+        "pPodium": 0.0927,
+        "pTop6": 0.2457,
+        "pTop10": 0.5905,
+        "pDnf": 0.1553,
+        "meanFinish": 10.81,
+        "finishRangeLow": 4,
+        "finishRangeHigh": 23,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/JONEWGARDEN.webp",
+        "actualPosition": 10
+      },
+      {
+        "position": 10,
+        "code": "SCDIXON",
+        "name": "Scott Dixon",
+        "team": "Chip Ganassi Racing",
+        "engine": "Honda",
+        "teamColor": "#D31217",
+        "predictedValue": 89.664,
+        "pWin": 0.0147,
+        "pPodium": 0.054,
+        "pTop6": 0.1655,
+        "pTop10": 0.489,
+        "pDnf": 0.099,
+        "meanFinish": 11.11,
+        "finishRangeLow": 5,
+        "finishRangeHigh": 17,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/SCDIXON.webp",
+        "actualPosition": 7
+      },
+      {
+        "position": 11,
+        "code": "ALROSSI",
+        "name": "Alexander Rossi",
+        "team": "ECR",
+        "engine": "Chevrolet",
+        "teamColor": "#8626EC",
+        "predictedValue": 89.615,
+        "pWin": 0.0173,
+        "pPodium": 0.0663,
+        "pTop6": 0.188,
+        "pTop10": 0.5082,
+        "pDnf": 0.1272,
+        "meanFinish": 11.2,
+        "finishRangeLow": 5,
+        "finishRangeHigh": 22,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/ALROSSI.webp",
+        "actualPosition": 11
+      },
+      {
+        "position": 12,
+        "code": "WIPOWER",
+        "name": "Will Power",
+        "team": "Andretti Global",
+        "engine": "Honda",
+        "teamColor": "#0A66C2",
+        "predictedValue": 89.63,
+        "pWin": 0.015,
+        "pPodium": 0.0553,
+        "pTop6": 0.1658,
+        "pTop10": 0.4565,
+        "pDnf": 0.1694,
+        "meanFinish": 11.96,
+        "finishRangeLow": 5,
+        "finishRangeHigh": 23,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/WIPOWER.webp",
+        "actualPosition": 12
+      },
+      {
+        "position": 13,
+        "code": "CACOLLET",
+        "name": "Caio Collet",
+        "team": "A.J. Foyt Enterprises",
+        "engine": "Chevrolet",
+        "teamColor": "#B22222",
+        "predictedValue": 90.165,
+        "pWin": 0.006,
+        "pPodium": 0.0198,
+        "pTop6": 0.0607,
+        "pTop10": 0.2193,
+        "pDnf": 0.1076,
+        "meanFinish": 13.83,
+        "finishRangeLow": 8,
+        "finishRangeHigh": 21,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/CACOLLET.webp",
+        "actualPosition": 21
+      },
+      {
+        "position": 14,
+        "code": "DEHAUGER",
+        "name": "Dennis Hauger",
+        "team": "Dale Coyne Racing",
+        "engine": "Honda",
+        "teamColor": "#5A5A5A",
+        "predictedValue": 90.165,
+        "pWin": 0.0045,
+        "pPodium": 0.018,
+        "pTop6": 0.0645,
+        "pTop10": 0.2245,
+        "pDnf": 0.1076,
+        "meanFinish": 13.9,
+        "finishRangeLow": 8,
+        "finishRangeHigh": 21,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/DEHAUGER.webp",
+        "actualPosition": 23
+      },
+      {
+        "position": 15,
+        "code": "FEROSENQVIST",
+        "name": "Felix Rosenqvist",
+        "team": "Meyer Shank Racing",
+        "engine": "Honda",
+        "teamColor": "#E5398D",
+        "predictedValue": 90.277,
+        "pWin": 0.003,
+        "pPodium": 0.0165,
+        "pTop6": 0.059,
+        "pTop10": 0.1865,
+        "pDnf": 0.1131,
+        "meanFinish": 14.45,
+        "finishRangeLow": 8,
+        "finishRangeHigh": 22,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/FEROSENQVIST.webp",
+        "actualPosition": 13
+      },
+      {
+        "position": 16,
+        "code": "RIVEEKAY",
+        "name": "Rinus VeeKay",
+        "team": "Juncos Hollinger Racing",
+        "engine": "Chevrolet",
+        "teamColor": "#00A19C",
+        "predictedValue": 90.362,
+        "pWin": 0.0027,
+        "pPodium": 0.0138,
+        "pTop6": 0.0447,
+        "pTop10": 0.1467,
+        "pDnf": 0.1131,
+        "meanFinish": 14.99,
+        "finishRangeLow": 9,
+        "finishRangeHigh": 22,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/RIVEEKAY.webp",
+        "actualPosition": 14
+      },
+      {
+        "position": 17,
+        "code": "GRRAHAL",
+        "name": "Graham Rahal",
+        "team": "Rahal Letterman Lanigan Racing",
+        "engine": "Honda",
+        "teamColor": "#1D449B",
+        "predictedValue": 90.532,
+        "pWin": 0.003,
+        "pPodium": 0.0125,
+        "pTop6": 0.0362,
+        "pTop10": 0.1205,
+        "pDnf": 0.085,
+        "meanFinish": 15.47,
+        "finishRangeLow": 10,
+        "finishRangeHigh": 21,
+        "confidence": "High",
+        "headshotUrl": "/headshots/GRRAHAL.webp",
+        "actualPosition": 3
+      },
+      {
+        "position": 18,
+        "code": "KYSIMPSON",
+        "name": "Kyffin Simpson",
+        "team": "Chip Ganassi Racing",
+        "engine": "Honda",
+        "teamColor": "#D31217",
+        "predictedValue": 90.526,
+        "pWin": 0.0037,
+        "pPodium": 0.0112,
+        "pTop6": 0.0372,
+        "pTop10": 0.1235,
+        "pDnf": 0.1131,
+        "meanFinish": 15.64,
+        "finishRangeLow": 10,
+        "finishRangeHigh": 22,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/KYSIMPSON.webp",
+        "actualPosition": 20
+      },
+      {
+        "position": 19,
+        "code": "LOFOSTER",
+        "name": "Louis Foster",
+        "team": "Rahal Letterman Lanigan Racing",
+        "engine": "Honda",
+        "teamColor": "#1D449B",
+        "predictedValue": 90.437,
+        "pWin": 0.0018,
+        "pPodium": 0.011,
+        "pTop6": 0.0312,
+        "pTop10": 0.127,
+        "pDnf": 0.1553,
+        "meanFinish": 15.72,
+        "finishRangeLow": 10,
+        "finishRangeHigh": 23,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/LOFOSTER.webp",
+        "actualPosition": 25
+      },
+      {
+        "position": 20,
+        "code": "SAFERRUCCI",
+        "name": "Santino Ferrucci",
+        "team": "A.J. Foyt Enterprises",
+        "engine": "Chevrolet",
+        "teamColor": "#B22222",
+        "predictedValue": 91.072,
+        "pWin": 0.0003,
+        "pPodium": 0.0037,
+        "pTop6": 0.0127,
+        "pTop10": 0.044,
+        "pDnf": 0.1272,
+        "meanFinish": 18.17,
+        "finishRangeLow": 13,
+        "finishRangeHigh": 23,
+        "confidence": "High",
+        "headshotUrl": "/headshots/SAFERRUCCI.webp",
+        "actualPosition": 8
+      },
+      {
+        "position": 21,
+        "code": "ROGROSJEAN",
+        "name": "Romain Grosjean",
+        "team": "Dale Coyne Racing",
+        "engine": "Honda",
+        "teamColor": "#5A5A5A",
+        "predictedValue": 91.099,
+        "pWin": 0.0003,
+        "pPodium": 0.003,
+        "pTop6": 0.0097,
+        "pTop10": 0.0355,
+        "pDnf": 0.1676,
+        "meanFinish": 18.55,
+        "finishRangeLow": 14,
+        "finishRangeHigh": 23,
+        "confidence": "High",
+        "headshotUrl": "/headshots/ROGROSJEAN.webp",
+        "actualPosition": 15
+      },
+      {
+        "position": 22,
+        "code": "STROBB",
+        "name": "Sting Ray Robb",
+        "team": "Juncos Hollinger Racing",
+        "engine": "Chevrolet",
+        "teamColor": "#00A19C",
+        "predictedValue": 91.586,
+        "pWin": 0.0013,
+        "pPodium": 0.0025,
+        "pTop6": 0.0037,
+        "pTop10": 0.0145,
+        "pDnf": 0.1412,
+        "meanFinish": 19.92,
+        "finishRangeLow": 16,
+        "finishRangeHigh": 24,
+        "confidence": "High",
+        "headshotUrl": "/headshots/STROBB.webp",
+        "actualPosition": 22
+      },
+      {
+        "position": 23,
+        "code": "CHRASMUSSEN",
+        "name": "Christian Rasmussen",
+        "team": "ECR",
+        "engine": "Chevrolet",
+        "teamColor": "#8626EC",
+        "predictedValue": 91.574,
+        "pWin": 0.0,
+        "pPodium": 0.0018,
+        "pTop6": 0.004,
+        "pTop10": 0.0163,
+        "pDnf": 0.1553,
+        "meanFinish": 19.99,
+        "finishRangeLow": 16,
+        "finishRangeHigh": 24,
+        "confidence": "High",
+        "headshotUrl": "/headshots/CHRASMUSSEN.webp",
+        "actualPosition": 19
+      },
+      {
+        "position": 24,
+        "code": "NOSIEGEL",
+        "name": "Nolan Siegel",
+        "team": "Arrow McLaren",
+        "engine": "Chevrolet",
+        "teamColor": "#FF8000",
+        "predictedValue": 91.759,
+        "pWin": 0.0003,
+        "pPodium": 0.0013,
+        "pTop6": 0.003,
+        "pTop10": 0.0105,
+        "pDnf": 0.1834,
+        "meanFinish": 20.66,
+        "finishRangeLow": 17,
+        "finishRangeHigh": 24,
+        "confidence": "High",
+        "headshotUrl": "/headshots/NOSIEGEL.webp",
+        "actualPosition": 18
+      },
+      {
+        "position": 25,
+        "code": "MISCHUMACHER",
+        "name": "Mick Schumacher",
+        "team": "Rahal Letterman Lanigan Racing",
+        "engine": "Honda",
+        "teamColor": "#1D449B",
+        "predictedValue": 92.003,
+        "pWin": 0.0003,
+        "pPodium": 0.0005,
+        "pTop6": 0.0015,
+        "pTop10": 0.0055,
+        "pDnf": 0.1376,
+        "meanFinish": 21.12,
+        "finishRangeLow": 18,
+        "finishRangeHigh": 24,
+        "confidence": "High",
+        "headshotUrl": "/headshots/MISCHUMACHER.webp",
+        "actualPosition": 24
+      }
+    ],
+    "actualResults": [
+      {
+        "position": 1,
+        "code": "ALPALOU"
+      },
+      {
+        "position": 2,
+        "code": "CHLUNDGAARD"
+      },
+      {
+        "position": 3,
+        "code": "GRRAHAL"
+      },
+      {
+        "position": 4,
+        "code": "DAMALUKAS"
+      },
+      {
+        "position": 5,
+        "code": "KYKIRKWOOD"
+      },
+      {
+        "position": 6,
+        "code": "MAARMSTRONG"
+      },
+      {
+        "position": 7,
+        "code": "SCDIXON"
+      },
+      {
+        "position": 8,
+        "code": "SAFERRUCCI"
+      },
+      {
+        "position": 9,
+        "code": "MAERICSSON"
+      },
+      {
+        "position": 10,
+        "code": "JONEWGARDEN"
+      },
+      {
+        "position": 11,
+        "code": "ALROSSI"
+      },
+      {
+        "position": 12,
+        "code": "WIPOWER"
+      },
+      {
+        "position": 13,
+        "code": "FEROSENQVIST"
+      },
+      {
+        "position": 14,
+        "code": "RIVEEKAY"
+      },
+      {
+        "position": 15,
+        "code": "ROGROSJEAN"
+      },
+      {
+        "position": 16,
+        "code": "SCMCLAUGHLIN"
+      },
+      {
+        "position": 17,
+        "code": "PAWARD"
+      },
+      {
+        "position": 18,
+        "code": "NOSIEGEL"
+      },
+      {
+        "position": 19,
+        "code": "CHRASMUSSEN"
+      },
+      {
+        "position": 20,
+        "code": "KYSIMPSON"
+      },
+      {
+        "position": 21,
+        "code": "CACOLLET"
+      },
+      {
+        "position": 22,
+        "code": "STROBB"
+      },
+      {
+        "position": 23,
+        "code": "DEHAUGER"
+      },
+      {
+        "position": 24,
+        "code": "MISCHUMACHER"
+      },
+      {
+        "position": 25,
+        "code": "LOFOSTER"
+      }
+    ],
+    "actualStatus": {
+      "ALPALOU": "1:45:57.8223",
+      "CHLUNDGAARD": "1:46:11.0998",
+      "GRRAHAL": "1:46:12.1100",
+      "DAMALUKAS": "1:46:12.8180",
+      "KYKIRKWOOD": "1:46:15.6193",
+      "MAARMSTRONG": "1:46:18.5628",
+      "SCDIXON": "1:46:22.5682",
+      "SAFERRUCCI": "1:46:39.3924",
+      "MAERICSSON": "1:46:41.6816",
+      "JONEWGARDEN": "1:46:49.7199",
+      "ALROSSI": "1:46:50.8052",
+      "WIPOWER": "1:46:51.8701",
+      "FEROSENQVIST": "1:46:52.3249",
+      "RIVEEKAY": "1:46:52.7449",
+      "ROGROSJEAN": "1:46:56.6806",
+      "SCMCLAUGHLIN": "1:46:57.9601",
+      "PAWARD": "1:46:58.8915",
+      "NOSIEGEL": "1:47:00.2294",
+      "CHRASMUSSEN": "1:47:01.0906",
+      "KYSIMPSON": "1:47:01.8379",
+      "CACOLLET": "1:47:04.1248",
+      "STROBB": "1:46:06.8047",
+      "DEHAUGER": "1:46:07.4969",
+      "MISCHUMACHER": "1:46:10.7110",
+      "LOFOSTER": "1:46:35.2884"
+    },
+    "accuracy": {
+      "n": 25,
+      "mean_position_error": 4.48,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 14,
+      "within_5": 16,
+      "exact_matches": 3,
+      "spearman_correlation": 0.6215384615384615,
+      "ndcg_at_5": 0.8308147179915536
+    }
+  }
+}
