@@ -2,8 +2,7 @@
   "generated_by": "motorsportverse registry build",
   "count": 11,
   "maturity_counts": {
-    "production": 2,
-    "experimental": 4,
+    "production": 6,
     "in-development": 5
   },
   "projects": [
@@ -49,6 +48,145 @@
           "github": "roni-altshuler"
         }
       ],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "formula-e-predictions",
+      "name": "Formula E Predictions",
+      "sport": "Formula E",
+      "category": "electric",
+      "maturity": "production",
+      "summary": "Race and championship forecasts for the ABB FIA Formula E World Championship.",
+      "description": "The first all-electric series on the MotorsportVerse core: a driver-forward skill blend (Elo seeded from 2019+ seasons + finishing history + optional gradient-boosted signal) with post-qualifying grid conditioning, Monte Carlo win/podium probabilities calibrated separately for street and permanent circuits, and a championship projection that accounts for pole and fastest-lap bonus points. Runs on the real 2025-26 season: official results flow from the live Formula E API into a committed, reviewable snapshot, with doubleheader weekends modeled as separate rounds. Backfilled and backtested across twelve seasons of series history. Deployed site, scheduled refresh pipeline, and public forward-eval grading every round.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/formula-e/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Formula E API (official results, snapshotted to a committed file)",
+        "Series history 2014-15 onward (backfilled archive)"
+      ],
+      "models": [
+        "driver-skill-elo",
+        "post-quali-grid-conditioning",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "electric",
+        "street-circuits",
+        "doubleheaders",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/formula-e.png",
+      "accent": "#1E1AF0",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "indycar-predictions",
+      "name": "IndyCar Predictions",
+      "sport": "IndyCar",
+      "category": "open-wheel",
+      "maturity": "production",
+      "summary": "Race and championship forecasts for the NTT IndyCar Series.",
+      "description": "American open-wheel racing on the MotorsportVerse core, built snapshot-first: fifteen seasons of hand-verified historical data are the committed source of truth, and live updates land only behind strict parse-validation gates. The model's signature is a dual rating system that scores oval and road/street ability separately - validated to materially beat a single rating in walk-forward testing - alongside attrition modeling tuned to oval risk and Chevrolet/Honda engine effects. Covers the full 2026 season including the Indianapolis 500's 33-car field. Deployed site, scheduled refresh pipeline, and public forward-eval grading every round.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/indycar-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/indycar/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Hand-verified season archives 2012-2026 (committed, standings-checked)",
+        "indycar.com / Wikipedia race classifications (validated refresh path)"
+      ],
+      "models": [
+        "dual-surface-elo",
+        "dnf-hazard-composition",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "open-wheel",
+        "ovals",
+        "indy-500",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/indycar.png",
+      "accent": "#D31217",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
+      "added": "2026-06-15"
+    },
+    {
+      "slug": "nascar-predictions",
+      "name": "NASCAR Predictions",
+      "sport": "NASCAR",
+      "category": "stock",
+      "maturity": "production",
+      "summary": "Race, stage, and Chase championship forecasts for the NASCAR Cup Series.",
+      "description": "Stock-car racing on the MotorsportVerse core: a field-relative driver-skill blend with per-track-type ratings (superspeedway, intermediate, short track, road course), attrition modeled as a first-class component of every forecast, and manufacturer effects. Title odds run through a format-aware championship simulator that encodes the 2026 Chase and the 2017-2025 elimination playoffs for historical backtesting, with the playoff projection gated on a passing seven-season backtest. Runs on the real 2026 Cup season: official results flow from NASCAR's public feeds into a committed, reviewable snapshot with per-stage results captured. Deployed site, scheduled refresh pipeline, and public forward-eval grading every round.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/nascar-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/nascar/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "NASCAR official feeds (results + stages, snapshotted to committed files)",
+        "Cup Series history 2018 onward (backfilled archive)"
+      ],
+      "models": [
+        "driver-skill-elo",
+        "track-type-ratings",
+        "dnf-hazard-composition",
+        "chase-championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "stock-car",
+        "ovals",
+        "stage-racing",
+        "chase-playoffs",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/nascar.png",
+      "accent": "#FFD659",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "promotion",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [],
       "added": "2026-06-15"
     },
     {
@@ -103,152 +241,13 @@
       "added": "2026-06-15"
     },
     {
-      "slug": "formula-e-predictions",
-      "name": "Formula E Predictions",
-      "sport": "Formula E",
-      "category": "electric",
-      "maturity": "experimental",
-      "summary": "Race and championship forecasts for the ABB FIA Formula E World Championship.",
-      "description": "The first all-electric series on the MotorsportVerse core: a driver-forward skill blend (Elo seeded from 2019+ seasons + finishing history + optional gradient-boosted signal) with post-qualifying grid conditioning, Monte Carlo win/podium probabilities calibrated separately for street and permanent circuits, and a championship projection that accounts for pole and fastest-lap bonus points. Runs on the real 2025-26 season: official results flow from the live Formula E API into a committed, reviewable snapshot, with doubleheader weekends modeled as separate rounds. Backfilled and backtested across twelve seasons of series history. Experimental while forward accuracy accrues over real rounds.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/formula-e-predictions",
-      "website": "https://roni-altshuler.github.io/motorsportverse/projects/formula-e/",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "Formula E API (official results, snapshotted to a committed file)",
-        "Series history 2014-15 onward (backfilled archive)"
-      ],
-      "models": [
-        "driver-skill-elo",
-        "post-quali-grid-conditioning",
-        "plackett-luce",
-        "championship-monte-carlo",
-        "standings"
-      ],
-      "tags": [
-        "electric",
-        "street-circuits",
-        "doubleheaders",
-        "calibrated-probabilities",
-        "monte-carlo"
-      ],
-      "icon": "/brand/sports/formula-e.png",
-      "accent": "#1E1AF0",
-      "uses_core": [
-        "calibration",
-        "championship",
-        "standings",
-        "elo",
-        "conformal",
-        "eval",
-        "drift",
-        "promotion",
-        "leakage",
-        "interfaces"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
-    },
-    {
-      "slug": "indycar-predictions",
-      "name": "IndyCar Predictions",
-      "sport": "IndyCar",
-      "category": "open-wheel",
-      "maturity": "experimental",
-      "summary": "Race and championship forecasts for the NTT IndyCar Series.",
-      "description": "American open-wheel racing on the MotorsportVerse core, built snapshot-first: fifteen seasons of hand-verified historical data are the committed source of truth, and live updates land only behind strict parse-validation gates. The model's signature is a dual rating system that scores oval and road/street ability separately - validated to materially beat a single rating in walk-forward testing - alongside attrition modeling tuned to oval risk and Chevrolet/Honda engine effects. Covers the full 2026 season including the Indianapolis 500's 33-car field. Experimental while forward accuracy accrues over real rounds.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/indycar-predictions",
-      "website": "https://roni-altshuler.github.io/motorsportverse/projects/indycar/",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "Hand-verified season archives 2012-2026 (committed, standings-checked)",
-        "indycar.com / Wikipedia race classifications (validated refresh path)"
-      ],
-      "models": [
-        "dual-surface-elo",
-        "dnf-hazard-composition",
-        "plackett-luce",
-        "championship-monte-carlo",
-        "standings"
-      ],
-      "tags": [
-        "open-wheel",
-        "ovals",
-        "indy-500",
-        "calibrated-probabilities",
-        "monte-carlo"
-      ],
-      "icon": "/brand/sports/indycar.png",
-      "accent": "#D31217",
-      "uses_core": [
-        "calibration",
-        "championship",
-        "standings",
-        "elo",
-        "conformal",
-        "eval",
-        "drift",
-        "promotion",
-        "leakage",
-        "interfaces"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
-    },
-    {
-      "slug": "nascar-predictions",
-      "name": "NASCAR Predictions",
-      "sport": "NASCAR",
-      "category": "stock",
-      "maturity": "experimental",
-      "summary": "Race, stage, and Chase championship forecasts for the NASCAR Cup Series.",
-      "description": "Stock-car racing on the MotorsportVerse core: a field-relative driver-skill blend with per-track-type ratings (superspeedway, intermediate, short track, road course), attrition modeled as a first-class component of every forecast, and manufacturer effects. Title odds run through a format-aware championship simulator that encodes the 2026 Chase and the 2017-2025 elimination playoffs for historical backtesting, with the playoff projection gated on a passing seven-season backtest. Runs on the real 2026 Cup season: official results flow from NASCAR's public feeds into a committed, reviewable snapshot with per-stage results captured. Experimental while forward accuracy accrues over real rounds.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/nascar-predictions",
-      "website": "https://roni-altshuler.github.io/motorsportverse/projects/nascar/",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "NASCAR official feeds (results + stages, snapshotted to committed files)",
-        "Cup Series history 2018 onward (backfilled archive)"
-      ],
-      "models": [
-        "driver-skill-elo",
-        "track-type-ratings",
-        "dnf-hazard-composition",
-        "chase-championship-monte-carlo",
-        "standings"
-      ],
-      "tags": [
-        "stock-car",
-        "ovals",
-        "stage-racing",
-        "chase-playoffs",
-        "calibrated-probabilities",
-        "monte-carlo"
-      ],
-      "icon": "/brand/sports/nascar.png",
-      "accent": "#FFD659",
-      "uses_core": [
-        "calibration",
-        "championship",
-        "standings",
-        "elo",
-        "conformal",
-        "eval",
-        "drift",
-        "promotion",
-        "leakage",
-        "interfaces"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
-    },
-    {
       "slug": "f3-predictions",
       "name": "RaceIQ F3",
       "sport": "Formula 3",
       "category": "open-wheel",
-      "maturity": "experimental",
+      "maturity": "production",
       "summary": "Sprint, feature-race, and championship forecasts for FIA Formula 3.",
-      "description": "The third series on the MotorsportVerse core, built at RaceIQ F2 parity: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history + optional gradient-boosted signal) routed through two race-type heads — a merit feature race and a reverse-top-12 sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, and a sprint+feature-aware championship projection over the 30-car grid. Runs on the real 2026 FIA Formula 3 season: official results are scraped into a committed, reviewable snapshot via the shared FIA feeder-series source, with model forecasts for upcoming rounds. Experimental while forward accuracy accrues over real rounds.",
+      "description": "The third series on the MotorsportVerse core, built at RaceIQ F2 parity: a leakage-safe driver-skill blend (Elo with rookie pooling + finishing history + optional gradient-boosted signal) routed through two race-type heads — a merit feature race and a reverse-top-12 sprint — with Monte Carlo win/podium probabilities, finishing-range intervals, and a sprint+feature-aware championship projection over the 30-car grid. Runs on the real 2026 FIA Formula 3 season: official results are scraped into a committed, reviewable snapshot via the shared FIA feeder-series source, with model forecasts for upcoming rounds. Deployed site, scheduled refresh pipeline, and public forward-eval grading every round.",
       "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/f3-predictions",
       "website": "https://roni-altshuler.github.io/motorsportverse/projects/f3/",
       "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",

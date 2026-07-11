@@ -81,10 +81,10 @@ is **MotorsportVerse**.
 |---|---|---|
 | [RaceIQ F1](projects/f1-predictions/) | Formula 1 | **production** |
 | [RaceIQ F2](projects/f2-predictions/) | Formula 2 | **production** |
-| [RaceIQ F3](projects/f3-predictions/) | Formula 3 | **experimental** (real 2026 season; accuracy accruing) |
-| [RaceIQ Formula E](projects/formula-e-predictions/) | Formula E | **experimental** (site live; accuracy accruing) |
-| [RaceIQ NASCAR](projects/nascar-predictions/) | NASCAR Cup | **experimental** (site live; accuracy accruing) |
-| [RaceIQ Indy](projects/indycar-predictions/) | IndyCar | **experimental** (site live; accuracy accruing) |
+| [RaceIQ F3](projects/f3-predictions/) | Formula 3 | **production** |
+| [RaceIQ Formula E](projects/formula-e-predictions/) | Formula E | **production** |
+| [RaceIQ NASCAR](projects/nascar-predictions/) | NASCAR Cup | **production** |
+| [RaceIQ Indy](projects/indycar-predictions/) | IndyCar | **production** |
 | [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
 
 Browse them all on the [live catalog](https://roni-altshuler.github.io/motorsportverse/#projects)
