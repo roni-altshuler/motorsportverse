@@ -34,10 +34,10 @@ scripts/                     build_registry*.{py,mjs}, sync_shared_ui.mjs (drift
 `feat/universe-phase0-f3-f2-parity`: F1 overhaul, F2/F3 parity, Formula E, NASCAR and
 IndyCar are all full products (backend + website + CI/cron wiring + registry), six
 sites ship in one Pages artifact. All seven test suites green; drift gate + registry
-validated. Next phases (user-directed): (1) drive every implemented project from
-experimental to production maturity per GOVERNANCE.md as forward accuracy accrues;
-(2) themed just-for-fun simulated projects (Cars-movie-inspired, kart-racer-inspired)
-with interactive synthetic data — no real series, clearly labeled.
+validated. All six implemented series are at **production** maturity (deployed site +
+scheduled refresh + public forward-eval, per GOVERNANCE.md). Next phase (user-directed):
+themed just-for-fun simulated projects (Cars-movie-inspired, kart-racer-inspired) with
+interactive synthetic data — no real series, clearly labeled, original IP-safe naming.
 
 ## Environment & commands
 

@@ -14,8 +14,10 @@ MotorsportVerse projects advance through five maturity levels (defined in
 | **production** | Validated & live | Forward-eval over ≥1 season, a live website, and an automated update pipeline |
 | **archived** | Frozen / superseded | No longer maintained; kept for reference |
 
-Today: **F1 = production**, **F2 = production** (real 2026 season, deployed site,
-scheduled refresh pipeline), all others = **concept**.
+Today: **F1, F2, F3, Formula E, NASCAR and IndyCar = production** (each with a
+real season, a deployed site, a scheduled refresh pipeline, and public
+forward-eval grading); WEC, MotoGP, WRC, IMSA and Le Mans = **in-development**
+(scaffolded).
 
 ## Promotion rules
 
