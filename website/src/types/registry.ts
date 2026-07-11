@@ -14,7 +14,8 @@ export type Category =
   | "endurance"
   | "rally"
   | "motorcycle"
-  | "electric";
+  | "electric"
+  | "fantasy";
 
 export interface Maintainer {
   name?: string;

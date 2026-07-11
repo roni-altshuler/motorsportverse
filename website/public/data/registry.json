@@ -1,8 +1,9 @@
 {
   "generated_by": "motorsportverse registry build",
-  "count": 11,
+  "count": 13,
   "maturity_counts": {
     "production": 6,
+    "experimental": 2,
     "in-development": 5
   },
   "projects": [
@@ -290,6 +291,65 @@
         }
       ],
       "added": "2026-07-02"
+    },
+    {
+      "slug": "chrome-valley-racing",
+      "name": "Chrome Valley Racing League",
+      "sport": "Chrome Valley Racing League (fictional)",
+      "category": "fantasy",
+      "maturity": "experimental",
+      "summary": "A fan-made, fully simulated stock-car story league you can race in the browser.",
+      "description": "A just-for-fun homage to the anthropomorphic-race-car genre: twelve original characters with personality-driven mechanics (showboats wobble while leading, big-heart racers surge on the final laps, a mentor arc lifts the rookie as the season unfolds) racing a seeded, fully simulated season across dusty ovals, canyon roads and a neon night race. The website replays the baked season and runs live in-browser race simulations — pick a venue, drop the flag, watch the story unfold. Every character, venue and result is original and simulated; not affiliated with any film studio. No real-world data, no predictions, no betting relevance — entertainment only.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/chrome-valley-racing",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/chrome-valley/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Fully simulated — seeded synthetic seasons, no real-world data"
+      ],
+      "models": [
+        "personality-driven-race-sim"
+      ],
+      "tags": [
+        "fantasy",
+        "simulated",
+        "just-for-fun",
+        "interactive"
+      ],
+      "icon": "/brand/sports/chrome-valley.svg",
+      "accent": "#E8792B",
+      "uses_core": [],
+      "maintainers": [],
+      "added": "2026-07-11"
+    },
+    {
+      "slug": "prism-cup-karting",
+      "name": "Prism Cup Karting",
+      "sport": "Prism Cup Karting (fictional)",
+      "category": "fantasy",
+      "maturity": "experimental",
+      "summary": "A fan-made, fully simulated kart-racing league with items, chaos and live browser races.",
+      "description": "A just-for-fun homage to the kart-racing game genre: original mascot racers across light, medium and heavy classes, original items (Seeker Orbs that hunt the leader, Slick Patches, Comet Boosts, Static Shields) with genre-faithful rubber-banding, and eight original fantasy circuits from a glass parkway in the sky to a molten keep. Cups are simulated from a fixed seed, and the website runs live in-browser races — pick a track and a favorite, drop the flag, watch the item chaos play out lap by lap. Every character, item, track and result is original and simulated; not affiliated with any video game company. No real-world data, no predictions, no betting relevance — entertainment only.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/prism-cup-karting",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/prism-cup/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "Fully simulated — seeded synthetic cups, no real-world data"
+      ],
+      "models": [
+        "item-chaos-race-sim",
+        "rubber-banding"
+      ],
+      "tags": [
+        "fantasy",
+        "simulated",
+        "just-for-fun",
+        "interactive"
+      ],
+      "icon": "/brand/sports/prism-cup.svg",
+      "accent": "#7C4DFF",
+      "uses_core": [],
+      "maintainers": [],
+      "added": "2026-07-11"
     },
     {
       "slug": "imsa-predictions",
