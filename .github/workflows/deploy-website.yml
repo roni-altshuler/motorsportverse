@@ -11,6 +11,8 @@ on:
       - "projects/formula-e-predictions/**"
       - "projects/nascar-predictions/**"
       - "projects/indycar-predictions/**"
+      - "projects/chrome-valley-racing/**"
+      - "projects/prism-cup-karting/**"
       - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
@@ -95,6 +97,15 @@ jobs:
           python -m indycar_predictions.drift_report --season 2026 --allow-empty
           python -m indycar_predictions.promotion_decision --season 2026 --allow-empty
 
+      # --- Fantasy fun projects: fully simulated, seeded data (stdlib only,
+      #     no pip install needed — PYTHONPATH=src, deterministic output) ---
+      - name: Generate Chrome Valley data
+        working-directory: projects/chrome-valley-racing
+        run: PYTHONPATH=src python -m chrome_valley.export
+      - name: Generate Prism Cup data
+        working-directory: projects/prism-cup-karting
+        run: PYTHONPATH=src python -m prism_cup.export
+
       # --- Ecosystem hub (root) ---
       - name: Build ecosystem website
         working-directory: website
@@ -137,6 +148,20 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/indycar
 
+      # --- Chrome Valley fun-project site (sub-path) ---
+      - name: Build Chrome Valley website
+        working-directory: projects/chrome-valley-racing/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/chrome-valley
+
+      # --- Prism Cup fun-project site (sub-path) ---
+      - name: Build Prism Cup website
+        working-directory: projects/prism-cup-karting/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/prism-cup
+
       # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
       #     race-weekend cron (f1-update-predictions.yml) commits, so no data
       #     generation step is needed here — only a static build. ---
@@ -150,13 +175,16 @@ jobs:
       - name: Assemble site tree
         run: |
           mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 \
-                   website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar
+                   website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar \
+                   website/out/projects/chrome-valley website/out/projects/prism-cup
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
           cp -r projects/f3-predictions/website/out/. website/out/projects/f3/
           cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
           cp -r projects/formula-e-predictions/website/out/. website/out/projects/formula-e/
           cp -r projects/nascar-predictions/website/out/. website/out/projects/nascar/
           cp -r projects/indycar-predictions/website/out/. website/out/projects/indycar/
+          cp -r projects/chrome-valley-racing/website/out/. website/out/projects/chrome-valley/
+          cp -r projects/prism-cup-karting/website/out/. website/out/projects/prism-cup/
 
       - uses: actions/upload-pages-artifact@v3
         with:

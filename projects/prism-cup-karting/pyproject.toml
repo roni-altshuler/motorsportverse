@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prism-cup-karting"
+version = "0.1.0"
+description = "Prism Cup Karting — a fan-made, fully simulated kart-racing league inspired by the arcade kart-racer genre. All characters, items, tracks and results are original and synthetic."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "MotorsportVerse" }]
+# Deliberately stdlib-only: the simulator is a seeded random-walk with item
+# mechanics, not an ML product — it does not sit on motorsport-core.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

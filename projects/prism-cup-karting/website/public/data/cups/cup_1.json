@@ -1,0 +1,687 @@
+{
+  "number": 1,
+  "id": "aurora",
+  "name": "Aurora Cup",
+  "trackIds": [
+    "prism-parkway",
+    "cloudline-circuit",
+    "glacier-run",
+    "sundae-speedway"
+  ],
+  "standings": [
+    {
+      "racerId": "rusty",
+      "name": "Rusty Piston",
+      "weightClass": "medium",
+      "color": "#9AA7B8",
+      "points": 38,
+      "wins": 1,
+      "podiums": 2,
+      "bestFinish": 1,
+      "rank": 1
+    },
+    {
+      "racerId": "mossback",
+      "name": "Old Mossback",
+      "weightClass": "heavy",
+      "color": "#6FBF73",
+      "points": 37,
+      "wins": 0,
+      "podiums": 2,
+      "bestFinish": 2,
+      "rank": 2
+    },
+    {
+      "racerId": "brine",
+      "name": "Captain Brine",
+      "weightClass": "heavy",
+      "color": "#4A6FA5",
+      "points": 35,
+      "wins": 1,
+      "podiums": 2,
+      "bestFinish": 1,
+      "rank": 3
+    },
+    {
+      "racerId": "pip",
+      "name": "Pip Nimbus",
+      "weightClass": "light",
+      "color": "#7ED4FF",
+      "points": 31,
+      "wins": 0,
+      "podiums": 2,
+      "bestFinish": 3,
+      "rank": 4
+    },
+    {
+      "racerId": "fenna",
+      "name": "Fenna Blaze",
+      "weightClass": "light",
+      "color": "#FF5A5F",
+      "points": 31,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinish": 4,
+      "rank": 5
+    },
+    {
+      "racerId": "inkwell",
+      "name": "Duke Inkwell",
+      "weightClass": "medium",
+      "color": "#B07CFF",
+      "points": 27,
+      "wins": 1,
+      "podiums": 1,
+      "bestFinish": 1,
+      "rank": 6
+    },
+    {
+      "racerId": "thistle",
+      "name": "Sir Reginald Thistle",
+      "weightClass": "medium",
+      "color": "#3D9BE9",
+      "points": 26,
+      "wins": 0,
+      "podiums": 1,
+      "bestFinish": 2,
+      "rank": 7
+    },
+    {
+      "racerId": "sprocket",
+      "name": "Sprocket",
+      "weightClass": "light",
+      "color": "#F2C14E",
+      "points": 26,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinish": 4,
+      "rank": 8
+    },
+    {
+      "racerId": "magma",
+      "name": "Mama Magma",
+      "weightClass": "heavy",
+      "color": "#FF7F2A",
+      "points": 25,
+      "wins": 1,
+      "podiums": 1,
+      "bestFinish": 1,
+      "rank": 9
+    },
+    {
+      "racerId": "crumb",
+      "name": "Colonel Crumb",
+      "weightClass": "light",
+      "color": "#D9A05B",
+      "points": 19,
+      "wins": 0,
+      "podiums": 1,
+      "bestFinish": 3,
+      "rank": 10
+    },
+    {
+      "racerId": "marina",
+      "name": "Marina Volt",
+      "weightClass": "medium",
+      "color": "#35E0C8",
+      "points": 19,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinish": 6,
+      "rank": 11
+    },
+    {
+      "racerId": "basalt",
+      "name": "Basalt",
+      "weightClass": "heavy",
+      "color": "#8C8C9A",
+      "points": 14,
+      "wins": 0,
+      "podiums": 0,
+      "bestFinish": 7,
+      "rank": 12
+    }
+  ],
+  "races": [
+    {
+      "trackId": "prism-parkway",
+      "trackName": "Prism Parkway",
+      "laps": 3,
+      "classification": [
+        {
+          "position": 1,
+          "racerId": "rusty",
+          "name": "Rusty Piston",
+          "weightClass": "medium",
+          "color": "#9AA7B8",
+          "points": 15
+        },
+        {
+          "position": 2,
+          "racerId": "mossback",
+          "name": "Old Mossback",
+          "weightClass": "heavy",
+          "color": "#6FBF73",
+          "points": 12
+        },
+        {
+          "position": 3,
+          "racerId": "crumb",
+          "name": "Colonel Crumb",
+          "weightClass": "light",
+          "color": "#D9A05B",
+          "points": 10
+        },
+        {
+          "position": 4,
+          "racerId": "fenna",
+          "name": "Fenna Blaze",
+          "weightClass": "light",
+          "color": "#FF5A5F",
+          "points": 9
+        },
+        {
+          "position": 5,
+          "racerId": "brine",
+          "name": "Captain Brine",
+          "weightClass": "heavy",
+          "color": "#4A6FA5",
+          "points": 8
+        },
+        {
+          "position": 6,
+          "racerId": "marina",
+          "name": "Marina Volt",
+          "weightClass": "medium",
+          "color": "#35E0C8",
+          "points": 7
+        },
+        {
+          "position": 7,
+          "racerId": "thistle",
+          "name": "Sir Reginald Thistle",
+          "weightClass": "medium",
+          "color": "#3D9BE9",
+          "points": 6
+        },
+        {
+          "position": 8,
+          "racerId": "magma",
+          "name": "Mama Magma",
+          "weightClass": "heavy",
+          "color": "#FF7F2A",
+          "points": 5
+        },
+        {
+          "position": 9,
+          "racerId": "pip",
+          "name": "Pip Nimbus",
+          "weightClass": "light",
+          "color": "#7ED4FF",
+          "points": 4
+        },
+        {
+          "position": 10,
+          "racerId": "basalt",
+          "name": "Basalt",
+          "weightClass": "heavy",
+          "color": "#8C8C9A",
+          "points": 3
+        },
+        {
+          "position": 11,
+          "racerId": "inkwell",
+          "name": "Duke Inkwell",
+          "weightClass": "medium",
+          "color": "#B07CFF",
+          "points": 2
+        },
+        {
+          "position": 12,
+          "racerId": "sprocket",
+          "name": "Sprocket",
+          "weightClass": "light",
+          "color": "#F2C14E",
+          "points": 1
+        }
+      ],
+      "highlights": [
+        {
+          "lap": 1,
+          "kind": "tempest",
+          "text": "Duke Inkwell's Tempest rips through \u2014 P4-P9 scrambled"
+        },
+        {
+          "lap": 2,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Rusty Piston \u2014 knocked back 3"
+        },
+        {
+          "lap": 2,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Fenna Blaze \u2014 knocked back 3"
+        },
+        {
+          "lap": 3,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Fenna Blaze \u2014 knocked back 3"
+        },
+        {
+          "lap": 3,
+          "kind": "shield-block",
+          "text": "Pip Nimbus's Static Shield fizzes away the Slick Patch"
+        },
+        {
+          "lap": 3,
+          "kind": "comet-boost",
+          "text": "Fenna Blaze rides a Comet Boost up 3 places"
+        }
+      ]
+    },
+    {
+      "trackId": "cloudline-circuit",
+      "trackName": "Cloudline Circuit",
+      "laps": 3,
+      "classification": [
+        {
+          "position": 1,
+          "racerId": "magma",
+          "name": "Mama Magma",
+          "weightClass": "heavy",
+          "color": "#FF7F2A",
+          "points": 15
+        },
+        {
+          "position": 2,
+          "racerId": "rusty",
+          "name": "Rusty Piston",
+          "weightClass": "medium",
+          "color": "#9AA7B8",
+          "points": 12
+        },
+        {
+          "position": 3,
+          "racerId": "pip",
+          "name": "Pip Nimbus",
+          "weightClass": "light",
+          "color": "#7ED4FF",
+          "points": 10
+        },
+        {
+          "position": 4,
+          "racerId": "fenna",
+          "name": "Fenna Blaze",
+          "weightClass": "light",
+          "color": "#FF5A5F",
+          "points": 9
+        },
+        {
+          "position": 5,
+          "racerId": "sprocket",
+          "name": "Sprocket",
+          "weightClass": "light",
+          "color": "#F2C14E",
+          "points": 8
+        },
+        {
+          "position": 6,
+          "racerId": "mossback",
+          "name": "Old Mossback",
+          "weightClass": "heavy",
+          "color": "#6FBF73",
+          "points": 7
+        },
+        {
+          "position": 7,
+          "racerId": "basalt",
+          "name": "Basalt",
+          "weightClass": "heavy",
+          "color": "#8C8C9A",
+          "points": 6
+        },
+        {
+          "position": 8,
+          "racerId": "thistle",
+          "name": "Sir Reginald Thistle",
+          "weightClass": "medium",
+          "color": "#3D9BE9",
+          "points": 5
+        },
+        {
+          "position": 9,
+          "racerId": "crumb",
+          "name": "Colonel Crumb",
+          "weightClass": "light",
+          "color": "#D9A05B",
+          "points": 4
+        },
+        {
+          "position": 10,
+          "racerId": "inkwell",
+          "name": "Duke Inkwell",
+          "weightClass": "medium",
+          "color": "#B07CFF",
+          "points": 3
+        },
+        {
+          "position": 11,
+          "racerId": "brine",
+          "name": "Captain Brine",
+          "weightClass": "heavy",
+          "color": "#4A6FA5",
+          "points": 2
+        },
+        {
+          "position": 12,
+          "racerId": "marina",
+          "name": "Marina Volt",
+          "weightClass": "medium",
+          "color": "#35E0C8",
+          "points": 1
+        }
+      ],
+      "highlights": [
+        {
+          "lap": 1,
+          "kind": "comet-boost",
+          "text": "Sir Reginald Thistle rides a Comet Boost up 2 places"
+        },
+        {
+          "lap": 1,
+          "kind": "slick-spin",
+          "text": "Rusty Piston spins on Marina Volt's Slick Patch \u2014 down 2"
+        },
+        {
+          "lap": 1,
+          "kind": "swap",
+          "text": "Swap Beam! Duke Inkwell trades places with Colonel Crumb"
+        },
+        {
+          "lap": 2,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Mama Magma \u2014 knocked back 2"
+        },
+        {
+          "lap": 3,
+          "kind": "shield-block",
+          "text": "Mama Magma's Static Shield crackles and eats the Seeker Orb"
+        },
+        {
+          "lap": 3,
+          "kind": "comet-boost",
+          "text": "Sir Reginald Thistle rides a Comet Boost up 2 places"
+        }
+      ]
+    },
+    {
+      "trackId": "glacier-run",
+      "trackName": "Glacier Run",
+      "laps": 3,
+      "classification": [
+        {
+          "position": 1,
+          "racerId": "inkwell",
+          "name": "Duke Inkwell",
+          "weightClass": "medium",
+          "color": "#B07CFF",
+          "points": 15
+        },
+        {
+          "position": 2,
+          "racerId": "mossback",
+          "name": "Old Mossback",
+          "weightClass": "heavy",
+          "color": "#6FBF73",
+          "points": 12
+        },
+        {
+          "position": 3,
+          "racerId": "brine",
+          "name": "Captain Brine",
+          "weightClass": "heavy",
+          "color": "#4A6FA5",
+          "points": 10
+        },
+        {
+          "position": 4,
+          "racerId": "rusty",
+          "name": "Rusty Piston",
+          "weightClass": "medium",
+          "color": "#9AA7B8",
+          "points": 9
+        },
+        {
+          "position": 5,
+          "racerId": "sprocket",
+          "name": "Sprocket",
+          "weightClass": "light",
+          "color": "#F2C14E",
+          "points": 8
+        },
+        {
+          "position": 6,
+          "racerId": "pip",
+          "name": "Pip Nimbus",
+          "weightClass": "light",
+          "color": "#7ED4FF",
+          "points": 7
+        },
+        {
+          "position": 7,
+          "racerId": "marina",
+          "name": "Marina Volt",
+          "weightClass": "medium",
+          "color": "#35E0C8",
+          "points": 6
+        },
+        {
+          "position": 8,
+          "racerId": "fenna",
+          "name": "Fenna Blaze",
+          "weightClass": "light",
+          "color": "#FF5A5F",
+          "points": 5
+        },
+        {
+          "position": 9,
+          "racerId": "magma",
+          "name": "Mama Magma",
+          "weightClass": "heavy",
+          "color": "#FF7F2A",
+          "points": 4
+        },
+        {
+          "position": 10,
+          "racerId": "thistle",
+          "name": "Sir Reginald Thistle",
+          "weightClass": "medium",
+          "color": "#3D9BE9",
+          "points": 3
+        },
+        {
+          "position": 11,
+          "racerId": "crumb",
+          "name": "Colonel Crumb",
+          "weightClass": "light",
+          "color": "#D9A05B",
+          "points": 2
+        },
+        {
+          "position": 12,
+          "racerId": "basalt",
+          "name": "Basalt",
+          "weightClass": "heavy",
+          "color": "#8C8C9A",
+          "points": 1
+        }
+      ],
+      "highlights": [
+        {
+          "lap": 1,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Sprocket \u2014 knocked back 3"
+        },
+        {
+          "lap": 1,
+          "kind": "tempest",
+          "text": "Colonel Crumb's Tempest rips through \u2014 P4-P9 scrambled"
+        },
+        {
+          "lap": 1,
+          "kind": "comet-boost",
+          "text": "Fenna Blaze rides a Comet Boost up 3 places"
+        },
+        {
+          "lap": 2,
+          "kind": "tempest",
+          "text": "Colonel Crumb's Tempest rips through \u2014 P4-P9 scrambled"
+        },
+        {
+          "lap": 3,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Old Mossback \u2014 knocked back 1"
+        },
+        {
+          "lap": 3,
+          "kind": "tempest",
+          "text": "Sir Reginald Thistle's Tempest rips through \u2014 P4-P9 scrambled"
+        }
+      ]
+    },
+    {
+      "trackId": "sundae-speedway",
+      "trackName": "Sundae Speedway",
+      "laps": 5,
+      "classification": [
+        {
+          "position": 1,
+          "racerId": "brine",
+          "name": "Captain Brine",
+          "weightClass": "heavy",
+          "color": "#4A6FA5",
+          "points": 15
+        },
+        {
+          "position": 2,
+          "racerId": "thistle",
+          "name": "Sir Reginald Thistle",
+          "weightClass": "medium",
+          "color": "#3D9BE9",
+          "points": 12
+        },
+        {
+          "position": 3,
+          "racerId": "pip",
+          "name": "Pip Nimbus",
+          "weightClass": "light",
+          "color": "#7ED4FF",
+          "points": 10
+        },
+        {
+          "position": 4,
+          "racerId": "sprocket",
+          "name": "Sprocket",
+          "weightClass": "light",
+          "color": "#F2C14E",
+          "points": 9
+        },
+        {
+          "position": 5,
+          "racerId": "fenna",
+          "name": "Fenna Blaze",
+          "weightClass": "light",
+          "color": "#FF5A5F",
+          "points": 8
+        },
+        {
+          "position": 6,
+          "racerId": "inkwell",
+          "name": "Duke Inkwell",
+          "weightClass": "medium",
+          "color": "#B07CFF",
+          "points": 7
+        },
+        {
+          "position": 7,
+          "racerId": "mossback",
+          "name": "Old Mossback",
+          "weightClass": "heavy",
+          "color": "#6FBF73",
+          "points": 6
+        },
+        {
+          "position": 8,
+          "racerId": "marina",
+          "name": "Marina Volt",
+          "weightClass": "medium",
+          "color": "#35E0C8",
+          "points": 5
+        },
+        {
+          "position": 9,
+          "racerId": "basalt",
+          "name": "Basalt",
+          "weightClass": "heavy",
+          "color": "#8C8C9A",
+          "points": 4
+        },
+        {
+          "position": 10,
+          "racerId": "crumb",
+          "name": "Colonel Crumb",
+          "weightClass": "light",
+          "color": "#D9A05B",
+          "points": 3
+        },
+        {
+          "position": 11,
+          "racerId": "rusty",
+          "name": "Rusty Piston",
+          "weightClass": "medium",
+          "color": "#9AA7B8",
+          "points": 2
+        },
+        {
+          "position": 12,
+          "racerId": "magma",
+          "name": "Mama Magma",
+          "weightClass": "heavy",
+          "color": "#FF7F2A",
+          "points": 1
+        }
+      ],
+      "highlights": [
+        {
+          "lap": 1,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Sir Reginald Thistle \u2014 knocked back 3"
+        },
+        {
+          "lap": 1,
+          "kind": "seeker-strike",
+          "text": "Seeker Orb hunts down Colonel Crumb \u2014 knocked back 3"
+        },
+        {
+          "lap": 2,
+          "kind": "comet-boost",
+          "text": "Marina Volt rides a Comet Boost up 1 place"
+        },
+        {
+          "lap": 2,
+          "kind": "comet-boost",
+          "text": "Fenna Blaze rides a Comet Boost up 2 places"
+        },
+        {
+          "lap": 3,
+          "kind": "comet-boost",
+          "text": "Duke Inkwell rides a Comet Boost up 2 places"
+        },
+        {
+          "lap": 4,
+          "kind": "tempest",
+          "text": "Mama Magma's Tempest rips through \u2014 P4-P9 scrambled"
+        }
+      ]
+    }
+  ]
+}
