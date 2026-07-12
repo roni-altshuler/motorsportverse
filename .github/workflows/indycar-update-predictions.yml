@@ -62,7 +62,7 @@ jobs:
         run: |
           pip install -e packages/motorsport-core -e packages/motorsport-data xgboost
           pip install -e projects/indycar-predictions --no-deps
-          pip install requests numpy matplotlib
+          pip install requests numpy matplotlib pytest
 
       - name: Determine round
         id: config

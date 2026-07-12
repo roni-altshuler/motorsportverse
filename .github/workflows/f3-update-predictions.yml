@@ -68,7 +68,7 @@ jobs:
           cache: pip
 
       - name: Install Python packages
-        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f3-predictions xgboost
+        run: pip install -e packages/motorsport-core -e packages/motorsport-data -e projects/f3-predictions xgboost pytest
 
       - name: Determine round
         id: config
