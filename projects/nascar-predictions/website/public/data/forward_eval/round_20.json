@@ -1,0 +1,63 @@
+{
+  "round": 20,
+  "venueName": "Atlanta Motor Speedway",
+  "trackType": "superspeedway",
+  "race": {
+    "n": 38,
+    "mean_position_error": 9.211,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 14,
+    "exact_matches": 1,
+    "spearman_correlation": 0.44851734325418535,
+    "ndcg_at_5": 0.6535110461563193
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 8.421,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 11,
+    "within_5": 16,
+    "exact_matches": 2,
+    "spearman_correlation": 0.4809060072217967,
+    "ndcg_at_5": 0.6584105418543473
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.024542,
+        "logLoss": 0.097769
+      },
+      "podium": {
+        "brier": 0.066513,
+        "logLoss": 0.218158
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.806,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 14,
+      "exact_matches": 4,
+      "spearman_correlation": 0.26306306306306304,
+      "ndcg_at_5": 0.4809394393115762
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 9.053,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 10,
+      "within_5": 14,
+      "exact_matches": 1,
+      "spearman_correlation": 0.4235693183061604,
+      "ndcg_at_5": 0.7381237086376125
+    }
+  }
+}
