@@ -59,8 +59,6 @@ motorsportverse/
 │   ├── formula-e-predictions RaceIQ Formula E — live product (pulselive API)
 │   ├── nascar-predictions   RaceIQ NASCAR — live product (DNF hazard, Chase title MC)
 │   ├── indycar-predictions  RaceIQ Indy — live product (curated history, dual-surface form)
-│   ├── chrome-valley-racing fan-made SIMULATED story league (fantasy; interactive)
-│   ├── prism-cup-karting    fan-made SIMULATED kart league (fantasy; interactive)
 │   └── <5 more>             scaffolded series (WEC, MotoGP, WRC, IMSA, Le Mans)
 │                            — DataSource+Predictor seams ready to implement
 ├── registry/                the project catalog (JSON + schema; source of truth)
@@ -87,7 +85,6 @@ is **MotorsportVerse**.
 | [RaceIQ Formula E](projects/formula-e-predictions/) | Formula E | **production** |
 | [RaceIQ NASCAR](projects/nascar-predictions/) | NASCAR Cup | **production** |
 | [RaceIQ Indy](projects/indycar-predictions/) | IndyCar | **production** |
-| [Chrome Valley](projects/chrome-valley-racing/) · [Prism Cup](projects/prism-cup-karting/) | fictional (fully simulated, just for fun) | **experimental** (fantasy) |
 | [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
 
 Browse them all on the [live catalog](https://roni-altshuler.github.io/motorsportverse/#projects)

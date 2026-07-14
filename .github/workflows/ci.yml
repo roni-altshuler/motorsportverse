@@ -60,12 +60,6 @@ jobs:
       - name: Test indycar-predictions
         run: pytest projects/indycar-predictions -q
 
-      - name: Test fantasy fun projects (stdlib-only, no install)
-        run: |
-          for p in chrome-valley-racing prism-cup-karting; do
-            (cd "projects/${p}" && PYTHONPATH=src pytest -q)
-          done
-
       - name: Test scaffolded series projects
         run: |
           for p in wec motogp wrc imsa lemans; do

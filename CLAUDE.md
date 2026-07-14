@@ -24,9 +24,6 @@ projects/nascar-predictions  full product (cf.nascar.com, DNF-composition model,
                              title MC + 2017-25 elimination format for backtests)
 projects/indycar-predictions full product — snapshot-primary (no public API: curated verified
                              history 2012-2026 IS the ground truth), dual oval/road-street form
-projects/chrome-valley-racing  FANTASY fun project: simulated story league (stdlib-only sim,
-                             bespoke site w/ in-browser race sim; NOT drift-gated, no cron)
-projects/prism-cup-karting   FANTASY fun project: simulated kart league (same shape)
 projects/<5 more>            scaffolded stubs (wec, motogp, wrc, imsa, lemans)
 website/                     ecosystem hub: landing + registry-driven catalog (Next.js)
 registry/projects/*.json     the catalog — source of truth for which sports exist + maturity
@@ -38,10 +35,7 @@ scripts/                     build_registry*.{py,mjs}, sync_shared_ui.mjs (drift
 IndyCar are all full products (backend + website + CI/cron wiring + registry), six
 sites ship in one Pages artifact. All seven test suites green; drift gate + registry
 validated. All six implemented series are at **production** maturity (deployed site +
-scheduled refresh + public forward-eval, per GOVERNANCE.md). The two FANTASY fun projects
-(chrome-valley-racing, prism-cup-karting — Cars-movie- and kart-racer-inspired) are fully
-simulated + interactive, registry category "fantasy", original IP-safe naming, fan-made
-disclaimers; they regenerate deterministic seeded data at deploy time and carry no cron.
+scheduled refresh + public forward-eval, per GOVERNANCE.md).
 
 ## Environment & commands
 
