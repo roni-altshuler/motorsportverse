@@ -14,7 +14,10 @@ def test_official_standings_match_reconstructed_points(real_source):
     state, remaining = pipeline.build_season_state(
         real_source, SEASON, config.CUP_CHASE_FORMAT_2026
     )
-    assert remaining == config.REGULAR_SEASON_RACES - 19
+    # Derived from the snapshot (not a literal) so the assertion tracks the
+    # season as the cron commits rounds; clamps to 0 once the Chase starts.
+    reg = config.REGULAR_SEASON_RACES
+    assert remaining == reg - min(config.COMPLETED_ROUNDS, reg)
     by_code = {d["code"]: d for d in official["driverStandings"]}
     for code, st in state.drivers.items():
         assert abs(st.points - by_code[code]["points"]) < 0.01, code

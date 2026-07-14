@@ -4,13 +4,29 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+import pytest
+
 from indycar_predictions import config, race_weekend as rw
 
 SEASON = config.SEASON
+# The first round the committed snapshot does not yet carry (F3-parity).
+# Derived, never hardcoded: a literal "next round" fails the suite the moment
+# the race-weekend cron commits that round's result to the snapshot.
+NEXT = config.COMPLETED_ROUNDS + 1
 
 
 def _dt(s: str) -> datetime:
     return datetime.strptime(s, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+
+
+def _pinned_snapshot(completed_upto: int) -> dict:
+    """A synthetic snapshot fixed at ``completed_upto`` rounds, for tests whose
+    scenario must hold no matter how far the committed season has advanced."""
+    return {
+        "season": SEASON,
+        "rounds": [{"round": r} for r in range(1, completed_upto + 1)],
+        "qualifying": {},
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -55,12 +71,17 @@ def test_detect_target_round_walks_the_calendar():
 # --------------------------------------------------------------------------- #
 # Phase (data-driven; offline snapshot)
 # --------------------------------------------------------------------------- #
+@pytest.mark.skipif(config.COMPLETED_ROUNDS == 0, reason="fresh season: nothing completed yet")
 def test_phase_post_race_for_completed_round():
-    assert rw.weekend_phase(11, SEASON) == "post-race"
+    assert rw.weekend_phase(config.COMPLETED_ROUNDS, SEASON) == "post-race"
 
 
-def test_phase_pre_for_upcoming_round():
-    assert rw.weekend_phase(12, SEASON) == "pre"
+def test_phase_pre_for_upcoming_round(monkeypatch):
+    # Hermetic: "pre" must hold when neither the live probe nor the snapshot
+    # carries the round — pin an empty snapshot so a committed qualifying
+    # weekend can't flip the assertion mid-weekend.
+    monkeypatch.setattr(rw, "load_snapshot", lambda *a, **k: _pinned_snapshot(0))
+    assert rw.weekend_phase(NEXT, SEASON) == "pre"
 
 
 class _FakeLive:
@@ -72,31 +93,36 @@ class _FakeLive:
 
 
 def test_phase_post_race_from_live_probe():
-    live = _FakeLive(results_by_round={12: ["r"]})
-    assert rw.weekend_phase(12, SEASON, live=live) == "post-race"
+    live = _FakeLive(results_by_round={NEXT: ["r"]})
+    assert rw.weekend_phase(NEXT, SEASON, live=live) == "post-race"
 
 
 # --------------------------------------------------------------------------- #
 # Freshness gate
 # --------------------------------------------------------------------------- #
 def test_no_work_when_live_matches_snapshot():
-    assert rw.check_work_pending(12, SEASON, live=_FakeLive()) is False
+    assert rw.check_work_pending(NEXT, SEASON, live=_FakeLive()) is False
 
 
 def test_work_pending_on_fresh_result():
-    live = _FakeLive(results_by_round={12: ["r"]})
-    assert rw.check_work_pending(12, SEASON, live=live) is True
+    live = _FakeLive(results_by_round={NEXT: ["r"]})
+    assert rw.check_work_pending(NEXT, SEASON, live=live) is True
 
 
+@pytest.mark.skipif(config.COMPLETED_ROUNDS == 0, reason="fresh season: nothing completed yet")
 def test_completed_round_is_not_fresh_work():
-    """Round 11 is already in the committed snapshot — a live result for it is
-    not pending work."""
-    live = _FakeLive(results_by_round={11: ["r"]})
-    assert rw.check_work_pending(11, SEASON, live=live) is False
+    """The latest completed round is already in the committed snapshot — a
+    live result for it is not pending work."""
+    live = _FakeLive(results_by_round={config.COMPLETED_ROUNDS: ["r"]})
+    assert rw.check_work_pending(config.COMPLETED_ROUNDS, SEASON, live=live) is False
 
 
 def test_stranded_round_recovery(monkeypatch):
     """A past-date round missing from the snapshot but present live = stranded."""
+    # Pin the snapshot at 11 completed rounds: the Nashville (r12) scenario is
+    # built on static calendar dates and must survive the real snapshot
+    # advancing past it.
+    monkeypatch.setattr(rw, "load_snapshot", lambda *a, **k: _pinned_snapshot(11))
     live = _FakeLive(results_by_round={12: ["r"]})
     now = _dt("2026-07-22 12:00")  # after Nashville
     assert rw.stranded_rounds(SEASON, live=live, now=now) == [12]
@@ -105,6 +131,7 @@ def test_stranded_round_recovery(monkeypatch):
     assert rw.check_work_pending(13, SEASON, live=live) is True
 
 
-def test_stranded_rounds_empty_before_race_dates():
+def test_stranded_rounds_empty_before_race_dates(monkeypatch):
+    monkeypatch.setattr(rw, "load_snapshot", lambda *a, **k: _pinned_snapshot(11))
     live = _FakeLive(results_by_round={12: ["r"]})
     assert rw.stranded_rounds(SEASON, live=live, now=_dt("2026-07-10 00:00")) == []
