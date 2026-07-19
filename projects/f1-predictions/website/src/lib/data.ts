@@ -244,7 +244,13 @@ export function getCurrentRaceContext(
       now,
     );
 
-    if (lifecycle === "live-weekend") {
+    // The race in focus is the one whose weekend is live OR whose official
+    // result is still syncing.  Without the "awaiting-results" case, the moment
+    // the nominal race time passed the home page would abandon the current race
+    // and feature the NEXT one (e.g. showing Hungary while Belgium's result was
+    // still pending) — the date-based nextRound check below excludes a race once
+    // its `getRaceDate` is in the past.
+    if (!liveRound && (lifecycle === "live-weekend" || lifecycle === "awaiting-results")) {
       liveRound = race;
     }
     if (!nextRound && getRaceDate(race.date) >= now && lifecycle !== "postponed") {
