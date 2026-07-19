@@ -146,14 +146,14 @@
     },
     {
       "round": 10,
-      "hasActual": false,
-      "meanError": null,
-      "exactMatches": null,
-      "within3": null,
-      "accuracyPct": null,
-      "podiumAccuracyPct": null,
-      "pointsAccuracyPct": null,
-      "within3AccuracyPct": null,
+      "hasActual": true,
+      "meanError": 3.09,
+      "exactMatches": 1,
+      "within3": 19,
+      "accuracyPct": 52.0,
+      "podiumAccuracyPct": 33.3,
+      "pointsAccuracyPct": 80.0,
+      "within3AccuracyPct": 86.4,
       "meanErrorClassified": null,
       "within3Classified": null,
       "accuracyPctClassified": null,
@@ -354,11 +354,11 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 3.87,
-    "seasonAccuracyPct": 60.9,
-    "seasonPodiumAccuracyPct": 51.9,
-    "seasonPointsAccuracyPct": 74.4,
-    "roundsWithActual": 9,
+    "seasonMeanError": 3.79,
+    "seasonAccuracyPct": 60.0,
+    "seasonPodiumAccuracyPct": 50.0,
+    "seasonPointsAccuracyPct": 75.0,
+    "roundsWithActual": 10,
     "seasonMeanErrorClassified": 3.12,
     "seasonAccuracyPctClassified": 69.9,
     "seasonWithin5PctClassified": 85.9,
@@ -1408,7 +1408,123 @@
           "drivers": 2
         }
       ]
+    },
+    {
+      "round": 10,
+      "name": "Belgian Grand Prix",
+      "comparedDrivers": 22,
+      "meanError": 3.09,
+      "medianError": 2.0,
+      "exactMatches": 1,
+      "within3": 19,
+      "within5": 20,
+      "winnerHit": false,
+      "podiumHits": 1,
+      "pointsHits": 8,
+      "pointsTotal": 10,
+      "podiumAccuracyPct": 33.3,
+      "pointsAccuracyPct": 80.0,
+      "accuracyPct": 52.0,
+      "biggestMisses": [
+        {
+          "driver": "RUS",
+          "team": "Mercedes",
+          "predicted": 2,
+          "actual": 22,
+          "delta": -20,
+          "absDelta": 20
+        },
+        {
+          "driver": "NOR",
+          "team": "McLaren",
+          "predicted": 1,
+          "actual": 7,
+          "delta": -6,
+          "absDelta": 6
+        },
+        {
+          "driver": "BOR",
+          "team": "Audi",
+          "predicted": 12,
+          "actual": 8,
+          "delta": 4,
+          "absDelta": 4
+        },
+        {
+          "driver": "ANT",
+          "team": "Mercedes",
+          "predicted": 4,
+          "actual": 1,
+          "delta": 3,
+          "absDelta": 3
+        },
+        {
+          "driver": "COL",
+          "team": "Alpine",
+          "predicted": 13,
+          "actual": 10,
+          "delta": 3,
+          "absDelta": 3
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "Haas",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Racing Bulls",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 3.5,
+          "drivers": 2
+        },
+        {
+          "team": "McLaren",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Mercedes",
+          "meanError": 11.5,
+          "drivers": 2
+        }
+      ]
     }
   ],
-  "generatedAt": "2026-07-19T11:49:16.648257Z"
+  "generatedAt": "2026-07-19T15:45:02.629945Z"
 }
