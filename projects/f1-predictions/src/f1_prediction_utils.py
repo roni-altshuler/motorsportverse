@@ -25,8 +25,10 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import os
+import re
 import json
 from datetime import datetime
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import fastf1
@@ -787,8 +789,52 @@ def enable_cache(cache_dir: str = "f1_cache") -> None:
     print(f"✅ FastF1 cache enabled at ./{cache_dir}")
 
 
+# Committed offline lap store.  The historical race laps that feed the
+# per-circuit driver-pace features are IMMUTABLE, but the FastF1 live-timing
+# API is frequently unreachable from CI runners (GitHub Actions egress IPs get
+# empty responses and get rate-limited), which used to crash the whole
+# race-weekend cron in load_multi_year_data with "No data for <GP>".  We
+# therefore materialise each past session's laps to a committed parquet under
+# features/data/lap_cache/ and read from it first, so downstream builds never
+# depend on the network for closed seasons — the monorepo rule: "committed
+# snapshot is the offline source of truth".  A live fetch (when run somewhere
+# with network access) writes the snapshot so it can be committed for CI.
+LAP_CACHE_DIR = Path(__file__).resolve().parent.parent / "features" / "data" / "lap_cache"
+
+
+def _lap_cache_path(year, grand_prix, session_type: str = "R") -> Path:
+    """Committed-snapshot path for one (year, circuit, session).
+
+    Keyed on the *resolved* historical GP so aliased circuits (e.g. Madrid →
+    Spain) share a single snapshot.
+    """
+    historical_gp = resolve_historical_gp_key(grand_prix)
+    safe_gp = re.sub(r"[^0-9A-Za-z]+", "_", str(historical_gp)).strip("_")
+    return LAP_CACHE_DIR / f"{year}_{safe_gp}_{session_type}.parquet"
+
+
+def _write_lap_cache(cache_path: Path, laps) -> None:
+    """Best-effort persist of a freshly-fetched session to the offline store."""
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        laps.to_parquet(cache_path, index=False)
+    except Exception as exc:  # pragma: no cover - persistence is best-effort
+        print(f"  ⚠️  Could not write lap cache {cache_path.name}: {exc}")
+
+
 def load_race_session(year, grand_prix, session_type="R"):
-    """Load a single FastF1 session → DataFrame of lap/sector times."""
+    """Load a single FastF1 session → DataFrame of lap/sector times.
+
+    Prefers the committed offline snapshot (features/data/lap_cache/) so CI
+    never touches the FastF1 network for immutable past seasons; falls back to
+    a live FastF1 fetch (and writes the snapshot) when no snapshot exists.
+    """
+    cache_path = _lap_cache_path(year, grand_prix, session_type)
+    if cache_path.exists():
+        laps = pd.read_parquet(cache_path)
+        print(f"  ✅ {year} {grand_prix} — {len(laps)} laps (offline snapshot).")
+        return laps
+
     historical_gp = resolve_historical_gp_key(grand_prix)
     alias_note = f" via {historical_gp}" if historical_gp != grand_prix else ""
     print(f"  ⏳ Loading {year} {grand_prix} GP ({session_type}){alias_note} …")
@@ -801,6 +847,7 @@ def load_race_session(year, grand_prix, session_type="R"):
         laps[f"{c} (s)"] = laps[c].dt.total_seconds()
     laps["Year"] = year
     print(f"  ✅ {year} {grand_prix} — {len(laps)} laps loaded.")
+    _write_lap_cache(cache_path, laps)
     return laps
 
 
