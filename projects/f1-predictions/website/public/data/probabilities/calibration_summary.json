@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-19T09:27:44Z",
+  "generatedAt": "2026-07-19T11:52:23Z",
   "trainingSeasons": [],
   "dataLimitation": "Isotonic calibration is gated on --min-completed-rounds distinct races of (predicted, observed) history (in-repo season results + the multi-season history DB). When the gate has not tripped, exported probabilities are raw Plackett-Luce Monte Carlo outputs and calibration.applied is false. Calibrated probabilities are renormalized per market (win sums to 1, podium to 3, top6 to 6, top10 to 10).",
   "perMarket": {
