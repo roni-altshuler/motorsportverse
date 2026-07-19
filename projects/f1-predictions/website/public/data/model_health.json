@@ -4,35 +4,35 @@
   "featureDrift": [
     {
       "feature": "predictedTime",
-      "psi": 8.2609,
+      "psi": 9.1911,
       "severity": "alarm",
       "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "winProbability",
-      "psi": 0.5614,
+      "psi": 0.5155,
       "severity": "alarm",
       "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "finishRangeLow",
-      "psi": 0.8664,
+      "psi": 0.9228,
       "severity": "alarm",
       "baseline_n": 462,
       "current_n": 22
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.6747,
+      "psi": 0.7308,
       "severity": "alarm",
       "baseline_n": 462,
       "current_n": 22
     }
   ],
   "outputDrift": {
-    "rolling_brier_recent": 5.169842621131974,
+    "rolling_brier_recent": 5.799686511904211,
     "rolling_brier_baseline": null,
     "relative_change": null,
     "severity": "ok",
@@ -40,47 +40,47 @@
   },
   "warnings": [],
   "alarms": [
-    "predictedTime: PSI 8.261 (significant drift vs baseline)",
-    "winProbability: PSI 0.561 (significant drift vs baseline)",
-    "finishRangeLow: PSI 0.866 (significant drift vs baseline)",
-    "finishRangeHigh: PSI 0.675 (significant drift vs baseline)"
+    "predictedTime: PSI 9.191 (significant drift vs baseline)",
+    "winProbability: PSI 0.515 (significant drift vs baseline)",
+    "finishRangeLow: PSI 0.923 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.731 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
       "round": 1,
-      "brier": 7.342281042638651
+      "brier": 6.605782590758164
     },
     {
       "round": 2,
-      "brier": 6.424385361474456
+      "brier": 5.869799439039246
     },
     {
       "round": 3,
-      "brier": 2.4308621740219887
+      "brier": 2.412090756622109
     },
     {
       "round": 4,
-      "brier": 5.535012523595917
+      "brier": 5.688904671695279
     },
     {
       "round": 5,
-      "brier": 6.980492298346351
+      "brier": 6.775624761532393
     },
     {
       "round": 6,
-      "brier": 7.292586522065966
+      "brier": 7.223698372843248
     },
     {
       "round": 7,
-      "brier": 4.369314487526514
+      "brier": 4.400413203738527
     },
     {
       "round": 8,
-      "brier": 2.6457513110645907
+      "brier": 2.2763607319179844
     },
     {
       "round": 9,
-      "brier": 5.169842621131974
+      "brier": 5.799686511904211
     }
   ]
 }

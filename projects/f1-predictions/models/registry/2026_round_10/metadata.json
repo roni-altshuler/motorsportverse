@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Belgium",
   "ensemble_weights": {
-    "gb": 0.5878244585765282,
-    "lstm": 0.0,
-    "xgb": 0.4121755414234719
+    "gb": 0.3618638874571809,
+    "lstm": 0.18,
+    "xgb": 0.4581361125428191
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -55,33 +55,39 @@
     "racecraft_elo",
     "teammate_delta_elo"
   ],
-  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
+  "gitSha": "de9d9bd73ad32627c995ad90df0f1d011e812ff3",
   "gpName": "Belgian Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.09823982290406548,
+      "MAE (s)": 0.36140816234422174,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.1186063912659912,
-      "R\u00b2": 0.9779429203213332
+      "RMSE (s)": 0.3902269480467425,
+      "R\u00b2": 0.9576042672270934
     },
     {
-      "MAE (s)": 0.14010479736328135,
+      "MAE (s)": 0.28546224365234424,
       "Model": "XGBoost",
-      "RMSE (s)": 0.16450334777552356,
-      "R\u00b2": 0.9575691913315101
+      "RMSE (s)": 0.37935574396966065,
+      "R\u00b2": 0.9599335411881257
     },
     {
-      "MAE (s)": 0.0713121901979207,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.093807647146307,
-      "R\u00b2": 0.9862022486529345
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.2327198643670556,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.29359820547568366,
+      "R\u00b2": 0.9760009293111389
     }
   ],
-  "pythonVersion": "3.11.14",
+  "pythonVersion": "3.11.15",
   "round": 10,
-  "savedAt": "2026-06-27T17:03:48+00:00",
+  "savedAt": "2026-07-19T08:42:08+00:00",
   "season": 2026
 }
