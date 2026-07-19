@@ -399,3 +399,76 @@ class TestBuildTrainingDataset:
         assert len(df) == 14
         # Both circuits should be in the encoder
         assert set(encoders["circuit"].keys()) == {"R1", "R2"}
+
+
+class TestTrainRacePaceSkipGuard:
+    """The trainer must no-op when a race-pace ensemble is already registered.
+
+    Regression guard for the race-weekend cron death-spiral: re-fetching the
+    full multi-season history on every poll exhausted the FastF1 rate limit and
+    then crashed the live pipeline downstream.  When the sentinel binaries are
+    present, ``main`` must return 0 WITHOUT ever calling ``build_training_dataset``
+    (i.e. without touching FastF1); ``--force`` overrides.
+    """
+
+    def _seed_sentinel(self, root):
+        import json
+        from pathlib import Path
+
+        d = Path(root) / "2025_round_99"
+        d.mkdir(parents=True)
+        (d / "metadata.json").write_text(json.dumps({"kind": "race-pace"}))
+        (d / "race_pace_gbr.joblib").write_bytes(b"stub")
+
+    def test_skips_when_already_registered(self, tmp_path, monkeypatch):
+        import train_race_pace
+
+        self._seed_sentinel(tmp_path)
+
+        def _boom(*a, **k):  # must never be reached
+            raise AssertionError("build_training_dataset called despite sentinel")
+
+        monkeypatch.setattr(train_race_pace, "build_training_dataset", _boom)
+        rc = train_race_pace.main(
+            ["--seasons", "2018-2025", "--registry-root", str(tmp_path)]
+        )
+        assert rc == 0
+
+    def test_force_bypasses_guard(self, tmp_path, monkeypatch):
+        import train_race_pace
+
+        self._seed_sentinel(tmp_path)
+        called = {"n": 0}
+
+        def _sentinel_call(pairs):
+            called["n"] += 1
+            # Return empty so main() exits early (rc=2) without training/saving.
+            import pandas as pd
+
+            return pd.DataFrame(), {}
+
+        monkeypatch.setattr(train_race_pace, "build_training_dataset", _sentinel_call)
+        rc = train_race_pace.main(
+            ["--seasons", "2024", "--rounds", "1", "--registry-root", str(tmp_path), "--force"]
+        )
+        assert called["n"] == 1  # guard bypassed → dataset build attempted
+        assert rc == 2  # empty df → documented "no lap data" exit
+
+    def test_empty_registry_does_not_skip(self, tmp_path):
+        import train_race_pace
+        from models.registry import ModelRegistry
+
+        assert train_race_pace._registered_race_pace(ModelRegistry(root=tmp_path)) is None
+
+    def test_metadata_only_entry_is_not_treated_as_usable(self, tmp_path):
+        # metadata.json without any binary must NOT count as registered.
+        import json
+        from pathlib import Path
+
+        import train_race_pace
+        from models.registry import ModelRegistry
+
+        d = Path(tmp_path) / "2025_round_99"
+        d.mkdir(parents=True)
+        (d / "metadata.json").write_text(json.dumps({"kind": "race-pace"}))
+        assert train_race_pace._registered_race_pace(ModelRegistry(root=tmp_path)) is None

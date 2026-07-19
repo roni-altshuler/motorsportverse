@@ -93,6 +93,32 @@ def _parse_rounds(spec: str | None) -> list[int] | None:
     return sorted(out)
 
 
+def _registered_race_pace(registry: ModelRegistry) -> tuple[int, int, dict] | None:
+    """Return ``(season, round, metadata)`` for the newest registered race-pace
+    ensemble whose binary artefacts are present on disk, else ``None``.
+
+    ``metadata.json`` is committed to git, and the cron force-adds the
+    ``*.joblib`` binaries alongside it, so a registered sentinel is fully usable
+    on a fresh runner.  We require at least one binary (not just metadata) so a
+    metadata-only entry never masks a genuinely missing model.
+    """
+    try:
+        entries = registry.list_all()
+    except Exception:
+        return None
+    candidates = [
+        (s, r, m) for s, r, m in entries if m.get("kind") == RACE_PACE_METADATA_KIND
+    ]
+    candidates.sort(key=lambda row: (row[0], row[1]))
+    for season, round_num, meta in reversed(candidates):
+        round_dir = registry.root / f"{season:04d}_round_{round_num:02d}"
+        if round_dir.is_dir() and any(
+            p.suffix in (".joblib", ".pt") for p in round_dir.iterdir()
+        ):
+            return (season, round_num, meta)
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Train the per-lap race-pace ensemble and save to the "
@@ -133,7 +159,40 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Suppress per-round chatter.",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Retrain even when a race-pace ensemble is already registered "
+        "(the default is to no-op in that case).",
+    )
     args = parser.parse_args(argv)
+
+    # ── Skip guard ──────────────────────────────────────────────────────────
+    # The race-pace ensemble is fit on IMMUTABLE multi-season history, so once a
+    # sentinel entry (round 99) with its binaries is registered there is nothing
+    # to recompute.  Re-running unconditionally means re-fetching up to 176
+    # historical FastF1 sessions on *every* scheduled poll — which exhausts the
+    # 500-req/h FastF1 rate limit and then starves the live pipeline of its
+    # budget (observed in the race-weekend cron: this step rate-limited, then
+    # load_multi_year_data crashed the whole run with "No data for <GP>").  The
+    # committed sentinel binaries are all the simulator needs, so default to a
+    # no-op; pass --force to deliberately retrain locally.
+    registry_root = (
+        args.registry_root
+        if args.registry_root is not None
+        else ModelRegistry.__dataclass_fields__["root"].default
+    )
+    if not args.force:
+        existing = _registered_race_pace(ModelRegistry(root=registry_root))
+        if existing is not None:
+            season_e, round_e, _ = existing
+            print(
+                f"Race-pace ensemble already registered "
+                f"({season_e:04d}_round_{round_e:02d}); skipping retrain "
+                f"(pass --force to override).",
+                file=sys.stderr,
+            )
+            return 0
 
     seasons = _parse_seasons(args.seasons)
     rounds = _parse_rounds(args.rounds) or list(range(1, 23))
@@ -177,9 +236,7 @@ def main(argv: list[str] | None = None) -> int:
     # Persist to the registry under a sentinel round number so it doesn't
     # collide with per-weekend registrations.  Encoders + feature columns +
     # metrics ride along in metadata.json.
-    registry = ModelRegistry(
-        root=args.registry_root if args.registry_root is not None else ModelRegistry.__dataclass_fields__["root"].default,
-    )
+    registry = ModelRegistry(root=registry_root)
     target_season = seasons[-1]
     models_dict = {
         "race_pace_gbr": artifacts["gbr"],
