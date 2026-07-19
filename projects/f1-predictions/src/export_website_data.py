@@ -1533,6 +1533,18 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
 
     round_data.update(_get_round_preserved_fields(round_num, existing_round))
 
+    # Preserve the circuit SVG geometry across re-exports.  It is derived from
+    # FastF1 *telemetry* (generate_circuit_svg.py) and is IMMUTABLE per circuit,
+    # but this export rebuilds circuitInfo without it — and on CI the telemetry
+    # fetch is unavailable, so the follow-up generate_circuit_svg step cannot
+    # re-derive it and would leave circuitInfo.geometry null, blanking the track
+    # map on the race page.  Carrying the previously-derived geometry forward
+    # here keeps the map intact (generate_circuit_svg then no-ops on it).
+    if isinstance(existing_round, dict):
+        prev_geometry = (existing_round.get("circuitInfo") or {}).get("geometry")
+        if isinstance(prev_geometry, dict) and prev_geometry.get("path"):
+            round_data["circuitInfo"]["geometry"] = prev_geometry
+
     round_data["weekendResults"] = _fetch_weekend_results(round_num, info, SEASON_YEAR)
     gp_session = next(
         (

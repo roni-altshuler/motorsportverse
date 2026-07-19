@@ -347,12 +347,22 @@ def process_round(round_num: int, season_override: int | None, force: bool) -> b
         season_year = season_override
 
     geometry = build_geometry(season_year, gp_key)
-    circuit_info["geometry"] = geometry  # None on failure — UI uses fallback
-    _save_round(round_num, data)
 
     if geometry is None:
+        # Telemetry unreachable (rate-limit, CI egress block, pre-2018 circuit).
+        # The layout is immutable, so NEVER clobber a previously-derived geometry
+        # with null — that would blank an already-good track map.  Only write
+        # null on a genuine cold start (no geometry yet).
+        if isinstance(circuit_info.get("geometry"), dict):
+            print(f"  round {round_num}: telemetry unavailable — keeping existing geometry")
+            return True
+        circuit_info["geometry"] = None
+        _save_round(round_num, data)
         print(f"  round {round_num}: geometry=null (cold-start fallback in UI)")
         return False
+
+    circuit_info["geometry"] = geometry
+    _save_round(round_num, data)
     print(
         f"  round {round_num}: ok  vertices≈{geometry['path'].count('L') + 1}  "
         f"corners={len(geometry['corners'])}  bytes={len(geometry['path'])}"
