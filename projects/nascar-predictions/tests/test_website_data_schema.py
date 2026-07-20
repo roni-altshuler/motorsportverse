@@ -303,7 +303,16 @@ def test_round_files_contract(data_dir):
     assert "stageResults" in completed["race"]
     assert "accuracy" in completed["race"]
 
-    upcoming = RoundDetail.model_validate(_load(data_dir / "rounds" / "round_21.json"))
+    # The first round the committed snapshot does not yet carry.  Derived, never
+    # hardcoded: a literal upcoming round starts failing the moment that round's
+    # result lands — and because bot commits don't trigger CI, it surfaces inside
+    # the cron's own "Validate generated outputs" gate (F3 golden-template rule).
+    next_round = config.COMPLETED_ROUNDS + 1
+    if next_round > len(config.CALENDAR):
+        pytest.skip("season complete — no upcoming round to assert")
+    upcoming = RoundDetail.model_validate(
+        _load(data_dir / "rounds" / f"round_{next_round:02d}.json")
+    )
     assert upcoming.completed is False
     assert upcoming.dataSource is None
 

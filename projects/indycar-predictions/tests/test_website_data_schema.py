@@ -279,10 +279,21 @@ def test_round_files_contract(data_dir):
     assert indy500.isIndy500 is True
     assert len(indy500.race.classification) == 33
 
-    upcoming = RoundDetail.model_validate(_load(data_dir / "rounds" / "round_12.json"))
+    # The first round the committed snapshot does not yet carry.  Derived, never
+    # hardcoded: a literal upcoming round starts failing the moment that round's
+    # result lands — and because bot commits don't trigger CI, it surfaces inside
+    # the cron's own "Validate generated outputs" gate (F3 golden-template rule).
+    next_round = config.COMPLETED_ROUNDS + 1
+    if next_round > len(config.CALENDAR):
+        pytest.skip("season complete — no upcoming round to assert")
+    upcoming = RoundDetail.model_validate(
+        _load(data_dir / "rounds" / f"round_{next_round:02d}.json")
+    )
     assert upcoming.completed is False
     assert upcoming.dataSource is None
-    assert upcoming.trackGroup == "oval"  # Nashville Superspeedway
+    # Venue-agnostic: the upcoming circuit changes as the season advances, so
+    # assert the group is populated and valid rather than naming one track.
+    assert upcoming.trackGroup in config.ELO_TRACK_GROUPS
 
 
 def test_probabilities_contract(data_dir):
