@@ -1,0 +1,63 @@
+{
+  "round": 21,
+  "venueName": "North Wilkesboro Speedway",
+  "trackType": "short",
+  "race": {
+    "n": 37,
+    "mean_position_error": 7.73,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 11,
+    "within_5": 13,
+    "exact_matches": 1,
+    "spearman_correlation": 0.6095305832147937,
+    "ndcg_at_5": 0.77501274804586
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 8.649,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 2,
+    "spearman_correlation": 0.5220483641536273,
+    "ndcg_at_5": 0.756163235841315
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.028514,
+        "logLoss": 0.131688
+      },
+      "podium": {
+        "brier": 0.068917,
+        "logLoss": 0.237101
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 37,
+      "mean_position_error": 10.162,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 8,
+      "within_5": 13,
+      "exact_matches": 3,
+      "spearman_correlation": 0.30369843527738266,
+      "ndcg_at_5": 0.686100662423681
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 9.135,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 9,
+      "within_5": 10,
+      "exact_matches": 3,
+      "spearman_correlation": 0.4540066382171645,
+      "ndcg_at_5": 0.6773096578548072
+    }
+  }
+}
