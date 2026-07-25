@@ -2,7 +2,7 @@
   "season": 2026,
   "source": "api.formula-e.pulselive.com",
   "championshipId": "8088703b-96c1-410d-a48b-77fca322334f",
-  "completedRounds": 13,
+  "completedRounds": 14,
   "totalRounds": 17,
   "calendar": [
     {
@@ -156,7 +156,7 @@
       "kind": "street",
       "city": "Tokyo",
       "date": "2026-07-25",
-      "completed": false,
+      "completed": true,
       "raceId": "f35ac0c2-456d-4c10-ac6e-2b810c18edcb"
     },
     {
@@ -196,6 +196,21 @@
   "driverStandings": [
     {
       "position": 1,
+      "code": "EVA",
+      "name": "M. Evans",
+      "team": "Jaguar TCS Racing",
+      "points": 144.0,
+      "wins": 2,
+      "podiums": 5,
+      "pointsHistory": [
+        128.0,
+        132.0,
+        132.0,
+        144.0
+      ]
+    },
+    {
+      "position": 2,
       "code": "WEH",
       "name": "P. Wehrlein",
       "team": "Porsche",
@@ -204,69 +219,54 @@
       "podiums": 5,
       "pointsHistory": [
         101.0,
-        101.0,
         129.0,
+        141.0,
         141.0
       ]
     },
     {
-      "position": 2,
-      "code": "EVA",
-      "name": "M. Evans",
-      "team": "Jaguar TCS Racing",
-      "points": 132.0,
+      "position": 3,
+      "code": "DEN",
+      "name": "J. Dennis",
+      "team": "Andretti",
+      "points": 130.0,
       "wins": 2,
-      "podiums": 5,
+      "podiums": 4,
       "pointsHistory": [
-        128.0,
-        128.0,
-        132.0,
-        132.0
+        94.0,
+        109.0,
+        109.0,
+        130.0
       ]
     },
     {
-      "position": 3,
+      "position": 4,
       "code": "ROW",
       "name": "O. Rowland",
       "team": "Nissan",
-      "points": 114.0,
+      "points": 120.0,
       "wins": 1,
       "podiums": 6,
       "pointsHistory": [
         109.0,
         109.0,
-        109.0,
-        114.0
-      ]
-    },
-    {
-      "position": 4,
-      "code": "DAC",
-      "name": "A. Félix da Costa",
-      "team": "Jaguar TCS Racing",
-      "points": 111.0,
-      "wins": 2,
-      "podiums": 4,
-      "pointsHistory": [
-        80.0,
-        92.0,
-        111.0,
-        111.0
+        114.0,
+        120.0
       ]
     },
     {
       "position": 5,
-      "code": "DEN",
-      "name": "J. Dennis",
-      "team": "Andretti",
-      "points": 109.0,
+      "code": "DAC",
+      "name": "A. Félix da Costa",
+      "team": "Jaguar TCS Racing",
+      "points": 113.0,
       "wins": 2,
-      "podiums": 3,
+      "podiums": 4,
       "pointsHistory": [
-        66.0,
-        94.0,
-        109.0,
-        109.0
+        92.0,
+        111.0,
+        111.0,
+        113.0
       ]
     },
     {
@@ -274,14 +274,14 @@
       "code": "MOR",
       "name": "E. Mortara",
       "team": "Mahindra Racing",
-      "points": 103.0,
+      "points": 113.0,
       "wins": 0,
       "podiums": 2,
       "pointsHistory": [
         103.0,
         103.0,
         103.0,
-        103.0
+        113.0
       ]
     },
     {
@@ -293,14 +293,29 @@
       "wins": 1,
       "podiums": 2,
       "pointsHistory": [
-        83.0,
         89.0,
         90.0,
+        96.0,
         96.0
       ]
     },
     {
       "position": 8,
+      "code": "CAS",
+      "name": "N. Cassidy",
+      "team": "Citroën Racing",
+      "points": 86.0,
+      "wins": 1,
+      "podiums": 4,
+      "pointsHistory": [
+        71.0,
+        71.0,
+        71.0,
+        86.0
+      ]
+    },
+    {
+      "position": 9,
       "code": "BUE",
       "name": "S. Buemi",
       "team": "Envision Racing",
@@ -310,23 +325,8 @@
       "pointsHistory": [
         65.0,
         65.0,
-        65.0,
+        75.0,
         75.0
-      ]
-    },
-    {
-      "position": 9,
-      "code": "CAS",
-      "name": "N. Cassidy",
-      "team": "Citroën Racing",
-      "points": 71.0,
-      "wins": 1,
-      "podiums": 3,
-      "pointsHistory": [
-        71.0,
-        71.0,
-        71.0,
-        71.0
       ]
     },
     {
@@ -338,8 +338,8 @@
       "wins": 1,
       "podiums": 2,
       "pointsHistory": [
-        43.0,
         59.0,
+        69.0,
         69.0,
         69.0
       ]
@@ -353,9 +353,9 @@
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        32.0,
         42.0,
         54.0,
+        65.0,
         65.0
       ]
     },
@@ -364,14 +364,14 @@
       "code": "MAR",
       "name": "J. M. Martí",
       "team": "CUPRA KIRO",
-      "points": 58.0,
+      "points": 62.0,
       "wins": 0,
       "podiums": 2,
       "pointsHistory": [
-        40.0,
         58.0,
         58.0,
-        58.0
+        58.0,
+        62.0
       ]
     },
     {
@@ -384,28 +384,43 @@
       "podiums": 1,
       "pointsHistory": [
         34.0,
-        34.0,
         40.0,
+        55.0,
         55.0
       ]
     },
     {
       "position": 14,
-      "code": "JEV",
-      "name": "J-É. Vergne",
-      "team": "Citroën Racing",
-      "points": 44.0,
-      "wins": 0,
+      "code": "TIC",
+      "name": "D. Ticktum",
+      "team": "CUPRA KIRO",
+      "points": 54.0,
+      "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        14.0,
-        18.0,
-        26.0,
-        44.0
+        28.0,
+        28.0,
+        28.0,
+        54.0
       ]
     },
     {
       "position": 15,
+      "code": "JEV",
+      "name": "J-É. Vergne",
+      "team": "Citroën Racing",
+      "points": 52.0,
+      "wins": 0,
+      "podiums": 1,
+      "pointsHistory": [
+        18.0,
+        26.0,
+        44.0,
+        52.0
+      ]
+    },
+    {
+      "position": 16,
       "code": "DIG",
       "name": "L. Di Grassi",
       "team": "Lola Yamaha ABT",
@@ -413,25 +428,10 @@
       "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        6.0,
         7.0,
         7.0,
+        32.0,
         32.0
-      ]
-    },
-    {
-      "position": 16,
-      "code": "TIC",
-      "name": "D. Ticktum",
-      "team": "CUPRA KIRO",
-      "points": 28.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        28.0,
-        28.0,
-        28.0,
-        28.0
       ]
     },
     {
@@ -439,14 +439,14 @@
       "code": "BAR",
       "name": "T. Barnard",
       "team": "DS Penske",
-      "points": 28.0,
+      "points": 29.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        24.0,
         26.0,
         26.0,
-        28.0
+        28.0,
+        29.0
       ]
     },
     {
@@ -458,9 +458,9 @@
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        10.0,
         18.0,
         20.0,
+        21.0,
         21.0
       ]
     },
@@ -499,12 +499,12 @@
     {
       "position": 1,
       "team": "Jaguar TCS Racing",
-      "points": 243.0,
+      "points": 257.0,
       "pointsHistory": [
-        208.0,
         220.0,
         243.0,
-        243.0
+        243.0,
+        257.0
       ]
     },
     {
@@ -512,87 +512,87 @@
       "team": "Porsche",
       "points": 237.0,
       "pointsHistory": [
-        184.0,
         190.0,
         219.0,
+        237.0,
         237.0
       ]
     },
     {
       "position": 3,
       "team": "Andretti",
-      "points": 174.0,
+      "points": 195.0,
       "pointsHistory": [
-        98.0,
         136.0,
         163.0,
-        174.0
+        174.0,
+        195.0
       ]
     },
     {
       "position": 4,
       "team": "Mahindra Racing",
-      "points": 172.0,
+      "points": 182.0,
       "pointsHistory": [
-        146.0,
         162.0,
         172.0,
-        172.0
+        172.0,
+        182.0
       ]
     },
     {
       "position": 5,
-      "team": "Envision Racing",
-      "points": 130.0,
+      "team": "Citroën Racing",
+      "points": 138.0,
       "pointsHistory": [
-        99.0,
-        99.0,
-        105.0,
-        130.0
+        89.0,
+        97.0,
+        115.0,
+        138.0
       ]
     },
     {
       "position": 6,
       "team": "Nissan",
-      "points": 125.0,
+      "points": 131.0,
       "pointsHistory": [
         120.0,
         120.0,
-        120.0,
-        125.0
+        125.0,
+        131.0
       ]
     },
     {
       "position": 7,
-      "team": "Citroën Racing",
-      "points": 115.0,
+      "team": "Envision Racing",
+      "points": 130.0,
       "pointsHistory": [
-        85.0,
-        89.0,
-        97.0,
-        115.0
+        99.0,
+        105.0,
+        130.0,
+        130.0
       ]
     },
     {
       "position": 8,
       "team": "CUPRA KIRO",
-      "points": 86.0,
+      "points": 116.0,
       "pointsHistory": [
-        68.0,
         86.0,
         86.0,
-        86.0
+        86.0,
+        116.0
       ]
     },
     {
       "position": 9,
       "team": "DS Penske",
-      "points": 49.0,
+      "points": 50.0,
       "pointsHistory": [
-        34.0,
         44.0,
         46.0,
-        49.0
+        49.0,
+        50.0
       ]
     },
     {
@@ -600,9 +600,9 @@
       "team": "Lola Yamaha ABT",
       "points": 34.0,
       "pointsHistory": [
-        8.0,
         9.0,
         9.0,
+        34.0,
         34.0
       ]
     }
@@ -3532,6 +3532,231 @@
         }
       ],
       "raceId": "94e2d53a-6a16-48e4-a99c-599e3cd30e2f"
+    },
+    "14": {
+      "race": [
+        {
+          "position": 1,
+          "code": "TIC",
+          "name": "Dan Ticktum",
+          "team": "CUPRA KIRO",
+          "grid": 6,
+          "status": "Finished",
+          "points": 26.0,
+          "pole": false,
+          "fastestLap": true
+        },
+        {
+          "position": 2,
+          "code": "DEN",
+          "name": "Jake Dennis",
+          "team": "Andretti",
+          "grid": 1,
+          "status": "Finished",
+          "points": 21.0,
+          "pole": true,
+          "fastestLap": false
+        },
+        {
+          "position": 3,
+          "code": "CAS",
+          "name": "Nick Cassidy",
+          "team": "Citroën Racing",
+          "grid": 7,
+          "status": "Finished",
+          "points": 15.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 4,
+          "code": "EVA",
+          "name": "Mitch Evans",
+          "team": "Jaguar TCS Racing",
+          "grid": 16,
+          "status": "Finished",
+          "points": 12.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 5,
+          "code": "MOR",
+          "name": "Edoardo Mortara",
+          "team": "Mahindra Racing",
+          "grid": 2,
+          "status": "Finished",
+          "points": 10.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 6,
+          "code": "JEV",
+          "name": "Jean-Éric Vergne",
+          "team": "Citroën Racing",
+          "grid": 10,
+          "status": "Finished",
+          "points": 8.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 7,
+          "code": "ROW",
+          "name": "Oliver Rowland",
+          "team": "Nissan",
+          "grid": 15,
+          "status": "Finished",
+          "points": 6.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 8,
+          "code": "MAR",
+          "name": "Josep Maria Martí",
+          "team": "CUPRA KIRO",
+          "grid": 18,
+          "status": "Finished",
+          "points": 4.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 9,
+          "code": "DAC",
+          "name": "António Félix Da Costa",
+          "team": "Jaguar TCS Racing",
+          "grid": 3,
+          "status": "Finished",
+          "points": 2.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 10,
+          "code": "BAR",
+          "name": "Taylor Barnard",
+          "team": "DS Penske",
+          "grid": 5,
+          "status": "Finished",
+          "points": 1.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 11,
+          "code": "DIG",
+          "name": "Lucas Di Grassi",
+          "team": "Lola Yamaha ABT",
+          "grid": 17,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 12,
+          "code": "ERI",
+          "name": "Joel Eriksson",
+          "team": "Envision Racing",
+          "grid": 13,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 13,
+          "code": "DRU",
+          "name": "Felipe Drugovich",
+          "team": "Andretti",
+          "grid": 20,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 14,
+          "code": "BUE",
+          "name": "Sébastien Buemi",
+          "team": "Envision Racing",
+          "grid": 14,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 15,
+          "code": "GUE",
+          "name": "Maximilian Günther",
+          "team": "DS Penske",
+          "grid": 9,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 16,
+          "code": "NAT",
+          "name": "Norman Nato",
+          "team": "Nissan",
+          "grid": 11,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 17,
+          "code": "DEV",
+          "name": "Nyck De Vries",
+          "team": "Mahindra Racing",
+          "grid": 12,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 18,
+          "code": "MUE",
+          "name": "Nico Müller",
+          "team": "Porsche",
+          "grid": 4,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": 19,
+          "code": "MAL",
+          "name": "Zane Maloney",
+          "team": "Lola Yamaha ABT",
+          "grid": 19,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        },
+        {
+          "position": null,
+          "code": "WEH",
+          "name": "Pascal Wehrlein",
+          "team": "Porsche",
+          "grid": 8,
+          "status": "Finished",
+          "points": 0.0,
+          "pole": false,
+          "fastestLap": false
+        }
+      ],
+      "raceId": "f35ac0c2-456d-4c10-ac6e-2b810c18edcb"
     }
   },
   "qualifying": {

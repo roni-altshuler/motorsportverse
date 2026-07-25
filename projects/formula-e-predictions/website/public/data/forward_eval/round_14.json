@@ -1,0 +1,52 @@
+{
+  "round": 14,
+  "venueName": "Tokyo",
+  "venueKind": "street",
+  "race": {
+    "n": 19,
+    "mean_position_error": 5.421,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 7,
+    "within_5": 11,
+    "exact_matches": 2,
+    "spearman_correlation": 0.21403508771929824,
+    "ndcg_at_5": 0.6699551931761251
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.065543,
+        "logLoss": 0.340179
+      },
+      "podium": {
+        "brier": 0.184493,
+        "logLoss": 0.693243
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 17,
+      "mean_position_error": 6.588,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 4,
+      "within_5": 8,
+      "exact_matches": 0,
+      "spearman_correlation": -0.10049019607843138,
+      "ndcg_at_5": 0.43639968511802174
+    },
+    "gridOrder": {
+      "n": 19,
+      "mean_position_error": 5.368,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 5,
+      "within_5": 11,
+      "exact_matches": 2,
+      "spearman_correlation": 0.34035087719298246,
+      "ndcg_at_5": 0.7148974223662082
+    }
+  }
+}
