@@ -1,0 +1,63 @@
+{
+  "round": 22,
+  "venueName": "Indianapolis Motor Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 39,
+    "mean_position_error": 9.692,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 11,
+    "within_5": 17,
+    "exact_matches": 3,
+    "spearman_correlation": 0.35566801619433197,
+    "ndcg_at_5": 0.8080456205462454
+  },
+  "racePostQuali": {
+    "n": 39,
+    "mean_position_error": 9.897,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 6,
+    "within_5": 13,
+    "exact_matches": 0,
+    "spearman_correlation": 0.43785425101214576,
+    "ndcg_at_5": 0.8090974696807475
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.026613,
+        "logLoss": 0.110561
+      },
+      "podium": {
+        "brier": 0.078931,
+        "logLoss": 0.254937
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.389,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 13,
+      "exact_matches": 2,
+      "spearman_correlation": 0.36164736164736166,
+      "ndcg_at_5": 0.9045167354508429
+    },
+    "gridOrder": {
+      "n": 39,
+      "mean_position_error": 9.846,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 10,
+      "within_5": 12,
+      "exact_matches": 2,
+      "spearman_correlation": 0.407085020242915,
+      "ndcg_at_5": 0.7730862262661478
+    }
+  }
+}
