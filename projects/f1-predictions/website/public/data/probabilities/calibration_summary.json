@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-07-25T18:51:01Z",
+  "generatedAt": "2026-07-26T17:36:14Z",
   "trainingSeasons": [],
   "dataLimitation": "Isotonic calibration is gated on --min-completed-rounds distinct races of (predicted, observed) history (in-repo season results + the multi-season history DB). When the gate has not tripped, exported probabilities are raw Plackett-Luce Monte Carlo outputs and calibration.applied is false. Calibrated probabilities are renormalized per market (win sums to 1, podium to 3, top6 to 6, top10 to 10).",
   "perMarket": {
     "win": {
-      "brierScore": 0.034326,
-      "logLoss": 0.117974,
+      "brierScore": 0.034598,
+      "logLoss": 0.118939,
       "reliability": [
         {
-          "meanPred": 0.02259222222222223,
+          "meanPred": 0.02264747474747475,
           "empirical": 0.0,
-          "count": 180
+          "count": 198
         },
         {
-          "meanPred": 0.13757058823529414,
-          "empirical": 0.17647058823529413,
-          "count": 34
+          "meanPred": 0.13841578947368421,
+          "empirical": 0.18421052631578946,
+          "count": 38
         },
         {
           "meanPred": 0.2093333333333333,
@@ -23,58 +23,58 @@
           "count": 6
         }
       ],
-      "sampleCount": 220
+      "sampleCount": 242
     },
     "podium": {
-      "brierScore": 0.075364,
-      "logLoss": 0.235005,
+      "brierScore": 0.076329,
+      "logLoss": 0.236848,
       "reliability": [
         {
-          "meanPred": 0.028485294117647057,
+          "meanPred": 0.028431999999999995,
           "empirical": 0.0,
-          "count": 136
+          "count": 150
         },
         {
-          "meanPred": 0.1468842105263158,
-          "empirical": 0.05263157894736842,
+          "meanPred": 0.14850000000000002,
+          "empirical": 0.05,
+          "count": 20
+        },
+        {
+          "meanPred": 0.2532214285714286,
+          "empirical": 0.2857142857142857,
+          "count": 28
+        },
+        {
+          "meanPred": 0.3562947368421052,
+          "empirical": 0.5263157894736842,
           "count": 19
         },
         {
-          "meanPred": 0.253568,
-          "empirical": 0.28,
-          "count": 25
+          "meanPred": 0.4414941176470588,
+          "empirical": 0.5294117647058824,
+          "count": 17
         },
         {
-          "meanPred": 0.3569777777777777,
-          "empirical": 0.5,
-          "count": 18
-        },
-        {
-          "meanPred": 0.44553333333333334,
-          "empirical": 0.5333333333333333,
-          "count": 15
-        },
-        {
-          "meanPred": 0.5553428571428571,
-          "empirical": 0.7142857142857143,
-          "count": 7
+          "meanPred": 0.55,
+          "empirical": 0.625,
+          "count": 8
         }
       ],
-      "sampleCount": 220
+      "sampleCount": 242
     },
     "top6": {
-      "brierScore": 0.108686,
-      "logLoss": 0.346867,
+      "brierScore": 0.10477,
+      "logLoss": 0.336431,
       "reliability": [
         {
-          "meanPred": 0.04085567010309278,
-          "empirical": 0.020618556701030927,
-          "count": 97
+          "meanPred": 0.040327102803738316,
+          "empirical": 0.018691588785046728,
+          "count": 107
         },
         {
-          "meanPred": 0.14340571428571428,
-          "empirical": 0.05714285714285714,
-          "count": 35
+          "meanPred": 0.14508717948717947,
+          "empirical": 0.05128205128205128,
+          "count": 39
         },
         {
           "meanPred": 0.24522222222222226,
@@ -82,56 +82,56 @@
           "count": 9
         },
         {
-          "meanPred": 0.33817777777777774,
-          "empirical": 0.3333333333333333,
-          "count": 9
+          "meanPred": 0.34363999999999995,
+          "empirical": 0.4,
+          "count": 10
         },
         {
-          "meanPred": 0.4541636363636364,
-          "empirical": 0.7272727272727273,
-          "count": 11
+          "meanPred": 0.4550666666666667,
+          "empirical": 0.6666666666666666,
+          "count": 12
         },
         {
-          "meanPred": 0.5540499999999999,
-          "empirical": 0.6875,
+          "meanPred": 0.5557333333333333,
+          "empirical": 0.6666666666666666,
+          "count": 18
+        },
+        {
+          "meanPred": 0.6613,
+          "empirical": 0.75,
           "count": 16
         },
         {
-          "meanPred": 0.6592666666666667,
-          "empirical": 0.7333333333333333,
-          "count": 15
+          "meanPred": 0.7391176470588235,
+          "empirical": 0.7058823529411765,
+          "count": 17
         },
         {
-          "meanPred": 0.7383733333333333,
-          "empirical": 0.6666666666666666,
-          "count": 15
-        },
-        {
-          "meanPred": 0.8416923076923075,
-          "empirical": 0.7692307692307693,
-          "count": 13
+          "meanPred": 0.8409571428571427,
+          "empirical": 0.7857142857142857,
+          "count": 14
         }
       ],
-      "sampleCount": 220
+      "sampleCount": 242
     },
     "top10": {
-      "brierScore": 0.17844,
-      "logLoss": 0.57066,
+      "brierScore": 0.17157,
+      "logLoss": 0.548659,
       "reliability": [
         {
-          "meanPred": 0.044506122448979606,
-          "empirical": 0.08163265306122448,
-          "count": 49
+          "meanPred": 0.044876363636363645,
+          "empirical": 0.07272727272727272,
+          "count": 55
         },
         {
-          "meanPred": 0.14573846153846154,
-          "empirical": 0.11538461538461539,
-          "count": 26
-        },
-        {
-          "meanPred": 0.23760714285714285,
-          "empirical": 0.32142857142857145,
+          "meanPred": 0.14390714285714284,
+          "empirical": 0.10714285714285714,
           "count": 28
+        },
+        {
+          "meanPred": 0.23893548387096775,
+          "empirical": 0.3225806451612903,
+          "count": 31
         },
         {
           "meanPred": 0.34384705882352945,
@@ -139,14 +139,14 @@
           "count": 17
         },
         {
-          "meanPred": 0.4542307692307693,
-          "empirical": 0.6153846153846154,
-          "count": 13
+          "meanPred": 0.45288000000000006,
+          "empirical": 0.6,
+          "count": 15
         },
         {
-          "meanPred": 0.5581666666666667,
-          "empirical": 0.6666666666666666,
-          "count": 6
+          "meanPred": 0.5503428571428571,
+          "empirical": 0.7142857142857143,
+          "count": 7
         },
         {
           "meanPred": 0.6480571428571429,
@@ -154,22 +154,22 @@
           "count": 7
         },
         {
-          "meanPred": 0.764,
-          "empirical": 0.625,
-          "count": 8
+          "meanPred": 0.7652888888888889,
+          "empirical": 0.6666666666666666,
+          "count": 9
         },
         {
-          "meanPred": 0.8644117647058822,
-          "empirical": 0.7647058823529411,
-          "count": 17
+          "meanPred": 0.8648736842105261,
+          "empirical": 0.7368421052631579,
+          "count": 19
         },
         {
-          "meanPred": 0.9578408163265307,
-          "empirical": 0.7755102040816326,
-          "count": 49
+          "meanPred": 0.9582925925925927,
+          "empirical": 0.7962962962962963,
+          "count": 54
         }
       ],
-      "sampleCount": 220
+      "sampleCount": 242
     }
   }
 }
