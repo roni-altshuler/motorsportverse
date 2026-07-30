@@ -10,6 +10,7 @@ import {
   ProbabilityRoundData,
   GpAccuracyReportData,
   PromotionStatusData,
+  ReplayData,
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -49,6 +50,26 @@ export async function fetchProbabilityData(
   try {
     const pad = round.toString().padStart(2, "0");
     const res = await fetch(`${base}/probabilities/round_${pad}.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Race Theatre replay for one round — a time-sampled reconstruction of the
+ * race baked offline from FastF1 (see `export_race_replay.py`). Only completed
+ * rounds that have been baked carry one; returns null instead of throwing so
+ * the Theatre page can show a graceful "replay coming soon" state.
+ */
+export async function fetchReplayData(
+  round: number,
+  base: string = BASE_PATH,
+): Promise<ReplayData | null> {
+  try {
+    const pad = round.toString().padStart(2, "0");
+    const res = await fetch(`${base}/replays/round_${pad}.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {

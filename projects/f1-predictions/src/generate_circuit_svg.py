@@ -108,20 +108,45 @@ def _polyline_length(points: np.ndarray) -> float:
 
 
 # ── viewBox normalisation ─────────────────────────────────────────────────
-def _normalise(points: np.ndarray, corners: np.ndarray | None) -> tuple[np.ndarray, np.ndarray | None, float]:
-    """Translate + uniform-scale into a 0..VIEWBOX_SIZE square, centred.
+class ViewTransform:
+    """Affine that maps raw FastF1 ``(X, Y)`` telemetry into the 1000×1000
+    SVG viewBox that ``build_geometry`` emits.
 
-    Y axis is flipped (telemetry uses standard cartesian; SVG y grows
-    downward). Returns (xformed_points, xformed_corners, metres_per_unit).
+    The Y axis is flipped (telemetry is standard cartesian; SVG y grows
+    downward), then the cloud is translated by its (flipped) bounding-box
+    minimum, uniformly scaled so the long axis fills the box, and the short
+    axis is centred. This is the single source of truth for the circuit
+    coordinate frame: ``export_race_replay.py`` fits one of these from the
+    same fastest-lap points and reuses it to project every car's position
+    telemetry onto the same track, so cars are guaranteed to sit on the
+    baked ``geometry.path``.
     """
-    xy = points.astype(np.float64)
+
+    def __init__(self, mins: np.ndarray, scale: float, pad: np.ndarray) -> None:
+        self.mins = mins  # on Y-flipped coords
+        self.scale = scale
+        self.pad = pad
+
+    @property
+    def metres_per_unit(self) -> float:
+        return 1.0 / self.scale
+
+    def apply(self, points: np.ndarray) -> np.ndarray:
+        """Project raw ``(X, Y)`` points (N×2) into viewBox space."""
+        xy = np.asarray(points, dtype=np.float64).copy()
+        xy[:, 1] = -xy[:, 1]
+        return (xy - self.mins) * self.scale + self.pad
+
+
+def fit_view_transform(points: np.ndarray, corners: np.ndarray | None) -> ViewTransform:
+    """Fit a :class:`ViewTransform` from the geometry points (+corners bbox)."""
+    xy = np.asarray(points, dtype=np.float64).copy()
     xy[:, 1] = -xy[:, 1]
     if corners is not None and len(corners):
-        cc = corners.astype(np.float64)
+        cc = np.asarray(corners, dtype=np.float64).copy()
         cc[:, 1] = -cc[:, 1]
         combined = np.vstack([xy, cc])
     else:
-        cc = None
         combined = xy
 
     mins = combined.min(axis=0)
@@ -131,18 +156,21 @@ def _normalise(points: np.ndarray, corners: np.ndarray | None) -> tuple[np.ndarr
     if max_extent <= 0:
         raise ValueError("degenerate telemetry: zero extent")
     scale = VIEWBOX_SIZE / max_extent
+    pad = (VIEWBOX_SIZE - extents * scale) / 2.0
+    return ViewTransform(mins, scale, pad)
 
-    def project(arr: np.ndarray) -> np.ndarray:
-        shifted = arr - mins
-        scaled = shifted * scale
-        # Centre the smaller axis inside the square
-        pad = (VIEWBOX_SIZE - extents * scale) / 2.0
-        return scaled + pad
 
-    xy_proj = project(xy)
-    cc_proj = project(cc) if cc is not None else None
-    metres_per_unit = 1.0 / scale
-    return xy_proj, cc_proj, metres_per_unit
+def _normalise(points: np.ndarray, corners: np.ndarray | None) -> tuple[np.ndarray, np.ndarray | None, float]:
+    """Translate + uniform-scale into a 0..VIEWBOX_SIZE square, centred.
+
+    Thin wrapper over :func:`fit_view_transform` kept for the geometry
+    pipeline's call site. Returns (xformed_points, xformed_corners,
+    metres_per_unit).
+    """
+    transform = fit_view_transform(points, corners)
+    xy_proj = transform.apply(points)
+    cc_proj = transform.apply(corners) if corners is not None and len(corners) else None
+    return xy_proj, cc_proj, transform.metres_per_unit
 
 
 def _build_path(points: np.ndarray) -> str:
@@ -200,15 +228,15 @@ def _load_telemetry(year: int, gp_key: str):
     return None
 
 
-def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
-    """Returns the geometry payload for one circuit, or None on failure."""
-    print(f"  • {year} R{gp_key}: loading FastF1 session…")
-    loaded = _load_telemetry(year, gp_key)
-    if loaded is None:
-        print(f"    skip: no usable telemetry found in {year} or recent prior seasons")
-        return None
-    tel, info = loaded
+def geometry_from_telemetry(tel, info) -> tuple[dict[str, Any], "ViewTransform"] | None:
+    """Build the geometry payload + its :class:`ViewTransform` from a loaded
+    fastest-lap telemetry frame and circuit info.
 
+    Split out of :func:`build_geometry` so callers that already hold a loaded
+    session (e.g. ``export_race_replay.py``) can reuse the identical geometry
+    core *and* obtain the transform needed to project car positions into the
+    same viewBox — without a second FastF1 session load.
+    """
     raw_xy = np.column_stack([tel["X"].values, tel["Y"].values]).astype(np.float64)
 
     # Filter NaNs and dedupe consecutive coords
@@ -256,12 +284,15 @@ def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
         print(f"    warn: circuit_info.corners unavailable ({exc})")
         corners_xy = None
 
-    # Normalise points + corners into the 1000x1000 viewBox
+    # Normalise points + corners into the 1000x1000 viewBox. Fit the transform
+    # once so it can be returned for reuse (car-position projection).
     try:
-        proj_points, proj_corners, metres_per_unit = _normalise(simplified, corners_xy)
+        transform = fit_view_transform(simplified, corners_xy)
     except ValueError as exc:
         print(f"    skip: normalise failed ({exc})")
         return None
+    proj_points = transform.apply(simplified)
+    proj_corners = transform.apply(corners_xy) if corners_xy is not None and len(corners_xy) else None
 
     path = _build_path(proj_points)
 
@@ -277,15 +308,31 @@ def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
                 }
             )
 
-    return {
+    geometry = {
         "viewBox": f"0 0 {VIEWBOX_SIZE} {VIEWBOX_SIZE}",
         "path": path,
         "corners": corner_payload,
         "drsZones": [],
-        "metresPerUnit": round(metres_per_unit, 4),
+        "metresPerUnit": round(transform.metres_per_unit, 4),
         "source": "fastf1",
         "generatedAt": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
     }
+    return geometry, transform
+
+
+def build_geometry(year: int, gp_key: str) -> dict[str, Any] | None:
+    """Returns the geometry payload for one circuit, or None on failure."""
+    print(f"  • {year} R{gp_key}: loading FastF1 session…")
+    loaded = _load_telemetry(year, gp_key)
+    if loaded is None:
+        print(f"    skip: no usable telemetry found in {year} or recent prior seasons")
+        return None
+    tel, info = loaded
+    result = geometry_from_telemetry(tel, info)
+    if result is None:
+        return None
+    geometry, _transform = result
+    return geometry
 
 
 # ── Round JSON I/O ────────────────────────────────────────────────────────

@@ -916,6 +916,106 @@ export interface PositionModelABData {
   };
 }
 
+/* ── Race Theatre replay ──────────────────────────────────────────────────
+ * A time-sampled reconstruction of a completed race, baked offline from
+ * FastF1 telemetry by `export_race_replay.py` into
+ * `public/data/replays/round_NN.json`. Car positions are stored as a
+ * normalised track fraction in [0,1) so the client places each car with
+ * `path.getPointAtLength(frac * total)` on the same `circuitInfo.geometry`
+ * path the CircuitMap draws — no coordinate transform on the client. The
+ * payload is columnar (per-driver parallel arrays) to stay small and
+ * gzip-friendly for the static export. Open unions + optional fields per the
+ * site convention so additive backend fields never break the build. */
+export interface ReplayDriver {
+  /** Three-letter code, e.g. "VER". Also the key into `cars` / `stints`. */
+  code: string;
+  number: number;
+  name: string;
+  team: string;
+  teamColor: string;
+  /** Starting grid slot; null when starting from the pit lane / unknown. */
+  grid: number | null;
+}
+
+export interface ReplayCarTrack {
+  /** True car position in the geometry's 1000×1000 viewBox space per frame,
+   *  projected from FastF1 position telemetry through the same transform that
+   *  produced `geometry.path` (so cars sit on the track — real racing lines,
+   *  side-by-side battles). null before the car's start and after it retires.
+   *  Each array length === `frameCount`. */
+  x: Array<number | null>;
+  y: Array<number | null>;
+  /** Lap the car is on at each frame (1-indexed). Length === `frameCount`. */
+  lap: number[];
+  /** Gap to the race leader in seconds per frame (0 for the leader; lapped
+   *  cars exceed one lap-time). null when the car is not running. */
+  gap: Array<number | null>;
+}
+
+export interface ReplayStint {
+  /** SOFT | MEDIUM | HARD | INTERMEDIATE | WET | string. */
+  compound: string;
+  startLap: number;
+  endLap: number;
+}
+
+export interface ReplayTrackStatus {
+  /** Session seconds from race start (t=0 at lights-out) when this begins. */
+  t: number;
+  /** FastF1 track-status code (1 green, 2 yellow, 4 SC, 5 red, 6/7 VSC). */
+  code: string;
+  /** Human label: Green | Yellow | Safety Car | VSC | Red Flag | string. */
+  label: string;
+}
+
+export interface ReplayFinishEntry {
+  code: string;
+  position: number;
+  laps: number;
+  /** "Finished" | "+1 Lap" | "DNF" | string. */
+  status: string;
+  /** Gap to the winner in seconds; null for DNF / lapped. */
+  gap: number | null;
+  points: number;
+}
+
+export interface ReplayData {
+  /** Bumped on breaking shape changes so the client can guard old files. */
+  schemaVersion: number;
+  sport: "f1";
+  season: number;
+  round: number;
+  name: string;
+  gpKey: string;
+  circuit: string;
+  source: "fastf1" | "synthetic" | string;
+  generatedAt: string;
+  totalLaps: number;
+  /** Seconds of session time between consecutive frames. */
+  dt: number;
+  /** Number of frames; every per-driver array has this length. */
+  frameCount: number;
+  /** Session seconds covered: (frameCount - 1) * dt. Frame i is at t = i*dt. */
+  duration: number;
+  /** The circuit outline the cars ride on. Baked in the same run as the car
+   *  positions with the same normalising transform, so it is guaranteed to
+   *  share one coordinate frame with `cars[*].x/y` — it does not depend on the
+   *  round JSON's `circuitInfo.geometry` matching. Same shape as CircuitMap
+   *  consumes. */
+  geometry: CircuitGeometry;
+  drivers: ReplayDriver[];
+  /** Per-driver time series, keyed by tricode. */
+  cars: Record<string, ReplayCarTrack>;
+  /** Tyre stints per driver, keyed by tricode. */
+  stints: Record<string, ReplayStint[]>;
+  /** Safety-car / flag windows over session time, in start order. */
+  trackStatus: ReplayTrackStatus[];
+  /** DRS detection→activation zones as track fractions in [0,1). */
+  drsZones: Array<{ start: number; end: number }>;
+  /** Final classification, ordered by finishing position. */
+  finish: ReplayFinishEntry[];
+}
+
 // Team colors for CSS usage
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",

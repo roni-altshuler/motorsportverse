@@ -341,6 +341,18 @@ export default function Navbar() {
                       >
                         Full Season Calendar
                       </Link>
+                      {season.completedRounds.length > 0 && (
+                        <Link
+                          href={withSeason(`/theatre/${Math.max(...season.completedRounds)}`)}
+                          onClick={() => setRacesOpen(false)}
+                          className="nav-link-text flex items-center gap-2 px-3 py-2.5 text-[color:var(--ink)] transition-colors hover:bg-[color:var(--surface-elevated)]"
+                        >
+                          Race Theatre
+                          <span className="eyebrow rounded-sm px-1.5 py-0.5" style={{ color: "var(--accent-f1-red-bright)", border: "1px solid var(--hairline-strong)" }}>
+                            New
+                          </span>
+                        </Link>
+                      )}
                       <div className="h-px my-1" style={{ background: "var(--hairline)" }} />
                       {season.calendar.map((race) => {
                         const completed = season.completedRounds.includes(race.round);

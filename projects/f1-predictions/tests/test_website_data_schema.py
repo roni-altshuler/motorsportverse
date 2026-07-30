@@ -437,3 +437,130 @@ def test_ranker_candidate_json_has_expected_shape(candidate_file: Path):
         for field in ("position", "driver", "rankerScore",
                       "winProbability", "podiumProbability"):
             assert field in entry, f"{candidate_file.name}: missing {field!r}"
+
+
+# --------------------------------------------------------------------------- #
+# Race Theatre replay contract — website/public/data/replays/round_NN.json
+# Baked locally from FastF1 by src/export_race_replay.py (CI cannot reach
+# FastF1), so this validates the COMMITTED artifact rather than regenerating —
+# same pattern as a committed backtest gate. Mirrors src/types/index.ts
+# `ReplayData`; change both in the same commit.
+# --------------------------------------------------------------------------- #
+class ReplayDriver(_Loose):
+    code: str
+    number: int
+    name: str
+    team: str
+    teamColor: str
+    grid: Optional[int]
+
+
+class ReplayCarTrack(_Loose):
+    x: list
+    y: list
+    lap: list
+    gap: list
+
+
+class ReplayStint(_Loose):
+    compound: str
+    startLap: int
+    endLap: int
+
+
+class ReplayTrackStatus(_Loose):
+    t: float
+    code: str
+    label: str
+
+
+class ReplayFinishEntry(_Loose):
+    code: str
+    position: int
+    laps: int
+    status: str
+    gap: Optional[float]
+    points: float
+
+
+class ReplayGeometry(_Loose):
+    viewBox: str
+    path: str
+    corners: list
+
+
+class ReplayData(_Loose):
+    schemaVersion: int
+    sport: str
+    season: int
+    round: int
+    name: str
+    totalLaps: int
+    dt: float
+    frameCount: int
+    duration: float
+    geometry: ReplayGeometry
+    drivers: list
+    cars: dict
+    stints: dict
+    trackStatus: list
+    drsZones: list
+    finish: list
+
+
+@pytest.mark.parametrize(
+    "replay_file",
+    sorted((WEBSITE_DATA / "replays").glob("round_*.json"))
+    if (WEBSITE_DATA / "replays").exists()
+    else [],
+    ids=lambda p: p.name,
+)
+def test_replay_json_matches_schema(replay_file: Path):
+    data = _load(replay_file)
+    payload = ReplayData(**data)
+    assert payload.sport == "f1"
+    assert payload.frameCount > 0
+    assert payload.dt > 0
+
+    # Every driver has a well-formed metadata row and a car track keyed by code.
+    for d in data["drivers"]:
+        ReplayDriver(**d)
+    n = payload.frameCount
+    for code, car in data["cars"].items():
+        track = ReplayCarTrack(**car)
+        # All per-driver series are exactly frameCount long — the client indexes
+        # them by (t / dt) and must never run off the end.
+        assert len(track.x) == n, f"{replay_file.name}: {code} x len {len(track.x)} != {n}"
+        assert len(track.y) == n
+        assert len(track.lap) == n
+        assert len(track.gap) == n
+    for code, stints in data["stints"].items():
+        for st in stints:
+            ReplayStint(**st)
+
+    # Finishing positions are unique and dense from 1.
+    positions = [e["position"] for e in data["finish"]]
+    assert len(positions) == len(set(positions)), f"{replay_file.name}: duplicate finish positions"
+
+    for s in data["trackStatus"]:
+        ReplayTrackStatus(**s)
+    for e in data["finish"]:
+        ReplayFinishEntry(**e)
+
+
+def test_replay_positions_sit_inside_viewbox():
+    """Cars are placed via getPointAtLength/x-y on the baked 0..1000 viewBox;
+    a projection bug would fling them far outside it. Allow a small margin for
+    racing lines that skirt the simplified centre-line's bounding box."""
+    replays_dir = WEBSITE_DATA / "replays"
+    if not replays_dir.exists() or not any(replays_dir.glob("round_*.json")):
+        pytest.skip("No replays/ baked yet (run export_race_replay.py locally)")
+    for replay_file in replays_dir.glob("round_*.json"):
+        data = _load(replay_file)
+        for code, car in data["cars"].items():
+            for v in car["x"]:
+                if v is not None:
+                    assert -60 <= v <= 1060, f"{replay_file.name}: {code} x={v} outside viewBox"
+            for v in car["y"]:
+                if v is not None:
+                    assert -60 <= v <= 1060, f"{replay_file.name}: {code} y={v} outside viewBox"

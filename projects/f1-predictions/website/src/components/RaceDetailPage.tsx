@@ -460,6 +460,22 @@ export default function RaceDetailPage({ round }: Props) {
             <p className="body-md text-[color:var(--body-strong)]">
               {data.circuit} · {formatDate(data.date)}
             </p>
+            {(season?.completedRounds?.includes(data.round) ?? Boolean(data.actualResults)) && (
+              <Link
+                href={`/theatre/${data.round}`}
+                className="group mt-5 inline-flex items-center gap-2.5 border border-[color:var(--hairline-strong)] bg-[color:var(--surface-card)] px-4 py-2.5 transition-colors hover:border-[color:var(--accent-f1-red)]"
+              >
+                <span
+                  className="flex h-2 w-2 rounded-full"
+                  style={{ background: "var(--accent-f1-red-bright)" }}
+                  aria-hidden
+                />
+                <span className="button-label text-[color:var(--ink)]">Enter Race Theatre</span>
+                <span className="text-[color:var(--muted)] transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </Link>
+            )}
           </div>
         </div>
       </section>
