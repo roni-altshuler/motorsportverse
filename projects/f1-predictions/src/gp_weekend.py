@@ -495,6 +495,7 @@ def run_post_race(round_num, skip_build=False):
     print(f"\n✅ Post-race update complete for Round {round_num}")
 
     _generate_circuit_geometry(round_num)
+    _generate_race_replay(round_num)
 
     if not skip_build:
         _build_website()
@@ -612,6 +613,39 @@ def _generate_circuit_geometry(round_num):
         print("⚠️  Circuit geometry generation timed out (2 min).")
     except Exception as exc:
         print(f"⚠️  Circuit geometry generation error: {type(exc).__name__}: {exc}")
+
+
+def _generate_race_replay(round_num):
+    """Bake the Race Theatre replay (public/data/replays/round_NN.json) for a
+    completed round.
+
+    Post-race only: it needs the actual race session's position telemetry, so
+    it runs here alongside the geometry refresh. Like the circuit geometry and
+    the lap cache, it must be produced locally — FastF1 is blocked from CI
+    runners — so this is the step that keeps every finished round playable in
+    the Theatre as the season rolls on. Best-effort: never fail the pipeline
+    (a race with unrecoverable telemetry simply shows "replay coming soon").
+    """
+    _print_banner("RACE REPLAY", "─")
+    season_year = _season_year()
+    try:
+        result = subprocess.run(
+            [sys.executable, "export_race_replay.py",
+             "--season", str(season_year), "--round", str(round_num)],
+            cwd=os.path.dirname(__file__),
+            capture_output=True,
+            text=True,
+            timeout=600,
+        )
+        if result.returncode == 0 and "✅" in result.stdout:
+            print(f"✅ Race replay baked for Round {round_num}.")
+        else:
+            tail = (result.stdout or result.stderr)[-400:]
+            print(f"⚠️  Race replay not baked for Round {round_num}:\n{tail}")
+    except subprocess.TimeoutExpired:
+        print("⚠️  Race replay bake timed out (10 min).")
+    except Exception as exc:
+        print(f"⚠️  Race replay bake error: {type(exc).__name__}: {exc}")
 
 
 # ═════════════════════════════════════════════════════════════════════════

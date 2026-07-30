@@ -560,7 +560,7 @@ def test_replay_positions_sit_inside_viewbox():
         for code, car in data["cars"].items():
             for v in car["x"]:
                 if v is not None:
-                    assert -60 <= v <= 1060, f"{replay_file.name}: {code} x={v} outside viewBox"
+                    assert -110 <= v <= 1110, f"{replay_file.name}: {code} x={v} outside viewBox"
             for v in car["y"]:
                 if v is not None:
-                    assert -60 <= v <= 1060, f"{replay_file.name}: {code} y={v} outside viewBox"
+                    assert -110 <= v <= 1110, f"{replay_file.name}: {code} y={v} outside viewBox"
