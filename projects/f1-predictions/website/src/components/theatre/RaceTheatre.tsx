@@ -290,21 +290,23 @@ export default function RaceTheatre({ round }: Props) {
         stroke(1.4, neutral ? "#5a5a5a" : tint + "cc", [2, 7]); // centre line / flag
       }
 
-      // ── start/finish bar ──
+      // ── start/finish (checkered, aligned to the track) ──
       if (trackPoints.length > 2) {
         const [sx, sy] = trackPoints[0];
         const [nx, ny] = trackPoints[1];
-        const dx = nx - sx;
-        const dy = ny - sy;
-        const len = Math.hypot(dx, dy) || 1;
-        const perpX = (-dy / len) * 15;
-        const perpY = (dx / len) * 15;
-        ctx.strokeStyle = "#f5f5f5";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(px(sx + perpX), py(sy + perpY));
-        ctx.lineTo(px(sx - perpX), py(sy - perpY));
-        ctx.stroke();
+        const ang = Math.atan2(ny - sy, nx - sx);
+        const half = 15 * scale; // half the track width, screen px
+        const cell = (half * 2) / 5;
+        ctx.save();
+        ctx.translate(px(sx), py(sy));
+        ctx.rotate(ang);
+        for (let r = 0; r < 2; r++) {
+          for (let c = 0; c < 5; c++) {
+            ctx.fillStyle = (r + c) % 2 === 0 ? "#f0f0f0" : "#181818";
+            ctx.fillRect((r - 1) * cell, -half + c * cell, cell, cell);
+          }
+        }
+        ctx.restore();
       }
 
       // ── corner number pills ──
@@ -328,21 +330,53 @@ export default function RaceTheatre({ round }: Props) {
       // ── cars ──
       const rows = orderAt(t);
       const focusedCode = focusedRef.current;
-      // draw retired/backmarkers first, leaders + focused last (on top)
-      const draw = [...rows].reverse();
       const carR = Math.max(6, 10.5 * scale * 1.3);
-      for (const row of draw) {
-        if (!row.running) continue;
-        const pos = carAt(row.driver.code, t);
-        if (!pos) continue;
-        const cx = px(pos.x);
-        const cy = py(pos.y);
+
+      // Precompute on-screen positions for every running car.
+      const placedCars = rows
+        .filter((row) => row.running)
+        .map((row) => {
+          const pos = carAt(row.driver.code, t);
+          return pos ? { row, cx: px(pos.x), cy: py(pos.y) } : null;
+        })
+        .filter((v): v is { row: TowerRow; cx: number; cy: number } => v != null);
+
+      // Motion trails — short comet tails sampled backwards in session time so
+      // direction and relative speed read at a glance (a wrap across the
+      // start/finish line is skipped rather than drawn as a long chord).
+      const TRAIL_N = 4;
+      const TRAIL_STEP = 1.0;
+      for (const { row, cx, cy } of placedCars) {
         const isFocus = focusedCode === row.driver.code;
         const dim = focusedCode != null && !isFocus;
         const color = row.driver.teamColor || "#cccccc";
+        let prev: [number, number] = [cx, cy];
+        for (let k = 1; k <= TRAIL_N; k++) {
+          const pp = carAt(row.driver.code, t - k * TRAIL_STEP);
+          if (!pp) break;
+          const X = px(pp.x);
+          const Y = py(pp.y);
+          if (Math.hypot(X - prev[0], Y - prev[1]) > carR * 8) break;
+          const a = 1 - (k - 1) / TRAIL_N;
+          ctx.beginPath();
+          ctx.moveTo(prev[0], prev[1]);
+          ctx.lineTo(X, Y);
+          ctx.lineWidth = carR * 0.72 * a;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = color;
+          ctx.globalAlpha = (dim ? 0.1 : 0.32) * a;
+          ctx.stroke();
+          prev = [X, Y];
+        }
+      }
+      ctx.globalAlpha = 1;
 
-        ctx.globalAlpha = dim ? 0.28 : 1;
-        // halo for leader / focused
+      // Dots — draw back-of-field first so the leader + focused car sit on top.
+      for (const { row, cx, cy } of [...placedCars].reverse()) {
+        const isFocus = focusedCode === row.driver.code;
+        const dim = focusedCode != null && !isFocus;
+        const color = row.driver.teamColor || "#cccccc";
+        ctx.globalAlpha = dim ? 0.3 : 1;
         if (row.position === 1 || isFocus) {
           ctx.beginPath();
           ctx.arc(cx, cy, carR + 4, 0, Math.PI * 2);
@@ -356,15 +390,35 @@ export default function RaceTheatre({ round }: Props) {
         ctx.lineWidth = 1.5;
         ctx.strokeStyle = isFocus ? "#ffffff" : "#0a0a0a";
         ctx.stroke();
-        // tricode label
-        ctx.globalAlpha = dim ? 0.4 : 1;
-        ctx.font = `${Math.max(8, 9.5 * scale * 1.25)}px var(--font-mono, monospace)`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+      }
+      ctx.globalAlpha = 1;
+
+      // Tricode labels — greedy declutter so a bunched pack (Monaco train, the
+      // start) doesn't turn into a smear of overlapping text. The leader and the
+      // focused car are always labelled; others only when clear of a placed one.
+      ctx.font = `${Math.max(8, 9.5 * scale * 1.25)}px var(--font-mono, monospace)`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const placedLabels: Array<[number, number]> = [];
+      const minGap = carR * 2.4;
+      for (const { row, cx, cy } of placedCars) {
+        const isFocus = focusedCode === row.driver.code;
+        const force = row.position === 1 || isFocus;
+        if (
+          !force &&
+          placedLabels.some(([lx, ly]) => Math.hypot(cx - lx, cy - ly) < minGap)
+        ) {
+          continue;
+        }
+        placedLabels.push([cx, cy]);
+        ctx.globalAlpha = focusedCode != null && !isFocus ? 0.45 : 1;
+        ctx.lineWidth = 2.6;
+        ctx.strokeStyle = "rgba(0,0,0,0.6)";
+        ctx.strokeText(row.driver.code, cx, cy + 0.5);
         ctx.fillStyle = "#ffffff";
         ctx.fillText(row.driver.code, cx, cy + 0.5);
-        ctx.globalAlpha = 1;
       }
+      ctx.globalAlpha = 1;
     };
     drawRef.current();
   }, [replay, trackPoints, carAt, orderAt, statusAt]);
