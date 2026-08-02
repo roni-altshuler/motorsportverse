@@ -33,6 +33,10 @@ where = ["src"]
 target-version = "py311"
 line-length = 100
 
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501", "E741"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
