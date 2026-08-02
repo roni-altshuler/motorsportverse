@@ -33,7 +33,10 @@ jobs:
 
       - name: Lint
         run: |
-          pip install ruff
+          # Pin ruff: an unpinned install silently tracks the latest release, and
+          # every ruff version widens its default ruleset — so CI would go red on a
+          # ruff release with no code change. Bump this deliberately.
+          pip install ruff==0.16.1
           # projects/f1-predictions has its own ruff config + dedicated f1-ci.yml,
           # so it is intentionally excluded here.
           ruff check packages/motorsport-core packages/motorsport-data scripts \
