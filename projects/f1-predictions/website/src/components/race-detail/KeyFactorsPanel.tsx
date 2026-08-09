@@ -33,7 +33,7 @@ export default function KeyFactorsPanel({ classification, graded }: KeyFactorsPa
 
   return (
     <div className="mb-8">
-      <HUDPanel kicker="Model Forecast" title="Why the model ranks them" bodyClassName="p-5 sm:p-6">
+      <HUDPanel kicker="Model Forecast" title="Factor breakdown" bodyClassName="p-5 sm:p-6">
         {hasFactors ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:divide-x md:divide-[color:var(--hairline)] divide-y md:divide-y-0 divide-[color:var(--hairline)]">
             {trio.map((entry) => (

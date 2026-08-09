@@ -24,8 +24,11 @@ import StrategyExplorer from "@/components/StrategyExplorer";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import WeekendTimeline from "@/components/race-detail/WeekendTimeline";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
+import PodiumRationale from "@/components/race-detail/PodiumRationale";
 import KeyFactorsPanel from "@/components/race-detail/KeyFactorsPanel";
+import FinishMarketsPanel from "@/components/race-detail/FinishMarketsPanel";
 import DriverComparison from "@/components/race-detail/DriverComparison";
+import ShareButton from "@/components/ShareButton";
 import PredictedClassificationTable from "@/components/race-detail/PredictedClassificationTable";
 import CircuitMap from "@/components/race-detail/CircuitMap";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
@@ -460,22 +463,27 @@ export default function RaceDetailPage({ round }: Props) {
             <p className="body-md text-[color:var(--body-strong)]">
               {data.circuit} · {formatDate(data.date)}
             </p>
-            {(season?.completedRounds?.includes(data.round) ?? Boolean(data.actualResults)) && (
-              <Link
-                href={`/theatre/${data.round}`}
-                className="group mt-5 inline-flex items-center gap-2.5 border border-[color:var(--hairline-strong)] bg-[color:var(--surface-card)] px-4 py-2.5 transition-colors hover:border-[color:var(--accent-f1-red)]"
-              >
-                <span
-                  className="flex h-2 w-2 rounded-full"
-                  style={{ background: "var(--accent-f1-red-bright)" }}
-                  aria-hidden
-                />
-                <span className="button-label text-[color:var(--ink)]">Enter Race Theatre</span>
-                <span className="text-[color:var(--muted)] transition-transform group-hover:translate-x-0.5">
-                  →
-                </span>
-              </Link>
-            )}
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              {/* Shares the page URL — the per-round OG card at
+                  public/og/round_NN.png unfurls automatically on link preview. */}
+              <ShareButton title={`${data.name} — race prediction`} />
+              {(season?.completedRounds?.includes(data.round) ?? Boolean(data.actualResults)) && (
+                <Link
+                  href={`/theatre/${data.round}`}
+                  className="group inline-flex items-center gap-2.5 border border-[color:var(--hairline-strong)] bg-[color:var(--surface-card)] px-4 py-2.5 transition-colors hover:border-[color:var(--accent-f1-red)]"
+                >
+                  <span
+                    className="flex h-2 w-2 rounded-full"
+                    style={{ background: "var(--accent-f1-red-bright)" }}
+                    aria-hidden
+                  />
+                  <span className="button-label text-[color:var(--ink)]">Enter Race Theatre</span>
+                  <span className="text-[color:var(--muted)] transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -836,10 +844,21 @@ export default function RaceDetailPage({ round }: Props) {
               }
             />
 
+            {/* Headline one-line rationale, paired directly with the podium
+              trio — "why the model ranks them" up front, not tucked away. */}
+            <PodiumRationale classification={data.classification} />
+
             {/* Explainability: plain-language factors behind the predicted
               podium trio.  Renders a quiet empty state when the round JSON
               predates the factor export. */}
             <KeyFactorsPanel classification={data.classification} graded={actualRows.length > 0} />
+
+            {/* Elevated finish-position markets (podium / top-6 / top-10 / DNF),
+              surfaced above the fold instead of only in the Visualisations drawer. */}
+            <FinishMarketsPanel
+              classification={data.classification}
+              probabilities={probabilities}
+            />
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-8">
               <HUDPanel
@@ -870,6 +889,16 @@ export default function RaceDetailPage({ round }: Props) {
                   <PodiumProbabilityChart classification={data.classification} />
                 </ChartContainer>
               </HUDPanel>
+            </div>
+
+            {/* Head-to-head driver comparison — promoted out of the Deep Dive
+              accordion to a first-class, always-open section on the race page. */}
+            <div className="mb-8">
+              <DriverComparison
+                classification={data.classification}
+                standings={standings}
+                probabilities={probabilities}
+              />
             </div>
           </>
         )}
@@ -1541,25 +1570,8 @@ export default function RaceDetailPage({ round }: Props) {
           </details>
         )}
 
-        {/* ═══ Deep Dive: Driver Comparison ═══ */}
-        {activeTab === "deepdive" && isPredictionPublished && (
-          <details className="deep-dive-section">
-            <summary className="deep-dive-summary">Driver Comparison</summary>
-            <div className="deep-dive-section-body">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <DriverComparison
-                  classification={data.classification}
-                  standings={standings}
-                  probabilities={probabilities}
-                />
-              </motion.div>
-            </div>
-          </details>
-        )}
+        {/* Driver Comparison was promoted out of Deep Dive to a first-class
+           above-the-fold section (see the prediction-gated block higher up). */}
 
         {/* ═══ Deep Dive: Circuit & Telemetry ═══ */}
         {activeTab === "deepdive" && (
@@ -1636,6 +1648,14 @@ export default function RaceDetailPage({ round }: Props) {
                     ))}
                   </div>
                 </div>
+
+                {/* TODO: needs circuit-history export — recent winners /
+                   pole-to-win conversion for this circuit are not in the
+                   exported round/circuit JSON (circuitInfo carries only
+                   physical characteristics; predictionInsights.poleToWinBias
+                   is a model coefficient, not a historical conversion rate).
+                   Render a per-circuit history mini-panel here once the
+                   export ships that data — do not fabricate it. */}
 
                 {data.predictionInsights && (
                   <div className="card p-6 sm:p-8">
