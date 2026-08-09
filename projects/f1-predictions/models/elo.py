@@ -177,6 +177,30 @@ class EloRating:
             shrink = self.inter_season_shrink
         state.rating = self.league_mean + (state.rating - self.league_mean) * shrink
 
+    def apply_interseason_carryover(self, season: int) -> None:
+        """Eagerly regress every rating toward the league mean for ``season``.
+
+        This is the snapshot counterpart of the decay
+        :meth:`_apply_inter_season_decay` applies lazily on the next update:
+        for each rated entity whose ``last_season`` precedes ``season`` it
+        pulls the rating toward the league mean using the mild same-era shrink
+        or the stronger era-boundary shrink, then advances ``last_season`` to
+        ``season`` so a subsequent update in that season does not shrink it a
+        second time. Call it once at a season boundary (e.g. before reading a
+        round-1 feature snapshot) so carried-over ratings already reflect
+        regression-to-the-mean even before any race in the new season.
+        """
+        for state in self._state.values():
+            if state.last_season is None or state.last_season >= season:
+                continue
+            try:
+                dist = era_distance(state.last_season, season)
+            except ValueError:
+                dist = 0
+            shrink = self.era_boundary_shrink if dist >= 1 else self.inter_season_shrink
+            state.rating = self.league_mean + (state.rating - self.league_mean) * shrink
+            state.last_season = season
+
     def initialise(
         self,
         key: str,
@@ -409,6 +433,23 @@ class EloFeatureBuilder:
             self._record_form(driver)
 
         self._last_processed = (event.season, event.round)
+
+    def carry_over_ratings(self, season: int) -> None:
+        """Regress every internal Elo toward the mean for a new ``season``.
+
+        Applies :meth:`EloRating.apply_interseason_carryover` to all five
+        rating tables so a season-boundary snapshot is regressed consistently
+        (idempotent within the season; a no-op for entities already updated in
+        ``season``).
+        """
+        for elo in (
+            self.race_elo,
+            self.team_elo,
+            self.wet_elo,
+            self.qual_elo,
+            self.racecraft_elo,
+        ):
+            elo.apply_interseason_carryover(season)
 
     def ensure_rookies(
         self,

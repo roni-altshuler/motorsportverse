@@ -7,6 +7,7 @@ the coherence fix: the predicted winner always holds the highest win probability
 """
 import numpy as np
 import pandas as pd
+import pytest
 
 from f1_prediction_utils import apply_race_postprocessing, circuit_grid_dynamics
 
@@ -20,6 +21,30 @@ def test_grid_dynamics_track_modulation():
     # favourite).
     assert monaco_lock > bahrain_lock
     assert monaco_k < bahrain_k
+
+
+def test_measured_prior_lifts_a_sticky_circuit():
+    # Monaco's measured grid→finish Spearman (0.91) is stronger than the
+    # hand-coded overtaking guess implies, so supplying the circuit key raises
+    # the grid lock above the hand-only value.
+    hand_lock, _ = circuit_grid_dynamics(0.1, 0.75, 0.0)
+    measured_lock, _ = circuit_grid_dynamics(0.1, 0.75, 0.0, circuit_key="Monaco")
+    assert measured_lock > hand_lock
+
+
+def test_unknown_circuit_falls_back_to_hand_coded():
+    # A venue with no measured 2022-25 history (Madrid) must reproduce the
+    # hand-coded dynamics exactly.
+    hand = circuit_grid_dynamics(0.5, 0.55, 0.0)
+    fallback = circuit_grid_dynamics(0.5, 0.55, 0.0, circuit_key="Madrid")
+    assert fallback == pytest.approx(hand)
+
+
+def test_circuit_key_is_optional_backward_compatible():
+    # The legacy 3-arg call must behave identically to circuit_key=None.
+    assert circuit_grid_dynamics(0.3, 0.4, 0.1) == pytest.approx(
+        circuit_grid_dynamics(0.3, 0.4, 0.1, circuit_key=None)
+    )
 
 
 def test_rain_softens_the_grid_lock():
@@ -48,7 +73,9 @@ def _synthetic_field(n=8):
         "GridAdvantage": -(rank - rank.mean()) * 0.05,
         "CleanAirPace": np.full(n, base),
         "CurrentForm": np.zeros(n),
-        "PreviousPosition": rank,
+        # SkillPrior replaces the retired PreviousPosition (same semantics:
+        # a higher expected finish position is worse).
+        "SkillPrior": rank,
         "PositionTrend": np.zeros(n),
         "ConsistencyScore": np.full(n, 0.1),
         "PitTimeLoss": np.full(n, 22.0),

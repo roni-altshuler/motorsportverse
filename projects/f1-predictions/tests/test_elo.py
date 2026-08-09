@@ -82,6 +82,50 @@ def test_inter_season_decay_pulls_toward_league_mean():
     assert post < pre
 
 
+def test_apply_interseason_carryover_regresses_toward_mean():
+    # Same-era boundary (2024 -> 2025, both ground_effect): mild shrink 0.85.
+    elo = DriverElo(inter_season_shrink=0.85, era_boundary_shrink=0.5)
+    elo.update_pairwise("A", "B", 1.0, 2024, 1, k_override=400.0)
+    pre = elo.rating("A")
+    assert pre > 1500.0
+    elo.apply_interseason_carryover(2025)
+    post = elo.rating("A")
+    # Regressed toward league mean by the same-era shrink.
+    assert post == pytest.approx(1500.0 + (pre - 1500.0) * 0.85)
+    # Idempotent within the season: last_season advanced to 2025 → no re-shrink.
+    elo.apply_interseason_carryover(2025)
+    assert elo.rating("A") == pytest.approx(post)
+
+
+def test_carryover_uses_stronger_era_boundary_shrink():
+    # 2025 (ground_effect) -> 2026 (active_aero) crosses an era boundary → 0.5.
+    elo = DriverElo(inter_season_shrink=0.85, era_boundary_shrink=0.5)
+    elo.update_pairwise("A", "B", 1.0, 2025, 1, k_override=400.0)
+    pre = elo.rating("A")
+    elo.apply_interseason_carryover(2026)
+    assert elo.rating("A") == pytest.approx(1500.0 + (pre - 1500.0) * 0.5)
+
+
+def test_builder_carry_over_ratings_applies_to_all_tables():
+    builder = EloFeatureBuilder()
+    event = RaceEvent(
+        season=2025,
+        round=1,
+        finish_order={"VER": 1, "NOR": 2, "PIA": 3},
+        grid_order={"VER": 2, "NOR": 1, "PIA": 3},
+        team_of={"VER": "RBR", "NOR": "MCL", "PIA": "MCL"},
+        wet=True,
+    )
+    builder.ingest_race(event)
+    pre_race = builder.race_elo.rating("VER")
+    pre_wet = builder.wet_elo.rating("VER")
+    assert pre_race > 1500.0 and pre_wet > 1500.0
+    builder.carry_over_ratings(2026)
+    # Every rating table regressed toward the mean across the era boundary.
+    assert builder.race_elo.rating("VER") < pre_race
+    assert builder.wet_elo.rating("VER") < pre_wet
+
+
 def test_replay_history_rejects_leakage():
     builder = EloFeatureBuilder()
     events = [

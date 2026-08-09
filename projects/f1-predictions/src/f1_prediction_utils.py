@@ -428,7 +428,14 @@ DEFAULT_FEATURE_COLS: list[str] = [
     "QualifyingRank",
     "GridAdvantage",
     "CurrentForm",
-    "PreviousPosition",
+    # ---- Leakage-safe skill prior (features/skill_priors.py) ----------
+    # RETIRES the leakage-prone ``PreviousPosition`` (a single noisy data
+    # point the model leaned on as a tautological shortcut). ``SkillPrior``
+    # is a Bayesian-shrunk blend of the driver's season body-of-work and
+    # team strength, built strictly from rounds < current_round.
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
     "SeasonMomentum",
     "PositionTrend",
     "DriverPredictionBias",
@@ -452,6 +459,16 @@ DEFAULT_FEATURE_COLS: list[str] = [
     "qualifying_elo",
     "racecraft_elo",
     "teammate_delta_elo",
+    # ---- Per-(driver, circuit) history (features/circuit_driver_history.py) --
+    # Prior-seasons-only per-circuit form (podium/DNF/grid-delta at THIS
+    # circuit). Populated by _add_circuit_history_features; imputed to a
+    # neutral default when the offline history store has no circuit-keyed
+    # rows for the venue (see that helper's docstring).
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits",
 ]
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -618,32 +635,154 @@ def _add_dynamic_team_form(merged, combined_results=None, current_round=1):
     return merged
 
 
+# Rain-probability at/above which a race is treated as "wet" for the
+# wet-weather Elo. The forecast probabilities the pipeline stores are the
+# only wet signal available offline; this threshold marks a race as wet
+# when a genuine soaking was expected. Deliberately conservative so a damp-
+# but-dry-line race does not pollute the wet rating.
+WET_RACE_RAIN_THRESHOLD = 0.60
+
+# How many prior seasons of finish orders to replay into the Elo before the
+# current season, so early-season ratings reflect real driver skill instead
+# of a cold-start 1500. Kept inside the current + one preceding regulation
+# era (see models/regulation_era) — older eras are discounted hard anyway.
+ELO_PRIOR_SEASONS_BACK = 3
+
+
+def _round_wet_flags(current_round):
+    """Map ``{round:int -> bool}`` of wet-race flags for the current season.
+
+    Reads the committed ``rounds/round_NN.json`` weather forecast (the only
+    wet signal available offline) and flags a round wet when its
+    ``weatherData.rainProbability`` meets :data:`WET_RACE_RAIN_THRESHOLD`.
+    Strictly prior-only: rounds >= ``current_round`` are ignored so the wet
+    Elo can never see the target round's weather.
+    """
+    flags: dict[int, bool] = {}
+    rounds_dir = os.path.join(WEBSITE_DATA_DIR, "rounds")
+    if not os.path.isdir(rounds_dir):
+        return flags
+    for rnd in range(1, int(current_round)):
+        path = os.path.join(rounds_dir, f"round_{rnd:02d}.json")
+        data = _read_json_file(path)
+        weather = data.get("weatherData") if isinstance(data, dict) else None
+        if not isinstance(weather, dict):
+            continue
+        rain = weather.get("rainProbability")
+        try:
+            flags[rnd] = float(rain) >= WET_RACE_RAIN_THRESHOLD
+        except (TypeError, ValueError):
+            continue
+    return flags
+
+
+def _load_prior_season_finish_orders(current_season, seasons_back=ELO_PRIOR_SEASONS_BACK):
+    """Prior-season race finish orders from the committed offline history DB.
+
+    Returns a list of ``(season, round, {driver: finish_position})`` for the
+    ``seasons_back`` seasons preceding ``current_season``, read from
+    ``data/history.duckdb`` (the same store the calibration/backfill layer
+    uses). These are used purely to *bootstrap* the Elo across the season
+    boundary; only real, already-run prior seasons are read so it is
+    leakage-safe by construction.
+
+    Degrades to an empty list (current-season-only Elo, i.e. the legacy
+    behaviour) when duckdb or the DB file is unavailable — the offline store
+    is force-committed in CI but may be absent in a bare checkout.
+    """
+    db_path = os.path.join(PROJECT_ROOT, "data", "history.duckdb")
+    if not os.path.exists(db_path):
+        return []
+    try:
+        import duckdb  # noqa: PLC0415 — optional offline dependency
+    except ImportError:
+        return []
+    lo = int(current_season) - int(seasons_back)
+    hi = int(current_season) - 1
+    try:
+        con = duckdb.connect(db_path, read_only=True)
+        try:
+            rows = con.execute(
+                """
+                SELECT season, round, driver, actual_position
+                FROM historical_predictions
+                WHERE season BETWEEN ? AND ?
+                  AND actual_position IS NOT NULL
+                  AND actual_position BETWEEN 1 AND 30
+                ORDER BY season, round, actual_position
+                """,
+                [lo, hi],
+            ).fetchall()
+        finally:
+            con.close()
+    except Exception as exc:  # pragma: no cover - defensive around the DB
+        print(f"ℹ️  Prior-season Elo bootstrap skipped: {type(exc).__name__}")
+        return []
+
+    by_race: dict[tuple[int, int], dict[str, int]] = {}
+    for season, rnd, driver, pos in rows:
+        try:
+            key = (int(season), int(rnd))
+            by_race.setdefault(key, {})[str(driver)] = int(pos)
+        except (TypeError, ValueError):
+            continue
+    ordered = []
+    for (season, rnd) in sorted(by_race.keys()):
+        finish_order = by_race[(season, rnd)]
+        if len(finish_order) >= 2:
+            ordered.append((season, rnd, finish_order))
+    return ordered
+
+
 def _add_elo_features(merged, combined_results, current_round, current_season):
-    """Compute the seven Elo features from prior-round results.
+    """Compute the seven Elo features from prior-season + prior-round results.
 
     Populates ``driver_elo``, ``team_elo``, ``driver_form_elo``,
     ``wet_weather_elo``, ``qualifying_elo``, ``racecraft_elo``,
-    ``teammate_delta_elo`` on ``merged``. Drivers with no prior-round
-    record (rookies, mid-season swaps) inherit the team-mean rating
-    via :meth:`models.elo.DriverElo.initialise_rookie` minus a small
-    discount. The feature is leakage-safe: ``combined_results`` is
-    already filtered to ``round < current_round`` by the caller.
+    ``teammate_delta_elo`` on ``merged``. Drivers with no prior record
+    (true rookies) inherit the team-mean rating via
+    :meth:`models.elo.DriverElo.initialise_rookie` minus a small discount.
 
-    The Elo system in this iteration uses **current-season results
-    only** — multi-season bootstrap would need per-season team
-    mappings which we do not currently store. Adding that is a
-    natural follow-up.
+    Cross-season carry (2026-08): the Elo is now bootstrapped from the
+    ``ELO_PRIOR_SEASONS_BACK`` seasons preceding ``current_season`` (read
+    from the committed offline history DB) before the current season's
+    prior rounds are applied. The rating regresses toward the league mean at
+    every season boundary — strongly across the 2025→2026 regulation-era
+    boundary — so an early-2026 ``driver_elo`` reflects real 2023-25 skill
+    instead of a cold-start 1500. Prior seasons carry no team map in the
+    offline store, so ``team_elo`` still learns from the current season only
+    (its per-driver aggregation needs the live constructor map); the driver-
+    level Elos are what benefit from the carry.
+
+    Leakage-safe: prior seasons are, by definition, already run; the current
+    season's ``combined_results`` is pre-filtered to ``round < current_round``
+    by the caller and re-guarded inside :meth:`replay_history`.
     """
     from models.elo import EloFeatureBuilder, RaceEvent, ELO_FEATURE_COLUMNS
 
     builder = EloFeatureBuilder()
+    wet_flags = _round_wet_flags(current_round)
 
-    # Replay prior rounds. The race "wet" flag isn't currently stored
-    # in combined_results — leave it False until a wet-race indicator
-    # is plumbed through. wet_weather_elo will reflect 1500 for now
-    # but still be a usable z-score after the postprocessor scales it.
-    sorted_rounds = sorted(combined_results.keys(), key=lambda r: int(r))
     events: list[RaceEvent] = []
+
+    # ── Cross-season bootstrap: prior seasons' finish orders ───────────────
+    # team_of is intentionally empty (no historical constructor map offline);
+    # this bootstraps the driver-level Elos without polluting team_elo with a
+    # wrong-season team mapping.
+    for season, rnd, finish_order in _load_prior_season_finish_orders(current_season):
+        events.append(
+            RaceEvent(
+                season=season,
+                round=rnd,
+                finish_order=dict(sorted(finish_order.items(), key=lambda kv: (kv[1], kv[0]))),
+                grid_order=None,
+                team_of={},
+                wet=False,  # prior-season race weather is not stored offline
+            )
+        )
+
+    # ── Current season prior rounds ────────────────────────────────────────
+    sorted_rounds = sorted(combined_results.keys(), key=lambda r: int(r))
     for rnd_str in sorted_rounds:
         rnd = int(rnd_str)
         race_data = combined_results.get(rnd_str, {})
@@ -669,10 +808,10 @@ def _add_elo_features(merged, combined_results, current_round, current_season):
             RaceEvent(
                 season=current_season,
                 round=rnd,
-                finish_order=finish_order,
+                finish_order=dict(sorted(finish_order.items(), key=lambda kv: (kv[1], kv[0]))),
                 grid_order=grid_order,
                 team_of=team_of,
-                wet=False,
+                wet=bool(wet_flags.get(rnd, False)),
             )
         )
 
@@ -682,6 +821,11 @@ def _add_elo_features(merged, combined_results, current_round, current_season):
             current_season=current_season,
             current_round=current_round,
         )
+
+    # Regress any rating still anchored in a prior season toward the league
+    # mean for the current season, so a round-1 snapshot (no current-season
+    # events yet) already reflects the inter-season / era-boundary shrink.
+    builder.carry_over_ratings(current_season)
 
     # Seed any drivers that haven't competed yet (rookies, new entries).
     roster = {drv: team for drv, team in DRIVER_TEAM.items() if drv in set(merged["Driver"])}
@@ -710,10 +854,128 @@ def _add_elo_features(merged, combined_results, current_round, current_season):
     for col, values in feature_arrays.items():
         merged[col] = values
 
+    n_wet = sum(1 for r in wet_flags.values() if r)
     print(
-        f"✅ Elo features added — replayed {len(events)} prior round(s) "
-        f"for season {current_season}."
+        f"✅ Elo features added — replayed {len(events)} race(s) "
+        f"(incl. prior seasons) into season {current_season}; "
+        f"{n_wet} wet round(s)."
     )
+    return merged
+
+
+# ==========================================================================
+# 4b. LEAKAGE-SAFE SKILL / CIRCUIT-HISTORY FEATURES
+# ==========================================================================
+
+def _build_prior_round_frames(combined_results, current_round):
+    """Reshape ``combined_results`` into ``{round:int -> DataFrame}``.
+
+    Each frame carries ``Driver``, ``Team`` (from the active constructor map)
+    and ``FinishPosition`` for one already-run round. Only rounds strictly
+    before ``current_round`` are kept and the result is re-asserted
+    prior-only so a slipped filter upstream surfaces as a bug.
+    """
+    frames: dict[int, pd.DataFrame] = {}
+    if not combined_results:
+        return frames
+    for rnd_str, race_data in combined_results.items():
+        try:
+            rnd = int(rnd_str)
+        except (TypeError, ValueError):
+            continue
+        if rnd >= int(current_round) or not isinstance(race_data, dict):
+            continue
+        rows = []
+        for drv, pos in race_data.items():
+            try:
+                fin = int(pos)
+            except (TypeError, ValueError):
+                continue
+            rows.append(
+                {"Driver": str(drv), "Team": DRIVER_TEAM.get(str(drv)), "FinishPosition": fin}
+            )
+        if rows:
+            frames[rnd] = pd.DataFrame(rows)
+    assert_prior_only(frames, int(current_round), "skill_prior_frames")
+    return frames
+
+
+def _add_skill_prior_features(merged, combined_results, current_round, circuit_key=None):
+    """Attach the leakage-safe ``SkillPrior`` blend (features/skill_priors.py).
+
+    Replaces the retired single-datapoint ``PreviousPosition`` with a
+    Bayesian-shrunk expectation over the driver's season body-of-work plus
+    team strength, drawn strictly from rounds < ``current_round``. At round 1
+    (no prior rounds) the prior collapses to the field mean for everyone,
+    which is a finite, harmless constant.
+
+    The module's optional per-circuit term needs a cross-season, circuit-keyed
+    history frame; the committed offline store does not carry per-round
+    circuit metadata yet, so that term falls back to the field mean here (see
+    :func:`_add_circuit_history_features` for the same limitation).
+    """
+    from features.skill_priors import attach_skill_priors
+
+    merged = merged.copy()
+    frames = _build_prior_round_frames(combined_results, current_round)
+    enriched = attach_skill_priors(
+        merged[["Driver", "Team"]],
+        current_round=int(current_round),
+        season=int(SEASON_YEAR),
+        prior_results=frames,
+        historical_results=None,
+        circuit_key=None,
+    )
+    prior_map = enriched.set_index("Driver")
+    for col in ("SkillPrior", "DriverPrior", "TeamPrior"):
+        merged[col] = merged["Driver"].map(prior_map[col])
+    n_prior = len(frames)
+    print(f"✅ Skill-prior feature added (SkillPrior, from {n_prior} prior round(s)).")
+    return merged
+
+
+# Neutral fill for the per-(driver, circuit) history columns when no
+# circuit-keyed history is available. A 22-car grid → midfield finish ≈ 11.
+_CIRCUIT_HISTORY_NEUTRAL = {
+    "CircuitFinishMeanK": 11.0,
+    "CircuitPodiumRate": 0.0,
+    "CircuitDNFRate": 0.0,
+    "CircuitGridDelta": 0.0,
+    "CircuitVisits": 0.0,
+}
+
+
+def _add_circuit_history_features(merged, current_round, circuit_key=None):
+    """Attach per-(driver, circuit) history (features/circuit_driver_history.py).
+
+    The feature is *wired end-to-end* here: as soon as a cross-season,
+    circuit-keyed history frame (``Driver``, ``Season``, ``Round``,
+    ``CircuitKey``, ``FinishPosition`` [, ``GridPosition``]) is available it
+    flows straight into the model. The committed offline store
+    (``data/history.duckdb``) currently records ``(season, round, driver,
+    finish)`` **without** per-round circuit metadata, so no circuit-keyed
+    frame can be assembled offline today; the attach therefore returns its
+    columns as NaN and we impute a neutral, finite default so the feature is
+    a harmless constant (zero variance → no model effect) until a circuit-
+    keyed backfill lands. This keeps the plumbing honest and leakage-safe
+    (prior seasons only) rather than fabricating circuit history.
+    """
+    from features.circuit_driver_history import attach_circuit_driver_history
+
+    merged = merged.copy()
+    empty_history = pd.DataFrame(
+        columns=["Driver", "Season", "Round", "CircuitKey", "FinishPosition", "GridPosition"]
+    )
+    out = attach_circuit_driver_history(
+        merged,
+        historical=empty_history,
+        circuit_key=str(circuit_key) if circuit_key is not None else "",
+        current_season=int(SEASON_YEAR),
+        current_round=int(current_round),
+    )
+    for col, neutral in _CIRCUIT_HISTORY_NEUTRAL.items():
+        merged[col] = pd.to_numeric(out.get(col), errors="coerce").fillna(neutral).to_numpy()
+    print("✅ Circuit-driver-history feature wired (neutral offline; activates with circuit-keyed history).")
     return merged
 
 
@@ -1153,13 +1415,24 @@ def build_training_dataset(grid, driver_stats, circuit_key="Australia",
         merged, predicted_results, actual_results, current_round=current_round
     )
 
-    # Elo ratings derived from prior-round finish orders. Adds the seven
-    # ELO_FEATURE_COLUMNS to merged; rookies are seeded from team mean.
+    # Elo ratings derived from prior-season + prior-round finish orders. Adds
+    # the seven ELO_FEATURE_COLUMNS to merged; rookies are seeded from team mean.
     merged = _add_elo_features(
         merged,
         combined_results=combined_results,
         current_round=current_round,
         current_season=SEASON_YEAR,
+    )
+
+    # Leakage-safe Bayesian skill prior (retires PreviousPosition) + per-
+    # circuit driver history. Both aggregate strictly prior-round/prior-season
+    # data and assert prior-only at their boundary.
+    merged = _add_skill_prior_features(
+        merged, combined_results=combined_results,
+        current_round=current_round, circuit_key=circuit_key,
+    )
+    merged = _add_circuit_history_features(
+        merged, current_round=current_round, circuit_key=circuit_key,
     )
 
     print(f"✅ Training dataset built — {len(merged)} drivers, "
@@ -1577,7 +1850,42 @@ def _env_float(name, default, min_value=None, max_value=None):
     return value
 
 
-def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0):
+# Measured per-circuit grid→finish stickiness + attrition (2022-2025), built
+# by scripts/build_circuit_priors.py. Loaded lazily + cached so the file is
+# read once per process.
+_CIRCUIT_PRIORS_CACHE: dict = {}
+# Grid-lock stickiness the measured Spearman is typically stronger evidence
+# than the hand-coded overtaking guess after this many circuit-races.
+_CIRCUIT_PRIOR_SHRINK_K = 4.0
+# Field-typical DNF rate used to centre the measured-attrition nudge to
+# win-probability spread (mean of the 2022-25 per-circuit dnfRate ≈ 0.14).
+_CIRCUIT_ATTRITION_BASE = 0.14
+
+
+def _load_circuit_grid_prior(circuit_key):
+    """Measured ``{gridFinishSpearman, dnfRate, races}`` for a gp_key, or None.
+
+    Reuses the candidate model's committed prior + gp_key→circuitId map so the
+    production path and the A/B candidate stream read exactly the same
+    ``features/data/circuit_priors.json`` numbers (no duplicated mapping).
+    New venues absent from the 2022-25 history (e.g. Madrid) return None so
+    the caller falls back to the hand-coded characteristic.
+    """
+    if not circuit_key:
+        return None
+    if circuit_key in _CIRCUIT_PRIORS_CACHE:
+        return _CIRCUIT_PRIORS_CACHE[circuit_key]
+    prior = None
+    try:
+        from models.candidate_model import load_circuit_prior
+        prior = load_circuit_prior(str(circuit_key))
+    except Exception:  # pragma: no cover - defensive around optional import
+        prior = None
+    _CIRCUIT_PRIORS_CACHE[circuit_key] = prior
+    return prior
+
+
+def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0, circuit_key=None):
     """Circuit-conditioned weighting of grid position in the race outcome.
 
     The single biggest reason a flat win probability is wrong is that it ignores
@@ -1589,8 +1897,16 @@ def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0):
     chance is spread across the front of the field. Safety cars and rain
     scramble the order, softening the lock either way.
 
-    This runs for **every** round — the circuit's ``overtaking`` characteristic
-    is what makes Monaco behave differently from Monza, automatically.
+    When ``circuit_key`` is supplied and the venue has measured history, the
+    hand-coded stickiness guess is replaced by the **measured** grid→finish
+    Spearman (2022-25, ``features/data/circuit_priors.json``), shrunk toward
+    the hand value by the circuit's race count, and the measured attrition
+    (``dnfRate``) nudges how far the win probability spreads. Venues without
+    measured history fall back to the hand-coded characteristic, and calling
+    without ``circuit_key`` reproduces the legacy behaviour exactly.
+
+    This runs for **every** round — the circuit's characteristics are what make
+    Monaco behave differently from Monza, automatically.
 
     Returns:
         pole_lock   – weight applied to the grid-rank z-score when building the
@@ -1604,19 +1920,39 @@ def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0):
     safety_car = float(np.clip(safety_car, 0.0, 1.0))
     rain = float(np.clip(rain_probability, 0.0, 1.0))
 
-    # How "locked" the grid is: hard to pass, dry, low safety-car risk.
-    stickiness = float(np.clip(
-        (1.0 - overtaking) * (1.0 - 0.30 * safety_car) * (1.0 - 0.45 * rain),
-        0.0, 1.0,
-    ))
+    # Hand-coded dry grid stickiness (safety-car softened, no rain yet).
+    hand_stick_dry = (1.0 - overtaking) * (1.0 - 0.30 * safety_car)
+
+    # Promote the MEASURED grid→finish stickiness where we have it, shrinking
+    # the data toward the hand value by the circuit's sample size.
+    stick_dry = hand_stick_dry
+    attrition = None
+    prior = _load_circuit_grid_prior(circuit_key)
+    if prior:
+        try:
+            data_stick = float(np.clip(prior.get("gridFinishSpearman"), 0.0, 1.0))
+            n_races = float(prior.get("races", 0) or 0)
+            stick_dry = (n_races * data_stick + _CIRCUIT_PRIOR_SHRINK_K * hand_stick_dry) / (
+                n_races + _CIRCUIT_PRIOR_SHRINK_K
+            )
+            attrition = float(prior.get("dnfRate")) if prior.get("dnfRate") is not None else None
+        except (TypeError, ValueError):
+            stick_dry = hand_stick_dry
+            attrition = None
+
+    # Rain scrambles the order — apply the same softening to whichever
+    # stickiness (hand or measured-blended) we ended up with.
+    stickiness = float(np.clip(stick_dry * (1.0 - 0.45 * rain), 0.0, 1.0))
     pole_lock = 0.95 * stickiness
 
     # How "open" the race is: easy to pass, wet, safety-car prone. Drives how
     # quickly win probability decays from the projected leader down the order.
-    openness = float(np.clip(
-        0.22 + 0.78 * overtaking + 0.30 * rain + 0.12 * safety_car,
-        0.18, 1.20,
-    ))
+    openness = 0.22 + 0.78 * overtaking + 0.30 * rain + 0.12 * safety_car
+    if attrition is not None:
+        # More retirements than the field norm → a more scrambled result →
+        # wider win spread. Bounded so a high-attrition circuit can't dominate.
+        openness += float(np.clip(0.6 * (attrition - _CIRCUIT_ATTRITION_BASE), -0.08, 0.08))
+    openness = float(np.clip(openness, 0.18, 1.20))
     win_decay_k = float(np.clip(1.5 + 5.5 * openness, 1.5, 8.0))
     return pole_lock, win_decay_k
 
@@ -1710,13 +2046,22 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
         if "FieldPositionVolatility" in merged.columns
         else 0.0
     )
+    # Leakage-safe skill prior replaces the retired single-datapoint
+    # PreviousPosition. Same sign/scale: a higher (worse) expected finish
+    # nudges the projection toward the back. Defensive so hand-built frames
+    # without the column (unit-test fixtures) don't raise.
+    skill_prior_term = (
+        _zscore(merged["SkillPrior"])
+        if "SkillPrior" in merged.columns
+        else 0.0
+    )
 
     merged["RaceProjectionScore"] = (
         _zscore(merged["PredictedLapTime"]) * pace_weight +
         _zscore(merged["AdjustedQualiTime"]) * quali_lock_in +
         _zscore(merged["CleanAirPace"]) * (pace_weight * 0.55) +
         _zscore(merged["CurrentForm"]) * form_weight +
-        _zscore(merged["PreviousPosition"]) * (form_weight * 0.45) +
+        skill_prior_term * (form_weight * 0.45) +
         _zscore(merged["ConsistencyScore"]) * consistency_weight +
         _zscore(merged["PitTimeLoss"]) * strategy_weight +
         _zscore(merged["TyreDegFactor"]) * (strategy_weight * 0.55) -
@@ -1742,7 +2087,7 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
     # Monza), so the pole-sitter is favoured by default and the win-probability
     # decay below stays consistent with the finishing order.
     pole_lock, win_decay_k = circuit_grid_dynamics(
-        overtaking, safety_car, rain_probability
+        overtaking, safety_car, rain_probability, circuit_key=circuit_key
     )
     grid_rank = merged["QualifyingRank"].fillna(merged["QualifyingRank"].max())
     merged["RaceProjectionScore"] = (
