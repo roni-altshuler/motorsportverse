@@ -5,6 +5,11 @@ import RaceTheatre from "@/components/theatre/RaceTheatre";
 import type { SeasonData } from "@/types";
 
 const DATA_DIR = path.join(process.cwd(), "public", "data");
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+function pad2(n: number): string {
+  return n.toString().padStart(2, "0");
+}
 
 function loadSeason(): SeasonData | null {
   try {
@@ -39,13 +44,32 @@ export async function generateMetadata({
     `Replay the ${raceName} lap by lap: all 20 cars on track, live timing tower, ` +
     `tyres, and safety-car periods — reconstructed from race telemetry.`;
   const canonical = `/theatre/${round}`;
+  const ogImage = `${BASE_PATH}/og/theatre_${pad2(round)}.png`;
 
   return {
     title,
     description,
     alternates: { canonical },
-    openGraph: { type: "website", title, description, url: canonical },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url: canonical,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${raceName} — race replay on RaceIQ`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
   };
 }
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Saira_Condensed, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -45,6 +45,16 @@ const SITE_URL =
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const OG_DEFAULT = `${BASE_PATH}/og/default.png`;
 
+// PWA "add to home screen": manifest + icon set live in public/ and are served
+// under the deploy base path. The manifest itself uses base-path-relative URLs
+// (start_url/scope/icons) so it resolves correctly whether the site is deployed
+// at the domain root or under a GitHub Pages subpath. No service worker is
+// registered — the site is a fully static export and stays offline-safe.
+const MANIFEST_URL = `${BASE_PATH}/manifest.webmanifest`;
+const APPLE_TOUCH_ICON = `${BASE_PATH}/icons/apple-touch-icon.png`;
+const ICON_192 = `${BASE_PATH}/icons/icon-192.png`;
+const ICON_512 = `${BASE_PATH}/icons/icon-512.png`;
+
 const SITE_TITLE = `RaceIQ | F1 ${ACTIVE_SEASON_YEAR} Race Predictions & Forecasts`;
 const SITE_DESCRIPTION =
   `AI and machine learning-powered Formula 1 ${ACTIVE_SEASON_YEAR} season predictions. ` +
@@ -55,6 +65,20 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
+  manifest: MANIFEST_URL,
+  applicationName: "RaceIQ",
+  appleWebApp: {
+    capable: true,
+    title: "RaceIQ",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [
+      { url: ICON_192, sizes: "192x192", type: "image/png" },
+      { url: ICON_512, sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: APPLE_TOUCH_ICON, sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     siteName: "RaceIQ",
@@ -76,6 +100,14 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [OG_DEFAULT],
   },
+};
+
+// Theme-color + color-scheme for the browser chrome / PWA status bar. The app
+// is dark-only (broadcast HUD); the F1-red bar echoes the accent stripe used
+// across the OG share cards and mirrors the manifest theme_color.
+export const viewport: Viewport = {
+  themeColor: "#E10600",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
