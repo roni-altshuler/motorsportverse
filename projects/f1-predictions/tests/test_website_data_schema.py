@@ -42,6 +42,9 @@ class DriverInfo(_Loose):
     team: str
     # Mirror of `DriverInfo.headshotUrl` in website/src/types/index.ts.
     headshotUrl: Optional[str] = None
+    # Adjective-form nationality + ISO 3166-1 alpha-2 (lowercase) country code.
+    nationality: Optional[str] = None
+    countryCode: Optional[str] = None
 
 
 class SeasonData(_Loose):
@@ -51,6 +54,21 @@ class SeasonData(_Loose):
     completedRounds: list[int]
     # `drivers` is optional here — older snapshots may pre-date the field.
     drivers: list[DriverInfo] = Field(default_factory=list)
+
+
+class CircuitPastWinner(_Loose):
+    # Mirror of `CircuitPastWinner` in website/src/types/index.ts.
+    season: int
+    driver: str
+    constructor: str
+
+
+class CircuitHistoryEntry(_Loose):
+    # Mirror of `CircuitHistoryEntry` in website/src/types/index.ts.
+    circuit: str
+    pastWinners: list[CircuitPastWinner] = Field(default_factory=list)
+    poleToWinPct: Optional[float] = None
+    safetyCarRate: Optional[float] = None
 
 
 class KeyFactor(_Loose):
@@ -205,6 +223,31 @@ def _load(path: Path) -> dict:
 def test_season_json_matches_schema():
     data = _load(WEBSITE_DATA / "season.json")
     SeasonData(**data)
+
+
+@pytest.mark.skipif(
+    not (WEBSITE_DATA / "circuit_history.json").exists(),
+    reason="No circuit_history.json generated yet (run export_circuit_history.py)",
+)
+def test_circuit_history_matches_schema():
+    """`circuit_history.json` is a {gpKey: CircuitHistoryEntry} map. Winners are
+    newest-first, capped at 5, and never fabricated (a winner => a constructor)."""
+    data = _load(WEBSITE_DATA / "circuit_history.json")
+    assert isinstance(data, dict) and data, "circuit_history.json must be a non-empty map"
+    for gp_key, entry in data.items():
+        model = CircuitHistoryEntry(**entry)
+        seasons = [w.season for w in model.pastWinners]
+        assert len(model.pastWinners) <= 5, f"{gp_key}: more than 5 past winners"
+        assert seasons == sorted(seasons, reverse=True), (
+            f"{gp_key}: pastWinners must be newest-first, got {seasons}"
+        )
+        assert len(seasons) == len(set(seasons)), (
+            f"{gp_key}: duplicate season in pastWinners {seasons}"
+        )
+        for pct in (model.poleToWinPct, model.safetyCarRate):
+            assert pct is None or 0.0 <= pct <= 1.0, (
+                f"{gp_key}: proxy value {pct} outside [0, 1]"
+            )
 
 
 @pytest.mark.skipif(

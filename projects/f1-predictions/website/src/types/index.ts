@@ -30,6 +30,14 @@ export interface DriverInfo {
   number: number;
   team: string;
   teamColor: string;
+  /** Racing-licence nationality in adjective form (e.g. "British", "Dutch"). */
+  nationality?: string | null;
+  /**
+   * ISO 3166-1 alpha-2 country code, lowercase (e.g. "gb", "nl") — matches
+   * `CountryFlag`/flagcdn.com, so a flag renders via
+   * `https://flagcdn.com/w80/${countryCode}.png`.
+   */
+  countryCode?: string | null;
   /**
    * Path to a 192x192 WebP headshot relative to the website public root
    * (e.g. `/headshots/VER.webp`).  Populated at Python build time by
@@ -58,6 +66,33 @@ export interface SeasonData {
   source?: string;
   sourceUrl?: string;
 }
+
+/** One past race winner at a circuit (sourced from committed results). */
+export interface CircuitPastWinner {
+  season: number;
+  /** Driver code, e.g. "VER". */
+  driver: string;
+  /** Constructor name, e.g. "Red Bull Racing". */
+  constructor: string;
+}
+
+/**
+ * Per-circuit history for one Grand Prix (see `circuit_history.json`).
+ * `poleToWinPct` and `safetyCarRate` are circuit-prior proxies
+ * (grid→finish correlation and DNF/attrition rate respectively), null when
+ * the circuit has no priors (e.g. a brand-new venue).
+ */
+export interface CircuitHistoryEntry {
+  /** Display name, e.g. "Albert Park". */
+  circuit: string;
+  /** Up to 5 most recent winners, newest first (may be empty). */
+  pastWinners: CircuitPastWinner[];
+  poleToWinPct: number | null;
+  safetyCarRate: number | null;
+}
+
+/** `circuit_history.json` — keyed by the round JSON's `gpKey`. */
+export type CircuitHistory = Record<string, CircuitHistoryEntry>;
 
 /**
  * A single plain-language "why" factor behind a driver's predicted result.

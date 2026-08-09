@@ -50,6 +50,23 @@ TRACKER_EXPORT_FILE = os.path.join(DATA_DIR, "season_tracker.json")
 
 F1_CALENDAR_SOURCE_URL = "https://www.formula1.com/en/racing/2026"
 
+# Committed reference map: driver code → {nationality (adjective), countryCode
+# (ISO 3166-1 alpha-2, lowercase — flagcdn.com / CountryFlag.tsx format)}.
+_DRIVER_NATIONALITY_PATH = os.path.join(
+    PROJECT_ROOT, "src", "data", "driver_nationality.json"
+)
+
+
+def _load_driver_nationality():
+    """Return {code: {'nationality': str, 'countryCode': str}} or {} if absent."""
+    try:
+        with open(_DRIVER_NATIONALITY_PATH, encoding="utf-8") as fh:
+            return json.load(fh).get("drivers", {})
+    except (OSError, ValueError) as exc:
+        print(f"  ⚠️  Driver nationality map unavailable: {exc}")
+        return {}
+
+
 # ── Explainability: map the L1 feature columns to user-facing groups ──────
 # The GROUP LABELS below are USER-FACING plain language (tech-scrub policy:
 # never leak algorithm/feature names to the site).  They feed
@@ -926,14 +943,18 @@ def export_season_metadata():
         })
 
     # ── Drivers (DriverInfo[]) ──
+    nationality_map = _load_driver_nationality()
     drivers = []
     for code, team in DRIVER_TEAM.items():
+        nat = nationality_map.get(code, {})
         drivers.append({
             "code":      code,
             "fullName":  DRIVER_FULL_NAMES.get(code, code),
             "number":    DRIVER_NUMBERS.get(code, 0),
             "team":      team,
             "teamColor": TEAM_COLOURS.get(team, "#888888"),
+            "nationality": nat.get("nationality"),
+            "countryCode": nat.get("countryCode"),
         })
     _inject_driver_headshots(drivers, code_key="code")
 
@@ -994,6 +1015,15 @@ def export_season_metadata():
     print(f"✅ Season metadata → {path}")
 
     _write_seasons_index(completed)
+
+    # Per-circuit history surface (past winners + grid/attrition priors).
+    # Derived from committed offline data; never blocks the main export.
+    try:
+        from export_circuit_history import export_circuit_history
+        export_circuit_history()
+    except Exception as exc:  # noqa: BLE001 — best-effort side artifact
+        print(f"  ⚠️  Circuit history export failed: {exc}")
+
     return season
 
 
