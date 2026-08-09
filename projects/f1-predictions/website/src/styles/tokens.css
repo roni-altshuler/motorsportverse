@@ -29,7 +29,10 @@
   --body:               #cccccc;
   --body-strong:        #e6e6e6;
   --muted:              #999999;
-  --muted-soft:         #666666;
+  /* Was #666 (~3.7:1 on the black canvas — fails WCAG AA for text). Promoted
+   * to #808080 (~5.3:1) so caption text using this token clears AA while
+   * staying visibly softer than --muted. Only ever raises contrast. */
+  --muted-soft:         #808080;
   --link:               #c3d9f3;
   --on-primary:         #000000;
   --on-photo:           #ffffff;

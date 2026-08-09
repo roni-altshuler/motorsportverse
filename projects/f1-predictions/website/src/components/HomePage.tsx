@@ -10,7 +10,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { SeasonData, StandingsData, RoundData, SeasonTrackerData, TrustStats } from "@/types";
+import { SeasonData, StandingsData, RoundData, SeasonTrackerData, TrustStats, ChampionshipForecast } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
@@ -19,6 +19,8 @@ import PodiumStage from "@/components/home/PodiumStage";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import ChampionshipBento from "@/components/home/ChampionshipBento";
 import ConstructorsConstellation from "@/components/home/ConstructorsConstellation";
+import TitleRaceModule from "@/components/home/TitleRaceModule";
+import LiveCountdown from "@/components/home/LiveCountdown";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import TeamColorBar from "@/components/ui/TeamColorBar";
 import DriverPortrait from "@/components/standings/DriverPortrait";
@@ -36,6 +38,7 @@ import {
   fetchStandingsData,
   fetchRoundData,
   fetchSeasonTrackerData,
+  fetchChampionshipForecast,
   formatDate,
   getCurrentRaceContext,
   getRoundLifecycle,
@@ -51,24 +54,13 @@ const TONE_TO_BADGE_VARIANT = {
 } as const;
 type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-function formatCountdown(targetIso: string, now: Date): string {
-  const target = new Date(targetIso).getTime();
-  const ms = target - now.getTime();
-  if (ms <= 0) return "in progress";
-  const days = Math.floor(ms / MS_PER_DAY);
-  const hours = Math.floor((ms % MS_PER_DAY) / (60 * 60 * 1000));
-  if (days > 0) return `in ${days}d ${hours}h`;
-  return `in ${hours}h`;
-}
-
 export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [standings, setStandings] = useState<StandingsData | null>(null);
   const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
   const { basePath } = useSeason();
 
   // Current-season accuracy comes from build-time props (honest, no fetch flash).
@@ -78,6 +70,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   useEffect(() => {
     fetchSeasonData(basePath).then(setSeason).catch(() => {});
     fetchSeasonTrackerData(basePath).then(setTracker).catch(() => {});
+    fetchChampionshipForecast(basePath).then(setForecast).catch(() => {});
     fetchStandingsData(basePath)
       .then((s) => {
         setStandings(s);
@@ -186,7 +179,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                 <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
                 <span className="eyebrow">
                   R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
-                  {formatCountdown(featuredRace.date, new Date())}
+                  <LiveCountdown targetIso={featuredRace.date} className="font-tabular" />
                 </span>
               </div>
 
@@ -334,6 +327,18 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
               immediate
             />
           </motion.section>
+        )}
+
+        {/* Title Race — the season's marquee projection, surfaced up front.
+            Between races (no official qualifying) it stands in for the race
+            forecast as an honest season outlook, never a fabricated grid. */}
+        {standings && (
+          <TitleRaceModule
+            standings={standings}
+            forecast={forecast}
+            raceForecastLive={isPredictionView && qualifyingOfficial}
+            featuredRace={featuredRace}
+          />
         )}
 
         {latestRound && latestRound.round !== featuredRace?.round &&

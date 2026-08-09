@@ -6,13 +6,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { ChevronDown, Github, Menu, X } from "lucide-react";
 
-import { GpAccuracyReportData, SeasonData, SeasonTrackerData } from "@/types";
+import { GpAccuracyReportData, SeasonData, SeasonTrackerData, StandingsData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import {
   fetchSeasonData,
   fetchSeasonTrackerData,
+  fetchStandingsData,
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
@@ -83,7 +84,9 @@ export default function Navbar() {
   const [standingsAnchor, setStandingsAnchor] = useState<"left" | "right">("left");
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
+  const [standings, setStandings] = useState<StandingsData | null>(null);
   const [utilityHidden, setUtilityHidden] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const racesRef = useRef<HTMLDivElement>(null);
   const standingsRef = useRef<HTMLDivElement>(null);
   const racesCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,7 +103,30 @@ export default function Navbar() {
   useEffect(() => {
     fetchSeasonData(basePath).then(setSeason).catch(() => setSeason(null));
     fetchSeasonTrackerData(basePath).then(setTracker).catch(() => setTracker(null));
+    fetchStandingsData(basePath).then(setStandings).catch(() => setStandings(null));
   }, [basePath]);
+
+  // Publish the real navbar height as a CSS variable so sticky elements below
+  // (e.g. the race-weekend context band) can pin flush to it. The utility strip
+  // collapses on scroll, so the height changes — a ResizeObserver keeps the var
+  // in sync through the collapse animation and across viewport changes.
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const publish = () =>
+      document.documentElement.style.setProperty(
+        "--navbar-height",
+        `${el.offsetHeight}px`,
+      );
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(el);
+    window.addEventListener("resize", publish);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", publish);
+    };
+  }, []);
 
   // Outside-click to close dropdowns
   useEffect(() => {
@@ -176,6 +202,14 @@ export default function Navbar() {
     return season.calendar.find((r) => !completed.has(r.round)) ?? season.calendar[season.calendar.length - 1];
   }, [season]);
 
+  // Default driver for the "Drivers" nav entry — the current championship
+  // leader, falling back to the season roster, then a marquee name so the
+  // link always resolves even before data loads.
+  const defaultDriverCode = useMemo(
+    () => standings?.drivers?.[0]?.driver ?? season?.drivers?.[0]?.code ?? "VER",
+    [standings, season],
+  );
+
   const navLinkBase =
     "nav-link-text px-3 lg:px-4 py-2 inline-flex items-center gap-1.5 transition-colors";
 
@@ -195,6 +229,7 @@ export default function Navbar() {
 
   return (
     <nav
+      ref={navRef}
       className="sticky top-0 z-50"
       aria-label="Primary"
       style={{
@@ -443,6 +478,19 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
+            {/* Drivers — points to the current championship leader's profile */}
+            <Link
+              href={withSeason(`/driver/${defaultDriverCode}`)}
+              aria-current={pathname.startsWith("/driver") ? "page" : undefined}
+              className={`${navLinkBase} ${
+                pathname.startsWith("/driver")
+                  ? "text-[color:var(--ink)]"
+                  : "text-[color:var(--muted)] hover:text-[color:var(--ink)]"
+              }`}
+            >
+              Drivers
+            </Link>
+
             {navLink("/accuracy", "Accuracy")}
             {navLink("/about", "About")}
           </div>
@@ -506,6 +554,7 @@ export default function Navbar() {
                   { href: "/", label: "Home" },
                   { href: withSeason("/calendar"), label: "Season Calendar" },
                   { href: withSeason("/standings"), label: "Standings" },
+                  { href: withSeason(`/driver/${defaultDriverCode}`), label: "Drivers" },
                   { href: "/accuracy", label: "Accuracy" },
                   { href: "/about", label: "About" },
                 ].map((item) => (
