@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import Link from "next/link";
 import type { ReplayData, ReplayDriver, SeasonData } from "@/types";
 import { fetchReplayData, fetchSeasonData } from "@/lib/data";
@@ -92,6 +93,10 @@ export default function RaceTheatre({ round }: Props) {
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [focused, setFocused] = useState<string | null>(null);
   const [uiCursor, setUiCursor] = useState(0); // throttled session seconds for the HUD
+  // Whether the replay has begun. On small screens (and under reduced-motion)
+  // the heavy replay does not autoplay — this gates a "Play replay" affordance
+  // that starts it on tap.
+  const [started, setStarted] = useState(false);
 
   // Imperative animation state (refs — never trigger re-render).
   const cursorRef = useRef(0);
@@ -119,7 +124,17 @@ export default function RaceTheatre({ round }: Props) {
         setLoading(false);
         cursorRef.current = 0;
         setUiCursor(0);
-        setPlaying(r != null && !reduced); // autoplay the full experience; respect reduced-motion
+        // Autoplay the full experience on desktop, but never force the heavy
+        // replay to start on small screens (data + battery) or when the viewer
+        // prefers reduced motion. Gated cases surface a "Play replay" affordance
+        // and begin on tap instead.
+        const smallScreen =
+          typeof window !== "undefined" &&
+          typeof window.matchMedia === "function" &&
+          window.matchMedia("(max-width: 640px)").matches;
+        const canAutoplay = r != null && !reduced && !smallScreen;
+        setPlaying(canAutoplay);
+        setStarted(canAutoplay);
       },
     );
     return () => {
@@ -456,6 +471,7 @@ export default function RaceTheatre({ round }: Props) {
   const seek = useCallback(
     (t: number) => {
       if (!replay) return;
+      setStarted(true);
       cursorRef.current = Math.min(Math.max(0, t), replay.duration);
       setUiCursor(cursorRef.current);
       drawRef.current();
@@ -465,24 +481,41 @@ export default function RaceTheatre({ round }: Props) {
 
   const togglePlay = useCallback(() => {
     if (!replay) return;
+    setStarted(true);
     if (cursorRef.current >= replay.duration) cursorRef.current = 0;
     setPlaying((p) => !p);
   }, [replay]);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
+  // Explicit start for the "Play replay" affordance (always begins playback).
+  const startReplay = useCallback(() => {
+    if (!replay) return;
+    setStarted(true);
+    if (cursorRef.current >= replay.duration) cursorRef.current = 0;
+    setPlaying(true);
+  }, [replay]);
+
+  // Keyboard controls are scoped to the focusable player container (below) so
+  // Space no longer hijacks page scroll site-wide. We only act — and only
+  // preventDefault — when the container itself is focused, never when a child
+  // control (buttons, the scrubber) owns the key.
+  const onStageKeyDown = useCallback(
+    (e: ReactKeyboardEvent<HTMLDivElement>) => {
+      const target = e.target as HTMLElement;
+      const tag = target.tagName;
+      if (tag === "BUTTON" || tag === "INPUT" || target.isContentEditable) return;
       if (e.code === "Space") {
         e.preventDefault();
         togglePlay();
       } else if (e.code === "ArrowRight") {
+        e.preventDefault();
         seek(cursorRef.current + 5);
       } else if (e.code === "ArrowLeft") {
+        e.preventDefault();
         seek(cursorRef.current - 5);
       }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [togglePlay, seek]);
+    },
+    [togglePlay, seek],
+  );
 
   /* ── derived HUD state (from throttled uiCursor) ── */
   const rows = useMemo(() => (replay ? orderAt(uiCursor) : []), [replay, orderAt, uiCursor]);
@@ -490,6 +523,20 @@ export default function RaceTheatre({ round }: Props) {
   const leaderLap = rows.length ? rows[0].lap : 0;
   const calendarName =
     season?.calendar?.find((e) => e.round === round)?.name || replay?.name || `Round ${round}`;
+
+  // A concise, updating textual snapshot of race state for screen readers.
+  // The string only changes when the top three, the lap, or the flag change,
+  // so the polite live region announces meaningfully rather than every frame.
+  const liveSummary = useMemo(() => {
+    if (!replay || rows.length === 0) return "";
+    const podium = rows
+      .filter((r) => r.running)
+      .slice(0, 3)
+      .map((r, i) => `P${i + 1} ${lastName(r.driver.name)}`)
+      .join(", ");
+    const flag = status?.label || "Green";
+    return `Lap ${leaderLap} of ${replay.totalLaps}. ${flag} flag. Leaders: ${podium}.`;
+  }, [replay, rows, status, leaderLap]);
 
   if (loading) {
     return (
@@ -551,7 +598,13 @@ export default function RaceTheatre({ round }: Props) {
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_320px]">
         {/* ── stage ── */}
-        <div className="flex flex-col gap-2">
+        <div
+          className="flex flex-col gap-2 rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-f1-red)]"
+          tabIndex={0}
+          role="group"
+          aria-label="Race replay player. Press space to play or pause, and the left and right arrow keys to seek."
+          onKeyDown={onStageKeyDown}
+        >
           <div
             ref={wrapRef}
             className="relative aspect-[4/3] w-full overflow-hidden rounded-[4px] border border-[color:var(--hairline)] bg-[color:var(--surface-soft)] sm:aspect-[16/10]"
@@ -559,7 +612,36 @@ export default function RaceTheatre({ round }: Props) {
               boxShadow: flagActive ? `inset 0 0 90px ${tint}22` : undefined,
             }}
           >
-            <canvas ref={canvasRef} className="absolute inset-0" />
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0"
+              role="img"
+              aria-label={`Animated replay of the ${calendarName} race, showing every car moving around the circuit map alongside a live timing tower.`}
+            />
+
+            {/* Visually-hidden, politely-announced race state for screen readers. */}
+            <div className="sr-only" aria-live="polite" aria-atomic="true">
+              {liveSummary}
+            </div>
+
+            {/* Start affordance — the heavy replay does not autoplay on small
+                screens or under reduced-motion, so offer a clear tap target. */}
+            {!started && (
+              <button
+                type="button"
+                onClick={startReplay}
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px] transition-opacity"
+                style={{ background: "color-mix(in srgb, var(--surface-soft) 78%, transparent)" }}
+                aria-label={`Play the ${calendarName} race replay`}
+              >
+                <span className="flex h-16 w-16 items-center justify-center rounded-full border border-[color:var(--hairline-strong)] bg-[color:var(--surface-elevated)] text-[color:var(--ink)] shadow-lg">
+                  <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+                    <path d="M2 1l11 6-11 6z" />
+                  </svg>
+                </span>
+                <span className="button-label text-sm text-[color:var(--ink)]">Play replay</span>
+              </button>
+            )}
           </div>
 
           {/* transport + scrubber */}
@@ -567,7 +649,7 @@ export default function RaceTheatre({ round }: Props) {
             <div className="flex items-center gap-3">
               <button
                 onClick={togglePlay}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--hairline-strong)] bg-[color:var(--surface-elevated)] text-[color:var(--ink)] transition-colors hover:border-[color:var(--accent-f1-red)]"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[color:var(--hairline-strong)] bg-[color:var(--surface-elevated)] text-[color:var(--ink)] transition-colors hover:border-[color:var(--accent-f1-red)]"
                 aria-label={playing ? "Pause" : "Play"}
               >
                 {playing ? (
@@ -629,7 +711,7 @@ export default function RaceTheatre({ round }: Props) {
                     key={s}
                     onClick={() => setSpeed(s)}
                     className={cn(
-                      "rounded-sm px-2 py-1 text-xs font-[family-name:var(--font-mono)] transition-colors",
+                      "flex h-11 min-w-[44px] items-center justify-center rounded-sm px-2 text-xs font-[family-name:var(--font-mono)] transition-colors",
                       speed === s
                         ? "bg-[color:var(--surface-elevated)] text-[color:var(--ink)]"
                         : "text-[color:var(--muted)] hover:text-[color:var(--body)]",
@@ -643,7 +725,7 @@ export default function RaceTheatre({ round }: Props) {
                     seek(0);
                     setPlaying(true);
                   }}
-                  className="ml-2 rounded-sm px-2 py-1 text-xs font-[family-name:var(--font-mono)] text-[color:var(--muted)] transition-colors hover:text-[color:var(--body)]"
+                  className="ml-2 flex h-11 items-center justify-center rounded-sm px-3 text-xs font-[family-name:var(--font-mono)] text-[color:var(--muted)] transition-colors hover:text-[color:var(--body)]"
                 >
                   ↺ Restart
                 </button>
@@ -669,7 +751,7 @@ export default function RaceTheatre({ round }: Props) {
                   key={row.driver.code}
                   onClick={() => setFocused(isFocus ? null : row.driver.code)}
                   className={cn(
-                    "flex w-full items-center gap-2 border-b border-[color:var(--hairline)] px-2 py-1.5 text-left transition-colors last:border-b-0",
+                    "flex min-h-[44px] w-full items-center gap-2 border-b border-[color:var(--hairline)] px-2 py-1.5 text-left transition-colors last:border-b-0",
                     isFocus
                       ? "bg-[color:var(--surface-elevated)]"
                       : "hover:bg-[color:var(--surface-soft)]",
@@ -720,9 +802,14 @@ export default function RaceTheatre({ round }: Props) {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .theatre-scrubber { -webkit-appearance: none; appearance: none; background: transparent; height: 20px; cursor: pointer; }
-        .theatre-scrubber::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 9999px; background: var(--ink); border: 2px solid var(--canvas); box-shadow: 0 0 0 1px var(--hairline-strong); }
-        .theatre-scrubber::-moz-range-thumb { width: 14px; height: 14px; border-radius: 9999px; background: var(--ink); border: 2px solid var(--canvas); }
+        .theatre-scrubber { -webkit-appearance: none; appearance: none; background: transparent; height: 44px; margin: 0; cursor: pointer; }
+        .theatre-scrubber:focus-visible { outline: none; }
+        .theatre-scrubber::-webkit-slider-runnable-track { height: 44px; background: transparent; }
+        /* 44px transparent hit area with a compact 20px visible thumb (ink fill,
+           canvas ring, hairline ring) painted via a hard-stop radial gradient. */
+        .theatre-scrubber::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 44px; height: 44px; margin-top: 0; border: none; border-radius: 9999px; cursor: grab; background: radial-gradient(circle at center, var(--ink) 0 7px, var(--canvas) 7px 9px, var(--hairline-strong) 9px 10px, transparent 10px); }
+        .theatre-scrubber::-moz-range-track { height: 44px; background: transparent; }
+        .theatre-scrubber::-moz-range-thumb { width: 44px; height: 44px; border: none; border-radius: 9999px; cursor: grab; background: radial-gradient(circle at center, var(--ink) 0 7px, var(--canvas) 7px 9px, var(--hairline-strong) 9px 10px, transparent 10px); }
       `,
         }}
       />
