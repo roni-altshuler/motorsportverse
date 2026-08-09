@@ -23,18 +23,33 @@ For one MC sample, for each of N laps:
      event sequence).
   2. Call ``race_pace.predict_lap_times`` once on the 20-row feature
      matrix.
-  3. Add lap-to-lap noise (sampled from a circuit-specific stddev).
+  3. Add a *per-sample per-driver car-performance shock* (constant across
+     the race — "how good is this car today") plus lap-to-lap noise.
   4. Apply pit-stop logic for any driver whose strategy says "pit this
      lap" — adds pit-loss seconds, resets tyre age, rotates compound.
   5. Update cumulative race time and recompute running positions/gaps.
 
-After ``n_samples`` simulations, aggregate per-driver finishing-position
-histograms → P(win), P(podium), P(top6), P(top10).
+Two forms of race-day chaos keep the win market out of the degenerate
+"one car at 98%" regime that a pure-pace forward-run collapses into:
+
+* **Retirement / DNF** — each sample draws a per-driver Bernoulli(p_dnf).
+  A retired car stops accumulating time at a sampled retirement lap and is
+  classified behind every car that finished, so the win/podium mass
+  redistributes to the field roughly as often as the real leader breaks
+  down.  Without this a fast-pace car finishes in ~every sample and the win
+  probability collapses onto one driver (the round-10 ANT=0.982 symptom).
+* **Per-sample car-performance shock** — a once-per-sample per-driver
+  offset (s/lap, held constant across the race, because a car that is "on
+  it" today is on it all race) tied to real lap-time spread.  This widens
+  the finishing distribution so a dominant car is a strong favourite but
+  not a lock.
+
+Aggregation applies a weak Dirichlet (base-rate) smoothing so no market
+probability is ever exactly 0.0 or 1.0 while the sum invariants
+(``sum(p_win)==1``, ``sum(p_podium)==3`` …) are preserved exactly.
 
 Constraints honoured
 --------------------
-* Pure-additive.  No existing file is touched in this step; Step 3 of the
-  A-P1.1 push wires it into ``apply_race_postprocessing``.
 * The simulator is **deterministic given a seed**.  We accept a
   ``np.random.Generator`` from the caller; if absent, default seed=42 per
   project convention (matches ``models/calibration.py`` and ``leakage.py``).
@@ -43,12 +58,11 @@ Constraints honoured
   characteristics, race-pace artefacts) are prior-only.
 * Single seeded RNG.  We never reseed mid-sim.
 
-Future extensions (not in v1)
------------------------------
+Future extensions
+-----------------
 * SC duration distribution from prior races (currently fixed 3 laps).
-* Driver-specific pit-stop variance from team history.
-* Tyre-compound choice per driver from prior-round strategy data.
-* Wet-tyre crossover (currently fixed: if rain_intensity > 0.5, force INTERMEDIATE).
+* Retirement-lap hazard from real data (currently uniform over the race).
+* Team-correlated performance shock (currently per-driver iid).
 """
 from __future__ import annotations
 
@@ -74,8 +88,33 @@ DEFAULT_N_SAMPLES: int = 2000
 
 # Per-lap noise default.  In FastF1 data the lap-to-lap std for a driver on
 # stable conditions is roughly 0.10-0.25s.  0.15s is a reasonable mid-point
-# that the caller can override.
+# that the caller can override.  This is *iid* per lap, so it only contributes
+# ~sigma·sqrt(N_laps) to finishing time — small next to the multi-second pace
+# gaps.  The reshuffling lever is DEFAULT_FORM_SHOCK_S below.
 DEFAULT_LAP_NOISE_S: float = 0.15
+
+# Per-sample per-driver car-performance shock (s/lap), held constant across
+# the race.  Because it is fully correlated across laps it contributes
+# ~sigma·N_laps to finishing time — comparable to real pace gaps — so it is
+# what actually mixes the finishing order.  0.16 s/lap sits inside the
+# real race-to-race pace-variation band (~0.15-0.25 s/lap) and, on a typical
+# ~55-lap race, keeps a dominant car near a 35-55% favourite rather than a
+# 95%+ lock.  Tuned against the completed-2026 rounds vs the published
+# Plackett-Luce baseline (see tests/test_race_simulator_sanity.py).
+DEFAULT_FORM_SHOCK_S: float = 0.16
+
+# Per-driver base retirement probability when the caller supplies no
+# per-driver override.  ~0.13 keeps mean retirements at ~3/race for a
+# 22-car field, matching the modern-era DNF base rate used in models/dnf.py.
+DEFAULT_FIELD_DNF_RATE: float = 0.13
+
+# Dirichlet / base-rate smoothing pseudo-count applied at aggregation.  A
+# weak (alpha=1 pseudo-sample, spread across the market base rate) prior:
+# it lifts every probability off exactly 0.0 / 1.0 without materially moving
+# well-sampled estimates, and — crucially — preserves the sum invariants
+# (sum p_win == 1, sum p_podium == 3, …) because the mass added per market
+# equals the market's slot count K.
+SMOOTHING_ALPHA: float = 1.0
 
 # Pit-stop logistics.  Window is the +/- range around the strategy-target lap
 # at which the driver actually pits — adds realism without over-engineering.
@@ -124,6 +163,9 @@ class RaceContext:
     track_temp_c: float = 35.0
     rain_intensity: float = 0.0
     lap_noise_s: float = DEFAULT_LAP_NOISE_S
+    # Race-day chaos knobs (A-P1.1 DNF + variance fix).
+    form_shock_s: float = DEFAULT_FORM_SHOCK_S
+    field_dnf_rate: float = DEFAULT_FIELD_DNF_RATE
 
 
 @dataclass(frozen=True)
@@ -132,18 +174,22 @@ class DriverInitial:
 
     The simulator does NOT learn driver identity — encoders embed it.  This
     struct lets callers pass driver-specific overrides (starting tyre from
-    strategy data, pace offset from the quali-time model, etc.).
+    strategy data, pace offset from the quali-time model, a per-driver
+    retirement probability from the reliability model, etc.).
     """
 
     base_pace_offset_s: float = 0.0   # negative = faster than the field mean
     starting_tyre: str = "MEDIUM"
+    p_dnf: float | None = None        # None → RaceContext.field_dnf_rate
 
 
 @dataclass
 class SimulationOutput:
-    """Aggregate output of ``simulate_race``.  All probabilities sum to N×p,
-    where N is the number of drivers; e.g. ``sum(p_win) == 1.0`` modulo
-    Monte Carlo noise."""
+    """Aggregate output of ``simulate_race``.
+
+    Win probabilities sum to 1.0 and podium probabilities sum to 3.0 (modulo
+    the base-rate smoothing, which is sum-preserving).  No probability is ever
+    exactly 0.0 or 1.0."""
 
     drivers: tuple[str, ...]
     p_win: dict[str, float]
@@ -151,6 +197,7 @@ class SimulationOutput:
     p_top6: dict[str, float]
     p_top10: dict[str, float]
     mean_finish_position: dict[str, float]
+    p_dnf: dict[str, float] = field(default_factory=dict)
     finish_position_distribution: dict[str, list[int]] = field(default_factory=dict)
     n_samples: int = 0
     n_laps: int = 0
@@ -174,6 +221,7 @@ class _RaceState:
         grid: list[GridEntry],
         context: RaceContext,
         initials: dict[str, DriverInitial],
+        encoders: dict[str, dict[str, int]],
         rng: np.random.Generator,
     ) -> None:
         n = len(grid)
@@ -196,6 +244,21 @@ class _RaceState:
         self.base_pace_offset = np.array(
             [initials.get(g.driver, DriverInitial()).base_pace_offset_s for g in grid]
         )
+        # Per-driver retirement probability (Bernoulli param per MC sample).
+        self.p_dnf = np.array(
+            [_resolve_p_dnf(initials.get(g.driver), context.field_dnf_rate) for g in grid]
+        )
+        # Pre-compute static feature columns once so the per-lap builder only
+        # touches the lap-varying entries.
+        drivers_enc = encoders.get("driver", {})
+        teams_enc = encoders.get("team", {})
+        self.driver_ids = np.array(
+            [drivers_enc.get(g.driver, -1) for g in grid], dtype=float
+        )
+        self.team_ids = np.array(
+            [teams_enc.get(g.team, -1) for g in grid], dtype=float
+        )
+        self.circuit_id = float(encoders.get("circuit", {}).get(context.circuit_key, -1))
         # Pre-compute the planned pit laps for each driver (per-sample noise so
         # MC samples differ in strategy timing slightly).
         self.pit_plan = _plan_pit_laps(
@@ -219,6 +282,12 @@ class _RaceState:
         if context.rain_intensity > WET_THRESHOLD:
             return ["INTERMEDIATE"] * len(grid)
         return [initials.get(g.driver, DriverInitial()).starting_tyre for g in grid]
+
+
+def _resolve_p_dnf(initial: DriverInitial | None, field_rate: float) -> float:
+    """Per-driver retirement probability, clipped to a plausible band."""
+    p = field_rate if initial is None or initial.p_dnf is None else initial.p_dnf
+    return float(min(0.6, max(0.005, p)))
 
 
 def _plan_pit_laps(
@@ -273,6 +342,27 @@ def _sample_sc_laps(
     return set(range(trigger, min(trigger + 3, total_laps) + 1))
 
 
+def _sample_retirements(
+    p_dnf: np.ndarray,
+    total_laps: int,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Draw per-driver retirement for one MC sample.
+
+    Returns ``(retire_lap, retired_mask)`` where ``retire_lap[i]`` is the lap
+    on which driver ``i`` retires (they complete laps ``1..retire_lap-1``);
+    finishers get ``total_laps + 1``.  Retirement laps are drawn uniformly
+    over the race distance — a deliberately simple hazard for v1.
+    """
+    n = p_dnf.shape[0]
+    retired_mask = rng.random(n) < p_dnf
+    retire_lap = np.full(n, total_laps + 1, dtype=int)
+    n_ret = int(retired_mask.sum())
+    if n_ret:
+        retire_lap[retired_mask] = rng.integers(1, total_laps + 1, size=n_ret)
+    return retire_lap, retired_mask
+
+
 # --------------------------------------------------------------------------- #
 # Per-lap feature builder
 # --------------------------------------------------------------------------- #
@@ -282,39 +372,36 @@ def _build_lap_features(
     state: _RaceState,
     lap_number: int,
     context: RaceContext,
-    encoders: dict[str, dict[str, int]],
     sc_active: bool,
     vsc_active: bool,
     yellow_active: bool,
 ) -> pd.DataFrame:
-    """One DataFrame row per driver for this lap, in FEATURE_COLUMNS order."""
-    rows = []
-    drivers_enc = encoders.get("driver", {})
-    teams_enc = encoders.get("team", {})
-    circuit_id = encoders.get("circuit", {}).get(context.circuit_key, -1)
+    """One DataFrame row per driver for this lap, in FEATURE_COLUMNS order.
+
+    Built column-wise from pre-computed static arrays (driver/team/circuit
+    ids, temps) so the hot loop never materialises 22 python dicts per lap.
+    """
+    n = state.n
     lap_progress = lap_number / context.total_laps if context.total_laps else 0.0
-    for i, entry in enumerate(state.grid):
-        rows.append(
-            {
-                "driver_id": drivers_enc.get(entry.driver, -1),
-                "team_id": teams_enc.get(entry.team, -1),
-                "circuit_id": circuit_id,
-                "lap_number": lap_number,
-                "lap_progress": lap_progress,
-                "track_position": int(state.position[i]),
-                "tyre_compound_code": int(state.compound_code[i]),
-                "tyre_age_laps": int(state.tyre_age[i]),
-                "gap_to_car_ahead_s": float(state.gap_ahead[i]),
-                "gap_to_car_behind_s": float(state.gap_behind[i]),
-                "sc_active": int(sc_active),
-                "vsc_active": int(vsc_active),
-                "yellow_active": int(yellow_active),
-                "air_temp_c": float(context.air_temp_c),
-                "track_temp_c": float(context.track_temp_c),
-                "rain_intensity": float(context.rain_intensity),
-            }
-        )
-    return pd.DataFrame(rows, columns=list(FEATURE_COLUMNS))
+    data = {
+        "driver_id": state.driver_ids,
+        "team_id": state.team_ids,
+        "circuit_id": np.full(n, state.circuit_id),
+        "lap_number": np.full(n, float(lap_number)),
+        "lap_progress": np.full(n, float(lap_progress)),
+        "track_position": state.position.astype(float),
+        "tyre_compound_code": state.compound_code.astype(float),
+        "tyre_age_laps": state.tyre_age.astype(float),
+        "gap_to_car_ahead_s": state.gap_ahead,
+        "gap_to_car_behind_s": state.gap_behind,
+        "sc_active": np.full(n, float(sc_active)),
+        "vsc_active": np.full(n, float(vsc_active)),
+        "yellow_active": np.full(n, float(yellow_active)),
+        "air_temp_c": np.full(n, float(context.air_temp_c)),
+        "track_temp_c": np.full(n, float(context.track_temp_c)),
+        "rain_intensity": np.full(n, float(context.rain_intensity)),
+    }
+    return pd.DataFrame(data, columns=list(FEATURE_COLUMNS))
 
 
 # --------------------------------------------------------------------------- #
@@ -329,39 +416,57 @@ def _simulate_one_sample(
     context: RaceContext,
     initials: dict[str, DriverInitial],
     rng: np.random.Generator,
-) -> np.ndarray:
-    """Run one MC sample.  Returns a length-N array of final positions
-    (1-indexed), driver-indexed in the same order as ``grid``.
+) -> tuple[np.ndarray, np.ndarray]:
+    """Run one MC sample.  Returns ``(final_positions, retired_mask)`` — the
+    length-N 1-indexed finishing positions and a boolean retirement mask, both
+    driver-indexed in the same order as ``grid``.
 
     The race-pace model gives us a *predicted* lap time; on top of that we
     add:
-      - per-driver base_pace_offset (e.g. -0.4s for the fastest driver) to
-        bake in the quali signal the upstream pipeline already extracted
+      - per-driver base_pace_offset (quali signal carried forward)
+      - a per-sample per-driver car-performance shock (constant across laps)
       - tyre-degradation linear term (deg_factor × tyre_age)
       - pit-loss when a driver pits this lap
-      - SC normalisation (compress the pack toward the leader's lap time
-        when SC is active)
+      - SC normalisation (compress the pack toward the leader's lap time)
       - lap-to-lap noise
+
+    Drivers may retire: a retired car stops accumulating time at its sampled
+    retirement lap and is classified behind every finisher.
     """
-    state = _RaceState(grid, context, initials, rng)
-    for lap in range(1, context.total_laps + 1):
+    state = _RaceState(grid, context, initials, encoders, rng)
+    n = state.n
+    total_laps = context.total_laps
+
+    # Per-sample per-driver car-performance shock (held constant across laps).
+    if context.form_shock_s > 0:
+        form_shock = rng.normal(0.0, context.form_shock_s, size=n)
+    else:
+        form_shock = np.zeros(n)
+
+    # Per-sample retirements.
+    retire_lap, retired_mask = _sample_retirements(state.p_dnf, total_laps, rng)
+    laps_run = np.zeros(n, dtype=int)
+
+    for lap in range(1, total_laps + 1):
+        # A car is running this lap iff it hasn't retired yet (retires at the
+        # start of ``retire_lap``, so it completes laps 1..retire_lap-1).
+        active = retire_lap > lap
         sc_active = lap in state.sc_laps
         feature_df = _build_lap_features(
             state=state,
             lap_number=lap,
             context=context,
-            encoders=encoders,
             sc_active=sc_active,
             vsc_active=False,
             yellow_active=False,
         )
         predicted = predict_lap_times(artifacts, feature_df)
-        # Per-driver base-pace offset (quali signal carried forward).
-        predicted = predicted + state.base_pace_offset
+        # Per-driver base-pace offset (quali signal) + per-sample form shock.
+        predicted = predicted + state.base_pace_offset + form_shock
         # Tyre degradation: linear in tyre age (cleared on pit stops).
         predicted = predicted + context.tyre_deg_factor * state.tyre_age
         # Per-lap noise.
-        noise = rng.normal(0.0, context.lap_noise_s, size=state.n)
+        noise = rng.normal(0.0, context.lap_noise_s, size=n)
         lap_times = predicted + noise
 
         # SC compresses lap times — every car runs roughly the same time.
@@ -369,13 +474,11 @@ def _simulate_one_sample(
             sc_lap_time = float(np.median(lap_times)) + 8.0  # ~8s slower than racing
             lap_times = np.full_like(lap_times, sc_lap_time)
 
-        # Pit-stop bookkeeping for any driver pitting *this* lap.
-        for i in range(state.n):
-            if lap in state.pit_plan[i]:
+        # Pit-stop bookkeeping for any driver pitting *this* lap (skip retired).
+        for i in range(n):
+            if active[i] and lap in state.pit_plan[i]:
                 lap_times[i] += context.pit_loss_s
                 state.tyre_age[i] = 0
-                # Compound rotation: advance one step in the rotation list,
-                # wrapping at the end so 2-stop strategies don't crash.
                 cur_idx = COMPOUND_ROTATION.index(state.starting_compound_name[i]) \
                     if state.starting_compound_name[i] in COMPOUND_ROTATION else 0
                 next_name = COMPOUND_ROTATION[(cur_idx + 1) % len(COMPOUND_ROTATION)]
@@ -383,48 +486,56 @@ def _simulate_one_sample(
                 state.compound_code[i] = COMPOUND_CODES.get(next_name, COMPOUND_CODES["UNKNOWN"])
                 state.n_stops[i] += 1
 
-        # Advance race time.
-        state.cum_time = state.cum_time + lap_times
-        state.tyre_age = state.tyre_age + 1
+        # Advance race time + tyre age only for cars still running.
+        state.cum_time[active] += lap_times[active]
+        laps_run[active] += 1
+        state.tyre_age[active] += 1
 
-        # Recompute positions from cumulative time (1-indexed).
-        order = np.argsort(state.cum_time)
-        ranks = np.empty(state.n, dtype=int)
-        ranks[order] = np.arange(1, state.n + 1)
-        state.position = ranks
+        # Recompute positions + gaps.  Primary key: laps completed (more =
+        # ahead, so retired cars sink); secondary: cumulative time.
+        _recompute_positions_and_gaps(state, laps_run)
 
-        # Recompute gaps.
-        for i in range(state.n):
-            pos = int(state.position[i])
-            ahead_idx = next(
-                (j for j in range(state.n) if int(state.position[j]) == pos - 1),
-                None,
-            )
-            behind_idx = next(
-                (j for j in range(state.n) if int(state.position[j]) == pos + 1),
-                None,
-            )
-            state.gap_ahead[i] = (
-                max(0.0, float(state.cum_time[i] - state.cum_time[ahead_idx]))
-                if ahead_idx is not None
-                else LEADER_GAP_SENTINEL_S
-            )
-            state.gap_behind[i] = (
-                max(0.0, float(state.cum_time[behind_idx] - state.cum_time[i]))
-                if behind_idx is not None
-                else LEADER_GAP_SENTINEL_S
-            )
+    # Final classification: finishers first (by time), then retired cars by
+    # laps completed then time.  1-indexed, driver-indexed in grid order.
+    order = np.lexsort((state.cum_time, -laps_run))
+    final_positions = np.empty(n, dtype=int)
+    final_positions[order] = np.arange(1, n + 1)
+    return final_positions, retired_mask
 
-    # Final classification: 1-indexed positions driver-indexed in grid order.
-    final_order = np.argsort(state.cum_time)
-    final_positions = np.empty(state.n, dtype=int)
-    final_positions[final_order] = np.arange(1, state.n + 1)
-    return final_positions
+
+def _recompute_positions_and_gaps(state: _RaceState, laps_run: np.ndarray) -> None:
+    """Vectorised running-order + inter-car gap update."""
+    n = state.n
+    order = np.lexsort((state.cum_time, -laps_run))  # leader first
+    state.position[order] = np.arange(1, n + 1)
+    sorted_ct = state.cum_time[order]
+    diffs = np.maximum(0.0, np.diff(sorted_ct)) if n > 1 else np.array([])
+    gap_ahead_sorted = np.full(n, LEADER_GAP_SENTINEL_S)
+    gap_behind_sorted = np.full(n, LEADER_GAP_SENTINEL_S)
+    if n > 1:
+        gap_ahead_sorted[1:] = diffs
+        gap_behind_sorted[:-1] = diffs
+    state.gap_ahead[order] = gap_ahead_sorted
+    state.gap_behind[order] = gap_behind_sorted
 
 
 # --------------------------------------------------------------------------- #
 # Public API
 # --------------------------------------------------------------------------- #
+
+
+def _smooth_market(counts: np.ndarray, n_samples: int, slots: int, n_drivers: int) -> np.ndarray:
+    """Dirichlet / base-rate smoothing that preserves the market sum.
+
+    ``p_i = (count_i + alpha * slots / n_drivers) / (n_samples + alpha)``.
+
+    Summed over drivers this gives exactly ``slots`` (1 for win, 3 for
+    podium, …) because the per-driver pseudo-mass totals ``alpha * slots``.
+    Every probability lands strictly inside (0, 1) whenever ``slots <
+    n_drivers`` (and equals the correct value when ``slots == n_drivers``).
+    """
+    base = SMOOTHING_ALPHA * slots / n_drivers
+    return (counts + base) / (n_samples + SMOOTHING_ALPHA)
 
 
 def simulate_race(
@@ -450,10 +561,11 @@ def simulate_race(
         driver / team / circuit ids in the per-lap feature rows.
     context
         Static race parameters (laps, circuit characteristics, weather
-        forecast).
+        forecast, plus the ``form_shock_s`` / ``field_dnf_rate`` chaos knobs).
     initials
-        Per-driver overrides (starting tyre, base pace offset).  Drivers
-        absent from this map get defaults (``MEDIUM`` tyre, zero offset).
+        Per-driver overrides (starting tyre, base pace offset, ``p_dnf``).
+        Drivers absent from this map get defaults (``MEDIUM`` tyre, zero
+        offset, ``field_dnf_rate`` retirement probability).
     n_samples
         Monte Carlo sample count.  Default 2000 — empirical std-err on
         a p≈0.3 estimate is ~1%, fast enough on CPU.
@@ -463,9 +575,10 @@ def simulate_race(
 
     Returns
     -------
-    ``SimulationOutput`` with per-driver win/podium/top6/top10 probabilities,
-    a per-driver finishing-position list (length ``n_samples`` each), and
-    the mean finishing position.
+    ``SimulationOutput`` with per-driver win/podium/top6/top10 probabilities
+    (base-rate smoothed so none is exactly 0.0 or 1.0), the realised DNF
+    frequency, a per-driver finishing-position list (length ``n_samples``
+    each), and the mean finishing position.
     """
     grid_list = list(grid)
     if not grid_list:
@@ -482,9 +595,10 @@ def simulate_race(
     rng = np.random.default_rng(seed)
     n = len(grid_list)
     finish_records = np.zeros((n_samples, n), dtype=int)
+    dnf_counts = np.zeros(n, dtype=float)
 
     for s in range(n_samples):
-        finish_records[s] = _simulate_one_sample(
+        positions, retired = _simulate_one_sample(
             grid=grid_list,
             artifacts=artifacts,
             encoders=encoders,
@@ -492,21 +606,37 @@ def simulate_race(
             initials=initials,
             rng=rng,
         )
+        finish_records[s] = positions
+        dnf_counts += retired
 
-    # Aggregate: per-driver position counts across samples.
+    # Aggregate: per-driver position counts across samples, then base-rate
+    # smooth each market so nothing pins to 0.0 / 1.0.
     p_win: dict[str, float] = {}
     p_podium: dict[str, float] = {}
     p_top6: dict[str, float] = {}
     p_top10: dict[str, float] = {}
+    p_dnf: dict[str, float] = {}
     mean_finish: dict[str, float] = {}
     position_dist: dict[str, list[int]] = {}
+
+    win_counts = (finish_records == 1).sum(axis=0).astype(float)
+    podium_counts = (finish_records <= 3).sum(axis=0).astype(float)
+    top6_counts = (finish_records <= 6).sum(axis=0).astype(float)
+    top10_counts = (finish_records <= 10).sum(axis=0).astype(float)
+
+    win_p = _smooth_market(win_counts, n_samples, 1, n)
+    podium_p = _smooth_market(podium_counts, n_samples, min(3, n), n)
+    top6_p = _smooth_market(top6_counts, n_samples, min(6, n), n)
+    top10_p = _smooth_market(top10_counts, n_samples, min(10, n), n)
+
     for i, drv in enumerate(drivers):
         finishes = finish_records[:, i]
-        p_win[drv] = float(np.mean(finishes == 1))
-        p_podium[drv] = float(np.mean(finishes <= 3))
-        p_top6[drv] = float(np.mean(finishes <= 6))
-        p_top10[drv] = float(np.mean(finishes <= 10))
+        p_win[drv] = float(win_p[i])
+        p_podium[drv] = float(podium_p[i])
+        p_top6[drv] = float(top6_p[i])
+        p_top10[drv] = float(top10_p[i])
         mean_finish[drv] = float(np.mean(finishes))
+        p_dnf[drv] = float(dnf_counts[i] / n_samples)
         position_dist[drv] = finishes.tolist()
 
     return SimulationOutput(
@@ -516,6 +646,7 @@ def simulate_race(
         p_top6=p_top6,
         p_top10=p_top10,
         mean_finish_position=mean_finish,
+        p_dnf=p_dnf,
         finish_position_distribution=position_dist,
         n_samples=n_samples,
         n_laps=context.total_laps,
@@ -569,4 +700,16 @@ def race_context_from_circuit(
         air_temp_c=air_temp,
         track_temp_c=track_temp,
         rain_intensity=rain,
+        # Street/high-SC circuits retire more cars; nudge the field DNF rate up
+        # a touch with safety-car likelihood but keep it inside a sane band.
+        field_dnf_rate=float(
+            min(
+                0.22,
+                max(
+                    0.08,
+                    DEFAULT_FIELD_DNF_RATE
+                    * (0.85 + 0.5 * float(char.get("safety_car_likelihood", 0.4))),
+                ),
+            )
+        ),
     )

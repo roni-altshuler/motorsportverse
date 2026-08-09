@@ -36,6 +36,7 @@ from typing import Any
 import pandas as pd
 
 from models.race_simulator import (
+    DEFAULT_FIELD_DNF_RATE,
     DEFAULT_N_SAMPLES,
     DEFAULT_SEED,
     DriverInitial,
@@ -85,8 +86,24 @@ def find_latest_race_pace_entry(
 # --------------------------------------------------------------------------- #
 
 
+def _dnf_prior_from_grid(grid_position: int, n_drivers: int, field_rate: float) -> float:
+    """Per-driver retirement probability tilted by grid slot.
+
+    Back-of-grid cars retire disproportionately often (first-lap contact,
+    mechanical wear from running deep in dirty air), so we tilt the field
+    base rate linearly from ~0.7× at the front to ~1.3× at the back.  The
+    mean across a full grid stays at ``field_rate``.  ``models/race_simulator``
+    clips the result to a plausible band.
+    """
+    if n_drivers <= 1:
+        return field_rate
+    frac = (grid_position - 1) / (n_drivers - 1)  # 0 = pole, 1 = last
+    return field_rate * (0.7 + 0.6 * max(0.0, min(1.0, frac)))
+
+
 def _build_grid_and_initials(
     merged: pd.DataFrame,
+    field_dnf_rate: float = DEFAULT_FIELD_DNF_RATE,
 ) -> tuple[list[GridEntry], dict[str, DriverInitial]]:
     """Convert the export pipeline's ``merged`` DataFrame to a simulator
     grid + per-driver initial-condition map.
@@ -100,6 +117,10 @@ def _build_grid_and_initials(
         ensemble.  We derive ``base_pace_offset_s`` as the deviation from
         the grid mean so the fastest drivers carry a negative offset
         (faster) into the simulator's per-lap noise model.
+
+    ``field_dnf_rate`` anchors the per-driver retirement prior (grid-tilted
+    via ``_dnf_prior_from_grid``); pass the circuit-adjusted rate from the
+    race context so street/high-SC rounds retire more cars.
     """
     if merged is None or len(merged) == 0:
         return [], {}
@@ -118,6 +139,7 @@ def _build_grid_and_initials(
         else 0.0
     )
 
+    n_drivers = len(merged)
     grid: list[GridEntry] = []
     initials: dict[str, DriverInitial] = {}
     for (_, row), pos in zip(merged.iterrows(), grid_pos):
@@ -138,6 +160,7 @@ def _build_grid_and_initials(
         initials[driver] = DriverInitial(
             base_pace_offset_s=offset,
             starting_tyre="MEDIUM",  # v1: uniform default; per-driver strategy lands in v2
+            p_dnf=_dnf_prior_from_grid(slot, n_drivers, field_dnf_rate),
         )
 
     # Sort by grid slot so the simulator sees the actual starting order.
@@ -217,11 +240,6 @@ def run_simulator_for_round(
         )
         return None
 
-    grid, initials = _build_grid_and_initials(merged)
-    if not grid:
-        LOGGER.info("simulator runner: empty grid from merged DataFrame; skip")
-        return None
-
     context = race_context_from_circuit(
         season=season,
         round_num=round_num,
@@ -230,6 +248,11 @@ def run_simulator_for_round(
         circuit_characteristics=circuit_characteristics,
         weather=weather,
     )
+
+    grid, initials = _build_grid_and_initials(merged, field_dnf_rate=context.field_dnf_rate)
+    if not grid:
+        LOGGER.info("simulator runner: empty grid from merged DataFrame; skip")
+        return None
 
     try:
         out = simulate_race(

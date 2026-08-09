@@ -228,11 +228,11 @@ jobs:
           python src/train_race_pace.py --seasons 2018-2025 || echo "⚠️  race-pace trainer skipped (see logs)"
 
           if [ "$PHASE" = "full" ]; then
-            python src/gp_weekend.py --round "$ROUND" --full --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --full --no-build
           elif [ "$PHASE" = "auto" ]; then
-            python src/gp_weekend.py --round "$ROUND" --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --no-build
           else
-            python src/gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build --use-race-simulator
+            python src/gp_weekend.py --round "$ROUND" --phase "$PHASE" --no-build
           fi
 
       - name: Generate labeled circuit maps for all rounds
