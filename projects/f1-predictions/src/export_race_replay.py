@@ -48,6 +48,7 @@ except ImportError:  # pragma: no cover
     raise SystemExit(1)
 
 from generate_circuit_svg import _load_telemetry, geometry_from_telemetry
+from replay_geometry import apply_high_fidelity_geometry
 from slim_replays import slim_payload  # shared numeric-precision policy (born-slim bakes)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -497,7 +498,7 @@ def build_replay(round_num: int, season: int, gp_key: str, dt: float) -> dict[st
     cal = {int(e.get("round", -1)): e for e in season_json.get("calendar", [])}
     entry = cal.get(round_num, {})
 
-    return {
+    payload = {
         "schemaVersion": SCHEMA_VERSION,
         "sport": "f1",
         "season": season,
@@ -519,6 +520,13 @@ def build_replay(round_num: int, season: int, gp_key: str, dt: float) -> dict[st
         "drsZones": [],
         "finish": finish,
     }
+    # Replace the coarse RDP fastest-lap outline with a smooth, high-fidelity one
+    # reconstructed from the just-built car positions (identical to what the offline
+    # rebuild produces), and drop corner pills that a prior-year geometry fallback
+    # left in a mismatched frame. No-ops safely if reconstruction isn't possible.
+    if apply_high_fidelity_geometry(payload):
+        print("    geometry: rebuilt high-fidelity outline from race positions")
+    return payload
 
 
 def _write(round_num: int, payload: dict[str, Any]) -> None:
