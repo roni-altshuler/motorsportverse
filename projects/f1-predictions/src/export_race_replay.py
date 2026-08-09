@@ -48,6 +48,7 @@ except ImportError:  # pragma: no cover
     raise SystemExit(1)
 
 from generate_circuit_svg import _load_telemetry, geometry_from_telemetry
+from slim_replays import slim_payload  # shared numeric-precision policy (born-slim bakes)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "website" / "public" / "data"
@@ -523,6 +524,10 @@ def build_replay(round_num: int, season: int, gp_key: str, dt: float) -> dict[st
 def _write(round_num: int, payload: dict[str, Any]) -> None:
     REPLAYS_DIR.mkdir(parents=True, exist_ok=True)
     out = REPLAYS_DIR / f"round_{round_num:02d}.json"
+    # Reduce numeric precision (drop redundant `.0`, cap over-precise scalars) so
+    # freshly baked replays are born as slim as src/slim_replays.py makes the
+    # committed ones — same policy, no schema change.
+    slim_payload(payload)
     with out.open("w") as f:
         json.dump(payload, f, separators=(",", ":"))
         f.write("\n")
