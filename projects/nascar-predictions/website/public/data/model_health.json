@@ -1,54 +1,53 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 22,
+  "lastEvaluatedRound": 23,
   "featureDrift": [
     {
       "feature": "predictedValue",
-      "psi": 0.25,
-      "severity": "alarm"
+      "psi": 0.0372,
+      "severity": "ok"
     },
     {
       "feature": "pWin",
-      "psi": 0.1376,
+      "psi": 0.2176,
       "severity": "warn"
     },
     {
       "feature": "pPodium",
-      "psi": 0.1765,
-      "severity": "warn"
+      "psi": 0.2521,
+      "severity": "alarm"
     },
     {
       "feature": "pDnf",
-      "psi": 0.3906,
+      "psi": 0.2934,
       "severity": "alarm"
     },
     {
       "feature": "meanFinish",
-      "psi": 0.081,
+      "psi": 0.096,
       "severity": "ok"
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.2267,
+      "psi": 0.1838,
       "severity": "warn"
     }
   ],
   "outputDrift": {
-    "rollingBrierRecent": 0.0272,
-    "rollingBrierBaseline": 0.0207,
-    "relativeChange": 0.3125,
+    "rollingBrierRecent": 0.0258,
+    "rollingBrierBaseline": 0.0213,
+    "relativeChange": 0.2119,
     "severity": "alarm",
-    "roundsCompared": 22
+    "roundsCompared": 23
   },
   "warnings": [
-    "pWin: PSI 0.138 (moderate drift vs baseline)",
-    "pPodium: PSI 0.176 (moderate drift vs baseline)",
-    "finishRangeHigh: PSI 0.227 (moderate drift vs baseline)"
+    "pWin: PSI 0.218 (moderate drift vs baseline)",
+    "finishRangeHigh: PSI 0.184 (moderate drift vs baseline)"
   ],
   "alarms": [
-    "predictedValue: PSI 0.250 (significant drift vs baseline)",
-    "pDnf: PSI 0.391 (significant drift vs baseline)",
-    "rolling Brier regression +31.2% (significant)"
+    "pPodium: PSI 0.252 (significant drift vs baseline)",
+    "pDnf: PSI 0.293 (significant drift vs baseline)",
+    "rolling Brier regression +21.2% (significant)"
   ],
   "brierByRound": [
     {
@@ -138,6 +137,10 @@
     {
       "round": 22,
       "brier": 0.026612437948717965
+    },
+    {
+      "round": 23,
+      "brier": 0.023471663333333333
     }
   ]
 }

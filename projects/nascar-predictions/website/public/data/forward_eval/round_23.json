@@ -1,0 +1,63 @@
+{
+  "round": 23,
+  "venueName": "Iowa Speedway",
+  "trackType": "short",
+  "race": {
+    "n": 36,
+    "mean_position_error": 10.333,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 7,
+    "within_5": 13,
+    "exact_matches": 1,
+    "spearman_correlation": 0.21184041184041183,
+    "ndcg_at_5": 0.835677431178866
+  },
+  "racePostQuali": {
+    "n": 36,
+    "mean_position_error": 10.944,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 7,
+    "within_5": 10,
+    "exact_matches": 0,
+    "spearman_correlation": 0.13719433719433718,
+    "ndcg_at_5": 0.6192454814266116
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.023471,
+        "logLoss": 0.080358
+      },
+      "podium": {
+        "brier": 0.062614,
+        "logLoss": 0.193952
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 11.0,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 10,
+      "exact_matches": 2,
+      "spearman_correlation": 0.18996138996138995,
+      "ndcg_at_5": 0.8074199965340226
+    },
+    "gridOrder": {
+      "n": 36,
+      "mean_position_error": 10.944,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 10,
+      "within_5": 13,
+      "exact_matches": 0,
+      "spearman_correlation": 0.1214929214929215,
+      "ndcg_at_5": 0.504112698491911
+    }
+  }
+}
