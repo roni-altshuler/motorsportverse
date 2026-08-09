@@ -29,6 +29,12 @@ import KeyFactorsPanel from "@/components/race-detail/KeyFactorsPanel";
 import FinishMarketsPanel from "@/components/race-detail/FinishMarketsPanel";
 import DriverComparison from "@/components/race-detail/DriverComparison";
 import ShareButton from "@/components/ShareButton";
+import AddToCalendar from "@/components/AddToCalendar";
+import PickEm from "@/components/race-detail/PickEm";
+import CircuitHistoryPanel, {
+  type CircuitHistoryEntry,
+  type CircuitHistoryData,
+} from "@/components/race-detail/CircuitHistoryPanel";
 import PredictedClassificationTable from "@/components/race-detail/PredictedClassificationTable";
 import CircuitMap from "@/components/race-detail/CircuitMap";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
@@ -56,6 +62,7 @@ import {
 } from "@/lib/data";
 import { useSeason } from "@/lib/SeasonProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
+import { type CalendarRace } from "@/lib/calendar";
 
 // Centralised legacy status-pill tone → Badge variant map.  Same as the
 // HomePage / Navbar table so the rest of the codebase can migrate
@@ -123,6 +130,10 @@ export default function RaceDetailPage({ round }: Props) {
   // Probability-layer output (markets + head-to-head) for the comparison
   // module.  Not every round ships one — stays null and the UI degrades.
   const [probabilities, setProbabilities] = useState<ProbabilityRoundData | null>(null);
+  // Per-circuit history (recent winners, pole-to-win, safety-car) from the
+  // optional circuit_history.json export.  Stays null when the file or the
+  // circuit entry is absent — the panel hides itself rather than fabricate.
+  const [circuitHistory, setCircuitHistory] = useState<CircuitHistoryEntry | null>(null);
 
   // B-P1.3b: fetch standings once for the driver-detail sheet.  Independent
   // of the season/round-data fetch so it can run in parallel.
@@ -179,6 +190,31 @@ export default function RaceDetailPage({ round }: Props) {
       active = false;
     };
   }, [round, basePath]);
+
+  // Per-circuit history file (optional).  Indexed by the round's gpKey — the
+  // pipeline's circuit key — with a fallback to the human circuit name. Fully
+  // null-tolerant: a missing file, missing entry, or fetch error leaves the
+  // panel hidden.
+  useEffect(() => {
+    if (!data) return;
+    let active = true;
+    const primaryKey = data.gpKey;
+    const fallbackKey = data.circuit;
+    fetch(`${basePath}/circuit_history.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((all: CircuitHistoryData | null) => {
+        if (!active) return;
+        const entry =
+          all && typeof all === "object" ? (all[primaryKey] ?? all[fallbackKey] ?? null) : null;
+        setCircuitHistory(entry);
+      })
+      .catch(() => {
+        if (active) setCircuitHistory(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [basePath, data]);
 
   if (!season && !data) {
     return (
@@ -410,6 +446,44 @@ export default function RaceDetailPage({ round }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tyreDegData = (data as any).tyreDegData;
 
+  // A completed round hides Add-to-Calendar (a past date is no use) — same
+  // signal the Race Theatre link uses, inverted.
+  const isCompletedRound =
+    season?.completedRounds?.includes(data.round) ?? Boolean(data.actualResults);
+  // Minimal calendar payload for the .ics builder — prefer the richer calendar
+  // entry (carries country + laps) and fall back to the round JSON.
+  const calendarRace: CalendarRace = seasonRace
+    ? {
+        round: seasonRace.round,
+        name: seasonRace.name,
+        circuit: seasonRace.circuit,
+        date: seasonRace.date,
+        country: seasonRace.country,
+        laps: seasonRace.laps,
+      }
+    : {
+        round: data.round,
+        name: data.name,
+        circuit: data.circuit,
+        date: data.date,
+        country: data.gpKey,
+      };
+
+  // "Beat the Model" pick'em inputs. The model podium is only meaningful once
+  // its forecast is published; the actual podium only once the race is graded.
+  const pickRoster = data.classification.map((e) => ({
+    driver: e.driver,
+    driverFullName: e.driverFullName,
+    team: e.team,
+    teamColor: e.teamColor,
+    headshotUrl: e.headshotUrl,
+  }));
+  const modelPodium = isPredictionPublished
+    ? data.classification.slice(0, 3).map((e) => e.driver)
+    : null;
+  const actualPodium =
+    actualRows.length >= 3 ? actualRows.slice(0, 3).map(([driver]) => driver) : null;
+
   return (
     <div>
       {/* Race detail hero — track circuit anchored to the left of the title
@@ -467,6 +541,11 @@ export default function RaceDetailPage({ round }: Props) {
               {/* Shares the page URL — the per-round OG card at
                   public/og/round_NN.png unfurls automatically on link preview. */}
               <ShareButton title={`${data.name} — race prediction`} />
+              {/* Add-to-Calendar is only useful ahead of the race — hidden once
+                  the round is completed. */}
+              {!isCompletedRound && (
+                <AddToCalendar race={calendarRace} season={seasonYear} size="sm" />
+              )}
               {(season?.completedRounds?.includes(data.round) ?? Boolean(data.actualResults)) && (
                 <Link
                   href={`/theatre/${data.round}`}
@@ -789,6 +868,19 @@ export default function RaceDetailPage({ round }: Props) {
             </div>
           </motion.div>
         )}
+
+        {/* ━━━ Beat the Model — additive fan pick'em (client-only, localStorage).
+            Pre-forecast: pick your podium. Graded: your podium vs the official
+            result AND the model's. Never overwrites the honest model content. */}
+        <PickEm
+          season={seasonYear}
+          round={data.round}
+          roster={pickRoster}
+          modelPodium={modelPodium}
+          actualPodium={actualPodium}
+          predictionPublished={isPredictionPublished}
+          graded={!!actualPodium}
+        />
 
         {/* ━━━ YouTube Highlight Links ━━━ */}
         <motion.div
@@ -1649,13 +1741,11 @@ export default function RaceDetailPage({ round }: Props) {
                   </div>
                 </div>
 
-                {/* TODO: needs circuit-history export — recent winners /
-                   pole-to-win conversion for this circuit are not in the
-                   exported round/circuit JSON (circuitInfo carries only
-                   physical characteristics; predictionInsights.poleToWinBias
-                   is a model coefficient, not a historical conversion rate).
-                   Render a per-circuit history mini-panel here once the
-                   export ships that data — do not fabricate it. */}
+                {/* Per-circuit history: recent winners + pole-to-win / safety-car
+                   context from the optional circuit_history.json export (indexed
+                   by gpKey). Hides itself when the entry or a field is absent —
+                   never fabricated. */}
+                <CircuitHistoryPanel entry={circuitHistory} circuitName={data.circuit} />
 
                 {data.predictionInsights && (
                   <div className="card p-6 sm:p-8">
