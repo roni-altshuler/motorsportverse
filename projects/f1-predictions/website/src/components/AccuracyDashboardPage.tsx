@@ -8,12 +8,18 @@ import {
   SeasonData,
   GpAccuracyReportData,
   PromotionStatusData,
+  ForwardEvalSummaryData,
 } from "@/types";
 import {
   fetchSeasonTrackerData,
   fetchSeasonData,
   fetchGpAccuracyReport,
   fetchPromotionStatus,
+  fetchForwardEvalSummary,
+  fetchForwardEvalRounds,
+  fetchModelHealth,
+  type ForwardEvalRoundData,
+  type ModelHealthData,
 } from "@/lib/data";
 import { useSeason } from "@/lib/SeasonProvider";
 import { getSeasonYear } from "@/lib/season";
@@ -22,6 +28,8 @@ import { AnimatedGradientText } from "@/components/magicui/animated-gradient-tex
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import BaselineComparisonPanel from "@/components/accuracy/BaselineComparisonPanel";
 import CandidateModelPanel from "@/components/accuracy/CandidateModelPanel";
+import ForwardEvalPanel from "@/components/accuracy/ForwardEvalPanel";
+import ModelHealthPanel from "@/components/accuracy/ModelHealthPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
@@ -31,6 +39,9 @@ export default function AccuracyDashboardPage() {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [gpAccuracyReport, setGpAccuracyReport] = useState<GpAccuracyReportData | null>(null);
   const [promotionStatus, setPromotionStatus] = useState<PromotionStatusData | null>(null);
+  const [forwardEval, setForwardEval] = useState<ForwardEvalSummaryData | null>(null);
+  const [forwardRounds, setForwardRounds] = useState<ForwardEvalRoundData[]>([]);
+  const [modelHealth, setModelHealth] = useState<ModelHealthData | null>(null);
   const [error, setError] = useState(false);
   const { basePath } = useSeason();
 
@@ -44,13 +55,29 @@ export default function AccuracyDashboardPage() {
     fetchSeasonData(basePath)
       .then(setSeason)
       .catch(() => {});
-    // Both are optional surfaces: archived seasons may lack the baselines
-    // block / promotion file entirely — the panels hide themselves.
+    // All of these are optional surfaces: archived seasons may lack the
+    // baselines block / promotion / forward-eval / health files entirely —
+    // the panels hide themselves when their data is null.
     fetchGpAccuracyReport(basePath)
       .then(setGpAccuracyReport)
       .catch(() => {});
     fetchPromotionStatus(basePath)
       .then(setPromotionStatus)
+      .catch(() => {});
+    fetchModelHealth(basePath)
+      .then(setModelHealth)
+      .catch(() => {});
+    // Fetch the walk-forward summary first; it tells us how many per-round
+    // files to pull for the trend chart, so we only fan out over graded rounds.
+    fetchForwardEvalSummary(basePath)
+      .then((summary) => {
+        setForwardEval(summary);
+        if (summary?.roundsEvaluated) {
+          fetchForwardEvalRounds(summary.roundsEvaluated, basePath)
+            .then(setForwardRounds)
+            .catch(() => {});
+        }
+      })
       .catch(() => {});
   }, [basePath]);
 
@@ -255,6 +282,18 @@ export default function AccuracyDashboardPage() {
         </motion.div>
       )}
 
+      {/* Model-health strip: forecast quality + input drift (model_health.json) */}
+      {modelHealth && (
+        <motion.div
+          className="card p-6 sm:p-8 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.12 }}
+        >
+          <ModelHealthPanel health={modelHealth} />
+        </motion.div>
+      )}
+
       {/* Honest scoreboard: model vs naive baselines */}
       {gpAccuracyReport?.baselines && (
         <motion.div
@@ -264,6 +303,18 @@ export default function AccuracyDashboardPage() {
           transition={{ duration: 0.4, delay: 0.15 }}
         >
           <BaselineComparisonPanel report={gpAccuracyReport} />
+        </motion.div>
+      )}
+
+      {/* Season-long walk-forward validation: model vs baselines + trend */}
+      {forwardEval && (
+        <motion.div
+          className="card p-6 sm:p-8 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.18 }}
+        >
+          <ForwardEvalPanel summary={forwardEval} rounds={forwardRounds} />
         </motion.div>
       )}
 

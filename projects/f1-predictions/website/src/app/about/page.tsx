@@ -46,11 +46,14 @@ export default function AboutPage() {
         <h2 className="display-md mb-8">How we measure accuracy</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
-            <p className="title-md mb-2">Per-position grading</p>
+            <p className="title-md mb-2">Podium &amp; points accuracy</p>
             <p className="body-sm text-[color:var(--muted)]">
-              Each predicted finish position is graded against the official
-              classification once a race is over. A prediction is considered a
-              hit when it lands within three positions of the actual result.
+              Once a race is official, predictions are graded against the
+              classified result. Our headline number is a podium-weighted blend
+              (60% podium, 40% points) of how many of the right drivers the
+              model placed in the top three and the top ten, alongside how often
+              it called the actual race winner. Mean position error and
+              within-three figures are shown too, for full transparency.
             </p>
           </div>
           <div>

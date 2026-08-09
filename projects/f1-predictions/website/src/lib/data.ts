@@ -11,6 +11,7 @@ import {
   GpAccuracyReportData,
   PromotionStatusData,
   ReplayData,
+  ForwardEvalSummaryData,
 } from "@/types";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -350,6 +351,128 @@ export async function fetchChampionshipForecast(
 ): Promise<ChampionshipForecast | null> {
   try {
     const res = await fetch(`${base}/championship_forecast.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Season-level walk-forward validation summary (`forward_eval/summary.json`):
+ * the model's aggregate metrics scored against naive baselines (qualifying
+ * grid, repeat-last-winner, championship order), each round graded using only
+ * the data available before it. Returns null instead of throwing so the panel
+ * hides gracefully on archived / pre-eval seasons.
+ */
+export async function fetchForwardEvalSummary(
+  base: string = BASE_PATH,
+): Promise<ForwardEvalSummaryData | null> {
+  try {
+    const res = await fetch(`${base}/forward_eval/summary.json`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * One graded round from `forward_eval/round_NN.json`. Only the fields the
+ * accuracy trend chart reads are typed here; the file carries more (biggest
+ * misses, log-loss vs uniform, etc.). Baseline sub-blocks are optional so a
+ * round scored before the baselines landed still parses.
+ */
+export interface ForwardEvalRoundData {
+  season: number;
+  round: number;
+  drivers_compared?: number;
+  mean_position_error?: number;
+  median_position_error?: number;
+  winner_hit?: boolean;
+  podium_hits?: number;
+  top10_overlap?: number;
+  spearman_correlation?: number;
+  baselines?: Record<
+    string,
+    {
+      mean_position_error?: number;
+      winner_hit?: boolean;
+      podium_hits?: number;
+      top10_overlap?: number;
+      spearman_correlation?: number;
+    }
+  >;
+}
+
+/**
+ * Fetch the per-round forward-eval files 1..count in parallel (mirrors the
+ * fan-out pattern in `getAvailableRounds`). Missing rounds are skipped rather
+ * than throwing, so a partially-graded season still yields a usable series.
+ */
+export async function fetchForwardEvalRounds(
+  count: number,
+  base: string = BASE_PATH,
+): Promise<ForwardEvalRoundData[]> {
+  if (!count || count < 1) return [];
+  const reqs = Array.from({ length: count }, (_, i) => i + 1).map(async (r) => {
+    try {
+      const pad = r.toString().padStart(2, "0");
+      const res = await fetch(`${base}/forward_eval/round_${pad}.json`);
+      if (!res.ok) return null;
+      return (await res.json()) as ForwardEvalRoundData;
+    } catch {
+      return null;
+    }
+  });
+  const results = await Promise.all(reqs);
+  return results
+    .filter((r): r is ForwardEvalRoundData => r !== null)
+    .sort((a, b) => a.round - b.round);
+}
+
+/** A single drifted feature row from `model_health.json`. */
+export interface ModelHealthFeatureDrift {
+  feature: string;
+  psi: number;
+  severity: string;
+  baseline_n?: number;
+  current_n?: number;
+}
+
+/**
+ * Schema for `model_health.json` — input-distribution drift plus the model's
+ * rolling round-by-round average probability error. Every block is optional so
+ * an empty / older export degrades gracefully; there is no matching type in
+ * `@/types`, so it is defined (and exported) here.
+ */
+export interface ModelHealthData {
+  season: number;
+  lastEvaluatedRound?: number;
+  featureDrift?: ModelHealthFeatureDrift[];
+  outputDrift?: {
+    rolling_brier_recent?: number;
+    rolling_brier_baseline?: number;
+    relative_change?: number;
+    severity?: string;
+    rounds_compared?: number;
+  };
+  warnings?: string[];
+  alarms?: string[];
+  brierByRound?: { round: number; brier: number }[];
+}
+
+/**
+ * Model-health snapshot (`model_health.json`): feature-drift severities and the
+ * rolling average-probability-error trend from the drift report. Returns null
+ * instead of throwing so the health strip hides gracefully when the file is
+ * missing (archived seasons never publish it).
+ */
+export async function fetchModelHealth(
+  base: string = BASE_PATH,
+): Promise<ModelHealthData | null> {
+  try {
+    const res = await fetch(`${base}/model_health.json`);
     if (!res.ok) return null;
     return res.json();
   } catch {
