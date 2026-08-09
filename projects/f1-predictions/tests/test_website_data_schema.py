@@ -119,6 +119,8 @@ class ProbabilityCalibrationBlock(_Loose):
     method: str
     trainingSeasons: list[int] = Field(default_factory=list)
     applied: bool
+    # Prior completed rounds the out-of-sample calibrator saw (additive; 0 → raw).
+    priorRounds: Optional[int] = None
 
 
 class ProbabilityRoundData(_Loose):

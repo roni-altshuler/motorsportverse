@@ -39,6 +39,7 @@ Hard rules honoured here:
 """
 from __future__ import annotations
 
+from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Mapping, Sequence
 
@@ -52,11 +53,99 @@ MARKETS: tuple[str, ...] = ("win", "podium", "top6", "top10")
 # Default Plackett–Luce temperature in seconds.  A 0.5s spread on lap-time
 # differences gives a sensible top-of-grid concentration without collapsing the
 # distribution onto the fastest driver.  Smaller τ → sharper distribution.
+# NOTE: this is a *base* value; the exporter fits τ on prior-round log-loss and
+# widens it per race by `chaos_temperature` so wet / street / high-safety-car
+# rounds publish fatter tails instead of an over-concentrated favourite.
 DEFAULT_TEMPERATURE: float = 0.5
 
 # Default Monte Carlo sample count.  5000 is enough for stable win/podium
 # estimates (std-err ~ √(p(1-p)/N) ≈ 0.007 at p=0.5) without being slow.
 DEFAULT_N_SAMPLES: int = 5000
+
+# Default per-team common-mode shock (in log-strength units) applied per Monte
+# Carlo draw so teammates co-move (shared car / reliability).  0 reproduces the
+# independent-driver sampler exactly (kept as the default for backward compat).
+DEFAULT_TEAM_SIGMA: float = 0.25
+
+
+# --------------------------------------------------------------------------- #
+# Temperature control (Plackett–Luce spread)
+# --------------------------------------------------------------------------- #
+
+
+def chaos_temperature(
+    base: float,
+    *,
+    rain_probability: float = 0.0,
+    safety_car_rate: float = 0.0,
+    overtaking_ease: float = 0.5,
+    max_widen: float = 1.0,
+) -> float:
+    """Widen the Plackett–Luce temperature for chaotic races.
+
+    Higher τ flattens the strength distribution → fatter tails, fewer
+    over-concentrated favourites.  A race is "chaotic" when rain is likely,
+    the safety-car rate is high, and overtaking is hard (``overtaking_ease``
+    low → the pace order gets locked by track position and a poorly-starting
+    favourite cannot recover, so upsets are more likely).
+
+    ``base`` is the fitted/nominal dry-race temperature; the return value is
+    ``base * (1 + max_widen * chaos)`` with ``chaos ∈ [0, 1]``.
+    """
+    r = float(np.clip(rain_probability, 0.0, 1.0))
+    s = float(np.clip(safety_car_rate, 0.0, 1.0))
+    o = float(np.clip(overtaking_ease, 0.0, 1.0))
+    chaos = float(np.clip(0.45 * r + 0.35 * s + 0.20 * (1.0 - o), 0.0, 1.0))
+    return float(base) * (1.0 + float(max_widen) * chaos)
+
+
+def fit_temperature_from_history(
+    lap_times_by_round: Mapping[int, Mapping[str, float]],
+    actuals_by_round: Mapping[int, Mapping[str, int]],
+    *,
+    grid: Sequence[float] = (0.35, 0.5, 0.7, 0.9, 1.2),
+    n_samples: int = 1500,
+    seed: int = 42,
+) -> float:
+    """Pick the base temperature that minimises prior-round win+podium log-loss.
+
+    For each candidate τ we run the Plackett–Luce Monte Carlo (reduced sample
+    count for speed) over every round that has actuals, then score the win and
+    podium probabilities against the observed outcomes with binary log-loss.
+    Returns the τ with the lowest mean loss, or :data:`DEFAULT_TEMPERATURE`
+    when there is not enough history (< 2 scored rounds) to choose.
+    """
+    rounds = sorted(set(lap_times_by_round) & set(actuals_by_round))
+    if len(rounds) < 2:
+        return DEFAULT_TEMPERATURE
+    best_tau = DEFAULT_TEMPERATURE
+    best_loss = float("inf")
+    for tau in grid:
+        preds: list[float] = []
+        obs: list[int] = []
+        for rnd in rounds:
+            laps = lap_times_by_round[rnd]
+            actual = actuals_by_round[rnd]
+            if not laps or not actual:
+                continue
+            mp = plackett_luce_probabilities(
+                lap_times=laps, n_samples=n_samples, temperature=float(tau), seed=seed
+            )
+            for drv in mp.drivers:
+                pos = actual.get(drv)
+                if pos is None:
+                    continue
+                preds.append(mp.p_win.get(drv, 0.0))
+                obs.append(int(pos == 1))
+                preds.append(mp.p_podium.get(drv, 0.0))
+                obs.append(int(pos <= 3))
+        if not preds:
+            continue
+        loss = log_loss(preds, obs)
+        if loss < best_loss:
+            best_loss = loss
+            best_tau = float(tau)
+    return best_tau
 
 
 # --------------------------------------------------------------------------- #
@@ -76,6 +165,11 @@ class MarketProbabilities:
     h2h: dict[str, dict[str, float]]
     n_samples: int
     temperature: float
+    # Per-driver P(DNF) fed to the sampler (retiree draws), when DNF-aware
+    # sampling was used.  ``None`` for the plain independent sampler.  Kept so
+    # the exporter can publish a DNF market that is self-consistent with the
+    # finishing-order markets (same probabilities drove both).
+    p_dnf: dict[str, float] | None = None
 
 
 def _compute_strengths(
@@ -101,6 +195,10 @@ def _sample_rankings(
     strengths: np.ndarray,
     n_samples: int,
     rng: np.random.Generator,
+    *,
+    team_ids: np.ndarray | None = None,
+    team_sigma: float = 0.0,
+    p_dnf: np.ndarray | None = None,
 ) -> np.ndarray:
     """Sample `n_samples` full finishing orders via Plackett–Luce.
 
@@ -109,6 +207,19 @@ def _sample_rankings(
     trick — adding i.i.d. Gumbel noise to log-strengths and argsort'ing — which
     is exactly equivalent to sequential sampling-without-replacement weighted
     by softmax(λ) (Yellott 1977 / Plackett 1975).
+
+    Two optional physical effects layer on top of the base sampler.  Both are
+    off by default so the plain independent-driver sampler is reproduced
+    byte-for-byte when they are unused:
+
+    * **Team correlation** (``team_ids`` + ``team_sigma`` > 0): one shared
+      Normal shock per (sample, team) is added to both teammates' log-strengths
+      — a common-mode car / reliability swing — so teammates co-move and
+      joint / tail markets widen.
+    * **DNF** (``p_dnf``): a Bernoulli(p_dnf) retirement is drawn per driver per
+      sample; retirees are pushed below every survivor (keeping their relative
+      order) so a fragile car loses podium mass instead of getting a free
+      finish.
 
     Returns
     -------
@@ -122,6 +233,16 @@ def _sample_rankings(
     u = rng.uniform(size=(n_samples, n_drivers))
     gumbel = -np.log(-np.log(u))
     perturbed = log_strengths[None, :] + gumbel
+    # Team common-mode shock: one draw per (sample, team), broadcast to members.
+    if team_ids is not None and team_sigma > 0:
+        n_teams = int(team_ids.max()) + 1 if team_ids.size else 0
+        if n_teams > 0:
+            team_shock = rng.normal(0.0, float(team_sigma), size=(n_samples, n_teams))
+            perturbed = perturbed + team_shock[:, team_ids]
+    # DNF: retirees sink below all survivors while keeping their relative order.
+    if p_dnf is not None:
+        retire = rng.random(size=(n_samples, n_drivers)) < p_dnf[None, :]
+        perturbed = np.where(retire, perturbed - 1.0e6, perturbed)
     # argsort in descending order: best (highest) first.
     return np.argsort(-perturbed, axis=1)
 
@@ -131,6 +252,10 @@ def plackett_luce_probabilities(
     n_samples: int = DEFAULT_N_SAMPLES,
     temperature: float = DEFAULT_TEMPERATURE,
     seed: int = 42,
+    *,
+    teams: Mapping[str, str] | None = None,
+    p_dnf: Mapping[str, float] | None = None,
+    team_sigma: float = 0.0,
 ) -> MarketProbabilities:
     """Run the full Plackett-Luce → market-probability pipeline.
 
@@ -146,17 +271,57 @@ def plackett_luce_probabilities(
     seed
         RNG seed (default 42 — required by project conventions, do not
         reseed elsewhere).
+    teams
+        Optional driver_code → team map.  When given together with
+        ``team_sigma`` > 0, teammates share a per-sample common-mode shock so
+        their finishes co-move.
+    p_dnf
+        Optional driver_code → P(DNF) map.  When given, a retirement is sampled
+        per driver per Monte Carlo draw and retirees are ranked at the back, so
+        the finishing markets price reliability instead of ignoring it.
+    team_sigma
+        Standard deviation (log-strength units) of the per-team shock.
+        Defaults to 0 (independent sampler) — pass
+        :data:`DEFAULT_TEAM_SIGMA` to enable correlation.
     """
     if not lap_times:
         raise ValueError("lap_times is empty")
     drivers, strengths = _compute_strengths(lap_times, temperature=temperature)
     rng = np.random.default_rng(seed=seed)
-    rankings = _sample_rankings(strengths, n_samples=n_samples, rng=rng)
+
+    team_ids: np.ndarray | None = None
+    if teams is not None and team_sigma > 0:
+        # Factorise team labels into contiguous integer ids aligned to drivers.
+        label_to_id: dict[str, int] = {}
+        ids: list[int] = []
+        for d in drivers:
+            label = str(teams.get(d, d))
+            ids.append(label_to_id.setdefault(label, len(label_to_id)))
+        team_ids = np.asarray(ids, dtype=np.intp)
+
+    p_dnf_arr: np.ndarray | None = None
+    p_dnf_out: dict[str, float] | None = None
+    if p_dnf is not None:
+        p_dnf_arr = np.asarray(
+            [float(np.clip(p_dnf.get(d, 0.0), 0.0, 1.0)) for d in drivers],
+            dtype=np.float64,
+        )
+        p_dnf_out = {d: float(p_dnf_arr[i]) for i, d in enumerate(drivers)}
+
+    rankings = _sample_rankings(
+        strengths,
+        n_samples=n_samples,
+        rng=rng,
+        team_ids=team_ids,
+        team_sigma=team_sigma,
+        p_dnf=p_dnf_arr,
+    )
     return _empirical_market_probs(
         drivers=drivers,
         rankings=rankings,
         n_samples=n_samples,
         temperature=temperature,
+        p_dnf=p_dnf_out,
     )
 
 
@@ -165,6 +330,7 @@ def _empirical_market_probs(
     rankings: np.ndarray,
     n_samples: int,
     temperature: float,
+    p_dnf: dict[str, float] | None = None,
 ) -> MarketProbabilities:
     """Reduce a (n_samples, n_drivers) ranking array into market probabilities."""
     n_drivers = len(drivers)
@@ -216,6 +382,7 @@ def _empirical_market_probs(
         h2h=h2h,
         n_samples=n_samples,
         temperature=temperature,
+        p_dnf=p_dnf,
     )
 
 
@@ -305,6 +472,115 @@ class ProbabilityCalibrator:
     def sample_counts(self) -> dict[str, int]:
         """How many records each per-market model was trained on."""
         return dict(self._fit_sample_counts)
+
+
+@dataclass
+class LogisticCalibrator:
+    """Regularized Platt (logistic) calibration in logit space — the production
+    calibrator for the published markets.
+
+    Why not bare isotonic?  On the handful of binary win/podium events a season
+    supplies, ``IsotonicRegression`` degenerates to a step function that pins
+    most drivers to exactly 0 and hands the whole market to one favourite (the
+    2026-07 audit measured a win market of RUS 0.95 / everyone-else 0.0).  A
+    two-parameter logistic in logit space cannot do that: it is smooth,
+    monotonic, and — critically — *shrunk toward the identity map* by how many
+    positive events actually fed the fit, so a sparse season nudges the raw
+    Plackett–Luce numbers rather than overwriting them.  A probability
+    ``floor`` guarantees no driver is ever published at a hard 0.
+
+    Fit per market::
+
+        logit(p_cal) = A · logit(p_raw) + B
+
+    with ``A``/``B`` from an L2-regularized logistic regression, then shrunk::
+
+        A_eff = (1 − w) · 1 + w · A ,   B_eff = w · B ,   w = n_pos / (n_pos + k)
+
+    Identity (``A=1, B=0``) is recovered when there are no positive events.
+    """
+
+    _params: dict[str, tuple[float, float]] = field(default_factory=dict)
+    _counts: dict[str, int] = field(default_factory=dict)
+    floor: float = 0.003
+    min_samples: int = 30
+    min_positives: int = 3
+    shrink_k: float = 8.0
+    l2_C: float = 1.0
+
+    @staticmethod
+    def _logit(p: np.ndarray) -> np.ndarray:
+        eps = 1e-4
+        p = np.clip(p, eps, 1.0 - eps)
+        return np.log(p / (1.0 - p))
+
+    def fit_from_history(self, history: Sequence[Mapping[str, object]]) -> "LogisticCalibrator":
+        """Fit one shrunk logistic per market from (predicted, observed) pairs."""
+        try:
+            from sklearn.linear_model import LogisticRegression
+        except ImportError:  # pragma: no cover - sklearn is a hard dep here
+            return self
+        by_market: dict[str, list[tuple[float, int]]] = defaultdict(list)
+        for rec in history:
+            market = rec.get("market")
+            if market not in MARKETS:
+                continue
+            try:
+                p = float(rec["predicted"])
+                y = int(rec["observed"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not (0.0 <= p <= 1.0) or y not in (0, 1):
+                continue
+            by_market[market].append((p, y))
+
+        for market, pairs in by_market.items():
+            n = len(pairs)
+            if n < self.min_samples:
+                continue
+            preds = np.array([p for p, _ in pairs], dtype=np.float64)
+            obs = np.array([y for _, y in pairs], dtype=np.float64)
+            n_pos = int(obs.sum())
+            # Need both classes present, with a floor on the rarer one, and some
+            # spread in the predictions — otherwise the fit is memorisation.
+            if n_pos < self.min_positives or (n - n_pos) < self.min_positives:
+                continue
+            if np.unique(preds).size < 2:
+                continue
+            z = self._logit(preds).reshape(-1, 1)
+            clf = LogisticRegression(C=self.l2_C, solver="lbfgs", max_iter=1000)
+            clf.fit(z, obs)
+            A = float(clf.coef_[0, 0])
+            B = float(clf.intercept_[0])
+            # Shrink toward identity by how confident the positive count makes us.
+            w = n_pos / (n_pos + self.shrink_k)
+            A_eff = (1.0 - w) * 1.0 + w * A
+            B_eff = w * B
+            self._params[market] = (A_eff, B_eff)
+            self._counts[market] = n
+        return self
+
+    def is_fitted(self, market: str | None = None) -> bool:
+        if market is None:
+            return bool(self._params)
+        return market in self._params
+
+    def transform(
+        self,
+        market: str,
+        predicted: Sequence[float] | np.ndarray,
+    ) -> np.ndarray:
+        """Apply the shrunk logistic map, floored.  Pass-through if not fitted."""
+        arr = np.asarray(list(predicted), dtype=np.float64)
+        if market not in self._params:
+            return arr.copy()
+        A, B = self._params[market]
+        z = self._logit(arr)
+        out = 1.0 / (1.0 + np.exp(-(A * z + B)))
+        return np.clip(out, self.floor, 1.0 - 1e-9)
+
+    def sample_counts(self) -> dict[str, int]:
+        return dict(self._counts)
 
 
 # --------------------------------------------------------------------------- #
@@ -528,6 +804,34 @@ def calibrate_market_probabilities(
 # Each market's probabilities must sum to the size of the set it describes:
 # exactly one winner, three podium slots, six top-6 slots, ten top-10 slots.
 MARKET_TARGET_SUM: dict[str, float] = {"win": 1.0, "podium": 3.0, "top6": 6.0, "top10": 10.0}
+
+
+def floor_market_struct(
+    market_struct: dict[str, dict[str, dict[str, float]]],
+    floor: float = 5.0e-4,
+) -> dict[str, dict[str, dict[str, float]]]:
+    """Raise every driver's calibrated ``probability`` to at least ``floor``.
+
+    Run *before* :func:`renormalize_market_struct`.  Because the water-fill only
+    ever scales by a positive factor (or caps at 1.0), a strictly-positive floor
+    on the input guarantees no driver is published at a hard 0.0 — the Monte
+    Carlo tail (a back-marker who wins 0 of N samples) and any calibrator output
+    both round up to a small but honest positive.  ``rawProbability`` (the
+    untouched empirical MC frequency) is preserved for transparency.
+    """
+    out: dict[str, dict[str, dict[str, float]]] = {}
+    for market, drivers in market_struct.items():
+        if market not in MARKET_TARGET_SUM or not drivers:
+            out[market] = drivers
+            continue
+        out[market] = {
+            d: {
+                "probability": max(float(v["probability"]), float(floor)),
+                "rawProbability": float(v["rawProbability"]),
+            }
+            for d, v in drivers.items()
+        }
+    return out
 
 
 def renormalize_market_struct(

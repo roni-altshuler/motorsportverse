@@ -748,12 +748,18 @@ export interface ProbabilityRoundData {
     method: string;
     trainingSeasons: number[];
     applied: boolean;
+    // Number of strictly-prior completed rounds this round's out-of-sample
+    // calibrator was fit on (0 → raw Monte Carlo published, applied=false).
+    priorRounds?: number;
   };
   markets: {
     win: ProbabilityMarketEntry[];
     podium: ProbabilityMarketEntry[];
     top6: ProbabilityMarketEntry[];
     top10: ProbabilityMarketEntry[];
+    // Per-driver P(DNF); the same probabilities drive the finishing-order
+    // sampler, so this market is self-consistent with win/podium/top-N.
+    dnf?: ProbabilityMarketEntry[];
   };
   h2h: Record<string, Record<string, number>>;
 }
@@ -803,6 +809,10 @@ export interface MarketCalibrationStats {
   brierScore: number | null;
   logLoss: number | null;
   reliability: ReliabilityBin[];
+  // Calibration error on the FINAL PUBLISHED probabilities (not raw inputs):
+  // ECE = count-weighted mean reliability-bin gap, MCE = worst-bin gap.
+  ece?: number | null;
+  mce?: number | null;
   // optional fields the summary may carry — be permissive:
   uniformBaselineLogLoss?: number | null;
   nSamples?: number;

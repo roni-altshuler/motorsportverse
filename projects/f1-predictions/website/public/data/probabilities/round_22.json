@@ -1,1083 +1,1084 @@
 {
   "round": 22,
   "season": 2026,
-  "generatedAt": "2026-07-26T17:36:14Z",
+  "generatedAt": "2026-08-09T09:25:54Z",
   "method": "plackett-luce-from-laptime",
   "monteCarloSamples": 5000,
-  "temperature": 0.5,
-  "calibration": {
-    "method": "isotonic",
-    "trainingSeasons": [],
-    "applied": true
+  "temperature": 0.424,
+  "h2h": {
+    "PIA": {
+      "NOR": 0.5384,
+      "LEC": 0.576,
+      "VER": 0.6206,
+      "RUS": 0.607,
+      "HAM": 0.6514,
+      "ANT": 0.737,
+      "SAI": 0.7618,
+      "PER": 0.7832,
+      "LAW": 0.7746,
+      "ALB": 0.82,
+      "HAD": 0.821,
+      "GAS": 0.8156,
+      "BEA": 0.8274,
+      "OCO": 0.8174,
+      "ALO": 0.8572,
+      "STR": 0.8682,
+      "HUL": 0.8484,
+      "LIN": 0.8294,
+      "COL": 0.8208,
+      "BOR": 0.8378,
+      "BOT": 0.85
+    },
+    "NOR": {
+      "PIA": 0.4616,
+      "LEC": 0.543,
+      "VER": 0.5918,
+      "RUS": 0.5782,
+      "HAM": 0.617,
+      "ANT": 0.7024,
+      "SAI": 0.7346,
+      "PER": 0.7606,
+      "LAW": 0.7492,
+      "ALB": 0.8028,
+      "HAD": 0.8006,
+      "GAS": 0.7872,
+      "BEA": 0.8056,
+      "OCO": 0.7938,
+      "ALO": 0.8474,
+      "STR": 0.8452,
+      "HUL": 0.826,
+      "LIN": 0.803,
+      "COL": 0.7984,
+      "BOR": 0.8194,
+      "BOT": 0.8286
+    },
+    "LEC": {
+      "PIA": 0.424,
+      "NOR": 0.457,
+      "VER": 0.554,
+      "RUS": 0.5248,
+      "HAM": 0.6012,
+      "ANT": 0.7044,
+      "SAI": 0.747,
+      "PER": 0.7718,
+      "LAW": 0.7794,
+      "ALB": 0.846,
+      "HAD": 0.8522,
+      "GAS": 0.8536,
+      "BEA": 0.8666,
+      "OCO": 0.8634,
+      "ALO": 0.8974,
+      "STR": 0.9062,
+      "HUL": 0.8914,
+      "LIN": 0.879,
+      "COL": 0.8792,
+      "BOR": 0.8882,
+      "BOT": 0.8978
+    },
+    "VER": {
+      "PIA": 0.3794,
+      "NOR": 0.4082,
+      "LEC": 0.446,
+      "RUS": 0.478,
+      "HAM": 0.5398,
+      "ANT": 0.6594,
+      "SAI": 0.7038,
+      "PER": 0.721,
+      "LAW": 0.7234,
+      "ALB": 0.7982,
+      "HAD": 0.8086,
+      "GAS": 0.8028,
+      "BEA": 0.8184,
+      "OCO": 0.8066,
+      "ALO": 0.859,
+      "STR": 0.8714,
+      "HUL": 0.8446,
+      "LIN": 0.8326,
+      "COL": 0.8312,
+      "BOR": 0.8436,
+      "BOT": 0.8494
+    },
+    "RUS": {
+      "PIA": 0.393,
+      "NOR": 0.4218,
+      "LEC": 0.4752,
+      "VER": 0.522,
+      "HAM": 0.5682,
+      "ANT": 0.6888,
+      "SAI": 0.724,
+      "PER": 0.7588,
+      "LAW": 0.7616,
+      "ALB": 0.8388,
+      "HAD": 0.8468,
+      "GAS": 0.8492,
+      "BEA": 0.8668,
+      "OCO": 0.86,
+      "ALO": 0.8972,
+      "STR": 0.9058,
+      "HUL": 0.8874,
+      "LIN": 0.8814,
+      "COL": 0.8774,
+      "BOR": 0.8904,
+      "BOT": 0.8998
+    },
+    "HAM": {
+      "PIA": 0.3486,
+      "NOR": 0.383,
+      "LEC": 0.3988,
+      "VER": 0.4602,
+      "RUS": 0.4318,
+      "ANT": 0.629,
+      "SAI": 0.6942,
+      "PER": 0.7272,
+      "LAW": 0.7226,
+      "ALB": 0.8254,
+      "HAD": 0.842,
+      "GAS": 0.8464,
+      "BEA": 0.8742,
+      "OCO": 0.8662,
+      "ALO": 0.9032,
+      "STR": 0.9152,
+      "HUL": 0.906,
+      "LIN": 0.8986,
+      "COL": 0.891,
+      "BOR": 0.9048,
+      "BOT": 0.912
+    },
+    "ANT": {
+      "PIA": 0.263,
+      "NOR": 0.2976,
+      "LEC": 0.2956,
+      "VER": 0.3406,
+      "RUS": 0.3112,
+      "HAM": 0.371,
+      "SAI": 0.5754,
+      "PER": 0.6102,
+      "LAW": 0.6128,
+      "ALB": 0.745,
+      "HAD": 0.782,
+      "GAS": 0.8018,
+      "BEA": 0.837,
+      "OCO": 0.835,
+      "ALO": 0.8844,
+      "STR": 0.9038,
+      "HUL": 0.8894,
+      "LIN": 0.888,
+      "COL": 0.8826,
+      "BOR": 0.898,
+      "BOT": 0.9066
+    },
+    "SAI": {
+      "PIA": 0.2382,
+      "NOR": 0.2654,
+      "LEC": 0.253,
+      "VER": 0.2962,
+      "RUS": 0.276,
+      "HAM": 0.3058,
+      "ANT": 0.4246,
+      "PER": 0.5332,
+      "LAW": 0.536,
+      "ALB": 0.6746,
+      "HAD": 0.7094,
+      "GAS": 0.7238,
+      "BEA": 0.7636,
+      "OCO": 0.7604,
+      "ALO": 0.8202,
+      "STR": 0.8516,
+      "HUL": 0.832,
+      "LIN": 0.8214,
+      "COL": 0.816,
+      "BOR": 0.8374,
+      "BOT": 0.845
+    },
+    "PER": {
+      "PIA": 0.2168,
+      "NOR": 0.2394,
+      "LEC": 0.2282,
+      "VER": 0.279,
+      "RUS": 0.2412,
+      "HAM": 0.2728,
+      "ANT": 0.3898,
+      "SAI": 0.4668,
+      "LAW": 0.4976,
+      "ALB": 0.6372,
+      "HAD": 0.6678,
+      "GAS": 0.6948,
+      "BEA": 0.7358,
+      "OCO": 0.7234,
+      "ALO": 0.793,
+      "STR": 0.8262,
+      "HUL": 0.8014,
+      "LIN": 0.7904,
+      "COL": 0.7814,
+      "BOR": 0.8022,
+      "BOT": 0.8186
+    },
+    "LAW": {
+      "PIA": 0.2254,
+      "NOR": 0.2508,
+      "LEC": 0.2206,
+      "VER": 0.2766,
+      "RUS": 0.2384,
+      "HAM": 0.2774,
+      "ANT": 0.3872,
+      "SAI": 0.464,
+      "PER": 0.5024,
+      "ALB": 0.6426,
+      "HAD": 0.6862,
+      "GAS": 0.7194,
+      "BEA": 0.7706,
+      "OCO": 0.7772,
+      "ALO": 0.8324,
+      "STR": 0.8656,
+      "HUL": 0.8514,
+      "LIN": 0.8488,
+      "COL": 0.8406,
+      "BOR": 0.8628,
+      "BOT": 0.8772
+    },
+    "ALB": {
+      "PIA": 0.18,
+      "NOR": 0.1972,
+      "LEC": 0.154,
+      "VER": 0.2018,
+      "RUS": 0.1612,
+      "HAM": 0.1746,
+      "ANT": 0.255,
+      "SAI": 0.3254,
+      "PER": 0.3628,
+      "LAW": 0.3574,
+      "HAD": 0.5408,
+      "GAS": 0.5732,
+      "BEA": 0.6354,
+      "OCO": 0.6306,
+      "ALO": 0.7222,
+      "STR": 0.7814,
+      "HUL": 0.7512,
+      "LIN": 0.7478,
+      "COL": 0.7348,
+      "BOR": 0.7746,
+      "BOT": 0.784
+    },
+    "HAD": {
+      "PIA": 0.179,
+      "NOR": 0.1994,
+      "LEC": 0.1478,
+      "VER": 0.1914,
+      "RUS": 0.1532,
+      "HAM": 0.158,
+      "ANT": 0.218,
+      "SAI": 0.2906,
+      "PER": 0.3322,
+      "LAW": 0.3138,
+      "ALB": 0.4592,
+      "GAS": 0.5344,
+      "BEA": 0.6166,
+      "OCO": 0.6082,
+      "ALO": 0.7128,
+      "STR": 0.768,
+      "HUL": 0.756,
+      "LIN": 0.7586,
+      "COL": 0.7494,
+      "BOR": 0.7884,
+      "BOT": 0.804
+    },
+    "GAS": {
+      "PIA": 0.1844,
+      "NOR": 0.2128,
+      "LEC": 0.1464,
+      "VER": 0.1972,
+      "RUS": 0.1508,
+      "HAM": 0.1536,
+      "ANT": 0.1982,
+      "SAI": 0.2762,
+      "PER": 0.3052,
+      "LAW": 0.2806,
+      "ALB": 0.4268,
+      "HAD": 0.4656,
+      "BEA": 0.5896,
+      "OCO": 0.5826,
+      "ALO": 0.7014,
+      "STR": 0.7722,
+      "HUL": 0.7618,
+      "LIN": 0.7692,
+      "COL": 0.766,
+      "BOR": 0.802,
+      "BOT": 0.8262
+    },
+    "BEA": {
+      "PIA": 0.1726,
+      "NOR": 0.1944,
+      "LEC": 0.1334,
+      "VER": 0.1816,
+      "RUS": 0.1332,
+      "HAM": 0.1258,
+      "ANT": 0.163,
+      "SAI": 0.2364,
+      "PER": 0.2642,
+      "LAW": 0.2294,
+      "ALB": 0.3646,
+      "HAD": 0.3834,
+      "GAS": 0.4104,
+      "OCO": 0.5012,
+      "ALO": 0.627,
+      "STR": 0.7194,
+      "HUL": 0.6904,
+      "LIN": 0.712,
+      "COL": 0.692,
+      "BOR": 0.754,
+      "BOT": 0.7824
+    },
+    "OCO": {
+      "PIA": 0.1826,
+      "NOR": 0.2062,
+      "LEC": 0.1366,
+      "VER": 0.1934,
+      "RUS": 0.14,
+      "HAM": 0.1338,
+      "ANT": 0.165,
+      "SAI": 0.2396,
+      "PER": 0.2766,
+      "LAW": 0.2228,
+      "ALB": 0.3694,
+      "HAD": 0.3918,
+      "GAS": 0.4174,
+      "BEA": 0.4988,
+      "ALO": 0.6336,
+      "STR": 0.7286,
+      "HUL": 0.7058,
+      "LIN": 0.7254,
+      "COL": 0.7188,
+      "BOR": 0.7832,
+      "BOT": 0.8018
+    },
+    "ALO": {
+      "PIA": 0.1428,
+      "NOR": 0.1526,
+      "LEC": 0.1026,
+      "VER": 0.141,
+      "RUS": 0.1028,
+      "HAM": 0.0968,
+      "ANT": 0.1156,
+      "SAI": 0.1798,
+      "PER": 0.207,
+      "LAW": 0.1676,
+      "ALB": 0.2778,
+      "HAD": 0.2872,
+      "GAS": 0.2986,
+      "BEA": 0.373,
+      "OCO": 0.3664,
+      "STR": 0.5946,
+      "HUL": 0.5524,
+      "LIN": 0.565,
+      "COL": 0.5574,
+      "BOR": 0.6238,
+      "BOT": 0.6396
+    },
+    "STR": {
+      "PIA": 0.1318,
+      "NOR": 0.1548,
+      "LEC": 0.0938,
+      "VER": 0.1286,
+      "RUS": 0.0942,
+      "HAM": 0.0848,
+      "ANT": 0.0962,
+      "SAI": 0.1484,
+      "PER": 0.1738,
+      "LAW": 0.1344,
+      "ALB": 0.2186,
+      "HAD": 0.232,
+      "GAS": 0.2278,
+      "BEA": 0.2806,
+      "OCO": 0.2714,
+      "ALO": 0.4054,
+      "HUL": 0.46,
+      "LIN": 0.479,
+      "COL": 0.4618,
+      "BOR": 0.5384,
+      "BOT": 0.5814
+    },
+    "HUL": {
+      "PIA": 0.1516,
+      "NOR": 0.174,
+      "LEC": 0.1086,
+      "VER": 0.1554,
+      "RUS": 0.1126,
+      "HAM": 0.094,
+      "ANT": 0.1106,
+      "SAI": 0.168,
+      "PER": 0.1986,
+      "LAW": 0.1486,
+      "ALB": 0.2488,
+      "HAD": 0.244,
+      "GAS": 0.2382,
+      "BEA": 0.3096,
+      "OCO": 0.2942,
+      "ALO": 0.4476,
+      "STR": 0.54,
+      "LIN": 0.5148,
+      "COL": 0.4996,
+      "BOR": 0.593,
+      "BOT": 0.6254
+    },
+    "LIN": {
+      "PIA": 0.1706,
+      "NOR": 0.197,
+      "LEC": 0.121,
+      "VER": 0.1674,
+      "RUS": 0.1186,
+      "HAM": 0.1014,
+      "ANT": 0.112,
+      "SAI": 0.1786,
+      "PER": 0.2096,
+      "LAW": 0.1512,
+      "ALB": 0.2522,
+      "HAD": 0.2414,
+      "GAS": 0.2308,
+      "BEA": 0.288,
+      "OCO": 0.2746,
+      "ALO": 0.435,
+      "STR": 0.521,
+      "HUL": 0.4852,
+      "COL": 0.483,
+      "BOR": 0.5806,
+      "BOT": 0.6222
+    },
+    "COL": {
+      "PIA": 0.1792,
+      "NOR": 0.2016,
+      "LEC": 0.1208,
+      "VER": 0.1688,
+      "RUS": 0.1226,
+      "HAM": 0.109,
+      "ANT": 0.1174,
+      "SAI": 0.184,
+      "PER": 0.2186,
+      "LAW": 0.1594,
+      "ALB": 0.2652,
+      "HAD": 0.2506,
+      "GAS": 0.234,
+      "BEA": 0.308,
+      "OCO": 0.2812,
+      "ALO": 0.4426,
+      "STR": 0.5382,
+      "HUL": 0.5004,
+      "LIN": 0.517,
+      "BOR": 0.6012,
+      "BOT": 0.6392
+    },
+    "BOR": {
+      "PIA": 0.1622,
+      "NOR": 0.1806,
+      "LEC": 0.1118,
+      "VER": 0.1564,
+      "RUS": 0.1096,
+      "HAM": 0.0952,
+      "ANT": 0.102,
+      "SAI": 0.1626,
+      "PER": 0.1978,
+      "LAW": 0.1372,
+      "ALB": 0.2254,
+      "HAD": 0.2116,
+      "GAS": 0.198,
+      "BEA": 0.246,
+      "OCO": 0.2168,
+      "ALO": 0.3762,
+      "STR": 0.4616,
+      "HUL": 0.407,
+      "LIN": 0.4194,
+      "COL": 0.3988,
+      "BOT": 0.5472
+    },
+    "BOT": {
+      "PIA": 0.15,
+      "NOR": 0.1714,
+      "LEC": 0.1022,
+      "VER": 0.1506,
+      "RUS": 0.1002,
+      "HAM": 0.088,
+      "ANT": 0.0934,
+      "SAI": 0.155,
+      "PER": 0.1814,
+      "LAW": 0.1228,
+      "ALB": 0.216,
+      "HAD": 0.196,
+      "GAS": 0.1738,
+      "BEA": 0.2176,
+      "OCO": 0.1982,
+      "ALO": 0.3604,
+      "STR": 0.4186,
+      "HUL": 0.3746,
+      "LIN": 0.3778,
+      "COL": 0.3608,
+      "BOR": 0.4528
+    }
   },
   "markets": {
     "win": [
       {
         "driver": "PIA",
-        "probability": 0.4989154013015185,
-        "rawProbability": 0.2068
+        "probability": 0.30884086218920986,
+        "rawProbability": 0.221
       },
       {
         "driver": "NOR",
-        "probability": 0.4555314533622558,
-        "rawProbability": 0.1954
+        "probability": 0.24585936648074844,
+        "rawProbability": 0.1912
       },
       {
         "driver": "LEC",
-        "probability": 0.045553145336225585,
-        "rawProbability": 0.1174
-      },
-      {
-        "driver": "VER",
-        "probability": 0.0,
-        "rawProbability": 0.1076
+        "probability": 0.13037991765862114,
+        "rawProbability": 0.1316
       },
       {
         "driver": "RUS",
-        "probability": 0.0,
-        "rawProbability": 0.1068
+        "probability": 0.0991842461244995,
+        "rawProbability": 0.1128
+      },
+      {
+        "driver": "VER",
+        "probability": 0.0917537388853337,
+        "rawProbability": 0.108
       },
       {
         "driver": "HAM",
-        "probability": 0.0,
-        "rawProbability": 0.0774
+        "probability": 0.05430165390356155,
+        "rawProbability": 0.0808
       },
       {
         "driver": "ANT",
-        "probability": 0.0,
-        "rawProbability": 0.0404
+        "probability": 0.014411194451388979,
+        "rawProbability": 0.039
       },
       {
         "driver": "SAI",
-        "probability": 0.0,
-        "rawProbability": 0.035
-      },
-      {
-        "driver": "PER",
-        "probability": 0.0,
-        "rawProbability": 0.0286
+        "probability": 0.010408915759263488,
+        "rawProbability": 0.0326
       },
       {
         "driver": "LAW",
-        "probability": 0.0,
-        "rawProbability": 0.0286
+        "probability": 0.005891309209829091,
+        "rawProbability": 0.0238
+      },
+      {
+        "driver": "PER",
+        "probability": 0.005196043324752798,
+        "rawProbability": 0.0222
       },
       {
         "driver": "ALB",
-        "probability": 0.0,
-        "rawProbability": 0.0138
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0088
       },
       {
         "driver": "HAD",
-        "probability": 0.0,
-        "rawProbability": 0.0088
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0058
       },
       {
         "driver": "GAS",
-        "probability": 0.0,
-        "rawProbability": 0.0088
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0068
       },
       {
         "driver": "BEA",
-        "probability": 0.0,
-        "rawProbability": 0.0066
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0046
       },
       {
         "driver": "OCO",
-        "probability": 0.0,
-        "rawProbability": 0.0056
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0034
       },
       {
         "driver": "ALO",
-        "probability": 0.0,
-        "rawProbability": 0.0044
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0024
       },
       {
         "driver": "STR",
-        "probability": 0.0,
-        "rawProbability": 0.0018
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0008
       },
       {
         "driver": "HUL",
-        "probability": 0.0,
-        "rawProbability": 0.0028
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0022
       },
       {
         "driver": "LIN",
-        "probability": 0.0,
-        "rawProbability": 0.0004
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0002
       },
       {
         "driver": "COL",
-        "probability": 0.0,
+        "probability": 0.0028143960010660147,
         "rawProbability": 0.001
       },
       {
         "driver": "BOR",
-        "probability": 0.0,
-        "rawProbability": 0.0008
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0006
       },
       {
         "driver": "BOT",
-        "probability": 0.0,
-        "rawProbability": 0.0012
+        "probability": 0.0028143960010660147,
+        "rawProbability": 0.0004
       }
     ],
     "podium": [
       {
         "driver": "PIA",
-        "probability": 0.7523609653725076,
-        "rawProbability": 0.5628
+        "probability": 0.6651204344035361,
+        "rawProbability": 0.5552
       },
       {
         "driver": "NOR",
-        "probability": 0.6421825813221407,
-        "rawProbability": 0.5216
+        "probability": 0.5952286104813428,
+        "rawProbability": 0.5016
       },
       {
         "driver": "LEC",
-        "probability": 0.46379853095487933,
-        "rawProbability": 0.3722
-      },
-      {
-        "driver": "VER",
-        "probability": 0.46379853095487933,
-        "rawProbability": 0.3282
+        "probability": 0.4681456712438133,
+        "rawProbability": 0.4132
       },
       {
         "driver": "RUS",
-        "probability": 0.46379853095487933,
-        "rawProbability": 0.3162
+        "probability": 0.38924577180974923,
+        "rawProbability": 0.361
+      },
+      {
+        "driver": "VER",
+        "probability": 0.3488976991791128,
+        "rawProbability": 0.3344
       },
       {
         "driver": "HAM",
-        "probability": 0.21406086044071354,
-        "rawProbability": 0.2418
+        "probability": 0.2514999276297088,
+        "rawProbability": 0.2686
       },
       {
         "driver": "ANT",
-        "probability": 0.0,
-        "rawProbability": 0.1328
+        "probability": 0.08815999284516361,
+        "rawProbability": 0.1384
       },
       {
         "driver": "SAI",
-        "probability": 0.0,
-        "rawProbability": 0.1188
+        "probability": 0.062284838706841025,
+        "rawProbability": 0.1114
       },
       {
         "driver": "PER",
-        "probability": 0.0,
-        "rawProbability": 0.1056
+        "probability": 0.04462208226765181,
+        "rawProbability": 0.0904
       },
       {
         "driver": "LAW",
-        "probability": 0.0,
-        "rawProbability": 0.0886
+        "probability": 0.0385032311143468,
+        "rawProbability": 0.0824
       },
       {
         "driver": "ALB",
-        "probability": 0.0,
-        "rawProbability": 0.0528
+        "probability": 0.010363069099868526,
+        "rawProbability": 0.0358
       },
       {
         "driver": "HAD",
-        "probability": 0.0,
-        "rawProbability": 0.035
+        "probability": 0.006152356174646183,
+        "rawProbability": 0.0256
       },
       {
         "driver": "GAS",
-        "probability": 0.0,
-        "rawProbability": 0.0328
+        "probability": 0.006003990021369464,
+        "rawProbability": 0.0252
       },
       {
         "driver": "BEA",
-        "probability": 0.0,
-        "rawProbability": 0.019
-      },
-      {
-        "driver": "OCO",
-        "probability": 0.0,
-        "rawProbability": 0.0192
-      },
-      {
-        "driver": "ALO",
-        "probability": 0.0,
+        "probability": 0.0028635916692054723,
         "rawProbability": 0.0142
       },
       {
+        "driver": "OCO",
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0144
+      },
+      {
+        "driver": "ALO",
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0078
+      },
+      {
         "driver": "STR",
-        "probability": 0.0,
-        "rawProbability": 0.01
-      },
-      {
-        "driver": "HUL",
-        "probability": 0.0,
-        "rawProbability": 0.0102
-      },
-      {
-        "driver": "LIN",
-        "probability": 0.0,
+        "probability": 0.0028635916692054723,
         "rawProbability": 0.004
       },
       {
+        "driver": "HUL",
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0066
+      },
+      {
+        "driver": "LIN",
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0026
+      },
+      {
         "driver": "COL",
-        "probability": 0.0,
-        "rawProbability": 0.0054
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0028
       },
       {
         "driver": "BOR",
-        "probability": 0.0,
-        "rawProbability": 0.0046
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.0024
       },
       {
         "driver": "BOT",
-        "probability": 0.0,
-        "rawProbability": 0.0042
+        "probability": 0.0028635916692054723,
+        "rawProbability": 0.002
       }
     ],
     "top6": [
       {
         "driver": "PIA",
-        "probability": 0.9773451975429853,
-        "rawProbability": 0.8746
-      },
-      {
-        "driver": "NOR",
-        "probability": 0.8377244550368446,
-        "rawProbability": 0.86
+        "probability": 0.8217900572617677,
+        "rawProbability": 0.7672
       },
       {
         "driver": "LEC",
-        "probability": 0.7085752682186643,
-        "rawProbability": 0.7094
+        "probability": 0.7938745310643175,
+        "rawProbability": 0.7388
       },
       {
-        "driver": "VER",
-        "probability": 0.7085752682186643,
-        "rawProbability": 0.6908
+        "driver": "NOR",
+        "probability": 0.7896362320249142,
+        "rawProbability": 0.7346
       },
       {
         "driver": "RUS",
-        "probability": 0.7085752682186643,
-        "rawProbability": 0.6612
+        "probability": 0.762382786004526,
+        "rawProbability": 0.7082
+      },
+      {
+        "driver": "VER",
+        "probability": 0.7245084688191197,
+        "rawProbability": 0.673
       },
       {
         "driver": "HAM",
-        "probability": 0.6323998337042847,
-        "rawProbability": 0.5266
+        "probability": 0.6573754688104759,
+        "rawProbability": 0.6138
       },
       {
         "driver": "ANT",
-        "probability": 0.3257817325143284,
-        "rawProbability": 0.3364
+        "probability": 0.40232225280382383,
+        "rawProbability": 0.4062
       },
       {
         "driver": "SAI",
-        "probability": 0.2932035592628956,
-        "rawProbability": 0.2988
+        "probability": 0.2942098649965483,
+        "rawProbability": 0.3184
       },
       {
         "driver": "PER",
-        "probability": 0.2932035592628956,
-        "rawProbability": 0.2646
+        "probability": 0.24279340749775008,
+        "rawProbability": 0.275
       },
       {
         "driver": "LAW",
-        "probability": 0.2932035592628956,
-        "rawProbability": 0.2282
+        "probability": 0.22388116403497496,
+        "rawProbability": 0.2586
       },
       {
         "driver": "ALB",
-        "probability": 0.051439220923315015,
-        "rawProbability": 0.1362
+        "probability": 0.09046787638396432,
+        "rawProbability": 0.1306
       },
       {
         "driver": "HAD",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0934
+        "probability": 0.06526533686438418,
+        "rawProbability": 0.102
       },
       {
         "driver": "GAS",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0788
-      },
-      {
-        "driver": "BEA",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0512
+        "probability": 0.04556360748133993,
+        "rawProbability": 0.0776
       },
       {
         "driver": "OCO",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0472
+        "probability": 0.024480486236462453,
+        "rawProbability": 0.0482
+      },
+      {
+        "driver": "BEA",
+        "probability": 0.02265070699145385,
+        "rawProbability": 0.0454
       },
       {
         "driver": "ALO",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0414
-      },
-      {
-        "driver": "STR",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0236
+        "probability": 0.012688686823190206,
+        "rawProbability": 0.029
       },
       {
         "driver": "HUL",
-        "probability": 0.021246634729195333,
-        "rawProbability": 0.0236
-      },
-      {
-        "driver": "COL",
-        "probability": 0.021246634729195333,
+        "probability": 0.006196918106823951,
         "rawProbability": 0.0166
       },
       {
+        "driver": "STR",
+        "probability": 0.005722950686167038,
+        "rawProbability": 0.0156
+      },
+      {
         "driver": "LIN",
-        "probability": 0.0,
-        "rawProbability": 0.013
+        "probability": 0.004711370459826098,
+        "rawProbability": 0.0134
+      },
+      {
+        "driver": "COL",
+        "probability": 0.003576373566864226,
+        "rawProbability": 0.0108
       },
       {
         "driver": "BOR",
-        "probability": 0.0,
-        "rawProbability": 0.0122
+        "probability": 0.0029507265406523192,
+        "rawProbability": 0.0092
       },
       {
         "driver": "BOT",
-        "probability": 0.0,
-        "rawProbability": 0.0122
+        "probability": 0.0029507265406523192,
+        "rawProbability": 0.0078
       }
     ],
     "top10": [
       {
-        "driver": "PIA",
-        "probability": 0.9812074624606015,
-        "rawProbability": 0.9934
-      },
-      {
-        "driver": "NOR",
-        "probability": 0.9812074624606015,
-        "rawProbability": 0.9934
+        "driver": "HAM",
+        "probability": 0.879298997810854,
+        "rawProbability": 0.8756
       },
       {
         "driver": "LEC",
-        "probability": 0.7943108029442965,
-        "rawProbability": 0.964
-      },
-      {
-        "driver": "VER",
-        "probability": 0.7943108029442965,
-        "rawProbability": 0.965
+        "probability": 0.8683897249924692,
+        "rawProbability": 0.8646
       },
       {
         "driver": "RUS",
-        "probability": 0.7631613596915789,
-        "rawProbability": 0.9544
-      },
-      {
-        "driver": "HAM",
-        "probability": 0.7179566798492206,
-        "rawProbability": 0.8924
+        "probability": 0.8673968342623439,
+        "rawProbability": 0.8636
       },
       {
         "driver": "ANT",
-        "probability": 0.7179566798492206,
-        "rawProbability": 0.7262
+        "probability": 0.811333930867466,
+        "rawProbability": 0.8074
+      },
+      {
+        "driver": "VER",
+        "probability": 0.8111336033928616,
+        "rawProbability": 0.8072
+      },
+      {
+        "driver": "PIA",
+        "probability": 0.8093304256653941,
+        "rawProbability": 0.8054
+      },
+      {
+        "driver": "NOR",
+        "probability": 0.782034659824814,
+        "rawProbability": 0.7782
       },
       {
         "driver": "SAI",
-        "probability": 0.7179566798492206,
-        "rawProbability": 0.6726
-      },
-      {
-        "driver": "PER",
-        "probability": 0.7179566798492206,
-        "rawProbability": 0.6436
+        "probability": 0.7175120291128391,
+        "rawProbability": 0.7142
       },
       {
         "driver": "LAW",
-        "probability": 0.7008624731861439,
-        "rawProbability": 0.5736
+        "probability": 0.6883687806477871,
+        "rawProbability": 0.6854
+      },
+      {
+        "driver": "PER",
+        "probability": 0.6616081009875722,
+        "rawProbability": 0.659
       },
       {
         "driver": "ALB",
-        "probability": 0.6013852189274654,
-        "rawProbability": 0.3892
+        "probability": 0.46424391689812,
+        "rawProbability": 0.465
       },
       {
         "driver": "HAD",
-        "probability": 0.6013852189274654,
-        "rawProbability": 0.2804
+        "probability": 0.3797947268461205,
+        "rawProbability": 0.382
       },
       {
         "driver": "GAS",
-        "probability": 0.1635345770767669,
-        "rawProbability": 0.218
+        "probability": 0.318289737905751,
+        "rawProbability": 0.3214
       },
       {
         "driver": "BEA",
-        "probability": 0.12265093280757519,
-        "rawProbability": 0.1568
+        "probability": 0.21953665911275147,
+        "rawProbability": 0.2236
       },
       {
         "driver": "OCO",
-        "probability": 0.12265093280757519,
-        "rawProbability": 0.1438
+        "probability": 0.21290361414032424,
+        "rawProbability": 0.217
       },
       {
         "driver": "ALO",
-        "probability": 0.10902305138451128,
-        "rawProbability": 0.1172
-      },
-      {
-        "driver": "STR",
-        "probability": 0.09812074624606015,
-        "rawProbability": 0.0802
+        "probability": 0.13553474253576117,
+        "rawProbability": 0.1396
       },
       {
         "driver": "HUL",
-        "probability": 0.09812074624606015,
-        "rawProbability": 0.0698
+        "probability": 0.0829626064313636,
+        "rawProbability": 0.0864
       },
       {
-        "driver": "LIN",
-        "probability": 0.09812074624606015,
-        "rawProbability": 0.0438
+        "driver": "STR",
+        "probability": 0.07942979386325759,
+        "rawProbability": 0.0828
       },
       {
         "driver": "COL",
-        "probability": 0.09812074624606015,
-        "rawProbability": 0.0502
+        "probability": 0.06748634061115202,
+        "rawProbability": 0.0706
+      },
+      {
+        "driver": "LIN",
+        "probability": 0.06631414172260526,
+        "rawProbability": 0.0694
       },
       {
         "driver": "BOR",
-        "probability": 0.0,
-        "rawProbability": 0.0388
+        "probability": 0.04337099895721971,
+        "rawProbability": 0.0458
       },
       {
         "driver": "BOT",
-        "probability": 0.0,
-        "rawProbability": 0.0332
+        "probability": 0.03372563341117149,
+        "rawProbability": 0.0358
       }
     ],
     "dnf": [
       {
-        "driver": "PIA",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "NOR",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "LEC",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "VER",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "RUS",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "HAM",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "ANT",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "SAI",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "PER",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "LAW",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "ALB",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "HAD",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "GAS",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "BEA",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "OCO",
-        "probability": 0.15,
-        "rawProbability": 0.15
+        "driver": "STR",
+        "probability": 0.33890271493212665,
+        "rawProbability": 0.33890271493212665
       },
       {
         "driver": "ALO",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "STR",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "HUL",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "LIN",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "COL",
-        "probability": 0.15,
-        "rawProbability": 0.15
-      },
-      {
-        "driver": "BOR",
-        "probability": 0.15,
-        "rawProbability": 0.15
+        "probability": 0.3004411764705882,
+        "rawProbability": 0.3004411764705882
       },
       {
         "driver": "BOT",
-        "probability": 0.15,
-        "rawProbability": 0.15
+        "probability": 0.2504411764705882,
+        "rawProbability": 0.2504411764705882
+      },
+      {
+        "driver": "ALB",
+        "probability": 0.23794117647058827,
+        "rawProbability": 0.23794117647058827
+      },
+      {
+        "driver": "HUL",
+        "probability": 0.23794117647058827,
+        "rawProbability": 0.23794117647058827
+      },
+      {
+        "driver": "NOR",
+        "probability": 0.21871040723981902,
+        "rawProbability": 0.21871040723981902
+      },
+      {
+        "driver": "PER",
+        "probability": 0.2119796380090498,
+        "rawProbability": 0.2119796380090498
+      },
+      {
+        "driver": "PIA",
+        "probability": 0.1994796380090498,
+        "rawProbability": 0.1994796380090498
+      },
+      {
+        "driver": "VER",
+        "probability": 0.1869796380090498,
+        "rawProbability": 0.1869796380090498
+      },
+      {
+        "driver": "HAD",
+        "probability": 0.1869796380090498,
+        "rawProbability": 0.1869796380090498
+      },
+      {
+        "driver": "SAI",
+        "probability": 0.18024886877828056,
+        "rawProbability": 0.18024886877828056
+      },
+      {
+        "driver": "BOR",
+        "probability": 0.18024886877828056,
+        "rawProbability": 0.18024886877828056
+      },
+      {
+        "driver": "BEA",
+        "probability": 0.16197963800904977,
+        "rawProbability": 0.16197963800904977
+      },
+      {
+        "driver": "LAW",
+        "probability": 0.14274886877828055,
+        "rawProbability": 0.14274886877828055
+      },
+      {
+        "driver": "LIN",
+        "probability": 0.14274886877828055,
+        "rawProbability": 0.14274886877828055
+      },
+      {
+        "driver": "LEC",
+        "probability": 0.13024886877828057,
+        "rawProbability": 0.13024886877828057
+      },
+      {
+        "driver": "RUS",
+        "probability": 0.13024886877828057,
+        "rawProbability": 0.13024886877828057
+      },
+      {
+        "driver": "GAS",
+        "probability": 0.13024886877828057,
+        "rawProbability": 0.13024886877828057
+      },
+      {
+        "driver": "OCO",
+        "probability": 0.12351809954751132,
+        "rawProbability": 0.12351809954751132
+      },
+      {
+        "driver": "HAM",
+        "probability": 0.11101809954751132,
+        "rawProbability": 0.11101809954751132
+      },
+      {
+        "driver": "ANT",
+        "probability": 0.11101809954751132,
+        "rawProbability": 0.11101809954751132
+      },
+      {
+        "driver": "COL",
+        "probability": 0.11101809954751132,
+        "rawProbability": 0.11101809954751132
       }
     ]
   },
-  "h2h": {
-    "PIA": {
-      "NOR": 0.5236,
-      "LEC": 0.6288,
-      "VER": 0.6606,
-      "RUS": 0.6708,
-      "HAM": 0.734,
-      "ANT": 0.8414,
-      "SAI": 0.8512,
-      "PER": 0.8728,
-      "LAW": 0.8858,
-      "ALB": 0.9296,
-      "HAD": 0.953,
-      "GAS": 0.9602,
-      "BEA": 0.9734,
-      "OCO": 0.9736,
-      "ALO": 0.9796,
-      "STR": 0.9868,
-      "HUL": 0.9874,
-      "LIN": 0.9948,
-      "COL": 0.9912,
-      "BOR": 0.9936,
-      "BOT": 0.9938
-    },
-    "NOR": {
-      "PIA": 0.4764,
-      "LEC": 0.6142,
-      "VER": 0.6404,
-      "RUS": 0.6504,
-      "HAM": 0.7234,
-      "ANT": 0.8296,
-      "SAI": 0.845,
-      "PER": 0.8664,
-      "LAW": 0.8838,
-      "ALB": 0.9278,
-      "HAD": 0.9482,
-      "GAS": 0.9548,
-      "BEA": 0.9718,
-      "OCO": 0.9726,
-      "ALO": 0.9778,
-      "STR": 0.986,
-      "HUL": 0.988,
-      "LIN": 0.993,
-      "COL": 0.9912,
-      "BOR": 0.992,
-      "BOT": 0.9932
-    },
-    "LEC": {
-      "PIA": 0.3712,
-      "NOR": 0.3858,
-      "VER": 0.5218,
-      "RUS": 0.5324,
-      "HAM": 0.6228,
-      "ANT": 0.7468,
-      "SAI": 0.7706,
-      "PER": 0.7954,
-      "LAW": 0.8184,
-      "ALB": 0.891,
-      "HAD": 0.9206,
-      "GAS": 0.9298,
-      "BEA": 0.9548,
-      "OCO": 0.9592,
-      "ALO": 0.9678,
-      "STR": 0.9782,
-      "HUL": 0.9808,
-      "LIN": 0.9888,
-      "COL": 0.984,
-      "BOR": 0.9902,
-      "BOT": 0.9912
-    },
-    "VER": {
-      "PIA": 0.3394,
-      "NOR": 0.3596,
-      "LEC": 0.4782,
-      "RUS": 0.5142,
-      "HAM": 0.5972,
-      "ANT": 0.733,
-      "SAI": 0.7672,
-      "PER": 0.7824,
-      "LAW": 0.8086,
-      "ALB": 0.8804,
-      "HAD": 0.9194,
-      "GAS": 0.9308,
-      "BEA": 0.9542,
-      "OCO": 0.952,
-      "ALO": 0.965,
-      "STR": 0.9772,
-      "HUL": 0.9778,
-      "LIN": 0.9878,
-      "COL": 0.9844,
-      "BOR": 0.9888,
-      "BOT": 0.9892
-    },
-    "RUS": {
-      "PIA": 0.3292,
-      "NOR": 0.3496,
-      "LEC": 0.4676,
-      "VER": 0.4858,
-      "HAM": 0.587,
-      "ANT": 0.7218,
-      "SAI": 0.7424,
-      "PER": 0.772,
-      "LAW": 0.798,
-      "ALB": 0.8752,
-      "HAD": 0.909,
-      "GAS": 0.9252,
-      "BEA": 0.9506,
-      "OCO": 0.9548,
-      "ALO": 0.9616,
-      "STR": 0.9732,
-      "HUL": 0.9768,
-      "LIN": 0.988,
-      "COL": 0.985,
-      "BOR": 0.9888,
-      "BOT": 0.9884
-    },
-    "HAM": {
-      "PIA": 0.266,
-      "NOR": 0.2766,
-      "LEC": 0.3772,
-      "VER": 0.4028,
-      "RUS": 0.413,
-      "ANT": 0.6458,
-      "SAI": 0.672,
-      "PER": 0.7026,
-      "LAW": 0.7324,
-      "ALB": 0.825,
-      "HAD": 0.8748,
-      "GAS": 0.9022,
-      "BEA": 0.9298,
-      "OCO": 0.9336,
-      "ALO": 0.9424,
-      "STR": 0.964,
-      "HUL": 0.966,
-      "LIN": 0.981,
-      "COL": 0.9756,
-      "BOR": 0.9826,
-      "BOT": 0.9842
-    },
-    "ANT": {
-      "PIA": 0.1586,
-      "NOR": 0.1704,
-      "LEC": 0.2532,
-      "VER": 0.267,
-      "RUS": 0.2782,
-      "HAM": 0.3542,
-      "SAI": 0.5416,
-      "PER": 0.5636,
-      "LAW": 0.606,
-      "ALB": 0.7226,
-      "HAD": 0.797,
-      "GAS": 0.8324,
-      "BEA": 0.8752,
-      "OCO": 0.8846,
-      "ALO": 0.9028,
-      "STR": 0.9372,
-      "HUL": 0.943,
-      "LIN": 0.9648,
-      "COL": 0.9564,
-      "BOR": 0.9694,
-      "BOT": 0.9732
-    },
-    "SAI": {
-      "PIA": 0.1488,
-      "NOR": 0.155,
-      "LEC": 0.2294,
-      "VER": 0.2328,
-      "RUS": 0.2576,
-      "HAM": 0.328,
-      "ANT": 0.4584,
-      "PER": 0.5246,
-      "LAW": 0.566,
-      "ALB": 0.6958,
-      "HAD": 0.7704,
-      "GAS": 0.81,
-      "BEA": 0.863,
-      "OCO": 0.874,
-      "ALO": 0.8874,
-      "STR": 0.926,
-      "HUL": 0.9338,
-      "LIN": 0.9596,
-      "COL": 0.9572,
-      "BOR": 0.9678,
-      "BOT": 0.9652
-    },
-    "PER": {
-      "PIA": 0.1272,
-      "NOR": 0.1336,
-      "LEC": 0.2046,
-      "VER": 0.2176,
-      "RUS": 0.228,
-      "HAM": 0.2974,
-      "ANT": 0.4364,
-      "SAI": 0.4754,
-      "LAW": 0.548,
-      "ALB": 0.6788,
-      "HAD": 0.7518,
-      "GAS": 0.7968,
-      "BEA": 0.8466,
-      "OCO": 0.8568,
-      "ALO": 0.8814,
-      "STR": 0.9244,
-      "HUL": 0.929,
-      "LIN": 0.9498,
-      "COL": 0.9506,
-      "BOR": 0.9566,
-      "BOT": 0.9632
-    },
-    "LAW": {
-      "PIA": 0.1142,
-      "NOR": 0.1162,
-      "LEC": 0.1816,
-      "VER": 0.1914,
-      "RUS": 0.202,
-      "HAM": 0.2676,
-      "ANT": 0.394,
-      "SAI": 0.434,
-      "PER": 0.452,
-      "ALB": 0.6266,
-      "HAD": 0.7086,
-      "GAS": 0.7646,
-      "BEA": 0.8262,
-      "OCO": 0.842,
-      "ALO": 0.8574,
-      "STR": 0.91,
-      "HUL": 0.916,
-      "LIN": 0.9444,
-      "COL": 0.9382,
-      "BOR": 0.9554,
-      "BOT": 0.959
-    },
-    "ALB": {
-      "PIA": 0.0704,
-      "NOR": 0.0722,
-      "LEC": 0.109,
-      "VER": 0.1196,
-      "RUS": 0.1248,
-      "HAM": 0.175,
-      "ANT": 0.2774,
-      "SAI": 0.3042,
-      "PER": 0.3212,
-      "LAW": 0.3734,
-      "HAD": 0.5936,
-      "GAS": 0.6528,
-      "BEA": 0.7322,
-      "OCO": 0.747,
-      "ALO": 0.7896,
-      "STR": 0.8524,
-      "HUL": 0.861,
-      "LIN": 0.9078,
-      "COL": 0.9008,
-      "BOR": 0.9282,
-      "BOT": 0.9302
-    },
-    "HAD": {
-      "PIA": 0.047,
-      "NOR": 0.0518,
-      "LEC": 0.0794,
-      "VER": 0.0806,
-      "RUS": 0.091,
-      "HAM": 0.1252,
-      "ANT": 0.203,
-      "SAI": 0.2296,
-      "PER": 0.2482,
-      "LAW": 0.2914,
-      "ALB": 0.4064,
-      "GAS": 0.5698,
-      "BEA": 0.6484,
-      "OCO": 0.669,
-      "ALO": 0.7138,
-      "STR": 0.8004,
-      "HUL": 0.8164,
-      "LIN": 0.8674,
-      "COL": 0.8638,
-      "BOR": 0.8944,
-      "BOT": 0.897
-    },
-    "GAS": {
-      "PIA": 0.0398,
-      "NOR": 0.0452,
-      "LEC": 0.0702,
-      "VER": 0.0692,
-      "RUS": 0.0748,
-      "HAM": 0.0978,
-      "ANT": 0.1676,
-      "SAI": 0.19,
-      "PER": 0.2032,
-      "LAW": 0.2354,
-      "ALB": 0.3472,
-      "HAD": 0.4302,
-      "BEA": 0.5908,
-      "OCO": 0.6036,
-      "ALO": 0.6616,
-      "STR": 0.7548,
-      "HUL": 0.7846,
-      "LIN": 0.8308,
-      "COL": 0.8282,
-      "BOR": 0.865,
-      "BOT": 0.8718
-    },
-    "BEA": {
-      "PIA": 0.0266,
-      "NOR": 0.0282,
-      "LEC": 0.0452,
-      "VER": 0.0458,
-      "RUS": 0.0494,
-      "HAM": 0.0702,
-      "ANT": 0.1248,
-      "SAI": 0.137,
-      "PER": 0.1534,
-      "LAW": 0.1738,
-      "ALB": 0.2678,
-      "HAD": 0.3516,
-      "GAS": 0.4092,
-      "OCO": 0.5232,
-      "ALO": 0.5762,
-      "STR": 0.6848,
-      "HUL": 0.6992,
-      "LIN": 0.775,
-      "COL": 0.759,
-      "BOR": 0.8154,
-      "BOT": 0.83
-    },
-    "OCO": {
-      "PIA": 0.0264,
-      "NOR": 0.0274,
-      "LEC": 0.0408,
-      "VER": 0.048,
-      "RUS": 0.0452,
-      "HAM": 0.0664,
-      "ANT": 0.1154,
-      "SAI": 0.126,
-      "PER": 0.1432,
-      "LAW": 0.158,
-      "ALB": 0.253,
-      "HAD": 0.331,
-      "GAS": 0.3964,
-      "BEA": 0.4768,
-      "ALO": 0.5524,
-      "STR": 0.664,
-      "HUL": 0.684,
-      "LIN": 0.758,
-      "COL": 0.755,
-      "BOR": 0.8058,
-      "BOT": 0.8166
-    },
-    "ALO": {
-      "PIA": 0.0204,
-      "NOR": 0.0222,
-      "LEC": 0.0322,
-      "VER": 0.035,
-      "RUS": 0.0384,
-      "HAM": 0.0576,
-      "ANT": 0.0972,
-      "SAI": 0.1126,
-      "PER": 0.1186,
-      "LAW": 0.1426,
-      "ALB": 0.2104,
-      "HAD": 0.2862,
-      "GAS": 0.3384,
-      "BEA": 0.4238,
-      "OCO": 0.4476,
-      "STR": 0.6116,
-      "HUL": 0.6396,
-      "LIN": 0.7216,
-      "COL": 0.7124,
-      "BOR": 0.7702,
-      "BOT": 0.7776
-    },
-    "STR": {
-      "PIA": 0.0132,
-      "NOR": 0.014,
-      "LEC": 0.0218,
-      "VER": 0.0228,
-      "RUS": 0.0268,
-      "HAM": 0.036,
-      "ANT": 0.0628,
-      "SAI": 0.074,
-      "PER": 0.0756,
-      "LAW": 0.09,
-      "ALB": 0.1476,
-      "HAD": 0.1996,
-      "GAS": 0.2452,
-      "BEA": 0.3152,
-      "OCO": 0.336,
-      "ALO": 0.3884,
-      "HUL": 0.523,
-      "LIN": 0.6166,
-      "COL": 0.6146,
-      "BOR": 0.6802,
-      "BOT": 0.6958
-    },
-    "HUL": {
-      "PIA": 0.0126,
-      "NOR": 0.012,
-      "LEC": 0.0192,
-      "VER": 0.0222,
-      "RUS": 0.0232,
-      "HAM": 0.034,
-      "ANT": 0.057,
-      "SAI": 0.0662,
-      "PER": 0.071,
-      "LAW": 0.084,
-      "ALB": 0.139,
-      "HAD": 0.1836,
-      "GAS": 0.2154,
-      "BEA": 0.3008,
-      "OCO": 0.316,
-      "ALO": 0.3604,
-      "STR": 0.477,
-      "LIN": 0.593,
-      "COL": 0.5798,
-      "BOR": 0.6524,
-      "BOT": 0.6726
-    },
-    "LIN": {
-      "PIA": 0.0052,
-      "NOR": 0.007,
-      "LEC": 0.0112,
-      "VER": 0.0122,
-      "RUS": 0.012,
-      "HAM": 0.019,
-      "ANT": 0.0352,
-      "SAI": 0.0404,
-      "PER": 0.0502,
-      "LAW": 0.0556,
-      "ALB": 0.0922,
-      "HAD": 0.1326,
-      "GAS": 0.1692,
-      "BEA": 0.225,
-      "OCO": 0.242,
-      "ALO": 0.2784,
-      "STR": 0.3834,
-      "HUL": 0.407,
-      "COL": 0.4886,
-      "BOR": 0.5736,
-      "BOT": 0.5922
-    },
-    "COL": {
-      "PIA": 0.0088,
-      "NOR": 0.0088,
-      "LEC": 0.016,
-      "VER": 0.0156,
-      "RUS": 0.015,
-      "HAM": 0.0244,
-      "ANT": 0.0436,
-      "SAI": 0.0428,
-      "PER": 0.0494,
-      "LAW": 0.0618,
-      "ALB": 0.0992,
-      "HAD": 0.1362,
-      "GAS": 0.1718,
-      "BEA": 0.241,
-      "OCO": 0.245,
-      "ALO": 0.2876,
-      "STR": 0.3854,
-      "HUL": 0.4202,
-      "LIN": 0.5114,
-      "BOR": 0.5794,
-      "BOT": 0.592
-    },
-    "BOR": {
-      "PIA": 0.0064,
-      "NOR": 0.008,
-      "LEC": 0.0098,
-      "VER": 0.0112,
-      "RUS": 0.0112,
-      "HAM": 0.0174,
-      "ANT": 0.0306,
-      "SAI": 0.0322,
-      "PER": 0.0434,
-      "LAW": 0.0446,
-      "ALB": 0.0718,
-      "HAD": 0.1056,
-      "GAS": 0.135,
-      "BEA": 0.1846,
-      "OCO": 0.1942,
-      "ALO": 0.2298,
-      "STR": 0.3198,
-      "HUL": 0.3476,
-      "LIN": 0.4264,
-      "COL": 0.4206,
-      "BOT": 0.5158
-    },
-    "BOT": {
-      "PIA": 0.0062,
-      "NOR": 0.0068,
-      "LEC": 0.0088,
-      "VER": 0.0108,
-      "RUS": 0.0116,
-      "HAM": 0.0158,
-      "ANT": 0.0268,
-      "SAI": 0.0348,
-      "PER": 0.0368,
-      "LAW": 0.041,
-      "ALB": 0.0698,
-      "HAD": 0.103,
-      "GAS": 0.1282,
-      "BEA": 0.17,
-      "OCO": 0.1834,
-      "ALO": 0.2224,
-      "STR": 0.3042,
-      "HUL": 0.3274,
-      "LIN": 0.4078,
-      "COL": 0.408,
-      "BOR": 0.4842
-    }
+  "calibration": {
+    "method": "held-out",
+    "trainingSeasons": [],
+    "applied": true,
+    "priorRounds": 11
   }
 }

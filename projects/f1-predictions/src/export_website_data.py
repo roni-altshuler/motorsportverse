@@ -337,6 +337,55 @@ def _apply_position_model_reorder(classification_data, *, round_num, gp_key, sea
     }
 
 
+def _unify_win_probability(classification_data, *, round_num, n_samples=4000):
+    """Make ``classification.winProbability`` equal the Monte-Carlo win market.
+
+    The site otherwise publishes two different win odds for the same driver: a
+    heuristic per-driver ``winProbability`` on the race-detail table and the
+    Monte-Carlo ``p_win`` on the probability surface.  This overrides
+    ``winProbability`` with the MC number so both read the same value.
+
+    It prefers the already-published win market in
+    ``probabilities/round_NN.json`` (an exact match with what the probability
+    page shows); if that file is absent — e.g. a brand-new round exported before
+    the probability step has run — it falls back to computing the Plackett-Luce
+    win probabilities inline from the predicted lap times, which is the same
+    pipeline the probability layer uses, so the *method* is unified either way.
+    Best-effort: any failure leaves the existing values untouched.
+    """
+    try:
+        win_by_driver: dict[str, float] = {}
+        probs_path = os.path.join(
+            DATA_DIR, "probabilities", f"round_{round_num:02d}.json"
+        )
+        published = _safe_load_json(probs_path)
+        win_market = ((published or {}).get("markets") or {}).get("win") or []
+        for e in win_market:
+            drv, p = e.get("driver"), e.get("probability")
+            if drv is not None and isinstance(p, (int, float)):
+                win_by_driver[str(drv)] = float(p)
+        if not win_by_driver:
+            from models.calibration import plackett_luce_probabilities
+
+            lap_times = {
+                str(e["driver"]): float(e["predictedTime"])
+                for e in classification_data
+                if e.get("driver") is not None
+                and isinstance(e.get("predictedTime"), (int, float))
+            }
+            if lap_times:
+                mp = plackett_luce_probabilities(lap_times, n_samples=n_samples, seed=42)
+                win_by_driver = {d: float(p) for d, p in mp.p_win.items()}
+        if not win_by_driver:
+            return
+        for e in classification_data:
+            p = win_by_driver.get(str(e.get("driver")))
+            if p is not None:
+                e["winProbability"] = round(p * 100.0, 1)
+    except Exception as ex:  # never block the export on the unification step
+        print(f"  ⚠️  winProbability unification skipped: {ex}")
+
+
 # Curated chart set (2026-05-21 UX refinement).  Cut from 17 charts to 6
 # — the most informative + eye-catching ones.  Dropped: feature_importance,
 # team_vs_pace, pace_vs_predicted, prediction_confidence, win_probability_board
@@ -1405,6 +1454,12 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
         except Exception as e:
             print(f"  ⚠️  Position model failed: {e}")
             position_model_config = {"applied": False, "reason": str(e)}
+
+    # Unify the two win numbers: the published race-detail winProbability now
+    # derives from the Monte-Carlo win market (same surface as the probability
+    # page) instead of the legacy heuristic, so the site never shows two
+    # different win odds for one driver.
+    _unify_win_probability(classification_data, round_num=round_num)
 
     # ── Derived helpers ──
     fastest_time = f"{classification_data[0]['predictedTime']:.3f}s"
