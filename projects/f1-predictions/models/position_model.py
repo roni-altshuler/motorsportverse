@@ -220,15 +220,27 @@ class PositionModel:
     def fit(self, X: np.ndarray, y: np.ndarray) -> "PositionModel":
         from sklearn.ensemble import HistGradientBoostingRegressor
 
-        # HistGBR supports true monotonic constraints; keep the trees shallow
-        # because the training frame is small (a handful of rounds × ~22 rows).
+        # HistGBR supports true monotonic constraints. The training frame is
+        # tiny — a handful of prior rounds × ~22 rows (≈66–220 samples) with 6
+        # features — so the estimator must be strongly regularised or it fits
+        # the noise in the current season's early rounds rather than a stable
+        # re-ranking signal. The original (max_depth=3, max_iter=200,
+        # min_samples_leaf=5, no L2) over-fit badly: on the 2026 walk-forward
+        # A/B it lost ~7.5% of RMSE-position-error to the production path and
+        # its winner-hit collapsed. Shallower trees (max_depth=2), fewer
+        # boosting rounds, a larger leaf floor, and explicit L2 shrinkage roughly
+        # halve that RMSE gap and restore winner-/podium-hit above production —
+        # a genuine improvement to the head as a fair contender, even though it
+        # still does not clear the promotion gate (see forward_eval
+        # --position-model-ab and promotion_status.json::learnedHead).
         try:
             est = HistGradientBoostingRegressor(
                 loss="squared_error",
-                max_depth=3,
-                max_iter=200,
+                max_depth=2,
+                max_iter=120,
                 learning_rate=0.05,
-                min_samples_leaf=5,
+                min_samples_leaf=10,
+                l2_regularization=1.0,
                 monotonic_cst=list(MONOTONIC_CONSTRAINTS),
                 random_state=RANDOM_STATE,
             )

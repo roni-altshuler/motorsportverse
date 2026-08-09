@@ -42,5 +42,18 @@
       "meanError": 3.87
     },
     "verdict": "parity"
+  },
+  "learnedHead": {
+    "source": "position_model_ab.json",
+    "roundsCompared": 8,
+    "minPriorRounds": 3,
+    "recommendation": "production-better",
+    "gate": "hold",
+    "learnedHeadMeanError": 3.7841,
+    "productionMeanError": 3.6706,
+    "meanErrorDelta": 0.1135,
+    "learnedHeadWinnerHitRate": 0.625,
+    "productionWinnerHitRate": 0.5,
+    "note": "Learned finishing-order head vs production RaceProjectionScore (leakage-safe walk-forward). Ships only when recommendation flips to 'position-model-better' and clears the RMSE gate; F1_USE_LEARNED_HEAD stays OFF until then."
   }
 }

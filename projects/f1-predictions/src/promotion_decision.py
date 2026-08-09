@@ -182,6 +182,56 @@ def build_headline_comparison(production_dir: Path, candidate_dir: Path) -> dict
     }
 
 
+def build_learned_head_status(production_dir: Path) -> dict | None:
+    """Surface the learned finishing-order head's walk-forward A/B verdict.
+
+    ``forward_eval.py --position-model-ab`` writes ``position_model_ab.json``
+    into the forward-eval directory: a leakage-safe walk-forward comparison of
+    the learned re-ranking head (``models.position_model``) against the
+    production hand-weighted ``RaceProjectionScore`` order.  We lift its verdict
+    into ``promotion_status.json`` so the operator sees, in one place, whether
+    the learned head is beating production yet.
+
+    This is deliberately read-only and additive: the top-level decision above
+    still governs the production-vs-candidate (quali-gap) promotion stream.  The
+    learned head ships only if its ``recommendation`` becomes
+    ``position-model-better`` AND it clears the same guarded RMSE gate — until
+    then ``F1_USE_LEARNED_HEAD`` stays OFF by default.  Returns ``None`` when the
+    A/B artefact is absent (nothing to report).
+    """
+    ab_path = production_dir / "position_model_ab.json"
+    if not ab_path.exists():
+        return None
+    try:
+        with ab_path.open("r", encoding="utf-8") as fh:
+            ab = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return None
+    verdict = ab.get("verdict") or {}
+    recommendation = verdict.get("recommendation")
+    # Map the position-model A/B recommendation onto a promote/hold signal
+    # consistent with the guarded RMSE gate used for the candidate stream.
+    gate = "promote" if recommendation == "position-model-better" else "hold"
+    return {
+        "source": ab_path.name,
+        "roundsCompared": ab.get("roundsCompared"),
+        "minPriorRounds": ab.get("minPriorRounds"),
+        "recommendation": recommendation,
+        "gate": gate,
+        "learnedHeadMeanError": verdict.get("positionModelMeanError"),
+        "productionMeanError": verdict.get("productionMeanError"),
+        "meanErrorDelta": verdict.get("meanErrorDelta"),
+        "learnedHeadWinnerHitRate": verdict.get("positionModelWinnerHitRate"),
+        "productionWinnerHitRate": verdict.get("productionWinnerHitRate"),
+        "note": (
+            "Learned finishing-order head vs production RaceProjectionScore "
+            "(leakage-safe walk-forward). Ships only when recommendation flips "
+            "to 'position-model-better' and clears the RMSE gate; "
+            "F1_USE_LEARNED_HEAD stays OFF until then."
+        ),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Apply the promotion rule to production vs candidate "
@@ -275,6 +325,11 @@ def main(argv: list[str] | None = None) -> int:
     headline = build_headline_comparison(args.production_dir, args.candidate_dir)
     if headline is not None:
         payload["headline"] = headline
+    # Learned finishing-order head A/B verdict (read from the production dir's
+    # position_model_ab.json). Additive; never affects the top-level decision.
+    learned_head = build_learned_head_status(args.production_dir)
+    if learned_head is not None:
+        payload["learnedHead"] = learned_head
 
     output_path = (
         args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
