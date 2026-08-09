@@ -42,6 +42,7 @@ import {
 } from "@/lib/driverData";
 
 import DriverPortrait from "@/components/standings/DriverPortrait";
+import CountryFlag from "@/components/CountryFlag";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import { Stat } from "@/components/ui/Stat";
@@ -67,9 +68,9 @@ export default function DriverProfilePage({ code: rawCode }: Props) {
 
   useEffect(() => {
     let active = true;
-    setLoading(true);
 
     (async () => {
+      setLoading(true);
       // Season + standings in parallel; rounds depend on the season's length.
       const [seasonData, standingsData] = await Promise.all([
         fetchSeasonJson(basePath).catch(() => null),
@@ -157,6 +158,13 @@ export default function DriverProfilePage({ code: rawCode }: Props) {
     driverInfo?.teamColor ?? standing?.teamColor ?? "var(--accent)";
   const number = driverInfo?.number ?? null;
   const headshot = resolveDriverHeadshot(code, driverInfo?.headshotUrl);
+  // Nationality is added to the season roster by the data pipeline; read it
+  // defensively (the shared DriverInfo type may not carry it yet) and render
+  // nothing when it is absent. `countryCode` is ISO 3166-1 (alpha-2 or -3).
+  const nationality =
+    (driverInfo as { nationality?: string } | null)?.nationality ?? null;
+  const countryCode =
+    (driverInfo as { countryCode?: string } | null)?.countryCode ?? null;
 
   // ------------------------------------------------------------------ states
   if (loading && !season && !standings) {
@@ -239,7 +247,24 @@ export default function DriverProfilePage({ code: rawCode }: Props) {
               {team && <Badge variant="default">{team}</Badge>}
             </div>
             <h1 className="display-md leading-none">{fullName}</h1>
-            <div className="mt-2 flex items-center gap-4 text-[color:var(--muted)]">
+            <div className="mt-2 flex flex-wrap items-center gap-4 text-[color:var(--muted)]">
+              {(nationality || countryCode) && (
+                <span className="inline-flex items-center gap-2">
+                  {countryCode && (
+                    <CountryFlag
+                      country={nationality ?? ""}
+                      countryCode={countryCode}
+                      size={18}
+                      className="rounded-[2px]"
+                    />
+                  )}
+                  {nationality && (
+                    <span className="eyebrow text-[color:var(--body)]">
+                      {nationality}
+                    </span>
+                  )}
+                </span>
+              )}
               {number != null && (
                 <span className="font-tabular text-sm">
                   <span className="text-[color:var(--muted)]">No.</span>{" "}

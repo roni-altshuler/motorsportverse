@@ -32,6 +32,7 @@ import ForwardEvalPanel from "@/components/accuracy/ForwardEvalPanel";
 import ModelHealthPanel from "@/components/accuracy/ModelHealthPanel";
 import LoadingTire from "@/components/ui/LoadingTire";
 import DriverPortrait from "@/components/standings/DriverPortrait";
+import ShareButton from "@/components/ShareButton";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 
 export default function AccuracyDashboardPage() {
@@ -151,6 +152,11 @@ export default function AccuracyDashboardPage() {
           Track how our model predictions compare to actual race results across the {seasonYear}{" "}
           season
         </p>
+        <ShareButton
+          title={`${seasonYear} F1 Prediction Accuracy`}
+          text={`How well the model called the ${seasonYear} Formula 1 season — winner-hit rate, podium accuracy and per-round scoring.`}
+          className="mt-6 justify-center"
+        />
       </motion.div>
 
       {/* Overall Season Metrics */}

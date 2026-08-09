@@ -12,6 +12,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SeasonData, StandingsData, RoundData, SeasonTrackerData, TrustStats, ChampionshipForecast } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
+import AddToCalendar from "@/components/AddToCalendar";
+import FavoriteStar from "@/components/FavoriteStar";
+import { useFavorites } from "@/lib/favorites";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
@@ -62,6 +65,8 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
   const { basePath } = useSeason();
+  const favorites = useFavorites();
+  const favoriteSet = new Set(favorites);
 
   // Current-season accuracy comes from build-time props (honest, no fetch flash).
   const accuracyPct = trustStats.currentSeason?.accuracyPct ?? null;
@@ -108,16 +113,17 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
     season && ctx
       ? ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0]
       : null;
-  const featuredMeta =
+  const featuredLifecycle =
     season && featuredRace
-      ? getRoundStatusMeta(
-          getRoundLifecycle(
-            featuredRace,
-            season.completedRounds.includes(featuredRace.round),
-            roundsWithActual.includes(featuredRace.round),
-          ),
+      ? getRoundLifecycle(
+          featuredRace,
+          season.completedRounds.includes(featuredRace.round),
+          roundsWithActual.includes(featuredRace.round),
         )
       : null;
+  const featuredMeta = featuredLifecycle
+    ? getRoundStatusMeta(featuredLifecycle)
+    : null;
   const featuredVariant: "live" | "positive" | "negative" | "muted" | "default" =
     featuredMeta
       ? TONE_TO_BADGE_VARIANT[featuredMeta.tone as StatusTone] ?? "default"
@@ -130,6 +136,13 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
     featuredRound?.weekendResults?.sessions?.some(
       (s) => s.kind === "qualifying" && s.status === "official",
     ) ?? false;
+  // The featured race is worth adding to a calendar until it has actually run —
+  // i.e. still upcoming, forecast-ready, or a live weekend. We reuse the round's
+  // lifecycle (already derived above) rather than reading the clock in render.
+  const featuredUpcoming =
+    featuredLifecycle === "upcoming" ||
+    featuredLifecycle === "prediction-ready" ||
+    featuredLifecycle === "live-weekend";
 
   return (
     <div>
@@ -211,6 +224,15 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                 <Link href="/standings" className={buttonVariants({ variant: "ghost" })}>
                   Standings
                 </Link>
+                {featuredUpcoming && featuredRace && (
+                  <AddToCalendar
+                    race={featuredRace}
+                    season={season?.season}
+                    variant="ghost"
+                    size="sm"
+                    label="Add to calendar"
+                  />
+                )}
               </div>
             </motion.div>
           ) : (
@@ -402,6 +424,11 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                           key={row.driver}
                           className="border-b border-[color:var(--hairline)] last:border-b-0 transition-colors hover:bg-[color:var(--surface-card)]"
                           data-team={row.team}
+                          style={{
+                            boxShadow: favoriteSet.has(row.driver)
+                              ? "inset 3px 0 0 0 var(--accent-podium-1)"
+                              : undefined,
+                          }}
                         >
                           <td className="px-4 py-3 font-mono font-tabular text-[color:var(--muted)] w-14">
                             {row.position === 1 && (
@@ -427,6 +454,11 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                               />
                               <TeamColorBar teamColor={row.teamColor} team={row.team} size="sm" />
                               <span className="title-sm">{row.driverFullName ?? row.driver}</span>
+                              <FavoriteStar
+                                code={row.driver}
+                                driverName={row.driverFullName ?? row.driver}
+                                size={15}
+                              />
                             </span>
                           </td>
                           <td className="px-2 py-3 body-sm text-[color:var(--muted)] hidden sm:table-cell">

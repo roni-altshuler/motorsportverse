@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SeasonData, SeasonTrackerData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
+import AddToCalendar from "@/components/AddToCalendar";
 import { Badge } from "@/components/ui/Badge";
 import LoadingTire from "@/components/ui/LoadingTire";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
@@ -68,6 +69,15 @@ export default function CalendarPage() {
         <p className="body-sm text-[color:var(--muted)]">
           {season.totalRounds} Grand Prix · {completedCount} forecasts published · {officialCount} official result{officialCount !== 1 ? "s" : ""}
         </p>
+        <div className="mt-6">
+          <AddToCalendar
+            races={season.calendar}
+            season={season.season}
+            label="Add full season"
+            variant="secondary"
+            size="sm"
+          />
+        </div>
       </div>
 
       {/* ── Photographic carousel — full season ── */}
@@ -135,12 +145,17 @@ export default function CalendarPage() {
           const statusMeta = getRoundStatusMeta(lifecycle);
           const variant = TONE_TO_BADGE_VARIANT[statusMeta.tone as StatusTone] ?? "default";
           const leftBorder = LIFECYCLE_BORDER[lifecycle] ?? "var(--hairline-strong)";
+          // A race is still "addable" until it has run — upcoming, forecast-ready
+          // or a live weekend. Past + awaiting-sync rows get no calendar button.
+          const isUpcoming =
+            lifecycle === "upcoming" ||
+            lifecycle === "prediction-ready" ||
+            lifecycle === "live-weekend";
 
           return (
-            <Link
+            <div
               key={race.round}
-              href={`/race/${race.round}`}
-              className="row-spec flex items-center gap-6 group transition-colors hover:bg-[color:var(--surface-card)] border-l-2"
+              className="row-spec flex items-center gap-2 group transition-colors hover:bg-[color:var(--surface-card)] border-l-2"
               style={{ borderLeftColor: "transparent" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderLeftColor = leftBorder;
@@ -148,6 +163,11 @@ export default function CalendarPage() {
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderLeftColor = "transparent";
               }}
+            >
+            <Link
+              href={`/race/${race.round}`}
+              aria-label={`${race.name} race report`}
+              className="flex items-center gap-6 flex-1 min-w-0"
             >
               <div className="text-center shrink-0 w-12 pl-3">
                 <span className="font-mono font-tabular text-[20px] tracking-[0.05em] text-[color:var(--muted)]">
@@ -193,6 +213,19 @@ export default function CalendarPage() {
                 →
               </span>
             </Link>
+
+              {isUpcoming && (
+                <div className="shrink-0 pr-3 pl-1">
+                  <AddToCalendar
+                    race={race}
+                    season={season.season}
+                    variant="ghost"
+                    size="sm"
+                    label="Add"
+                  />
+                </div>
+              )}
+            </div>
           );
         })}
       </div>

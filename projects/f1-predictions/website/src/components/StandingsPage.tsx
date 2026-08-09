@@ -23,6 +23,9 @@ import ConstructorsForecastLanes from "@/components/standings/ConstructorsForeca
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import LoadingTire from "@/components/ui/LoadingTire";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import ShareButton from "@/components/ShareButton";
+import FavoriteStar from "@/components/FavoriteStar";
+import { useFavorites } from "@/lib/favorites";
 import { motion } from "framer-motion";
 
 type Tab = "drivers" | "constructors" | "wdc";
@@ -63,6 +66,8 @@ export default function StandingsPage() {
   const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
   const [error, setError] = useState(false);
   const { basePath } = useSeason();
+  const favorites = useFavorites();
+  const favoriteSet = new Set(favorites);
   const activeTab = parseTab(searchParams.get("tab"));
 
   useEffect(() => {
@@ -121,6 +126,11 @@ export default function StandingsPage() {
             style={{ width: `${(data.lastUpdatedRound / totalRounds) * 100}%` }}
           />
         </div>
+        <ShareButton
+          title={`${seasonYear} F1 Championship Standings`}
+          text={`See who's winning the ${seasonYear} Formula 1 title — full driver & constructor standings, plus who can still take it.`}
+          className="mt-6 justify-center"
+        />
       </div>
 
       {/* ━━━ Cinematic championship KPI strip ━━━ */}
@@ -238,11 +248,17 @@ export default function StandingsPage() {
                 <tbody>
                   {data.drivers.map((d) => {
                     const maxPts = data.drivers[0]?.points || 1;
+                    const isFav = favoriteSet.has(d.driver);
                     return (
                       <tr
                         key={d.driver}
                         className="transition-colors"
-                        style={{ borderBottom: "1px solid var(--border)" }}
+                        style={{
+                          borderBottom: "1px solid var(--border)",
+                          boxShadow: isFav
+                            ? "inset 3px 0 0 0 var(--accent-podium-1)"
+                            : undefined,
+                        }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.background =
                             "var(--bg-card-hover)")
@@ -285,14 +301,23 @@ export default function StandingsPage() {
                           />
                         </td>
                         <td className="px-4 py-3">
-                          <span className="font-bold" style={{ color: "var(--text)" }}>
-                            {d.driver}
-                          </span>
-                          <span
-                            className="ml-2 text-xs hidden sm:inline"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {d.driverFullName}
+                          <span className="inline-flex items-center gap-2">
+                            <FavoriteStar
+                              code={d.driver}
+                              driverName={d.driverFullName}
+                              size={15}
+                            />
+                            <span>
+                              <span className="font-bold" style={{ color: "var(--text)" }}>
+                                {d.driver}
+                              </span>
+                              <span
+                                className="ml-2 text-xs hidden sm:inline"
+                                style={{ color: "var(--text-muted)" }}
+                              >
+                                {d.driverFullName}
+                              </span>
+                            </span>
                           </span>
                         </td>
                         <td className="px-4 py-3" style={{ color: "var(--text-muted)" }}>
