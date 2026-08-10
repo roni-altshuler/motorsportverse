@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
 import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
+import ModelHealthPanel from "@/components/accuracy/ModelHealthPanel";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
-import { Sparkline } from "@/components/charts/Sparkline";
+import ShareButton from "@/components/ShareButton";
 import {
   getCalibrationSummary,
   getFEData,
@@ -36,14 +37,19 @@ export default function AccuracyPage() {
   const backtest = getHistoricalBacktest();
 
   const acc = data.seasonAccuracy;
-  const brierSeries = (health?.brierByRound ?? []).map((b) => b.brier);
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
       <p className="eyebrow mb-3">Formula E · Season {data.season - 1}-{String(data.season).slice(2)}</p>
-      <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
-        Model accuracy
-      </h1>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
+          Model accuracy
+        </h1>
+        <ShareButton
+          title={`Formula E ${data.season - 1}-${String(data.season).slice(2)} — model accuracy`}
+          text="How the RaceIQ Formula E model's pre-race forecasts have scored against real results, model-vs-baseline and calibration honesty included."
+        />
+      </div>
       <p className="mt-3 text-[var(--ink-muted)]">
         How the Formula E model&rsquo;s pre-race forecasts have scored against the actual
         results, over {acc?.roundsScored ?? data.completedRounds} completed rounds of the
@@ -139,44 +145,8 @@ export default function AccuracyPage() {
       {/* Historical backtest dashboard */}
       {backtest && backtest.roundsEvaluated > 0 && <HistoricalBacktestPanel data={backtest} />}
 
-      {/* Model health */}
-      {health && (
-        <section className="mt-12">
-          <h2 className="mb-4 text-xl font-semibold text-[var(--ink)]">Model health</h2>
-          <div className="grid gap-6 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-6 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow mb-2">Win-market Brier trend</p>
-              <Sparkline points={brierSeries} />
-              <p className="mt-2 text-xs text-[var(--ink-dim)]">
-                Lower is better · {health.brierByRound.length} rounds
-              </p>
-            </div>
-            <div>
-              <p className="eyebrow mb-2">Diagnostics</p>
-              {health.alarms.length === 0 && health.warnings.length === 0 ? (
-                <p className="text-sm text-[var(--ink-muted)]">No drift warnings.</p>
-              ) : (
-                <ul className="space-y-1 text-sm">
-                  {health.alarms.map((a) => (
-                    <li key={a} style={{ color: "var(--warning)" }}>
-                      ⚠ {a}
-                    </li>
-                  ))}
-                  {health.warnings.map((w) => (
-                    <li key={w} className="text-[var(--ink-muted)]">
-                      • {w}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <p className="mt-3 text-xs text-[var(--ink-dim)]">
-                Feature drift and rolling-Brier are tracked round-to-round; a spike flags where the
-                field behaved unlike the rounds the model learned from.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Model health — self-check strip (forecast quality vs input drift) */}
+      <ModelHealthPanel health={health} />
     </div>
   );
 }

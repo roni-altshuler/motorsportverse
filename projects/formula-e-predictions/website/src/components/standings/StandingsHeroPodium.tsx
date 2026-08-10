@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import type { DriverStanding } from "@/types/fe";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -79,21 +81,25 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
         </div>
 
         <div className="flex items-center gap-4 w-full">
-          <DriverPortrait
-            driver={driver.code}
-            driverFullName={driver.name}
-            team={driver.team}
-            teamColor={color}
-            headshotUrl={driver.headshotUrl}
-            size={isP1 ? 84 : 64}
-          />
+          <Link href={`/driver/${driver.code}`} aria-label={`${driver.name} profile`}>
+            <DriverPortrait
+              driver={driver.code}
+              driverFullName={driver.name}
+              team={driver.team}
+              teamColor={color}
+              headshotUrl={driver.headshotUrl}
+              size={isP1 ? 84 : 64}
+            />
+          </Link>
           <div className="min-w-0 flex-1">
             <p className="caption-uppercase text-[10px] tracking-[0.18em] truncate">
               {driver.code}
             </p>
-            <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1 truncate">
-              {driver.name}
-            </p>
+            <Link href={`/driver/${driver.code}`} className="hover:opacity-80 transition-opacity">
+              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1 truncate">
+                {driver.name}
+              </p>
+            </Link>
             <div className="flex items-center gap-2 mt-2">
               <TeamColorBar teamColor={color} team={driver.team} size="sm" />
               <span className="caption-uppercase text-[10px] tracking-[0.18em] truncate">

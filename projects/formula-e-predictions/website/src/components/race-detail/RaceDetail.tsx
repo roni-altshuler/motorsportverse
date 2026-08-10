@@ -11,7 +11,9 @@ import { PredictedVsActualSlope } from "@/components/charts/PredictedVsActualSlo
 import WinProbabilityChart, {
   type WinProbabilityTrend,
 } from "@/components/charts/WinProbabilityChart";
+import AddToCalendar from "@/components/AddToCalendar";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
+import ShareButton from "@/components/ShareButton";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
@@ -124,6 +126,9 @@ export function RaceDetail({
   const openEntry: ClassificationEntry | null =
     openDriver != null ? block.classification.find((e) => e.code === openDriver) ?? null : null;
 
+  // Calendar entry for this round — powers the "Add to calendar" download.
+  const calendarEntry = calendar.find((c) => c.round === round.round) ?? null;
+
   return (
     <div>
       {/* Telemetry-framed header (round / venue / country / status + venue kind). */}
@@ -136,6 +141,17 @@ export function RaceDetail({
         doubleheader={doubleheader}
         dataSource={round.dataSource}
       />
+
+      {/* Share + add-to-calendar affordances for this E-Prix. */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <ShareButton
+          title={`${round.venueName} E-Prix — Formula E`}
+          text={`Round ${round.round}: the ${round.venueName} E-Prix — RaceIQ's full-field Formula E forecast and win probabilities.`}
+        />
+        {calendarEntry?.raceDate && (
+          <AddToCalendar race={calendarEntry} season={round.season} variant="ghost" />
+        )}
+      </div>
 
       {/* Auto-generated "what the model sees" bullets for this E-Prix. */}
       <RaceNarrativeCard round={round} championship={championship} doubleheader={doubleheader} />

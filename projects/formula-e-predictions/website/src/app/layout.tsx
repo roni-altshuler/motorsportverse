@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { EB_Garamond, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
 import Footer from "@/components/Footer";
@@ -32,10 +32,35 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+// PWA "add to home screen": manifest + icon set live in public/ and are served
+// under the deploy base path. Both the manifest URL and the icon URLs are
+// base-path-prefixed so they resolve whether the site is deployed at the domain
+// root or under a GitHub Pages subpath. No service worker is registered — the
+// site is a fully static export and stays offline-safe.
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const MANIFEST_URL = `${BASE_PATH}/manifest.webmanifest`;
+const APPLE_TOUCH_ICON = `${BASE_PATH}/icons/apple-touch-icon.png`;
+const ICON_192 = `${BASE_PATH}/icons/icon-192.png`;
+const ICON_512 = `${BASE_PATH}/icons/icon-512.png`;
+
 export const metadata: Metadata = {
   title: "RaceIQ Formula E — Formula E predictions",
   description:
     "Race and championship forecasts for the ABB FIA Formula E World Championship — every E-Prix, street and circuit, calibrated on real results. A MotorsportVerse project on motorsport-core.",
+  manifest: MANIFEST_URL,
+  applicationName: "RaceIQ Formula E",
+  appleWebApp: {
+    capable: true,
+    title: "RaceIQ FE",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [
+      { url: ICON_192, sizes: "192x192", type: "image/png" },
+      { url: ICON_512, sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: APPLE_TOUCH_ICON, sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "RaceIQ Formula E — Formula E predictions",
     description:
@@ -43,6 +68,14 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: { card: "summary_large_image" },
+};
+
+// Theme-color + color-scheme for the browser chrome / PWA status bar. The app
+// is dark-only; the electric-blue bar mirrors the manifest theme_color and the
+// site accent (#1E1AF0).
+export const viewport: Viewport = {
+  themeColor: "#1E1AF0",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

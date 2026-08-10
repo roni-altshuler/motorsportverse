@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import AddToCalendar from "@/components/AddToCalendar";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
@@ -175,6 +176,14 @@ export default function CalendarPage({
           {totalRounds} rounds across {venues} venues · {completedRounds} complete ·{" "}
           {remaining} remaining
         </p>
+        <div className="mt-6">
+          <AddToCalendar
+            races={calendar}
+            season={season}
+            label="Add full season to calendar"
+            variant="ghost"
+          />
+        </div>
       </div>
 
       <SeasonRibbon calendar={calendar} />
@@ -268,9 +277,8 @@ export default function CalendarPage({
             ? "var(--accent-f1-red-hover)"
             : "var(--hairline-strong)";
           return (
-            <Link
+            <div
               key={r.round}
-              href={`/race/${r.round}`}
               className="row-spec flex items-center gap-6 group transition-colors hover:bg-[color:var(--surface-card)] border-l-2"
               style={{ borderLeftColor: "transparent" }}
               onMouseEnter={(e) => {
@@ -280,33 +288,48 @@ export default function CalendarPage({
                 e.currentTarget.style.borderLeftColor = "transparent";
               }}
             >
-              <div className="text-center shrink-0 w-12 pl-3">
-                <span className="font-mono tabular-nums text-[20px] tracking-[0.05em] text-[color:var(--muted)]">
-                  {String(r.round).padStart(2, "0")}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <CountryFlag country={r.country} size={32} className="shrink-0" />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-3 flex-wrap mb-1">
-                    <h3 className="title-md truncate group-hover:text-[color:var(--ink)] transition-colors">
-                      {r.name}
-                    </h3>
-                    <Badge variant="muted">{r.kind === "street" ? "Street" : "Circuit"}</Badge>
-                    {r.completed ? (
-                      <Badge variant="positive">Completed</Badge>
-                    ) : isNext ? (
-                      <Badge variant="live">Next up</Badge>
-                    ) : (
-                      <Badge variant="muted">Upcoming</Badge>
-                    )}
-                  </div>
-                  <p className="eyebrow truncate">
-                    {[date, r.country].filter(Boolean).join(" · ")}
-                  </p>
+              <Link
+                href={`/race/${r.round}`}
+                className="flex items-center gap-6 flex-1 min-w-0"
+              >
+                <div className="text-center shrink-0 w-12 pl-3">
+                  <span className="font-mono tabular-nums text-[20px] tracking-[0.05em] text-[color:var(--muted)]">
+                    {String(r.round).padStart(2, "0")}
+                  </span>
                 </div>
-              </div>
+
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <CountryFlag country={r.country} size={32} className="shrink-0" />
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-3 flex-wrap mb-1">
+                      <h3 className="title-md truncate group-hover:text-[color:var(--ink)] transition-colors">
+                        {r.name}
+                      </h3>
+                      <Badge variant="muted">{r.kind === "street" ? "Street" : "Circuit"}</Badge>
+                      {r.completed ? (
+                        <Badge variant="positive">Completed</Badge>
+                      ) : isNext ? (
+                        <Badge variant="live">Next up</Badge>
+                      ) : (
+                        <Badge variant="muted">Upcoming</Badge>
+                      )}
+                    </div>
+                    <p className="eyebrow truncate">
+                      {[date, r.country].filter(Boolean).join(" · ")}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+
+              {r.raceDate && (
+                <AddToCalendar
+                  race={r}
+                  season={season}
+                  variant="ghost"
+                  label="Add"
+                  className="shrink-0"
+                />
+              )}
 
               <span
                 className="text-[color:var(--muted)] shrink-0 group-hover:text-[color:var(--ink)] transition-colors pr-2"
@@ -314,7 +337,7 @@ export default function CalendarPage({
               >
                 →
               </span>
-            </Link>
+            </div>
           );
         })}
       </div>
