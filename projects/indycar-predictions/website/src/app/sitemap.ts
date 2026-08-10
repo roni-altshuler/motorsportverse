@@ -20,10 +20,12 @@ const BASE = SITE_URL.replace(/\/$/, "");
 export default function sitemap(): MetadataRoute.Sitemap {
   let lastUpdated = new Date();
   let totalRounds = 17;
+  let driverCodes: string[] = [];
   try {
     const data = getIndycarData();
     if (data.generatedAt) lastUpdated = new Date(data.generatedAt);
     if (data.totalRounds) totalRounds = data.totalRounds;
+    driverCodes = data.driverStandings.map((d) => d.code);
   } catch {
     /* fall back to defaults if indycar.json is unreadable at build time */
   }
@@ -46,5 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticEntries, ...raceEntries];
+  const driverEntries: MetadataRoute.Sitemap = driverCodes.map((code) => ({
+    url: `${BASE}/driver/${code}`,
+    lastModified: lastUpdated,
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...raceEntries, ...driverEntries];
 }

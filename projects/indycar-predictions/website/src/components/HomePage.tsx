@@ -22,6 +22,7 @@ import { trackTypeLabel } from "@/lib/track";
 import type { RaceBlock } from "@/types/indycar";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
+import AddToCalendar from "@/components/AddToCalendar";
 import HeroParallax from "@/components/home/HeroParallax";
 import HeroCountdown from "@/components/home/HeroCountdown";
 import PodiumStage from "@/components/home/PodiumStage";
@@ -167,6 +168,21 @@ export default function HomePage() {
                 <Link href="/accuracy" className={buttonVariants({ variant: "ghost" })}>
                   Accuracy
                 </Link>
+                {nextCalendarRound.raceDate && (
+                  <AddToCalendar
+                    race={{
+                      round: next.round,
+                      name: next.raceName || next.venueName,
+                      circuit: next.venueName,
+                      date: nextCalendarRound.raceDate,
+                      country: nextCalendarRound.country ?? undefined,
+                    }}
+                    season={data.season}
+                    variant="ghost"
+                    size="md"
+                    label="Add to calendar"
+                  />
+                )}
               </div>
             </div>
           ) : (

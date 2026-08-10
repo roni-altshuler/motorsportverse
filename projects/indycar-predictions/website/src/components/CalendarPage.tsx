@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import AddToCalendar from "@/components/AddToCalendar";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
@@ -171,6 +172,22 @@ export default function CalendarPage({
           {totalRounds} rounds across {venues} tracks · {completedRounds} complete ·{" "}
           {remaining} remaining
         </p>
+        <div className="mt-6">
+          <AddToCalendar
+            races={calendar
+              .filter((r) => r.raceDate)
+              .map((r) => ({
+                round: r.round,
+                name: r.raceName || r.name,
+                circuit: r.name,
+                date: r.raceDate as string,
+                country: r.country ?? undefined,
+              }))}
+            season={season}
+            variant="ghost"
+            label="Add full season to calendar"
+          />
+        </div>
       </div>
 
       <SeasonRibbon calendar={calendar} />

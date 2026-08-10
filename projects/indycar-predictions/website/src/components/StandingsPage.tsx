@@ -1,12 +1,14 @@
 "use client";
 
 import { Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 
 import ProgressionChart, {
   type ProgressionSeries,
 } from "@/components/charts/ProgressionChart";
+import ShareButton from "@/components/ShareButton";
 import DriverBadge from "@/components/standings/DriverBadge";
 import TeamBadge from "@/components/standings/TeamBadge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
@@ -179,6 +181,12 @@ function StandingsPageInner(baked: StandingsPageProps) {
           <div
             className="progress-bar-fill"
             style={{ width: `${(lastUpdatedRound / totalRounds) * 100}%` }}
+          />
+        </div>
+        <div className="mt-6 flex justify-center">
+          <ShareButton
+            title={`${season} NTT IndyCar Series standings`}
+            text={`The ${season} IndyCar championship as it stands — full driver & team standings, plus who can still take the title.`}
           />
         </div>
       </div>
@@ -463,10 +471,17 @@ function DriversTable({ drivers }: { drivers: DriverStanding[] }) {
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-bold text-[color:var(--ink)]">{d.code}</span>
-                    <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)]">
-                      {d.name}
-                    </span>
+                    <Link
+                      href={`/driver/${d.code}`}
+                      className="group/name inline-flex items-baseline hover:text-[color:var(--accent-f1-red-bright)] transition-colors"
+                    >
+                      <span className="font-bold text-[color:var(--ink)] group-hover/name:text-[color:var(--accent-f1-red-bright)]">
+                        {d.code}
+                      </span>
+                      <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)] group-hover/name:text-[color:var(--ink)]">
+                        {d.name}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-3 text-[color:var(--text-muted)]">
                     <span className="inline-flex items-center gap-2">

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import type { DriverStanding } from "@/types/indycar";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -91,9 +93,14 @@ function PodiumCard({ driver, rank }: { driver: DriverStanding; rank: 1 | 2 | 3 
             <p className="caption-uppercase text-[10px] tracking-[0.18em] truncate">
               {driver.code}
             </p>
-            <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1 truncate">
-              {driver.name}
-            </p>
+            <Link
+              href={`/driver/${driver.code}`}
+              className="block hover:text-[color:var(--accent-f1-red-bright)] transition-colors"
+            >
+              <p className="display-md [font-weight:700] text-[color:var(--ink)] !text-[34px] !leading-none mt-1 truncate hover:text-[color:var(--accent-f1-red-bright)] transition-colors">
+                {driver.name}
+              </p>
+            </Link>
             <div className="flex items-center gap-2 mt-2">
               <TeamColorBar teamColor={color} team={driver.team} size="sm" />
               <span className="caption-uppercase text-[10px] tracking-[0.18em] truncate">

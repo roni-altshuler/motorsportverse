@@ -11,6 +11,8 @@ import { PredictedVsActualSlope } from "@/components/charts/PredictedVsActualSlo
 import WinProbabilityChart, {
   type WinProbabilityTrend,
 } from "@/components/charts/WinProbabilityChart";
+import AddToCalendar from "@/components/AddToCalendar";
+import ShareButton from "@/components/ShareButton";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
@@ -132,6 +134,27 @@ export function RaceDetail({
         isIndy500={isIndy500}
         dataSource={round.dataSource}
       />
+
+      {/* Share + calendar affordances for this round. */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <ShareButton
+          title={`${round.raceName || round.venueName} — IndyCar race prediction`}
+        />
+        {round.raceDate && (
+          <AddToCalendar
+            race={{
+              round: round.round,
+              name: round.raceName || round.venueName,
+              circuit: round.venueName,
+              date: round.raceDate,
+              country: round.country ?? undefined,
+            }}
+            season={round.season}
+            variant="ghost"
+            size="md"
+          />
+        )}
+      </div>
 
       {/* Auto-generated "what the model sees" bullets for this race. */}
       <RaceNarrativeCard round={round} championship={championship} isIndy500={isIndy500} />

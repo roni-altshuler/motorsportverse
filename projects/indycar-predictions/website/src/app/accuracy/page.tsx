@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import ShareButton from "@/components/ShareButton";
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
 import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
@@ -50,6 +51,13 @@ export default function AccuracyPage() {
         season. Every number is scored against the full official classification (every
         car is classified in IndyCar racing), using only data available before each race.
       </p>
+
+      <div className="mt-6">
+        <ShareButton
+          title={`IndyCar ${data.seasonLabel ?? data.season} prediction accuracy`}
+          text={`How the RaceIQ Indy model's pre-race forecasts scored against real ${data.seasonLabel ?? data.season} NTT IndyCar Series results — winners, podiums and finishing order, versus honest baselines.`}
+        />
+      </div>
 
       {/* Headline metrics */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
@@ -78,9 +79,12 @@ export default function DriverBadge({
             <AnimatedNumber value={points} variant="default" decimals={0} />
           </div>
         </div>
-        <p className="text-lg font-black tracking-tight leading-tight text-[color:var(--ink)]">
+        <Link
+          href={`/driver/${driver}`}
+          className="text-lg font-black tracking-tight leading-tight text-[color:var(--ink)] hover:text-[color:var(--accent-f1-red-bright)] transition-colors"
+        >
           {driverFullName ?? driver}
-        </p>
+        </Link>
         <p className="text-sm text-[color:var(--text-muted)] mt-1">{team}</p>
         <div className="flex items-center gap-3 mt-3 text-[11px] font-mono text-[color:var(--text-muted)]">
           <span>
