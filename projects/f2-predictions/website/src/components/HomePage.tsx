@@ -21,6 +21,7 @@ import { teamColor } from "@/lib/teams";
 import type { RaceBlock } from "@/types/f2";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
+import AddToCalendar from "@/components/AddToCalendar";
 import HeroParallax from "@/components/home/HeroParallax";
 import HeroCountdown from "@/components/home/HeroCountdown";
 import PodiumStage from "@/components/home/PodiumStage";
@@ -163,6 +164,19 @@ export default function HomePage() {
                 <Link href="/accuracy" className={buttonVariants({ variant: "ghost" })}>
                   Accuracy
                 </Link>
+                {nextCalendarRound.featureDate && (
+                  <AddToCalendar
+                    race={{
+                      round: next.round,
+                      name: next.venueName,
+                      circuit: nextCalendarRound.city,
+                      date: nextCalendarRound.featureDate,
+                      country: nextCalendarRound.country ?? undefined,
+                    }}
+                    season={data.season}
+                    variant="ghost"
+                  />
+                )}
               </div>
             </div>
           ) : (

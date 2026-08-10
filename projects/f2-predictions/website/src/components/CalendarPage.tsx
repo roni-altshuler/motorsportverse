@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
+import AddToCalendar from "@/components/AddToCalendar";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { useSeasonF2Data } from "@/lib/f2client";
@@ -56,6 +57,26 @@ export default function CalendarPage({
         <p className="body-sm text-[color:var(--muted)]">
           {totalRounds} rounds · {completedRounds} complete · {remaining} remaining
         </p>
+        {(() => {
+          const seasonRaces = calendar
+            .filter((r) => r.featureDate)
+            .map((r) => ({
+              round: r.round,
+              name: r.name,
+              circuit: r.city,
+              date: r.featureDate as string,
+              country: r.country ?? undefined,
+            }));
+          return seasonRaces.length > 0 ? (
+            <div className="mt-6">
+              <AddToCalendar
+                races={seasonRaces}
+                season={season}
+                label="Add full season to calendar"
+              />
+            </div>
+          ) : null;
+        })()}
       </div>
 
       <SeasonRibbon calendar={calendar} />

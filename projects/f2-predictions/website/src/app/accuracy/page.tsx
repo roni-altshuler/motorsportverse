@@ -6,6 +6,7 @@ import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPan
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
 import { Sparkline } from "@/components/charts/Sparkline";
+import ShareButton from "@/components/ShareButton";
 import {
   getCalibrationSummary,
   getF2Data,
@@ -49,6 +50,13 @@ export default function AccuracyPage() {
         results, over {acc?.roundsScored ?? data.completedRounds} completed rounds of {data.season}.
         Every number is scored finishers-only, using only data available before each race.
       </p>
+
+      <div className="mt-6">
+        <ShareButton
+          title={`RaceIQ F2 — ${data.season} model accuracy`}
+          text={`How the RaceIQ F2 model has scored against real ${data.season} FIA Formula 2 results.`}
+        />
+      </div>
 
       {/* Headline metrics */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

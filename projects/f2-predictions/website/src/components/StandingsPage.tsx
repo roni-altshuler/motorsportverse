@@ -1,8 +1,11 @@
 "use client";
 
 import { Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+
+import ShareButton from "@/components/ShareButton";
 
 import ProgressionChart, {
   type ProgressionSeries,
@@ -173,6 +176,12 @@ function StandingsPageInner(baked: StandingsPageProps) {
           <div
             className="progress-bar-fill"
             style={{ width: `${(lastUpdatedRound / totalRounds) * 100}%` }}
+          />
+        </div>
+        <div className="mt-6 flex justify-center">
+          <ShareButton
+            title={`F2 ${season} Championship Standings`}
+            text={`FIA Formula 2 ${season} championship standings & title projections — RaceIQ F2.`}
           />
         </div>
       </div>
@@ -446,10 +455,17 @@ function DriversTable({ drivers }: { drivers: DriverStanding[] }) {
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-bold text-[color:var(--ink)]">{d.code}</span>
-                    <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)]">
-                      {d.name}
-                    </span>
+                    <Link
+                      href={`/driver/${d.code}`}
+                      className="group/link inline-flex items-baseline hover:text-[color:var(--accent)] transition-colors"
+                    >
+                      <span className="font-bold text-[color:var(--ink)] group-hover/link:text-[color:var(--accent)]">
+                        {d.code}
+                      </span>
+                      <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)]">
+                        {d.name}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-3 text-[color:var(--text-muted)]">
                     <span className="inline-flex items-center gap-2">

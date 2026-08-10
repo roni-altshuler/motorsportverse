@@ -13,6 +13,8 @@ import WinProbabilityChart, {
   type WinProbabilityTrend,
 } from "@/components/charts/WinProbabilityChart";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
+import ShareButton from "@/components/ShareButton";
+import AddToCalendar from "@/components/AddToCalendar";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
@@ -25,6 +27,7 @@ import { useSeason } from "@/lib/SeasonProvider";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import type { CircuitGeometry } from "@/types/circuit";
 import type {
+  CalendarRound,
   ClassificationEntry,
   DriverStanding,
   ProbabilitiesRound,
@@ -42,6 +45,8 @@ export function RaceDetail({
   driverStandings: bakedStandings = [],
   championship: bakedChampionship = [],
   winTrend = null,
+  calendarRound = null,
+  season,
 }: {
   round: RoundDetail;
   probabilities: ProbabilitiesRound | null;
@@ -51,6 +56,10 @@ export function RaceDetail({
   /** Win-market-by-round trend baked from the CURRENT season's probability
    *  files (built server-side in the page); hidden on archived-season overlay. */
   winTrend?: WinProbabilityTrend | null;
+  /** Calendar entry for this round (carries the feature-race date + host city)
+   *  — powers the "Add to calendar" affordance in the header. */
+  calendarRound?: CalendarRound | null;
+  season?: number;
 }) {
   const reduced = useReducedMotion();
   const [tab, setTab] = useState<RaceKey>("feature");
@@ -125,6 +134,26 @@ export function RaceDetail({
         activeRace={tab}
         dataSource={round.dataSource}
       />
+
+      {/* Engagement row: share the page + (for upcoming rounds) add to calendar. */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <ShareButton
+          title={`F2 ${round.venueName} — Round ${round.round}`}
+          text={`RaceIQ F2 forecast for the ${round.venueName} round — sprint + feature race win probabilities.`}
+        />
+        {!round.completed && calendarRound?.featureDate && (
+          <AddToCalendar
+            race={{
+              round: round.round,
+              name: round.venueName,
+              circuit: calendarRound.city,
+              date: calendarRound.featureDate,
+              country: calendarRound.country ?? round.country ?? undefined,
+            }}
+            season={season}
+          />
+        )}
+      </div>
 
       {/* Primary race tabs — F2's two scored races (Feature + Sprint). */}
       <div className="mb-6 flex gap-2">
