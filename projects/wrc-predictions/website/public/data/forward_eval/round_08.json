@@ -1,0 +1,74 @@
+{
+  "round": 8,
+  "venueName": "EKO Acropolis Rally Greece",
+  "surface": "gravel",
+  "rally": {
+    "n": 13,
+    "mean_position_error": 6.077,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 7,
+    "within_5": 10,
+    "exact_matches": 0,
+    "spearman_correlation": 0.6923076923076923,
+    "ndcg_at_5": 0.870387241885237
+  },
+  "markets": {
+    "win": {
+      "brier": 0.074708,
+      "logLoss": 0.267204
+    },
+    "podium": {
+      "brier": 0.163175,
+      "logLoss": 0.46416
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 13,
+        "mean_position_error": 5.615,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 9,
+        "exact_matches": 0,
+        "spearman_correlation": 0.6868131868131868,
+        "ndcg_at_5": 0.8661515599019101
+      },
+      "markets": {
+        "win": {
+          "brier": 0.079327,
+          "logLoss": 0.275969
+        },
+        "podium": {
+          "brier": 0.195677,
+          "logLoss": 0.53343
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 13,
+        "mean_position_error": 4.769,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 9,
+        "exact_matches": 0,
+        "spearman_correlation": 0.7637362637362637,
+        "ndcg_at_5": 0.8637352271558397
+      },
+      "markets": {
+        "win": {
+          "brier": 0.058066,
+          "logLoss": 0.181592
+        },
+        "podium": {
+          "brier": 0.195677,
+          "logLoss": 0.53343
+        }
+      }
+    }
+  }
+}

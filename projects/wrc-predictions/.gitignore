@@ -1,0 +1,10 @@
+# Scratch HTTP cache for the results-API pull. The committed data/*.json
+# snapshots are the source of truth; this is safe to delete/re-fetch.
+.http_cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+website/.next/
+website/out/
+*.egg-info/

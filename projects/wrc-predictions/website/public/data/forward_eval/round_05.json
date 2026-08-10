@@ -1,0 +1,74 @@
+{
+  "round": 5,
+  "venueName": "Rally Islas Canarias",
+  "surface": "tarmac",
+  "rally": {
+    "n": 11,
+    "mean_position_error": 7.909,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 4,
+    "within_5": 7,
+    "exact_matches": 0,
+    "spearman_correlation": 0.7181818181818181,
+    "ndcg_at_5": 0.8621400529167386
+  },
+  "markets": {
+    "win": {
+      "brier": 0.097029,
+      "logLoss": 0.402207
+    },
+    "podium": {
+      "brier": 0.168376,
+      "logLoss": 0.503828
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 11,
+        "mean_position_error": 5.818,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 6,
+        "within_5": 7,
+        "exact_matches": 0,
+        "spearman_correlation": 0.6818181818181818,
+        "ndcg_at_5": 0.8421514228749156
+      },
+      "markets": {
+        "win": {
+          "brier": 0.102972,
+          "logLoss": 0.450334
+        },
+        "podium": {
+          "brier": 0.148982,
+          "logLoss": 0.524469
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 11,
+        "mean_position_error": 6.909,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 6,
+        "exact_matches": 0,
+        "spearman_correlation": -0.09090909090909091,
+        "ndcg_at_5": 0.5852140381342008
+      },
+      "markets": {
+        "win": {
+          "brier": 0.103929,
+          "logLoss": 0.664889
+        },
+        "podium": {
+          "brier": 0.226336,
+          "logLoss": 0.810822
+        }
+      }
+    }
+  }
+}

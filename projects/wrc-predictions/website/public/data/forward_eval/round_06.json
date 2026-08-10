@@ -1,0 +1,74 @@
+{
+  "round": 6,
+  "venueName": "Vodafone Rally de Portugal",
+  "surface": "gravel",
+  "rally": {
+    "n": 11,
+    "mean_position_error": 7.909,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 2,
+    "within_5": 6,
+    "exact_matches": 0,
+    "spearman_correlation": 0.509090909090909,
+    "ndcg_at_5": 0.6904842083881592
+  },
+  "markets": {
+    "win": {
+      "brier": 0.099787,
+      "logLoss": 0.42594
+    },
+    "podium": {
+      "brier": 0.279131,
+      "logLoss": 0.867153
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 11,
+        "mean_position_error": 6.182,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 4,
+        "within_5": 7,
+        "exact_matches": 2,
+        "spearman_correlation": 0.5181818181818182,
+        "ndcg_at_5": 0.6985114301113295
+      },
+      "markets": {
+        "win": {
+          "brier": 0.100426,
+          "logLoss": 0.393906
+        },
+        "podium": {
+          "brier": 0.252909,
+          "logLoss": 0.783198
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 11,
+        "mean_position_error": 5.727,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 4,
+        "within_5": 7,
+        "exact_matches": 0,
+        "spearman_correlation": 0.4090909090909091,
+        "ndcg_at_5": 0.6931843830763171
+      },
+      "markets": {
+        "win": {
+          "brier": 0.097735,
+          "logLoss": 0.362728
+        },
+        "podium": {
+          "brier": 0.252909,
+          "logLoss": 0.783198
+        }
+      }
+    }
+  }
+}

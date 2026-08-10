@@ -3,8 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 6,
-    "experimental": 1,
-    "in-development": 4
+    "experimental": 2,
+    "in-development": 3
   },
   "projects": [
     {
@@ -344,6 +344,57 @@
       "logo": "/brand/series/raceiq-motogp.png"
     },
     {
+      "slug": "wrc-predictions",
+      "name": "RaceIQ WRC",
+      "sport": "WRC",
+      "category": "rally",
+      "maturity": "experimental",
+      "summary": "Rally-classification and championship forecasts for the FIA World Rally Championship.",
+      "description": "World rally on the MotorsportVerse core. Each round is a single rally classification (no sprint, no qualifying grid), driven by a leakage-safe crew-skill blend — cross-season Elo, the car (manufacturer/tier), and a same-surface form signal, since gravel, tarmac and snow reward different crews. Because rally has no grid, the current championship order is a very strong predictor, so the production forecast ENSEMBLES the skill model with a championship-form prior — validated by walk-forward (2021-2026) to beat the standings-order baseline on the live season (win and podium Brier) while the surface/cross-season signal adds what a bare standings heuristic can't. Monte Carlo win/podium probabilities, finishing-range intervals, and a rally-by-rally drivers' + manufacturers' championship projection. Runs on the real 2026 WRC season pulled from the official wrc.com results API into a committed, reviewable snapshot (2021-2026 corpus). Deployed site + scheduled refresh pipeline; forward-eval grades every rally honestly against standings and last-rally baselines.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/wrc-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/wrc/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "wrc.com results API (official, pulled to a committed snapshot)",
+        "2021-2026 WRC corpus (offline, reproducible)"
+      ],
+      "models": [
+        "crew-skill-elo-cross-season",
+        "surface-form",
+        "championship-form-ensemble",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "rally",
+        "mixed-surface",
+        "one-classification-per-round",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/wrc.png",
+      "accent": "#0F62FE",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "roni-altshuler"
+        }
+      ],
+      "added": "2026-06-15"
+    },
+    {
       "slug": "imsa-predictions",
       "name": "IMSA Predictions",
       "sport": "IMSA",
@@ -418,33 +469,6 @@
       ],
       "icon": "/brand/sports/wec.png",
       "accent": "#E8002D",
-      "uses_core": [
-        "calibration",
-        "eval"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15"
-    },
-    {
-      "slug": "wrc-predictions",
-      "name": "WRC Predictions",
-      "sport": "WRC",
-      "category": "rally",
-      "maturity": "in-development",
-      "summary": "Stage-time forecasts for the FIA World Rally Championship.",
-      "description": "Scaffolded on the shared MotorsportVerse core: a WRC project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/wrc-predictions",
-      "website": "",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "WRC timing"
-      ],
-      "models": [],
-      "tags": [
-        "scaffolded"
-      ],
-      "icon": "/brand/sports/wrc.png",
-      "accent": "#0F62FE",
       "uses_core": [
         "calibration",
         "eval"

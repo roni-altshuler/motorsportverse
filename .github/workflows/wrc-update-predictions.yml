@@ -1,0 +1,115 @@
+name: WRC — Update Race Predictions
+
+# WRC rally-weekend automation. The committed data/official_2026.json is the
+# offline source of truth; a guarded live re-pull from the official wrc.com
+# results API (Red Bull-hosted JSON, reachable from GitHub runners) can only ADD
+# completed rounds (build_snapshot's regression guard refuses to regress). A cheap
+# freshness pre-check skips the heavier multi-season pull when nothing new is scored.
+#
+# Rallies run Thursday-Sunday, roughly January-November, across many time zones;
+# the classification settles late Sunday and standings can firm up into Monday, so
+# the poll casts a Fri-Sun window plus weekday safety nets.
+
+on:
+  schedule:
+    - cron: "20 6-22/2 * * 5"   # Friday
+    - cron: "20 6-22/2 * * 6"   # Saturday
+    - cron: "20 6-22/2 * * 0"   # Sunday (main result window)
+    - cron: "20 0-4 * * 1"      # Sunday-night spillover
+    - cron: "0 9,21 * * 1"      # Monday safety net
+    - cron: "0 12 * * 2,3"      # Tue/Wed once each
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run the pull even if the freshness gate says nothing new"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: wrc-update-predictions
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: |
+          pip install -e packages/motorsport-core -e packages/motorsport-data
+          pip install -e projects/wrc-predictions --no-deps
+          pip install requests numpy matplotlib pytest
+
+      - name: Freshness gate — has a new rally been scored?
+        id: check
+        working-directory: projects/wrc-predictions
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force }}" = "true" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual force-run — skipping the freshness gate."
+          else
+            PYTHONPATH=src python scripts/freshness_gate.py >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Re-pull the snapshot (guarded live API fetch)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/wrc-predictions
+        run: PYTHONPATH=src python -m wrc_predictions.refresh --season 2026 --skip-forward-eval
+
+      - name: Regenerate site dataset (fresh processes pick up new rounds)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/wrc-predictions
+        run: |
+          PYTHONPATH=src python -m wrc_predictions.export
+          PYTHONPATH=src python -m wrc_predictions.forward_eval --season 2026 --allow-empty
+
+      - name: Validate generated outputs
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/wrc-predictions
+        run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
+
+      - name: Commit refreshed data if changed
+        id: commit
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f projects/wrc-predictions/data/official_*.json \
+                     projects/wrc-predictions/website/public/data
+          if git diff --cached --quiet; then
+            echo "No data changes — snapshot already current."
+            exit 0
+          fi
+          git commit -m "[wrc] Update predictions ($(date -u +%Y-%m-%d))"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash .github/scripts/safe_push.sh
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: predict
+    if: needs.predict.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy-website.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

@@ -1,0 +1,74 @@
+{
+  "round": 10,
+  "venueName": "Secto Rally Finland",
+  "surface": "gravel",
+  "rally": {
+    "n": 12,
+    "mean_position_error": 9.083,
+    "winner_hit": true,
+    "podium_hits": 1,
+    "within_3": 6,
+    "within_5": 6,
+    "exact_matches": 2,
+    "spearman_correlation": 0.7902097902097902,
+    "ndcg_at_5": 0.9184755503976889
+  },
+  "markets": {
+    "win": {
+      "brier": 0.057585,
+      "logLoss": 0.176905
+    },
+    "podium": {
+      "brier": 0.135761,
+      "logLoss": 0.450094
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 9.75,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 4,
+        "within_5": 8,
+        "exact_matches": 1,
+        "spearman_correlation": 0.7622377622377622,
+        "ndcg_at_5": 0.8437535207295084
+      },
+      "markets": {
+        "win": {
+          "brier": 0.062066,
+          "logLoss": 0.188035
+        },
+        "podium": {
+          "brier": 0.138442,
+          "logLoss": 0.494306
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 10.083,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 2,
+        "spearman_correlation": 0.6923076923076923,
+        "ndcg_at_5": 0.9943864126913525
+      },
+      "markets": {
+        "win": {
+          "brier": 0.047553,
+          "logLoss": 0.153262
+        },
+        "podium": {
+          "brier": 0.118442,
+          "logLoss": 0.349181
+        }
+      }
+    }
+  }
+}

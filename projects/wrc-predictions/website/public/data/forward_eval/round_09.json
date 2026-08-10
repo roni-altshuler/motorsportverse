@@ -1,0 +1,74 @@
+{
+  "round": 9,
+  "venueName": "Rally Estonia",
+  "surface": "gravel",
+  "rally": {
+    "n": 12,
+    "mean_position_error": 8.5,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 7,
+    "within_5": 7,
+    "exact_matches": 1,
+    "spearman_correlation": 0.2937062937062937,
+    "ndcg_at_5": 0.2545932358582992
+  },
+  "markets": {
+    "win": {
+      "brier": 0.071043,
+      "logLoss": 0.233687
+    },
+    "podium": {
+      "brier": 0.21153,
+      "logLoss": 0.697985
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 7.583,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.32867132867132864,
+        "ndcg_at_5": 0.24253718805610014
+      },
+      "markets": {
+        "win": {
+          "brier": 0.073472,
+          "logLoss": 0.234397
+        },
+        "podium": {
+          "brier": 0.231908,
+          "logLoss": 0.720469
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 7.417,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.1888111888111888,
+        "ndcg_at_5": 0.5223389601108347
+      },
+      "markets": {
+        "win": {
+          "brier": 0.080875,
+          "logLoss": 0.270637
+        },
+        "podium": {
+          "brier": 0.343575,
+          "logLoss": 1.080752
+        }
+      }
+    }
+  }
+}

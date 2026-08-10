@@ -1,0 +1,74 @@
+{
+  "round": 4,
+  "venueName": "Croatia Rally",
+  "surface": "tarmac",
+  "rally": {
+    "n": 15,
+    "mean_position_error": 15.067,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 3,
+    "within_5": 5,
+    "exact_matches": 1,
+    "spearman_correlation": -0.07857142857142857,
+    "ndcg_at_5": -0.21577929819478908
+  },
+  "markets": {
+    "win": {
+      "brier": 0.043651,
+      "logLoss": 0.136357
+    },
+    "podium": {
+      "brier": 0.152237,
+      "logLoss": 0.501601
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 15,
+        "mean_position_error": 15.6,
+        "winner_hit": true,
+        "podium_hits": 1,
+        "within_3": 3,
+        "within_5": 5,
+        "exact_matches": 1,
+        "spearman_correlation": -0.16428571428571428,
+        "ndcg_at_5": -0.3283750046708694
+      },
+      "markets": {
+        "win": {
+          "brier": 0.038111,
+          "logLoss": 0.120249
+        },
+        "podium": {
+          "brier": 0.184267,
+          "logLoss": 0.573663
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 15,
+        "mean_position_error": 14.533,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 3,
+        "within_5": 3,
+        "exact_matches": 1,
+        "spearman_correlation": 0.010714285714285714,
+        "ndcg_at_5": -0.21577929819478908
+      },
+      "markets": {
+        "win": {
+          "brier": 0.037059,
+          "logLoss": 0.108254
+        },
+        "podium": {
+          "brier": 0.108053,
+          "logLoss": 0.383929
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "round": 1,
+  "venueName": "Rallye Monte Carlo",
+  "surface": "tarmac",
+  "rally": {
+    "n": 13,
+    "mean_position_error": 6.231,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 7,
+    "within_5": 8,
+    "exact_matches": 0,
+    "spearman_correlation": 0.7472527472527473,
+    "ndcg_at_5": 0.9243923227820071
+  },
+  "markets": {
+    "win": {
+      "brier": 0.070215,
+      "logLoss": 0.247533
+    },
+    "podium": {
+      "brier": 0.162485,
+      "logLoss": 0.484457
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 13,
+        "mean_position_error": 6.231,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.7472527472527473,
+        "ndcg_at_5": 0.9243923227820071
+      },
+      "markets": {
+        "win": {
+          "brier": 0.071214,
+          "logLoss": 0.229562
+        },
+        "podium": {
+          "brier": 0.158054,
+          "logLoss": 0.44316
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 13,
+        "mean_position_error": 15.615,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 0,
+        "within_5": 1,
+        "exact_matches": 0,
+        "spearman_correlation": 0.7472527472527473,
+        "ndcg_at_5": 0.9243923227820071
+      },
+      "markets": {
+        "win": {
+          "brier": 0.076706,
+          "logLoss": 0.50484
+        },
+        "podium": {
+          "brier": 0.217823,
+          "logLoss": 0.832636
+        }
+      }
+    }
+  }
+}

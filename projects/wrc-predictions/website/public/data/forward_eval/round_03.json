@@ -1,0 +1,74 @@
+{
+  "round": 3,
+  "venueName": "Safari Rally Kenya",
+  "surface": "gravel",
+  "rally": {
+    "n": 14,
+    "mean_position_error": 8.429,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 4,
+    "within_5": 7,
+    "exact_matches": 0,
+    "spearman_correlation": 0.01978021978021978,
+    "ndcg_at_5": 0.5730544970937724
+  },
+  "markets": {
+    "win": {
+      "brier": 0.06319,
+      "logLoss": 0.211522
+    },
+    "podium": {
+      "brier": 0.165571,
+      "logLoss": 0.466963
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 14,
+        "mean_position_error": 9.071,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 3,
+        "within_5": 6,
+        "exact_matches": 0,
+        "spearman_correlation": -0.002197802197802198,
+        "ndcg_at_5": 0.4715219412266779
+      },
+      "markets": {
+        "win": {
+          "brier": 0.063002,
+          "logLoss": 0.201355
+        },
+        "podium": {
+          "brier": 0.181764,
+          "logLoss": 0.497504
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 14,
+        "mean_position_error": 7.929,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 5,
+        "within_5": 6,
+        "exact_matches": 1,
+        "spearman_correlation": 0.15604395604395604,
+        "ndcg_at_5": 0.6221877408227081
+      },
+      "markets": {
+        "win": {
+          "brier": 0.053993,
+          "logLoss": 0.169867
+        },
+        "podium": {
+          "brier": 0.103193,
+          "logLoss": 0.313082
+        }
+      }
+    }
+  }
+}
