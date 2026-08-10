@@ -58,6 +58,40 @@ DEFAULT_TEMPERATURE: float = 0.5
 # estimates (std-err ~ √(p(1-p)/N) ≈ 0.007 at p=0.5) without being slow.
 DEFAULT_N_SAMPLES: int = 5000
 
+# --- Small-sample calibration regularisation (mirrors the F1 flagship fix) ---
+# Isotonic on a handful of positive events collapses to a step function: the
+# top-predicted competitor maps to an over-confident ~1.0 and the tail to an
+# impossible exact 0.0 (seen across F3/IndyCar/NASCAR). We temper it two ways:
+#   * shrink the isotonic map back toward the RAW model probability (which is a
+#     smooth, self-normalising Plackett–Luce estimate) by the number of positive
+#     events observed for that market — w = n_pos / (n_pos + K); few winners →
+#     trust the raw model, many → trust the empirical calibration; and
+#   * floor every calibrated probability so no competitor is ever a hard 0.0.
+# Keyed on the POSITIVE-event count (not total rows) because that is what a
+# rare-event market like "win" is actually starved of.
+CALIBRATION_SHRINK_K: float = 8.0
+CALIBRATION_PROB_FLOOR: float = 0.003
+
+
+def _regularise_calibration(
+    raw: np.ndarray,
+    calibrated: np.ndarray,
+    n_pos: int,
+    *,
+    k: float = CALIBRATION_SHRINK_K,
+    floor: float = CALIBRATION_PROB_FLOOR,
+) -> np.ndarray:
+    """Shrink a calibrated vector toward the raw model probability by the
+    positive-event count, then floor. Prevents small-sample isotonic collapse
+    (over-confident leader, hard-zero tail) while converging to the empirical
+    calibration as evidence accrues."""
+    raw = np.asarray(raw, dtype=np.float64)
+    calibrated = np.asarray(calibrated, dtype=np.float64)
+    denom = n_pos + k
+    w = (n_pos / denom) if denom > 0 else 0.0
+    blended = (1.0 - w) * raw + w * calibrated
+    return np.clip(blended, floor, 1.0)
+
 
 # --------------------------------------------------------------------------- #
 # Plackett–Luce sampling
@@ -271,6 +305,7 @@ class ProbabilityCalibrator:
 
     _models: dict[str, IsotonicRegression] = field(default_factory=dict)
     _fit_sample_counts: dict[str, int] = field(default_factory=dict)
+    _pos_counts: dict[str, int] = field(default_factory=dict)
     _min_samples: int = 5
 
     def fit_from_history(self, history: Sequence[Mapping[str, object]]) -> "ProbabilityCalibrator":
@@ -309,6 +344,7 @@ class ProbabilityCalibrator:
             model.fit(preds, obs)
             self._models[market] = model
             self._fit_sample_counts[market] = len(pairs)
+            self._pos_counts[market] = int(obs.sum())
         return self
 
     def is_fitted(self, market: str | None = None) -> bool:
@@ -321,11 +357,17 @@ class ProbabilityCalibrator:
         market: str,
         predicted: Sequence[float] | np.ndarray,
     ) -> np.ndarray:
-        """Apply per-market calibration.  Pass-through if not fitted."""
+        """Apply per-market calibration.  Pass-through if not fitted.
+
+        The isotonic map is regularised toward the raw input by the market's
+        positive-event count and floored, so a small-sample fit can't collapse
+        to an over-confident leader / hard-zero tail (see ``_regularise_calibration``).
+        """
         arr = np.asarray(list(predicted), dtype=np.float64)
         if market not in self._models:
             return arr.copy()
-        return np.clip(self._models[market].transform(arr), 0.0, 1.0)
+        iso = np.clip(self._models[market].transform(arr), 0.0, 1.0)
+        return _regularise_calibration(arr, iso, self._pos_counts.get(market, 0))
 
     def sample_counts(self) -> dict[str, int]:
         """How many records each per-market model was trained on."""
@@ -355,6 +397,7 @@ class StratifiedProbabilityCalibrator:
     """
 
     _stratum_models: dict[str, dict[str, IsotonicRegression]] = field(default_factory=dict)
+    _stratum_pos_counts: dict[str, dict[str, int]] = field(default_factory=dict)
     _global: ProbabilityCalibrator = field(default_factory=ProbabilityCalibrator)
     _min_samples_per_stratum: int = 8  # higher than global; smaller buckets need protection
 
@@ -396,6 +439,7 @@ class StratifiedProbabilityCalibrator:
             model = IsotonicRegression(out_of_bounds="clip", y_min=0.0, y_max=1.0)
             model.fit(preds, obs)
             self._stratum_models.setdefault(stratum, {})[market] = model
+            self._stratum_pos_counts.setdefault(stratum, {})[market] = int(obs.sum())
         return self
 
     def is_fitted(self, market: str | None = None, stratum: str | None = None) -> bool:
@@ -423,7 +467,9 @@ class StratifiedProbabilityCalibrator:
         if stratum is not None and stratum in self._stratum_models:
             stratum_model = self._stratum_models[stratum].get(market)
             if stratum_model is not None:
-                return np.clip(stratum_model.transform(arr), 0.0, 1.0)
+                iso = np.clip(stratum_model.transform(arr), 0.0, 1.0)
+                n_pos = self._stratum_pos_counts.get(stratum, {}).get(market, 0)
+                return _regularise_calibration(arr, iso, n_pos)
         return self._global.transform(market, arr)
 
     def sample_counts(self) -> dict[str, int | dict[str, int]]:
