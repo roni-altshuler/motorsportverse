@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
+import ShareButton from "@/components/ShareButton";
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
 import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
+import ModelHealthPanel from "@/components/accuracy/ModelHealthPanel";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
-import { Sparkline } from "@/components/charts/Sparkline";
 import {
   getCalibrationSummary,
   getNascarData,
@@ -36,7 +37,6 @@ export default function AccuracyPage() {
   const backtest = getHistoricalBacktest();
 
   const acc = data.seasonAccuracy;
-  const brierSeries = (health?.brierByRound ?? []).map((b) => b.brier);
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
@@ -50,6 +50,13 @@ export default function AccuracyPage() {
         season. Every number is scored against the full official classification (every
         car is classified in Cup racing), using only data available before each race.
       </p>
+
+      <div className="mt-6">
+        <ShareButton
+          title={`NASCAR Cup ${data.seasonLabel ?? data.season} model accuracy`}
+          text={`How the NASCAR Cup ${data.seasonLabel ?? data.season} prediction model scores vs the real results`}
+        />
+      </div>
 
       {/* Headline metrics */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -139,42 +146,27 @@ export default function AccuracyPage() {
       {/* Historical backtest dashboard */}
       {backtest && backtest.roundsEvaluated > 0 && <HistoricalBacktestPanel data={backtest} />}
 
-      {/* Model health */}
+      {/* Model health — self-check strip (F1-parity ModelHealthPanel). */}
       {health && (
         <section className="mt-12">
-          <h2 className="mb-4 text-xl font-semibold text-[var(--ink)]">Model health</h2>
-          <div className="grid gap-6 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-6 lg:grid-cols-2">
-            <div>
-              <p className="eyebrow mb-2">Win-market Brier trend</p>
-              <Sparkline points={brierSeries} />
-              <p className="mt-2 text-xs text-[var(--ink-dim)]">
-                Lower is better · {health.brierByRound.length} rounds
-              </p>
-            </div>
-            <div>
+          <ModelHealthPanel health={health} />
+          {(health.alarms.length > 0 || health.warnings.length > 0) && (
+            <div className="mt-6 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-6">
               <p className="eyebrow mb-2">Diagnostics</p>
-              {health.alarms.length === 0 && health.warnings.length === 0 ? (
-                <p className="text-sm text-[var(--ink-muted)]">No drift warnings.</p>
-              ) : (
-                <ul className="space-y-1 text-sm">
-                  {health.alarms.map((a) => (
-                    <li key={a} style={{ color: "var(--warning)" }}>
-                      ⚠ {a}
-                    </li>
-                  ))}
-                  {health.warnings.map((w) => (
-                    <li key={w} className="text-[var(--ink-muted)]">
-                      • {w}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <p className="mt-3 text-xs text-[var(--ink-dim)]">
-                Feature drift and rolling-Brier are tracked round-to-round; a spike flags where the
-                field behaved unlike the rounds the model learned from.
-              </p>
+              <ul className="space-y-1 text-sm">
+                {health.alarms.map((a) => (
+                  <li key={a} style={{ color: "var(--warning)" }}>
+                    ⚠ {a}
+                  </li>
+                ))}
+                {health.warnings.map((w) => (
+                  <li key={w} className="text-[var(--ink-muted)]">
+                    • {w}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          )}
         </section>
       )}
     </div>

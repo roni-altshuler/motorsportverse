@@ -1,8 +1,11 @@
 "use client";
 
 import { Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+
+import ShareButton from "@/components/ShareButton";
 
 import ProgressionChart, {
   type ProgressionSeries,
@@ -187,6 +190,12 @@ function StandingsPageInner(baked: StandingsPageProps) {
           <div
             className="progress-bar-fill"
             style={{ width: `${(lastUpdatedRound / totalRounds) * 100}%` }}
+          />
+        </div>
+        <div className="mt-6 flex justify-center">
+          <ShareButton
+            title={`NASCAR Cup ${season} Championship Standings`}
+            text={`NASCAR Cup ${season} championship standings & Chase playoff forecast`}
           />
         </div>
       </div>
@@ -465,20 +474,27 @@ function DriversTable({ drivers }: { drivers: DriverStanding[] }) {
                     <div className="w-1 h-8 rounded" style={{ backgroundColor: color }} />
                   </td>
                   <td className="px-2 py-2">
-                    <DriverPortrait
-                      driver={d.code}
-                      driverFullName={d.name}
-                      team={d.team}
-                      teamColor={color}
-                      headshotUrl={d.headshotUrl}
-                      size={40}
-                    />
+                    <Link href={`/driver/${d.code}`} aria-label={`${d.name} profile`}>
+                      <DriverPortrait
+                        driver={d.code}
+                        driverFullName={d.name}
+                        team={d.team}
+                        teamColor={color}
+                        headshotUrl={d.headshotUrl}
+                        size={40}
+                      />
+                    </Link>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-bold text-[color:var(--ink)]">{d.code}</span>
-                    <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)]">
-                      {d.name}
-                    </span>
+                    <Link
+                      href={`/driver/${d.code}`}
+                      className="group inline-flex items-baseline hover:underline underline-offset-4"
+                    >
+                      <span className="font-bold text-[color:var(--ink)]">{d.code}</span>
+                      <span className="ml-2 text-xs hidden sm:inline text-[color:var(--text-muted)] group-hover:text-[color:var(--ink)]">
+                        {d.name}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-3 text-[color:var(--text-muted)]">
                     <span className="inline-flex items-center gap-2">

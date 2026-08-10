@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { EB_Garamond, JetBrains_Mono, Saira_Condensed } from "next/font/google";
 
 import Footer from "@/components/Footer";
@@ -33,10 +33,35 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+// PWA "add to home screen": manifest + icon set live in public/ and are served
+// under the deploy base path. The manifest uses base-path-relative URLs
+// (start_url/scope/icons) so it resolves whether the site is deployed at the
+// domain root or under a GitHub Pages subpath. No service worker is registered
+// — the site is a fully static export and stays offline-safe.
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const MANIFEST_URL = `${BASE_PATH}/manifest.webmanifest`;
+const APPLE_TOUCH_ICON = `${BASE_PATH}/icons/apple-touch-icon.png`;
+const ICON_192 = `${BASE_PATH}/icons/icon-192.png`;
+const ICON_512 = `${BASE_PATH}/icons/icon-512.png`;
+
 export const metadata: Metadata = {
   title: "RaceIQ NASCAR — NASCAR Cup Series predictions",
   description:
     "Race and championship forecasts for the NASCAR Cup Series — every points race, stage racing and Chase playoff odds, calibrated on real results. A MotorsportVerse project on motorsport-core.",
+  manifest: MANIFEST_URL,
+  applicationName: "RaceIQ NASCAR",
+  appleWebApp: {
+    capable: true,
+    title: "RaceIQ NASCAR",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [
+      { url: ICON_192, sizes: "192x192", type: "image/png" },
+      { url: ICON_512, sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: APPLE_TOUCH_ICON, sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "RaceIQ NASCAR — NASCAR Cup Series predictions",
     description:
@@ -44,6 +69,10 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FFD659",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

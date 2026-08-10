@@ -21,6 +21,7 @@ import { trackTypeLabel } from "@/lib/track";
 import type { RaceBlock } from "@/types/nascar";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
+import AddToCalendar from "@/components/AddToCalendar";
 import HeroParallax from "@/components/home/HeroParallax";
 import HeroCountdown from "@/components/home/HeroCountdown";
 import PodiumStage from "@/components/home/PodiumStage";
@@ -166,6 +167,21 @@ export default function HomePage() {
                 <Link href="/accuracy" className={buttonVariants({ variant: "ghost" })}>
                   Accuracy
                 </Link>
+                {nextCalendarRound.raceDate && (
+                  <AddToCalendar
+                    race={{
+                      round: nextCalendarRound.round,
+                      name: nextCalendarRound.raceName || nextCalendarRound.name,
+                      circuit: nextCalendarRound.name,
+                      date: nextCalendarRound.raceDate,
+                      country: nextCalendarRound.country ?? undefined,
+                      isPlayoff: nextCalendarRound.isPlayoff,
+                    }}
+                    season={data.season}
+                    variant="ghost"
+                    label="Add to calendar"
+                  />
+                )}
               </div>
             </div>
           ) : (

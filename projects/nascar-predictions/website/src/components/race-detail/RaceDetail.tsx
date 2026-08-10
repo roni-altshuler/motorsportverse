@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+import AddToCalendar from "@/components/AddToCalendar";
+import ShareButton from "@/components/ShareButton";
 import ChartContainer from "@/components/charts/ChartContainer";
 import { FinishProbabilityHeatmap } from "@/components/charts/FinishProbabilityHeatmap";
 import { HeadToHeadMatrix } from "@/components/charts/HeadToHeadMatrix";
@@ -134,6 +136,28 @@ export function RaceDetail({
         isPlayoff={isPlayoff}
         dataSource={round.dataSource}
       />
+
+      {/* Share + add-to-calendar actions. */}
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+        <ShareButton
+          title={`${round.raceName || round.venueName} — NASCAR race prediction`}
+        />
+        {calEntry?.raceDate && (
+          <AddToCalendar
+            race={{
+              round: round.round,
+              name: round.raceName || round.venueName,
+              circuit: round.venueName,
+              date: calEntry.raceDate,
+              country: round.country ?? undefined,
+              isPlayoff,
+            }}
+            season={round.season}
+            variant="ghost"
+            label="Add to calendar"
+          />
+        )}
+      </div>
 
       {/* Auto-generated "what the model sees" bullets for this race. */}
       <RaceNarrativeCard round={round} championship={championship} isPlayoff={isPlayoff} />

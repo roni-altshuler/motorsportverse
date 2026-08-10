@@ -3,7 +3,9 @@
 import Link from "next/link";
 
 import CountryFlag from "@/components/CountryFlag";
+import AddToCalendar from "@/components/AddToCalendar";
 import { Badge } from "@/components/ui/Badge";
+import type { CalendarRace } from "@/lib/calendar";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { useSeasonNascarData } from "@/lib/nascarclient";
@@ -54,6 +56,18 @@ export default function CalendarPage({
   const nextRound = calendar.find((r) => !r.completed)?.round;
   const venues = new Set(calendar.map((r) => r.key)).size;
   const playoffStart = calendar.find((r) => r.isPlayoff)?.round;
+
+  // Season .ics feed — every round with a known date.
+  const seasonRaces: CalendarRace[] = calendar
+    .filter((r) => r.raceDate)
+    .map((r) => ({
+      round: r.round,
+      name: r.raceName || r.name,
+      circuit: r.name,
+      date: r.raceDate as string,
+      country: r.country ?? undefined,
+      isPlayoff: r.isPlayoff,
+    }));
 
   const statusChip = (r: CalendarRound, isNext: boolean) => (
     <span
@@ -172,6 +186,16 @@ export default function CalendarPage({
           {totalRounds} rounds across {venues} tracks · {completedRounds} complete ·{" "}
           {remaining} remaining
         </p>
+        {seasonRaces.length > 0 && (
+          <div className="mt-6">
+            <AddToCalendar
+              races={seasonRaces}
+              season={season}
+              variant="ghost"
+              label="Add full season to calendar"
+            />
+          </div>
+        )}
       </div>
 
       <SeasonRibbon calendar={calendar} />
