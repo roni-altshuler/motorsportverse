@@ -12,7 +12,9 @@ import { SprintGridFlip } from "@/components/charts/SprintGridFlip";
 import WinProbabilityChart, {
   type WinProbabilityTrend,
 } from "@/components/charts/WinProbabilityChart";
+import AddToCalendar from "@/components/AddToCalendar";
 import DriverDetailSheet from "@/components/DriverDetailSheet";
+import ShareButton from "@/components/ShareButton";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
@@ -25,6 +27,7 @@ import { useSeason } from "@/lib/SeasonProvider";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import type { CircuitGeometry } from "@/types/circuit";
 import type {
+  CalendarRound,
   ClassificationEntry,
   DriverStanding,
   ProbabilitiesRound,
@@ -42,6 +45,7 @@ export function RaceDetail({
   driverStandings: bakedStandings = [],
   championship: bakedChampionship = [],
   winTrend = null,
+  calendarRound = null,
 }: {
   round: RoundDetail;
   probabilities: ProbabilitiesRound | null;
@@ -51,6 +55,9 @@ export function RaceDetail({
   /** Win-market-by-round trend baked from the CURRENT season's probability
    *  files (built server-side in the page); hidden on archived-season overlay. */
   winTrend?: WinProbabilityTrend | null;
+  /** The season-calendar entry for this round (dates/city) — powers the .ics
+   *  "Add to calendar" button. Baked from the current season. */
+  calendarRound?: CalendarRound | null;
 }) {
   const reduced = useReducedMotion();
   const [tab, setTab] = useState<RaceKey>("feature");
@@ -125,6 +132,17 @@ export function RaceDetail({
         activeRace={tab}
         dataSource={round.dataSource}
       />
+
+      {/* Share + add-to-calendar actions. */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <ShareButton
+          title={`${round.venueName} — F3 round ${round.round}`}
+          text={`Sprint + feature-race forecasts for the F3 ${round.venueName} round — win probabilities, predicted podium and the model's classification.`}
+        />
+        {calendarRound && !isArchived && (
+          <AddToCalendar race={calendarRound} season={round.season} size="sm" />
+        )}
+      </div>
 
       {/* Primary race tabs — F3's two scored races (Feature + Sprint). */}
       <div className="mb-6 flex gap-2">

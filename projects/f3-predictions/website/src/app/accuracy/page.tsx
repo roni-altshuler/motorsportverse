@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
 import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
+import ModelHealthStrip from "@/components/accuracy/ModelHealthStrip";
 import RoundsHeatmap from "@/components/accuracy/RoundsHeatmap";
 import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
+import ShareButton from "@/components/ShareButton";
 import { Sparkline } from "@/components/charts/Sparkline";
 import {
   getCalibrationSummary,
@@ -50,6 +52,12 @@ export default function AccuracyPage() {
         Every number is scored finishers-only, using only data available before each race.
       </p>
 
+      <ShareButton
+        title={`${data.season} FIA Formula 3 Prediction Accuracy`}
+        text={`How well the RaceIQ model called the ${data.season} FIA Formula 3 season — winner-hit rate, podium accuracy and per-round scoring vs honest baselines.`}
+        className="mt-6"
+      />
+
       {/* Headline metrics */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metric label="Winner hit rate" value={pct(acc?.winnerHitRate ?? season?.winnerHitRate)} />
@@ -60,6 +68,9 @@ export default function AccuracyPage() {
         />
         <Metric label="NDCG@5" value={season?.meanNdcgAt5 != null ? season.meanNdcgAt5.toFixed(2) : "—"} />
       </div>
+
+      {/* Compact model-health strip — honest at-a-glance status. */}
+      <ModelHealthStrip health={health} />
 
       {/* Per-round accuracy heatmap */}
       {rounds.length > 0 && (

@@ -19,6 +19,7 @@ import Link from "next/link";
 import { getCircuit, getF3Data, getRound } from "@/lib/f3data";
 import { teamColor } from "@/lib/teams";
 import type { RaceBlock } from "@/types/f3";
+import AddToCalendar from "@/components/AddToCalendar";
 import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
@@ -119,7 +120,7 @@ export default function HomePage() {
             </h1>
             <p className="body-md mt-6 max-w-2xl text-[color:var(--body-strong)]">
               Sprint, feature-race and championship forecasts for the FIA Formula
-              2 championship — from a model built for a spec series, where the
+              3 championship — from a model built for a spec series, where the
               cars are equal so driver skill rules. The sprint runs a reversed
               grid; the feature race is earned on merit. {data.completedRounds} of{" "}
               {data.totalRounds} rounds complete, on the same MotorsportVerse core
@@ -163,6 +164,13 @@ export default function HomePage() {
                 <Link href="/accuracy" className={buttonVariants({ variant: "ghost" })}>
                   Accuracy
                 </Link>
+                <AddToCalendar
+                  race={nextCalendarRound}
+                  season={data.season}
+                  variant="ghost"
+                  size="md"
+                  label="Add to calendar"
+                />
               </div>
             </div>
           ) : (

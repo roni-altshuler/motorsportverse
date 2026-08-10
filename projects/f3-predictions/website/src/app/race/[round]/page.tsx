@@ -112,6 +112,7 @@ export default async function RacePage({ params }: { params: Promise<{ round: st
         driverStandings={data.driverStandings}
         championship={data.championship}
         winTrend={buildWinTrend(data)}
+        calendarRound={calRound ?? null}
       />
     </div>
   );

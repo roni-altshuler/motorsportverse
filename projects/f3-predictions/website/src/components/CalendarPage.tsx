@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import AddToCalendar from "@/components/AddToCalendar";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import SeasonRibbon from "@/components/calendar/SeasonRibbon";
@@ -56,6 +57,15 @@ export default function CalendarPage({
         <p className="body-sm text-[color:var(--muted)]">
           {totalRounds} rounds · {completedRounds} complete · {remaining} remaining
         </p>
+        <div className="mt-6">
+          <AddToCalendar
+            races={calendar}
+            season={season}
+            variant="ghost"
+            size="sm"
+            label="Add full season to calendar"
+          />
+        </div>
       </div>
 
       <SeasonRibbon calendar={calendar} />
