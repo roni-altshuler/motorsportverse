@@ -11,6 +11,7 @@ on:
       - "projects/formula-e-predictions/**"
       - "projects/nascar-predictions/**"
       - "projects/indycar-predictions/**"
+      - "projects/motogp-predictions/**"
       - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
@@ -63,6 +64,7 @@ jobs:
           pip install -e projects/formula-e-predictions --no-deps
           pip install -e projects/nascar-predictions --no-deps
           pip install -e projects/indycar-predictions --no-deps
+          pip install -e projects/motogp-predictions --no-deps
           pip install requests numpy matplotlib
       - name: Generate F2 data
         run: |
@@ -94,6 +96,12 @@ jobs:
           python -m indycar_predictions.forward_eval --season 2026 --allow-empty
           python -m indycar_predictions.drift_report --season 2026 --allow-empty
           python -m indycar_predictions.promotion_decision --season 2026 --allow-empty
+      - name: Generate MotoGP data
+        # MotoGP folds drift + rolling-Brier into model_health via export/forward_eval,
+        # so there is no separate drift_report / promotion_decision module to run.
+        run: |
+          python -m motogp_predictions.export
+          python -m motogp_predictions.forward_eval --season 2026 --allow-empty
 
       # --- Ecosystem hub (root) ---
       - name: Build ecosystem website
@@ -137,6 +145,13 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/indycar
 
+      # --- RaceIQ MotoGP project site (sub-path) ---
+      - name: Build MotoGP website
+        working-directory: projects/motogp-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/motogp
+
       # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
       #     race-weekend cron (f1-update-predictions.yml) commits, so no data
       #     generation step is needed here — only a static build. ---
@@ -150,13 +165,15 @@ jobs:
       - name: Assemble site tree
         run: |
           mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 \
-                   website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar
+                   website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar \
+                   website/out/projects/motogp
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
           cp -r projects/f3-predictions/website/out/. website/out/projects/f3/
           cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
           cp -r projects/formula-e-predictions/website/out/. website/out/projects/formula-e/
           cp -r projects/nascar-predictions/website/out/. website/out/projects/nascar/
           cp -r projects/indycar-predictions/website/out/. website/out/projects/indycar/
+          cp -r projects/motogp-predictions/website/out/. website/out/projects/motogp/
 
       - uses: actions/upload-pages-artifact@v3
         with:

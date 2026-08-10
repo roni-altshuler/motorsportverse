@@ -3,7 +3,8 @@
   "count": 11,
   "maturity_counts": {
     "production": 6,
-    "in-development": 5
+    "experimental": 1,
+    "in-development": 4
   },
   "projects": [
     {
@@ -292,6 +293,57 @@
       "added": "2026-07-02"
     },
     {
+      "slug": "motogp-predictions",
+      "name": "RaceIQ MotoGP",
+      "sport": "MotoGP",
+      "category": "motorcycle",
+      "maturity": "experimental",
+      "summary": "Sprint, Grand Prix, and championship forecasts for the premier MotoGP world championship.",
+      "description": "The premier-class motorcycle series on the MotorsportVerse core. A leakage-safe rider-skill blend (cross-season Elo with rookie pooling + finishing history + a first-class manufacturer/bike term — MotoGP is not a spec series) routed through two race heads that share the qualifying grid: the Saturday Sprint (shorter, higher-variance) and Sunday's Grand Prix, with Monte Carlo win/podium probabilities, finishing-range intervals, and a Sprint+GP-aware rider championship projection. Runs on the real 2026 MotoGP season pulled from the official results API into a committed, reviewable snapshot (2021-2026 corpus). The post-qualifying forecast is the headline surface and is validated to beat the grid-order baseline on win- and podium-Brier; forward-eval grades every completed round honestly against grid and last-standings baselines. Deployed site + scheduled refresh pipeline.",
+      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/motogp-predictions",
+      "website": "https://roni-altshuler.github.io/motorsportverse/projects/motogp/",
+      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
+      "datasets": [
+        "api.motogp.pulselive.com (official results API, pulled to a committed snapshot)",
+        "2021-2026 premier-class corpus (offline, reproducible)"
+      ],
+      "models": [
+        "rider-skill-elo-cross-season",
+        "manufacturer-effect",
+        "plackett-luce",
+        "championship-monte-carlo",
+        "standings"
+      ],
+      "tags": [
+        "motorcycle",
+        "sprint-and-grand-prix",
+        "grid-conditioned",
+        "calibrated-probabilities",
+        "monte-carlo"
+      ],
+      "icon": "/brand/sports/motogp.png",
+      "accent": "#CC0000",
+      "uses_core": [
+        "calibration",
+        "championship",
+        "standings",
+        "elo",
+        "conformal",
+        "eval",
+        "drift",
+        "leakage",
+        "interfaces"
+      ],
+      "maintainers": [
+        {
+          "name": "MotorsportVerse",
+          "github": "roni-altshuler"
+        }
+      ],
+      "added": "2026-06-15",
+      "logo": "/brand/series/raceiq-motogp.png"
+    },
+    {
       "slug": "imsa-predictions",
       "name": "IMSA Predictions",
       "sport": "IMSA",
@@ -345,34 +397,6 @@
       ],
       "maintainers": [],
       "added": "2026-06-15"
-    },
-    {
-      "slug": "motogp-predictions",
-      "name": "MotoGP Predictions",
-      "sport": "MotoGP",
-      "category": "motorcycle",
-      "maturity": "in-development",
-      "summary": "Race forecasts for the MotoGP world championship.",
-      "description": "Scaffolded on the shared MotorsportVerse core: a MotoGP project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
-      "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/motogp-predictions",
-      "website": "",
-      "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
-      "datasets": [
-        "MotoGP timing"
-      ],
-      "models": [],
-      "tags": [
-        "scaffolded"
-      ],
-      "icon": "/brand/sports/motogp.png",
-      "accent": "#CC0000",
-      "uses_core": [
-        "calibration",
-        "eval"
-      ],
-      "maintainers": [],
-      "added": "2026-06-15",
-      "logo": "/brand/series/raceiq-motogp.png"
     },
     {
       "slug": "wec-predictions",

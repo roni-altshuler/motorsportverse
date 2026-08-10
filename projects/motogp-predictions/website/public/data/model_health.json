@@ -1,0 +1,467 @@
+{
+  "season": 2026,
+  "lastEvaluatedRound": 12,
+  "featureDrift": [
+    {
+      "feature": "predictedValue",
+      "psi": 0.0837,
+      "severity": "ok"
+    },
+    {
+      "feature": "pWin",
+      "psi": 0.1951,
+      "severity": "warn"
+    },
+    {
+      "feature": "pPodium",
+      "psi": 0.1283,
+      "severity": "warn"
+    },
+    {
+      "feature": "meanFinish",
+      "psi": 0.1183,
+      "severity": "warn"
+    },
+    {
+      "feature": "finishRangeHigh",
+      "psi": 0.0741,
+      "severity": "ok"
+    }
+  ],
+  "outputDrift": {
+    "rollingBrierRecent": 0.0427,
+    "rollingBrierBaseline": 0.0446,
+    "relativeChange": -0.0427,
+    "severity": "ok",
+    "roundsCompared": 12
+  },
+  "warnings": [
+    "pWin: PSI 0.195 (moderate drift vs baseline)",
+    "pPodium: PSI 0.128 (moderate drift vs baseline)",
+    "meanFinish: PSI 0.118 (moderate drift vs baseline)"
+  ],
+  "alarms": [],
+  "brierByRound": [
+    {
+      "round": 1,
+      "brier": 0.035418173684210526
+    },
+    {
+      "round": 2,
+      "brier": 0.03796933833333333
+    },
+    {
+      "round": 3,
+      "brier": 0.035633413333333336
+    },
+    {
+      "round": 4,
+      "brier": 0.04841340300000001
+    },
+    {
+      "round": 5,
+      "brier": 0.063166061875
+    },
+    {
+      "round": 6,
+      "brier": 0.05258314705882353
+    },
+    {
+      "round": 7,
+      "brier": 0.022978704210526318
+    },
+    {
+      "round": 8,
+      "brier": 0.030281884999999995
+    },
+    {
+      "round": 9,
+      "brier": 0.0540273705882353
+    },
+    {
+      "round": 10,
+      "brier": 0.051329303124999996
+    },
+    {
+      "round": 11,
+      "brier": 0.02686360333333333
+    },
+    {
+      "round": 12,
+      "brier": 0.0507618125
+    }
+  ],
+  "forwardEval": {
+    "roundsScored": 12,
+    "meanPositionError": 4.0205,
+    "winnerHitRate": 0.25,
+    "podiumHitRate": 0.5,
+    "walkForward": {
+      "feature": {
+        "model": {
+          "n_rounds": 12,
+          "metrics": {
+            "mean_position_error": {
+              "mean": 4.0205,
+              "median": 3.8455,
+              "min": 2.833,
+              "max": 7.235,
+              "last": 4.125,
+              "trend": 0.1159090909090909,
+              "n": 12
+            },
+            "winnerHit": {
+              "mean": 0.25,
+              "median": 0.0,
+              "min": 0.0,
+              "max": 1.0,
+              "last": 0.0,
+              "trend": 0.045454545454545456,
+              "n": 12
+            },
+            "podium_hits": {
+              "mean": 1.5,
+              "median": 2.0,
+              "min": 0.0,
+              "max": 2.0,
+              "last": 2.0,
+              "trend": 0.006993006993006993,
+              "n": 12
+            },
+            "within_3": {
+              "mean": 8.333333333333334,
+              "median": 8.5,
+              "min": 3.0,
+              "max": 14.0,
+              "last": 9.0,
+              "trend": -0.42657342657342656,
+              "n": 12
+            },
+            "within_5": {
+              "mean": 12.833333333333334,
+              "median": 13.0,
+              "min": 6.0,
+              "max": 18.0,
+              "last": 11.0,
+              "trend": -0.4195804195804196,
+              "n": 12
+            },
+            "exact_matches": {
+              "mean": 1.4166666666666667,
+              "median": 1.5,
+              "min": 0.0,
+              "max": 4.0,
+              "last": 0.0,
+              "trend": -0.05944055944055944,
+              "n": 12
+            },
+            "spearman_correlation": {
+              "mean": 0.8436993218339968,
+              "median": 0.8895768833849329,
+              "min": 0.38235294117647056,
+              "max": 0.9421052631578948,
+              "last": 0.8411764705882353,
+              "trend": -0.0035786968449507146,
+              "n": 12
+            },
+            "ndcg_at_5": {
+              "mean": 0.9113757592789359,
+              "median": 0.9524810463970235,
+              "min": 0.5124422031994379,
+              "max": 0.9742322959703081,
+              "last": 0.9495899245630705,
+              "trend": 0.0025373649161649758,
+              "n": 12
+            },
+            "winBrier": {
+              "mean": 0.042451666666666665,
+              "median": 0.043189,
+              "min": 0.02298,
+              "max": 0.063168,
+              "last": 0.050761,
+              "trend": 0.0002742587412587412,
+              "n": 12
+            },
+            "winLogLoss": {
+              "mean": 0.13584933333333335,
+              "median": 0.1318045,
+              "min": 0.079967,
+              "max": 0.23161,
+              "last": 0.152418,
+              "trend": 0.0001899860139860145,
+              "n": 12
+            },
+            "podiumBrier": {
+              "mean": 0.07903875,
+              "median": 0.063187,
+              "min": 0.049002,
+              "max": 0.161727,
+              "last": 0.051887,
+              "trend": -0.0038048006993006986,
+              "n": 12
+            },
+            "podiumLogLoss": {
+              "mean": 0.252561,
+              "median": 0.184742,
+              "min": 0.157566,
+              "max": 0.678,
+              "last": 0.168333,
+              "trend": -0.01112753146853147,
+              "n": 12
+            }
+          }
+        },
+        "baselines": {
+          "gridOrder": {
+            "n_rounds": 12,
+            "metrics": {
+              "mean_position_error": {
+                "mean": 3.8842499999999998,
+                "median": 3.6875,
+                "min": 2.526,
+                "max": 7.294,
+                "last": 4.062,
+                "trend": 0.1116678321678322,
+                "n": 12
+              },
+              "winnerHit": {
+                "mean": 0.3333333333333333,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 1.0,
+                "last": 0.0,
+                "trend": 0.006993006993006995,
+                "n": 12
+              },
+              "podium_hits": {
+                "mean": 1.5833333333333333,
+                "median": 2.0,
+                "min": 0.0,
+                "max": 2.0,
+                "last": 2.0,
+                "trend": 0.0034965034965034965,
+                "n": 12
+              },
+              "within_3": {
+                "mean": 8.666666666666666,
+                "median": 8.0,
+                "min": 3.0,
+                "max": 14.0,
+                "last": 9.0,
+                "trend": -0.5314685314685315,
+                "n": 12
+              },
+              "within_5": {
+                "mean": 12.416666666666666,
+                "median": 11.5,
+                "min": 6.0,
+                "max": 18.0,
+                "last": 11.0,
+                "trend": -0.548951048951049,
+                "n": 12
+              },
+              "exact_matches": {
+                "mean": 1.9166666666666667,
+                "median": 2.0,
+                "min": 0.0,
+                "max": 5.0,
+                "last": 0.0,
+                "trend": -0.09440559440559441,
+                "n": 12
+              },
+              "spearman_correlation": {
+                "mean": 0.7835096319229446,
+                "median": 0.8287151702786377,
+                "min": 0.20588235294117646,
+                "max": 0.9385964912280702,
+                "last": 0.8117647058823529,
+                "trend": -0.0013002735138958061,
+                "n": 12
+              },
+              "ndcg_at_5": {
+                "mean": 0.8816105467289601,
+                "median": 0.8945748666401879,
+                "min": 0.5628535464810688,
+                "max": 0.9800342895651737,
+                "last": 0.9443588242041181,
+                "trend": 0.002086259543417745,
+                "n": 12
+              },
+              "winBrier": {
+                "mean": 0.05352125,
+                "median": 0.0610815,
+                "min": 0.000967,
+                "max": 0.103701,
+                "last": 0.094542,
+                "trend": 0.001307611888111888,
+                "n": 12
+              },
+              "winLogLoss": {
+                "mean": 0.6273635000000001,
+                "median": 0.2436815,
+                "min": 0.008479,
+                "max": 1.751535,
+                "last": 0.255101,
+                "trend": -0.014091055944055941,
+                "n": 12
+              },
+              "podiumBrier": {
+                "mean": 0.10598391666666666,
+                "median": 0.1096455,
+                "min": 0.04887,
+                "max": 0.23529,
+                "last": 0.061094,
+                "trend": -0.0022162692307692304,
+                "n": 12
+              },
+              "podiumLogLoss": {
+                "mean": 1.06857725,
+                "median": 0.48294950000000003,
+                "min": 0.13524,
+                "max": 3.943089,
+                "last": 0.259095,
+                "trend": -0.10682121328671328,
+                "n": 12
+              }
+            }
+          },
+          "lastStandings": {
+            "n_rounds": 11,
+            "metrics": {
+              "mean_position_error": {
+                "mean": 4.242818181818182,
+                "median": 4.0,
+                "min": 2.667,
+                "max": 6.706,
+                "last": 4.067,
+                "trend": 0.16024545454545458,
+                "n": 11
+              },
+              "winnerHit": {
+                "mean": 0.18181818181818182,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 1.0,
+                "last": 0.0,
+                "trend": -0.03636363636363636,
+                "n": 11
+              },
+              "podium_hits": {
+                "mean": 1.0909090909090908,
+                "median": 1.0,
+                "min": 0.0,
+                "max": 3.0,
+                "last": 1.0,
+                "trend": -0.15454545454545454,
+                "n": 11
+              },
+              "within_3": {
+                "mean": 8.454545454545455,
+                "median": 8.0,
+                "min": 3.0,
+                "max": 15.0,
+                "last": 6.0,
+                "trend": -0.7,
+                "n": 11
+              },
+              "within_5": {
+                "mean": 11.727272727272727,
+                "median": 12.0,
+                "min": 7.0,
+                "max": 16.0,
+                "last": 12.0,
+                "trend": -0.42727272727272725,
+                "n": 11
+              },
+              "exact_matches": {
+                "mean": 1.0909090909090908,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 5.0,
+                "last": 0.0,
+                "trend": -0.33636363636363636,
+                "n": 11
+              },
+              "spearman_correlation": {
+                "mean": 0.7956066637181188,
+                "median": 0.8321428571428572,
+                "min": 0.5735294117647058,
+                "max": 0.9214285714285714,
+                "last": 0.8428571428571429,
+                "trend": 0.008090949298379637,
+                "n": 11
+              },
+              "ndcg_at_5": {
+                "mean": 0.8847815549411236,
+                "median": 0.9057654509078963,
+                "min": 0.7413090234285628,
+                "max": 1.0,
+                "last": 0.9057654509078963,
+                "trend": 0.0014711342630208488,
+                "n": 11
+              },
+              "winBrier": {
+                "mean": 0.07387827272727272,
+                "median": 0.08976,
+                "min": 0.001915,
+                "max": 0.117259,
+                "last": 0.117259,
+                "trend": 0.0035592999999999996,
+                "n": 11
+              },
+              "winLogLoss": {
+                "mean": 0.7286780909090909,
+                "median": 0.495694,
+                "min": 0.016281,
+                "max": 1.979822,
+                "last": 1.979822,
+                "trend": 0.09243643636363637,
+                "n": 11
+              },
+              "podiumBrier": {
+                "mean": 0.17128663636363636,
+                "median": 0.17756,
+                "min": 0.001718,
+                "max": 0.276575,
+                "last": 0.16758,
+                "trend": 0.010177718181818183,
+                "n": 11
+              },
+              "podiumLogLoss": {
+                "mean": 1.8377190909090908,
+                "median": 1.567893,
+                "min": 0.015896,
+                "max": 4.885882,
+                "last": 0.69742,
+                "trend": -0.0051049363636363546,
+                "n": 11
+              }
+            }
+          }
+        }
+      }
+    },
+    "phaseComparison": {
+      "note": "Headline model is POST-quali (grid-conditioned). Pre-quali form-only is weaker than the grid; the post-quali model beats it on win- and podium-Brier.",
+      "roundsScored": 12,
+      "feature": {
+        "winBrier": {
+          "post": 0.042452,
+          "pre": 0.051173,
+          "grid": 0.053521
+        },
+        "podiumBrier": {
+          "post": 0.079039,
+          "pre": 0.115051,
+          "grid": 0.105984
+        },
+        "winnerHit": {
+          "post": 0.25,
+          "pre": 0.0,
+          "grid": 0.3333
+        }
+      },
+      "beatsGridBaseline": true
+    }
+  }
+}

@@ -1,0 +1,118 @@
+name: MotoGP — Update Race Predictions
+
+# MotoGP race-weekend automation. The committed data/official_2026.json is the
+# offline source of truth; a guarded live re-pull from the official results API
+# (api.motogp.pulselive.com — reachable from GitHub runners) can only ADD
+# completed rounds (build_snapshot's regression guard refuses to overwrite a
+# healthy snapshot with fewer rounds). A cheap freshness pre-check (one events
+# call) skips the heavier multi-season pull when nothing new has been scored.
+#
+# MotoGP runs a Sprint on Saturday and the Grand Prix on Sunday, roughly March→
+# November, across many time zones (European afternoons + flyaway rounds), so the
+# poll casts a wide weekend window plus weekday safety nets for publication lag.
+
+on:
+  schedule:
+    # ── Saturday: Sprint + qualifying window (broad UTC to cover flyaways). ──
+    - cron: "15 6-22/2 * * 6"
+    # ── Sunday: the Grand Prix window + European/US spillover. ──
+    - cron: "15 6-22/2 * * 0"
+    - cron: "15 0-3 * * 1"
+    # ── Weekday safety nets: results/standings can settle a little after the race. ──
+    - cron: "0 8,20 * * 1"   # Monday
+    - cron: "0 12 * * 2,3"   # Tuesday/Wednesday once each
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run the pull even if the freshness gate says nothing new"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: motogp-update-predictions
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: |
+          pip install -e packages/motorsport-core -e packages/motorsport-data
+          pip install -e projects/motogp-predictions --no-deps
+          pip install requests numpy matplotlib pytest
+
+      - name: Freshness gate — has a new round been scored?
+        id: check
+        working-directory: projects/motogp-predictions
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force }}" = "true" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual force-run — skipping the freshness gate."
+          else
+            PYTHONPATH=src python scripts/freshness_gate.py >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Re-pull the snapshot (guarded live API fetch)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/motogp-predictions
+        run: PYTHONPATH=src python -m motogp_predictions.refresh --season 2026 --skip-forward-eval
+
+      - name: Regenerate site dataset (fresh processes pick up new rounds)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/motogp-predictions
+        run: |
+          PYTHONPATH=src python -m motogp_predictions.export
+          PYTHONPATH=src python -m motogp_predictions.forward_eval --season 2026 --allow-empty
+
+      - name: Validate generated outputs
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/motogp-predictions
+        run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
+
+      - name: Commit refreshed data if changed
+        id: commit
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f projects/motogp-predictions/data/official_*.json \
+                     projects/motogp-predictions/website/public/data
+          if git diff --cached --quiet; then
+            echo "No data changes — snapshot already current."
+            exit 0
+          fi
+          git commit -m "[motogp] Update predictions ($(date -u +%Y-%m-%d))"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash .github/scripts/safe_push.sh
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: predict
+    if: needs.predict.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy-website.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

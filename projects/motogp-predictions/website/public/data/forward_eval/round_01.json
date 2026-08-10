@@ -1,0 +1,102 @@
+{
+  "round": 1,
+  "venueName": "Buriram",
+  "sprint": {
+    "n": 21,
+    "mean_position_error": 3.571,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 11,
+    "within_5": 19,
+    "exact_matches": 0,
+    "spearman_correlation": 0.8298701298701299,
+    "ndcg_at_5": 0.8750891896637116
+  },
+  "feature": {
+    "n": 19,
+    "mean_position_error": 3.421,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 10,
+    "within_5": 15,
+    "exact_matches": 0,
+    "spearman_correlation": 0.9421052631578948,
+    "ndcg_at_5": 0.9419174003822649
+  },
+  "markets": {
+    "sprint": {
+      "win": {
+        "brier": 0.053614,
+        "logLoss": 0.181574
+      },
+      "podium": {
+        "brier": 0.069367,
+        "logLoss": 0.201508
+      }
+    },
+    "feature": {
+      "win": {
+        "brier": 0.035418,
+        "logLoss": 0.09813
+      },
+      "podium": {
+        "brier": 0.078487,
+        "logLoss": 0.216842
+      }
+    }
+  },
+  "baselines": {
+    "gridOrder": {
+      "sprint": {
+        "score": {
+          "n": 21,
+          "mean_position_error": 2.429,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "within_3": 13,
+          "within_5": 21,
+          "exact_matches": 5,
+          "spearman_correlation": 0.8883116883116883,
+          "ndcg_at_5": 0.9446924623210989
+        },
+        "markets": {
+          "win": {
+            "brier": 0.049019,
+            "logLoss": 0.405733
+          },
+          "podium": {
+            "brier": 0.050374,
+            "logLoss": 0.248758
+          }
+        }
+      },
+      "feature": {
+        "score": {
+          "n": 19,
+          "mean_position_error": 2.526,
+          "winner_hit": true,
+          "podium_hits": 2,
+          "within_3": 12,
+          "within_5": 18,
+          "exact_matches": 3,
+          "spearman_correlation": 0.9385964912280702,
+          "ndcg_at_5": 0.9800342895651737
+        },
+        "markets": {
+          "win": {
+            "brier": 0.000967,
+            "logLoss": 0.008479
+          },
+          "podium": {
+            "brier": 0.0541,
+            "logLoss": 0.34912
+          }
+        }
+      }
+    },
+    "lastStandings": {
+      "sprint": null,
+      "feature": null
+    }
+  }
+}
