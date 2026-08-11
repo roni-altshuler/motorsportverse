@@ -1,0 +1,252 @@
+/*
+ * Design tokens — RaceIQ WEC (dark broadcast-HUD), a faithful port of the
+ * RaceIQ F1 flagship's Bugatti design system, re-themed to the WEC endurance
+ * identity.
+ *
+ * The chromatic swap from F1: the F1 red accent (#E10600) becomes the WEC
+ * endurance green (#3DDC97, the registered accent). Everything else mirrors F1
+ * — pure-black canvas, white uppercase letterspaced display, serif body,
+ * monospace nav/buttons/captions, the glow stack, gradients, scanlines, motion.
+ *
+ * Variable NAMES are preserved verbatim from F1 (incl. the legacy
+ * --accent-f1-red family, re-pointed to WEC green) so the ported shared
+ * components keep compiling without edits. #3DDC97 is a LIGHT accent: text ON it
+ * stays NEAR-BLACK (--accent-ink #04140d, following the suite's light-accent
+ * convention), its hover DARKENS (not brightens) for feedback, and the
+ * green itself is already WCAG-safe as small text on black (~9:1). The
+ * CLASS-colour block at the bottom (Hypercar / LMP2 / LMGT3) is WEC's signature
+ * palette — multi-class racing is the sport's defining structure.
+ */
+
+:root,
+[data-theme="dark"] {
+  /* ── Bugatti palette ─────────────────────────────────────────────── */
+  --canvas:             #000000;
+  --surface-soft:       #0d0d0d;
+  --surface-card:       #141414;
+  --surface-elevated-b: #1f1f1f;
+  --hairline:           #262626;
+  --hairline-strong:    #3a3a3a;
+  --ink:                #ffffff;
+  --body:               #cccccc;
+  --body-strong:        #e6e6e6;
+  --muted:              #999999;
+  --muted-soft:         #666666;
+  --link:               #a7eccf;
+  --on-primary:         #000000;
+  --on-photo:           #ffffff;
+  --warning:            #d4a017;
+  --success:            #5fa657;
+
+  /* ── Legacy semantic names re-pointed to Bugatti values ──────────── */
+  --bg:                 #000000;
+  --bg-elevated:        #0d0d0d;
+  --surface:            #141414;
+  --surface-elevated:   #1f1f1f;
+  --surface-overlay:    #141414;
+
+  --border:             #262626;
+  --border-strong:      #3a3a3a;
+  --border-accent:      #3a3a3a;
+
+  --text-primary:       #ffffff;
+  --text-secondary:     #e6e6e6;
+  --text-muted:         #999999;
+  --text-inverse:       #000000;
+
+  /* WEC endurance-green accent — the single chromatic swap from F1's red.
+   * The --accent-f1-red family NAMES are kept so ported shared components
+   * resolve; the VALUES are WEC green. Light accent → hover DARKENS, text on
+   * accent is near-black. */
+  --accent-f1-red:        #3DDC97;        /* WEC endurance green */
+  --accent-f1-red-hover:  #2FBE80;        /* darker (light-accent hover) */
+  --accent-f1-red-bright: #56E0A6;        /* small-text pop on black (~8.8:1) */
+  --accent-f1-red-soft:   rgba(61, 220, 151, 0.14);
+
+  --accent:             var(--accent-f1-red);
+  --accent-strong:      var(--accent-f1-red-hover);
+  --accent-ink:         #04140d;          /* text ON WEC-green accent = near-black */
+
+  --accent-live:        var(--accent-f1-red);
+  --accent-live-fg:     #04140d;
+  --accent-live-hover:  var(--accent-f1-red-hover);
+  --accent-positive:    #5fa657;
+  --accent-positive-fg: #04140d;
+  --accent-negative:    #FF6B5E;          /* podium-miss arrows read warm red */
+  --accent-negative-fg: #ffffff;
+  --accent-info:        #a7eccf;
+  --accent-info-fg:     #04140d;
+  --accent-podium-1:    #FFD166;
+  --accent-podium-2:    #C5CCD3;
+  --accent-podium-3:    #CD7F32;
+
+  /* ── Elevation — all shadows nuked (Bugatti default) ─────────────── */
+  --shadow-sm:  none;
+  --shadow:     none;
+  --shadow-lg:  none;
+  --shadow-elevated: none;
+  --shadow-hud:      none;
+
+  /* ── Glow stack — re-armed for live + podium + team surfaces (green). */
+  --glow-accent:  none;
+  --glow-purple:  none;
+  --glow-live:    0 0 14px rgba(61, 220, 151, 0.50), 0 0 32px rgba(61, 220, 151, 0.22);
+  --glow-podium:  0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-podium-gold: 0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-team:    0 0 18px color-mix(in srgb, var(--team-color, #ffffff) 50%, transparent);
+
+  /* ── Magic-UI HSL color triplets (used by gradient primitives) ────── */
+  --color-1: 154 68% 55%;    /* WEC green */
+  --color-2: 202 66% 59%;    /* LMP2 blue */
+  --color-3: 45 100% 60%;    /* champagne gold */
+  --color-4: 25 87% 61%;     /* LMGT3 amber */
+  --color-5: 175 84% 32%;    /* deep teal */
+
+  /* ── Gradients — decorative stack (green scrim) ───────────────────── */
+  --gradient-paddock:   linear-gradient(180deg, rgba(61,220,151,0.10) 0%, transparent 55%);
+  --gradient-hud-frame: linear-gradient(180deg, var(--surface-soft), var(--surface-card));
+  --gradient-scanline:  repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+
+  /* ── Radius — Bugatti flat; cards get one notch of softness. ──────── */
+  --radius-sm:   0px;
+  --radius:      0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  --radius-card: 4px;
+  --radius-md:   4px;
+
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+  --space-section: 120px;
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  40px;
+  --space-12: 64px;
+
+  /* ── HUD palette ─────────────────────────────────────────────────── */
+  --hud-purple:        var(--muted);
+  --hud-purple-soft:   rgba(255, 255, 255, 0.06);
+  --hud-yellow:        var(--warning);
+  --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
+  --hud-red-light:     var(--accent-f1-red);
+  --hud-red-soft:      var(--accent-f1-red-soft);
+  --hud-green:         var(--success);
+  --hud-cyan:          var(--link);
+  --hud-champagne:     var(--accent-podium-1);
+
+  /* ── Class palette — WEC's defining variable (Hypercar/LMP2/LMGT3). */
+  --class-hypercar: #3DDC97;
+  --class-lmp2:     #4EA8DE;
+  --class-lmgt3:    #F4A259;
+
+  /* ── Motion tokens ───────────────────────────────────────────────── */
+  --dur-instant: 80ms;
+  --dur-snap:    180ms;
+  --dur-base:    320ms;
+  --dur-glide:   520ms;
+  --dur-cinema:  900ms;
+  --ease-pit:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Font bindings (resolved by next/font in layout.tsx) ─────────── */
+  --font-display: var(--font-saira), "Saira Condensed", "Impact", sans-serif;
+  --font-serif:   var(--font-garamond), "EB Garamond", "Garamond", "Times New Roman", serif;
+  --font-mono:    var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:    var(--font-display);
+
+  /* ── shadcn aliases ─────────────────────────────────────────────── */
+  --background:           var(--bg);
+  --foreground:           var(--text-primary);
+  --card:                 var(--surface);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--surface-elevated);
+  --popover-foreground:   var(--text-primary);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--on-primary);
+  --secondary:            var(--surface-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted-bg:             var(--surface-elevated);
+  --muted-foreground:     var(--text-muted);
+  --accent-foreground:    var(--text-primary);
+  --destructive:          var(--accent-negative);
+  --destructive-foreground: var(--accent-negative-fg);
+  --input:                var(--border);
+  --ring:                 var(--ink);
+
+  --ink-muted:   var(--body);
+  --ink-dim:     var(--muted);
+  --surface-2:   var(--surface-elevated);
+  --surface-3:   var(--surface-elevated-b);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Class-colour palette — WEC's signature UI element. Resolved via
+ * `data-class="HYPERCAR|LMP2|LMGT3"` or inline `--class-color`. Values mirror
+ * the export's per-class `color`.
+ * ───────────────────────────────────────────────────────────────────── */
+[data-class="HYPERCAR"] { --class-color: var(--class-hypercar); }
+[data-class="LMP2"]     { --class-color: var(--class-lmp2); }
+[data-class="LMGT3"]    { --class-color: var(--class-lmgt3); }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Legacy-compat aliases.
+ * ───────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-card:        var(--surface-card);
+  --bg-card-solid:  var(--surface-card);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-card);
+  --text:           var(--text-primary);
+  --glass-border:   var(--hairline);
+  --glass-bg:       transparent;
+}
+
+/* Tabular-figure utility for numeric / timing displays. */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Class chip — WEC's signature per-class badge (used in the class selector
+ * and on round/calendar cards). Tinted by the resolved --class-color.
+ * ───────────────────────────────────────────────────────────────────── */
+.class-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--class-color, var(--muted));
+  border: 1px solid color-mix(in oklab, var(--class-color, var(--hairline)) 55%, transparent);
+  background: color-mix(in oklab, var(--class-color, transparent) 12%, transparent);
+}
+.class-chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--class-color, var(--muted));
+  flex-shrink: 0;
+}

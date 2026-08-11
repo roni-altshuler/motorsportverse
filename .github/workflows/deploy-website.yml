@@ -13,6 +13,7 @@ on:
       - "projects/indycar-predictions/**"
       - "projects/motogp-predictions/**"
       - "projects/wrc-predictions/**"
+      - "projects/wec-predictions/**"
       - "projects/f1-predictions/website/**"
       - "packages/**"
       - ".github/workflows/deploy-website.yml"
@@ -67,6 +68,7 @@ jobs:
           pip install -e projects/indycar-predictions --no-deps
           pip install -e projects/motogp-predictions --no-deps
           pip install -e projects/wrc-predictions --no-deps
+          pip install -e projects/wec-predictions --no-deps
           pip install requests numpy matplotlib
       - name: Generate F2 data
         run: |
@@ -108,6 +110,10 @@ jobs:
         run: |
           python -m wrc_predictions.export
           python -m wrc_predictions.forward_eval --season 2026 --allow-empty
+      - name: Generate WEC data
+        run: |
+          python -m wec_predictions.export
+          python -m wec_predictions.forward_eval --season 2026 --allow-empty
 
       # --- Ecosystem hub (root) ---
       - name: Build ecosystem website
@@ -165,6 +171,13 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ env.BASE }}/projects/wrc
 
+      # --- RaceIQ WEC project site (sub-path) ---
+      - name: Build WEC website
+        working-directory: projects/wec-predictions/website
+        run: npm install && npm run build
+        env:
+          PAGES_BASE_PATH: ${{ env.BASE }}/projects/wec
+
       # --- RaceIQ F1 flagship site (sub-path). The F1 site reads the JSON the
       #     race-weekend cron (f1-update-predictions.yml) commits, so no data
       #     generation step is needed here — only a static build. ---
@@ -179,7 +192,7 @@ jobs:
         run: |
           mkdir -p website/out/projects/f2 website/out/projects/f3 website/out/projects/f1 \
                    website/out/projects/formula-e website/out/projects/nascar website/out/projects/indycar \
-                   website/out/projects/motogp website/out/projects/wrc
+                   website/out/projects/motogp website/out/projects/wrc website/out/projects/wec
           cp -r projects/f2-predictions/website/out/. website/out/projects/f2/
           cp -r projects/f3-predictions/website/out/. website/out/projects/f3/
           cp -r projects/f1-predictions/website/out/. website/out/projects/f1/
@@ -188,6 +201,7 @@ jobs:
           cp -r projects/indycar-predictions/website/out/. website/out/projects/indycar/
           cp -r projects/motogp-predictions/website/out/. website/out/projects/motogp/
           cp -r projects/wrc-predictions/website/out/. website/out/projects/wrc/
+          cp -r projects/wec-predictions/website/out/. website/out/projects/wec/
 
       - uses: actions/upload-pages-artifact@v3
         with:

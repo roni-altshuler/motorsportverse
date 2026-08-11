@@ -1,27 +1,50 @@
 {
   "slug": "wec-predictions",
-  "name": "WEC Predictions",
-  "sport": "WEC",
+  "name": "RaceIQ WEC",
+  "sport": "FIA WEC",
   "category": "endurance",
-  "maturity": "in-development",
-  "summary": "Multi-class endurance forecasts for the FIA World Endurance Championship.",
-  "description": "Scaffolded on the shared MotorsportVerse core: a WEC project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+  "maturity": "experimental",
+  "summary": "Per-class race and championship forecasts for the FIA World Endurance Championship.",
+  "description": "World endurance on the MotorsportVerse core. Endurance is multi-class, so every round is forecast per class (Hypercar, LMP2 at Le Mans, and LMGT3), and the competitor is the car entry, not a driver. Each entry's chance is an ensemble of recency (the last race and this-season form) with a smoothed cross-season entry rating and the team's operational strength — validated by walk-forward (2021-2026) to beat both naive baselines (last-race order and season-form order) on win- and podium-Brier over the full history, while tracking the best baseline in the current era. Monte Carlo per-class win/podium probabilities, finishing-range intervals, and a per-class drivers' championship projection. Le Mans is included as a round (24 hours, with its extra LMP2 field). Runs on the real season pulled from the official Al Kamel timing archive into a committed, reviewable snapshot (2021-2026 corpus). Deployed site + scheduled refresh; forward-eval grades every round honestly against the last-race and season-form baselines.",
   "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/wec-predictions",
-  "website": "",
+  "website": "https://roni-altshuler.github.io/motorsportverse/projects/wec/",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
   "datasets": [
-    "FIA WEC timing"
+    "Al Kamel FIA WEC timing archive (official, pulled to a committed snapshot)",
+    "2021-2026 WEC corpus (offline, reproducible)"
   ],
-  "models": [],
+  "models": [
+    "per-class-entry-elo-cross-season",
+    "recency-form-ensemble",
+    "plackett-luce",
+    "championship-monte-carlo",
+    "standings"
+  ],
   "tags": [
-    "scaffolded"
+    "endurance",
+    "multi-class",
+    "le-mans",
+    "car-entry",
+    "calibrated-probabilities",
+    "monte-carlo"
   ],
   "icon": "/brand/sports/wec.png",
-  "accent": "#E8002D",
+  "accent": "#3DDC97",
   "uses_core": [
     "calibration",
-    "eval"
+    "championship",
+    "standings",
+    "elo",
+    "conformal",
+    "eval",
+    "leakage",
+    "interfaces"
   ],
-  "maintainers": [],
-  "added": "2026-06-15"
+  "maintainers": [
+    {
+      "name": "MotorsportVerse",
+      "github": "roni-altshuler"
+    }
+  ],
+  "added": "2026-08-11"
 }
