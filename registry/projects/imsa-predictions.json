@@ -1,27 +1,50 @@
 {
   "slug": "imsa-predictions",
-  "name": "IMSA Predictions",
+  "name": "RaceIQ IMSA",
   "sport": "IMSA",
   "category": "endurance",
-  "maturity": "in-development",
-  "summary": "Multi-class forecasts for the IMSA SportsCar Championship.",
-  "description": "Scaffolded on the shared MotorsportVerse core: a IMSA project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+  "maturity": "experimental",
+  "summary": "Per-class race and championship forecasts for the IMSA WeatherTech SportsCar Championship.",
+  "description": "North American sportscar racing on the MotorsportVerse core. IMSA is multi-class, so every round is forecast per class (GTP, LMP2, GTD PRO, GTD), and the competitor is the car entry, not a driver. Each entry's chance is an ensemble of recency (the last race and this-season form) with a smoothed cross-season entry rating and the team's operational strength — validated by walk-forward (2022-2026) to be never worse than the naive baselines (last-race order and season-form order) on win- and podium-Brier, beating both over the full history. Monte Carlo per-class win/podium probabilities, finishing-range intervals, and a per-class championship projection. Includes the blue-riband endurance rounds — the Rolex 24 At Daytona, Sebring, Petit Le Mans. Runs on the real season pulled from the official Al Kamel timing archive into a committed, reviewable snapshot (2022-2026 corpus, WeatherTech rounds only). Deployed site + scheduled refresh; forward-eval grades every round honestly against the last-race and season-form baselines.",
   "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/imsa-predictions",
-  "website": "",
+  "website": "https://roni-altshuler.github.io/motorsportverse/projects/imsa/",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
   "datasets": [
-    "IMSA timing"
+    "Al Kamel IMSA WeatherTech timing archive (official, pulled to a committed snapshot)",
+    "2022-2026 IMSA corpus (offline, reproducible)"
   ],
-  "models": [],
+  "models": [
+    "per-class-entry-elo-cross-season",
+    "recency-form-ensemble",
+    "plackett-luce",
+    "championship-monte-carlo",
+    "standings"
+  ],
   "tags": [
-    "scaffolded"
+    "endurance",
+    "multi-class",
+    "rolex-24",
+    "car-entry",
+    "calibrated-probabilities",
+    "monte-carlo"
   ],
   "icon": "/brand/sports/imsa.png",
-  "accent": "#0A2A5E",
+  "accent": "#E4002B",
   "uses_core": [
     "calibration",
-    "eval"
+    "championship",
+    "standings",
+    "elo",
+    "conformal",
+    "eval",
+    "leakage",
+    "interfaces"
   ],
-  "maintainers": [],
-  "added": "2026-06-15"
+  "maintainers": [
+    {
+      "name": "MotorsportVerse",
+      "github": "roni-altshuler"
+    }
+  ],
+  "added": "2026-08-11"
 }

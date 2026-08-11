@@ -1,0 +1,159 @@
+{
+  "round": 5,
+  "season": 2026,
+  "place": "Detroit",
+  "country": "United States",
+  "event": "Detroit Street Course",
+  "classes": [
+    {
+      "class": "GTP",
+      "label": "GTP",
+      "color": "#E10600",
+      "field": 11,
+      "score": {
+        "n": 11,
+        "mean_position_error": 2.909,
+        "winner_hit": true,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 4,
+        "spearman_correlation": 0.06363636363636363,
+        "ndcg_at_5": 0.6730512641135552
+      },
+      "markets": {
+        "win": {
+          "brier": 0.053291,
+          "logLoss": 0.183932
+        },
+        "podium": {
+          "brier": 0.215071,
+          "logLoss": 0.71035
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 11,
+            "mean_position_error": 3.091,
+            "winner_hit": false,
+            "podium_hits": 2,
+            "within_3": 8,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": 0.07272727272727272,
+            "ndcg_at_5": 0.6092523810252172
+          },
+          "markets": {
+            "win": {
+              "brier": 0.06998,
+              "logLoss": 0.228959
+            },
+            "podium": {
+              "brier": 0.195077,
+              "logLoss": 0.630374
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 11,
+            "mean_position_error": 3.091,
+            "winner_hit": true,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 8,
+            "exact_matches": 4,
+            "spearman_correlation": 0.10909090909090909,
+            "ndcg_at_5": 0.7315964294983528
+          },
+          "markets": {
+            "win": {
+              "brier": 0.059804,
+              "logLoss": 0.201855
+            },
+            "podium": {
+              "brier": 0.238239,
+              "logLoss": 0.790656
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "GTDPRO",
+      "label": "GTD PRO",
+      "color": "#F4A259",
+      "field": 10,
+      "score": {
+        "n": 10,
+        "mean_position_error": 3.0,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 1,
+        "spearman_correlation": 0.17575757575757575,
+        "ndcg_at_5": 0.6040188403231542
+      },
+      "markets": {
+        "win": {
+          "brier": 0.098031,
+          "logLoss": 0.331513
+        },
+        "podium": {
+          "brier": 0.224886,
+          "logLoss": 0.616612
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 10,
+            "mean_position_error": 2.8,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": 0.3333333333333333,
+            "ndcg_at_5": 0.7415878579867907
+          },
+          "markets": {
+            "win": {
+              "brier": 0.096927,
+              "logLoss": 0.326998
+            },
+            "podium": {
+              "brier": 0.166499,
+              "logLoss": 0.481166
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 10,
+            "mean_position_error": 3.8,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 4,
+            "within_5": 8,
+            "exact_matches": 0,
+            "spearman_correlation": -0.07878787878787878,
+            "ndcg_at_5": 0.4668007704364942
+          },
+          "markets": {
+            "win": {
+              "brier": 0.106619,
+              "logLoss": 0.392046
+            },
+            "podium": {
+              "brier": 0.269611,
+              "logLoss": 0.720447
+            }
+          }
+        }
+      }
+    }
+  ]
+}

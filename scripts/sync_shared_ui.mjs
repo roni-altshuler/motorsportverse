@@ -29,6 +29,7 @@ const TARGETS = [
   join(ROOT, "projects/motogp-predictions/website/src/components"),
   join(ROOT, "projects/wrc-predictions/website/src/components"),
   join(ROOT, "projects/wec-predictions/website/src/components"),
+  join(ROOT, "projects/imsa-predictions/website/src/components"),
 ];
 
 // Directories synced wholesale (every canonical file is managed).

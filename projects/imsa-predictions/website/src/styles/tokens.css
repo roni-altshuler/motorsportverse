@@ -1,0 +1,257 @@
+/*
+ * Design tokens — RaceIQ IMSA (dark broadcast-HUD), a faithful port of the
+ * RaceIQ F1 flagship's Bugatti design system, re-themed to the IMSA
+ * WeatherTech SportsCar Championship identity.
+ *
+ * The accent is IMSA WeatherTech red (#E4002B) — a DEEP, saturated accent in
+ * the same family as F1's #E10600, so this site keeps F1's deep-accent
+ * treatment: text ON the accent is WHITE (--accent-ink #ffffff), and a brighter
+ * red (--accent-f1-red-bright) is used for small text / numerals on black where
+ * the base red would be too dark. Everything else mirrors F1 — pure-black
+ * canvas, white uppercase letterspaced display, serif body, monospace
+ * nav/buttons/captions, the glow stack, gradients, scanlines, motion.
+ *
+ * Variable NAMES are preserved verbatim from F1 (the legacy --accent-f1-red
+ * family) so the ported shared components keep compiling without edits; only the
+ * VALUES change. The CLASS-colour block at the bottom (GTP / LMP2 / GTD PRO /
+ * GTD) is IMSA's signature palette — multi-class racing is the sport's defining
+ * structure. GTP's export colour is red and would collide with the site accent,
+ * so its pill is recoloured to a distinct teal (matched to lib/classes.ts).
+ */
+
+:root,
+[data-theme="dark"] {
+  /* ── Bugatti palette ─────────────────────────────────────────────── */
+  --canvas:             #000000;
+  --surface-soft:       #0d0d0d;
+  --surface-card:       #141414;
+  --surface-elevated-b: #1f1f1f;
+  --hairline:           #262626;
+  --hairline-strong:    #3a3a3a;
+  --ink:                #ffffff;
+  --body:               #cccccc;
+  --body-strong:        #e6e6e6;
+  --muted:              #999999;
+  --muted-soft:         #666666;
+  --link:               #ff8a9c;
+  --on-primary:         #000000;
+  --on-photo:           #ffffff;
+  --warning:            #d4a017;
+  --success:            #5fa657;
+
+  /* ── Legacy semantic names re-pointed to Bugatti values ──────────── */
+  --bg:                 #000000;
+  --bg-elevated:        #0d0d0d;
+  --surface:            #141414;
+  --surface-elevated:   #1f1f1f;
+  --surface-overlay:    #141414;
+
+  --border:             #262626;
+  --border-strong:      #3a3a3a;
+  --border-accent:      #3a3a3a;
+
+  --text-primary:       #ffffff;
+  --text-secondary:     #e6e6e6;
+  --text-muted:         #999999;
+  --text-inverse:       #000000;
+
+  /* IMSA WeatherTech red accent — a DEEP accent (same family as F1's red).
+   * The --accent-f1-red family NAMES are kept so ported shared components
+   * resolve; the VALUES are IMSA red. Deep accent → text on it is WHITE, and a
+   * brighter red variant carries small text / numerals on black. */
+  --accent-f1-red:        #E4002B;        /* IMSA WeatherTech red */
+  --accent-f1-red-hover:  #FF1A44;        /* brighter (deep-accent hover) */
+  --accent-f1-red-bright: #FF3355;        /* small-text pop on black (~5:1) */
+  --accent-f1-red-soft:   rgba(228, 0, 43, 0.14);
+
+  --accent:             var(--accent-f1-red);
+  --accent-strong:      var(--accent-f1-red-hover);
+  --accent-ink:         #ffffff;          /* text ON IMSA-red accent = white */
+
+  --accent-live:        var(--accent-f1-red);
+  --accent-live-fg:     #ffffff;
+  --accent-live-hover:  var(--accent-f1-red-hover);
+  --accent-positive:    #5fa657;
+  --accent-positive-fg: #04140d;
+  --accent-negative:    var(--accent-f1-red); /* podium-miss arrows read red */
+  --accent-negative-fg: #ffffff;
+  --accent-info:        #ff8a9c;
+  --accent-info-fg:     #240208;
+  --accent-podium-1:    #FFD166;
+  --accent-podium-2:    #C5CCD3;
+  --accent-podium-3:    #CD7F32;
+
+  /* ── Elevation — all shadows nuked (Bugatti default) ─────────────── */
+  --shadow-sm:  none;
+  --shadow:     none;
+  --shadow-lg:  none;
+  --shadow-elevated: none;
+  --shadow-hud:      none;
+
+  /* ── Glow stack — re-armed for live + podium + team surfaces (red). */
+  --glow-accent:  none;
+  --glow-purple:  none;
+  --glow-live:    0 0 14px rgba(228, 0, 43, 0.55), 0 0 32px rgba(228, 0, 43, 0.25);
+  --glow-podium:  0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-podium-gold: 0 0 24px rgba(255, 209, 102, 0.30);
+  --glow-team:    0 0 18px color-mix(in srgb, var(--team-color, #ffffff) 50%, transparent);
+
+  /* ── Magic-UI HSL color triplets (used by gradient primitives) ────── */
+  --color-1: 349 100% 45%;   /* IMSA red */
+  --color-2: 202 66% 59%;    /* LMP2 blue */
+  --color-3: 45 100% 60%;    /* champagne gold */
+  --color-4: 28 88% 62%;     /* GTD PRO orange */
+  --color-5: 174 63% 51%;    /* GTP teal */
+
+  /* ── Gradients — decorative stack (red scrim) ─────────────────────── */
+  --gradient-paddock:   linear-gradient(180deg, rgba(228,0,43,0.10) 0%, transparent 55%);
+  --gradient-hud-frame: linear-gradient(180deg, var(--surface-soft), var(--surface-card));
+  --gradient-scanline:  repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+
+  /* ── Radius — Bugatti flat; cards get one notch of softness. ──────── */
+  --radius-sm:   0px;
+  --radius:      0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-none: 0px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+  --radius-card: 4px;
+  --radius-md:   4px;
+
+  /* ── Spacing scale ───────────────────────────────────────────────── */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+  --space-xxl: 64px;
+  --space-section: 120px;
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  40px;
+  --space-12: 64px;
+
+  /* ── HUD palette ─────────────────────────────────────────────────── */
+  --hud-purple:        var(--muted);
+  --hud-purple-soft:   rgba(255, 255, 255, 0.06);
+  --hud-yellow:        var(--warning);
+  --hud-yellow-soft:   rgba(212, 160, 23, 0.10);
+  --hud-red-light:     var(--accent-f1-red);
+  --hud-red-soft:      var(--accent-f1-red-soft);
+  --hud-green:         var(--success);
+  --hud-cyan:          var(--link);
+  --hud-champagne:     var(--accent-podium-1);
+
+  /* ── Class palette — IMSA's defining variable (GTP/LMP2/GTD PRO/GTD).
+   * GTP is recoloured to teal (its export colour is red — clashes with the
+   * accent); the others mirror the export's per-class colours. */
+  --class-gtp:      #2DD4BF;
+  --class-lmp2:     #4EA8DE;
+  --class-gtdpro:   #F4A259;
+  --class-gtd:      #B57BFF;
+
+  /* ── Motion tokens ───────────────────────────────────────────────── */
+  --dur-instant: 80ms;
+  --dur-snap:    180ms;
+  --dur-base:    320ms;
+  --dur-glide:   520ms;
+  --dur-cinema:  900ms;
+  --ease-pit:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-launch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-drs:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Font bindings (resolved by next/font in layout.tsx) ─────────── */
+  --font-display: var(--font-saira), "Saira Condensed", "Impact", sans-serif;
+  --font-serif:   var(--font-garamond), "EB Garamond", "Garamond", "Times New Roman", serif;
+  --font-mono:    var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:    var(--font-display);
+
+  /* ── shadcn aliases ─────────────────────────────────────────────── */
+  --background:           var(--bg);
+  --foreground:           var(--text-primary);
+  --card:                 var(--surface);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--surface-elevated);
+  --popover-foreground:   var(--text-primary);
+  --primary:              var(--ink);
+  --primary-foreground:   var(--on-primary);
+  --secondary:            var(--surface-elevated);
+  --secondary-foreground: var(--text-primary);
+  --muted-bg:             var(--surface-elevated);
+  --muted-foreground:     var(--text-muted);
+  --accent-foreground:    var(--text-primary);
+  --destructive:          var(--accent-negative);
+  --destructive-foreground: var(--accent-negative-fg);
+  --input:                var(--border);
+  --ring:                 var(--ink);
+
+  --ink-muted:   var(--body);
+  --ink-dim:     var(--muted);
+  --surface-2:   var(--surface-elevated);
+  --surface-3:   var(--surface-elevated-b);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Class-colour palette — IMSA's signature UI element. Resolved via
+ * `data-class="GTP|LMP2|GTDPRO|GTD"` or inline `--class-color`. Values mirror
+ * the site's pill-colour map (GTP overridden to teal).
+ * ───────────────────────────────────────────────────────────────────── */
+[data-class="GTP"]    { --class-color: var(--class-gtp); }
+[data-class="LMP2"]   { --class-color: var(--class-lmp2); }
+[data-class="GTDPRO"] { --class-color: var(--class-gtdpro); }
+[data-class="GTD"]    { --class-color: var(--class-gtd); }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Legacy-compat aliases.
+ * ───────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-card:        var(--surface-card);
+  --bg-card-solid:  var(--surface-card);
+  --bg-card-hover:  var(--surface-elevated);
+  --bg-surface:     var(--surface-card);
+  --text:           var(--text-primary);
+  --glass-border:   var(--hairline);
+  --glass-bg:       transparent;
+}
+
+/* Tabular-figure utility for numeric / timing displays. */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Class chip — IMSA's signature per-class badge (used in the class selector
+ * and on round/calendar cards). Tinted by the resolved --class-color.
+ * ───────────────────────────────────────────────────────────────────── */
+.class-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--class-color, var(--muted));
+  border: 1px solid color-mix(in oklab, var(--class-color, var(--hairline)) 55%, transparent);
+  background: color-mix(in oklab, var(--class-color, transparent) 12%, transparent);
+}
+.class-chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--class-color, var(--muted));
+  flex-shrink: 0;
+}

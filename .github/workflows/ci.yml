@@ -29,6 +29,7 @@ jobs:
           pip install -e projects/motogp-predictions --no-deps
           pip install -e projects/wrc-predictions --no-deps
           pip install -e projects/wec-predictions --no-deps
+          pip install -e projects/imsa-predictions --no-deps
           pip install requests numpy matplotlib
           # xgboost powers the full GBR+XGB skill ensemble; sklearn comes via core.
           # Without it the model degrades to a GBR-only signal, so this is for parity.
@@ -75,9 +76,12 @@ jobs:
       - name: Test wec-predictions
         run: pytest projects/wec-predictions -q
 
+      - name: Test imsa-predictions
+        run: pytest projects/imsa-predictions -q
+
       - name: Test scaffolded series projects
         run: |
-          for p in imsa lemans; do
+          for p in lemans; do
             (cd "projects/${p}-predictions" && PYTHONPATH=src pytest -q)
           done
 

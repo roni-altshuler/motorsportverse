@@ -1,0 +1,108 @@
+name: IMSA — Update Race Predictions
+
+# IMSA WeatherTech race-weekend automation. The committed data/official_2026.json
+# is the offline source of truth; a guarded live re-pull from the official Al Kamel
+# timing archive (static CSV classifications, reachable from GitHub runners) can
+# only ADD completed rounds (build_snapshot's regression guard refuses to regress).
+# A cheap freshness pre-check skips the heavier multi-season pull when nothing new
+# is scored.
+#
+# IMSA rounds run Jan-Oct, mostly Sat/Sun (the Rolex 24 is a 24h race over a late-
+# January weekend), so the poll casts a Sat-Sun window plus a Monday safety net.
+
+on:
+  schedule:
+    - cron: "45 6-23/3 * * 6"   # Saturday
+    - cron: "45 0-23/3 * * 0"   # Sunday (main result window; 24h races span it)
+    - cron: "45 0-6 * * 1"      # Sunday-night spillover
+    - cron: "0 11,23 * * 1"     # Monday safety net
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run the pull even if the freshness gate says nothing new"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: imsa-update-predictions
+  cancel-in-progress: false
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      committed: ${{ steps.commit.outputs.committed }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python packages
+        run: |
+          pip install -e packages/motorsport-core -e packages/motorsport-data
+          pip install -e projects/imsa-predictions --no-deps
+          pip install requests numpy matplotlib pytest
+
+      - name: Freshness gate — has a new round been scored?
+        id: check
+        working-directory: projects/imsa-predictions
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force }}" = "true" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual force-run — skipping the freshness gate."
+          else
+            PYTHONPATH=src python scripts/freshness_gate.py >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Re-pull the snapshot (guarded live archive fetch)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/imsa-predictions
+        run: PYTHONPATH=src python -m imsa_predictions.refresh --season 2026 --skip-forward-eval
+
+      - name: Regenerate site dataset (fresh processes pick up new rounds)
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/imsa-predictions
+        run: |
+          PYTHONPATH=src python -m imsa_predictions.export
+          PYTHONPATH=src python -m imsa_predictions.forward_eval --season 2026 --allow-empty
+
+      - name: Commit refreshed data if changed
+        id: commit
+        if: steps.check.outputs.should_run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "committed=false" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f projects/imsa-predictions/data/official_*.json \
+                     projects/imsa-predictions/website/public/data
+          if git diff --cached --quiet; then
+            echo "No data changes — snapshot already current."
+            exit 0
+          fi
+          git commit -m "[imsa] Update predictions ($(date -u +%Y-%m-%d))"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          bash .github/scripts/safe_push.sh
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: predict
+    if: needs.predict.outputs.committed == 'true'
+    uses: ./.github/workflows/deploy-website.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

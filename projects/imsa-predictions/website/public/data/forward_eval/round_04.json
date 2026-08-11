@@ -1,0 +1,234 @@
+{
+  "round": 4,
+  "season": 2026,
+  "place": "Monterey",
+  "country": "United States",
+  "event": "Weathertech Raceway Laguna Seca",
+  "classes": [
+    {
+      "class": "GTP",
+      "label": "GTP",
+      "color": "#E10600",
+      "field": 11,
+      "score": {
+        "n": 11,
+        "mean_position_error": 2.909,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 1,
+        "spearman_correlation": 0.36363636363636365,
+        "ndcg_at_5": 0.7056410409428583
+      },
+      "markets": {
+        "win": {
+          "brier": 0.096248,
+          "logLoss": 0.38041
+        },
+        "podium": {
+          "brier": 0.237447,
+          "logLoss": 0.725325
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 11,
+            "mean_position_error": 3.091,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 10,
+            "exact_matches": 1,
+            "spearman_correlation": 0.3,
+            "ndcg_at_5": 0.6666120020622447
+          },
+          "markets": {
+            "win": {
+              "brier": 0.094551,
+              "logLoss": 0.352304
+            },
+            "podium": {
+              "brier": 0.237832,
+              "logLoss": 0.730421
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 11,
+            "mean_position_error": 2.909,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 8,
+            "exact_matches": 2,
+            "spearman_correlation": 0.2909090909090909,
+            "ndcg_at_5": 0.6210920194430121
+          },
+          "markets": {
+            "win": {
+              "brier": 0.096463,
+              "logLoss": 0.381265
+            },
+            "podium": {
+              "brier": 0.242032,
+              "logLoss": 0.730326
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "GTDPRO",
+      "label": "GTD PRO",
+      "color": "#F4A259",
+      "field": 9,
+      "score": {
+        "n": 9,
+        "mean_position_error": 2.222,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 8,
+        "exact_matches": 1,
+        "spearman_correlation": 0.4,
+        "ndcg_at_5": 0.8269896723136287
+      },
+      "markets": {
+        "win": {
+          "brier": 0.117376,
+          "logLoss": 0.399057
+        },
+        "podium": {
+          "brier": 0.158375,
+          "logLoss": 0.466806
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 9,
+            "mean_position_error": 2.444,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 8,
+            "within_5": 9,
+            "exact_matches": 0,
+            "spearman_correlation": 0.48333333333333334,
+            "ndcg_at_5": 0.7898636010449258
+          },
+          "markets": {
+            "win": {
+              "brier": 0.105151,
+              "logLoss": 0.343972
+            },
+            "podium": {
+              "brier": 0.205006,
+              "logLoss": 0.583178
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 9,
+            "mean_position_error": 1.556,
+            "winner_hit": false,
+            "podium_hits": 2,
+            "within_3": 8,
+            "within_5": 8,
+            "exact_matches": 4,
+            "spearman_correlation": 0.4666666666666667,
+            "ndcg_at_5": 0.7014238600244287
+          },
+          "markets": {
+            "win": {
+              "brier": 0.118701,
+              "logLoss": 0.406506
+            },
+            "podium": {
+              "brier": 0.17768,
+              "logLoss": 0.51763
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "GTD",
+      "label": "GTD",
+      "color": "#B57BFF",
+      "field": 13,
+      "score": {
+        "n": 13,
+        "mean_position_error": 4.308,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 6,
+        "within_5": 8,
+        "exact_matches": 2,
+        "spearman_correlation": -0.1043956043956044,
+        "ndcg_at_5": 0.5903623612048637
+      },
+      "markets": {
+        "win": {
+          "brier": 0.084875,
+          "logLoss": 0.420659
+        },
+        "podium": {
+          "brier": 0.218178,
+          "logLoss": 0.688494
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 4.769,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 6,
+            "within_5": 9,
+            "exact_matches": 0,
+            "spearman_correlation": -0.17032967032967034,
+            "ndcg_at_5": 0.5508243570423766
+          },
+          "markets": {
+            "win": {
+              "brier": 0.084823,
+              "logLoss": 0.411706
+            },
+            "podium": {
+              "brier": 0.224928,
+              "logLoss": 0.702104
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 4.308,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 0,
+            "spearman_correlation": 0.04395604395604396,
+            "ndcg_at_5": 0.6054857835834226
+          },
+          "markets": {
+            "win": {
+              "brier": 0.084989,
+              "logLoss": 0.389367
+            },
+            "podium": {
+              "brier": 0.193816,
+              "logLoss": 0.619703
+            }
+          }
+        }
+      }
+    }
+  ]
+}
