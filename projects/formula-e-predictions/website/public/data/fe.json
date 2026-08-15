@@ -2,9 +2,9 @@
   "sport": "Formula E",
   "season": 2026,
   "seasonLabel": "SEASON 2025-2026",
-  "generatedAt": "2026-08-15T11:01:14+00:00",
-  "completedRounds": 15,
-  "lastUpdatedRound": 15,
+  "generatedAt": "2026-08-15T15:22:38+00:00",
+  "completedRounds": 16,
+  "lastUpdatedRound": 16,
   "totalRounds": 17,
   "calendar": [
     {
@@ -180,8 +180,8 @@
       "kind": "street",
       "city": "London",
       "raceDate": "2026-08-15",
-      "completed": false,
-      "dataSource": null
+      "completed": true,
+      "dataSource": "snapshot"
     },
     {
       "round": 17,
@@ -198,50 +198,50 @@
   "driverStandings": [
     {
       "position": 1,
-      "code": "DEN",
-      "name": "J. Dennis",
-      "team": "Andretti",
-      "teamColor": "#F26522",
-      "points": 146.0,
-      "wins": 2,
-      "podiums": 5,
-      "pointsHistory": [
-        109.0,
-        109.0,
-        130.0,
-        146.0
-      ]
-    },
-    {
-      "position": 2,
-      "code": "EVA",
-      "name": "M. Evans",
-      "team": "Jaguar TCS Racing",
-      "teamColor": "#C9A227",
-      "points": 144.0,
-      "wins": 2,
-      "podiums": 5,
-      "pointsHistory": [
-        132.0,
-        132.0,
-        144.0,
-        144.0
-      ]
-    },
-    {
-      "position": 3,
       "code": "WEH",
       "name": "P. Wehrlein",
       "team": "Porsche",
       "teamColor": "#D5001C",
-      "points": 141.0,
+      "points": 169.0,
+      "wins": 3,
+      "podiums": 6,
+      "pointsHistory": [
+        141.0,
+        141.0,
+        141.0,
+        169.0
+      ]
+    },
+    {
+      "position": 2,
+      "code": "DEN",
+      "name": "J. Dennis",
+      "team": "Andretti",
+      "teamColor": "#F26522",
+      "points": 164.0,
+      "wins": 2,
+      "podiums": 6,
+      "pointsHistory": [
+        109.0,
+        130.0,
+        146.0,
+        164.0
+      ]
+    },
+    {
+      "position": 3,
+      "code": "EVA",
+      "name": "M. Evans",
+      "team": "Jaguar TCS Racing",
+      "teamColor": "#C9A227",
+      "points": 148.0,
       "wins": 2,
       "podiums": 5,
       "pointsHistory": [
-        129.0,
-        141.0,
-        141.0,
-        141.0
+        132.0,
+        144.0,
+        144.0,
+        148.0
       ]
     },
     {
@@ -250,46 +250,46 @@
       "name": "O. Rowland",
       "team": "Nissan",
       "teamColor": "#E4287C",
-      "points": 132.0,
+      "points": 134.0,
       "wins": 1,
       "podiums": 6,
       "pointsHistory": [
-        109.0,
         114.0,
         120.0,
-        132.0
+        132.0,
+        134.0
       ]
     },
     {
       "position": 5,
-      "code": "MOR",
-      "name": "E. Mortara",
-      "team": "Mahindra Racing",
-      "teamColor": "#E31837",
-      "points": 116.0,
-      "wins": 0,
-      "podiums": 2,
-      "pointsHistory": [
-        103.0,
-        103.0,
-        113.0,
-        116.0
-      ]
-    },
-    {
-      "position": 6,
       "code": "DAC",
       "name": "A. F\u00e9lix da Costa",
       "team": "Jaguar TCS Racing",
       "teamColor": "#C9A227",
-      "points": 113.0,
+      "points": 128.0,
       "wins": 2,
-      "podiums": 4,
+      "podiums": 5,
       "pointsHistory": [
         111.0,
-        111.0,
         113.0,
-        113.0
+        113.0,
+        128.0
+      ]
+    },
+    {
+      "position": 6,
+      "code": "MOR",
+      "name": "E. Mortara",
+      "team": "Mahindra Racing",
+      "teamColor": "#E31837",
+      "points": 126.0,
+      "wins": 0,
+      "podiums": 2,
+      "pointsHistory": [
+        103.0,
+        113.0,
+        116.0,
+        126.0
       ]
     },
     {
@@ -298,14 +298,14 @@
       "name": "N. Cassidy",
       "team": "Citro\u00ebn Racing",
       "teamColor": "#EB002A",
-      "points": 104.0,
+      "points": 106.0,
       "wins": 1,
       "podiums": 5,
       "pointsHistory": [
         71.0,
-        71.0,
         86.0,
-        104.0
+        104.0,
+        106.0
       ]
     },
     {
@@ -318,9 +318,9 @@
       "wins": 1,
       "podiums": 2,
       "pointsHistory": [
-        90.0,
         96.0,
         96.0,
+        102.0,
         102.0
       ]
     },
@@ -336,7 +336,7 @@
       "pointsHistory": [
         69.0,
         69.0,
-        69.0,
+        94.0,
         94.0
       ]
     },
@@ -346,14 +346,14 @@
       "name": "S. Buemi",
       "team": "Envision Racing",
       "teamColor": "#00C900",
-      "points": 75.0,
+      "points": 87.0,
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        65.0,
         75.0,
         75.0,
-        75.0
+        75.0,
+        87.0
       ]
     },
     {
@@ -366,7 +366,7 @@
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        54.0,
+        65.0,
         65.0,
         65.0,
         65.0
@@ -383,7 +383,7 @@
       "podiums": 2,
       "pointsHistory": [
         58.0,
-        58.0,
+        62.0,
         62.0,
         62.0
       ]
@@ -398,14 +398,30 @@
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        26.0,
         44.0,
         52.0,
+        62.0,
         62.0
       ]
     },
     {
       "position": 14,
+      "code": "TIC",
+      "name": "D. Ticktum",
+      "team": "CUPRA KIRO",
+      "teamColor": "#2AA8A0",
+      "points": 60.0,
+      "wins": 1,
+      "podiums": 1,
+      "pointsHistory": [
+        28.0,
+        54.0,
+        54.0,
+        60.0
+      ]
+    },
+    {
+      "position": 15,
       "code": "ERI",
       "name": "J. Eriksson",
       "team": "Envision Racing",
@@ -414,26 +430,10 @@
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
-        40.0,
+        55.0,
         55.0,
         55.0,
         55.0
-      ]
-    },
-    {
-      "position": 15,
-      "code": "TIC",
-      "name": "D. Ticktum",
-      "team": "CUPRA KIRO",
-      "teamColor": "#2AA8A0",
-      "points": 54.0,
-      "wins": 1,
-      "podiums": 1,
-      "pointsHistory": [
-        28.0,
-        28.0,
-        54.0,
-        54.0
       ]
     },
     {
@@ -442,14 +442,14 @@
       "name": "T. Barnard",
       "team": "DS Penske",
       "teamColor": "#CBA65F",
-      "points": 33.0,
+      "points": 41.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        26.0,
         28.0,
         29.0,
-        33.0
+        33.0,
+        41.0
       ]
     },
     {
@@ -462,7 +462,7 @@
       "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        7.0,
+        32.0,
         32.0,
         32.0,
         32.0
@@ -478,9 +478,9 @@
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        20.0,
         21.0,
         21.0,
+        23.0,
         23.0
       ]
     },
@@ -496,7 +496,7 @@
       "pointsHistory": [
         11.0,
         11.0,
-        11.0,
+        19.0,
         19.0
       ]
     },
@@ -512,7 +512,7 @@
       "pointsHistory": [
         2.0,
         2.0,
-        2.0,
+        3.0,
         3.0
       ]
     }
@@ -522,126 +522,126 @@
       "position": 1,
       "team": "Jaguar TCS Racing",
       "teamColor": "#C9A227",
-      "points": 257.0,
+      "points": 276.0,
       "wins": 4,
-      "podiums": 9,
+      "podiums": 10,
       "pointsHistory": [
         243.0,
-        243.0,
         257.0,
-        257.0
+        257.0,
+        276.0
       ]
     },
     {
       "position": 2,
       "team": "Porsche",
       "teamColor": "#D5001C",
-      "points": 243.0,
-      "wins": 3,
-      "podiums": 7,
+      "points": 271.0,
+      "wins": 4,
+      "podiums": 8,
       "pointsHistory": [
-        219.0,
         237.0,
         237.0,
-        243.0
+        243.0,
+        271.0
       ]
     },
     {
       "position": 3,
       "team": "Andretti",
       "teamColor": "#F26522",
-      "points": 211.0,
+      "points": 229.0,
       "wins": 2,
-      "podiums": 6,
+      "podiums": 7,
       "pointsHistory": [
-        163.0,
         174.0,
         195.0,
-        211.0
+        211.0,
+        229.0
       ]
     },
     {
       "position": 4,
       "team": "Mahindra Racing",
       "teamColor": "#E31837",
-      "points": 210.0,
+      "points": 220.0,
       "wins": 2,
       "podiums": 5,
       "pointsHistory": [
         172.0,
-        172.0,
         182.0,
-        210.0
+        210.0,
+        220.0
       ]
     },
     {
       "position": 5,
       "team": "Citro\u00ebn Racing",
       "teamColor": "#EB002A",
-      "points": 166.0,
+      "points": 168.0,
       "wins": 1,
       "podiums": 6,
       "pointsHistory": [
-        97.0,
         115.0,
         138.0,
-        166.0
+        166.0,
+        168.0
       ]
     },
     {
       "position": 6,
       "team": "Nissan",
       "teamColor": "#E4287C",
-      "points": 151.0,
+      "points": 153.0,
       "wins": 1,
       "podiums": 6,
       "pointsHistory": [
-        120.0,
         125.0,
         131.0,
-        151.0
+        151.0,
+        153.0
       ]
     },
     {
       "position": 7,
       "team": "Envision Racing",
       "teamColor": "#00C900",
-      "points": 130.0,
+      "points": 142.0,
       "wins": 0,
       "podiums": 2,
       "pointsHistory": [
-        105.0,
         130.0,
         130.0,
-        130.0
+        130.0,
+        142.0
       ]
     },
     {
       "position": 8,
       "team": "CUPRA KIRO",
       "teamColor": "#2AA8A0",
-      "points": 116.0,
+      "points": 122.0,
       "wins": 1,
       "podiums": 3,
       "pointsHistory": [
         86.0,
-        86.0,
         116.0,
-        116.0
+        116.0,
+        122.0
       ]
     },
     {
       "position": 9,
       "team": "DS Penske",
       "teamColor": "#CBA65F",
-      "points": 56.0,
+      "points": 64.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
-        46.0,
         49.0,
         50.0,
-        56.0
+        56.0,
+        64.0
       ]
     },
     {
@@ -652,85 +652,85 @@
       "wins": 1,
       "podiums": 1,
       "pointsHistory": [
-        9.0,
         34.0,
         34.0,
+        35.0,
         35.0
       ]
     }
   ],
   "championship": [
     {
-      "code": "EVA",
-      "name": "M. Evans",
-      "team": "Jaguar TCS Racing",
-      "pTitle": 0.8808,
-      "currentPoints": 144.0,
-      "projMean": 189.75775,
-      "projP10": 181.252,
-      "projP90": 198.252,
-      "maxAttainable": 202.0,
-      "canStillWin": true
-    },
-    {
       "code": "DEN",
       "name": "J. Dennis",
       "team": "Andretti",
-      "pTitle": 0.1138,
-      "currentPoints": 146.0,
-      "projMean": 175.62575000000007,
-      "projP10": 165.20800000000003,
-      "projP90": 187.20800000000003,
-      "maxAttainable": 204.0,
-      "canStillWin": true
-    },
-    {
-      "code": "ROW",
-      "name": "O. Rowland",
-      "team": "Nissan",
-      "pTitle": 0.0035,
-      "currentPoints": 132.0,
-      "projMean": 150.837,
-      "projP10": 138.47199999999998,
-      "projP90": 163.47199999999998,
-      "maxAttainable": 190.0,
+      "pTitle": 0.5938,
+      "currentPoints": 164.0,
+      "projMean": 180.26450000000006,
+      "projP10": 172.876,
+      "projP90": 189.876,
+      "maxAttainable": 193.0,
       "canStillWin": true
     },
     {
       "code": "WEH",
       "name": "P. Wehrlein",
       "team": "Porsche",
-      "pTitle": 0.002,
-      "currentPoints": 141.0,
-      "projMean": 153.3665,
-      "projP10": 142.2,
-      "projP90": 166.2,
-      "maxAttainable": 199.0,
+      "pTitle": 0.392,
+      "currentPoints": 169.0,
+      "projMean": 178.82325000000006,
+      "projP10": 170.264,
+      "projP90": 187.264,
+      "maxAttainable": 198.0,
       "canStillWin": true
+    },
+    {
+      "code": "EVA",
+      "name": "M. Evans",
+      "team": "Jaguar TCS Racing",
+      "pTitle": 0.0143,
+      "currentPoints": 148.0,
+      "projMean": 168.31799999999998,
+      "projP10": 161.522,
+      "projP90": 174.522,
+      "maxAttainable": 177.0,
+      "canStillWin": true
+    },
+    {
+      "code": "ROW",
+      "name": "O. Rowland",
+      "team": "Nissan",
+      "pTitle": 0.0,
+      "currentPoints": 134.0,
+      "projMean": 140.97075,
+      "projP10": 134.182,
+      "projP90": 149.182,
+      "maxAttainable": 163.0,
+      "canStillWin": false
     },
     {
       "code": "DAC",
       "name": "A. F\u00e9lix da Costa",
       "team": "Jaguar TCS Racing",
       "pTitle": 0.0,
-      "currentPoints": 113.0,
-      "projMean": 125.97675000000002,
-      "projP10": 114.22,
-      "projP90": 138.22000000000003,
-      "maxAttainable": 171.0,
-      "canStillWin": true
+      "currentPoints": 128.0,
+      "projMean": 137.32549999999995,
+      "projP10": 129.244,
+      "projP90": 146.244,
+      "maxAttainable": 157.0,
+      "canStillWin": false
     },
     {
       "code": "MOR",
       "name": "E. Mortara",
       "team": "Mahindra Racing",
       "pTitle": 0.0,
-      "currentPoints": 116.0,
-      "projMean": 132.9835,
-      "projP10": 121.356,
-      "projP90": 146.356,
-      "maxAttainable": 174.0,
-      "canStillWin": true
+      "currentPoints": 126.0,
+      "projMean": 135.61425000000003,
+      "projP10": 127.266,
+      "projP90": 144.266,
+      "maxAttainable": 155.0,
+      "canStillWin": false
     },
     {
       "code": "MUE",
@@ -738,22 +738,22 @@
       "team": "Porsche",
       "pTitle": 0.0,
       "currentPoints": 102.0,
-      "projMean": 110.99775000000005,
-      "projP10": 102.18,
-      "projP90": 122.18,
-      "maxAttainable": 160.0,
-      "canStillWin": true
+      "projMean": 106.05375,
+      "projP10": 102.096,
+      "projP90": 114.096,
+      "maxAttainable": 131.0,
+      "canStillWin": false
     },
     {
       "code": "BUE",
       "name": "S. Buemi",
       "team": "Envision Racing",
       "pTitle": 0.0,
-      "currentPoints": 75.0,
-      "projMean": 77.66825000000003,
-      "projP10": 75.05600000000001,
-      "projP90": 85.05600000000001,
-      "maxAttainable": 133.0,
+      "currentPoints": 87.0,
+      "projMean": 89.55975,
+      "projP10": 87.048,
+      "projP90": 97.048,
+      "maxAttainable": 116.0,
       "canStillWin": false
     },
     {
@@ -761,12 +761,12 @@
       "name": "N. Cassidy",
       "team": "Citro\u00ebn Racing",
       "pTitle": 0.0,
-      "currentPoints": 104.0,
-      "projMean": 112.58449999999998,
-      "projP10": 104.148,
-      "projP90": 123.148,
-      "maxAttainable": 162.0,
-      "canStillWin": true
+      "currentPoints": 106.0,
+      "projMean": 109.56325000000002,
+      "projP10": 106.072,
+      "projP90": 118.072,
+      "maxAttainable": 135.0,
+      "canStillWin": false
     },
     {
       "code": "DEV",
@@ -774,11 +774,11 @@
       "team": "Mahindra Racing",
       "pTitle": 0.0,
       "currentPoints": 94.0,
-      "projMean": 103.00975000000001,
-      "projP10": 94.15199999999999,
-      "projP90": 115.15199999999999,
-      "maxAttainable": 152.0,
-      "canStillWin": true
+      "projMean": 96.96375000000002,
+      "projP10": 94.054,
+      "projP90": 104.054,
+      "maxAttainable": 123.0,
+      "canStillWin": false
     },
     {
       "code": "DRU",
@@ -786,10 +786,10 @@
       "team": "Andretti",
       "pTitle": 0.0,
       "currentPoints": 65.0,
-      "projMean": 67.98625,
-      "projP10": 65.04400000000001,
-      "projP90": 76.04400000000001,
-      "maxAttainable": 123.0,
+      "projMean": 65.841,
+      "projP10": 65.016,
+      "projP90": 67.016,
+      "maxAttainable": 94.0,
       "canStillWin": false
     },
     {
@@ -798,10 +798,10 @@
       "team": "CUPRA KIRO",
       "pTitle": 0.0,
       "currentPoints": 62.0,
-      "projMean": 72.47250000000003,
-      "projP10": 62.18000000000001,
-      "projP90": 85.18,
-      "maxAttainable": 120.0,
+      "projMean": 67.12475,
+      "projP10": 62.106,
+      "projP90": 77.106,
+      "maxAttainable": 91.0,
       "canStillWin": false
     },
     {
@@ -810,10 +810,10 @@
       "team": "Envision Racing",
       "pTitle": 0.0,
       "currentPoints": 55.0,
-      "projMean": 61.97249999999997,
-      "projP10": 55.108000000000004,
-      "projP90": 73.108,
-      "maxAttainable": 113.0,
+      "projMean": 56.706,
+      "projP10": 55.024,
+      "projP90": 61.024,
+      "maxAttainable": 84.0,
       "canStillWin": false
     },
     {
@@ -822,10 +822,10 @@
       "team": "Citro\u00ebn Racing",
       "pTitle": 0.0,
       "currentPoints": 62.0,
-      "projMean": 73.68149999999999,
-      "projP10": 63.188,
-      "projP90": 86.18799999999999,
-      "maxAttainable": 120.0,
+      "projMean": 67.03475000000003,
+      "projP10": 62.084,
+      "projP90": 77.084,
+      "maxAttainable": 91.0,
       "canStillWin": false
     },
     {
@@ -834,10 +834,10 @@
       "team": "Lola Yamaha ABT",
       "pTitle": 0.0,
       "currentPoints": 32.0,
-      "projMean": 33.28950000000002,
-      "projP10": 32.016000000000005,
-      "projP90": 36.016000000000005,
-      "maxAttainable": 90.0,
+      "projMean": 32.68049999999999,
+      "projP10": 32.006,
+      "projP90": 32.006,
+      "maxAttainable": 61.0,
       "canStillWin": false
     },
     {
@@ -845,11 +845,11 @@
       "name": "D. Ticktum",
       "team": "CUPRA KIRO",
       "pTitle": 0.0,
-      "currentPoints": 54.0,
-      "projMean": 58.53625000000002,
-      "projP10": 54.08,
-      "projP90": 69.08,
-      "maxAttainable": 112.0,
+      "currentPoints": 60.0,
+      "projMean": 62.75624999999999,
+      "projP10": 60.064,
+      "projP90": 70.064,
+      "maxAttainable": 89.0,
       "canStillWin": false
     },
     {
@@ -857,11 +857,11 @@
       "name": "T. Barnard",
       "team": "DS Penske",
       "pTitle": 0.0,
-      "currentPoints": 33.0,
-      "projMean": 36.24425,
-      "projP10": 33.072,
-      "projP90": 45.072,
-      "maxAttainable": 91.0,
+      "currentPoints": 41.0,
+      "projMean": 43.09175,
+      "projP10": 41.046,
+      "projP90": 49.046,
+      "maxAttainable": 70.0,
       "canStillWin": false
     },
     {
@@ -870,10 +870,10 @@
       "team": "DS Penske",
       "pTitle": 0.0,
       "currentPoints": 23.0,
-      "projMean": 25.15049999999999,
-      "projP10": 23.055999999999997,
-      "projP90": 31.055999999999997,
-      "maxAttainable": 81.0,
+      "projMean": 23.88650000000001,
+      "projP10": 23.026,
+      "projP90": 25.026,
+      "maxAttainable": 52.0,
       "canStillWin": false
     },
     {
@@ -882,10 +882,10 @@
       "team": "Nissan",
       "pTitle": 0.0,
       "currentPoints": 19.0,
-      "projMean": 19.515,
-      "projP10": 19.008000000000003,
-      "projP90": 19.008000000000003,
-      "maxAttainable": 77.0,
+      "projMean": 19.2275,
+      "projP10": 19.004,
+      "projP90": 19.004,
+      "maxAttainable": 48.0,
       "canStillWin": false
     },
     {
@@ -894,68 +894,68 @@
       "team": "Lola Yamaha ABT",
       "pTitle": 0.0,
       "currentPoints": 3.0,
-      "projMean": 3.3442499999999993,
-      "projP10": 3.0039999999999996,
-      "projP90": 3.0039999999999996,
-      "maxAttainable": 61.0,
+      "projMean": 3.19425,
+      "projP10": 3.0,
+      "projP90": 3.0,
+      "maxAttainable": 32.0,
       "canStillWin": false
     }
   ],
   "seasonAccuracy": {
-    "roundsScored": 15,
-    "meanPositionError": 5.575,
-    "podiumHitRate": 0.2222,
-    "winnerHitRate": 0.1333
+    "roundsScored": 16,
+    "meanPositionError": 5.489,
+    "podiumHitRate": 0.2292,
+    "winnerHitRate": 0.125
   },
   "nextPrediction": {
     "season": 2026,
-    "round": 16,
+    "round": 17,
     "venueKey": "london",
-    "venueName": "London",
-    "phase": "post-quali",
-    "qualifyingActual": true,
+    "venueName": "London II",
+    "phase": "pre",
+    "qualifyingActual": false,
     "qualifying": [
       {
         "position": 1,
-        "code": "WEH",
-        "name": "P. Wehrlein",
-        "team": "Porsche"
-      },
-      {
-        "position": 2,
-        "code": "MUE",
-        "name": "N. M\u00fcller",
-        "team": "Porsche"
-      },
-      {
-        "position": 3,
         "code": "EVA",
         "name": "M. Evans",
         "team": "Jaguar TCS Racing"
       },
       {
-        "position": 4,
-        "code": "TIC",
-        "name": "D. Ticktum",
-        "team": "CUPRA KIRO"
-      },
-      {
-        "position": 5,
+        "position": 2,
         "code": "DEN",
         "name": "J. Dennis",
         "team": "Andretti"
       },
       {
-        "position": 6,
-        "code": "ERI",
-        "name": "J. Eriksson",
-        "team": "Envision Racing"
+        "position": 3,
+        "code": "WEH",
+        "name": "P. Wehrlein",
+        "team": "Porsche"
       },
       {
-        "position": 7,
+        "position": 4,
+        "code": "MOR",
+        "name": "E. Mortara",
+        "team": "Mahindra Racing"
+      },
+      {
+        "position": 5,
         "code": "DAC",
         "name": "A. F\u00e9lix da Costa",
         "team": "Jaguar TCS Racing"
+      },
+      {
+        "position": 6,
+        "code": "ROW",
+        "name": "O. Rowland",
+        "team": "Nissan"
+      },
+      {
+        "position": 7,
+        "code": "MAR",
+        "name": "J. M. Mart\u00ed",
+        "team": "CUPRA KIRO"
       },
       {
         "position": 8,
@@ -965,75 +965,75 @@
       },
       {
         "position": 9,
-        "code": "DEV",
-        "name": "N. de Vries",
-        "team": "Mahindra Racing"
+        "code": "MUE",
+        "name": "N. M\u00fcller",
+        "team": "Porsche"
       },
       {
         "position": 10,
-        "code": "BUE",
-        "name": "S. Buemi",
-        "team": "Envision Racing"
-      },
-      {
-        "position": 11,
         "code": "CAS",
         "name": "N. Cassidy",
         "team": "Citro\u00ebn Racing"
       },
       {
+        "position": 11,
+        "code": "DEV",
+        "name": "N. de Vries",
+        "team": "Mahindra Racing"
+      },
+      {
         "position": 12,
+        "code": "TIC",
+        "name": "D. Ticktum",
+        "team": "CUPRA KIRO"
+      },
+      {
+        "position": 13,
+        "code": "BUE",
+        "name": "S. Buemi",
+        "team": "Envision Racing"
+      },
+      {
+        "position": 14,
         "code": "BAR",
         "name": "T. Barnard",
         "team": "DS Penske"
       },
       {
-        "position": 13,
-        "code": "MOR",
-        "name": "E. Mortara",
-        "team": "Mahindra Racing"
-      },
-      {
-        "position": 14,
-        "code": "ROW",
-        "name": "O. Rowland",
-        "team": "Nissan"
-      },
-      {
         "position": 15,
+        "code": "ERI",
+        "name": "J. Eriksson",
+        "team": "Envision Racing"
+      },
+      {
+        "position": 16,
+        "code": "GUE",
+        "name": "M. G\u00fcnther",
+        "team": "DS Penske"
+      },
+      {
+        "position": 17,
         "code": "DRU",
         "name": "F. Drugovich",
         "team": "Andretti"
       },
       {
-        "position": 16,
-        "code": "MAR",
-        "name": "J. M. Mart\u00ed",
-        "team": "CUPRA KIRO"
-      },
-      {
-        "position": 17,
-        "code": "NAT",
-        "name": "N. Nato",
-        "team": "Nissan"
-      },
-      {
         "position": 18,
-        "code": "MAL",
-        "name": "Z. Maloney",
-        "team": "Lola Yamaha ABT"
-      },
-      {
-        "position": 19,
         "code": "DIG",
         "name": "L. Di Grassi",
         "team": "Lola Yamaha ABT"
       },
       {
+        "position": 19,
+        "code": "NAT",
+        "name": "N. Nato",
+        "team": "Nissan"
+      },
+      {
         "position": 20,
-        "code": "GUE",
-        "name": "M. G\u00fcnther",
-        "team": "DS Penske"
+        "code": "MAL",
+        "name": "Z. Maloney",
+        "team": "Lola Yamaha ABT"
       }
     ],
     "race": [
@@ -1042,160 +1042,160 @@
         "code": "EVA",
         "name": "M. Evans",
         "team": "Jaguar TCS Racing",
-        "pWin": 0.684,
-        "pPodium": 0.9775
+        "pWin": 0.3947,
+        "pPodium": 0.8133
       },
       {
         "position": 2,
         "code": "DEN",
         "name": "J. Dennis",
         "team": "Andretti",
-        "pWin": 0.1308,
-        "pPodium": 0.675
+        "pWin": 0.1983,
+        "pPodium": 0.6018
       },
       {
         "position": 3,
         "code": "WEH",
         "name": "P. Wehrlein",
         "team": "Porsche",
-        "pWin": 0.0512,
-        "pPodium": 0.3585
+        "pWin": 0.0712,
+        "pPodium": 0.2622
       },
       {
         "position": 4,
-        "code": "MUE",
-        "name": "N. M\u00fcller",
-        "team": "Porsche",
-        "pWin": 0.0325,
-        "pPodium": 0.2105
+        "code": "MOR",
+        "name": "E. Mortara",
+        "team": "Mahindra Racing",
+        "pWin": 0.0747,
+        "pPodium": 0.2572
       },
       {
         "position": 5,
         "code": "DAC",
         "name": "A. F\u00e9lix da Costa",
         "team": "Jaguar TCS Racing",
-        "pWin": 0.0198,
-        "pPodium": 0.1542
+        "pWin": 0.0602,
+        "pPodium": 0.2465
       },
       {
         "position": 6,
-        "code": "JEV",
-        "name": "J-\u00c9. Vergne",
-        "team": "Citro\u00ebn Racing",
-        "pWin": 0.0127,
-        "pPodium": 0.1138
-      },
-      {
-        "position": 7,
         "code": "ROW",
         "name": "O. Rowland",
         "team": "Nissan",
-        "pWin": 0.01,
-        "pPodium": 0.082
+        "pWin": 0.0365,
+        "pPodium": 0.1522
       },
       {
-        "position": 8,
-        "code": "MOR",
-        "name": "E. Mortara",
-        "team": "Mahindra Racing",
-        "pWin": 0.0132,
-        "pPodium": 0.0835
-      },
-      {
-        "position": 9,
-        "code": "ERI",
-        "name": "J. Eriksson",
-        "team": "Envision Racing",
-        "pWin": 0.0123,
-        "pPodium": 0.085
-      },
-      {
-        "position": 10,
-        "code": "DEV",
-        "name": "N. de Vries",
-        "team": "Mahindra Racing",
-        "pWin": 0.009,
-        "pPodium": 0.0735
-      },
-      {
-        "position": 11,
-        "code": "TIC",
-        "name": "D. Ticktum",
-        "team": "CUPRA KIRO",
-        "pWin": 0.0095,
-        "pPodium": 0.071
-      },
-      {
-        "position": 12,
-        "code": "CAS",
-        "name": "N. Cassidy",
-        "team": "Citro\u00ebn Racing",
-        "pWin": 0.006,
-        "pPodium": 0.0465
-      },
-      {
-        "position": 13,
+        "position": 7,
         "code": "MAR",
         "name": "J. M. Mart\u00ed",
         "team": "CUPRA KIRO",
-        "pWin": 0.0037,
-        "pPodium": 0.0262
+        "pWin": 0.0278,
+        "pPodium": 0.115
       },
       {
-        "position": 14,
+        "position": 8,
+        "code": "JEV",
+        "name": "J-\u00c9. Vergne",
+        "team": "Citro\u00ebn Racing",
+        "pWin": 0.0235,
+        "pPodium": 0.1105
+      },
+      {
+        "position": 9,
+        "code": "MUE",
+        "name": "N. M\u00fcller",
+        "team": "Porsche",
+        "pWin": 0.0215,
+        "pPodium": 0.0785
+      },
+      {
+        "position": 10,
+        "code": "CAS",
+        "name": "N. Cassidy",
+        "team": "Citro\u00ebn Racing",
+        "pWin": 0.0177,
+        "pPodium": 0.0712
+      },
+      {
+        "position": 11,
+        "code": "DEV",
+        "name": "N. de Vries",
+        "team": "Mahindra Racing",
+        "pWin": 0.0135,
+        "pPodium": 0.0592
+      },
+      {
+        "position": 12,
+        "code": "TIC",
+        "name": "D. Ticktum",
+        "team": "CUPRA KIRO",
+        "pWin": 0.0143,
+        "pPodium": 0.0548
+      },
+      {
+        "position": 13,
         "code": "BUE",
         "name": "S. Buemi",
         "team": "Envision Racing",
-        "pWin": 0.0008,
-        "pPodium": 0.0168
+        "pWin": 0.013,
+        "pPodium": 0.0517
       },
       {
-        "position": 15,
+        "position": 14,
         "code": "BAR",
         "name": "T. Barnard",
         "team": "DS Penske",
-        "pWin": 0.0025,
-        "pPodium": 0.0132
+        "pWin": 0.0107,
+        "pPodium": 0.0403
+      },
+      {
+        "position": 15,
+        "code": "ERI",
+        "name": "J. Eriksson",
+        "team": "Envision Racing",
+        "pWin": 0.0097,
+        "pPodium": 0.0333
       },
       {
         "position": 16,
-        "code": "DRU",
-        "name": "F. Drugovich",
-        "team": "Andretti",
-        "pWin": 0.0008,
-        "pPodium": 0.0075
-      },
-      {
-        "position": 17,
         "code": "GUE",
         "name": "M. G\u00fcnther",
         "team": "DS Penske",
-        "pWin": 0.0,
-        "pPodium": 0.0008
+        "pWin": 0.0032,
+        "pPodium": 0.0138
+      },
+      {
+        "position": 17,
+        "code": "DRU",
+        "name": "F. Drugovich",
+        "team": "Andretti",
+        "pWin": 0.0037,
+        "pPodium": 0.0147
       },
       {
         "position": 18,
         "code": "DIG",
         "name": "L. Di Grassi",
         "team": "Lola Yamaha ABT",
-        "pWin": 0.0,
-        "pPodium": 0.0025
+        "pWin": 0.0025,
+        "pPodium": 0.016
       },
       {
         "position": 19,
         "code": "NAT",
         "name": "N. Nato",
         "team": "Nissan",
-        "pWin": 0.0013,
-        "pPodium": 0.0018
+        "pWin": 0.0018,
+        "pPodium": 0.0043
       },
       {
         "position": 20,
         "code": "MAL",
         "name": "Z. Maloney",
         "team": "Lola Yamaha ABT",
-        "pWin": 0.0,
-        "pPodium": 0.0003
+        "pWin": 0.0013,
+        "pPodium": 0.0035
       }
     ]
   }

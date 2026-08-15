@@ -5,8 +5,8 @@
   "venueName": "London",
   "country": "United Kingdom",
   "venueKind": "street",
-  "completed": false,
-  "dataSource": null,
+  "completed": true,
+  "dataSource": "snapshot",
   "modelConfig": {
     "positionModel": {
       "applied": false
@@ -17,51 +17,51 @@
     "grid": [
       {
         "position": 1,
-        "code": "WEH",
-        "name": "P. Wehrlein",
-        "team": "Porsche"
-      },
-      {
-        "position": 2,
-        "code": "MUE",
-        "name": "N. M\u00fcller",
-        "team": "Porsche"
-      },
-      {
-        "position": 3,
         "code": "EVA",
         "name": "M. Evans",
         "team": "Jaguar TCS Racing"
       },
       {
-        "position": 4,
-        "code": "TIC",
-        "name": "D. Ticktum",
-        "team": "CUPRA KIRO"
-      },
-      {
-        "position": 5,
+        "position": 2,
         "code": "DEN",
         "name": "J. Dennis",
         "team": "Andretti"
       },
       {
-        "position": 6,
-        "code": "ERI",
-        "name": "J. Eriksson",
-        "team": "Envision Racing"
+        "position": 3,
+        "code": "ROW",
+        "name": "O. Rowland",
+        "team": "Nissan"
       },
       {
-        "position": 7,
+        "position": 4,
+        "code": "MOR",
+        "name": "E. Mortara",
+        "team": "Mahindra Racing"
+      },
+      {
+        "position": 5,
         "code": "DAC",
         "name": "A. F\u00e9lix da Costa",
         "team": "Jaguar TCS Racing"
       },
       {
-        "position": 8,
+        "position": 6,
+        "code": "WEH",
+        "name": "P. Wehrlein",
+        "team": "Porsche"
+      },
+      {
+        "position": 7,
         "code": "JEV",
         "name": "J-\u00c9. Vergne",
         "team": "Citro\u00ebn Racing"
+      },
+      {
+        "position": 8,
+        "code": "MAR",
+        "name": "J. M. Mart\u00ed",
+        "team": "CUPRA KIRO"
       },
       {
         "position": 9,
@@ -71,9 +71,9 @@
       },
       {
         "position": 10,
-        "code": "BUE",
-        "name": "S. Buemi",
-        "team": "Envision Racing"
+        "code": "MUE",
+        "name": "N. M\u00fcller",
+        "team": "Porsche"
       },
       {
         "position": 11,
@@ -83,21 +83,21 @@
       },
       {
         "position": 12,
-        "code": "BAR",
-        "name": "T. Barnard",
-        "team": "DS Penske"
+        "code": "ERI",
+        "name": "J. Eriksson",
+        "team": "Envision Racing"
       },
       {
         "position": 13,
-        "code": "MOR",
-        "name": "E. Mortara",
-        "team": "Mahindra Racing"
+        "code": "TIC",
+        "name": "D. Ticktum",
+        "team": "CUPRA KIRO"
       },
       {
         "position": 14,
-        "code": "ROW",
-        "name": "O. Rowland",
-        "team": "Nissan"
+        "code": "BAR",
+        "name": "T. Barnard",
+        "team": "DS Penske"
       },
       {
         "position": 15,
@@ -107,33 +107,33 @@
       },
       {
         "position": 16,
-        "code": "MAR",
-        "name": "J. M. Mart\u00ed",
-        "team": "CUPRA KIRO"
+        "code": "BUE",
+        "name": "S. Buemi",
+        "team": "Envision Racing"
       },
       {
         "position": 17,
-        "code": "NAT",
-        "name": "N. Nato",
-        "team": "Nissan"
+        "code": "GUE",
+        "name": "M. G\u00fcnther",
+        "team": "DS Penske"
       },
       {
         "position": 18,
-        "code": "MAL",
-        "name": "Z. Maloney",
-        "team": "Lola Yamaha ABT"
-      },
-      {
-        "position": 19,
         "code": "DIG",
         "name": "L. Di Grassi",
         "team": "Lola Yamaha ABT"
       },
       {
+        "position": 19,
+        "code": "NAT",
+        "name": "N. Nato",
+        "team": "Nissan"
+      },
+      {
         "position": 20,
-        "code": "GUE",
-        "name": "M. G\u00fcnther",
-        "team": "DS Penske"
+        "code": "MAL",
+        "name": "Z. Maloney",
+        "team": "Lola Yamaha ABT"
       }
     ],
     "classification": [
@@ -143,17 +143,17 @@
         "name": "M. Evans",
         "team": "Jaguar TCS Racing",
         "teamColor": "#C9A227",
-        "predictedValue": 88.445,
-        "pWin": 0.684,
-        "pPodium": 0.9775,
-        "pTop6": 1.0,
+        "predictedValue": 88.205,
+        "pWin": 0.5325,
+        "pPodium": 0.9227,
+        "pTop6": 0.9982,
         "pTop10": 1.0,
-        "meanFinish": 1.43,
+        "meanFinish": 1.78,
         "finishRangeLow": 1,
-        "finishRangeHigh": 2,
+        "finishRangeHigh": 3,
         "confidence": "High",
         "headshotUrl": "/headshots/EVA.webp",
-        "actualPosition": null
+        "actualPosition": 8
       },
       {
         "position": 2,
@@ -161,53 +161,53 @@
         "name": "J. Dennis",
         "team": "Andretti",
         "teamColor": "#F26522",
-        "predictedValue": 89.265,
-        "pWin": 0.1308,
-        "pPodium": 0.675,
-        "pTop6": 0.9633,
-        "pTop10": 1.0,
-        "meanFinish": 3.07,
+        "predictedValue": 88.865,
+        "pWin": 0.1547,
+        "pPodium": 0.548,
+        "pTop6": 0.8848,
+        "pTop10": 0.9925,
+        "meanFinish": 3.66,
         "finishRangeLow": 1,
-        "finishRangeHigh": 5,
+        "finishRangeHigh": 7,
         "confidence": "High",
         "headshotUrl": "/headshots/DEN.webp",
-        "actualPosition": null
+        "actualPosition": 2
       },
       {
         "position": 3,
-        "code": "WEH",
-        "name": "P. Wehrlein",
-        "team": "Porsche",
-        "teamColor": "#D5001C",
-        "predictedValue": 89.706,
-        "pWin": 0.0512,
-        "pPodium": 0.3585,
-        "pTop6": 0.792,
-        "pTop10": 0.982,
-        "meanFinish": 4.67,
+        "code": "ROW",
+        "name": "O. Rowland",
+        "team": "Nissan",
+        "teamColor": "#E4287C",
+        "predictedValue": 89.326,
+        "pWin": 0.0578,
+        "pPodium": 0.263,
+        "pTop6": 0.597,
+        "pTop10": 0.9015,
+        "meanFinish": 5.94,
         "finishRangeLow": 2,
-        "finishRangeHigh": 8,
+        "finishRangeHigh": 10,
         "confidence": "High",
-        "headshotUrl": "/headshots/WEH.webp",
-        "actualPosition": null
+        "headshotUrl": "/headshots/ROW.webp",
+        "actualPosition": 10
       },
       {
         "position": 4,
-        "code": "MUE",
-        "name": "N. M\u00fcller",
-        "team": "Porsche",
-        "teamColor": "#D5001C",
-        "predictedValue": 89.995,
-        "pWin": 0.0325,
-        "pPodium": 0.2105,
-        "pTop6": 0.5972,
-        "pTop10": 0.9305,
-        "meanFinish": 5.98,
-        "finishRangeLow": 3,
-        "finishRangeHigh": 10,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/MUE.webp",
-        "actualPosition": null
+        "code": "MOR",
+        "name": "E. Mortara",
+        "team": "Mahindra Racing",
+        "teamColor": "#E31837",
+        "predictedValue": 89.41,
+        "pWin": 0.044,
+        "pPodium": 0.2127,
+        "pTop6": 0.5433,
+        "pTop10": 0.8585,
+        "meanFinish": 6.51,
+        "finishRangeLow": 2,
+        "finishRangeHigh": 11,
+        "confidence": "High",
+        "headshotUrl": "/headshots/MOR.webp",
+        "actualPosition": 5
       },
       {
         "position": 5,
@@ -215,215 +215,215 @@
         "name": "A. F\u00e9lix da Costa",
         "team": "Jaguar TCS Racing",
         "teamColor": "#C9A227",
-        "predictedValue": 90.166,
-        "pWin": 0.0198,
-        "pPodium": 0.1542,
-        "pTop6": 0.475,
-        "pTop10": 0.8602,
-        "meanFinish": 6.88,
+        "predictedValue": 89.606,
+        "pWin": 0.0297,
+        "pPodium": 0.1452,
+        "pTop6": 0.3992,
+        "pTop10": 0.747,
+        "meanFinish": 7.78,
         "finishRangeLow": 3,
-        "finishRangeHigh": 11,
+        "finishRangeHigh": 13,
         "confidence": "Medium",
         "headshotUrl": "/headshots/DAC.webp",
-        "actualPosition": null
+        "actualPosition": 3
       },
       {
         "position": 6,
+        "code": "WEH",
+        "name": "P. Wehrlein",
+        "team": "Porsche",
+        "teamColor": "#D5001C",
+        "predictedValue": 89.626,
+        "pWin": 0.0288,
+        "pPodium": 0.1403,
+        "pTop6": 0.3842,
+        "pTop10": 0.723,
+        "meanFinish": 7.97,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 13,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/WEH.webp",
+        "actualPosition": 1
+      },
+      {
+        "position": 7,
         "code": "JEV",
         "name": "J-\u00c9. Vergne",
         "team": "Citro\u00ebn Racing",
         "teamColor": "#EB002A",
-        "predictedValue": 90.33,
-        "pWin": 0.0127,
-        "pPodium": 0.1138,
-        "pTop6": 0.3645,
-        "pTop10": 0.767,
-        "meanFinish": 7.8,
+        "predictedValue": 89.69,
+        "pWin": 0.0205,
+        "pPodium": 0.125,
+        "pTop6": 0.3475,
+        "pTop10": 0.679,
+        "meanFinish": 8.39,
         "finishRangeLow": 3,
-        "finishRangeHigh": 12,
+        "finishRangeHigh": 14,
         "confidence": "Medium",
         "headshotUrl": "/headshots/JEV.webp",
         "actualPosition": null
       },
       {
-        "position": 7,
-        "code": "ROW",
-        "name": "O. Rowland",
-        "team": "Nissan",
-        "teamColor": "#E4287C",
-        "predictedValue": 90.446,
-        "pWin": 0.01,
-        "pPodium": 0.082,
-        "pTop6": 0.2935,
-        "pTop10": 0.687,
-        "meanFinish": 8.57,
-        "finishRangeLow": 4,
-        "finishRangeHigh": 13,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/ROW.webp",
-        "actualPosition": null
-      },
-      {
         "position": 8,
-        "code": "MOR",
-        "name": "E. Mortara",
-        "team": "Mahindra Racing",
-        "teamColor": "#E31837",
-        "predictedValue": 90.45,
-        "pWin": 0.0132,
-        "pPodium": 0.0835,
-        "pTop6": 0.2873,
-        "pTop10": 0.675,
-        "meanFinish": 8.6,
-        "finishRangeLow": 4,
-        "finishRangeHigh": 13,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/MOR.webp",
-        "actualPosition": null
-      },
-      {
-        "position": 9,
-        "code": "ERI",
-        "name": "J. Eriksson",
-        "team": "Envision Racing",
-        "teamColor": "#00C900",
-        "predictedValue": 90.466,
-        "pWin": 0.0123,
-        "pPodium": 0.085,
-        "pTop6": 0.2968,
-        "pTop10": 0.6685,
-        "meanFinish": 8.6,
-        "finishRangeLow": 4,
-        "finishRangeHigh": 13,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/ERI.webp",
-        "actualPosition": null
-      },
-      {
-        "position": 10,
-        "code": "DEV",
-        "name": "N. de Vries",
-        "team": "Mahindra Racing",
-        "teamColor": "#E31837",
-        "predictedValue": 90.554,
-        "pWin": 0.009,
-        "pPodium": 0.0735,
-        "pTop6": 0.2477,
-        "pTop10": 0.6038,
-        "meanFinish": 9.14,
-        "finishRangeLow": 4,
-        "finishRangeHigh": 14,
-        "confidence": "Low",
-        "headshotUrl": "/headshots/DEV.webp",
-        "actualPosition": null
-      },
-      {
-        "position": 11,
-        "code": "TIC",
-        "name": "D. Ticktum",
-        "team": "CUPRA KIRO",
-        "teamColor": "#2AA8A0",
-        "predictedValue": 90.556,
-        "pWin": 0.0095,
-        "pPodium": 0.071,
-        "pTop6": 0.2485,
-        "pTop10": 0.5933,
-        "meanFinish": 9.24,
-        "finishRangeLow": 4,
-        "finishRangeHigh": 14,
-        "confidence": "Low",
-        "headshotUrl": "/headshots/TIC.webp",
-        "actualPosition": null
-      },
-      {
-        "position": 12,
-        "code": "CAS",
-        "name": "N. Cassidy",
-        "team": "Citro\u00ebn Racing",
-        "teamColor": "#EB002A",
-        "predictedValue": 90.74,
-        "pWin": 0.006,
-        "pPodium": 0.0465,
-        "pTop6": 0.17,
-        "pTop10": 0.4575,
-        "meanFinish": 10.29,
-        "finishRangeLow": 5,
-        "finishRangeHigh": 14,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/CAS.webp",
-        "actualPosition": null
-      },
-      {
-        "position": 13,
         "code": "MAR",
         "name": "J. M. Mart\u00ed",
         "team": "CUPRA KIRO",
         "teamColor": "#2AA8A0",
-        "predictedValue": 91.032,
-        "pWin": 0.0037,
-        "pPodium": 0.0262,
-        "pTop6": 0.1003,
-        "pTop10": 0.283,
-        "meanFinish": 11.95,
-        "finishRangeLow": 6,
-        "finishRangeHigh": 16,
-        "confidence": "Low",
+        "predictedValue": 89.752,
+        "pWin": 0.0238,
+        "pPodium": 0.104,
+        "pTop6": 0.3023,
+        "pTop10": 0.636,
+        "meanFinish": 8.85,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 14,
+        "confidence": "Medium",
         "headshotUrl": "/headshots/MAR.webp",
         "actualPosition": null
       },
       {
-        "position": 14,
-        "code": "BUE",
-        "name": "S. Buemi",
-        "team": "Envision Racing",
-        "teamColor": "#00C900",
-        "predictedValue": 91.318,
-        "pWin": 0.0008,
-        "pPodium": 0.0168,
-        "pTop6": 0.0625,
-        "pTop10": 0.176,
-        "meanFinish": 13.38,
-        "finishRangeLow": 8,
-        "finishRangeHigh": 17,
-        "confidence": "Medium",
-        "headshotUrl": "/headshots/BUE.webp",
-        "actualPosition": null
+        "position": 9,
+        "code": "DEV",
+        "name": "N. de Vries",
+        "team": "Mahindra Racing",
+        "teamColor": "#E31837",
+        "predictedValue": 89.834,
+        "pWin": 0.0203,
+        "pPodium": 0.1013,
+        "pTop6": 0.2797,
+        "pTop10": 0.5865,
+        "meanFinish": 9.28,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 15,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/DEV.webp",
+        "actualPosition": 13
       },
       {
-        "position": 15,
+        "position": 10,
+        "code": "MUE",
+        "name": "N. M\u00fcller",
+        "team": "Porsche",
+        "teamColor": "#D5001C",
+        "predictedValue": 89.835,
+        "pWin": 0.0198,
+        "pPodium": 0.102,
+        "pTop6": 0.28,
+        "pTop10": 0.5725,
+        "meanFinish": 9.32,
+        "finishRangeLow": 3,
+        "finishRangeHigh": 15,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/MUE.webp",
+        "actualPosition": 11
+      },
+      {
+        "position": 11,
+        "code": "CAS",
+        "name": "N. Cassidy",
+        "team": "Citro\u00ebn Racing",
+        "teamColor": "#EB002A",
+        "predictedValue": 89.86,
+        "pWin": 0.017,
+        "pPodium": 0.0932,
+        "pTop6": 0.26,
+        "pTop10": 0.5585,
+        "meanFinish": 9.59,
+        "finishRangeLow": 4,
+        "finishRangeHigh": 15,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/CAS.webp",
+        "actualPosition": 9
+      },
+      {
+        "position": 12,
+        "code": "ERI",
+        "name": "J. Eriksson",
+        "team": "Envision Racing",
+        "teamColor": "#00C900",
+        "predictedValue": 89.986,
+        "pWin": 0.014,
+        "pPodium": 0.077,
+        "pTop6": 0.2105,
+        "pTop10": 0.4715,
+        "meanFinish": 10.39,
+        "finishRangeLow": 4,
+        "finishRangeHigh": 16,
+        "confidence": "Low",
+        "headshotUrl": "/headshots/ERI.webp",
+        "actualPosition": 14
+      },
+      {
+        "position": 13,
+        "code": "TIC",
+        "name": "D. Ticktum",
+        "team": "CUPRA KIRO",
+        "teamColor": "#2AA8A0",
+        "predictedValue": 90.236,
+        "pWin": 0.0092,
+        "pPodium": 0.0405,
+        "pTop6": 0.1313,
+        "pTop10": 0.3167,
+        "meanFinish": 12.17,
+        "finishRangeLow": 6,
+        "finishRangeHigh": 17,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/TIC.webp",
+        "actualPosition": 7
+      },
+      {
+        "position": 14,
         "code": "BAR",
         "name": "T. Barnard",
         "team": "DS Penske",
         "teamColor": "#CBA65F",
-        "predictedValue": 91.354,
-        "pWin": 0.0025,
-        "pPodium": 0.0132,
-        "pTop6": 0.0498,
-        "pTop10": 0.1527,
-        "meanFinish": 13.62,
-        "finishRangeLow": 9,
-        "finishRangeHigh": 17,
+        "predictedValue": 90.394,
+        "pWin": 0.0088,
+        "pPodium": 0.0328,
+        "pTop6": 0.0927,
+        "pTop10": 0.2323,
+        "meanFinish": 13.32,
+        "finishRangeLow": 7,
+        "finishRangeHigh": 18,
         "confidence": "Medium",
         "headshotUrl": "/headshots/BAR.webp",
-        "actualPosition": null
+        "actualPosition": 6
       },
       {
-        "position": 16,
+        "position": 15,
         "code": "DRU",
         "name": "F. Drugovich",
         "team": "Andretti",
         "teamColor": "#F26522",
-        "predictedValue": 91.659,
-        "pWin": 0.0008,
-        "pPodium": 0.0075,
-        "pTop6": 0.028,
-        "pTop10": 0.0953,
-        "meanFinish": 14.93,
-        "finishRangeLow": 11,
+        "predictedValue": 90.459,
+        "pWin": 0.0045,
+        "pPodium": 0.029,
+        "pTop6": 0.0858,
+        "pTop10": 0.214,
+        "meanFinish": 13.72,
+        "finishRangeLow": 7,
         "finishRangeHigh": 18,
         "confidence": "Medium",
         "headshotUrl": "/headshots/DRU.webp",
-        "actualPosition": null
+        "actualPosition": 16
+      },
+      {
+        "position": 16,
+        "code": "BUE",
+        "name": "S. Buemi",
+        "team": "Envision Racing",
+        "teamColor": "#00C900",
+        "predictedValue": 90.518,
+        "pWin": 0.0057,
+        "pPodium": 0.023,
+        "pTop6": 0.075,
+        "pTop10": 0.1895,
+        "meanFinish": 14.05,
+        "finishRangeLow": 8,
+        "finishRangeHigh": 18,
+        "confidence": "Medium",
+        "headshotUrl": "/headshots/BUE.webp",
+        "actualPosition": 4
       },
       {
         "position": 17,
@@ -431,17 +431,17 @@
         "name": "M. G\u00fcnther",
         "team": "DS Penske",
         "teamColor": "#CBA65F",
-        "predictedValue": 92.201,
-        "pWin": 0.0,
-        "pPodium": 0.0008,
-        "pTop6": 0.009,
-        "pTop10": 0.0262,
-        "meanFinish": 16.97,
-        "finishRangeLow": 14,
+        "predictedValue": 90.601,
+        "pWin": 0.0037,
+        "pPodium": 0.0205,
+        "pTop6": 0.065,
+        "pTop10": 0.1598,
+        "meanFinish": 14.56,
+        "finishRangeLow": 8,
         "finishRangeHigh": 19,
-        "confidence": "High",
+        "confidence": "Medium",
         "headshotUrl": "/headshots/GUE.webp",
-        "actualPosition": null
+        "actualPosition": 12
       },
       {
         "position": 18,
@@ -449,14 +449,14 @@
         "name": "L. Di Grassi",
         "team": "Lola Yamaha ABT",
         "teamColor": "#0033A0",
-        "predictedValue": 92.43,
-        "pWin": 0.0,
-        "pPodium": 0.0025,
-        "pTop6": 0.0083,
-        "pTop10": 0.0227,
-        "meanFinish": 17.55,
-        "finishRangeLow": 15,
-        "finishRangeHigh": 20,
+        "predictedValue": 90.91,
+        "pWin": 0.0032,
+        "pPodium": 0.0103,
+        "pTop6": 0.0345,
+        "pTop10": 0.0887,
+        "meanFinish": 16.24,
+        "finishRangeLow": 11,
+        "finishRangeHigh": 19,
         "confidence": "High",
         "headshotUrl": "/headshots/DIG.webp",
         "actualPosition": null
@@ -467,17 +467,17 @@
         "name": "N. Nato",
         "team": "Nissan",
         "teamColor": "#E4287C",
-        "predictedValue": 92.673,
-        "pWin": 0.0013,
-        "pPodium": 0.0018,
-        "pTop6": 0.0043,
-        "pTop10": 0.0123,
-        "meanFinish": 18.27,
-        "finishRangeLow": 16,
+        "predictedValue": 91.313,
+        "pWin": 0.0015,
+        "pPodium": 0.0063,
+        "pTop6": 0.02,
+        "pTop10": 0.0473,
+        "meanFinish": 17.79,
+        "finishRangeLow": 14,
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/NAT.webp",
-        "actualPosition": null
+        "actualPosition": 15
       },
       {
         "position": 20,
@@ -485,18 +485,95 @@
         "name": "Z. Maloney",
         "team": "Lola Yamaha ABT",
         "teamColor": "#0033A0",
-        "predictedValue": 93.014,
-        "pWin": 0.0,
-        "pPodium": 0.0003,
-        "pTop6": 0.0022,
-        "pTop10": 0.007,
-        "meanFinish": 19.05,
-        "finishRangeLow": 17,
+        "predictedValue": 91.574,
+        "pWin": 0.0005,
+        "pPodium": 0.0032,
+        "pTop6": 0.009,
+        "pTop10": 0.0253,
+        "meanFinish": 18.7,
+        "finishRangeLow": 16,
         "finishRangeHigh": 20,
         "confidence": "High",
         "headshotUrl": "/headshots/MAL.webp",
         "actualPosition": null
       }
-    ]
+    ],
+    "actualResults": [
+      {
+        "position": 1,
+        "code": "WEH"
+      },
+      {
+        "position": 2,
+        "code": "DEN"
+      },
+      {
+        "position": 3,
+        "code": "DAC"
+      },
+      {
+        "position": 4,
+        "code": "BUE"
+      },
+      {
+        "position": 5,
+        "code": "MOR"
+      },
+      {
+        "position": 6,
+        "code": "BAR"
+      },
+      {
+        "position": 7,
+        "code": "TIC"
+      },
+      {
+        "position": 8,
+        "code": "EVA"
+      },
+      {
+        "position": 9,
+        "code": "CAS"
+      },
+      {
+        "position": 10,
+        "code": "ROW"
+      },
+      {
+        "position": 11,
+        "code": "MUE"
+      },
+      {
+        "position": 12,
+        "code": "GUE"
+      },
+      {
+        "position": 13,
+        "code": "DEV"
+      },
+      {
+        "position": 14,
+        "code": "ERI"
+      },
+      {
+        "position": 15,
+        "code": "NAT"
+      },
+      {
+        "position": 16,
+        "code": "DRU"
+      }
+    ],
+    "accuracy": {
+      "n": 16,
+      "mean_position_error": 4.188,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 7,
+      "within_5": 11,
+      "exact_matches": 1,
+      "spearman_correlation": 0.47058823529411764,
+      "ndcg_at_5": 0.7445205985530496
+    }
   }
 }
