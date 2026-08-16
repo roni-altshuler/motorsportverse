@@ -1,0 +1,63 @@
+{
+  "round": 24,
+  "venueName": "Richmond Raceway",
+  "trackType": "short",
+  "race": {
+    "n": 37,
+    "mean_position_error": 8.27,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 13,
+    "within_5": 17,
+    "exact_matches": 0,
+    "spearman_correlation": 0.5196775723091512,
+    "ndcg_at_5": 0.841508996273038
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 8.432,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 13,
+    "within_5": 17,
+    "exact_matches": 1,
+    "spearman_correlation": 0.5071123755334281,
+    "ndcg_at_5": 0.797320537045025
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.029185,
+        "logLoss": 0.121058
+      },
+      "podium": {
+        "brier": 0.086473,
+        "logLoss": 0.286224
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.389,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 11,
+      "within_5": 15,
+      "exact_matches": 1,
+      "spearman_correlation": 0.3065637065637066,
+      "ndcg_at_5": 0.7620629425888242
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 9.081,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 14,
+      "exact_matches": 2,
+      "spearman_correlation": 0.4516358463726885,
+      "ndcg_at_5": 0.7955738817642454
+    }
+  }
+}

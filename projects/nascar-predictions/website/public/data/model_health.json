@@ -1,25 +1,25 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 23,
+  "lastEvaluatedRound": 24,
   "featureDrift": [
     {
       "feature": "predictedValue",
-      "psi": 0.0372,
-      "severity": "ok"
+      "psi": 0.1501,
+      "severity": "warn"
     },
     {
       "feature": "pWin",
-      "psi": 0.2176,
+      "psi": 0.228,
       "severity": "warn"
     },
     {
       "feature": "pPodium",
-      "psi": 0.2521,
-      "severity": "alarm"
+      "psi": 0.078,
+      "severity": "ok"
     },
     {
       "feature": "pDnf",
-      "psi": 0.2934,
+      "psi": 0.473,
       "severity": "alarm"
     },
     {
@@ -29,25 +29,25 @@
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.1838,
-      "severity": "warn"
+      "psi": 0.2613,
+      "severity": "alarm"
     }
   ],
   "outputDrift": {
-    "rollingBrierRecent": 0.0258,
-    "rollingBrierBaseline": 0.0213,
-    "relativeChange": 0.2119,
+    "rollingBrierRecent": 0.0265,
+    "rollingBrierBaseline": 0.0223,
+    "relativeChange": 0.1857,
     "severity": "alarm",
-    "roundsCompared": 23
+    "roundsCompared": 24
   },
   "warnings": [
-    "pWin: PSI 0.218 (moderate drift vs baseline)",
-    "finishRangeHigh: PSI 0.184 (moderate drift vs baseline)"
+    "predictedValue: PSI 0.150 (moderate drift vs baseline)",
+    "pWin: PSI 0.228 (moderate drift vs baseline)"
   ],
   "alarms": [
-    "pPodium: PSI 0.252 (significant drift vs baseline)",
-    "pDnf: PSI 0.293 (significant drift vs baseline)",
-    "rolling Brier regression +21.2% (significant)"
+    "pDnf: PSI 0.473 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.261 (significant drift vs baseline)",
+    "rolling Brier regression +18.6% (significant)"
   ],
   "brierByRound": [
     {
@@ -141,6 +141,10 @@
     {
       "round": 23,
       "brier": 0.023471663333333333
+    },
+    {
+      "round": 24,
+      "brier": 0.02918536135135135
     }
   ]
 }
