@@ -1,0 +1,67 @@
+name: Feature request
+description: Suggest an improvement to a project, a package or the ecosystem hub
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: the fastest way to get a feature shipped across every series is to
+        put it in `packages/motorsport-core` or the shared UI set, not in one project. If
+        your idea only makes sense for one sport, say so — that is a valid answer, it just
+        changes where the code lands.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where does this belong?
+      options:
+        - Shared — packages/motorsport-core (ML, evaluation, calibration)
+        - Shared — packages/motorsport-data (schema, sources, history store)
+        - Shared — the synced UI set (every series site gets it)
+        - One project only
+        - Ecosystem hub / registry / docs
+        - CI, cron or deployment tooling
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: >
+        Describe the gap, not the solution. "The accuracy page can't tell a backtest from a
+        live record" is a problem; "add a badge" is a solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What you would build, and roughly where.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: What data does it need, and does that data exist?
+      description: >
+        **This repo does not fake data.** A chart is only portable to a series whose export
+        genuinely supplies its inputs. If the feature needs a field nothing currently
+        publishes, say which pipeline would have to produce it.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How would we know it worked?
+      description: >
+        For anything touching a model or a probability: which metric moves, against which
+        baseline, over how many rounds. See docs/EVIDENCE.md.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and this is not a duplicate
+          required: true
+        - label: This does not add betting advice or odds-provider integration
+          required: true

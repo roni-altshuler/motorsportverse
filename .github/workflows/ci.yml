@@ -75,19 +75,49 @@ jobs:
       - name: Validate registry
         run: python scripts/build_registry.py
 
+      - name: Published-data integrity
+        # Corpus-level checks over every project's website/public/data — the
+        # question a per-file schema test cannot answer. Any `--allow <check>`
+        # added here is DEBT and must have an entry in docs/KNOWN_ISSUES.md;
+        # the flag lives on this line, and not in a config file, so a reader
+        # trips over it. There are currently none.
+        run: python scripts/validate_published_data.py
+
       - name: Shared-UI drift check
         run: node scripts/sync_shared_ui.mjs --check
 
-  website:
-    name: Website build
+  websites:
+    name: Website build + tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        site:
+          - website
+          - projects/f2-predictions/website
+          - projects/f3-predictions/website
+          - projects/formula-e-predictions/website
+          - projects/nascar-predictions/website
+          - projects/indycar-predictions/website
+          - projects/chrome-valley-racing/website
+          - projects/prism-cup-karting/website
+          # projects/f1-predictions/website is covered by f1-ci.yml, which owns
+          # the flagship's toolchain (its own eslint/prettier config and a
+          # heavier prebuild). Adding it here would run two different pipelines
+          # over one site.
     defaults:
       run:
-        working-directory: website
+        working-directory: ${{ matrix.site }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
       - run: npm install
-      - run: npm run build
+      - name: Test
+        run: npm test -- --ci
+      - name: Build
+        # The hub's prebuild regenerates public/data/registry.json; the series
+        # sites read their committed JSON. PAGES_BASE_PATH is empty so the
+        # build matches a local run rather than the Pages assembly.
+        run: PAGES_BASE_PATH= npm run build

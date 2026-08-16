@@ -11,8 +11,9 @@ each sport is a thin project on top. The **F1 flagship lives IN this repo** at
 as self-contained). Six series are full products; the rest are scaffolded stubs.
 
 ```
-packages/motorsport-core     shared ML: calibration (Plackett-Luce), championship MC,
-                             standings, elo, conformal, eval, drift, promotion, leakage
+packages/motorsport-core     shared ML: calibration (Plackett-Luce + post-calibration
+                             market renormalisation), championship MC, standings, elo,
+                             conformal, eval, evidence, integrity, drift, promotion, leakage
 packages/motorsport-data     canonical pydantic schema, DataSource ABC, DuckDB HistoryStore,
                              shared FIA feeder scraper (sources/fia_feeder.py) w/ wrong-event guards
 projects/f1-predictions      flagship (flat src/ layout; post-quali overhaul: grid provenance,
@@ -27,11 +28,21 @@ projects/indycar-predictions full product — snapshot-primary (no public API: c
 projects/chrome-valley-racing  FANTASY fun project: simulated story league (stdlib-only sim,
                              bespoke site w/ in-browser race sim; NOT drift-gated, no cron)
 projects/prism-cup-karting   FANTASY fun project: simulated kart league (same shape)
-projects/<5 more>            scaffolded stubs (wec, motogp, wrc, imsa, lemans)
+projects/<5 more>            scaffolded, CONTRACT-TESTED seams (wec, motogp, wrc, imsa,
+                             lemans): real config/snapshot/datasource/predict + tests that
+                             assert nothing is fabricated. No feed wired — they publish nothing.
 website/                     ecosystem hub: landing + registry-driven catalog (Next.js)
 registry/projects/*.json     the catalog — source of truth for which sports exist + maturity
-scripts/                     build_registry*.{py,mjs}, sync_shared_ui.mjs (drift gate), new_project.py
+scripts/                     build_registry*.{py,mjs}, sync_shared_ui.mjs (drift gate),
+                             validate_published_data.py (corpus integrity), new_project.py
 ```
+
+**The four docs that govern changes here.** Read the relevant one before editing:
+[`DESIGN.md`](DESIGN.md) (the visual system, in getdesign.md format),
+[`docs/EVIDENCE.md`](docs/EVIDENCE.md) (what an accuracy claim has to show),
+[`GOVERNANCE.md`](GOVERNANCE.md) (the maturity ladder), and
+[`docs/KNOWN_ISSUES.md`](docs/KNOWN_ISSUES.md) (defects carried on purpose, each with
+the gate waived for it — currently none).
 
 **Buildout status (2026-07-10):** Phase 0 ("complete the universe") is DONE on branch
 `feat/universe-phase0-f3-f2-parity`: F1 overhaul, F2/F3 parity, Formula E, NASCAR and
@@ -65,6 +76,11 @@ OMP_NUM_THREADS=1 PYTHONPATH=src ../../.venv/bin/python -m pytest tests/test_mod
 # Pipelines run as modules from the project dir (export/refresh/forward_eval/
 # historical_backtest/promotion_decision/season_rollover/backfill/race_weekend):
 PYTHONPATH=src ../../.venv/bin/python -m f3_predictions.export
+# Scaffolded series (stdlib+core only, no heavy deps):
+cd projects/wec-predictions && PYTHONPATH=src ../../.venv/bin/python -m pytest -q
+# Corpus integrity over EVERY project's published data — run after any export change
+python scripts/validate_published_data.py            # -v for passing checks too
+python scripts/validate_published_data.py f3 nascar  # a subset
 # Lint (what CI runs)
 .venv/bin/ruff check packages projects scripts
 ```
@@ -78,7 +94,9 @@ Websites (all Next.js 16, Tailwind v4, static export):
 
 ```bash
 cd projects/<slug>-predictions/website && npm install && PAGES_BASE_PATH= npm run build
+npm test                            # Jest + Testing Library; every site has a suite
 node scripts/shoot.mjs [/tmp/out]   # per-site Playwright screenshot harness, run after build
+node ../../../scripts/sync_shared_ui.mjs --check   # shared component + test drift gate
 cd website && npm run build         # hub; prebuild regenerates public/data/registry.json
 ```
 
@@ -141,6 +159,16 @@ no eliminations, 55-pt win — and the 2017-25 elimination bracket for backtests
 playoff panel is gated on `historical_backtest/playoffs.json:gate.pass`. Backfill floor
 is 2018 (the 2017 cacher endpoint serves wrong-season data; a guard refuses it).
 
+**NASCAR does not beat grid order, and the site says so.** Measured over 19 paired
+rounds of 2026: pre-qualifying mean position error **9.81 vs grid order's 9.03**,
+improvement −0.78 with a 95% CI of [−1.29, −0.22] — entirely below zero. It *does* beat
+the last-race baseline. This was masked until 2026-08 because the name-keyed baselines
+were being attached to the `racePostQuali` block (8.91, a near-tie) instead of the `race`
+block they actually score; `evidence._primary_race_type` now pins it. **Do not quote the
+post-quali number against a pre-quali baseline** — a model that has seen the grid is not
+competing with a baseline that is the grid. Grid order is a strong baseline in a series
+where track position is this decisive, and losing to it is the honest current state.
+
 **The FIA feeder scraper is shared** (fiaformula2.com/fiaformula3.com run one CMS):
 parser lives in `motorsport_data.sources.fia_feeder.FiaFeederSource`; F2/F3 sources are
 thin bindings. F2's fixture-HTML tests are the parsing contract — never change the
@@ -152,6 +180,51 @@ site's JSON (`website/public/data/`: `<slug>.json`, `rounds/`, `probabilities/`,
 `model_health`, `promotion_status`, `seasons.json`). Shapes mirror across sites so
 components port 1:1. When you change Python output, update the site's TS types AND the
 pydantic mirror in `tests/test_website_data_schema.py` in the same change (CI gates it).
+`export.py` also publishes `evidence.json` (via `forward_eval`) — see below.
+
+**Evidence is computed once, in Python.** `motorsport_core.evidence.build_evidence()`
+reads the published `forward_eval/` tree and emits one `evidence.json` per project:
+model vs each baseline, **paired on the rounds they both scored**, with a seeded
+percentile bootstrap and a verdict of better/worse/inconclusive/insufficient. Every
+site renders it through the shared `EvidencePanel`. Deriving the comparison in
+TypeScript instead would put it in six codebases that drift independently, and a
+component that recomputes a number is a second model nobody benchmarked. Below
+`MIN_ROUNDS_FOR_CLAIM` (5) the verdict is `insufficient` however good the delta
+looks, and a CI straddling zero is `inconclusive` rather than the sign of the point
+estimate. **A losing comparison is published, in words** — there is no code path
+that hides one.
+
+**Integrity is checked at the CORPUS level, not per file.**
+`python scripts/validate_published_data.py` runs `motorsport_core.integrity` over
+every project's `website/public/data/`: contiguous rounds, dates that increase,
+no future-dated completed round, no duplicate or placeholder competitors,
+probabilities in [0,1] **and summing to their market's set size**, a baseline
+beside every scored round after round 1, an honest calibration gate, a coherent
+season manifest, recognised drift severities. **Run it after any export change.**
+A project with nothing published is skipped, not failed. `--allow <check>` carries
+a known defect and every allowance needs an entry in `docs/KNOWN_ISSUES.md`; the
+flag lives in the CI invocation, never a config file, so a reader trips over it.
+
+**The lesson that check was born from (2026-08).** Per-competitor isotonic
+calibration does not preserve the simplex — a published win market summed to as
+much as 2.00 across F2/F3/FE/NASCAR/IndyCar, and the sites render `probability`
+straight as a percentage, so a reader adding up the win column got 200%. The
+flagship had **already found and fixed this** in 2026-07, but the fix lived in
+`projects/f1-predictions/models/calibration.py` rather than in the shared package,
+so every cloned series inherited the calibration step and none inherited the fix.
+`renormalize_market_struct` now lives in `motorsport_core.calibration`, every
+series' `_calibrate_markets` calls it **unrounded** (rounding first reintroduces
+the drift), and `probability_mass` is the corpus-level regression test. **The
+general rule: a fix that belongs to every series goes in `packages/`, not in the
+project where it was found.** Per-file schema tests all passed the whole time.
+
+The near-miss is worth internalising: three schema mirrors *did* assert a
+probability sum — on `rawProbability`, the empirical Monte-Carlo frequency,
+which is coherent by construction and was never the broken field. The field the
+site renders is `probability`. **A test one identifier away from catching this
+passed cleanly for a month.** When you assert on a published number, assert on
+the one the page actually shows;
+`test_published_probabilities_sum_to_their_market` now does, in every project.
 
 ## Frontend specifics
 
@@ -159,12 +232,36 @@ pydantic mirror in `tests/test_website_data_schema.py` in the same change (CI ga
   components; never import fs-based data loaders (`lib/<slug>data.ts`, `lib/registry.ts`)
   from client components. `.npmrc` pins `legacy-peer-deps=true` — do not delete it.
 - **Shared design system**: F1's `website/src/components/{ui,magicui}` is canonical;
-  F2/F3/Formula E carry byte-identical copies enforced by `node scripts/sync_shared_ui.mjs
-  --check` in CI — add each new site to its TARGETS in the same change that copies the
-  site. Theming happens ONLY via each site's `styles/tokens.css` accent tokens
-  (F1 `#E10600`, F2 `#1E9BD7`, F3 `#D9A441`, FE `#1E1AF0`, NASCAR `#FFD659` — light
-  accents need near-black `--accent-ink`, deep accents need brightening hovers).
+  every other site **including the hub** carries byte-identical copies enforced by
+  `node scripts/sync_shared_ui.mjs --check` in CI — add each new site to its TARGETS in
+  the same change that copies the site. A deliberate per-site divergence goes in
+  `TARGET_EXEMPTIONS` **with its reason**, not in the global `SITE_SPECIFIC` set (which
+  drops the file from the gate everywhere). Theming happens ONLY via each site's
+  `styles/tokens.css` accent tokens (F1 `#E10600`, F2 `#1E9BD7`, F3 `#D9A441`,
+  FE `#1E1AF0`, NASCAR `#FFD659`, IndyCar `#D31217` — light accents need near-black
+  `--accent-ink`, deep accents need brightening hovers).
   Charts (`components/charts/`) are per-site adapted, deliberately NOT drift-gated.
+- **Chart colour is validated, not chosen.** Every site defines `--viz-model`,
+  `--viz-baseline`, `--viz-cat-3`, `--viz-reference`, `--viz-field` and
+  `--viz-seq-1..5`, measured against all three chart surfaces with `--pairs all`;
+  the numbers are in [`DESIGN.md`](DESIGN.md) §1.4 and in each `tokens.css`. Two rules:
+  the categorical scale **stops at three** (a fourth hue fails CVD separation — fold the
+  tail into `--viz-field`), and model/baseline are **always direct-labelled** because
+  their tritan separation is ΔE 5.7, below the floor. Never use the site accent for one
+  of two series — it is already the site's identity.
+- **Evidence components are shared and synced**: `EvidencePanel`, `BaselineLadder`,
+  `StatusBanner`, `EmptyState`, `Skeleton`, `format.ts`. `EvidencePanel` is deliberately
+  **not a tab** and renders on every page showing a forecast. `format.ts` enforces
+  absent-renders-as-absent (`—`, never `0`) and there are tests.
+- **Every site has a Jest suite** (`npm test`), including a synced shared suite under
+  `src/__tests__/shared/` that asserts the honesty rules rather than that components
+  render. `@testing-library/dom` is declared as a **direct** devDependency on every
+  site: it is a peer of `@testing-library/react`, and `.npmrc`'s `legacy-peer-deps=true`
+  means npm will not install it transitively.
+- **Every site has `error.tsx`, `not-found.tsx`, `global-error.tsx`, `manifest.ts`,
+  `robots.ts` and `sitemap.ts`.** `global-error.tsx` renders its own `<html>`/`<body>`
+  with inline styles — at that point the root layout is gone and the stylesheet may be
+  what failed.
 - **Don't fake data**: port only charts whose inputs the sport's export genuinely
   supplies (no telemetry charts without telemetry). Scroll-reveal must never leave
   content permanently invisible (use the failsafe `useReveal` pattern).

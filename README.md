@@ -88,7 +88,16 @@ is **MotorsportVerse**.
 | [RaceIQ NASCAR](projects/nascar-predictions/) | NASCAR Cup | **production** |
 | [RaceIQ Indy](projects/indycar-predictions/) | IndyCar | **production** |
 | [Chrome Valley](projects/chrome-valley-racing/) · [Prism Cup](projects/prism-cup-karting/) | fictional (fully simulated, just for fun) | **experimental** (fantasy) |
-| [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded) |
+| [WEC](projects/wec-predictions/) · [MotoGP](projects/motogp-predictions/) · [WRC](projects/wrc-predictions/) · [IMSA](projects/imsa-predictions/) · [Le Mans](projects/lemans-predictions/) | — | in-development (scaffolded, contract-tested) |
+
+The five scaffolded series have **working seams and a test suite, and publish
+nothing.** Their `DataSource` returns an empty calendar rather than a plausible
+one, and there are tests asserting exactly that — a scaffold that returns
+convincing fake data is far more dangerous than one that returns nothing,
+because the fake data reaches a chart. Each README names the specific decisions
+that have to be settled before an ingester can be written (WEC and IMSA score a
+car rather than a person; WRC classifies on cumulative stage time; Le Mans
+overlaps WEC and the overlap has to be resolved first).
 
 Browse them all on the [live catalog](https://roni-altshuler.github.io/motorsportverse/#projects)
 or under the website's `/projects` directory. See the
@@ -119,6 +128,9 @@ pytest packages/motorsport-core packages/motorsport-data
 # Build/validate the catalog
 python scripts/build_registry.py
 
+# Integrity-check every project's published data (run after any export change)
+python scripts/validate_published_data.py
+
 # Run the ecosystem website
 cd website && npm install && npm run dev   # → http://localhost:3000
 
@@ -142,12 +154,34 @@ recipe onto a very different data reality (a live API, an unofficial JSON
 feed, and a hand-verified committed archive). The five scaffolded series are
 ready for the same path the moment a data feed is wired.
 
+## How we know the numbers are honest
+
+Claims are gated rather than asserted, and the gates are in the repo:
+
+- **[Evidence policy](docs/EVIDENCE.md)** — every accuracy claim is stated as
+  model versus a *named baseline* over *named rounds*, or it is not stated.
+  Baselines are never deleted, calibration gates the product, a backtest is
+  labelled a backtest, and a regression blocks promotion.
+- **`motorsport_core.evidence`** computes each project's model-vs-baseline
+  comparison once, paired on the rounds both scored, with a bootstrap interval —
+  and publishes `evidence.json` that every site renders identically. **A losing
+  comparison is printed in words**; there is no code path that hides one.
+- **`scripts/validate_published_data.py`** checks the published *corpus*, not
+  just each file: contiguous rounds, dates that increase, probabilities that sum
+  to the field they describe, a baseline beside every scored round, an honest
+  calibration gate. It runs in CI with no waivers.
+- **[Known issues](docs/KNOWN_ISSUES.md)** — defects carried on purpose, each
+  with the gate waived for it. Currently empty.
+
 ## Documentation
 
 [Architecture](docs/architecture.md) · [Adding a sport](docs/adding-a-sport.md) ·
 [Core API](docs/core-api.md) · [Data schema](docs/data-schema.md) ·
-[Design system](docs/design-system.md) · [Branding system](docs/BRANDING_SYSTEM.md) ·
-[Governance](GOVERNANCE.md) · [Org structure](.github/ORG_STRUCTURE.md)
+[Design reference](DESIGN.md) · [Design system overview](docs/design-system.md) ·
+[Evidence policy](docs/EVIDENCE.md) · [Known issues](docs/KNOWN_ISSUES.md) ·
+[Branding system](docs/BRANDING_SYSTEM.md) · [Governance](GOVERNANCE.md) ·
+[Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) ·
+[Changelog](CHANGELOG.md) · [Org structure](.github/ORG_STRUCTURE.md)
 
 ## License
 

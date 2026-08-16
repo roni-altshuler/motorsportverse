@@ -1,0 +1,88 @@
+name: New series proposal
+description: Propose adding a motorsport series to the catalog
+labels: ["new-series", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A new series is a registry entry plus a `DataSource` and a `Predictor` — everything
+        numerically heavy comes from `motorsport-core`. The step-by-step runbook is
+        [docs/adding-a-sport.md](../blob/main/docs/adding-a-sport.md); the maturity ladder a
+        new entry climbs is in [GOVERNANCE.md](../blob/main/GOVERNANCE.md).
+
+        The hard part is never the model. **It is whether a lawful, stable, public source of
+        results exists**, so most of this form is about that.
+  - type: input
+    id: series
+    attributes:
+      label: Series
+      description: Full name and the slug you would use.
+      placeholder: "Super Formula — super-formula-predictions"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - open-wheel
+        - stock-car
+        - endurance
+        - rally
+        - motorcycle
+        - karting
+        - fantasy (simulated, fan-made)
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Where do results come from?
+      description: >
+        A URL, and whether it is a documented API, an undocumented JSON endpoint, or HTML
+        that needs a parser. Note the terms of use. If several series share one CMS, say so
+        — that is how F2 and F3 share one scraper.
+    validations:
+      required: true
+  - type: input
+    id: history
+    attributes:
+      label: How far back does that source go?
+      description: >
+        Seasons of usable results. Fewer than ~3 seasons means the project starts at
+        in-development and its calibration gate stays closed for a while, which is fine —
+        it just needs saying up front.
+      placeholder: "2019-2026 (8 seasons)"
+    validations:
+      required: true
+  - type: textarea
+    id: format
+    attributes:
+      label: What is unusual about the format?
+      description: >
+        The thing that breaks a naive clone. Examples already handled here: F2/F3's
+        reverse-top-10 sprint grid, Formula E's doubleheaders, NASCAR's DNF composition and
+        elimination playoffs, IndyCar's oval/road split. Rallies score stages; endurance
+        races run multiple classes at once and finish on laps.
+    validations:
+      required: true
+  - type: textarea
+    id: identity
+    attributes:
+      label: What identifies a competitor, and is it stable?
+      description: >
+        Driver, car number, crew, or an entry that changes drivers mid-race (endurance).
+        A series where the scoring unit is not one person needs the schema mapped
+        explicitly before any modelling.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: The data source is public and its terms permit this use
+          required: true
+        - label: I have read docs/adding-a-sport.md
+          required: true
