@@ -12,6 +12,7 @@ import {
   getImsaData,
 } from "@/lib/imsaData";
 import type { SeasonAccuracyStat } from "@/types/imsa";
+import { getEvidence } from "@/lib/evidence";
 
 export const metadata: Metadata = {
   title: "Accuracy — RaceIQ IMSA",
@@ -77,6 +78,7 @@ export default function Page() {
 
   return (
     <AccuracyView
+      evidence={getEvidence()}
       classes={data.classes}
       overall={overall}
       byClass={byClass}

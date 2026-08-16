@@ -16,6 +16,8 @@ import {
   getModelHealth,
   getPromotionStatus,
 } from "@/lib/nascardata";
+import { EvidencePanel } from "@/components/ui/EvidencePanel";
+import { getEvidence } from "@/lib/evidence";
 
 export const metadata: Metadata = { title: "Accuracy — RaceIQ NASCAR" };
 
@@ -40,6 +42,7 @@ export default function AccuracyPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
+      <EvidencePanel evidence={getEvidence()} className="mb-10" />
       <p className="eyebrow mb-3">NASCAR Cup Series · Season {data.seasonLabel ?? data.season}</p>
       <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
         Model accuracy

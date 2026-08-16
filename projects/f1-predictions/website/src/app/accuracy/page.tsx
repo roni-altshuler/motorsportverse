@@ -6,6 +6,8 @@ import AccuracyDashboardPage from "@/components/AccuracyDashboardPage";
 import CalibrationPanel from "@/components/CalibrationPanel";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
 import { getCalibrationSummary } from "@/lib/calibration";
+import { EvidencePanel } from "@/components/ui/EvidencePanel";
+import { getEvidence } from "@/lib/evidence";
 
 // ---------------------------------------------------------------------------
 // Metadata only. Read at build time (static export) so the share card + the
@@ -98,6 +100,7 @@ export default function Page() {
 
   return (
     <>
+      <EvidencePanel evidence={getEvidence()} className="mb-10" />
       <Suspense
         fallback={
           <div className="min-h-[60vh] flex items-center justify-center">
