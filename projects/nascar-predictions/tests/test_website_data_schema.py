@@ -383,3 +383,39 @@ def test_playoff_backtest_artifact_committed():
     assert payload["format"] == "elimination-2017-2025"
     assert set(payload["gate"]) >= {"pass", "observedMeanChampionPercentile"}
     assert payload["seasons"], "playoff backtest must cover at least one season"
+
+
+def test_published_probabilities_sum_to_their_market(data_dir):
+    """Every market must total the size of the set it describes.
+
+    The sites render `probability` straight as a percentage, so a win market
+    summing to 1.6 means the column a reader adds up does not describe the
+    field on screen. Per-competitor isotonic calibration does not preserve the
+    simplex; `motorsport_core.calibration.renormalize_market_struct` restores it
+    at export time, and this is the per-project regression test.
+
+    Note what the pre-existing assertions in this file check: `rawProbability`,
+    which is an empirical Monte-Carlo frequency and was never the broken one.
+    That is exactly why this defect passed CI for a month.
+    """
+    expected = {"win": 1.0, "podium": 3.0, "top6": 6.0, "top10": 10.0}
+    checked = 0
+    for path in sorted((data_dir / "probabilities").glob("round_*.json")):
+        payload = _load(path)
+        for race_type, block in payload.items():
+            if not isinstance(block, dict) or "markets" not in block:
+                continue
+            for market, entries in block["markets"].items():
+                target = expected.get(market)
+                if target is None:
+                    continue
+                total = sum(e["probability"] for e in entries.values())
+                # The field can be smaller than the market (six cars cannot fill
+                # ten top-10 slots), so the target clamps to the field size.
+                target = min(target, float(len(entries)))
+                assert abs(total - target) <= target * 0.02, (
+                    f"{path.name} {race_type}.{market} sums to {total:.4f}, "
+                    f"expected {target:.0f}"
+                )
+                checked += 1
+    assert checked > 0, "no markets were checked — the glob or shape changed"

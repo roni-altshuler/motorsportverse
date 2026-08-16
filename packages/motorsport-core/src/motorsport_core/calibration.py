@@ -542,6 +542,96 @@ def calibrate_market_probabilities(
     return out
 
 
+# Each market's probabilities must sum to the size of the set it describes:
+# exactly one winner, three podium slots, six top-6 slots, ten top-10 slots.
+MARKET_TARGET_SUM: dict[str, float] = {"win": 1.0, "podium": 3.0, "top6": 6.0, "top10": 10.0}
+
+
+def renormalize_market_struct(
+    market_struct: Mapping[str, Mapping[str, Mapping[str, float]]],
+    *,
+    digits: int | None = None,
+) -> dict[str, dict[str, dict[str, float]]]:
+    """Restore probabilistic coherence after per-competitor isotonic calibration.
+
+    **Call this on every market struct before publishing it.** Isotonic
+    calibration maps each competitor's probability independently, so the market
+    no longer sums to its set size — a published win market can total 1.6, which
+    means the percentages a reader adds up do not describe the field they are
+    looking at.
+
+    This water-fills each market back to its target sum: scale everyone, cap at
+    1.0, redistribute the excess over the uncapped competitors. Raw
+    Plackett-Luce probabilities are empirical Monte-Carlo frequencies and are
+    already coherent, so for them this is a numerical no-op; ``rawProbability``
+    is left untouched either way, which keeps the pre-calibration number
+    auditable beside the published one.
+
+    History: the F1 flagship audited this on 2026-07-07 (published win markets
+    summing to 1.17-1.94) and fixed it locally, in its own
+    ``models/calibration.py``. **The five cloned series never received the fix**,
+    because it lived in the flagship rather than in this shared package — and a
+    2026-08 integrity sweep measured F2, F3, Formula E, NASCAR and IndyCar
+    publishing win markets from 0.50 to 2.00. Living here is the point: it is
+    the only place a fix reaches every series at once.
+    ``motorsport_core.integrity.check_probabilities`` is the regression test at
+    the corpus level.
+
+    Args:
+        market_struct: ``{market: {competitor: {probability, rawProbability}}}``.
+        digits: optional rounding applied to the published values. Round AFTER
+            the water-fill, never before — rounding first reintroduces the drift
+            this function exists to remove.
+
+    Returns:
+        The same structure with coherent ``probability`` values. Markets not in
+        :data:`MARKET_TARGET_SUM` (e.g. ``dnf``, which has no fixed set size)
+        pass through untouched.
+    """
+    out: dict[str, dict[str, dict[str, float]]] = {}
+    for market, competitors in market_struct.items():
+        target = MARKET_TARGET_SUM.get(market)
+        if target is None or not competitors:
+            out[market] = {c: dict(v) for c, v in competitors.items()}
+            continue
+        names = list(competitors.keys())
+        probs = np.array(
+            [max(float(competitors[c].get("probability", 0.0)), 0.0) for c in names],
+            dtype=np.float64,
+        )
+        # A field smaller than the market cannot fill it — six cars cannot
+        # occupy ten top-10 slots. Clamping the target keeps the invariant
+        # "every competitor is somewhere in this set" instead of scaling six
+        # probabilities up to sum to ten.
+        target = min(target, float(len(names)))
+        if probs.sum() <= 0:
+            out[market] = {c: dict(v) for c, v in competitors.items()}
+            continue
+        capped = np.zeros(len(names), dtype=bool)
+        for _ in range(len(names)):
+            free = ~capped
+            remaining = target - float(capped.sum())  # capped competitors hold 1.0
+            free_sum = probs[free].sum()
+            if remaining <= 0 or free_sum <= 0:
+                break
+            probs[free] = probs[free] * (remaining / free_sum)
+            overflow = free & (probs > 1.0)
+            if not overflow.any():
+                break
+            probs[overflow] = 1.0
+            capped |= overflow
+        out[market] = {
+            c: {
+                "probability": (
+                    round(float(probs[i]), digits) if digits is not None else float(probs[i])
+                ),
+                "rawProbability": float(competitors[c].get("rawProbability", 0.0)),
+            }
+            for i, c in enumerate(names)
+        }
+    return out
+
+
 def collect_history_from_rounds(
     round_predictions: Mapping[int, MarketProbabilities],
     round_actuals: Mapping[int, Mapping[str, int]],

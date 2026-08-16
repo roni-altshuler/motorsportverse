@@ -271,12 +271,19 @@ def _calibrate_markets(race: RaceForecast, calibrator, stratum: str) -> dict:
             cal_vals = raw_vals
         out[market] = {
             c: {
-                "probability": round(float(cal_vals[i]), 4),
+                # Unrounded on purpose: the water-fill below has to see the
+                # real values. Rounding first reintroduces the drift it removes.
+                "probability": float(cal_vals[i]),
                 "rawProbability": round(float(raw_vals[i]), 4),
             }
             for i, c in enumerate(codes)
         }
-    return out
+    # Per-competitor isotonic calibration does not preserve the simplex: a
+    # published win market summing to 1.6 means the percentages a reader adds
+    # up do not describe the field on screen. The flagship audited and fixed
+    # this in 2026-07 but the fix lived in F1 rather than in the shared
+    # package, so every cloned series shipped without it.
+    return calibration.renormalize_market_struct(out, digits=4)
 
 
 def _race_probabilities(fc: RoundForecastIndycar, calibrator) -> dict:
