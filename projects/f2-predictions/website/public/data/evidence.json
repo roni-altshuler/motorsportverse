@@ -1,0 +1,148 @@
+{
+  "available": true,
+  "reason": null,
+  "season": 2026,
+  "sport": "RaceIQ F2",
+  "generatedAt": "2026-07-08T07:14:20Z",
+  "roundsScored": 6,
+  "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
+  "headline": {
+    "metric": "mean_position_error",
+    "baseline": "lastRace",
+    "baselineLabel": "Last race order",
+    "raceType": "feature",
+    "lowerIsBetter": true,
+    "nRounds": 5,
+    "rounds": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "modelMean": 5.5094,
+    "baselineMean": 4.8926,
+    "delta": 0.6168,
+    "improvement": -0.6168,
+    "ciLow": -2.1902,
+    "ciHigh": 0.9566,
+    "pModelBetter": 0.2535,
+    "verdict": "inconclusive",
+    "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+  },
+  "comparisons": [
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "feature",
+      "lowerIsBetter": true,
+      "nRounds": 5,
+      "rounds": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "modelMean": 5.5094,
+      "baselineMean": 4.8926,
+      "delta": 0.6168,
+      "improvement": -0.6168,
+      "ciLow": -2.1902,
+      "ciHigh": 0.9566,
+      "pModelBetter": 0.2535,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "sprint",
+      "lowerIsBetter": true,
+      "nRounds": 5,
+      "rounds": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "modelMean": 5.6914,
+      "baselineMean": 5.252,
+      "delta": 0.4394,
+      "improvement": -0.4394,
+      "ciLow": -0.7396,
+      "ciHigh": -0.0586,
+      "pModelBetter": 0.008,
+      "verdict": "worse",
+      "note": "the model does NOT beat last race order over 5 paired rounds \u2014 published as measured"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "feature",
+      "lowerIsBetter": false,
+      "nRounds": 5,
+      "rounds": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "modelMean": 0.70042,
+      "baselineMean": 0.627981,
+      "delta": 0.07244,
+      "improvement": 0.07244,
+      "ciLow": -0.074165,
+      "ciHigh": 0.247072,
+      "pModelBetter": 0.7785,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "sprint",
+      "lowerIsBetter": false,
+      "nRounds": 5,
+      "rounds": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "modelMean": 0.617185,
+      "baselineMean": 0.578829,
+      "delta": 0.038356,
+      "improvement": 0.038356,
+      "ciLow": -0.026391,
+      "ciHigh": 0.103104,
+      "pModelBetter": 0.885,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+    }
+  ],
+  "calibration": {
+    "applied": true,
+    "trainingRounds": 6,
+    "dataLimitation": "Calibrated on real F2 results.",
+    "note": "probabilities are calibrated on real results"
+  },
+  "promotion": {
+    "decision": "hold",
+    "reason": "insufficient overlap (4 common rounds; need >= 5)",
+    "candidate": "position-head",
+    "roundsCompared": 4
+  },
+  "caveats": [
+    "The model does not beat last race order on every measured comparison. That is stated rather than hidden.",
+    "Some comparisons straddle zero: a difference has not been demonstrated, in either direction.",
+    "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
+  ]
+}

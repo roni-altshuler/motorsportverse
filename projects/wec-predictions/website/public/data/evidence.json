@@ -1,0 +1,309 @@
+{
+  "available": true,
+  "reason": null,
+  "season": 2026,
+  "sport": "RaceIQ WEC",
+  "generatedAt": "2026-08-11T07:01:59Z",
+  "roundsScored": 4,
+  "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
+  "headline": {
+    "metric": "mean_position_error",
+    "baseline": "lastRace",
+    "baselineLabel": "Last race order",
+    "raceType": "HYPERCAR",
+    "lowerIsBetter": true,
+    "nRounds": 4,
+    "rounds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "modelMean": 3.529,
+    "baselineMean": 4.023,
+    "delta": -0.494,
+    "improvement": 0.494,
+    "ciLow": -0.159,
+    "ciHigh": 1.147,
+    "pModelBetter": 0.9085,
+    "verdict": "insufficient",
+    "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+  },
+  "comparisons": [
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "HYPERCAR",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 3.529,
+      "baselineMean": 4.023,
+      "delta": -0.494,
+      "improvement": 0.494,
+      "ciLow": -0.159,
+      "ciHigh": 1.147,
+      "pModelBetter": 0.9085,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "LMGT3",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 5.211,
+      "baselineMean": 5.045,
+      "delta": 0.166,
+      "improvement": -0.166,
+      "ciLow": -0.853,
+      "ciHigh": 0.85475,
+      "pModelBetter": 0.317,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "LMP2",
+      "lowerIsBetter": true,
+      "nRounds": 1,
+      "rounds": [
+        3
+      ],
+      "modelMean": 5.111,
+      "baselineMean": 2.111,
+      "delta": 3.0,
+      "improvement": -3.0,
+      "ciLow": null,
+      "ciHigh": null,
+      "pModelBetter": null,
+      "verdict": "insufficient",
+      "note": "1 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "HYPERCAR",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 3.529,
+      "baselineMean": 3.56525,
+      "delta": -0.03625,
+      "improvement": 0.03625,
+      "ciLow": -0.49725,
+      "ciHigh": 0.588,
+      "pModelBetter": 0.5695,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "LMGT3",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 5.211,
+      "baselineMean": 4.45225,
+      "delta": 0.75875,
+      "improvement": -0.75875,
+      "ciLow": -1.23925,
+      "ciHigh": -0.313,
+      "pModelBetter": 0.0,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "LMP2",
+      "lowerIsBetter": true,
+      "nRounds": 1,
+      "rounds": [
+        3
+      ],
+      "modelMean": 5.111,
+      "baselineMean": 4.111,
+      "delta": 1.0,
+      "improvement": -1.0,
+      "ciLow": null,
+      "ciHigh": null,
+      "pModelBetter": null,
+      "verdict": "insufficient",
+      "note": "1 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "HYPERCAR",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 0.700079,
+      "baselineMean": 0.693434,
+      "delta": 0.006646,
+      "improvement": 0.006646,
+      "ciLow": -0.10333,
+      "ciHigh": 0.08462,
+      "pModelBetter": 0.5795,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "LMGT3",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 0.565143,
+      "baselineMean": 0.553178,
+      "delta": 0.011965,
+      "improvement": 0.011965,
+      "ciLow": -0.017785,
+      "ciHigh": 0.041715,
+      "pModelBetter": 0.816,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "LMP2",
+      "lowerIsBetter": false,
+      "nRounds": 1,
+      "rounds": [
+        3
+      ],
+      "modelMean": 0.585874,
+      "baselineMean": 0.718904,
+      "delta": -0.13303,
+      "improvement": -0.13303,
+      "ciLow": null,
+      "ciHigh": null,
+      "pModelBetter": null,
+      "verdict": "insufficient",
+      "note": "1 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "HYPERCAR",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 0.700079,
+      "baselineMean": 0.725237,
+      "delta": -0.025158,
+      "improvement": -0.025158,
+      "ciLow": -0.089506,
+      "ciHigh": 0.018614,
+      "pModelBetter": 0.273,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "LMGT3",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "modelMean": 0.565143,
+      "baselineMean": 0.595005,
+      "delta": -0.029862,
+      "improvement": -0.029862,
+      "ciLow": -0.099552,
+      "ciHigh": 0.041259,
+      "pModelBetter": 0.265,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "seasonForm",
+      "baselineLabel": "Season form order",
+      "raceType": "LMP2",
+      "lowerIsBetter": false,
+      "nRounds": 1,
+      "rounds": [
+        3
+      ],
+      "modelMean": 0.585874,
+      "baselineMean": 0.702916,
+      "delta": -0.117042,
+      "improvement": -0.117042,
+      "ciLow": null,
+      "ciHigh": null,
+      "pModelBetter": null,
+      "verdict": "insufficient",
+      "note": "1 paired round(s); 5 are needed before this comparison earns a claim either way"
+    }
+  ],
+  "calibration": {
+    "applied": true,
+    "trainingRounds": 4,
+    "dataLimitation": "Calibrated on real WEC results, per class stratum.",
+    "note": "probabilities are calibrated on real results"
+  },
+  "promotion": null,
+  "caveats": [
+    "Only 4 round(s) have been scored. Nothing here is a claim yet.",
+    "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
+  ]
+}

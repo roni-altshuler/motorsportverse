@@ -42,6 +42,23 @@ export function NumberTicker({
     }).format(direction === "down" ? value : startValue),
   );
 
+  // Failsafe (mirrors useReveal): never leave the number stuck at its start
+  // value if the in-view trigger doesn't fire (headless capture, prerender,
+  // odd engines). Snaps straight to the final value — no animation.
+  //
+  // This lived only on the ecosystem hub. Because the canonical copy here is
+  // what the drift gate pushes to every series site, nine sites could publish a
+  // stat tile reading 0. That is the scroll-reveal-fails-closed bug in its most
+  // misleading form: a wrong NUMBER rather than an obviously blank space.
+  useEffect(() => {
+    if (isInView) return;
+    const t = window.setTimeout(
+      () => motionValue.jump(direction === "down" ? startValue : value),
+      1500,
+    );
+    return () => window.clearTimeout(t);
+  }, [isInView, motionValue, direction, startValue, value]);
+
   useEffect(() => {
     if (!isInView) return;
     if (reduced) {

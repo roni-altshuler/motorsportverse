@@ -79,6 +79,13 @@ jobs:
           PYTHONPATH=src python -m wec_predictions.export
           PYTHONPATH=src python -m wec_predictions.forward_eval --season 2026 --allow-empty
 
+
+      - name: Publish evidence artifact
+        # Rebuild the model-vs-baseline block from the forward-eval that just
+        # ran, so evidence.json ships with the round it describes rather than a
+        # round behind. CI asserts this is current (build_evidence.py --check).
+        working-directory: .
+        run: python scripts/build_evidence.py wec-predictions
       - name: Commit refreshed data if changed
         id: commit
         if: steps.check.outputs.should_run == 'true'

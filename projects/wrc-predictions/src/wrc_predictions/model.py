@@ -184,7 +184,20 @@ def _championship_form(source: WrcDataSource, year: int, current_round: int, cod
     win = {c: float(dec[i]) for i, c in enumerate(order)}
 
     def topk(k, hi, mid, lo):
-        return {c: (hi if i < k else mid if i < k + 3 else lo) for i, c in enumerate(order)}
+        """Shape a top-k prior by standings order, then make it total k.
+
+        The hi/mid/lo constants describe the SHAPE of the prior — a favourite is
+        far likelier to make the top six than a privateer — but they were never
+        going to add up on their own: over a 34-crew entry the podium prior
+        totalled 3.39, top-six 8.30 and top-ten 13.80. Only `win` was
+        normalised, so the ensemble published podium/top6/top10 that were
+        coherent in neither the raw nor the calibrated field. Water-filling to
+        `k` keeps the shape and fixes the total, and because blending two
+        coherent priors is convex, the ensemble downstream stays coherent too.
+        """
+        shape = [hi if i < k else mid if i < k + 3 else lo for i in range(n)]
+        scaled = calibration.water_fill_to_target(shape, float(k))
+        return {c: float(scaled[i]) for i, c in enumerate(order)}
 
     form_rank = {c: i for i, c in enumerate(order)}
     return win, topk(3, 0.7, 0.15, 0.03), topk(6, 0.85, 0.4, 0.08), topk(10, 0.9, 0.55, 0.15), form_rank

@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import ClassSelector from "@/components/ClassSelector";
+import { EvidencePanel, type EvidenceBlock } from "@/components/ui/EvidencePanel";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Stat } from "@/components/ui/Stat";
@@ -61,6 +62,7 @@ export default function AccuracyView({
   perRound,
   calibration,
   forwardEval,
+  evidence,
 }: {
   classes: ClassMeta[];
   overall: SeasonAccuracyStat;
@@ -68,6 +70,7 @@ export default function AccuracyView({
   perRound: Record<string, RoundAccuracyRow[]>;
   calibration: CalibrationSummary | null;
   forwardEval: ForwardEvalSummary | null;
+  evidence?: EvidenceBlock;
 }) {
   // Classes that actually have per-round scored data drive the breakdown tabs.
   const scoredKeys = Object.keys(perRound);
@@ -92,6 +95,8 @@ export default function AccuracyView({
           few places of its prediction is a strong result.
         </p>
       </header>
+
+      <EvidencePanel evidence={evidence} className="mb-10" />
 
       {/* Overall KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">

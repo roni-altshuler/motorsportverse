@@ -1,0 +1,65 @@
+# Pre-commit hooks — the same gates CI runs, before the commit rather than after.
+#
+#   pip install pre-commit && pre-commit install
+#   pre-commit run --all-files
+#
+# Ruff is the toolchain of record here (CI runs `ruff check packages projects scripts`),
+# so this config uses ruff rather than black/flake8/isort. `projects/f1-predictions` has
+# its own ruff configuration and its own workflow, and is excluded from the repo-wide
+# lint for exactly that reason — the same exclusion applies here.
+
+exclude: |
+  (?x)^(
+      projects/f1-predictions/.*|
+      .*/node_modules/.*|
+      .*/\.next/.*|
+      .*/out/.*|
+      .*/website/public/data/.*|
+      .*/package-lock\.json|
+      registry/index\.json
+  )$
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.17
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+        args: ["--fix"]
+      - id: ruff-format
+        name: ruff (format check)
+        args: ["--diff"]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.(md|txt|html)$'
+      - id: end-of-file-fixer
+        exclude: '\.(md|txt|json|html)$'
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-added-large-files
+        # Committed snapshots and curated history files are the offline source of
+        # truth for several series and are legitimately large; reliability plots
+        # are PNGs. 10MB is the ceiling that has never been hit in normal work.
+        args: ["--maxkb=10240"]
+
+  - repo: local
+    hooks:
+      - id: registry-validate
+        name: registry validates against schema
+        entry: python scripts/build_registry.py
+        language: system
+        pass_filenames: false
+        files: ^registry/
+
+      - id: shared-ui-drift
+        name: shared UI has not drifted from the canonical F1 copy
+        entry: node scripts/sync_shared_ui.mjs --check
+        language: system
+        pass_filenames: false
+        files: ^(projects/[^/]+/website/src/components/(ui|magicui)/|website/src/components/(ui|magicui)/|scripts/sync_shared_ui\.mjs)

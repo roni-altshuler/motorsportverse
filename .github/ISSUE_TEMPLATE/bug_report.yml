@@ -1,0 +1,96 @@
+name: Bug report
+description: Report something that isn't working as expected
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please search existing issues first to avoid duplicates.
+        For security issues, **do not** file here — see [SECURITY.md](../blob/main/SECURITY.md).
+
+        If the bug is "a prediction looks wrong", please say what you expected and why.
+        A surprising probability is usually the model being honest about uncertainty; a
+        prediction attached to the **wrong round, wrong session or wrong driver** is a real
+        bug and the most important kind to report.
+  - type: dropdown
+    id: project
+    attributes:
+      label: Which project?
+      options:
+        - f1-predictions (RaceIQ F1)
+        - f2-predictions (RaceIQ F2)
+        - f3-predictions (RaceIQ F3)
+        - formula-e-predictions (RaceIQ Formula E)
+        - nascar-predictions (RaceIQ NASCAR)
+        - indycar-predictions (RaceIQ Indy)
+        - chrome-valley-racing (fantasy)
+        - prism-cup-karting (fantasy)
+        - A scaffolded series (WEC / MotoGP / WRC / IMSA / Le Mans)
+        - packages/motorsport-core
+        - packages/motorsport-data
+        - Ecosystem hub (website/) or registry
+        - Other / not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Website / UI
+        - Prediction pipeline (predict / pipeline / model)
+        - Data source or scraper (wrong or missing results)
+        - Evaluation & accuracy (forward_eval / backtest / calibration)
+        - Export & published JSON (website/public/data)
+        - CI / cron / deployment
+        - Registry & catalog
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, including what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Numbered steps. For a site bug include the page and the season/round. For a pipeline
+        bug include the exact command — pipelines run as modules from the project directory.
+      placeholder: |
+        1. cd projects/f3-predictions
+        2. OMP_NUM_THREADS=1 PYTHONPATH=src python -m f3_predictions.export
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: round
+    attributes:
+      label: Season and round
+      description: Which season and round is affected, if the bug is about a specific race.
+      placeholder: "2026, round 5 (Barcelona)"
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Browser + OS for a site bug, or Python version + OS for a pipeline bug.
+      placeholder: "Chrome 124 on macOS 14 / Python 3.11 on Ubuntu"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console / pipeline output
+      description: Paste relevant errors. Redact anything sensitive.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and this is not a duplicate
+          required: true
+        - label: This is not a security vulnerability (those go through SECURITY.md)
+          required: true

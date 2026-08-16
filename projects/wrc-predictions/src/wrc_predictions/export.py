@@ -218,24 +218,20 @@ def _calibrate_markets(rally: RallyForecast, calibrator) -> dict:
             cal_vals = calibrator.transform(market, raw_vals, stratum=_RALLY_STRATUM)
         else:
             cal_vals = raw_vals
-        # The win market is mutually exclusive — exactly one rally winner — so its
-        # calibrated probabilities must sum to 1.0. Per-market isotonic calibration
-        # + the probability floor over WRC's large field inflates the sum, so
-        # renormalise win to a coherent market (order + the anti-collapse floor are
-        # preserved; the top probability only shrinks). The top-k markets are
-        # independent per-crew probabilities that legitimately sum to k, left as-is.
-        if market == "win":
-            total = float(cal_vals.sum())
-            if total > 0:
-                cal_vals = cal_vals / total
+        # Per-competitor calibration does not preserve the simplex. Each entry is
+        # mapped independently, so the market stops summing to the size of the set
+        # it describes. This was handled here for `win` alone, on the reasoning
+        # that the top-k markets "legitimately sum to k" — true of what they MEAN,
+        # but not of what calibration leaves behind. All four markets are
+        # renormalised together after the loop, by the shared water-fill.
         out[market] = {
             c: {
-                "probability": round(float(cal_vals[i]), 4),
+                "probability": float(cal_vals[i]),
                 "rawProbability": round(float(raw_vals[i]), 4),
             }
             for i, c in enumerate(codes)
         }
-    return out
+    return calibration.renormalize_market_struct(out, digits=4)
 
 
 def probabilities_payload(fc: RoundForecast, calibrator, real_rounds: int) -> dict:

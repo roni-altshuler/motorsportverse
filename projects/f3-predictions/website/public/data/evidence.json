@@ -1,0 +1,141 @@
+{
+  "available": true,
+  "reason": null,
+  "season": 2026,
+  "sport": "RaceIQ F3",
+  "generatedAt": "2026-07-07T15:02:39Z",
+  "roundsScored": 5,
+  "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
+  "headline": {
+    "metric": "mean_position_error",
+    "baseline": "lastRace",
+    "baselineLabel": "Last race order",
+    "raceType": "feature",
+    "lowerIsBetter": true,
+    "nRounds": 4,
+    "rounds": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "modelMean": 6.3465,
+    "baselineMean": 6.437,
+    "delta": -0.0905,
+    "improvement": 0.0905,
+    "ciLow": -0.58825,
+    "ciHigh": 0.57025,
+    "pModelBetter": 0.6575,
+    "verdict": "insufficient",
+    "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+  },
+  "comparisons": [
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "feature",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "modelMean": 6.3465,
+      "baselineMean": 6.437,
+      "delta": -0.0905,
+      "improvement": 0.0905,
+      "ciLow": -0.58825,
+      "ciHigh": 0.57025,
+      "pModelBetter": 0.6575,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "mean_position_error",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "sprint",
+      "lowerIsBetter": true,
+      "nRounds": 4,
+      "rounds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "modelMean": 7.2185,
+      "baselineMean": 8.1995,
+      "delta": -0.981,
+      "improvement": 0.981,
+      "ciLow": -0.093,
+      "ciHigh": 2.662,
+      "pModelBetter": 0.936,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "feature",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "modelMean": 0.716108,
+      "baselineMean": 0.727977,
+      "delta": -0.011868,
+      "improvement": -0.011868,
+      "ciLow": -0.064318,
+      "ciHigh": 0.05098,
+      "pModelBetter": 0.3485,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastRace",
+      "baselineLabel": "Last race order",
+      "raceType": "sprint",
+      "lowerIsBetter": false,
+      "nRounds": 4,
+      "rounds": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "modelMean": 0.652568,
+      "baselineMean": 0.660816,
+      "delta": -0.008247,
+      "improvement": -0.008247,
+      "ciLow": -0.242916,
+      "ciHigh": 0.113041,
+      "pModelBetter": 0.3025,
+      "verdict": "insufficient",
+      "note": "4 paired round(s); 5 are needed before this comparison earns a claim either way"
+    }
+  ],
+  "calibration": {
+    "applied": true,
+    "trainingRounds": 5,
+    "dataLimitation": "Calibrated on real F3 results.",
+    "note": "probabilities are calibrated on real results"
+  },
+  "promotion": {
+    "decision": "hold",
+    "reason": "insufficient overlap (3 common rounds; need >= 5)",
+    "candidate": "position-head",
+    "roundsCompared": 3
+  },
+  "caveats": [
+    "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
+  ]
+}

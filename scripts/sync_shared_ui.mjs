@@ -30,7 +30,20 @@ const TARGETS = [
   join(ROOT, "projects/wrc-predictions/website/src/components"),
   join(ROOT, "projects/wec-predictions/website/src/components"),
   join(ROOT, "projects/imsa-predictions/website/src/components"),
+  // The ecosystem hub. Its copies were already byte-identical to canonical —
+  // simply ungated, which is how it came to carry a number-ticker failsafe that
+  // canonical lacked for months. An ungated identical copy is not a copy that
+  // stays identical; it is one nobody has diffed yet.
+  join(ROOT, "website/src/components"),
 ];
+
+// Files a specific target legitimately diverges on, with the reason. Anything
+// not listed here must match canonical exactly.
+const TARGET_EXEMPTIONS = {
+  // The hub's bento grid uses the card-pop treatment from the ecosystem
+  // landing design; the series sites use the flat variant. Deliberate.
+  "website/src/components": new Set(["magicui/bento-grid.tsx"]),
+};
 
 // Directories synced wholesale (every canonical file is managed).
 const SHARED_DIRS = ["magicui"];
@@ -45,6 +58,31 @@ const INTERSECT_DIRS = ["ui"];
 // per-site code, not drifted copies. Only add a chart once its data contract
 // is genuinely series-agnostic.
 const SHARED_FILES = [];
+// Files every site must carry, created in a target that lacks them.
+//
+// INTERSECT_DIRS deliberately will not push a canonical-only file, on the
+// reasoning that a site may simply not use it. That is right for a chart and
+// wrong for these: they are the honesty primitives. `format.ts` is what makes
+// an absent value render as an em dash instead of a confident 0, and the
+// evidence components are what put a baseline next to an accuracy claim. A
+// site that quietly lacks them does not degrade gracefully — it publishes a
+// number with nothing next to it, which is the failure mode the whole
+// evidence discipline exists to prevent. So they are pushed, not intersected.
+const REQUIRED_FILES = [
+  "ui/format.ts",
+  "ui/EvidencePanel.tsx",
+  "ui/BaselineLadder.tsx",
+  "ui/EmptyState.tsx",
+  "ui/StatusBanner.tsx",
+  "ui/Skeleton.tsx",
+];
+// The shared component tests travel with the components they pin. A site that
+// carried the components but not their tests would pass CI while rendering a
+// suppressed losing comparison.
+const REQUIRED_TEST_DIR = "src/__tests__/shared";
+// Shared loaders that live under src/lib rather than src/components. Managed
+// against the site root, like the tests.
+const REQUIRED_SRC_FILES = ["src/lib/evidence.ts"];
 // Managed-dir files that are legitimately site-specific — never synced.
 const SITE_SPECIFIC = new Set(["ui/DriverHeadshot.tsx"]);
 
@@ -52,14 +90,29 @@ const check = process.argv.includes("--check");
 let drifted = 0;
 let synced = 0;
 
-function manage(rel) {
+function manage(rel, { required = false, canonicalRoot = CANONICAL, targetRoots = TARGETS } = {}) {
   if (SITE_SPECIFIC.has(rel)) return;
-  const src = join(CANONICAL, rel);
+  const src = join(canonicalRoot, rel);
   if (!existsSync(src)) return;
   const want = readFileSync(src, "utf8");
-  for (const targetRoot of TARGETS) {
+  for (const targetRoot of targetRoots) {
+    const key = targetRoot.replace(ROOT + "/", "");
+    if (TARGET_EXEMPTIONS[key]?.has(rel)) continue;
     const dst = join(targetRoot, rel);
-    if (!existsSync(dst)) continue; // target site doesn't carry this file
+    if (!existsSync(dst)) {
+      // A required file missing from a site is drift, not an opt-out.
+      if (!required) continue;
+      if (check) {
+        console.error(`MISSING: ${dst.replace(ROOT + "/", "")} — required shared file is absent`);
+        drifted++;
+        continue;
+      }
+      mkdirSync(dirname(dst), { recursive: true });
+      writeFileSync(dst, want);
+      console.log(`created ${dst.replace(ROOT + "/", "")}`);
+      synced++;
+      continue;
+    }
     const have = readFileSync(dst, "utf8");
     if (have === want) continue;
     if (check) {
@@ -80,6 +133,25 @@ for (const dir of [...SHARED_DIRS, ...INTERSECT_DIRS]) {
   for (const f of readdirSync(base)) manage(join(dir, f));
 }
 for (const rel of SHARED_FILES) manage(rel);
+for (const rel of REQUIRED_FILES) manage(rel, { required: true });
+
+// The shared tests live one level up from components/, so they are managed
+// against the site src/ root rather than the components root.
+const CANONICAL_SRC = join(ROOT, "projects/f1-predictions/website");
+const TARGET_SRCS = TARGETS.map((t) => dirname(dirname(t)));
+const testBase = join(CANONICAL_SRC, REQUIRED_TEST_DIR);
+if (existsSync(testBase)) {
+  for (const f of readdirSync(testBase)) {
+    manage(join(REQUIRED_TEST_DIR, f), {
+      required: true,
+      canonicalRoot: CANONICAL_SRC,
+      targetRoots: TARGET_SRCS,
+    });
+  }
+}
+for (const rel of REQUIRED_SRC_FILES) {
+  manage(rel, { required: true, canonicalRoot: CANONICAL_SRC, targetRoots: TARGET_SRCS });
+}
 
 if (check) {
   if (drifted) {

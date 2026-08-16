@@ -12,6 +12,7 @@ import {
   getWecData,
 } from "@/lib/wecData";
 import type { SeasonAccuracyStat } from "@/types/wec";
+import { getEvidence } from "@/lib/evidence";
 
 export const metadata: Metadata = {
   title: "Accuracy — RaceIQ WEC",
@@ -77,6 +78,7 @@ export default function Page() {
 
   return (
     <AccuracyView
+      evidence={getEvidence()}
       classes={data.classes}
       overall={overall}
       byClass={byClass}

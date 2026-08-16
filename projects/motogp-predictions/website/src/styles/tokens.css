@@ -230,3 +230,54 @@
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Chart series tokens — VALIDATED, not chosen.
+ *
+ * A chart mark is a different job from a link or a caption, and the site
+ * accent is already spoken for by the site's identity — a two-series chart
+ * cannot use it for one of them. These slots are accent-independent so one
+ * shared chart component renders correctly under every series accent.
+ *
+ * Every number below is reproducible:
+ *
+ *   node scripts/validate_palette.js --ordinal --pairs all
+ *
+ * CIEDE2000 throughout, CVD simulated with the Machado (2009) severity-1.0
+ * matrices applied in linear light. Measured:
+ *
+ *   model↔baseline    normal ΔE 51.7 · protan 50.7 · deutan 49.3
+ *   model↔cat-3       normal ΔE 64.6 · protan 37.8 · deutan 20.6 · tritan 54.1
+ *   baseline↔cat-3    normal ΔE 37.1 · protan 20.4 · deutan 23.1 · tritan 63.0
+ *   sequential        monotone L 32.1→70.5 · adjacent ΔL ≥ 9.2 · single hue
+ *                     (3° spread) · light end 9.28:1 on black
+ *
+ * TRITAN separation for model↔baseline is ΔE 11.9, below the ΔE 15 floor.
+ * That pair is legal only WITH secondary encoding, so both series are ALWAYS
+ * direct-labelled. This is a requirement, not styling.
+ *
+ * --viz-cat-3 was #c25ba6 until it was actually measured: protan ΔE 11.9 and
+ * deutan ΔE 14.7 against --viz-baseline, i.e. two of three series that a
+ * red-green colour-blind reader could not tell apart. An exhaustive sRGB sweep
+ * inside the lightness band found 4252 admissible replacements; #b75781 is the
+ * one that keeps the original muted-rose intent. The lesson is the palette
+ * equivalent of the rest of this repo: a plausible-looking value that nothing
+ * measured is not a validated value.
+ *
+ * A fourth categorical series folds into --viz-field. See DESIGN.md §1.4.
+ * ───────────────────────────────────────────────────────────────────── */
+
+:root {
+  --viz-model:     #5fa657;   /* categorical 1 — this model */
+  --viz-baseline:  #3987e5;   /* categorical 2 — the baseline it must beat */
+  --viz-cat-3:     #b75781;   /* categorical 3 — a third named series */
+  --viz-reference: #4d4d4d;   /* de-emphasis: ideal diagonal, gridlines */
+  --viz-field:     #57575a;   /* the aggregated tail, deliberately recessive */
+
+  /* Sequential, one hue, low→high. Never a rainbow. */
+  --viz-seq-1: #63461e;
+  --viz-seq-2: #845b25;
+  --viz-seq-3: #a5712c;
+  --viz-seq-4: #c68733;
+  --viz-seq-5: #e79d3b;
+}

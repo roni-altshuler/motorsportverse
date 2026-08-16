@@ -16,6 +16,8 @@ import {
   getModelHealth,
   getPromotionStatus,
 } from "@/lib/fedata";
+import { EvidencePanel } from "@/components/ui/EvidencePanel";
+import { getEvidence } from "@/lib/evidence";
 
 export const metadata: Metadata = { title: "Accuracy — RaceIQ Formula E" };
 
@@ -40,6 +42,7 @@ export default function AccuracyPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
+      <EvidencePanel evidence={getEvidence()} className="mb-10" />
       <p className="eyebrow mb-3">Formula E · Season {data.season - 1}-{String(data.season).slice(2)}</p>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">

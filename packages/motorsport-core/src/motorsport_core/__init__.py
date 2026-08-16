@@ -16,6 +16,11 @@ agnostic foundation that every MotorsportVerse project builds on:
   :mod:`~motorsport_core.hierarchical_bayes` — modelling building blocks.
 - :mod:`~motorsport_core.leakage` — temporal leakage guards.
 - :mod:`~motorsport_core.features` — skill priors + competitor history.
+- :mod:`~motorsport_core.evidence` — model-vs-baseline comparison blocks, so
+  every site renders the same accuracy claim from the same artifact.
+- :mod:`~motorsport_core.integrity` — corpus-level checks over a project's
+  published data, asking whether the corpus supports what the site says
+  about it rather than whether each file parses.
 """
 
 __version__ = "0.2.0"
@@ -36,4 +41,6 @@ __all__ = [
     "standings",
     "championship",
     "features",
+    "evidence",
+    "integrity",
 ]
