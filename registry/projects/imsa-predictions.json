@@ -4,8 +4,8 @@
   "sport": "IMSA",
   "category": "endurance",
   "maturity": "in-development",
-  "summary": "Multi-class forecasts for the IMSA SportsCar Championship.",
-  "description": "Scaffolded on the shared MotorsportVerse core: a IMSA project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+  "summary": "Multi-class forecasts for the IMSA WeatherTech SportsCar Championship.",
+  "description": "Scaffolded on the shared MotorsportVerse core with working seams: a snapshot-backed DataSource implementing the core calendar/grid/results contract, a leakage-guarded prior-form Predictor, and a contract test suite asserting that nothing is fabricated while no feed is wired. Multi-class like WEC, with a second points structure over the endurance rounds and materially changing entry lists. See the project README.",
   "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/imsa-predictions",
   "website": "",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
@@ -14,7 +14,8 @@
   ],
   "models": [],
   "tags": [
-    "scaffolded"
+    "scaffolded",
+    "contract-tested"
   ],
   "icon": "/brand/sports/imsa.png",
   "accent": "#0A2A5E",

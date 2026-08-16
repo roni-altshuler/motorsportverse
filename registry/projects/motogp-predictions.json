@@ -4,8 +4,8 @@
   "sport": "MotoGP",
   "category": "motorcycle",
   "maturity": "in-development",
-  "summary": "Race forecasts for the MotoGP world championship.",
-  "description": "Scaffolded on the shared MotorsportVerse core: a MotoGP project tree with DataSource and Predictor seams ready to implement. Inherits calibration, championship simulation, standings, evaluation, drift monitoring, and leakage guards from motorsport-core the moment a data feed is wired.",
+  "summary": "Sprint and Grand Prix forecasts for the MotoGP world championship.",
+  "description": "Scaffolded on the shared MotorsportVerse core with working seams: a snapshot-backed DataSource implementing the core calendar/grid/results contract, a leakage-guarded prior-form Predictor, and a contract test suite asserting that nothing is fabricated while no feed is wired. A GP weekend carries two scoring races sharing one qualifying, so the F2/F3 feeder template is the clone source \u2014 but the sprint grid is NOT reversed here. See the project README.",
   "repo": "https://github.com/roni-altshuler/motorsportverse/tree/main/projects/motogp-predictions",
   "website": "",
   "docs": "https://github.com/roni-altshuler/motorsportverse/tree/main/docs",
@@ -14,7 +14,8 @@
   ],
   "models": [],
   "tags": [
-    "scaffolded"
+    "scaffolded",
+    "contract-tested"
   ],
   "icon": "/brand/sports/motogp.png",
   "accent": "#CC0000",
