@@ -88,19 +88,69 @@ jobs:
       - name: Validate registry
         run: python scripts/build_registry.py
 
+      - name: Published-data integrity
+        # Checks the published corpus against ITSELF — market mass, calendar
+        # coverage, chronology, duplicate and placeholder entrants, calibration
+        # honesty, baseline presence. The per-file schema tests above all passed
+        # for a month while calibrated win markets summed to 2.00, because no
+        # check compared the corpus with the claims made about it.
+        #
+        # A known failure may only be carried with an explicit `--allow <check>`
+        # written HERE, in the workflow that grants it, never in a config file,
+        # and deleted in the same PR as the fix. See docs/KNOWN_ISSUES.md.
+        run: python scripts/validate_published_data.py
+
+      - name: Evidence artifacts are current
+        # evidence.json must match what the published forward-eval implies. If
+        # this fails, a site is rendering a model-vs-baseline comparison built
+        # from data that has since moved.
+        run: python scripts/build_evidence.py --check
+
       - name: Shared-UI drift check
         run: node scripts/sync_shared_ui.mjs --check
 
-  website:
-    name: Website build
+      - name: Chart palette validation
+        # The --viz-* tokens carry specific claims (CVD ΔE, contrast, monotone
+        # lightness). This is what makes them checkable rather than asserted.
+        run: node scripts/validate_palette.js --ordinal --pairs all
+
+  websites:
+    name: Website tests + build
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - site: website
+          - site: projects/f1-predictions/website
+            # Tests run; the full build does not. The flagship's prebuild does
+            # image processing (OG cards, PNG→WebP via sharp) that belongs with
+            # its own deploy, not in the ecosystem gate. Its tests are what pin
+            # the shared components, and those are the canonical copies.
+            build: skip
+          - site: projects/f2-predictions/website
+          - site: projects/f3-predictions/website
+          - site: projects/formula-e-predictions/website
+          - site: projects/imsa-predictions/website
+          - site: projects/indycar-predictions/website
+          - site: projects/motogp-predictions/website
+          - site: projects/nascar-predictions/website
+          - site: projects/wec-predictions/website
+          - site: projects/wrc-predictions/website
     defaults:
       run:
-        working-directory: website
+        working-directory: ${{ matrix.site }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
       - run: npm install
-      - run: npm run build
+      - name: Test
+        run: npm test -- --ci
+      - name: Build
+        if: matrix.build != 'skip'
+        # The hub's prebuild regenerates public/data/registry.json; the series
+        # sites read their committed JSON. PAGES_BASE_PATH is empty so the build
+        # matches a local run rather than the Pages assembly.
+        run: PAGES_BASE_PATH= npm run build

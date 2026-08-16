@@ -273,6 +273,13 @@ jobs:
             --output "reports/forward_eval_${SEASON_YEAR}.json" \
             --allow-empty
 
+
+      - name: Publish evidence artifact
+        # Rebuild the model-vs-baseline block from the forward-eval that just
+        # ran, so evidence.json ships with the round it describes rather than a
+        # round behind. CI asserts this is current (build_evidence.py --check).
+        working-directory: .
+        run: python scripts/build_evidence.py f1-predictions
       - name: Drift report — feature PSI + rolling-Brier (A-P1.2)
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'
         run: |

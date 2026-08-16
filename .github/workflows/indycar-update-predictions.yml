@@ -119,6 +119,13 @@ jobs:
           python -m indycar_predictions.drift_report --season 2026 --allow-empty
           python -m indycar_predictions.promotion_decision --season 2026 --allow-empty
 
+
+      - name: Publish evidence artifact
+        # Rebuild the model-vs-baseline block from the forward-eval that just
+        # ran, so evidence.json ships with the round it describes rather than a
+        # round behind. CI asserts this is current (build_evidence.py --check).
+        working-directory: .
+        run: python scripts/build_evidence.py indycar-predictions
       - name: Validate generated outputs
         if: steps.check.outputs.should_run == 'true'
         run: |
