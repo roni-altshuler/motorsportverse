@@ -1,49 +1,49 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 16,
+  "lastEvaluatedRound": 17,
   "featureDrift": [
     {
       "feature": "predictedValue",
-      "psi": 0.1642,
-      "severity": "warn"
-    },
-    {
-      "feature": "pWin",
-      "psi": 0.3078,
+      "psi": 0.325,
       "severity": "alarm"
     },
     {
+      "feature": "pWin",
+      "psi": 0.1073,
+      "severity": "warn"
+    },
+    {
       "feature": "pPodium",
-      "psi": 0.1114,
+      "psi": 0.2067,
       "severity": "warn"
     },
     {
       "feature": "meanFinish",
-      "psi": 0.115,
-      "severity": "warn"
+      "psi": 0.2503,
+      "severity": "alarm"
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 0.2336,
-      "severity": "warn"
+      "psi": 0.6152,
+      "severity": "alarm"
     }
   ],
   "outputDrift": {
-    "rollingBrierRecent": 0.0652,
-    "rollingBrierBaseline": 0.059,
-    "relativeChange": 0.1047,
+    "rollingBrierRecent": 0.0663,
+    "rollingBrierBaseline": 0.06,
+    "relativeChange": 0.1066,
     "severity": "warn",
-    "roundsCompared": 16
+    "roundsCompared": 17
   },
   "warnings": [
-    "predictedValue: PSI 0.164 (moderate drift vs baseline)",
-    "pPodium: PSI 0.111 (moderate drift vs baseline)",
-    "meanFinish: PSI 0.115 (moderate drift vs baseline)",
-    "finishRangeHigh: PSI 0.234 (moderate drift vs baseline)",
-    "rolling Brier regression +10.5%"
+    "pWin: PSI 0.107 (moderate drift vs baseline)",
+    "pPodium: PSI 0.207 (moderate drift vs baseline)",
+    "rolling Brier regression +10.7%"
   ],
   "alarms": [
-    "pWin: PSI 0.308 (significant drift vs baseline)"
+    "predictedValue: PSI 0.325 (significant drift vs baseline)",
+    "meanFinish: PSI 0.250 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.615 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
@@ -108,7 +108,11 @@
     },
     {
       "round": 16,
-      "brier": 0.0786497875
+      "brier": 0.07874534000000001
+    },
+    {
+      "round": 17,
+      "brier": 0.06605709
     }
   ]
 }

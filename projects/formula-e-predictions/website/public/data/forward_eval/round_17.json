@@ -1,0 +1,52 @@
+{
+  "round": 17,
+  "venueName": "London II",
+  "venueKind": "street",
+  "race": {
+    "n": 18,
+    "mean_position_error": 6.222,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 7,
+    "within_5": 11,
+    "exact_matches": 0,
+    "spearman_correlation": -0.011351909184726523,
+    "ndcg_at_5": 0.5058726053003909
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.066052,
+        "logLoss": 0.322021
+      },
+      "podium": {
+        "brier": 0.203701,
+        "logLoss": 0.636444
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 15,
+      "mean_position_error": 5.933,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 6,
+      "within_5": 10,
+      "exact_matches": 0,
+      "spearman_correlation": -0.2571428571428571,
+      "ndcg_at_5": 0.23989083747301207
+    },
+    "gridOrder": {
+      "n": 18,
+      "mean_position_error": 4.556,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "within_3": 8,
+      "within_5": 12,
+      "exact_matches": 0,
+      "spearman_correlation": 0.45923632610939114,
+      "ndcg_at_5": 0.7768078228324942
+    }
+  }
+}

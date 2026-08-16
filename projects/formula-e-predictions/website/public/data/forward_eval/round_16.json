@@ -4,49 +4,49 @@
   "venueKind": "street",
   "race": {
     "n": 16,
-    "mean_position_error": 4.188,
+    "mean_position_error": 4.438,
     "winner_hit": false,
     "podium_hits": 1,
     "within_3": 7,
     "within_5": 11,
     "exact_matches": 1,
-    "spearman_correlation": 0.47058823529411764,
-    "ndcg_at_5": 0.7445205985530496
+    "spearman_correlation": 0.4264705882352941,
+    "ndcg_at_5": 0.7228548893795668
   },
   "markets": {
     "race": {
       "win": {
-        "brier": 0.078656,
-        "logLoss": 0.294847
+        "brier": 0.078739,
+        "logLoss": 0.298213
       },
       "podium": {
-        "brier": 0.167487,
-        "logLoss": 0.509179
+        "brier": 0.167616,
+        "logLoss": 0.509997
       }
     }
   },
   "baselines": {
     "lastRace": {
       "n": 13,
-      "mean_position_error": 6.385,
+      "mean_position_error": 6.538,
       "winner_hit": false,
       "podium_hits": 1,
       "within_3": 4,
-      "within_5": 6,
+      "within_5": 5,
       "exact_matches": 1,
       "spearman_correlation": -0.17032967032967034,
-      "ndcg_at_5": 0.2798441570265184
+      "ndcg_at_5": 0.27634190825658367
     },
     "gridOrder": {
       "n": 16,
-      "mean_position_error": 4.75,
+      "mean_position_error": 4.625,
       "winner_hit": true,
       "podium_hits": 1,
       "within_3": 7,
       "within_5": 10,
       "exact_matches": 1,
-      "spearman_correlation": 0.39705882352941174,
-      "ndcg_at_5": 0.7909817095585793
+      "spearman_correlation": 0.4411764705882353,
+      "ndcg_at_5": 0.8018145641453207
     }
   }
 }
