@@ -161,3 +161,10 @@ export function getPointsProgression(): PointsProgression {
 
   return { rounds: completed, byCode, byTeam };
 }
+
+/** The paired model-vs-baseline block published by `motorsport_core.evidence`. */
+export type EvidenceBlock = import("@/components/ui/EvidencePanel").EvidenceBlock;
+
+export function getEvidence(): EvidenceBlock | null {
+  return readJson<EvidenceBlock>("evidence.json");
+}

@@ -2,12 +2,15 @@
   "name": "prism-cup-karting-website",
   "version": "0.1.0",
   "private": true,
-  "description": "Prism Cup Karting — a fan-made simulated kart racing league (MotorsportVerse).",
+  "description": "Prism Cup Karting \u2014 a fan-made simulated kart racing league (MotorsportVerse).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "shoot": "node scripts/shoot.mjs"
+    "shoot": "node scripts/shoot.mjs",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "lucide-react": "^0.471.2",
@@ -17,9 +20,15 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.19.41",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "playwright": "^1.61.0",
     "tailwindcss": "^4",
     "typescript": "^5"

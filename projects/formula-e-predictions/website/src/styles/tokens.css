@@ -241,3 +241,47 @@
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Chart series tokens — VALIDATED, not chosen.
+ *
+ * A chart mark is a different job from a link or a caption, and the site
+ * accent is already spoken for by the site's identity — a two-series chart
+ * cannot use it for one of them. These slots are accent-independent so one
+ * shared chart component renders correctly under all six series accents.
+ *
+ * Measured with the dataviz validator against all three chart surfaces in
+ * this repo (#0d0d0d series panels, #141414 series cards, #0c1119 hub) using
+ * --pairs all, because on a championship chart every line is visible at once:
+ *
+ *   trio            L band PASS · chroma PASS · CVD worst ΔE 10.6 (protan)
+ *                   normal-vision worst ΔE 21.4 · contrast >= 3:1 PASS
+ *   model↔baseline  CVD ΔE 24.2 · normal-vision ΔE 24.9
+ *   sequential      monotone L PASS · adjacent ΔL PASS · light-end 2.13:1
+ *                   PASS · single hue (3° spread) PASS — clears the stricter
+ *                   ordinal gate too
+ *
+ * TRITAN separation for model↔baseline is ΔE 5.7, BELOW the floor. That pair
+ * is legal only WITH secondary encoding, so both series are ALWAYS
+ * direct-labelled. This is a requirement, not styling.
+ *
+ * The categorical scale stops at THREE and that is a measurement: adding
+ * orange fails at ΔE 4.8-5.3 deutan against the green, and adding a grey
+ * fails the lightness band and the chroma floor. A fourth contender folds
+ * into --viz-field instead. See DESIGN.md §1.4.
+ * ───────────────────────────────────────────────────────────────────── */
+
+:root {
+  --viz-model:     #5fa657;   /* categorical 1 — this model */
+  --viz-baseline:  #3987e5;   /* categorical 2 — the baseline it must beat */
+  --viz-cat-3:     #c25ba6;   /* categorical 3 — a third named series */
+  --viz-reference: #4d4d4d;   /* de-emphasis: ideal diagonal, gridlines */
+  --viz-field:     #57575a;   /* the aggregated tail, deliberately recessive */
+
+  /* Sequential, one hue, low→high. Never a rainbow. */
+  --viz-seq-1: #63461e;
+  --viz-seq-2: #845b25;
+  --viz-seq-3: #a5712c;
+  --viz-seq-4: #c68733;
+  --viz-seq-5: #e79d3b;
+}

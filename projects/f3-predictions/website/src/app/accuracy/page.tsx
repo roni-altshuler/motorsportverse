@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { EvidencePanel } from "@/components/ui/EvidencePanel";
+
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
 import CandidateModelCard from "@/components/accuracy/CandidateModelCard";
 import HistoricalBacktestPanel from "@/components/accuracy/HistoricalBacktestPanel";
@@ -8,6 +10,7 @@ import WalkForwardPanel from "@/components/accuracy/WalkForwardPanel";
 import { Sparkline } from "@/components/charts/Sparkline";
 import {
   getCalibrationSummary,
+  getEvidence,
   getF3Data,
   getForwardEvalRounds,
   getForwardEvalSeason,
@@ -33,6 +36,7 @@ export default function AccuracyPage() {
   const health = getModelHealth();
   const calibration = getCalibrationSummary();
   const promotion = getPromotionStatus();
+  const evidence = getEvidence();
   const backtest = getHistoricalBacktest();
 
   const acc = data.seasonAccuracy;
@@ -60,6 +64,10 @@ export default function AccuracyPage() {
         />
         <Metric label="NDCG@5" value={season?.meanNdcgAt5 != null ? season.meanNdcgAt5.toFixed(2) : "—"} />
       </div>
+
+      {/* Evidence — deliberately NOT a tab, and directly below the headline
+          numbers it justifies. docs/EVIDENCE.md; DESIGN.md §5. */}
+      <EvidencePanel evidence={evidence} className="mt-8" />
 
       {/* Per-round accuracy heatmap */}
       {rounds.length > 0 && (

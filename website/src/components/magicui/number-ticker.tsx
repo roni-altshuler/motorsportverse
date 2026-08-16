@@ -42,18 +42,6 @@ export function NumberTicker({
     }).format(direction === "down" ? value : startValue),
   );
 
-  // Failsafe (mirrors useReveal): never leave the number stuck at its start
-  // value if the in-view trigger doesn't fire (headless capture, prerender,
-  // odd engines). Snaps straight to the final value — no animation.
-  useEffect(() => {
-    if (isInView) return;
-    const t = window.setTimeout(
-      () => motionValue.jump(direction === "down" ? startValue : value),
-      1500,
-    );
-    return () => window.clearTimeout(t);
-  }, [isInView, motionValue, direction, startValue, value]);
-
   useEffect(() => {
     if (!isInView) return;
     if (reduced) {
@@ -67,6 +55,21 @@ export function NumberTicker({
     }, delay * 1000);
     return () => window.clearTimeout(timer);
   }, [motionValue, isInView, delay, value, direction, startValue, reduced]);
+
+  // Failsafe (mirrors useReveal): never leave the number stuck at its start
+  // value if the in-view trigger doesn't fire — headless capture, prerender,
+  // odd engines. Snaps straight to the final value, no animation. Without it a
+  // stat tile can publish "0" where the real figure should be, which is the
+  // scroll-reveal-fails-closed bug in its most misleading form: a wrong NUMBER
+  // rather than a blank space.
+  useEffect(() => {
+    if (isInView) return;
+    const t = window.setTimeout(
+      () => motionValue.jump(direction === "down" ? startValue : value),
+      1500,
+    );
+    return () => window.clearTimeout(t);
+  }, [isInView, motionValue, direction, startValue, value]);
 
   useEffect(() => {
     const source = reduced ? motionValue : springValue;
