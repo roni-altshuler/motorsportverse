@@ -49,6 +49,18 @@ from sklearn.isotonic import IsotonicRegression
 # when building summary reports and reliability diagrams.
 MARKETS: tuple[str, ...] = ("win", "podium", "top6", "top10")
 
+# What each market must total across the whole field.  A win market describes
+# one slot, a podium three, and so on — so the probabilities over a field are
+# not a distribution summing to 1 but an expected count summing to the size of
+# the set.  This is the invariant `renormalize_market_struct` restores and the
+# one `motorsport_core.integrity.probability_mass` checks in published data.
+MARKET_TARGET_SUM: dict[str, float] = {
+    "win": 1.0,
+    "podium": 3.0,
+    "top6": 6.0,
+    "top10": 10.0,
+}
+
 # Default Plackett–Luce temperature in seconds.  A 0.5s spread on lap-time
 # differences gives a sensible top-of-grid concentration without collapsing the
 # distribution onto the fastest driver.  Smaller τ → sharper distribution.
@@ -91,6 +103,108 @@ def _regularise_calibration(
     w = (n_pos / denom) if denom > 0 else 0.0
     blended = (1.0 - w) * raw + w * calibrated
     return np.clip(blended, floor, 1.0)
+
+
+def water_fill_to_target(
+    values: Sequence[float],
+    target: float,
+    *,
+    floor: float = CALIBRATION_PROB_FLOOR,
+    cap: float = 1.0,
+) -> np.ndarray:
+    """Scale ``values`` so they sum to ``target`` without leaving [floor, cap].
+
+    Plain rescaling would be enough if probabilities were unbounded, but they
+    are not: scaling a market up can push a strong favourite past 1.0, which is
+    a worse lie than the one being fixed.  So this water-fills — scale the free
+    entries, pin whatever crosses a bound, redistribute the remainder over what
+    is still free, repeat.
+
+    ``floor`` exists to compose with :func:`_regularise_calibration`, which
+    floors every calibrated probability so nothing is ever a hard 0.0.  Scaling
+    a market down would otherwise quietly undo that and reintroduce the
+    impossible zeros it was added to prevent.  When the floor and the target
+    cannot both hold (a field so large that ``n * floor`` already exceeds the
+    target) the target wins: an incoherent market misleads every reader, while
+    a zero misleads only about one competitor.
+    """
+    probs = np.clip(np.asarray(list(values), dtype=np.float64), 0.0, None)
+    n = probs.size
+    if n == 0:
+        return probs
+    # A market can be larger than the field it describes — a five-car class has
+    # no meaningful "top ten".  Everyone finishes in it, so the honest target is
+    # the field size, not the market's nominal one.
+    target = float(min(target, n * cap))
+    if target <= 0 or probs.sum() <= 0:
+        return probs
+    use_floor = floor if n * floor <= target else 0.0
+
+    pinned_hi = np.zeros(n, dtype=bool)
+    pinned_lo = np.zeros(n, dtype=bool)
+    # Each pass pins at least one more entry, so this terminates in <= n passes.
+    for _ in range(n + 1):
+        free = ~(pinned_hi | pinned_lo)
+        remaining = target - float(pinned_hi.sum()) * cap - float(pinned_lo.sum()) * use_floor
+        free_sum = float(probs[free].sum())
+        if not free.any() or free_sum <= 0:
+            break
+        probs[free] = probs[free] * (remaining / free_sum)
+        over = free & (probs > cap)
+        under = free & (probs < use_floor)
+        if not over.any() and not under.any():
+            break
+        probs[over] = cap
+        probs[under] = use_floor
+        pinned_hi |= over
+        pinned_lo |= under
+    return probs
+
+
+def renormalize_market_struct(
+    market_struct: Mapping[str, Mapping[str, Mapping[str, float]]],
+    *,
+    digits: int | None = None,
+    targets: Mapping[str, float] = MARKET_TARGET_SUM,
+) -> dict[str, dict[str, dict[str, float]]]:
+    """Restore probabilistic coherence to a published market block.
+
+    Per-competitor calibration maps each competitor independently, so the market
+    it belongs to stops summing to the size of the set it describes: a win
+    market must total 1, a podium 3, a top-six 6, a top-ten 10.  The sites
+    render ``probability`` straight as a percentage, so an incoherent market is
+    visible to any reader who adds up a column.
+
+    History worth keeping: the F1 flagship found this in its 2026-07-07 audit
+    (win markets summing to 1.17-1.94) and fixed it in
+    ``projects/f1-predictions/models/calibration.py``.  Because the fix lived in
+    the flagship rather than here, every series cloned from the golden template
+    inherited the calibration step and none inherited the fix.  It belongs in
+    the shared package precisely so that cannot happen again.
+
+    ``rawProbability`` is passed through untouched.  Where it is an empirical
+    Monte-Carlo frequency it is already coherent, and where it is not — WRC
+    blends in a hand-built form prior — rescaling it here would hide a modelling
+    bug behind a presentation fix.  ``integrity.probability_mass`` checks the
+    raw field separately for that reason.
+
+    Set ``digits`` to round only after renormalising.  Rounding first
+    reintroduces exactly the drift this removes.
+    """
+    out: dict[str, dict[str, dict[str, float]]] = {}
+    for market, entries in market_struct.items():
+        target = targets.get(market)
+        if target is None or not entries:
+            out[market] = {c: dict(v) for c, v in entries.items()}
+            continue
+        names = list(entries.keys())
+        probs = water_fill_to_target([entries[c].get("probability", 0.0) for c in names], target)
+        out[market] = {}
+        for i, c in enumerate(names):
+            row = dict(entries[c])
+            row["probability"] = round(float(probs[i]), digits) if digits else float(probs[i])
+            out[market][c] = row
+    return out
 
 
 # --------------------------------------------------------------------------- #

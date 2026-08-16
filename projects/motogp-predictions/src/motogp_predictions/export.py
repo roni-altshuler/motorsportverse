@@ -240,25 +240,20 @@ def _calibrate_markets(race: RaceForecast, calibrator) -> dict:
             cal_vals = calibrator.transform(market, raw_vals, stratum=race.race_type)
         else:
             cal_vals = raw_vals
-        # The win market is mutually exclusive — exactly one winner — so its
-        # calibrated probabilities must sum to 1.0. Per-market isotonic calibration
-        # + the probability floor over MotoGP's ~29-rider field inflates the sum
-        # (1.2-1.5), so renormalise win to a coherent market (order + the
-        # anti-collapse floor are preserved; the top probability only shrinks).
-        # The top-k markets (podium/top6/top10) are independent per-rider
-        # probabilities that legitimately sum to k, so they are left as-is.
-        if market == "win":
-            total = float(cal_vals.sum())
-            if total > 0:
-                cal_vals = cal_vals / total
+        # Per-competitor calibration does not preserve the simplex. Each entry is
+        # mapped independently, so the market stops summing to the size of the set
+        # it describes. This was handled here for `win` alone, on the reasoning
+        # that the top-k markets "legitimately sum to k" — true of what they MEAN,
+        # but not of what calibration leaves behind. All four markets are
+        # renormalised together after the loop, by the shared water-fill.
         out[market] = {
             c: {
-                "probability": round(float(cal_vals[i]), 4),
+                "probability": float(cal_vals[i]),
                 "rawProbability": round(float(raw_vals[i]), 4),
             }
             for i, c in enumerate(codes)
         }
-    return out
+    return calibration.renormalize_market_struct(out, digits=4)
 
 
 def _race_probabilities(race: RaceForecast, calibrator) -> dict:

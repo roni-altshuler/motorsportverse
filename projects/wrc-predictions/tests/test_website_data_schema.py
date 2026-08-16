@@ -252,3 +252,35 @@ def test_seasons_index_matches_contract(data_dir):
     idx = SeasonsIndex.model_validate(_load(data_dir / "seasons.json"))
     assert idx.current == config.SEASON
     assert config.SEASON in idx.available
+
+
+def test_published_probabilities_sum_to_their_market(data_dir):
+    """Every market must total the size of the set it describes.
+
+    A win market is one slot, a podium three, a top-six six, a top-ten ten. The
+    site renders `probability` straight as a percentage, so an incoherent market
+    is visible to any reader who adds up a column.
+
+    Note what the OTHER sum assertions in this file check: `rawProbability` —
+    the empirical Monte-Carlo frequency, which is coherent by construction and
+    was never the field that broke. The calibrated `probability` the page
+    actually renders went unchecked, which is how win markets summing from 0.50
+    to 2.00 shipped for a month. Assert on the number the reader sees.
+
+    Delegates to motorsport_core.integrity so the rule has ONE definition; a
+    second copy here would be the next thing to drift.
+    """
+    from motorsport_core.integrity import check_probabilities
+
+    checked = 0
+    failures = []
+    for path in sorted((data_dir / "probabilities").glob("round_*.json")):
+        payload = json.loads(path.read_text())
+        for finding in check_probabilities(payload, path.name):
+            if finding.check != "probability_mass":
+                continue
+            checked += 1
+            if not finding.ok:
+                failures.append(f"{path.name}: {finding.message}")
+    assert not failures, "incoherent published markets:\n" + "\n".join(failures)
+    assert checked > 0, "no markets were checked — the glob or the payload shape changed"

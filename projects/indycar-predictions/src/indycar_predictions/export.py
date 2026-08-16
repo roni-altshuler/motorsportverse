@@ -271,12 +271,12 @@ def _calibrate_markets(race: RaceForecast, calibrator, stratum: str) -> dict:
             cal_vals = raw_vals
         out[market] = {
             c: {
-                "probability": round(float(cal_vals[i]), 4),
+                "probability": float(cal_vals[i]),
                 "rawProbability": round(float(raw_vals[i]), 4),
             }
             for i, c in enumerate(codes)
         }
-    return out
+    return calibration.renormalize_market_struct(out, digits=4)
 
 
 def _race_probabilities(fc: RoundForecastIndycar, calibrator) -> dict:
