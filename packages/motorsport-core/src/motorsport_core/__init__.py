@@ -10,6 +10,8 @@ agnostic foundation that every MotorsportVerse project builds on:
 - :mod:`~motorsport_core.drift` / :mod:`~motorsport_core.promotion` —
   continuous-learning health monitoring + A/B promotion gate.
 - :mod:`~motorsport_core.eval` — forward-time ranking metrics.
+- :mod:`~motorsport_core.evidence` — paired model-vs-baseline evidence artifact.
+- :mod:`~motorsport_core.integrity` — integrity checks over published site data.
 - :mod:`~motorsport_core.standings` — championship standings from results.
 - :mod:`~motorsport_core.championship` — Monte Carlo title projection.
 - :mod:`~motorsport_core.elo` / :mod:`~motorsport_core.conformal` /
@@ -33,6 +35,8 @@ __all__ = [
     "era",
     "leakage",
     "eval",
+    "evidence",
+    "integrity",
     "standings",
     "championship",
     "features",

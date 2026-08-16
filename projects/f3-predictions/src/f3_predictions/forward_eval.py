@@ -268,6 +268,32 @@ def run_position_head_ab(
     return target
 
 
+def write_evidence_artifact(out_dir: Path, sport: str) -> Path | None:
+    """Publish ``evidence.json`` beside the forward-eval it summarises.
+
+    The model-vs-baseline comparison is computed ONCE here, by
+    :func:`motorsport_core.evidence.build_evidence`, and every site renders the
+    result through the shared ``EvidencePanel``. Deriving it in TypeScript
+    instead would put the comparison in six independent codebases that drift
+    independently — and a page that recomputes a number is a second model
+    nobody benchmarked.
+
+    Pairing matters: the block compares model and baseline on the rounds they
+    BOTH scored, never two independently-averaged means over different round
+    sets. Round 1 has no previous race, so it contributes to neither.
+    """
+    from motorsport_core import evidence as core_evidence
+
+    data_dir = out_dir.parent
+    block = core_evidence.build_evidence(
+        out_dir,
+        calibration_summary=data_dir / "calibration_summary.json",
+        promotion_status=data_dir / "promotion_status.json",
+        sport=sport,
+    )
+    return core_evidence.write_evidence(block, data_dir / "evidence.json")
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--season", type=int, default=config.SEASON)
@@ -287,6 +313,14 @@ def main() -> int:
         print("forward_eval: no completed rounds to score", flush=True)
         return 1
     print(f"forward_eval: scored {n} round(s) → {args.out}")
+
+    try:
+        evidence_path = write_evidence_artifact(args.out, "f3")
+    except Exception as e:  # an evidence failure must not block the report
+        print(f"forward_eval: evidence artifact failed: {e}")
+    else:
+        if evidence_path is not None:
+            print(f"forward_eval: evidence → {evidence_path.name}")
 
     if args.position_model_ab:
         try:
