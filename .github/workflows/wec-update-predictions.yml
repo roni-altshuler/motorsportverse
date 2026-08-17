@@ -86,6 +86,27 @@ jobs:
         # round behind. CI asserts this is current (build_evidence.py --check).
         working-directory: .
         run: python scripts/build_evidence.py wec-predictions
+      - name: Validate generated outputs
+        if: steps.check.outputs.should_run == 'true'
+        # This cron had NO pre-commit gate at all — it installed pytest and
+        # never ran it, so degenerate output could reach Pages unchallenged.
+        run: |
+          cd projects/wec-predictions
+          # The export tests are this product's analogue of the other
+          # crons' test_website_data_schema.py: they assert the shape and
+          # sanity of what was just written. The snapshot tests are left
+          # out on purpose — they exercise the live archive fetch, which
+          # is a different failure domain from 'is this output publishable'.
+          PYTHONPATH=src python -m pytest tests/test_export_wec.py tests/test_model_wec.py -q
+      - name: Published-data integrity gate
+        if: steps.check.outputs.should_run == 'true'
+        # Corpus gate before commit. The schema test above proves each FILE is
+        # well-formed; this proves the numbers inside them add up. A cron commit
+        # pushes with GITHUB_TOKEN, which by design does NOT trigger CI — so
+        # whatever is not checked HERE is not checked at all until a human
+        # pushes a branch. That is how a completed Formula E season sat on main
+        # for a day with a permanently failing source test (b0f4976).
+        run: python scripts/validate_published_data.py wec-predictions
       - name: Commit refreshed data if changed
         id: commit
         if: steps.check.outputs.should_run == 'true'

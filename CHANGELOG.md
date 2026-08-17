@@ -56,6 +56,20 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   rather than the key name lets one function serve all five. Without it the
   flagship's own evidence panel would have rendered empty.
 
+- **A time-bomb test in Formula E, and the CI blind spot that hid it.**
+  `test_composite_qualifying_is_real_only` asserted that the *last round of the
+  calendar* had no qualifying, as a stand-in for "a round not yet run". Commit
+  `b0f4976` — a routine cron data update — completed the season and made that
+  permanently false. It now asks for a round beyond the calendar, which is absent
+  regardless of the date, and asserts the property its docstring actually claims.
+
+  The structural half matters more: cron commits push with `GITHUB_TOKEN`, which
+  by design does not trigger workflows, so **zero of the last 40 CI runs were for
+  a data commit**. Each cron's own gate ran `test_website_data_schema.py` alone —
+  and WEC and IMSA installed `pytest` without ever invoking it. Every cron now
+  runs `scripts/validate_published_data.py` before committing, and the endurance
+  crons gained the export/model gate they never had.
+
 - **`NumberTicker` could publish a stat tile stuck at its start value** — usually
   `0` — when the in-view trigger never fired (headless capture, prerender,
   unusual engines). The hub carried a failsafe; the canonical F1 copy did not,

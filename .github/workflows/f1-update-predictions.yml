@@ -331,6 +331,20 @@ jobs:
           # drivers, duplicate positions) from reaching GitHub Pages.
           pytest tests/test_website_data_schema.py tests/test_predictions_sanity.py -v --tb=short
 
+      - name: Published-data integrity gate
+        if: steps.check.outputs.should_run == 'true'
+        # Corpus gate before commit. The schema test above proves each FILE is
+        # well-formed; this proves the numbers inside them add up. A cron commit
+        # pushes with GITHUB_TOKEN, which by design does NOT trigger CI — so
+        # whatever is not checked HERE is not checked at all until a human
+        # pushes a branch. That is how a completed Formula E season sat on main
+        # for a day with a permanently failing source test (b0f4976).
+        #
+        # This job defaults to working-directory: projects/f1-predictions, so the
+        # repo-root script needs an explicit override — without it the step looks
+        # for projects/f1-predictions/scripts/ and fails.
+        working-directory: .
+        run: python scripts/validate_published_data.py f1-predictions
       - name: Commit updated data
         id: commit
         if: github.event_name != 'schedule' || steps.check.outputs.should_run == 'true'

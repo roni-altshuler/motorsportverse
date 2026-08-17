@@ -91,10 +91,28 @@ def test_composite_falls_back_to_synthetic_beyond_snapshot():
 
 
 def test_composite_qualifying_is_real_only():
-    """The synthetic source has no qualifying, so any answer is real."""
+    """The synthetic source has no qualifying, so any answer is real.
+
+    The absent case used to be spelled `len(config.CALENDAR)` — the last round
+    of the season — as a stand-in for "a round that has not been run yet". That
+    made this a time bomb rather than a test: it held only while the season was
+    incomplete, and started failing permanently the moment round 17 was scored
+    (commit b0f4976, 2026-08-16). Nobody noticed for a day because cron data
+    commits push with GITHUB_TOKEN and therefore never trigger CI, and the FE
+    cron gates on test_website_data_schema.py alone.
+
+    A round BEYOND the calendar is absent no matter how far the season has got,
+    so it expresses the same intent without depending on the date.
+    """
     src = CompositeFESource.default()
-    assert src.qualifying(config.SEASON, 1)
-    assert src.qualifying(config.SEASON, len(config.CALENDAR)) is None
+
+    order = src.qualifying(config.SEASON, 1)
+    assert order, "round 1 qualifying should be published"
+    assert all(isinstance(code, str) and code for code in order)
+    # The real point of the test: a non-None answer never came from synthetic.
+    assert CompositeFESource.is_real(src.provenance(config.SEASON, 1))
+
+    assert src.qualifying(config.SEASON, len(config.CALENDAR) + 1) is None
 
 
 # --------------------------------------------------------------------------- #

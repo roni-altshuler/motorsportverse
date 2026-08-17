@@ -137,6 +137,58 @@ not evidence.
 
 ---
 
+### A time-bomb test, and the CI blind spot that hid it
+
+**Found:** 2026-08-17, by the first CI run to execute the Formula E suite after
+the season finished.
+
+**What it was.** `test_composite_qualifying_is_real_only` asserted:
+
+```python
+assert src.qualifying(config.SEASON, len(config.CALENDAR)) is None
+```
+
+`len(config.CALENDAR)` is the *last round of the season*, used as a stand-in for
+"a round that has not been run yet". That is true only while the season is
+incomplete. Commit `b0f4976` — a routine Formula E cron data update on
+2026-08-16 — pushed `completedRounds` from 16 to 17, London II acquired a
+published qualifying order, and the assertion became permanently false.
+
+The test now asks for a round *beyond* the calendar, which is absent no matter
+how far the season has progressed, and additionally asserts the property the
+docstring actually claims: that a non-`None` answer never came from the
+synthetic source.
+
+**The blind spot is the real finding.** Nobody noticed for a day, and the reason
+is structural:
+
+1. **Cron commits never run CI.** The update workflows push with
+   `GITHUB_TOKEN`, and GitHub deliberately does not trigger workflows on pushes
+   made with it. Across the last 40 CI runs, **zero** were for a data commit.
+   Every `[series] Update round N` commit reached `main` without CI.
+2. **The pre-commit gate in each cron was narrower than the suite.** The crons
+   ran `tests/test_website_data_schema.py` only, so a source-layer test could
+   not fail the job that broke it.
+3. **WEC and IMSA had no pre-commit gate at all** — they installed `pytest` and
+   never invoked it.
+
+So the only thing standing between a data commit and GitHub Pages was whichever
+subset of tests that cron happened to name. Whatever is not checked *there* is
+not checked at all until a human pushes a branch.
+
+**The fix.** Every cron now runs `scripts/validate_published_data.py <project>`
+before its commit step, and WEC and IMSA gained the export/model gate they never
+had. The corpus check is the right gate for a data commit specifically: the
+schema tests prove each file is well-formed, and this proves the numbers inside
+them add up.
+
+**Still open, deliberately:** CI genuinely cannot run on `GITHUB_TOKEN` pushes.
+Making it do so means committing with a PAT, which trades a real security
+boundary for coverage. The per-cron gates are the cheaper half of that trade and
+are what landed; the PAT question is left as a decision rather than assumed.
+
+---
+
 ## How to add an entry
 
 1. Add or extend a check in `motorsport_core.integrity` so the defect **fails a

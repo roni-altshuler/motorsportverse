@@ -95,6 +95,15 @@ jobs:
         working-directory: projects/motogp-predictions
         run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
 
+      - name: Published-data integrity gate
+        if: steps.check.outputs.should_run == 'true'
+        # Corpus gate before commit. The schema test above proves each FILE is
+        # well-formed; this proves the numbers inside them add up. A cron commit
+        # pushes with GITHUB_TOKEN, which by design does NOT trigger CI — so
+        # whatever is not checked HERE is not checked at all until a human
+        # pushes a branch. That is how a completed Formula E season sat on main
+        # for a day with a permanently failing source test (b0f4976).
+        run: python scripts/validate_published_data.py motogp-predictions
       - name: Commit refreshed data if changed
         id: commit
         if: steps.check.outputs.should_run == 'true'
