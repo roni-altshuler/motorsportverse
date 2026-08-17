@@ -153,4 +153,24 @@ jobs:
         # The hub's prebuild regenerates public/data/registry.json; the series
         # sites read their committed JSON. PAGES_BASE_PATH is empty so the build
         # matches a local run rather than the Pages assembly.
-        run: PAGES_BASE_PATH= npm run build
+        #
+        # Retried because every site imports `next/font/google`, so each build
+        # FETCHES fonts from Google's CDN and a blip fails it with
+        # "Error while requesting resource" — nothing to do with the code. That
+        # was survivable when CI built one site; this matrix builds ten, so the
+        # per-run odds of hitting it are ten times higher and it started showing
+        # up immediately. A genuine build error still fails, just three times.
+        #
+        # The real fix is to vendor the fonts and use `next/font/local`, which
+        # removes the network from the build entirely. That is a deliberate
+        # change across ten sites, not something to slip into a retry loop.
+        run: |
+          for attempt in 1 2 3; do
+            if PAGES_BASE_PATH= npm run build; then
+              exit 0
+            fi
+            echo "::warning::build attempt ${attempt} failed for ${{ matrix.site }}"
+            sleep 15
+          done
+          echo "::error::build failed three times for ${{ matrix.site }}"
+          exit 1
