@@ -182,6 +182,30 @@ had. The corpus check is the right gate for a data commit specifically: the
 schema tests prove each file is well-formed, and this proves the numbers inside
 them add up.
 
+**The sweep afterwards found three more of the same shape**, all spelling an
+absent round as `len(config.CALENDAR)` — one commented, in as many words,
+`# finale not yet run`:
+
+| file | fires when |
+| --- | --- |
+| `f2/tests/test_sources.py` | F2 reaches round 14 (8 to go) |
+| `f3/tests/test_sources.py` | F3 reaches round 9 (4 to go) |
+| `f3/tests/test_real_data.py` | F3 reaches round 9 (4 to go) |
+
+All now derive the absent round from the snapshot's own `completedRounds`, or
+ask for a round beyond the calendar. Formula E broke first only because it is
+the first series whose season finished.
+
+Two patterns were checked and cleared rather than assumed guilty:
+`config.COMPLETED_ROUNDS + 1` is safe — Formula E is the natural experiment, its
+season is complete, it uses that idiom and its suite passes 126/126 — and
+`detect_target_round`'s calendar comparison pins to a hard-coded
+`datetime(2027, 1, 1)`, which is deterministic on purpose.
+
+**The rule this leaves:** never spell "hasn't happened yet" as a fixed position
+in the calendar. Derive it from the data's own progress counter, or step past
+the end of the calendar entirely.
+
 **Still open, deliberately:** CI genuinely cannot run on `GITHUB_TOKEN` pushes.
 Making it do so means committing with a PAT, which trades a real security
 boundary for coverage. The per-cron gates are the cheaper half of that trade and

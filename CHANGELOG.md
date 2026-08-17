@@ -70,6 +70,12 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   runs `scripts/validate_published_data.py` before committing, and the endurance
   crons gained the export/model gate they never had.
 
+  A sweep found **three more of the same shape** — in F2 and F3, one commented
+  `# finale not yet run` — all defused before they could fire. Formula E broke
+  first only because it is the first series whose season finished. The rule:
+  never spell "hasn't happened yet" as a fixed position in the calendar; derive
+  it from the data's own progress counter.
+
 - **`NumberTicker` could publish a stat tile stuck at its start value** — usually
   `0` — when the in-view trigger never fired (headless capture, prerender,
   unusual engines). The hub carried a failsafe; the canonical F1 copy did not,

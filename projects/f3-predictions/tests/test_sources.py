@@ -68,7 +68,11 @@ def test_composite_prefers_a_real_source():
 def test_datasource_serves_real_data_by_default():
     s = F3DataSource()  # default = snapshot (real) + synthetic fallback
     assert 12 <= len(s.results(config.SEASON, 1)) <= len(config.DRIVERS)
-    assert s.results(config.SEASON, len(config.CALENDAR)) == []  # finale not yet run
+    # Derived from the snapshot's own completed count, not from the calendar
+    # length. "The finale" only means "not yet run" while the season is
+    # unfinished — Formula E's identical line broke permanently the moment its
+    # last round was scored (docs/KNOWN_ISSUES.md).
+    assert s.results(config.SEASON, config.COMPLETED_ROUNDS + 1) == []
     assert s.provenance(config.SEASON, 1, 1) == "snapshot"
     races = s.race_results_for_round(config.SEASON, 1)
     assert races["sprint"] and races["feature"]

@@ -45,8 +45,17 @@ def test_snapshot_serves_real_completed_rounds_only():
     # positions ascending & unique (classified order)
     pos = [r.position for r in feature]
     assert pos == sorted(pos) and len(set(pos)) == len(pos)
-    # a not-yet-run round is absent from the snapshot → defer
-    assert s.results(config.SEASON, len(config.CALENDAR), race_index=1) is None
+    # A not-yet-run round is absent from the snapshot → defer.
+    #
+    # Derived from the snapshot's own completed count, NOT from
+    # `len(config.CALENDAR)`. Spelling it as the last round of the season makes
+    # the test hold only until the season finishes: the identical line in
+    # Formula E's suite broke permanently the moment its round 17 was scored
+    # (see docs/KNOWN_ISSUES.md). F2 has 8 rounds left, so this is the same bomb
+    # with a longer fuse. `completedRounds + 1` is absent whether the season is
+    # half-run or over.
+    not_yet_run = load_snapshot()["completedRounds"] + 1
+    assert s.results(config.SEASON, not_yet_run, race_index=1) is None
 
 
 def test_snapshot_standings_reconcile_to_totals():

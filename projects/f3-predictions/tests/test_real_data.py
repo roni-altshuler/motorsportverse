@@ -48,7 +48,8 @@ def test_snapshot_serves_real_completed_rounds_only():
     pos = [r.position for r in feature]
     assert pos == sorted(pos) and len(set(pos)) == len(pos)
     # a not-yet-run round is absent from the snapshot → defer
-    assert s.results(config.SEASON, len(config.CALENDAR), race_index=1) is None
+    not_yet_run = load_snapshot()["completedRounds"] + 1
+    assert s.results(config.SEASON, not_yet_run, race_index=1) is None
 
 
 def test_snapshot_standings_reconcile_to_totals():
