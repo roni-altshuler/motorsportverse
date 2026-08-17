@@ -44,26 +44,39 @@ const roundFiles = (dir: string): string[] => {
     .sort();
 };
 
-/** Every {win|podium|top6|top10} block anywhere in the payload, at any depth. */
-function* markets(node: unknown, path = ""): Generator<{ path: string; market: string; entries: Json }> {
+/**
+ * Every {win|podium|top6|top10} block anywhere in the payload, at any depth.
+ *
+ * Two published shapes, both real: the series sites key a market by competitor
+ * (`{ VER: { probability } }`) and the flagship publishes a LIST
+ * (`[{ driver, probability }]`). Returning the probabilities rather than the
+ * container lets one caller handle both — the Python integrity check had to
+ * learn the same lesson, and a version of this that only understood the dict
+ * shape silently checked nothing on F1.
+ */
+function* markets(node: unknown, path = ""): Generator<{ path: string; market: string; values: number[] }> {
   if (Array.isArray(node)) {
     for (const [i, item] of node.entries()) yield* markets(item, `${path}[${i}]`);
     return;
   }
   if (!node || typeof node !== "object") return;
   for (const [key, value] of Object.entries(node as Json)) {
-    const isMarket =
-      key in MARKET_TARGET &&
-      value !== null &&
-      typeof value === "object" &&
-      !Array.isArray(value) &&
-      Object.values(value as Json).length > 0 &&
-      Object.values(value as Json).every(
-        (v) => v !== null && typeof v === "object" && "probability" in (v as Json),
-      );
-    if (isMarket) yield { path: `${path}.${key}`, market: key, entries: value as Json };
+    const probs = key in MARKET_TARGET ? marketValues(value) : null;
+    if (probs) yield { path: `${path}.${key}`, market: key, values: probs };
     else yield* markets(value, `${path}.${key}`);
   }
+}
+
+/** The probabilities in a market block, whichever shape it takes, else null. */
+function marketValues(value: unknown): number[] | null {
+  const hasProb = (v: unknown) => v !== null && typeof v === "object" && "probability" in (v as Json);
+  const entries = Array.isArray(value)
+    ? value
+    : value !== null && typeof value === "object"
+      ? Object.values(value as Json)
+      : [];
+  if (entries.length === 0 || !entries.every(hasProb)) return null;
+  return entries.map((e) => Number((e as Json).probability));
 }
 
 const hasData = existsSync(DATA);
@@ -99,12 +112,9 @@ const probabilityRounds = hasData ? roundFiles("probabilities") : [];
   it("renders no probability outside [0, 1]", () => {
     const bad: string[] = [];
     for (const file of probabilityRounds) {
-      for (const { path, entries } of markets(readJson("probabilities", file))) {
-        for (const [name, entry] of Object.entries(entries)) {
-          const p = (entry as Json).probability;
-          if (typeof p !== "number" || Number.isNaN(p) || p < 0 || p > 1) {
-            bad.push(`${file}${path}.${name} = ${String(p)}`);
-          }
+      for (const { path, values } of markets(readJson("probabilities", file))) {
+        for (const [i, p] of values.entries()) {
+          if (!Number.isFinite(p) || p < 0 || p > 1) bad.push(`${file}${path}[${i}] = ${String(p)}`);
         }
       }
     }
@@ -120,8 +130,7 @@ const probabilityRounds = hasData ? roundFiles("probabilities") : [];
     const bad: string[] = [];
     let checked = 0;
     for (const file of probabilityRounds) {
-      for (const { path, market, entries } of markets(readJson("probabilities", file))) {
-        const values = Object.values(entries).map((e) => Number((e as Json).probability));
+      for (const { path, market, values } of markets(readJson("probabilities", file))) {
         // A market can be larger than the field it describes — a five-car class
         // has no meaningful top ten, and everyone finishes in it.
         const target = Math.min(MARKET_TARGET[market], values.length);
@@ -160,16 +169,27 @@ const summaries = hasData
   });
 
   it("gives every standings entry an identity and a position", () => {
+    // Identity is resolved by SHAPE, not by a list of blessed key names. A
+    // manufacturer table identifies by `make` and an engine table by `engine`,
+    // and a fixed list of code/name/team/driver called both of those anonymous —
+    // which is a test failing correct data, the thing that teaches people to
+    // ignore tests. Any non-colour string field is an identity.
+    const isColour = (v: string) => /^#?[0-9a-f]{3,8}$/i.test(v.trim());
+    const PRESENTATION = new Set(["color", "colour", "teamcolor", "teamcolour"]);
     const bad: string[] = [];
     for (const file of summaries) {
       for (const [key, value] of Object.entries(readJson(file))) {
         if (!/standings/i.test(key) || !Array.isArray(value) || value.length === 0) continue;
         for (const [i, entry] of value.entries()) {
           const e = entry as Json;
-          const identity = e.code ?? e.name ?? e.team ?? e.driver ?? e.entry;
-          if (!identity || typeof e.position !== "number") {
-            bad.push(`${file}.${key}[${i}]`);
-          }
+          const identity = Object.entries(e).some(
+            ([k, v]) =>
+              typeof v === "string" &&
+              v.trim().length > 0 &&
+              !PRESENTATION.has(k.toLowerCase()) &&
+              !isColour(v),
+          );
+          if (!identity || typeof e.position !== "number") bad.push(`${file}.${key}[${i}]`);
         }
       }
     }
