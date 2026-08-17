@@ -145,6 +145,28 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ### Changed
 
+- **Fonts are vendored, and the website build no longer touches the network.**
+  Every site imported `next/font/google`, which downloads the font files at
+  BUILD time — so a production build of a fully static export from committed
+  JSON still depended on `fonts.googleapis.com` being reachable, and a blip
+  failed it outright with `Error while requesting resource`. The latin subsets
+  now live under each site's `src/app/fonts/` and are loaded with
+  `next/font/local`. Same families, same weights (the flagship keeps its own
+  400/700 set — Bugatti's system has no bold role). Verified: the built output
+  contains zero references to googleapis or gstatic.
+- **All GitHub Actions pins moved to Node 24 majors** — `checkout@v6`,
+  `setup-node@v6`, `setup-python@v6`, `deploy-pages@v5`,
+  `upload-pages-artifact@v5`. The ten cron workflows were already on v6; `ci.yml`
+  and `deploy-website.yml` were the stragglers, which is where every "Node.js 20
+  is deprecated" annotation came from. Each bump was checked against the
+  action's own `action.yml` runtime rather than assumed from the version number.
+- **A published-data test now runs on every site**, asserting from the site side
+  what the Python schema tests assert from the pipeline side: probabilities in
+  range, every market summing to the size of the set it describes, contiguous
+  calendars, standings identity, and a coherent `evidence.json`. Written to
+  DISCOVER rather than hardcode filenames, because the ecosystem publishes
+  several shapes — a test naming `f3.json` would silently cover nothing on the
+  endurance and rally products.
 - `scripts/sync_shared_ui.mjs` gained a *required* tier. Its `ui` directory was
   intersect-only — a canonical file absent from a target was treated as an opt-out, which
   is right for a chart and wrong for the honesty primitives. A site quietly missing

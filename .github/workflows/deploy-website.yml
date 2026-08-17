@@ -42,7 +42,7 @@ jobs:
     env:
       BASE: /${{ github.event.repository.name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           # Always build the current tip of the deploy branch. When this workflow
           # is invoked via workflow_call from f1/f2-update-predictions.yml, the
@@ -53,10 +53,10 @@ jobs:
           # up when some later push happens to re-trigger a deploy). Pinning the
           # branch tip makes the just-pushed results go live in the same run.
           ref: main
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -218,7 +218,7 @@ jobs:
           cp -r projects/wec-predictions/website/out/. website/out/projects/wec/
           cp -r projects/imsa-predictions/website/out/. website/out/projects/imsa/
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: website/out
 
@@ -233,11 +233,11 @@ jobs:
       # during syncing_files (seen 2026-07-05 and 2026-07-06). Cron-triggered
       # deploys run unattended, so retry twice before failing the run.
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
       - id: deployment-retry
         if: steps.deployment.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
       - if: steps.deployment.outcome == 'failure' && steps.deployment-retry.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

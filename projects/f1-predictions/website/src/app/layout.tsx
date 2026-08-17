@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Saira_Condensed, EB_Garamond, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -12,24 +12,38 @@ import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 // licensed Bugatti typefaces: Saira Condensed (display headlines + wordmark),
 // EB Garamond (serif body), JetBrains Mono (buttons + nav + captions). All at
 // weight 400 — Bugatti's system has no bold role.
-const sairaCondensed = Saira_Condensed({
-  subsets: ["latin"],
+// Fonts are VENDORED, not fetched.
+//
+// `next/font/google` downloads the font files at BUILD time, so every
+// production build depended on fonts.googleapis.com being reachable and a blip
+// there failed it outright ("Error while requesting resource"). That is a
+// network dependency inside a build that otherwise has none — this site is a
+// fully static export from committed JSON, and the fonts were the one thing
+// still phoning out. The files now live beside this layout, so the build is
+// hermetic.
+//
+// Same families, same weights, same latin subset as before. Note the flagship
+// uses a DIFFERENT weight set from the series sites (400/700 display, 400 for
+// body and mono — Bugatti's system has no bold role), which is why only the
+// weights listed here are vendored rather than the shared five.
+const sairaCondensed = localFont({
+  src: [
+    { path: "./fonts/SairaCondensed-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/SairaCondensed-700.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-saira-condensed",
-  weight: ["400", "700"],
   display: "swap",
 });
 
-const ebGaramond = EB_Garamond({
-  subsets: ["latin"],
+const ebGaramond = localFont({
+  src: [{ path: "./fonts/EBGaramond-400.woff2", weight: "400", style: "normal" }],
   variable: "--font-eb-garamond",
-  weight: "400",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: [{ path: "./fonts/JetBrainsMono-400.woff2", weight: "400", style: "normal" }],
   variable: "--font-jetbrains-mono",
-  weight: "400",
   display: "swap",
 });
 
