@@ -2,6 +2,16 @@ name: CI
 
 on:
   push:
+    # Branches only. A bare `push:` also matches TAG pushes, which ran the full
+    # twelve-job matrix against `archive/ecosystem-standard-v1` — a tag that
+    # deliberately points at superseded, stale-base code and therefore cannot
+    # pass. A permanent red run against something archived on purpose is noise
+    # that trains people to ignore the badge.
+    #
+    # `'**'` keeps every branch, including nested ones like feat/a/b, so feature
+    # branches are gated exactly as before. deploy-website.yml already scoped
+    # itself this way; this brings CI into line.
+    branches: ["**"]
   pull_request:
 
 jobs:
