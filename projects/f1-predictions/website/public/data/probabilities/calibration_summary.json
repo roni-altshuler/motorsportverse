@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T09:25:55Z",
+  "generatedAt": "2026-08-22T16:28:00Z",
   "trainingSeasons": [],
   "dataLimitation": "Each round is calibrated strictly out-of-sample: the calibrator is fit only on rounds that completed BEFORE it (expanding window), never on its own result. A round with fewer than --min-completed-rounds prior races publishes raw Monte Carlo probabilities (calibration.applied=false) \u2014 publishing raw is strictly better than over-fitting a handful of events. Published probabilities carry a small floor (no driver is ever 0.0) and are renormalized per market (win sums to 1, podium to 3, top6 to 6, top10 to 10). The metrics below score the FINAL PUBLISHED probabilities against actual results, not the raw inputs.",
   "scores": "published",

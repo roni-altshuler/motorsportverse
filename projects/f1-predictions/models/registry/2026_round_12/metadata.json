@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Netherlands",
   "ensemble_weights": {
-    "gb": 0.7013636847443626,
-    "lstm": 0.0,
-    "xgb": 0.2986363152556374
+    "gb": 0.43550944197737573,
+    "lstm": 0.18,
+    "xgb": 0.38449055802262433
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -33,7 +33,9 @@
     "QualifyingRank",
     "GridAdvantage",
     "CurrentForm",
-    "PreviousPosition",
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
     "SeasonMomentum",
     "PositionTrend",
     "DriverPredictionBias",
@@ -53,35 +55,46 @@
     "wet_weather_elo",
     "qualifying_elo",
     "racecraft_elo",
-    "teammate_delta_elo"
+    "teammate_delta_elo",
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits"
   ],
-  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
+  "gitSha": "4992477d37c7056cb141447a5f2e22bfb9a6cb1d",
   "gpName": "Dutch Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.045455464294585114,
+      "MAE (s)": 0.6011483739731716,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.06887311535514351,
-      "R\u00b2": 0.9833092680551623
+      "RMSE (s)": 1.0019622922937566,
+      "R\u00b2": 0.40732015844845293
     },
     {
-      "MAE (s)": 0.10675463867187603,
+      "MAE (s)": 0.6809160522460929,
       "Model": "XGBoost",
-      "RMSE (s)": 0.12714556620178788,
-      "R\u00b2": 0.9431175404476665
+      "RMSE (s)": 0.8124646094355696,
+      "R\u00b2": 0.610303679164578
     },
     {
-      "MAE (s)": 0.06015855417453793,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.08213370633727489,
-      "R\u00b2": 0.9762633859370243
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.5686823120266524,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.8785643320250683,
+      "R\u00b2": 0.544315206262414
     }
   ],
-  "pythonVersion": "3.11.14",
+  "pythonVersion": "3.11.16",
   "round": 12,
-  "savedAt": "2026-06-27T17:05:14+00:00",
+  "savedAt": "2026-08-22T16:25:00+00:00",
   "season": 2026
 }
