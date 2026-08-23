@@ -1,0 +1,63 @@
+{
+  "round": 25,
+  "venueName": "New Hampshire Motor Speedway",
+  "trackType": "short",
+  "race": {
+    "n": 36,
+    "mean_position_error": 8.889,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 8,
+    "within_5": 12,
+    "exact_matches": 1,
+    "spearman_correlation": 0.45045045045045046,
+    "ndcg_at_5": 0.7863281478235208
+  },
+  "racePostQuali": {
+    "n": 36,
+    "mean_position_error": 8.056,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 9,
+    "within_5": 15,
+    "exact_matches": 0,
+    "spearman_correlation": 0.5158301158301158,
+    "ndcg_at_5": 0.7891303669268518
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.027528,
+        "logLoss": 0.097764
+      },
+      "podium": {
+        "brier": 0.092785,
+        "logLoss": 0.332884
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.778,
+      "winner_hit": false,
+      "podium_hits": 0,
+      "within_3": 8,
+      "within_5": 12,
+      "exact_matches": 0,
+      "spearman_correlation": 0.3613899613899614,
+      "ndcg_at_5": 0.5779072669420824
+    },
+    "gridOrder": {
+      "n": 36,
+      "mean_position_error": 8.111,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 12,
+      "within_5": 16,
+      "exact_matches": 1,
+      "spearman_correlation": 0.45997425997425995,
+      "ndcg_at_5": 0.7140992470653205
+    }
+  }
+}
