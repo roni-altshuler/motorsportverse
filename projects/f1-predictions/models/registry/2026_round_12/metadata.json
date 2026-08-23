@@ -1,100 +1,26 @@
 {
   "artifacts": [
-    "gbr",
-    "scaler",
-    "xgb"
+    "calibrator"
   ],
-  "circuitKey": "Netherlands",
-  "ensemble_weights": {
-    "gb": 0.43550944197737573,
-    "lstm": 0.18,
-    "xgb": 0.38449055802262433
-  },
-  "feature_cols": [
-    "TeamAdjustedPace",
-    "TeamPerformanceScore",
-    "TeamFormDelta",
-    "CleanAirPace",
-    "BestLapTime",
-    "LapTimeStd",
-    "ConsistencyScore",
-    "SectorBalance",
-    "PitTimeLoss",
-    "TyreDegFactor",
-    "ExperienceFactor",
-    "RainProbability",
-    "Temperature",
-    "WeatherRiskScore",
-    "CircuitOvertaking",
-    "CircuitSafetyCar",
-    "CircuitGripPenalty",
-    "ExpectedStopsFeature",
-    "SprintWeekend",
-    "QualifyingRank",
-    "GridAdvantage",
-    "CurrentForm",
-    "SkillPrior",
-    "DriverPrior",
-    "TeamPrior",
-    "SeasonMomentum",
-    "PositionTrend",
-    "DriverPredictionBias",
-    "TeamPredictionBias",
-    "DriverDegComposite",
-    "DriverDegDeltaField",
-    "UndercutEdgeAhead",
-    "OvercutEdgeBehind",
-    "TeamOrderPressure",
-    "TeammateConflictRisk",
-    "FieldPositionVolatility",
-    "LocalBattleIntensity",
-    "DRSOvertakeProbAhead",
-    "driver_elo",
-    "team_elo",
-    "driver_form_elo",
-    "wet_weather_elo",
-    "qualifying_elo",
-    "racecraft_elo",
-    "teammate_delta_elo",
-    "CircuitFinishMeanK",
-    "CircuitPodiumRate",
-    "CircuitDNFRate",
-    "CircuitGridDelta",
-    "CircuitVisits"
+  "calibration": "held-out-logistic",
+  "dbHistoryRounds": 0,
+  "fittedMarkets": [
+    "win",
+    "podium",
+    "top6",
+    "top10"
   ],
-  "gitSha": "4992477d37c7056cb141447a5f2e22bfb9a6cb1d",
-  "gpName": "Dutch Grand Prix",
-  "kind": "qualifying-time",
-  "lstm_used": true,
-  "max_spread_s": 3.5,
-  "metrics": [
-    {
-      "MAE (s)": 0.6011483739731716,
-      "Model": "Gradient Boosting",
-      "RMSE (s)": 1.0019622922937566,
-      "R\u00b2": 0.40732015844845293
-    },
-    {
-      "MAE (s)": 0.6809160522460929,
-      "Model": "XGBoost",
-      "RMSE (s)": 0.8124646094355696,
-      "R\u00b2": 0.610303679164578
-    },
-    {
-      "MAE (s)": 0.0,
-      "Model": "LSTM Neural Network",
-      "RMSE (s)": 0.0,
-      "R\u00b2": 0.0
-    },
-    {
-      "MAE (s)": 0.5686823120266524,
-      "Model": "Ensemble (GBR + XGB + LSTM)",
-      "RMSE (s)": 0.8785643320250683,
-      "R\u00b2": 0.544315206262414
-    }
-  ],
+  "gitSha": "c773e5384424b027dda0a656aee46db2c737dbf4",
+  "historyRecords": 1052,
+  "kind": "probability-calibrator",
   "pythonVersion": "3.11.16",
   "round": 12,
-  "savedAt": "2026-08-22T16:25:00+00:00",
+  "sampleCounts": {
+    "podium": 263,
+    "top10": 263,
+    "top6": 263,
+    "win": 263
+  },
+  "savedAt": "2026-08-23T16:17:31+00:00",
   "season": 2026
 }

@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-22T16:25:48.356153Z",
+  "generatedAt": "2026-08-23T16:15:35.197731Z",
   "overallAccuracy": {
-    "seasonMeanError": 3.65,
-    "seasonAccuracyPct": 59.7,
-    "seasonPodiumAccuracyPct": 48.5,
-    "seasonPointsAccuracyPct": 76.4,
-    "roundsWithActual": 11,
-    "seasonMeanErrorClassified": 3.12,
-    "seasonAccuracyPctClassified": 69.9,
-    "seasonWithin5PctClassified": 85.9,
-    "totalDnfsExcluded": 42,
-    "seasonWinnerHits": 7,
-    "seasonWinnerHitPct": 63.6
+    "seasonMeanError": 3.61,
+    "seasonAccuracyPct": 60.3,
+    "seasonPodiumAccuracyPct": 50.0,
+    "seasonPointsAccuracyPct": 75.8,
+    "roundsWithActual": 12,
+    "seasonMeanErrorClassified": 3.03,
+    "seasonAccuracyPctClassified": 70.9,
+    "seasonWithin5PctClassified": 86.6,
+    "totalDnfsExcluded": 47,
+    "seasonWinnerHits": 8,
+    "seasonWinnerHitPct": 66.7
   },
   "gpReports": [
     {
@@ -1289,6 +1289,122 @@
           "drivers": 2
         }
       ]
+    },
+    {
+      "round": 12,
+      "name": "Dutch Grand Prix",
+      "comparedDrivers": 21,
+      "meanError": 3.14,
+      "medianError": 2.0,
+      "exactMatches": 2,
+      "within3": 15,
+      "within5": 19,
+      "winnerHit": true,
+      "podiumHits": 2,
+      "pointsHits": 7,
+      "pointsTotal": 10,
+      "podiumAccuracyPct": 66.7,
+      "pointsAccuracyPct": 70.0,
+      "accuracyPct": 68.0,
+      "biggestMisses": [
+        {
+          "driver": "VER",
+          "team": "Red Bull Racing",
+          "predicted": 6,
+          "actual": 22,
+          "delta": -16,
+          "absDelta": 16
+        },
+        {
+          "driver": "ALO",
+          "team": "Aston Martin",
+          "predicted": 17,
+          "actual": 9,
+          "delta": 8,
+          "absDelta": 8
+        },
+        {
+          "driver": "HUL",
+          "team": "Audi",
+          "predicted": 13,
+          "actual": 8,
+          "delta": 5,
+          "absDelta": 5
+        },
+        {
+          "driver": "OCO",
+          "team": "Haas",
+          "predicted": 14,
+          "actual": 19,
+          "delta": -5,
+          "absDelta": 5
+        },
+        {
+          "driver": "PER",
+          "team": "Cadillac",
+          "predicted": 20,
+          "actual": 15,
+          "delta": 5,
+          "absDelta": 5
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "McLaren",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Mercedes",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Racing Bulls",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 3.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 4.5,
+          "drivers": 2
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 5.0,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 16.0,
+          "drivers": 1
+        }
+      ]
     }
   ],
   "baselines": {
@@ -1296,13 +1412,13 @@
       "label": "Qualifying grid order",
       "description": "Predict the finishing order to equal the qualifying grid.",
       "season": {
-        "roundsScored": 11,
-        "winnerHits": 8,
-        "winnerHitRate": 72.7,
-        "podiumSetPct": 57.6,
-        "pointsSetPct": 75.5,
-        "blendPct": 64.7,
-        "meanError": 3.44
+        "roundsScored": 12,
+        "winnerHits": 9,
+        "winnerHitRate": 75.0,
+        "podiumSetPct": 61.1,
+        "pointsSetPct": 75.0,
+        "blendPct": 66.7,
+        "meanError": 3.39
       },
       "perRound": {
         "1": {
@@ -1414,6 +1530,16 @@
           "podiumAccuracyPct": 33.3,
           "pointsAccuracyPct": 90.0,
           "blendPct": 56.0
+        },
+        "12": {
+          "winnerHit": true,
+          "podiumHits": 3,
+          "podiumTotal": 3,
+          "top10Overlap": 7,
+          "meanError": 2.82,
+          "podiumAccuracyPct": 100.0,
+          "pointsAccuracyPct": 70.0,
+          "blendPct": 88.0
         }
       }
     },
@@ -1421,9 +1547,9 @@
       "label": "Pole-sitter wins",
       "description": "Predict the pole-sitter to win the race.",
       "season": {
-        "roundsScored": 11,
-        "winnerHits": 8,
-        "winnerHitRate": 72.7
+        "roundsScored": 12,
+        "winnerHits": 9,
+        "winnerHitRate": 75.0
       },
       "perRound": {
         "1": {
@@ -1469,6 +1595,10 @@
         "11": {
           "winnerHit": true,
           "predictedWinner": "NOR"
+        },
+        "12": {
+          "winnerHit": true,
+          "predictedWinner": "NOR"
         }
       }
     },
@@ -1476,9 +1606,9 @@
       "label": "Championship points leader wins",
       "description": "Predict the driver leading the championship (before the round) to win.",
       "season": {
-        "roundsScored": 10,
+        "roundsScored": 11,
         "winnerHits": 5,
-        "winnerHitRate": 50.0
+        "winnerHitRate": 45.5
       },
       "perRound": {
         "2": {
@@ -1518,6 +1648,10 @@
           "predictedWinner": "ANT"
         },
         "11": {
+          "winnerHit": false,
+          "predictedWinner": "ANT"
+        },
+        "12": {
           "winnerHit": false,
           "predictedWinner": "ANT"
         }

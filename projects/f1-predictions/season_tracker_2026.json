@@ -2067,7 +2067,98 @@
           "team": "Cadillac"
         }
       },
-      "actual": {}
+      "actual": {
+        "NOR": {
+          "position": 1
+        },
+        "ANT": {
+          "position": 2
+        },
+        "RUS": {
+          "position": 3
+        },
+        "HAM": {
+          "position": 4
+        },
+        "LEC": {
+          "position": 5
+        },
+        "PIA": {
+          "position": 6
+        },
+        "LAW": {
+          "position": 7
+        },
+        "HUL": {
+          "position": 8
+        },
+        "ALO": {
+          "position": 9
+        },
+        "GAS": {
+          "position": 10
+        },
+        "TSU": {
+          "position": 11
+        },
+        "LIN": {
+          "position": 12
+        },
+        "BOR": {
+          "position": 13
+        },
+        "COL": {
+          "position": 14
+        },
+        "PER": {
+          "position": 15
+        },
+        "SAI": {
+          "position": 16
+        },
+        "ALB": {
+          "position": 17
+        },
+        "BOT": {
+          "position": 18
+        },
+        "OCO": {
+          "position": 19
+        },
+        "STR": {
+          "position": 20
+        },
+        "BEA": {
+          "position": 21
+        },
+        "VER": {
+          "position": 22
+        }
+      },
+      "actualStatus": {
+        "NOR": "1",
+        "ANT": "2",
+        "RUS": "3",
+        "HAM": "4",
+        "LEC": "5",
+        "PIA": "6",
+        "LAW": "7",
+        "HUL": "8",
+        "ALO": "9",
+        "GAS": "10",
+        "TSU": "11",
+        "LIN": "12",
+        "BOR": "13",
+        "COL": "14",
+        "PER": "15",
+        "SAI": "16",
+        "ALB": "17",
+        "BOT": "R",
+        "OCO": "R",
+        "STR": "R",
+        "BEA": "R",
+        "VER": "R"
+      }
     },
     "13": {
       "predicted": {
@@ -3248,6 +3339,30 @@
       "points_total": 10,
       "points_accuracy_pct": 90.0,
       "accuracy_pct": 56.0
+    },
+    "12": {
+      "mean_position_error": 3.14,
+      "median_position_error": 2.0,
+      "exact_matches": 2,
+      "within_3_positions": 15,
+      "within_5_positions": 19,
+      "total_drivers": 21,
+      "within_3_accuracy_pct": 71.4,
+      "podium_hits": 2,
+      "podium_total": 3,
+      "podium_accuracy_pct": 66.7,
+      "points_hits": 7,
+      "points_total": 10,
+      "points_accuracy_pct": 70.0,
+      "accuracy_pct": 68.0,
+      "mean_position_error_classified": 2.31,
+      "exact_matches_classified": 2,
+      "within_3_classified": 13,
+      "within_5_classified": 15,
+      "total_classified": 16,
+      "accuracy_pct_classified": 81.2,
+      "within_5_pct_classified": 93.8,
+      "dnf_count": 5
     }
   }
 }

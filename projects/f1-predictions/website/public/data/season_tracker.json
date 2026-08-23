@@ -178,19 +178,19 @@
     },
     {
       "round": 12,
-      "hasActual": false,
-      "meanError": null,
-      "exactMatches": null,
-      "within3": null,
-      "accuracyPct": null,
-      "podiumAccuracyPct": null,
-      "pointsAccuracyPct": null,
-      "within3AccuracyPct": null,
-      "meanErrorClassified": null,
-      "within3Classified": null,
-      "accuracyPctClassified": null,
-      "within5PctClassified": null,
-      "dnfCount": null
+      "hasActual": true,
+      "meanError": 3.14,
+      "exactMatches": 2,
+      "within3": 15,
+      "accuracyPct": 68.0,
+      "podiumAccuracyPct": 66.7,
+      "pointsAccuracyPct": 70.0,
+      "within3AccuracyPct": 71.4,
+      "meanErrorClassified": 2.31,
+      "within3Classified": 13,
+      "accuracyPctClassified": 81.2,
+      "within5PctClassified": 93.8,
+      "dnfCount": 5
     },
     {
       "round": 13,
@@ -354,15 +354,15 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 3.65,
-    "seasonAccuracyPct": 59.7,
-    "seasonPodiumAccuracyPct": 48.5,
-    "seasonPointsAccuracyPct": 76.4,
-    "roundsWithActual": 11,
-    "seasonMeanErrorClassified": 3.12,
-    "seasonAccuracyPctClassified": 69.9,
-    "seasonWithin5PctClassified": 85.9,
-    "totalDnfsExcluded": 42
+    "seasonMeanError": 3.61,
+    "seasonAccuracyPct": 60.3,
+    "seasonPodiumAccuracyPct": 50.0,
+    "seasonPointsAccuracyPct": 75.8,
+    "roundsWithActual": 12,
+    "seasonMeanErrorClassified": 3.03,
+    "seasonAccuracyPctClassified": 70.9,
+    "seasonWithin5PctClassified": 86.6,
+    "totalDnfsExcluded": 47
   },
   "gpReports": [
     {
@@ -1640,7 +1640,123 @@
           "drivers": 2
         }
       ]
+    },
+    {
+      "round": 12,
+      "name": "Dutch Grand Prix",
+      "comparedDrivers": 21,
+      "meanError": 3.14,
+      "medianError": 2.0,
+      "exactMatches": 2,
+      "within3": 15,
+      "within5": 19,
+      "winnerHit": true,
+      "podiumHits": 2,
+      "pointsHits": 7,
+      "pointsTotal": 10,
+      "podiumAccuracyPct": 66.7,
+      "pointsAccuracyPct": 70.0,
+      "accuracyPct": 68.0,
+      "biggestMisses": [
+        {
+          "driver": "VER",
+          "team": "Red Bull Racing",
+          "predicted": 6,
+          "actual": 22,
+          "delta": -16,
+          "absDelta": 16
+        },
+        {
+          "driver": "ALO",
+          "team": "Aston Martin",
+          "predicted": 17,
+          "actual": 9,
+          "delta": 8,
+          "absDelta": 8
+        },
+        {
+          "driver": "HUL",
+          "team": "Audi",
+          "predicted": 13,
+          "actual": 8,
+          "delta": 5,
+          "absDelta": 5
+        },
+        {
+          "driver": "OCO",
+          "team": "Haas",
+          "predicted": 14,
+          "actual": 19,
+          "delta": -5,
+          "absDelta": 5
+        },
+        {
+          "driver": "PER",
+          "team": "Cadillac",
+          "predicted": 20,
+          "actual": 15,
+          "delta": 5,
+          "absDelta": 5
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "McLaren",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Mercedes",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Racing Bulls",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 3.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 4.5,
+          "drivers": 2
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 5.0,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 16.0,
+          "drivers": 1
+        }
+      ]
     }
   ],
-  "generatedAt": "2026-08-22T16:25:48.356153Z"
+  "generatedAt": "2026-08-23T16:15:35.197731Z"
 }
