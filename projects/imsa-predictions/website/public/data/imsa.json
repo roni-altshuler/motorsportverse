@@ -1,21 +1,11 @@
 {
   "sport": "IMSA WeatherTech SportsCar Championship",
   "season": 2026,
-  "generatedAt": "2026-08-16T18:02:23+00:00",
-  "completedRounds": 8,
-  "lastUpdatedRound": 8,
-  "totalRounds": 8,
+  "generatedAt": "2026-08-23T19:05:20+00:00",
+  "completedRounds": 9,
+  "lastUpdatedRound": 9,
+  "totalRounds": 9,
   "classes": [
-    {
-      "key": "GTP",
-      "label": "GTP",
-      "color": "#E10600"
-    },
-    {
-      "key": "LMP2",
-      "label": "LMP2",
-      "color": "#4EA8DE"
-    },
     {
       "key": "GTDPRO",
       "label": "GTD PRO",
@@ -107,729 +97,22 @@
       "completed": true,
       "isEnduranceCup": false,
       "dataSource": "snapshot"
+    },
+    {
+      "round": 9,
+      "key": "virginia-international-raceway",
+      "name": "Virginia International Raceway",
+      "place": "Alton",
+      "country": "United States",
+      "completed": true,
+      "isEnduranceCup": false,
+      "dataSource": "snapshot"
     }
   ],
   "standings": {
-    "GTP": [
-      {
-        "position": 1,
-        "code": "GTP-31",
-        "number": "31",
-        "team": "Cadillac Whelen",
-        "manufacturer": "Cadillac",
-        "vehicle": "Cadillac V-Series.R",
-        "drivers": [
-          "Jack Aitken",
-          "Earl Bamber",
-          "Frederik Vesti"
-        ],
-        "teamColor": "#941E32",
-        "points": 2180.0,
-        "wins": 2,
-        "podiums": 6,
-        "pointsHistory": [
-          320.0,
-          620.0,
-          940.0,
-          1260.0,
-          1610.0,
-          1960.0,
-          1960.0,
-          2180.0
-        ]
-      },
-      {
-        "position": 2,
-        "code": "GTP-93",
-        "number": "93",
-        "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-        "manufacturer": "Acura",
-        "vehicle": "Acura ARX-06",
-        "drivers": [
-          "Renger van der Zande",
-          "Nick Yelloly"
-        ],
-        "teamColor": "#CE0E2D",
-        "points": 2000.0,
-        "wins": 1,
-        "podiums": 2,
-        "pointsHistory": [
-          260.0,
-          510.0,
-          860.0,
-          1120.0,
-          1400.0,
-          1720.0,
-          1720.0,
-          2000.0
-        ]
-      },
-      {
-        "position": 3,
-        "code": "GTP-7",
-        "number": "7",
-        "team": "Porsche Penske Motorsport",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 963",
-        "drivers": [
-          "Felipe Nasr",
-          "Julien Andlauer"
-        ],
-        "teamColor": "#B9975B",
-        "points": 1990.0,
-        "wins": 2,
-        "podiums": 2,
-        "pointsHistory": [
-          350.0,
-          700.0,
-          980.0,
-          1220.0,
-          1480.0,
-          1740.0,
-          1740.0,
-          1990.0
-        ]
-      },
-      {
-        "position": 4,
-        "code": "GTP-6",
-        "number": "6",
-        "team": "Porsche Penske Motorsport",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 963",
-        "drivers": [
-          "Laurens Vanthoor",
-          "Kevin Estre"
-        ],
-        "teamColor": "#B9975B",
-        "points": 1860.0,
-        "wins": 0,
-        "podiums": 2,
-        "pointsHistory": [
-          280.0,
-          600.0,
-          900.0,
-          1150.0,
-          1380.0,
-          1630.0,
-          1630.0,
-          1860.0
-        ]
-      },
-      {
-        "position": 5,
-        "code": "GTP-24",
-        "number": "24",
-        "team": "BMW M Team WRT",
-        "manufacturer": "BMW",
-        "vehicle": "BMW M Hybrid V8",
-        "drivers": [
-          "Dries Vanthoor",
-          "Sheldon van der Linde"
-        ],
-        "teamColor": "#0166B1",
-        "points": 1740.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          300.0,
-          560.0,
-          820.0,
-          1040.0,
-          1260.0,
-          1540.0,
-          1540.0,
-          1740.0
-        ]
-      },
-      {
-        "position": 6,
-        "code": "GTP-25",
-        "number": "25",
-        "team": "BMW M Team WRT",
-        "manufacturer": "BMW",
-        "vehicle": "BMW M Hybrid V8",
-        "drivers": [
-          "Philipp Eng",
-          "Marco Wittmann"
-        ],
-        "teamColor": "#0166B1",
-        "points": 1720.0,
-        "wins": 0,
-        "podiums": 2,
-        "pointsHistory": [
-          230.0,
-          440.0,
-          640.0,
-          940.0,
-          1260.0,
-          1480.0,
-          1480.0,
-          1720.0
-        ]
-      },
-      {
-        "position": 7,
-        "code": "GTP-40",
-        "number": "40",
-        "team": "Cadillac Wayne Taylor Racing",
-        "manufacturer": "Cadillac",
-        "vehicle": "Cadillac V-Series.R",
-        "drivers": [
-          "Jordan Taylor",
-          "Louis Deletraz"
-        ],
-        "teamColor": "#941E32",
-        "points": 1710.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          250.0,
-          490.0,
-          720.0,
-          930.0,
-          1180.0,
-          1410.0,
-          1410.0,
-          1710.0
-        ]
-      },
-      {
-        "position": 8,
-        "code": "GTP-10",
-        "number": "10",
-        "team": "Cadillac Wayne Taylor Racing",
-        "manufacturer": "Cadillac",
-        "vehicle": "Cadillac V-Series.R",
-        "drivers": [
-          "Ricky Taylor",
-          "Filipe Albuquerque"
-        ],
-        "teamColor": "#941E32",
-        "points": 1700.0,
-        "wins": 1,
-        "podiums": 2,
-        "pointsHistory": [
-          200.0,
-          400.0,
-          610.0,
-          810.0,
-          1110.0,
-          1350.0,
-          1350.0,
-          1700.0
-        ]
-      },
-      {
-        "position": 9,
-        "code": "GTP-60",
-        "number": "60",
-        "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-        "manufacturer": "Acura",
-        "vehicle": "Acura ARX-06",
-        "drivers": [
-          "Tom Blomqvist",
-          "Colin Braun"
-        ],
-        "teamColor": "#CE0E2D",
-        "points": 1680.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          220.0,
-          500.0,
-          740.0,
-          1020.0,
-          1260.0,
-          1470.0,
-          1470.0,
-          1680.0
-        ]
-      },
-      {
-        "position": 10,
-        "code": "GTP-5",
-        "number": "5",
-        "team": "JDC-Miller MotorSports",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 963",
-        "drivers": [
-          "Tijmen van der Helm",
-          "Laurin Heinrich",
-          "Kaylen Frederick"
-        ],
-        "teamColor": "#B9975B",
-        "points": 1650.0,
-        "wins": 1,
-        "podiums": 3,
-        "pointsHistory": [
-          230.0,
-          480.0,
-          830.0,
-          1030.0,
-          1330.0,
-          1330.0,
-          1650.0
-        ]
-      },
-      {
-        "position": 11,
-        "code": "GTP-23",
-        "number": "23",
-        "team": "ASTON MARTIN THOR Team",
-        "manufacturer": "Aston Martin",
-        "vehicle": "Aston Martin Valkyrie",
-        "drivers": [
-          "Ross Gunn",
-          "Roman De Angelis"
-        ],
-        "teamColor": "#00665E",
-        "points": 1550.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          210.0,
-          430.0,
-          650.0,
-          880.0,
-          1090.0,
-          1290.0,
-          1290.0,
-          1550.0
-        ]
-      },
-      {
-        "position": 12,
-        "code": "GTP-85",
-        "number": "85",
-        "team": "JDC-Miller MotorSports",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 963",
-        "drivers": [
-          "Tijmen van der Helm",
-          "Nico Pino",
-          "Kaylen Frederick"
-        ],
-        "teamColor": "#B9975B",
-        "points": 240.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          240.0,
-          240.0,
-          240.0,
-          240.0,
-          240.0,
-          240.0,
-          240.0,
-          240.0
-        ]
-      }
-    ],
-    "LMP2": [
-      {
-        "position": 1,
-        "code": "LMP2-04",
-        "number": "04",
-        "team": "Crowdstrike Racing by APR",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "George Kurtz",
-          "Alex Quinn",
-          "Toby Sowery"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1570.0,
-        "wins": 1,
-        "podiums": 4,
-        "pointsHistory": [
-          350.0,
-          610.0,
-          610.0,
-          610.0,
-          610.0,
-          930.0,
-          1250.0,
-          1570.0
-        ]
-      },
-      {
-        "position": 2,
-        "code": "LMP2-43",
-        "number": "43",
-        "team": "Inter Europol Competition",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Jeremy Clarke",
-          "Bijoy Garg",
-          "Tom Dillmann"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1500.0,
-        "wins": 2,
-        "podiums": 3,
-        "pointsHistory": [
-          320.0,
-          520.0,
-          520.0,
-          520.0,
-          520.0,
-          800.0,
-          1150.0,
-          1500.0
-        ]
-      },
-      {
-        "position": 3,
-        "code": "LMP2-99",
-        "number": "99",
-        "team": "AO Racing",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "PJ Hyett",
-          "Dane Cameron",
-          "Jonny Edgar"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1440.0,
-        "wins": 1,
-        "podiums": 2,
-        "pointsHistory": [
-          260.0,
-          510.0,
-          510.0,
-          510.0,
-          510.0,
-          860.0,
-          1160.0,
-          1440.0
-        ]
-      },
-      {
-        "position": 4,
-        "code": "LMP2-22",
-        "number": "22",
-        "team": "United Autosports USA",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Daniel Goldburg",
-          "Paul Di Resta",
-          "Rasmus Lindh"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1360.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          280.0,
-          600.0,
-          600.0,
-          600.0,
-          600.0,
-          860.0,
-          1120.0,
-          1360.0
-        ]
-      },
-      {
-        "position": 5,
-        "code": "LMP2-52",
-        "number": "52",
-        "team": "Bryan Herta Autosport with PR1/Mathiasen",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Misha Goikhberg",
-          "Parker Thompson",
-          "Harry Tincknell"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1260.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          250.0,
-          480.0,
-          480.0,
-          480.0,
-          480.0,
-          730.0,
-          1010.0,
-          1260.0
-        ]
-      },
-      {
-        "position": 6,
-        "code": "LMP2-8",
-        "number": "8",
-        "team": "Tower Motorsports",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "John Farano",
-          "Sebastian Alvarez",
-          "Tristan Vautier"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1260.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          230.0,
-          530.0,
-          530.0,
-          530.0,
-          530.0,
-          770.0,
-          1000.0,
-          1260.0
-        ]
-      },
-      {
-        "position": 7,
-        "code": "LMP2-2",
-        "number": "2",
-        "team": "United Autosports USA",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Phil Fayer",
-          "Hunter McElrea",
-          "Mikkel Jensen"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1240.0,
-        "wins": 1,
-        "podiums": 1,
-        "pointsHistory": [
-          210.0,
-          560.0,
-          560.0,
-          560.0,
-          560.0,
-          780.0,
-          1020.0,
-          1240.0
-        ]
-      },
-      {
-        "position": 8,
-        "code": "LMP2-11",
-        "number": "11",
-        "team": "TDS Racing",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Tobi Lutke",
-          "Mathias Beche",
-          "David Heinemeier Hansson"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1160.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          190.0,
-          430.0,
-          430.0,
-          430.0,
-          430.0,
-          640.0,
-          860.0,
-          1160.0
-        ]
-      },
-      {
-        "position": 9,
-        "code": "LMP2-73",
-        "number": "73",
-        "team": "Pratt Miller Motorsports",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Pietro Fittipaldi",
-          "Manuel Espirito Santo",
-          "Chris Cumming"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1100.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          200.0,
-          420.0,
-          420.0,
-          420.0,
-          420.0,
-          650.0,
-          900.0,
-          1100.0
-        ]
-      },
-      {
-        "position": 10,
-        "code": "LMP2-18",
-        "number": "18",
-        "team": "Era Motorsport",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Naveen Rao",
-          "Ferdinand Habsburg",
-          "Jacob Abel"
-        ],
-        "teamColor": "#5B6670",
-        "points": 1010.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          220.0,
-          500.0,
-          500.0,
-          500.0,
-          500.0,
-          800.0,
-          800.0,
-          1010.0
-        ]
-      },
-      {
-        "position": 11,
-        "code": "LMP2-37",
-        "number": "37",
-        "team": "Intersport Racing",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Jon Field",
-          "Oliver Jarvis",
-          "Max van der Snel"
-        ],
-        "teamColor": "#5B6670",
-        "points": 840.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          240.0,
-          450.0,
-          450.0,
-          450.0,
-          450.0,
-          650.0,
-          650.0,
-          840.0
-        ]
-      },
-      {
-        "position": 12,
-        "code": "LMP2-343",
-        "number": "343",
-        "team": "Inter Europol Competition",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Jakub Smiechowski",
-          "George Kolovos",
-          "Nolan Siegel",
-          "Nick Cassidy"
-        ],
-        "teamColor": "#5B6670",
-        "points": 300.0,
-        "wins": 0,
-        "podiums": 1,
-        "pointsHistory": [
-          300.0,
-          300.0,
-          300.0,
-          300.0,
-          300.0,
-          300.0,
-          300.0,
-          300.0
-        ]
-      },
-      {
-        "position": 13,
-        "code": "LMP2-79",
-        "number": "79",
-        "team": "JDC-Miller MotorSports",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Gerry Kraut",
-          "Josh Burdon",
-          "Sennan Fielding"
-        ],
-        "teamColor": "#5B6670",
-        "points": 230.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          230.0
-        ]
-      },
-      {
-        "position": 14,
-        "code": "LMP2-83",
-        "number": "83",
-        "team": "Af Corse Usa",
-        "manufacturer": "Oreca",
-        "vehicle": "ORECA LMP2 07",
-        "drivers": [
-          "Francois Perrodo",
-          "Matthieu Vaxiviere",
-          "Nicklas Nielsen",
-          "Dylan Murry"
-        ],
-        "teamColor": "#5B6670",
-        "points": 180.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          180.0,
-          180.0,
-          180.0,
-          180.0,
-          180.0,
-          180.0,
-          180.0,
-          180.0
-        ]
-      }
-    ],
     "GTDPRO": [
       {
         "position": 1,
-        "code": "GTDP-4",
-        "number": "4",
-        "team": "Corvette Racing by Pratt Miller Motorsports",
-        "manufacturer": "Chevrolet",
-        "vehicle": "Chevrolet Corvette Z06 GT3.R",
-        "drivers": [
-          "Tommy Milner",
-          "Nicky Catsburg"
-        ],
-        "teamColor": "#C5B358",
-        "points": 1950.0,
-        "wins": 0,
-        "podiums": 3,
-        "pointsHistory": [
-          280.0,
-          580.0,
-          580.0,
-          900.0,
-          1140.0,
-          1370.0,
-          1650.0,
-          1950.0
-        ]
-      },
-      {
-        "position": 2,
         "code": "GTDP-1",
         "number": "1",
         "team": "Paul Miller Racing",
@@ -840,7 +123,7 @@
           "Connor De Phillippi"
         ],
         "teamColor": "#0166B1",
-        "points": 1940.0,
+        "points": 2200.0,
         "wins": 1,
         "podiums": 3,
         "pointsHistory": [
@@ -851,33 +134,62 @@
           1120.0,
           1440.0,
           1740.0,
-          1940.0
+          1940.0,
+          2200.0
+        ]
+      },
+      {
+        "position": 2,
+        "code": "GTDP-4",
+        "number": "4",
+        "team": "Corvette Racing by Pratt Miller Motorsports",
+        "manufacturer": "Chevrolet",
+        "vehicle": "Chevrolet Corvette Z06 GT3.R",
+        "drivers": [
+          "Tommy Milner",
+          "Nicky Catsburg"
+        ],
+        "teamColor": "#C5B358",
+        "points": 2200.0,
+        "wins": 0,
+        "podiums": 3,
+        "pointsHistory": [
+          280.0,
+          580.0,
+          580.0,
+          900.0,
+          1140.0,
+          1370.0,
+          1650.0,
+          1950.0,
+          2200.0
         ]
       },
       {
         "position": 3,
-        "code": "GTDP-77",
-        "number": "77",
-        "team": "AO Racing",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 911 GT3 R (992)",
+        "code": "GTDP-9",
+        "number": "9",
+        "team": "Pfaff Motorsports",
+        "manufacturer": "Lamborghini",
+        "vehicle": "Lamborghini Temerario GT3",
         "drivers": [
-          "Nick Tandy",
-          "Harry King"
+          "Andrea Caldarelli",
+          "Sandy Mitchell"
         ],
-        "teamColor": "#B9975B",
-        "points": 1940.0,
-        "wins": 0,
-        "podiums": 4,
+        "teamColor": "#B4A46A",
+        "points": 2190.0,
+        "wins": 2,
+        "podiums": 3,
         "pointsHistory": [
-          220.0,
-          540.0,
-          540.0,
-          840.0,
-          1060.0,
-          1300.0,
-          1620.0,
-          1940.0
+          250.0,
+          460.0,
+          460.0,
+          720.0,
+          1040.0,
+          1260.0,
+          1490.0,
+          1840.0,
+          2190.0
         ]
       },
       {
@@ -892,9 +204,9 @@
           "Frederic Vervisch"
         ],
         "teamColor": "#00274D",
-        "points": 1870.0,
+        "points": 2170.0,
         "wins": 1,
-        "podiums": 2,
+        "podiums": 3,
         "pointsHistory": [
           240.0,
           470.0,
@@ -903,33 +215,35 @@
           1120.0,
           1330.0,
           1590.0,
-          1870.0
+          1870.0,
+          2170.0
         ]
       },
       {
         "position": 5,
-        "code": "GTDP-9",
-        "number": "9",
-        "team": "Pfaff Motorsports",
-        "manufacturer": "Lamborghini",
-        "vehicle": "Lamborghini Temerario GT3",
+        "code": "GTDP-77",
+        "number": "77",
+        "team": "AO Racing",
+        "manufacturer": "Porsche",
+        "vehicle": "Porsche 911 GT3 R (992)",
         "drivers": [
-          "Andrea Caldarelli",
-          "Sandy Mitchell"
+          "Nick Tandy",
+          "Harry King"
         ],
-        "teamColor": "#B4A46A",
-        "points": 1840.0,
-        "wins": 1,
-        "podiums": 2,
+        "teamColor": "#B9975B",
+        "points": 2160.0,
+        "wins": 0,
+        "podiums": 4,
         "pointsHistory": [
-          250.0,
-          460.0,
-          460.0,
-          720.0,
-          1040.0,
-          1260.0,
-          1490.0,
-          1840.0
+          220.0,
+          540.0,
+          540.0,
+          840.0,
+          1060.0,
+          1300.0,
+          1620.0,
+          1940.0,
+          2160.0
         ]
       },
       {
@@ -944,7 +258,7 @@
           "Ben Barnicoat"
         ],
         "teamColor": "#1A1A1A",
-        "points": 1830.0,
+        "points": 2070.0,
         "wins": 2,
         "podiums": 2,
         "pointsHistory": [
@@ -955,37 +269,12 @@
           880.0,
           1230.0,
           1580.0,
-          1830.0
+          1830.0,
+          2070.0
         ]
       },
       {
         "position": 7,
-        "code": "GTDP-3",
-        "number": "3",
-        "team": "Corvette Racing by Pratt Miller Motorsports",
-        "manufacturer": "Chevrolet",
-        "vehicle": "Chevrolet Corvette Z06 GT3.R",
-        "drivers": [
-          "Antonio Garcia",
-          "Alexander Sims"
-        ],
-        "teamColor": "#C5B358",
-        "points": 1800.0,
-        "wins": 1,
-        "podiums": 1,
-        "pointsHistory": [
-          180.0,
-          460.0,
-          460.0,
-          740.0,
-          1090.0,
-          1370.0,
-          1590.0,
-          1800.0
-        ]
-      },
-      {
-        "position": 8,
         "code": "GTDP-64",
         "number": "64",
         "team": "Ford Racing",
@@ -996,9 +285,9 @@
           "Dennis Olsen"
         ],
         "teamColor": "#00274D",
-        "points": 1730.0,
+        "points": 2050.0,
         "wins": 0,
-        "podiums": 1,
+        "podiums": 2,
         "pointsHistory": [
           170.0,
           420.0,
@@ -1007,7 +296,35 @@
           930.0,
           1230.0,
           1470.0,
-          1730.0
+          1730.0,
+          2050.0
+        ]
+      },
+      {
+        "position": 8,
+        "code": "GTDP-3",
+        "number": "3",
+        "team": "Corvette Racing by Pratt Miller Motorsports",
+        "manufacturer": "Chevrolet",
+        "vehicle": "Chevrolet Corvette Z06 GT3.R",
+        "drivers": [
+          "Antonio Garcia",
+          "Alexander Sims"
+        ],
+        "teamColor": "#C5B358",
+        "points": 2010.0,
+        "wins": 1,
+        "podiums": 1,
+        "pointsHistory": [
+          180.0,
+          460.0,
+          460.0,
+          740.0,
+          1090.0,
+          1370.0,
+          1590.0,
+          1800.0,
+          2010.0
         ]
       },
       {
@@ -1022,7 +339,7 @@
           "Nikita Johnson"
         ],
         "teamColor": "#FF8000",
-        "points": 1520.0,
+        "points": 1750.0,
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
@@ -1033,7 +350,8 @@
           880.0,
           1080.0,
           1330.0,
-          1520.0
+          1520.0,
+          1750.0
         ]
       },
       {
@@ -1059,6 +377,7 @@
           610.0,
           800.0,
           800.0,
+          1020.0,
           1020.0
         ]
       },
@@ -1085,6 +404,7 @@
           470.0,
           720.0,
           720.0,
+          960.0,
           960.0
         ]
       },
@@ -1111,6 +431,7 @@
           340.0,
           600.0,
           600.0,
+          830.0,
           830.0
         ]
       },
@@ -1138,11 +459,33 @@
           490.0,
           490.0,
           490.0,
+          490.0,
           490.0
         ]
       },
       {
         "position": 14,
+        "code": "GTDP-68",
+        "number": "68",
+        "team": "Car Blanche",
+        "manufacturer": "Aston Martin",
+        "vehicle": "Aston Martin Vantage GT3 Evo",
+        "drivers": [
+          "Marco Sorensen",
+          "Valentin Hasse Clot"
+        ],
+        "teamColor": "#00665E",
+        "points": 490.0,
+        "wins": 0,
+        "podiums": 0,
+        "pointsHistory": [
+          210.0,
+          210.0,
+          490.0
+        ]
+      },
+      {
+        "position": 15,
         "code": "GTDP-75",
         "number": "75",
         "team": "75 Express",
@@ -1166,11 +509,12 @@
           320.0,
           320.0,
           320.0,
+          320.0,
           320.0
         ]
       },
       {
-        "position": 15,
+        "position": 16,
         "code": "GTDP-15",
         "number": "15",
         "team": "Vasser Sullivan Racing",
@@ -1188,25 +532,6 @@
           210.0,
           210.0,
           210.0,
-          210.0
-        ]
-      },
-      {
-        "position": 16,
-        "code": "GTDP-68",
-        "number": "68",
-        "team": "Car Blanche",
-        "manufacturer": "Aston Martin",
-        "vehicle": "Aston Martin Vantage GT3 Evo",
-        "drivers": [
-          "Valentin Hasse Clot",
-          "Scott Andrews"
-        ],
-        "teamColor": "#00665E",
-        "points": 210.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
           210.0,
           210.0
         ]
@@ -1236,6 +561,7 @@
           200.0,
           200.0,
           200.0,
+          200.0,
           200.0
         ]
       }
@@ -1243,29 +569,29 @@
     "GTD": [
       {
         "position": 1,
-        "code": "GTD-12",
-        "number": "12",
-        "team": "Vasser Sullivan Racing",
-        "manufacturer": "Lexus",
-        "vehicle": "Lexus RC F GT3",
+        "code": "GTD-57",
+        "number": "57",
+        "team": "Winward Racing",
+        "manufacturer": "Mercedes-AMG",
+        "vehicle": "Mercedes-AMG GT3",
         "drivers": [
-          "Aaron Telitz",
-          "Benjamin Pedersen",
-          "Frankie Montecalvo"
+          "Russell Ward",
+          "Philip Ellis"
         ],
-        "teamColor": "#1A1A1A",
-        "points": 1830.0,
-        "wins": 1,
-        "podiums": 2,
+        "teamColor": "#00A19B",
+        "points": 2170.0,
+        "wins": 4,
+        "podiums": 4,
         "pointsHistory": [
-          220.0,
-          410.0,
-          760.0,
-          1010.0,
-          1010.0,
-          1290.0,
-          1610.0,
-          1830.0
+          350.0,
+          480.0,
+          700.0,
+          960.0,
+          960.0,
+          1120.0,
+          1470.0,
+          1820.0,
+          2170.0
         ]
       },
       {
@@ -1277,13 +603,12 @@
         "vehicle": "BMW M4 GT3 EVO",
         "drivers": [
           "Patrick Gallagher",
-          "Robby Foley",
-          "Francis Selldorff"
+          "Robby Foley"
         ],
         "teamColor": "#0166B1",
-        "points": 1830.0,
+        "points": 2150.0,
         "wins": 0,
-        "podiums": 2,
+        "podiums": 3,
         "pointsHistory": [
           210.0,
           470.0,
@@ -1292,38 +617,12 @@
           1030.0,
           1270.0,
           1570.0,
-          1830.0
+          1830.0,
+          2150.0
         ]
       },
       {
         "position": 3,
-        "code": "GTD-57",
-        "number": "57",
-        "team": "WINWARD RACING",
-        "manufacturer": "Mercedes-AMG",
-        "vehicle": "Mercedes-AMG GT3",
-        "drivers": [
-          "Russell Ward",
-          "Philip Ellis",
-          "Indy Dontje"
-        ],
-        "teamColor": "#00A19B",
-        "points": 1820.0,
-        "wins": 3,
-        "podiums": 3,
-        "pointsHistory": [
-          350.0,
-          480.0,
-          700.0,
-          960.0,
-          960.0,
-          1120.0,
-          1470.0,
-          1820.0
-        ]
-      },
-      {
-        "position": 4,
         "code": "GTD-27",
         "number": "27",
         "team": "Heart of Racing Team",
@@ -1331,11 +630,10 @@
         "vehicle": "Aston Martin Vantage GT3 Evo",
         "drivers": [
           "Dudu Barrichello",
-          "Tom Gamble",
-          "Zacharie Robichon"
+          "Tom Gamble"
         ],
         "teamColor": "#00665E",
-        "points": 1820.0,
+        "points": 2100.0,
         "wins": 0,
         "podiums": 3,
         "pointsHistory": [
@@ -1346,11 +644,66 @@
           1150.0,
           1410.0,
           1660.0,
-          1820.0
+          1820.0,
+          2100.0
+        ]
+      },
+      {
+        "position": 4,
+        "code": "GTD-12",
+        "number": "12",
+        "team": "Vasser Sullivan Racing",
+        "manufacturer": "Lexus",
+        "vehicle": "Lexus RC F GT3",
+        "drivers": [
+          "Aaron Telitz",
+          "Benjamin Pedersen"
+        ],
+        "teamColor": "#1A1A1A",
+        "points": 2050.0,
+        "wins": 1,
+        "podiums": 2,
+        "pointsHistory": [
+          220.0,
+          410.0,
+          760.0,
+          1010.0,
+          1010.0,
+          1290.0,
+          1610.0,
+          1830.0,
+          2050.0
         ]
       },
       {
         "position": 5,
+        "code": "GTD-70",
+        "number": "70",
+        "team": "Inception Racing",
+        "manufacturer": "Ferrari",
+        "vehicle": "Ferrari 296 GT3 EVO",
+        "drivers": [
+          "Brendan Iribe",
+          "Frederik Schandorff"
+        ],
+        "teamColor": "#DA291C",
+        "points": 1800.0,
+        "wins": 0,
+        "podiums": 2,
+        "pointsHistory": [
+          180.0,
+          320.0,
+          600.0,
+          900.0,
+          900.0,
+          1030.0,
+          1270.0,
+          1500.0,
+          1800.0
+        ]
+      },
+      {
+        "position": 6,
         "code": "GTD-34",
         "number": "34",
         "team": "Conquest Racing",
@@ -1358,11 +711,10 @@
         "vehicle": "Ferrari 296 GT3 EVO",
         "drivers": [
           "Albert Costa",
-          "Lorenzo Patrese",
-          "Fran Rueda"
+          "Lorenzo Patrese"
         ],
         "teamColor": "#DA291C",
-        "points": 1550.0,
+        "points": 1790.0,
         "wins": 0,
         "podiums": 1,
         "pointsHistory": [
@@ -1373,34 +725,8 @@
           890.0,
           1140.0,
           1420.0,
-          1550.0
-        ]
-      },
-      {
-        "position": 6,
-        "code": "GTD-120",
-        "number": "120",
-        "team": "Wright Motorsports",
-        "manufacturer": "Porsche",
-        "vehicle": "Porsche 911 GT3 R (992)",
-        "drivers": [
-          "Adam Adelson",
-          "Callum Ilott",
-          "Tom Sargent"
-        ],
-        "teamColor": "#B9975B",
-        "points": 1530.0,
-        "wins": 0,
-        "podiums": 2,
-        "pointsHistory": [
-          110.0,
-          410.0,
-          570.0,
-          850.0,
-          850.0,
-          1170.0,
-          1390.0,
-          1530.0
+          1550.0,
+          1790.0
         ]
       },
       {
@@ -1412,11 +738,10 @@
         "vehicle": "Chevrolet Corvette Z06 GT3.R",
         "drivers": [
           "Orey Fidani",
-          "Matthew Bell",
-          "Lars Kern"
+          "Matthew Bell"
         ],
         "teamColor": "#C5B358",
-        "points": 1520.0,
+        "points": 1770.0,
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
@@ -1427,34 +752,35 @@
           910.0,
           1090.0,
           1280.0,
-          1520.0
+          1520.0,
+          1770.0
         ]
       },
       {
         "position": 8,
-        "code": "GTD-70",
-        "number": "70",
-        "team": "Inception Racing",
-        "manufacturer": "Ferrari",
-        "vehicle": "Ferrari 296 GT3 EVO",
+        "code": "GTD-120",
+        "number": "120",
+        "team": "Wright Motorsports",
+        "manufacturer": "Porsche",
+        "vehicle": "Porsche 911 GT3 R (992)",
         "drivers": [
-          "Brendan Iribe",
-          "Frederik Schandorff",
-          "Ollie Millroy"
+          "Adam Adelson",
+          "Callum Ilott"
         ],
-        "teamColor": "#DA291C",
-        "points": 1500.0,
+        "teamColor": "#B9975B",
+        "points": 1740.0,
         "wins": 0,
-        "podiums": 1,
+        "podiums": 2,
         "pointsHistory": [
-          180.0,
-          320.0,
-          600.0,
-          900.0,
-          900.0,
-          1030.0,
-          1270.0,
-          1500.0
+          110.0,
+          410.0,
+          570.0,
+          850.0,
+          850.0,
+          1170.0,
+          1390.0,
+          1530.0,
+          1740.0
         ]
       },
       {
@@ -1466,11 +792,10 @@
         "vehicle": "Lamborghini Huracan GT3 EVO2",
         "drivers": [
           "Danny Formal",
-          "Trent Hindman",
-          "Graham Doyle"
+          "Trent Hindman"
         ],
         "teamColor": "#B4A46A",
-        "points": 1430.0,
+        "points": 1690.0,
         "wins": 1,
         "podiums": 1,
         "pointsHistory": [
@@ -1481,7 +806,8 @@
           870.0,
           980.0,
           1240.0,
-          1430.0
+          1430.0,
+          1690.0
         ]
       },
       {
@@ -1493,11 +819,10 @@
         "vehicle": "Chevrolet Corvette Z06 GT3.R",
         "drivers": [
           "Giacomo Alto\u00e8",
-          "Casper Stevenson",
-          "Alec Udell"
+          "Casper Stevenson"
         ],
         "teamColor": "#C5B358",
-        "points": 1350.0,
+        "points": 1540.0,
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
@@ -1508,38 +833,12 @@
           710.0,
           860.0,
           1070.0,
-          1350.0
+          1350.0,
+          1540.0
         ]
       },
       {
         "position": 11,
-        "code": "GTD-16",
-        "number": "16",
-        "team": "Myers Riley Motorsports",
-        "manufacturer": "Ford",
-        "vehicle": "Ford Mustang GT3",
-        "drivers": [
-          "Sheena Monk",
-          "Felipe Fraga",
-          "Jenson Altzman"
-        ],
-        "teamColor": "#00274D",
-        "points": 1310.0,
-        "wins": 0,
-        "podiums": 0,
-        "pointsHistory": [
-          120.0,
-          320.0,
-          560.0,
-          790.0,
-          790.0,
-          960.0,
-          1190.0,
-          1310.0
-        ]
-      },
-      {
-        "position": 12,
         "code": "GTD-66",
         "number": "66",
         "team": "Gradient Racing",
@@ -1547,11 +846,10 @@
         "vehicle": "Ford Mustang GT3",
         "drivers": [
           "Jake Walker",
-          "Till Bechtolsheimer",
-          "Joey Hand"
+          "Corey Lewis"
         ],
         "teamColor": "#00274D",
-        "points": 1300.0,
+        "points": 1500.0,
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
@@ -1562,7 +860,35 @@
           730.0,
           920.0,
           1120.0,
-          1300.0
+          1300.0,
+          1500.0
+        ]
+      },
+      {
+        "position": 12,
+        "code": "GTD-16",
+        "number": "16",
+        "team": "Myers Riley Motorsports",
+        "manufacturer": "Ford",
+        "vehicle": "Ford Mustang GT3",
+        "drivers": [
+          "Sheena Monk",
+          "Felipe Fraga"
+        ],
+        "teamColor": "#00274D",
+        "points": 1490.0,
+        "wins": 0,
+        "podiums": 0,
+        "pointsHistory": [
+          120.0,
+          320.0,
+          560.0,
+          790.0,
+          790.0,
+          960.0,
+          1190.0,
+          1310.0,
+          1490.0
         ]
       },
       {
@@ -1574,11 +900,10 @@
         "vehicle": "Chevrolet Corvette Z06 GT3.R",
         "drivers": [
           "Mason Filippi",
-          "Robert Wickens",
-          "Charlie Eastwood"
+          "Robert Wickens"
         ],
         "teamColor": "#C5B358",
-        "points": 1160.0,
+        "points": 1390.0,
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
@@ -1589,7 +914,8 @@
           610.0,
           810.0,
           990.0,
-          1160.0
+          1160.0,
+          1390.0
         ]
       },
       {
@@ -1616,6 +942,7 @@
           530.0,
           740.0,
           740.0,
+          990.0,
           990.0
         ]
       },
@@ -1643,6 +970,7 @@
           410.0,
           640.0,
           640.0,
+          960.0,
           960.0
         ]
       },
@@ -1670,6 +998,7 @@
           610.0,
           750.0,
           750.0,
+          950.0,
           950.0
         ]
       },
@@ -1692,6 +1021,7 @@
           200.0,
           380.0,
           610.0,
+          820.0,
           820.0,
           820.0,
           820.0,
@@ -1723,6 +1053,7 @@
           310.0,
           660.0,
           660.0,
+          810.0,
           810.0
         ]
       },
@@ -1750,6 +1081,7 @@
           310.0,
           530.0,
           530.0,
+          740.0,
           740.0
         ]
       },
@@ -1772,6 +1104,7 @@
         "pointsHistory": [
           300.0,
           300.0,
+          600.0,
           600.0
         ]
       },
@@ -1799,6 +1132,7 @@
           320.0,
           440.0,
           440.0,
+          440.0,
           440.0
         ]
       },
@@ -1818,6 +1152,7 @@
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
+          260.0,
           260.0,
           260.0,
           260.0,
@@ -1847,6 +1182,7 @@
           180.0,
           180.0,
           180.0,
+          180.0,
           180.0
         ]
       },
@@ -1866,6 +1202,7 @@
         "wins": 0,
         "podiums": 0,
         "pointsHistory": [
+          170.0,
           170.0,
           170.0,
           170.0,
@@ -1899,558 +1236,34 @@
           160.0,
           160.0,
           160.0,
+          160.0,
           160.0
         ]
       }
     ]
   },
   "championship": {
-    "GTP": {
-      "basis": "assuming a full 11-round season (3 rounds remaining)",
-      "remainingRounds": 3,
-      "entries": [
-        {
-          "code": "GTP-31",
-          "number": "31",
-          "team": "Cadillac Whelen",
-          "manufacturer": "Cadillac",
-          "vehicle": "Cadillac V-Series.R",
-          "drivers": [
-            "Jack Aitken",
-            "Earl Bamber",
-            "Frederik Vesti"
-          ],
-          "teamColor": "#941E32",
-          "pTitle": 0.9487,
-          "currentPoints": 2180.0,
-          "projMean": 3071.24,
-          "projP10": 2990.0,
-          "projP90": 3150.0,
-          "maxAttainable": 3230.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-93",
-          "number": "93",
-          "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-          "manufacturer": "Acura",
-          "vehicle": "Acura ARX-06",
-          "drivers": [
-            "Renger van der Zande",
-            "Nick Yelloly"
-          ],
-          "teamColor": "#CE0E2D",
-          "pTitle": 0.044,
-          "currentPoints": 2000.0,
-          "projMean": 2914.24,
-          "projP10": 2830.0,
-          "projP90": 2990.0,
-          "maxAttainable": 3050.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-7",
-          "number": "7",
-          "team": "Porsche Penske Motorsport",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 963",
-          "drivers": [
-            "Felipe Nasr",
-            "Julien Andlauer"
-          ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.0073,
-          "currentPoints": 1990.0,
-          "projMean": 2835.14,
-          "projP10": 2750.0,
-          "projP90": 2920.0,
-          "maxAttainable": 3040.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-6",
-          "number": "6",
-          "team": "Porsche Penske Motorsport",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 963",
-          "drivers": [
-            "Laurens Vanthoor",
-            "Kevin Estre"
-          ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.0,
-          "currentPoints": 1860.0,
-          "projMean": 2637.38,
-          "projP10": 2550.0,
-          "projP90": 2730.0,
-          "maxAttainable": 2910.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-24",
-          "number": "24",
-          "team": "BMW M Team WRT",
-          "manufacturer": "BMW",
-          "vehicle": "BMW M Hybrid V8",
-          "drivers": [
-            "Dries Vanthoor",
-            "Sheldon van der Linde"
-          ],
-          "teamColor": "#0166B1",
-          "pTitle": 0.0,
-          "currentPoints": 1740.0,
-          "projMean": 2412.43,
-          "projP10": 2350.0,
-          "projP90": 2490.0,
-          "maxAttainable": 2790.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-25",
-          "number": "25",
-          "team": "BMW M Team WRT",
-          "manufacturer": "BMW",
-          "vehicle": "BMW M Hybrid V8",
-          "drivers": [
-            "Philipp Eng",
-            "Marco Wittmann"
-          ],
-          "teamColor": "#0166B1",
-          "pTitle": 0.0,
-          "currentPoints": 1720.0,
-          "projMean": 2418.7,
-          "projP10": 2350.0,
-          "projP90": 2500.0,
-          "maxAttainable": 2770.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-40",
-          "number": "40",
-          "team": "Cadillac Wayne Taylor Racing",
-          "manufacturer": "Cadillac",
-          "vehicle": "Cadillac V-Series.R",
-          "drivers": [
-            "Jordan Taylor",
-            "Louis Deletraz"
-          ],
-          "teamColor": "#941E32",
-          "pTitle": 0.0,
-          "currentPoints": 1710.0,
-          "projMean": 2478.34,
-          "projP10": 2400.0,
-          "projP90": 2570.0,
-          "maxAttainable": 2760.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-10",
-          "number": "10",
-          "team": "Cadillac Wayne Taylor Racing",
-          "manufacturer": "Cadillac",
-          "vehicle": "Cadillac V-Series.R",
-          "drivers": [
-            "Ricky Taylor",
-            "Filipe Albuquerque"
-          ],
-          "teamColor": "#941E32",
-          "pTitle": 0.0,
-          "currentPoints": 1700.0,
-          "projMean": 2466.3,
-          "projP10": 2390.0,
-          "projP90": 2560.0,
-          "maxAttainable": 2750.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-60",
-          "number": "60",
-          "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-          "manufacturer": "Acura",
-          "vehicle": "Acura ARX-06",
-          "drivers": [
-            "Tom Blomqvist",
-            "Colin Braun"
-          ],
-          "teamColor": "#CE0E2D",
-          "pTitle": 0.0,
-          "currentPoints": 1680.0,
-          "projMean": 2342.52,
-          "projP10": 2280.0,
-          "projP90": 2420.0,
-          "maxAttainable": 2730.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-5",
-          "number": "5",
-          "team": "JDC-Miller MotorSports",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 963",
-          "drivers": [
-            "Tijmen van der Helm",
-            "Laurin Heinrich",
-            "Kaylen Frederick"
-          ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.0,
-          "currentPoints": 1650.0,
-          "projMean": 2513.13,
-          "projP10": 2420.0,
-          "projP90": 2600.0,
-          "maxAttainable": 2700.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-23",
-          "number": "23",
-          "team": "ASTON MARTIN THOR Team",
-          "manufacturer": "Aston Martin",
-          "vehicle": "Aston Martin Valkyrie",
-          "drivers": [
-            "Ross Gunn",
-            "Roman De Angelis"
-          ],
-          "teamColor": "#00665E",
-          "pTitle": 0.0,
-          "currentPoints": 1550.0,
-          "projMean": 2197.6,
-          "projP10": 2140.0,
-          "projP90": 2280.0,
-          "maxAttainable": 2600.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTP-85",
-          "number": "85",
-          "team": "JDC-Miller MotorSports",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 963",
-          "drivers": [
-            "Tijmen van der Helm",
-            "Nico Pino",
-            "Kaylen Frederick"
-          ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.0,
-          "currentPoints": 240.0,
-          "projMean": 882.99,
-          "projP10": 830.0,
-          "projP90": 960.0,
-          "maxAttainable": 1290.0,
-          "canStillWin": false
-        }
-      ]
-    },
-    "LMP2": {
-      "basis": "assuming a full 11-round season (3 rounds remaining)",
-      "remainingRounds": 3,
-      "entries": [
-        {
-          "code": "LMP2-04",
-          "number": "04",
-          "team": "Crowdstrike Racing by APR",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "George Kurtz",
-            "Alex Quinn",
-            "Toby Sowery"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.787,
-          "currentPoints": 1570.0,
-          "projMean": 2473.92,
-          "projP10": 2390.0,
-          "projP90": 2560.0,
-          "maxAttainable": 2620.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-43",
-          "number": "43",
-          "team": "Inter Europol Competition",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Jeremy Clarke",
-            "Bijoy Garg",
-            "Tom Dillmann"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.192,
-          "currentPoints": 1500.0,
-          "projMean": 2395.28,
-          "projP10": 2310.0,
-          "projP90": 2480.0,
-          "maxAttainable": 2550.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-99",
-          "number": "99",
-          "team": "AO Racing",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "PJ Hyett",
-            "Dane Cameron",
-            "Jonny Edgar"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0208,
-          "currentPoints": 1440.0,
-          "projMean": 2292.66,
-          "projP10": 2200.0,
-          "projP90": 2390.0,
-          "maxAttainable": 2490.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-22",
-          "number": "22",
-          "team": "United Autosports USA",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Daniel Goldburg",
-            "Paul Di Resta",
-            "Rasmus Lindh"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0003,
-          "currentPoints": 1360.0,
-          "projMean": 2123.32,
-          "projP10": 2030.0,
-          "projP90": 2220.0,
-          "maxAttainable": 2410.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-52",
-          "number": "52",
-          "team": "Bryan Herta Autosport with PR1/Mathiasen",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Misha Goikhberg",
-            "Parker Thompson",
-            "Harry Tincknell"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1260.0,
-          "projMean": 2002.28,
-          "projP10": 1910.0,
-          "projP90": 2100.0,
-          "maxAttainable": 2310.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-8",
-          "number": "8",
-          "team": "Tower Motorsports",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "John Farano",
-            "Sebastian Alvarez",
-            "Tristan Vautier"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1260.0,
-          "projMean": 2007.41,
-          "projP10": 1920.0,
-          "projP90": 2110.0,
-          "maxAttainable": 2310.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-2",
-          "number": "2",
-          "team": "United Autosports USA",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Phil Fayer",
-            "Hunter McElrea",
-            "Mikkel Jensen"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1240.0,
-          "projMean": 1921.43,
-          "projP10": 1840.0,
-          "projP90": 2020.0,
-          "maxAttainable": 2290.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-11",
-          "number": "11",
-          "team": "TDS Racing",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Tobi Lutke",
-            "Mathias Beche",
-            "David Heinemeier Hansson"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1160.0,
-          "projMean": 1890.37,
-          "projP10": 1800.0,
-          "projP90": 1990.0,
-          "maxAttainable": 2210.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-73",
-          "number": "73",
-          "team": "Pratt Miller Motorsports",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Pietro Fittipaldi",
-            "Manuel Espirito Santo",
-            "Chris Cumming"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1100.0,
-          "projMean": 1707.5,
-          "projP10": 1640.0,
-          "projP90": 1790.0,
-          "maxAttainable": 2150.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-18",
-          "number": "18",
-          "team": "Era Motorsport",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Naveen Rao",
-            "Ferdinand Habsburg",
-            "Jacob Abel"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 1010.0,
-          "projMean": 1704.95,
-          "projP10": 1620.0,
-          "projP90": 1800.0,
-          "maxAttainable": 2060.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-37",
-          "number": "37",
-          "team": "Intersport Racing",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Jon Field",
-            "Oliver Jarvis",
-            "Max van der Snel"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 840.0,
-          "projMean": 1412.79,
-          "projP10": 1360.0,
-          "projP90": 1480.0,
-          "maxAttainable": 1890.0,
-          "canStillWin": true
-        },
-        {
-          "code": "LMP2-343",
-          "number": "343",
-          "team": "Inter Europol Competition",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Jakub Smiechowski",
-            "George Kolovos",
-            "Nolan Siegel",
-            "Nick Cassidy"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 300.0,
-          "projMean": 1049.75,
-          "projP10": 960.0,
-          "projP90": 1150.0,
-          "maxAttainable": 1350.0,
-          "canStillWin": false
-        },
-        {
-          "code": "LMP2-79",
-          "number": "79",
-          "team": "JDC-Miller MotorSports",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Gerry Kraut",
-            "Josh Burdon",
-            "Sennan Fielding"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 230.0,
-          "projMean": 914.29,
-          "projP10": 830.0,
-          "projP90": 1010.0,
-          "maxAttainable": 1280.0,
-          "canStillWin": false
-        },
-        {
-          "code": "LMP2-83",
-          "number": "83",
-          "team": "Af Corse Usa",
-          "manufacturer": "Oreca",
-          "vehicle": "ORECA LMP2 07",
-          "drivers": [
-            "Francois Perrodo",
-            "Matthieu Vaxiviere",
-            "Nicklas Nielsen",
-            "Dylan Murry"
-          ],
-          "teamColor": "#5B6670",
-          "pTitle": 0.0,
-          "currentPoints": 180.0,
-          "projMean": 754.05,
-          "projP10": 700.0,
-          "projP90": 830.0,
-          "maxAttainable": 1230.0,
-          "canStillWin": false
-        }
-      ]
-    },
     "GTDPRO": {
-      "basis": "assuming a full 11-round season (3 rounds remaining)",
-      "remainingRounds": 3,
+      "basis": "assuming a full 11-round season (2 rounds remaining)",
+      "remainingRounds": 2,
       "entries": [
         {
-          "code": "GTDP-77",
-          "number": "77",
-          "team": "AO Racing",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 911 GT3 R (992)",
+          "code": "GTDP-9",
+          "number": "9",
+          "team": "Pfaff Motorsports",
+          "manufacturer": "Lamborghini",
+          "vehicle": "Lamborghini Temerario GT3",
           "drivers": [
-            "Nick Tandy",
-            "Harry King"
+            "Andrea Caldarelli",
+            "Sandy Mitchell"
           ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.4675,
-          "currentPoints": 1940.0,
-          "projMean": 2813.43,
-          "projP10": 2720.0,
-          "projP90": 2910.0,
-          "maxAttainable": 2990.0,
+          "teamColor": "#B4A46A",
+          "pTitle": 0.36,
+          "currentPoints": 2190.0,
+          "projMean": 2757.82,
+          "projP10": 2680.0,
+          "projP90": 2840.0,
+          "maxAttainable": 2890.0,
           "canStillWin": true
         },
         {
@@ -2464,12 +1277,12 @@
             "Nicky Catsburg"
           ],
           "teamColor": "#C5B358",
-          "pTitle": 0.448,
-          "currentPoints": 1950.0,
-          "projMean": 2804.32,
-          "projP10": 2710.0,
-          "projP90": 2900.0,
-          "maxAttainable": 3000.0,
+          "pTitle": 0.2293,
+          "currentPoints": 2200.0,
+          "projMean": 2729.85,
+          "projP10": 2650.0,
+          "projP90": 2810.0,
+          "maxAttainable": 2900.0,
           "canStillWin": true
         },
         {
@@ -2483,12 +1296,12 @@
             "Frederic Vervisch"
           ],
           "teamColor": "#00274D",
-          "pTitle": 0.0415,
-          "currentPoints": 1870.0,
-          "projMean": 2666.41,
-          "projP10": 2560.0,
-          "projP90": 2770.0,
-          "maxAttainable": 2920.0,
+          "pTitle": 0.2112,
+          "currentPoints": 2170.0,
+          "projMean": 2733.09,
+          "projP10": 2650.0,
+          "projP90": 2820.0,
+          "maxAttainable": 2870.0,
           "canStillWin": true
         },
         {
@@ -2502,69 +1315,31 @@
             "Connor De Phillippi"
           ],
           "teamColor": "#0166B1",
-          "pTitle": 0.0238,
-          "currentPoints": 1940.0,
-          "projMean": 2632.85,
-          "projP10": 2530.0,
-          "projP90": 2750.0,
-          "maxAttainable": 2990.0,
+          "pTitle": 0.1708,
+          "currentPoints": 2200.0,
+          "projMean": 2712.33,
+          "projP10": 2630.0,
+          "projP90": 2800.0,
+          "maxAttainable": 2900.0,
           "canStillWin": true
         },
         {
-          "code": "GTDP-9",
-          "number": "9",
-          "team": "Pfaff Motorsports",
-          "manufacturer": "Lamborghini",
-          "vehicle": "Lamborghini Temerario GT3",
+          "code": "GTDP-77",
+          "number": "77",
+          "team": "AO Racing",
+          "manufacturer": "Porsche",
+          "vehicle": "Porsche 911 GT3 R (992)",
           "drivers": [
-            "Andrea Caldarelli",
-            "Sandy Mitchell"
+            "Nick Tandy",
+            "Harry King"
           ],
-          "teamColor": "#B4A46A",
-          "pTitle": 0.0155,
-          "currentPoints": 1840.0,
-          "projMean": 2635.61,
-          "projP10": 2530.0,
-          "projP90": 2740.0,
-          "maxAttainable": 2890.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTDP-14",
-          "number": "14",
-          "team": "Vasser Sullivan Racing",
-          "manufacturer": "Lexus",
-          "vehicle": "Lexus RC F GT3",
-          "drivers": [
-            "Jack Hawksworth",
-            "Ben Barnicoat"
-          ],
-          "teamColor": "#1A1A1A",
-          "pTitle": 0.003,
-          "currentPoints": 1830.0,
-          "projMean": 2563.04,
-          "projP10": 2460.0,
-          "projP90": 2680.0,
-          "maxAttainable": 2880.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTDP-3",
-          "number": "3",
-          "team": "Corvette Racing by Pratt Miller Motorsports",
-          "manufacturer": "Chevrolet",
-          "vehicle": "Chevrolet Corvette Z06 GT3.R",
-          "drivers": [
-            "Antonio Garcia",
-            "Alexander Sims"
-          ],
-          "teamColor": "#C5B358",
-          "pTitle": 0.0005,
-          "currentPoints": 1800.0,
-          "projMean": 2478.05,
-          "projP10": 2380.0,
-          "projP90": 2590.0,
-          "maxAttainable": 2850.0,
+          "teamColor": "#B9975B",
+          "pTitle": 0.023,
+          "currentPoints": 2160.0,
+          "projMean": 2629.34,
+          "projP10": 2550.0,
+          "projP90": 2720.0,
+          "maxAttainable": 2860.0,
           "canStillWin": true
         },
         {
@@ -2578,12 +1353,50 @@
             "Dennis Olsen"
           ],
           "teamColor": "#00274D",
-          "pTitle": 0.0003,
-          "currentPoints": 1730.0,
-          "projMean": 2487.54,
-          "projP10": 2380.0,
-          "projP90": 2600.0,
-          "maxAttainable": 2780.0,
+          "pTitle": 0.0037,
+          "currentPoints": 2050.0,
+          "projMean": 2614.75,
+          "projP10": 2530.0,
+          "projP90": 2700.0,
+          "maxAttainable": 2750.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTDP-14",
+          "number": "14",
+          "team": "Vasser Sullivan Racing",
+          "manufacturer": "Lexus",
+          "vehicle": "Lexus RC F GT3",
+          "drivers": [
+            "Jack Hawksworth",
+            "Ben Barnicoat"
+          ],
+          "teamColor": "#1A1A1A",
+          "pTitle": 0.002,
+          "currentPoints": 2070.0,
+          "projMean": 2535.49,
+          "projP10": 2450.0,
+          "projP90": 2630.0,
+          "maxAttainable": 2770.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTDP-3",
+          "number": "3",
+          "team": "Corvette Racing by Pratt Miller Motorsports",
+          "manufacturer": "Chevrolet",
+          "vehicle": "Chevrolet Corvette Z06 GT3.R",
+          "drivers": [
+            "Antonio Garcia",
+            "Alexander Sims"
+          ],
+          "teamColor": "#C5B358",
+          "pTitle": 0.0,
+          "currentPoints": 2010.0,
+          "projMean": 2427.57,
+          "projP10": 2350.0,
+          "projP90": 2520.0,
+          "maxAttainable": 2710.0,
           "canStillWin": true
         },
         {
@@ -2598,11 +1411,11 @@
           ],
           "teamColor": "#FF8000",
           "pTitle": 0.0,
-          "currentPoints": 1520.0,
-          "projMean": 2012.63,
-          "projP10": 1950.0,
-          "projP90": 2100.0,
-          "maxAttainable": 2570.0,
+          "currentPoints": 1750.0,
+          "projMean": 2087.01,
+          "projP10": 2040.0,
+          "projP90": 2160.0,
+          "maxAttainable": 2450.0,
           "canStillWin": true
         },
         {
@@ -2618,11 +1431,11 @@
           "teamColor": "#B9975B",
           "pTitle": 0.0,
           "currentPoints": 1020.0,
-          "projMean": 1647.23,
-          "projP10": 1550.0,
-          "projP90": 1760.0,
-          "maxAttainable": 2070.0,
-          "canStillWin": true
+          "projMean": 1408.73,
+          "projP10": 1340.0,
+          "projP90": 1500.0,
+          "maxAttainable": 1720.0,
+          "canStillWin": false
         },
         {
           "code": "GTDP-033",
@@ -2637,11 +1450,11 @@
           "teamColor": "#DA291C",
           "pTitle": 0.0,
           "currentPoints": 960.0,
-          "projMean": 1662.04,
-          "projP10": 1560.0,
-          "projP90": 1770.0,
-          "maxAttainable": 2010.0,
-          "canStillWin": true
+          "projMean": 1384.1,
+          "projP10": 1310.0,
+          "projP90": 1470.0,
+          "maxAttainable": 1660.0,
+          "canStillWin": false
         },
         {
           "code": "GTDP-62",
@@ -2656,10 +1469,10 @@
           "teamColor": "#DA291C",
           "pTitle": 0.0,
           "currentPoints": 830.0,
-          "projMean": 1408.72,
-          "projP10": 1320.0,
-          "projP90": 1510.0,
-          "maxAttainable": 1880.0,
+          "projMean": 1182.29,
+          "projP10": 1120.0,
+          "projP90": 1260.0,
+          "maxAttainable": 1530.0,
           "canStillWin": false
         },
         {
@@ -2676,10 +1489,29 @@
           "teamColor": "#00A19B",
           "pTitle": 0.0,
           "currentPoints": 490.0,
-          "projMean": 1107.48,
-          "projP10": 1019.0,
-          "projP90": 1220.0,
-          "maxAttainable": 1540.0,
+          "projMean": 902.84,
+          "projP10": 830.0,
+          "projP90": 990.0,
+          "maxAttainable": 1190.0,
+          "canStillWin": false
+        },
+        {
+          "code": "GTDP-68",
+          "number": "68",
+          "team": "Car Blanche",
+          "manufacturer": "Aston Martin",
+          "vehicle": "Aston Martin Vantage GT3 Evo",
+          "drivers": [
+            "Marco Sorensen",
+            "Valentin Hasse Clot"
+          ],
+          "teamColor": "#00665E",
+          "pTitle": 0.0,
+          "currentPoints": 490.0,
+          "projMean": 963.62,
+          "projP10": 880.0,
+          "projP90": 1060.0,
+          "maxAttainable": 1190.0,
           "canStillWin": false
         },
         {
@@ -2697,10 +1529,10 @@
           "teamColor": "#00A19B",
           "pTitle": 0.0,
           "currentPoints": 320.0,
-          "projMean": 1076.35,
-          "projP10": 970.0,
-          "projP90": 1180.0,
-          "maxAttainable": 1370.0,
+          "projMean": 834.25,
+          "projP10": 750.0,
+          "projP90": 920.0,
+          "maxAttainable": 1020.0,
           "canStillWin": false
         },
         {
@@ -2716,29 +1548,10 @@
           "teamColor": "#1A1A1A",
           "pTitle": 0.0,
           "currentPoints": 210.0,
-          "projMean": 741.79,
-          "projP10": 670.0,
-          "projP90": 840.0,
-          "maxAttainable": 1260.0,
-          "canStillWin": false
-        },
-        {
-          "code": "GTDP-68",
-          "number": "68",
-          "team": "Car Blanche",
-          "manufacturer": "Aston Martin",
-          "vehicle": "Aston Martin Vantage GT3 Evo",
-          "drivers": [
-            "Valentin Hasse Clot",
-            "Scott Andrews"
-          ],
-          "teamColor": "#00665E",
-          "pTitle": 0.0,
-          "currentPoints": 210.0,
-          "projMean": 733.37,
-          "projP10": 660.0,
-          "projP90": 830.0,
-          "maxAttainable": 1260.0,
+          "projMean": 559.24,
+          "projP10": 500.0,
+          "projP90": 640.0,
+          "maxAttainable": 910.0,
           "canStillWin": false
         },
         {
@@ -2756,18 +1569,37 @@
           "teamColor": "#00A19B",
           "pTitle": 0.0,
           "currentPoints": 200.0,
-          "projMean": 739.13,
-          "projP10": 660.0,
-          "projP90": 840.0,
-          "maxAttainable": 1250.0,
+          "projMean": 557.67,
+          "projP10": 500.0,
+          "projP90": 640.0,
+          "maxAttainable": 900.0,
           "canStillWin": false
         }
       ]
     },
     "GTD": {
-      "basis": "assuming a full 11-round season (3 rounds remaining)",
-      "remainingRounds": 3,
+      "basis": "assuming a full 11-round season (2 rounds remaining)",
+      "remainingRounds": 2,
       "entries": [
+        {
+          "code": "GTD-57",
+          "number": "57",
+          "team": "Winward Racing",
+          "manufacturer": "Mercedes-AMG",
+          "vehicle": "Mercedes-AMG GT3",
+          "drivers": [
+            "Russell Ward",
+            "Philip Ellis"
+          ],
+          "teamColor": "#00A19B",
+          "pTitle": 0.5555,
+          "currentPoints": 2170.0,
+          "projMean": 2742.63,
+          "projP10": 2660.0,
+          "projP90": 2820.0,
+          "maxAttainable": 2870.0,
+          "canStillWin": true
+        },
         {
           "code": "GTD-96",
           "number": "96",
@@ -2776,56 +1608,15 @@
           "vehicle": "BMW M4 GT3 EVO",
           "drivers": [
             "Patrick Gallagher",
-            "Robby Foley",
-            "Francis Selldorff"
+            "Robby Foley"
           ],
           "teamColor": "#0166B1",
-          "pTitle": 0.4295,
-          "currentPoints": 1830.0,
-          "projMean": 2619.97,
-          "projP10": 2510.0,
-          "projP90": 2730.0,
-          "maxAttainable": 2880.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTD-57",
-          "number": "57",
-          "team": "WINWARD RACING",
-          "manufacturer": "Mercedes-AMG",
-          "vehicle": "Mercedes-AMG GT3",
-          "drivers": [
-            "Russell Ward",
-            "Philip Ellis",
-            "Indy Dontje"
-          ],
-          "teamColor": "#00A19B",
-          "pTitle": 0.3513,
-          "currentPoints": 1820.0,
-          "projMean": 2608.66,
-          "projP10": 2500.0,
-          "projP90": 2730.0,
-          "maxAttainable": 2870.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTD-12",
-          "number": "12",
-          "team": "Vasser Sullivan Racing",
-          "manufacturer": "Lexus",
-          "vehicle": "Lexus RC F GT3",
-          "drivers": [
-            "Aaron Telitz",
-            "Benjamin Pedersen",
-            "Frankie Montecalvo"
-          ],
-          "teamColor": "#1A1A1A",
-          "pTitle": 0.1875,
-          "currentPoints": 1830.0,
-          "projMean": 2553.85,
-          "projP10": 2430.0,
-          "projP90": 2670.0,
-          "maxAttainable": 2880.0,
+          "pTitle": 0.4037,
+          "currentPoints": 2150.0,
+          "projMean": 2729.48,
+          "projP10": 2650.0,
+          "projP90": 2820.0,
+          "maxAttainable": 2850.0,
           "canStillWin": true
         },
         {
@@ -2836,76 +1627,34 @@
           "vehicle": "Aston Martin Vantage GT3 Evo",
           "drivers": [
             "Dudu Barrichello",
-            "Tom Gamble",
-            "Zacharie Robichon"
+            "Tom Gamble"
           ],
           "teamColor": "#00665E",
-          "pTitle": 0.0318,
-          "currentPoints": 1820.0,
-          "projMean": 2442.05,
-          "projP10": 2310.0,
-          "projP90": 2580.0,
-          "maxAttainable": 2870.0,
+          "pTitle": 0.0377,
+          "currentPoints": 2100.0,
+          "projMean": 2610.26,
+          "projP10": 2520.0,
+          "projP90": 2700.0,
+          "maxAttainable": 2800.0,
           "canStillWin": true
         },
         {
-          "code": "GTD-34",
-          "number": "34",
-          "team": "Conquest Racing",
-          "manufacturer": "Ferrari",
-          "vehicle": "Ferrari 296 GT3 EVO",
+          "code": "GTD-12",
+          "number": "12",
+          "team": "Vasser Sullivan Racing",
+          "manufacturer": "Lexus",
+          "vehicle": "Lexus RC F GT3",
           "drivers": [
-            "Albert Costa",
-            "Lorenzo Patrese",
-            "Fran Rueda"
+            "Aaron Telitz",
+            "Benjamin Pedersen"
           ],
-          "teamColor": "#DA291C",
-          "pTitle": 0.0,
-          "currentPoints": 1550.0,
-          "projMean": 2003.17,
-          "projP10": 1870.0,
-          "projP90": 2150.0,
-          "maxAttainable": 2600.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTD-120",
-          "number": "120",
-          "team": "Wright Motorsports",
-          "manufacturer": "Porsche",
-          "vehicle": "Porsche 911 GT3 R (992)",
-          "drivers": [
-            "Adam Adelson",
-            "Callum Ilott",
-            "Tom Sargent"
-          ],
-          "teamColor": "#B9975B",
-          "pTitle": 0.0,
-          "currentPoints": 1530.0,
-          "projMean": 1980.59,
-          "projP10": 1850.0,
-          "projP90": 2130.0,
-          "maxAttainable": 2580.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTD-13",
-          "number": "13",
-          "team": "13 Autosport",
-          "manufacturer": "Chevrolet",
-          "vehicle": "Chevrolet Corvette Z06 GT3.R",
-          "drivers": [
-            "Orey Fidani",
-            "Matthew Bell",
-            "Lars Kern"
-          ],
-          "teamColor": "#C5B358",
-          "pTitle": 0.0,
-          "currentPoints": 1520.0,
-          "projMean": 2113.13,
-          "projP10": 1980.0,
-          "projP90": 2250.0,
-          "maxAttainable": 2570.0,
+          "teamColor": "#1A1A1A",
+          "pTitle": 0.003,
+          "currentPoints": 2050.0,
+          "projMean": 2505.57,
+          "projP10": 2400.0,
+          "projP90": 2610.0,
+          "maxAttainable": 2750.0,
           "canStillWin": true
         },
         {
@@ -2916,16 +1665,72 @@
           "vehicle": "Ferrari 296 GT3 EVO",
           "drivers": [
             "Brendan Iribe",
-            "Frederik Schandorff",
-            "Ollie Millroy"
+            "Frederik Schandorff"
           ],
           "teamColor": "#DA291C",
           "pTitle": 0.0,
-          "currentPoints": 1500.0,
-          "projMean": 2074.9,
-          "projP10": 1940.0,
-          "projP90": 2210.0,
-          "maxAttainable": 2550.0,
+          "currentPoints": 1800.0,
+          "projMean": 2259.28,
+          "projP10": 2160.0,
+          "projP90": 2360.0,
+          "maxAttainable": 2500.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTD-34",
+          "number": "34",
+          "team": "Conquest Racing",
+          "manufacturer": "Ferrari",
+          "vehicle": "Ferrari 296 GT3 EVO",
+          "drivers": [
+            "Albert Costa",
+            "Lorenzo Patrese"
+          ],
+          "teamColor": "#DA291C",
+          "pTitle": 0.0,
+          "currentPoints": 1790.0,
+          "projMean": 2173.5,
+          "projP10": 2060.0,
+          "projP90": 2290.0,
+          "maxAttainable": 2490.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTD-13",
+          "number": "13",
+          "team": "13 Autosport",
+          "manufacturer": "Chevrolet",
+          "vehicle": "Chevrolet Corvette Z06 GT3.R",
+          "drivers": [
+            "Orey Fidani",
+            "Matthew Bell"
+          ],
+          "teamColor": "#C5B358",
+          "pTitle": 0.0,
+          "currentPoints": 1770.0,
+          "projMean": 2191.01,
+          "projP10": 2080.0,
+          "projP90": 2301.0,
+          "maxAttainable": 2470.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTD-120",
+          "number": "120",
+          "team": "Wright Motorsports",
+          "manufacturer": "Porsche",
+          "vehicle": "Porsche 911 GT3 R (992)",
+          "drivers": [
+            "Adam Adelson",
+            "Callum Ilott"
+          ],
+          "teamColor": "#B9975B",
+          "pTitle": 0.0,
+          "currentPoints": 1740.0,
+          "projMean": 2057.68,
+          "projP10": 1950.0,
+          "projP90": 2180.0,
+          "maxAttainable": 2440.0,
           "canStillWin": true
         },
         {
@@ -2936,16 +1741,15 @@
           "vehicle": "Lamborghini Huracan GT3 EVO2",
           "drivers": [
             "Danny Formal",
-            "Trent Hindman",
-            "Graham Doyle"
+            "Trent Hindman"
           ],
           "teamColor": "#B4A46A",
           "pTitle": 0.0,
-          "currentPoints": 1430.0,
-          "projMean": 1905.18,
-          "projP10": 1770.0,
-          "projP90": 2050.0,
-          "maxAttainable": 2480.0,
+          "currentPoints": 1690.0,
+          "projMean": 2091.84,
+          "projP10": 1980.0,
+          "projP90": 2210.0,
+          "maxAttainable": 2390.0,
           "canStillWin": true
         },
         {
@@ -2956,36 +1760,15 @@
           "vehicle": "Chevrolet Corvette Z06 GT3.R",
           "drivers": [
             "Giacomo Alto\u00e8",
-            "Casper Stevenson",
-            "Alec Udell"
+            "Casper Stevenson"
           ],
           "teamColor": "#C5B358",
           "pTitle": 0.0,
-          "currentPoints": 1350.0,
-          "projMean": 1991.0,
-          "projP10": 1860.0,
-          "projP90": 2120.0,
-          "maxAttainable": 2400.0,
-          "canStillWin": true
-        },
-        {
-          "code": "GTD-16",
-          "number": "16",
-          "team": "Myers Riley Motorsports",
-          "manufacturer": "Ford",
-          "vehicle": "Ford Mustang GT3",
-          "drivers": [
-            "Sheena Monk",
-            "Felipe Fraga",
-            "Jenson Altzman"
-          ],
-          "teamColor": "#00274D",
-          "pTitle": 0.0,
-          "currentPoints": 1310.0,
-          "projMean": 1648.15,
-          "projP10": 1530.0,
-          "projP90": 1790.0,
-          "maxAttainable": 2360.0,
+          "currentPoints": 1540.0,
+          "projMean": 1815.61,
+          "projP10": 1710.0,
+          "projP90": 1940.0,
+          "maxAttainable": 2240.0,
           "canStillWin": true
         },
         {
@@ -2996,16 +1779,34 @@
           "vehicle": "Ford Mustang GT3",
           "drivers": [
             "Jake Walker",
-            "Till Bechtolsheimer",
-            "Joey Hand"
+            "Corey Lewis"
           ],
           "teamColor": "#00274D",
           "pTitle": 0.0,
-          "currentPoints": 1300.0,
-          "projMean": 1707.99,
-          "projP10": 1580.0,
-          "projP90": 1850.0,
-          "maxAttainable": 2350.0,
+          "currentPoints": 1500.0,
+          "projMean": 1760.24,
+          "projP10": 1660.0,
+          "projP90": 1880.0,
+          "maxAttainable": 2200.0,
+          "canStillWin": true
+        },
+        {
+          "code": "GTD-16",
+          "number": "16",
+          "team": "Myers Riley Motorsports",
+          "manufacturer": "Ford",
+          "vehicle": "Ford Mustang GT3",
+          "drivers": [
+            "Sheena Monk",
+            "Felipe Fraga"
+          ],
+          "teamColor": "#00274D",
+          "pTitle": 0.0,
+          "currentPoints": 1490.0,
+          "projMean": 1699.07,
+          "projP10": 1620.0,
+          "projP90": 1810.0,
+          "maxAttainable": 2190.0,
           "canStillWin": true
         },
         {
@@ -3016,17 +1817,16 @@
           "vehicle": "Chevrolet Corvette Z06 GT3.R",
           "drivers": [
             "Mason Filippi",
-            "Robert Wickens",
-            "Charlie Eastwood"
+            "Robert Wickens"
           ],
           "teamColor": "#C5B358",
           "pTitle": 0.0,
-          "currentPoints": 1160.0,
-          "projMean": 1581.47,
-          "projP10": 1450.0,
-          "projP90": 1730.0,
-          "maxAttainable": 2210.0,
-          "canStillWin": true
+          "currentPoints": 1390.0,
+          "projMean": 1711.78,
+          "projP10": 1600.0,
+          "projP90": 1830.0,
+          "maxAttainable": 2090.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-80",
@@ -3042,11 +1842,11 @@
           "teamColor": "#00A19B",
           "pTitle": 0.0,
           "currentPoints": 990.0,
-          "projMean": 1728.26,
-          "projP10": 1610.0,
-          "projP90": 1850.0,
-          "maxAttainable": 2040.0,
-          "canStillWin": true
+          "projMean": 1409.89,
+          "projP10": 1300.0,
+          "projP90": 1520.0,
+          "maxAttainable": 1690.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-023",
@@ -3062,11 +1862,11 @@
           "teamColor": "#DA291C",
           "pTitle": 0.0,
           "currentPoints": 960.0,
-          "projMean": 1742.99,
-          "projP10": 1630.0,
-          "projP90": 1860.0,
-          "maxAttainable": 2010.0,
-          "canStillWin": true
+          "projMean": 1385.9,
+          "projP10": 1280.0,
+          "projP90": 1500.0,
+          "maxAttainable": 1660.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-21",
@@ -3082,11 +1882,11 @@
           "teamColor": "#DA291C",
           "pTitle": 0.0,
           "currentPoints": 950.0,
-          "projMean": 1535.76,
-          "projP10": 1400.0,
-          "projP90": 1680.0,
-          "maxAttainable": 2000.0,
-          "canStillWin": true
+          "projMean": 1295.27,
+          "projP10": 1180.0,
+          "projP90": 1420.0,
+          "maxAttainable": 1650.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-19",
@@ -3101,11 +1901,11 @@
           "teamColor": "#00665E",
           "pTitle": 0.0,
           "currentPoints": 820.0,
-          "projMean": 1245.58,
-          "projP10": 1110.0,
-          "projP90": 1390.0,
-          "maxAttainable": 1870.0,
-          "canStillWin": true
+          "projMean": 1113.69,
+          "projP10": 1010.0,
+          "projP90": 1230.0,
+          "maxAttainable": 1520.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-912",
@@ -3121,11 +1921,11 @@
           "teamColor": "#B9975B",
           "pTitle": 0.0,
           "currentPoints": 810.0,
-          "projMean": 1239.7,
-          "projP10": 1110.0,
-          "projP90": 1390.0,
-          "maxAttainable": 1860.0,
-          "canStillWin": true
+          "projMean": 1079.62,
+          "projP10": 980.0,
+          "projP90": 1210.0,
+          "maxAttainable": 1510.0,
+          "canStillWin": false
         },
         {
           "code": "GTD-28",
@@ -3141,10 +1941,10 @@
           "teamColor": "#B9975B",
           "pTitle": 0.0,
           "currentPoints": 740.0,
-          "projMean": 1287.08,
-          "projP10": 1150.0,
-          "projP90": 1430.0,
-          "maxAttainable": 1790.0,
+          "projMean": 1048.77,
+          "projP10": 940.0,
+          "projP90": 1170.0,
+          "maxAttainable": 1440.0,
           "canStillWin": false
         },
         {
@@ -3161,10 +1961,10 @@
           "teamColor": "#00665E",
           "pTitle": 0.0,
           "currentPoints": 600.0,
-          "projMean": 1490.89,
-          "projP10": 1400.0,
-          "projP90": 1580.0,
-          "maxAttainable": 1650.0,
+          "projMean": 1120.07,
+          "projP10": 1030.0,
+          "projP90": 1210.0,
+          "maxAttainable": 1300.0,
           "canStillWin": false
         },
         {
@@ -3181,10 +1981,10 @@
           "teamColor": "#00665E",
           "pTitle": 0.0,
           "currentPoints": 440.0,
-          "projMean": 840.24,
-          "projP10": 710.0,
-          "projP90": 990.0,
-          "maxAttainable": 1490.0,
+          "projMean": 714.21,
+          "projP10": 610.0,
+          "projP90": 840.0,
+          "maxAttainable": 1140.0,
           "canStillWin": false
         },
         {
@@ -3200,10 +2000,10 @@
           "teamColor": "#1A1A1A",
           "pTitle": 0.0,
           "currentPoints": 260.0,
-          "projMean": 914.2,
-          "projP10": 780.0,
-          "projP90": 1050.0,
-          "maxAttainable": 1310.0,
+          "projMean": 711.35,
+          "projP10": 610.0,
+          "projP90": 820.0,
+          "maxAttainable": 960.0,
           "canStillWin": false
         },
         {
@@ -3219,10 +2019,10 @@
           "teamColor": "#B9975B",
           "pTitle": 0.0,
           "currentPoints": 180.0,
-          "projMean": 580.64,
-          "projP10": 450.0,
-          "projP90": 720.0,
-          "maxAttainable": 1230.0,
+          "projMean": 452.04,
+          "projP10": 350.0,
+          "projP90": 570.0,
+          "maxAttainable": 880.0,
           "canStillWin": false
         },
         {
@@ -3238,10 +2038,10 @@
           "teamColor": "#B4A46A",
           "pTitle": 0.0,
           "currentPoints": 170.0,
-          "projMean": 513.47,
-          "projP10": 400.0,
-          "projP90": 650.0,
-          "maxAttainable": 1220.0,
+          "projMean": 404.01,
+          "projP10": 310.0,
+          "projP90": 520.0,
+          "maxAttainable": 870.0,
           "canStillWin": false
         },
         {
@@ -3259,10 +2059,10 @@
           "teamColor": "#B9975B",
           "pTitle": 0.0,
           "currentPoints": 160.0,
-          "projMean": 511.07,
-          "projP10": 390.0,
-          "projP90": 650.0,
-          "maxAttainable": 1210.0,
+          "projMean": 397.25,
+          "projP10": 300.0,
+          "projP90": 510.0,
+          "maxAttainable": 860.0,
           "canStillWin": false
         }
       ]
@@ -3270,10 +2070,10 @@
   },
   "seasonAccuracy": {
     "overall": {
-      "roundsScored": 26,
-      "meanPositionError": 3.667,
-      "podiumHitRate": 0.359,
-      "winnerHitRate": 0.1538
+      "roundsScored": 28,
+      "meanPositionError": 3.595,
+      "podiumHitRate": 0.369,
+      "winnerHitRate": 0.1429
     },
     "byClass": {
       "GTP": {
@@ -3289,399 +2089,26 @@
         "winnerHitRate": 0.2
       },
       "GTDPRO": {
-        "roundsScored": 7,
-        "meanPositionError": 3.434,
+        "roundsScored": 8,
+        "meanPositionError": 3.38,
         "podiumHitRate": 0.3333,
         "winnerHitRate": 0.0
       },
       "GTD": {
-        "roundsScored": 7,
-        "meanPositionError": 5.3,
-        "podiumHitRate": 0.1905,
-        "winnerHitRate": 0.1429
+        "roundsScored": 8,
+        "meanPositionError": 4.926,
+        "podiumHitRate": 0.25,
+        "winnerHitRate": 0.125
       }
     }
   },
   "nextPrediction": {
     "season": 2026,
-    "round": 9,
-    "place": "Round 9",
+    "round": 10,
+    "place": "Round 10",
     "country": null,
-    "event": "Round 9",
+    "event": "Round 10",
     "classes": [
-      {
-        "key": "GTP",
-        "label": "GTP",
-        "color": "#E10600",
-        "race": [
-          {
-            "position": 1,
-            "code": "GTP-93",
-            "number": "93",
-            "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-            "manufacturer": "Acura",
-            "vehicle": "Acura ARX-06",
-            "drivers": [
-              "Renger van der Zande",
-              "Nick Yelloly"
-            ],
-            "teamColor": "#CE0E2D",
-            "pWin": 0.239,
-            "pPodium": 0.6353
-          },
-          {
-            "position": 2,
-            "code": "GTP-31",
-            "number": "31",
-            "team": "Cadillac Whelen",
-            "manufacturer": "Cadillac",
-            "vehicle": "Cadillac V-Series.R",
-            "drivers": [
-              "Jack Aitken",
-              "Earl Bamber",
-              "Frederik Vesti"
-            ],
-            "teamColor": "#941E32",
-            "pWin": 0.1877,
-            "pPodium": 0.519
-          },
-          {
-            "position": 3,
-            "code": "GTP-5",
-            "number": "5",
-            "team": "JDC-Miller MotorSports",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 963",
-            "drivers": [
-              "Tijmen van der Helm",
-              "Laurin Heinrich",
-              "Kaylen Frederick"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.1572,
-            "pPodium": 0.4637
-          },
-          {
-            "position": 4,
-            "code": "GTP-7",
-            "number": "7",
-            "team": "Porsche Penske Motorsport",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 963",
-            "drivers": [
-              "Felipe Nasr",
-              "Julien Andlauer"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.1263,
-            "pPodium": 0.4017
-          },
-          {
-            "position": 5,
-            "code": "GTP-40",
-            "number": "40",
-            "team": "Cadillac Wayne Taylor Racing",
-            "manufacturer": "Cadillac",
-            "vehicle": "Cadillac V-Series.R",
-            "drivers": [
-              "Jordan Taylor",
-              "Louis Deletraz"
-            ],
-            "teamColor": "#941E32",
-            "pWin": 0.0633,
-            "pPodium": 0.2325
-          },
-          {
-            "position": 6,
-            "code": "GTP-10",
-            "number": "10",
-            "team": "Cadillac Wayne Taylor Racing",
-            "manufacturer": "Cadillac",
-            "vehicle": "Cadillac V-Series.R",
-            "drivers": [
-              "Ricky Taylor",
-              "Filipe Albuquerque"
-            ],
-            "teamColor": "#941E32",
-            "pWin": 0.064,
-            "pPodium": 0.2257
-          },
-          {
-            "position": 7,
-            "code": "GTP-6",
-            "number": "6",
-            "team": "Porsche Penske Motorsport",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 963",
-            "drivers": [
-              "Laurens Vanthoor",
-              "Kevin Estre"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.0715,
-            "pPodium": 0.2255
-          },
-          {
-            "position": 8,
-            "code": "GTP-25",
-            "number": "25",
-            "team": "BMW M Team WRT",
-            "manufacturer": "BMW",
-            "vehicle": "BMW M Hybrid V8",
-            "drivers": [
-              "Philipp Eng",
-              "Marco Wittmann"
-            ],
-            "teamColor": "#0166B1",
-            "pWin": 0.0308,
-            "pPodium": 0.1002
-          },
-          {
-            "position": 9,
-            "code": "GTP-24",
-            "number": "24",
-            "team": "BMW M Team WRT",
-            "manufacturer": "BMW",
-            "vehicle": "BMW M Hybrid V8",
-            "drivers": [
-              "Dries Vanthoor",
-              "Sheldon van der Linde"
-            ],
-            "teamColor": "#0166B1",
-            "pWin": 0.021,
-            "pPodium": 0.071
-          },
-          {
-            "position": 10,
-            "code": "GTP-60",
-            "number": "60",
-            "team": "Acura Meyer Shank Racing w/Curb Agajanian",
-            "manufacturer": "Acura",
-            "vehicle": "Acura ARX-06",
-            "drivers": [
-              "Tom Blomqvist",
-              "Colin Braun"
-            ],
-            "teamColor": "#CE0E2D",
-            "pWin": 0.021,
-            "pPodium": 0.0658
-          },
-          {
-            "position": 11,
-            "code": "GTP-23",
-            "number": "23",
-            "team": "ASTON MARTIN THOR Team",
-            "manufacturer": "Aston Martin",
-            "vehicle": "Aston Martin Valkyrie",
-            "drivers": [
-              "Ross Gunn",
-              "Roman De Angelis"
-            ],
-            "teamColor": "#00665E",
-            "pWin": 0.0182,
-            "pPodium": 0.0597
-          }
-        ]
-      },
-      {
-        "key": "LMP2",
-        "label": "LMP2",
-        "color": "#4EA8DE",
-        "race": [
-          {
-            "position": 1,
-            "code": "LMP2-04",
-            "number": "04",
-            "team": "Crowdstrike Racing by APR",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "George Kurtz",
-              "Alex Quinn",
-              "Toby Sowery"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.2322,
-            "pPodium": 0.6173
-          },
-          {
-            "position": 2,
-            "code": "LMP2-43",
-            "number": "43",
-            "team": "Inter Europol Competition",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Jeremy Clarke",
-              "Bijoy Garg",
-              "Tom Dillmann"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.212,
-            "pPodium": 0.5808
-          },
-          {
-            "position": 3,
-            "code": "LMP2-99",
-            "number": "99",
-            "team": "AO Racing",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "PJ Hyett",
-              "Dane Cameron",
-              "Jonny Edgar"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.156,
-            "pPodium": 0.462
-          },
-          {
-            "position": 4,
-            "code": "LMP2-22",
-            "number": "22",
-            "team": "United Autosports USA",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Daniel Goldburg",
-              "Paul Di Resta",
-              "Rasmus Lindh"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.073,
-            "pPodium": 0.2465
-          },
-          {
-            "position": 5,
-            "code": "LMP2-8",
-            "number": "8",
-            "team": "Tower Motorsports",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "John Farano",
-              "Sebastian Alvarez",
-              "Tristan Vautier"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0643,
-            "pPodium": 0.2137
-          },
-          {
-            "position": 6,
-            "code": "LMP2-52",
-            "number": "52",
-            "team": "Bryan Herta Autosport with PR1/Mathiasen",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Misha Goikhberg",
-              "Parker Thompson",
-              "Harry Tincknell"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0645,
-            "pPodium": 0.2175
-          },
-          {
-            "position": 7,
-            "code": "LMP2-11",
-            "number": "11",
-            "team": "TDS Racing",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Tobi Lutke",
-              "Mathias Beche",
-              "David Heinemeier Hansson"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0558,
-            "pPodium": 0.1892
-          },
-          {
-            "position": 8,
-            "code": "LMP2-18",
-            "number": "18",
-            "team": "Era Motorsport",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Naveen Rao",
-              "Ferdinand Habsburg",
-              "Jacob Abel"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.045,
-            "pPodium": 0.1398
-          },
-          {
-            "position": 9,
-            "code": "LMP2-79",
-            "number": "79",
-            "team": "JDC-Miller MotorSports",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Gerry Kraut",
-              "Josh Burdon",
-              "Sennan Fielding"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0382,
-            "pPodium": 0.1233
-          },
-          {
-            "position": 10,
-            "code": "LMP2-2",
-            "number": "2",
-            "team": "United Autosports USA",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Phil Fayer",
-              "Hunter McElrea",
-              "Mikkel Jensen"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0352,
-            "pPodium": 0.1153
-          },
-          {
-            "position": 11,
-            "code": "LMP2-73",
-            "number": "73",
-            "team": "Pratt Miller Motorsports",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Pietro Fittipaldi",
-              "Manuel Espirito Santo",
-              "Chris Cumming"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0132,
-            "pPodium": 0.0588
-          },
-          {
-            "position": 12,
-            "code": "LMP2-37",
-            "number": "37",
-            "team": "Intersport Racing",
-            "manufacturer": "Oreca",
-            "vehicle": "ORECA LMP2 07",
-            "drivers": [
-              "Jon Field",
-              "Oliver Jarvis",
-              "Max van der Snel"
-            ],
-            "teamColor": "#5B6670",
-            "pWin": 0.0107,
-            "pPodium": 0.0357
-          }
-        ]
-      },
       {
         "key": "GTDPRO",
         "label": "GTD PRO",
@@ -3689,36 +2116,6 @@
         "race": [
           {
             "position": 1,
-            "code": "GTDP-77",
-            "number": "77",
-            "team": "AO Racing",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 911 GT3 R (992)",
-            "drivers": [
-              "Nick Tandy",
-              "Harry King"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.2057,
-            "pPodium": 0.5578
-          },
-          {
-            "position": 2,
-            "code": "GTDP-4",
-            "number": "4",
-            "team": "Corvette Racing by Pratt Miller Motorsports",
-            "manufacturer": "Chevrolet",
-            "vehicle": "Chevrolet Corvette Z06 GT3.R",
-            "drivers": [
-              "Tommy Milner",
-              "Nicky Catsburg"
-            ],
-            "teamColor": "#C5B358",
-            "pWin": 0.1953,
-            "pPodium": 0.5188
-          },
-          {
-            "position": 3,
             "code": "GTDP-9",
             "number": "9",
             "team": "Pfaff Motorsports",
@@ -3729,11 +2126,11 @@
               "Sandy Mitchell"
             ],
             "teamColor": "#B4A46A",
-            "pWin": 0.1122,
-            "pPodium": 0.364
+            "pWin": 0.1955,
+            "pPodium": 0.5453
           },
           {
-            "position": 4,
+            "position": 2,
             "code": "GTDP-65",
             "number": "65",
             "team": "Ford Racing",
@@ -3744,11 +2141,11 @@
               "Frederic Vervisch"
             ],
             "teamColor": "#00274D",
-            "pWin": 0.1152,
-            "pPodium": 0.3583
+            "pWin": 0.1808,
+            "pPodium": 0.5252
           },
           {
-            "position": 5,
+            "position": 3,
             "code": "GTDP-64",
             "number": "64",
             "team": "Ford Racing",
@@ -3759,41 +2156,26 @@
               "Dennis Olsen"
             ],
             "teamColor": "#00274D",
-            "pWin": 0.083,
-            "pPodium": 0.264
+            "pWin": 0.192,
+            "pPodium": 0.5068
           },
           {
-            "position": 6,
-            "code": "GTDP-14",
-            "number": "14",
-            "team": "Vasser Sullivan Racing",
-            "manufacturer": "Lexus",
-            "vehicle": "Lexus RC F GT3",
+            "position": 4,
+            "code": "GTDP-4",
+            "number": "4",
+            "team": "Corvette Racing by Pratt Miller Motorsports",
+            "manufacturer": "Chevrolet",
+            "vehicle": "Chevrolet Corvette Z06 GT3.R",
             "drivers": [
-              "Jack Hawksworth",
-              "Ben Barnicoat"
+              "Tommy Milner",
+              "Nicky Catsburg"
             ],
-            "teamColor": "#1A1A1A",
-            "pWin": 0.0743,
-            "pPodium": 0.2407
+            "teamColor": "#C5B358",
+            "pWin": 0.12,
+            "pPodium": 0.3718
           },
           {
-            "position": 7,
-            "code": "GTDP-033",
-            "number": "033",
-            "team": "Triarsi Competizione",
-            "manufacturer": "Ferrari",
-            "vehicle": "Ferrari 296 GT3 EVO",
-            "drivers": [
-              "James Calado",
-              "Riccardo Agostini"
-            ],
-            "teamColor": "#DA291C",
-            "pWin": 0.0558,
-            "pPodium": 0.1837
-          },
-          {
-            "position": 8,
+            "position": 5,
             "code": "GTDP-1",
             "number": "1",
             "team": "Paul Miller Racing",
@@ -3804,8 +2186,53 @@
               "Connor De Phillippi"
             ],
             "teamColor": "#0166B1",
-            "pWin": 0.0503,
-            "pPodium": 0.1708
+            "pWin": 0.1037,
+            "pPodium": 0.338
+          },
+          {
+            "position": 6,
+            "code": "GTDP-68",
+            "number": "68",
+            "team": "Car Blanche",
+            "manufacturer": "Aston Martin",
+            "vehicle": "Aston Martin Vantage GT3 Evo",
+            "drivers": [
+              "Marco Sorensen",
+              "Valentin Hasse Clot"
+            ],
+            "teamColor": "#00665E",
+            "pWin": 0.0615,
+            "pPodium": 0.2055
+          },
+          {
+            "position": 7,
+            "code": "GTDP-77",
+            "number": "77",
+            "team": "AO Racing",
+            "manufacturer": "Porsche",
+            "vehicle": "Porsche 911 GT3 R (992)",
+            "drivers": [
+              "Nick Tandy",
+              "Harry King"
+            ],
+            "teamColor": "#B9975B",
+            "pWin": 0.0513,
+            "pPodium": 0.1985
+          },
+          {
+            "position": 8,
+            "code": "GTDP-14",
+            "number": "14",
+            "team": "Vasser Sullivan Racing",
+            "manufacturer": "Lexus",
+            "vehicle": "Lexus RC F GT3",
+            "drivers": [
+              "Jack Hawksworth",
+              "Ben Barnicoat"
+            ],
+            "teamColor": "#1A1A1A",
+            "pWin": 0.0542,
+            "pPodium": 0.1787
           },
           {
             "position": 9,
@@ -3819,41 +2246,11 @@
               "Alexander Sims"
             ],
             "teamColor": "#C5B358",
-            "pWin": 0.049,
-            "pPodium": 0.1538
+            "pWin": 0.0333,
+            "pPodium": 0.0997
           },
           {
             "position": 10,
-            "code": "GTDP-911",
-            "number": "911",
-            "team": "Manthey",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 911 GT3 R (992)",
-            "drivers": [
-              "Klaus Bachler",
-              "Thomas Preining"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.0317,
-            "pPodium": 0.1005
-          },
-          {
-            "position": 11,
-            "code": "GTDP-62",
-            "number": "62",
-            "team": "Risi Competizione",
-            "manufacturer": "Ferrari",
-            "vehicle": "Ferrari 296 GT3 EVO",
-            "drivers": [
-              "Daniel Serra",
-              "Davide Rigon"
-            ],
-            "teamColor": "#DA291C",
-            "pWin": 0.0198,
-            "pPodium": 0.0627
-          },
-          {
-            "position": 12,
             "code": "GTDP-59",
             "number": "59",
             "team": "RLL Team McLaren",
@@ -3865,7 +2262,7 @@
             ],
             "teamColor": "#FF8000",
             "pWin": 0.0077,
-            "pPodium": 0.0248
+            "pPodium": 0.0305
           }
         ]
       },
@@ -3876,22 +2273,6 @@
         "race": [
           {
             "position": 1,
-            "code": "GTD-068",
-            "number": "068",
-            "team": "Car Blanche",
-            "manufacturer": "Aston Martin",
-            "vehicle": "Aston Martin Vantage GT3 Evo",
-            "drivers": [
-              "Marius Fossard",
-              "Valentin Hasse Clot",
-              "Trenton Estep"
-            ],
-            "teamColor": "#00665E",
-            "pWin": 0.2158,
-            "pPodium": 0.5612
-          },
-          {
-            "position": 2,
             "code": "GTD-96",
             "number": "96",
             "team": "Turner Motorsport",
@@ -3899,95 +2280,29 @@
             "vehicle": "BMW M4 GT3 EVO",
             "drivers": [
               "Patrick Gallagher",
-              "Robby Foley",
-              "Francis Selldorff"
+              "Robby Foley"
             ],
             "teamColor": "#0166B1",
-            "pWin": 0.1115,
-            "pPodium": 0.3348
+            "pWin": 0.2337,
+            "pPodium": 0.6017
           },
           {
-            "position": 3,
+            "position": 2,
             "code": "GTD-57",
             "number": "57",
-            "team": "WINWARD RACING",
+            "team": "Winward Racing",
             "manufacturer": "Mercedes-AMG",
             "vehicle": "Mercedes-AMG GT3",
             "drivers": [
               "Russell Ward",
-              "Philip Ellis",
-              "Indy Dontje"
+              "Philip Ellis"
             ],
             "teamColor": "#00A19B",
-            "pWin": 0.1137,
-            "pPodium": 0.3285
+            "pWin": 0.2168,
+            "pPodium": 0.5787
           },
           {
-            "position": 4,
-            "code": "GTD-023",
-            "number": "023",
-            "team": "Triarsi Competizione",
-            "manufacturer": "Ferrari",
-            "vehicle": "Ferrari 296 GT3 EVO",
-            "drivers": [
-              "Onofrio Triarsi",
-              "Kenton Koch",
-              "Robert Megennis"
-            ],
-            "teamColor": "#DA291C",
-            "pWin": 0.114,
-            "pPodium": 0.3225
-          },
-          {
-            "position": 5,
-            "code": "GTD-80",
-            "number": "80",
-            "team": "Lone Star Racing",
-            "manufacturer": "Mercedes-AMG",
-            "vehicle": "Mercedes-AMG GT3",
-            "drivers": [
-              "Scott Andrews",
-              "Lin Hodenius",
-              "James Roe"
-            ],
-            "teamColor": "#00A19B",
-            "pWin": 0.0773,
-            "pPodium": 0.2442
-          },
-          {
-            "position": 6,
-            "code": "GTD-12",
-            "number": "12",
-            "team": "Vasser Sullivan Racing",
-            "manufacturer": "Lexus",
-            "vehicle": "Lexus RC F GT3",
-            "drivers": [
-              "Aaron Telitz",
-              "Benjamin Pedersen",
-              "Frankie Montecalvo"
-            ],
-            "teamColor": "#1A1A1A",
-            "pWin": 0.069,
-            "pPodium": 0.2135
-          },
-          {
-            "position": 7,
-            "code": "GTD-81",
-            "number": "81",
-            "team": "DragonSpeed",
-            "manufacturer": "Chevrolet",
-            "vehicle": "Chevrolet Corvette Z06 GT3.R",
-            "drivers": [
-              "Giacomo Alto\u00e8",
-              "Casper Stevenson",
-              "Alec Udell"
-            ],
-            "teamColor": "#C5B358",
-            "pWin": 0.0445,
-            "pPodium": 0.1462
-          },
-          {
-            "position": 8,
+            "position": 3,
             "code": "GTD-27",
             "number": "27",
             "team": "Heart of Racing Team",
@@ -3995,47 +2310,14 @@
             "vehicle": "Aston Martin Vantage GT3 Evo",
             "drivers": [
               "Dudu Barrichello",
-              "Tom Gamble",
-              "Zacharie Robichon"
+              "Tom Gamble"
             ],
             "teamColor": "#00665E",
-            "pWin": 0.0362,
-            "pPodium": 0.1232
+            "pWin": 0.1205,
+            "pPodium": 0.3887
           },
           {
-            "position": 9,
-            "code": "GTD-13",
-            "number": "13",
-            "team": "13 Autosport",
-            "manufacturer": "Chevrolet",
-            "vehicle": "Chevrolet Corvette Z06 GT3.R",
-            "drivers": [
-              "Orey Fidani",
-              "Matthew Bell",
-              "Lars Kern"
-            ],
-            "teamColor": "#C5B358",
-            "pWin": 0.0367,
-            "pPodium": 0.1142
-          },
-          {
-            "position": 10,
-            "code": "GTD-21",
-            "number": "21",
-            "team": "Af Corse Usa",
-            "manufacturer": "Ferrari",
-            "vehicle": "Ferrari 296 GT3 EVO",
-            "drivers": [
-              "Simon Mann",
-              "Lilou Wadoux Ducellier",
-              "Antonio Fuoco"
-            ],
-            "teamColor": "#DA291C",
-            "pWin": 0.0287,
-            "pPodium": 0.0987
-          },
-          {
-            "position": 11,
+            "position": 4,
             "code": "GTD-70",
             "number": "70",
             "team": "Inception Racing",
@@ -4043,31 +2325,44 @@
             "vehicle": "Ferrari 296 GT3 EVO",
             "drivers": [
               "Brendan Iribe",
-              "Frederik Schandorff",
-              "Ollie Millroy"
+              "Frederik Schandorff"
             ],
             "teamColor": "#DA291C",
-            "pWin": 0.0333,
-            "pPodium": 0.1063
+            "pWin": 0.0845,
+            "pPodium": 0.2775
           },
           {
-            "position": 12,
-            "code": "GTD-28",
-            "number": "28",
-            "team": "Rs1",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 911 GT3 R (992)",
+            "position": 5,
+            "code": "GTD-12",
+            "number": "12",
+            "team": "Vasser Sullivan Racing",
+            "manufacturer": "Lexus",
+            "vehicle": "Lexus RC F GT3",
             "drivers": [
-              "Devlin Defrancesco",
-              "Ryan Yardley",
-              "Jan Heylen"
+              "Aaron Telitz",
+              "Benjamin Pedersen"
             ],
-            "teamColor": "#B9975B",
-            "pWin": 0.0243,
-            "pPodium": 0.0872
+            "teamColor": "#1A1A1A",
+            "pWin": 0.0825,
+            "pPodium": 0.2577
           },
           {
-            "position": 13,
+            "position": 6,
+            "code": "GTD-13",
+            "number": "13",
+            "team": "13 Autosport",
+            "manufacturer": "Chevrolet",
+            "vehicle": "Chevrolet Corvette Z06 GT3.R",
+            "drivers": [
+              "Orey Fidani",
+              "Matthew Bell"
+            ],
+            "teamColor": "#C5B358",
+            "pWin": 0.0643,
+            "pPodium": 0.2035
+          },
+          {
+            "position": 7,
             "code": "GTD-45",
             "number": "45",
             "team": "Wayne Taylor Racing",
@@ -4075,15 +2370,14 @@
             "vehicle": "Lamborghini Huracan GT3 EVO2",
             "drivers": [
               "Danny Formal",
-              "Trent Hindman",
-              "Graham Doyle"
+              "Trent Hindman"
             ],
             "teamColor": "#B4A46A",
-            "pWin": 0.0233,
-            "pPodium": 0.0642
+            "pWin": 0.0488,
+            "pPodium": 0.175
           },
           {
-            "position": 14,
+            "position": 8,
             "code": "GTD-34",
             "number": "34",
             "team": "Conquest Racing",
@@ -4091,47 +2385,14 @@
             "vehicle": "Ferrari 296 GT3 EVO",
             "drivers": [
               "Albert Costa",
-              "Lorenzo Patrese",
-              "Fran Rueda"
+              "Lorenzo Patrese"
             ],
             "teamColor": "#DA291C",
-            "pWin": 0.0158,
-            "pPodium": 0.0553
+            "pWin": 0.0467,
+            "pPodium": 0.16
           },
           {
-            "position": 15,
-            "code": "GTD-120",
-            "number": "120",
-            "team": "Wright Motorsports",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 911 GT3 R (992)",
-            "drivers": [
-              "Adam Adelson",
-              "Callum Ilott",
-              "Tom Sargent"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.0107,
-            "pPodium": 0.0457
-          },
-          {
-            "position": 16,
-            "code": "GTD-912",
-            "number": "912",
-            "team": "Manthey 1St Phorm",
-            "manufacturer": "Porsche",
-            "vehicle": "Porsche 911 GT3 R (992)",
-            "drivers": [
-              "Ryan Hardwick",
-              "Riccardo Pera",
-              "Morris Schuring"
-            ],
-            "teamColor": "#B9975B",
-            "pWin": 0.0148,
-            "pPodium": 0.0475
-          },
-          {
-            "position": 17,
+            "position": 9,
             "code": "GTD-36",
             "number": "36",
             "team": "DXDT Racing",
@@ -4139,15 +2400,44 @@
             "vehicle": "Chevrolet Corvette Z06 GT3.R",
             "drivers": [
               "Mason Filippi",
-              "Robert Wickens",
-              "Charlie Eastwood"
+              "Robert Wickens"
             ],
             "teamColor": "#C5B358",
-            "pWin": 0.0125,
-            "pPodium": 0.0455
+            "pWin": 0.029,
+            "pPodium": 0.1037
           },
           {
-            "position": 18,
+            "position": 10,
+            "code": "GTD-120",
+            "number": "120",
+            "team": "Wright Motorsports",
+            "manufacturer": "Porsche",
+            "vehicle": "Porsche 911 GT3 R (992)",
+            "drivers": [
+              "Adam Adelson",
+              "Callum Ilott"
+            ],
+            "teamColor": "#B9975B",
+            "pWin": 0.0258,
+            "pPodium": 0.0938
+          },
+          {
+            "position": 11,
+            "code": "GTD-81",
+            "number": "81",
+            "team": "DragonSpeed",
+            "manufacturer": "Chevrolet",
+            "vehicle": "Chevrolet Corvette Z06 GT3.R",
+            "drivers": [
+              "Giacomo Alto\u00e8",
+              "Casper Stevenson"
+            ],
+            "teamColor": "#C5B358",
+            "pWin": 0.0183,
+            "pPodium": 0.0642
+          },
+          {
+            "position": 12,
             "code": "GTD-66",
             "number": "66",
             "team": "Gradient Racing",
@@ -4155,15 +2445,14 @@
             "vehicle": "Ford Mustang GT3",
             "drivers": [
               "Jake Walker",
-              "Till Bechtolsheimer",
-              "Joey Hand"
+              "Corey Lewis"
             ],
             "teamColor": "#00274D",
-            "pWin": 0.0112,
-            "pPodium": 0.0363
+            "pWin": 0.0185,
+            "pPodium": 0.0592
           },
           {
-            "position": 19,
+            "position": 13,
             "code": "GTD-16",
             "number": "16",
             "team": "Myers Riley Motorsports",
@@ -4171,12 +2460,11 @@
             "vehicle": "Ford Mustang GT3",
             "drivers": [
               "Sheena Monk",
-              "Felipe Fraga",
-              "Jenson Altzman"
+              "Felipe Fraga"
             ],
             "teamColor": "#00274D",
-            "pWin": 0.0067,
-            "pPodium": 0.0252
+            "pWin": 0.0105,
+            "pPodium": 0.0365
           }
         ]
       }

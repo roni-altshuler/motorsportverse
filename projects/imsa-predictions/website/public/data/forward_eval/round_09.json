@@ -1,0 +1,159 @@
+{
+  "round": 9,
+  "season": 2026,
+  "place": "Alton",
+  "country": "United States",
+  "event": "Virginia International Raceway",
+  "classes": [
+    {
+      "class": "GTDPRO",
+      "label": "GTD PRO",
+      "color": "#F4A259",
+      "field": 10,
+      "score": {
+        "n": 10,
+        "mean_position_error": 3.0,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 7,
+        "within_5": 9,
+        "exact_matches": 1,
+        "spearman_correlation": 0.17575757575757575,
+        "ndcg_at_5": 0.6342237746874501
+      },
+      "markets": {
+        "win": {
+          "brier": 0.088702,
+          "logLoss": 0.301497
+        },
+        "podium": {
+          "brier": 0.196166,
+          "logLoss": 0.547585
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 10,
+            "mean_position_error": 2.8,
+            "winner_hit": true,
+            "podium_hits": 1,
+            "within_3": 8,
+            "within_5": 8,
+            "exact_matches": 1,
+            "spearman_correlation": 0.24848484848484848,
+            "ndcg_at_5": 0.8039825948340603
+          },
+          "markets": {
+            "win": {
+              "brier": 0.06795,
+              "logLoss": 0.225623
+            },
+            "podium": {
+              "brier": 0.155813,
+              "logLoss": 0.457299
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 10,
+            "mean_position_error": 3.6,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 5,
+            "within_5": 7,
+            "exact_matches": 0,
+            "spearman_correlation": -0.030303030303030304,
+            "ndcg_at_5": 0.6413130131564994
+          },
+          "markets": {
+            "win": {
+              "brier": 0.093802,
+              "logLoss": 0.328943
+            },
+            "podium": {
+              "brier": 0.232774,
+              "logLoss": 0.634861
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "GTD",
+      "label": "GTD",
+      "color": "#B57BFF",
+      "field": 13,
+      "score": {
+        "n": 13,
+        "mean_position_error": 2.308,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 10,
+        "within_5": 11,
+        "exact_matches": 3,
+        "spearman_correlation": 0.6098901098901099,
+        "ndcg_at_5": 0.7920610446724745
+      },
+      "markets": {
+        "win": {
+          "brier": 0.054178,
+          "logLoss": 0.180543
+        },
+        "podium": {
+          "brier": 0.106857,
+          "logLoss": 0.353058
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 2.769,
+            "winner_hit": true,
+            "podium_hits": 2,
+            "within_3": 10,
+            "within_5": 11,
+            "exact_matches": 2,
+            "spearman_correlation": 0.46703296703296704,
+            "ndcg_at_5": 0.8092291234786476
+          },
+          "markets": {
+            "win": {
+              "brier": 0.047454,
+              "logLoss": 0.16268
+            },
+            "podium": {
+              "brier": 0.109744,
+              "logLoss": 0.349065
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 2.308,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 10,
+            "within_5": 12,
+            "exact_matches": 1,
+            "spearman_correlation": 0.7252747252747253,
+            "ndcg_at_5": 0.8465428439012183
+          },
+          "markets": {
+            "win": {
+              "brier": 0.069288,
+              "logLoss": 0.235518
+            },
+            "podium": {
+              "brier": 0.148831,
+              "logLoss": 0.446759
+            }
+          }
+        }
+      }
+    }
+  ]
+}

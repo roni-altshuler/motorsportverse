@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "RaceIQ IMSA",
-  "generatedAt": "2026-08-11T07:25:35Z",
-  "roundsScored": 8,
+  "generatedAt": "2026-08-23T19:05:23Z",
+  "roundsScored": 9,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Last race order",
     "raceType": "GTD",
     "lowerIsBetter": true,
-    "nRounds": 7,
+    "nRounds": 8,
     "rounds": [
       1,
       2,
@@ -20,17 +20,18 @@
       4,
       6,
       7,
-      8
+      8,
+      9
     ],
-    "modelMean": 5.299857,
-    "baselineMean": 5.31,
-    "delta": -0.010143,
-    "improvement": 0.010143,
-    "ciLow": -0.338857,
-    "ciHigh": 0.318,
-    "pModelBetter": 0.554,
+    "modelMean": 4.925875,
+    "baselineMean": 4.992375,
+    "delta": -0.0665,
+    "improvement": 0.0665,
+    "ciLow": -0.244625,
+    "ciHigh": 0.33575,
+    "pModelBetter": 0.6625,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -39,7 +40,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTD",
       "lowerIsBetter": true,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -47,17 +48,18 @@
         4,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 5.299857,
-      "baselineMean": 5.31,
-      "delta": -0.010143,
-      "improvement": 0.010143,
-      "ciLow": -0.338857,
-      "ciHigh": 0.318,
-      "pModelBetter": 0.554,
+      "modelMean": 4.925875,
+      "baselineMean": 4.992375,
+      "delta": -0.0665,
+      "improvement": 0.0665,
+      "ciLow": -0.244625,
+      "ciHigh": 0.33575,
+      "pModelBetter": 0.6625,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -65,7 +67,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTDPRO",
       "lowerIsBetter": true,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -73,17 +75,18 @@
         5,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 3.434286,
-      "baselineMean": 3.154571,
-      "delta": 0.279714,
-      "improvement": -0.279714,
-      "ciLow": -0.747571,
-      "ciHigh": 0.123714,
-      "pModelBetter": 0.1,
+      "modelMean": 3.38,
+      "baselineMean": 3.11025,
+      "delta": 0.26975,
+      "improvement": -0.26975,
+      "ciLow": -0.64575,
+      "ciHigh": 0.090625,
+      "pModelBetter": 0.0705,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -141,7 +144,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTD",
       "lowerIsBetter": true,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -149,17 +152,18 @@
         4,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 5.299857,
-      "baselineMean": 5.458571,
-      "delta": -0.158714,
-      "improvement": 0.158714,
-      "ciLow": -0.166857,
-      "ciHigh": 0.501,
-      "pModelBetter": 0.8235,
+      "modelMean": 4.925875,
+      "baselineMean": 5.06475,
+      "delta": -0.138875,
+      "improvement": 0.138875,
+      "ciLow": -0.146875,
+      "ciHigh": 0.441625,
+      "pModelBetter": 0.8115,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -167,7 +171,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTDPRO",
       "lowerIsBetter": true,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -175,17 +179,18 @@
         5,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 3.434286,
-      "baselineMean": 3.575286,
-      "delta": -0.141,
-      "improvement": 0.141,
-      "ciLow": -0.163571,
-      "ciHigh": 0.442857,
-      "pModelBetter": 0.811,
+      "modelMean": 3.38,
+      "baselineMean": 3.578375,
+      "delta": -0.198375,
+      "improvement": 0.198375,
+      "ciLow": -0.1165,
+      "ciHigh": 0.475,
+      "pModelBetter": 0.896,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -243,7 +248,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTD",
       "lowerIsBetter": false,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -251,17 +256,18 @@
         4,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 0.628225,
-      "baselineMean": 0.650085,
-      "delta": -0.02186,
-      "improvement": -0.02186,
-      "ciLow": -0.068236,
-      "ciHigh": 0.023515,
-      "pModelBetter": 0.1785,
+      "modelMean": 0.648705,
+      "baselineMean": 0.669978,
+      "delta": -0.021273,
+      "improvement": -0.021273,
+      "ciLow": -0.06417,
+      "ciHigh": 0.018433,
+      "pModelBetter": 0.1435,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -269,7 +275,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTDPRO",
       "lowerIsBetter": false,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -277,17 +283,18 @@
         5,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 0.630803,
-      "baselineMean": 0.717987,
-      "delta": -0.087184,
-      "improvement": -0.087184,
-      "ciLow": -0.137178,
-      "ciHigh": -0.032048,
-      "pModelBetter": 0.001,
+      "modelMean": 0.631231,
+      "baselineMean": 0.728736,
+      "delta": -0.097506,
+      "improvement": -0.097506,
+      "ciLow": -0.141751,
+      "ciHigh": -0.04167,
+      "pModelBetter": 0.0005,
       "verdict": "worse",
-      "note": "the model does NOT beat last race order over 7 paired rounds \u2014 published as measured"
+      "note": "the model does NOT beat last race order over 8 paired rounds \u2014 published as measured"
     },
     {
       "metric": "ndcg_at_5",
@@ -305,13 +312,13 @@
         6,
         8
       ],
-      "modelMean": 0.723986,
-      "baselineMean": 0.69332,
-      "delta": 0.030666,
-      "improvement": 0.030666,
-      "ciLow": -0.011663,
+      "modelMean": 0.724699,
+      "baselineMean": 0.695779,
+      "delta": 0.02892,
+      "improvement": 0.02892,
+      "ciLow": -0.016279,
       "ciHigh": 0.072718,
-      "pModelBetter": 0.924,
+      "pModelBetter": 0.901,
       "verdict": "inconclusive",
       "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
     },
@@ -345,7 +352,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTD",
       "lowerIsBetter": false,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -353,17 +360,18 @@
         4,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 0.628225,
-      "baselineMean": 0.645064,
-      "delta": -0.016839,
-      "improvement": -0.016839,
-      "ciLow": -0.070614,
-      "ciHigh": 0.050719,
-      "pModelBetter": 0.274,
+      "modelMean": 0.648705,
+      "baselineMean": 0.670249,
+      "delta": -0.021545,
+      "improvement": -0.021545,
+      "ciLow": -0.067881,
+      "ciHigh": 0.034308,
+      "pModelBetter": 0.2015,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -371,7 +379,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTDPRO",
       "lowerIsBetter": false,
-      "nRounds": 7,
+      "nRounds": 8,
       "rounds": [
         1,
         2,
@@ -379,17 +387,18 @@
         5,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "modelMean": 0.630803,
-      "baselineMean": 0.550561,
-      "delta": 0.080242,
-      "improvement": 0.080242,
-      "ciLow": 0.017516,
-      "ciHigh": 0.136545,
-      "pModelBetter": 0.9955,
+      "modelMean": 0.631231,
+      "baselineMean": 0.561905,
+      "delta": 0.069326,
+      "improvement": 0.069326,
+      "ciLow": 0.011076,
+      "ciHigh": 0.123366,
+      "pModelBetter": 0.989,
       "verdict": "better",
-      "note": "the model beats season form order over 7 paired rounds"
+      "note": "the model beats season form order over 8 paired rounds"
     },
     {
       "metric": "ndcg_at_5",
@@ -407,11 +416,11 @@
         6,
         8
       ],
-      "modelMean": 0.723986,
-      "baselineMean": 0.777313,
-      "delta": -0.053328,
-      "improvement": -0.053328,
-      "ciLow": -0.098279,
+      "modelMean": 0.724699,
+      "baselineMean": 0.778105,
+      "delta": -0.053406,
+      "improvement": -0.053406,
+      "ciLow": -0.098435,
       "ciHigh": 0.000954,
       "pModelBetter": 0.0295,
       "verdict": "inconclusive",
@@ -444,7 +453,7 @@
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 8,
+    "trainingRounds": 9,
     "dataLimitation": "Calibrated on real IMSA results, per class stratum.",
     "note": "probabilities are calibrated on real results"
   },
