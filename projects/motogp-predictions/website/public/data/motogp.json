@@ -1,9 +1,9 @@
 {
   "sport": "MotoGP",
   "season": 2026,
-  "generatedAt": "2026-08-30T11:58:32+00:00",
-  "completedRounds": 12,
-  "lastUpdatedRound": 12,
+  "generatedAt": "2026-08-30T16:44:27+00:00",
+  "completedRounds": 13,
+  "lastUpdatedRound": 13,
   "totalRounds": 22,
   "calendar": [
     {
@@ -146,8 +146,8 @@
       "city": "Alca\u00f1iz",
       "event": "MICHELIN\u00ae GRAND PRIX OF ARAGON ",
       "date": "2026-08-30",
-      "completed": false,
-      "dataSource": null
+      "completed": true,
+      "dataSource": "snapshot"
     },
     {
       "round": 14,
@@ -258,7 +258,7 @@
       "nationality": "ES",
       "team": "Aprilia",
       "teamColor": "#22A6A0",
-      "points": 240.0,
+      "points": 256.0,
       "wins": 4,
       "podiums": 11,
       "pointsHistory": [
@@ -273,20 +273,48 @@
         172.0,
         193.0,
         208.0,
-        240.0
+        240.0,
+        256.0
       ]
     },
     {
       "position": 2,
+      "code": "MAM",
+      "name": "Marc Marquez",
+      "number": 93,
+      "nationality": "ES",
+      "team": "Ducati",
+      "teamColor": "#C8102E",
+      "points": 237.0,
+      "wins": 9,
+      "podiums": 11,
+      "pointsHistory": [
+        9.0,
+        34.0,
+        45.0,
+        57.0,
+        57.0,
+        57.0,
+        71.0,
+        108.0,
+        140.0,
+        153.0,
+        190.0,
+        200.0,
+        237.0
+      ]
+    },
+    {
+      "position": 3,
       "code": "BEZ",
       "name": "Marco Bezzecchi",
       "number": 72,
       "nationality": "IT",
       "team": "Aprilia",
       "teamColor": "#22A6A0",
-      "points": 209.0,
+      "points": 232.0,
       "wins": 4,
-      "podiums": 10,
+      "podiums": 12,
       "pointsHistory": [
         25.0,
         56.0,
@@ -299,11 +327,39 @@
         180.0,
         186.0,
         186.0,
-        209.0
+        209.0,
+        232.0
       ]
     },
     {
-      "position": 3,
+      "position": 4,
+      "code": "GIA",
+      "name": "Fabio Di Giannantonio",
+      "number": 49,
+      "nationality": "IT",
+      "team": "Ducati",
+      "teamColor": "#C8102E",
+      "points": 208.0,
+      "wins": 1,
+      "podiums": 8,
+      "pointsHistory": [
+        12.0,
+        37.0,
+        50.0,
+        71.0,
+        84.0,
+        116.0,
+        134.0,
+        138.0,
+        157.0,
+        177.0,
+        184.0,
+        199.0,
+        208.0
+      ]
+    },
+    {
+      "position": 5,
       "code": "OGU",
       "name": "Ai Ogura",
       "number": 79,
@@ -325,70 +381,46 @@
         134.0,
         168.0,
         194.0,
+        203.0,
         203.0
       ]
     },
     {
-      "position": 4,
-      "code": "MAM",
-      "name": "Marc Marquez",
-      "number": 93,
-      "nationality": "ES",
-      "team": "Ducati",
-      "teamColor": "#C8102E",
-      "points": 200.0,
-      "wins": 7,
-      "podiums": 9,
-      "pointsHistory": [
-        9.0,
-        34.0,
-        45.0,
-        57.0,
-        57.0,
-        57.0,
-        71.0,
-        108.0,
-        140.0,
-        153.0,
-        190.0,
-        200.0
-      ]
-    },
-    {
-      "position": 5,
-      "code": "GIA",
-      "name": "Fabio Di Giannantonio",
-      "number": 49,
-      "nationality": "IT",
-      "team": "Ducati",
-      "teamColor": "#C8102E",
-      "points": 199.0,
-      "wins": 1,
-      "podiums": 8,
-      "pointsHistory": [
-        12.0,
-        37.0,
-        50.0,
-        71.0,
-        84.0,
-        116.0,
-        134.0,
-        138.0,
-        157.0,
-        177.0,
-        184.0,
-        199.0
-      ]
-    },
-    {
       "position": 6,
+      "code": "ACO",
+      "name": "Pedro Acosta",
+      "number": 37,
+      "nationality": "ES",
+      "team": "KTM",
+      "teamColor": "#FF6900",
+      "points": 189.0,
+      "wins": 1,
+      "podiums": 7,
+      "pointsHistory": [
+        32.0,
+        42.0,
+        60.0,
+        66.0,
+        83.0,
+        92.0,
+        103.0,
+        132.0,
+        132.0,
+        133.0,
+        148.0,
+        163.0,
+        189.0
+      ]
+    },
+    {
+      "position": 7,
       "code": "FE2",
       "name": "Raul Fernandez",
       "number": 25,
       "nationality": "ES",
       "team": "Aprilia",
       "teamColor": "#22A6A0",
-      "points": 184.0,
+      "points": 186.0,
       "wins": 3,
       "podiums": 7,
       "pointsHistory": [
@@ -403,33 +435,8 @@
         106.0,
         138.0,
         159.0,
-        184.0
-      ]
-    },
-    {
-      "position": 7,
-      "code": "ACO",
-      "name": "Pedro Acosta",
-      "number": 37,
-      "nationality": "ES",
-      "team": "KTM",
-      "teamColor": "#FF6900",
-      "points": 163.0,
-      "wins": 1,
-      "podiums": 6,
-      "pointsHistory": [
-        32.0,
-        42.0,
-        60.0,
-        66.0,
-        83.0,
-        92.0,
-        103.0,
-        132.0,
-        132.0,
-        133.0,
-        148.0,
-        163.0
+        184.0,
+        186.0
       ]
     },
     {
@@ -455,6 +462,7 @@
         127.0,
         130.0,
         143.0,
+        143.0,
         143.0
       ]
     },
@@ -466,9 +474,9 @@
       "nationality": "ES",
       "team": "Ducati",
       "teamColor": "#C8102E",
-      "points": 106.0,
+      "points": 128.0,
       "wins": 2,
-      "podiums": 3,
+      "podiums": 4,
       "pointsHistory": [
         0.0,
         13.0,
@@ -481,70 +489,19 @@
         67.0,
         78.0,
         87.0,
-        106.0
+        106.0,
+        128.0
       ]
     },
     {
       "position": 10,
-      "code": "MAL",
-      "name": "Luca Marini",
-      "number": 10,
-      "nationality": "IT",
-      "team": "Honda",
-      "teamColor": "#1C4E9C",
-      "points": 86.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        6.0,
-        11.0,
-        23.0,
-        27.0,
-        33.0,
-        43.0,
-        46.0,
-        57.0,
-        65.0,
-        71.0,
-        79.0,
-        86.0
-      ]
-    },
-    {
-      "position": 11,
-      "code": "BAS",
-      "name": "Enea Bastianini",
-      "number": 23,
-      "nationality": "IT",
-      "team": "KTM",
-      "teamColor": "#FF6900",
-      "points": 76.0,
-      "wins": 0,
-      "podiums": 1,
-      "pointsHistory": [
-        4.0,
-        5.0,
-        22.0,
-        30.0,
-        39.0,
-        39.0,
-        39.0,
-        48.0,
-        57.0,
-        69.0,
-        76.0,
-        76.0
-      ]
-    },
-    {
-      "position": 12,
       "code": "ALD",
       "name": "Fermin Aldeguer",
       "number": 54,
       "nationality": "ES",
       "team": "Ducati",
       "teamColor": "#C8102E",
-      "points": 76.0,
+      "points": 90.0,
       "wins": 0,
       "podiums": 1,
       "pointsHistory": [
@@ -559,7 +516,62 @@
         76.0,
         76.0,
         76.0,
-        76.0
+        76.0,
+        90.0
+      ]
+    },
+    {
+      "position": 11,
+      "code": "MAL",
+      "name": "Luca Marini",
+      "number": 10,
+      "nationality": "IT",
+      "team": "Honda",
+      "teamColor": "#1C4E9C",
+      "points": 88.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        6.0,
+        11.0,
+        23.0,
+        27.0,
+        33.0,
+        43.0,
+        46.0,
+        57.0,
+        65.0,
+        71.0,
+        79.0,
+        86.0,
+        88.0
+      ]
+    },
+    {
+      "position": 12,
+      "code": "BAS",
+      "name": "Enea Bastianini",
+      "number": 23,
+      "nationality": "IT",
+      "team": "KTM",
+      "teamColor": "#FF6900",
+      "points": 84.0,
+      "wins": 0,
+      "podiums": 1,
+      "pointsHistory": [
+        4.0,
+        5.0,
+        22.0,
+        30.0,
+        39.0,
+        39.0,
+        39.0,
+        48.0,
+        57.0,
+        69.0,
+        76.0,
+        76.0,
+        84.0
       ]
     },
     {
@@ -570,7 +582,7 @@
       "nationality": "ZA",
       "team": "KTM",
       "teamColor": "#FF6900",
-      "points": 72.0,
+      "points": 78.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -585,11 +597,39 @@
         53.0,
         58.0,
         64.0,
-        72.0
+        72.0,
+        78.0
       ]
     },
     {
       "position": 14,
+      "code": "MOR",
+      "name": "Diogo Moreira",
+      "number": 11,
+      "nationality": "BR",
+      "team": "Honda",
+      "teamColor": "#1C4E9C",
+      "points": 64.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        3.0,
+        6.0,
+        9.0,
+        9.0,
+        10.0,
+        17.0,
+        23.0,
+        36.0,
+        41.0,
+        43.0,
+        48.0,
+        54.0,
+        64.0
+      ]
+    },
+    {
+      "position": 15,
       "code": "QUA",
       "name": "Fabio Quartararo",
       "number": 20,
@@ -611,33 +651,8 @@
         37.0,
         45.0,
         55.0,
+        55.0,
         55.0
-      ]
-    },
-    {
-      "position": 15,
-      "code": "MOR",
-      "name": "Diogo Moreira",
-      "number": 11,
-      "nationality": "BR",
-      "team": "Honda",
-      "teamColor": "#1C4E9C",
-      "points": 54.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        3.0,
-        6.0,
-        9.0,
-        9.0,
-        10.0,
-        17.0,
-        23.0,
-        36.0,
-        41.0,
-        43.0,
-        48.0,
-        54.0
       ]
     },
     {
@@ -663,6 +678,7 @@
         43.0,
         43.0,
         46.0,
+        53.0,
         53.0
       ]
     },
@@ -674,7 +690,7 @@
       "nationality": "FR",
       "team": "Honda",
       "teamColor": "#1C4E9C",
-      "points": 34.0,
+      "points": 36.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -689,7 +705,8 @@
         34.0,
         34.0,
         34.0,
-        34.0
+        34.0,
+        36.0
       ]
     },
     {
@@ -700,7 +717,7 @@
       "nationality": "ES",
       "team": "Honda",
       "teamColor": "#1C4E9C",
-      "points": 29.0,
+      "points": 33.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -715,7 +732,8 @@
         26.0,
         26.0,
         26.0,
-        29.0
+        29.0,
+        33.0
       ]
     },
     {
@@ -726,7 +744,7 @@
       "nationality": "AU",
       "team": "Yamaha",
       "teamColor": "#0A2472",
-      "points": 23.0,
+      "points": 28.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -741,7 +759,8 @@
         11.0,
         15.0,
         19.0,
-        23.0
+        23.0,
+        28.0
       ]
     },
     {
@@ -752,7 +771,7 @@
       "nationality": "ES",
       "team": "Yamaha",
       "teamColor": "#0A2472",
-      "points": 21.0,
+      "points": 24.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -767,7 +786,8 @@
         12.0,
         19.0,
         21.0,
-        21.0
+        21.0,
+        24.0
       ]
     },
     {
@@ -793,6 +813,7 @@
         11.0,
         11.0,
         12.0,
+        14.0,
         14.0
       ]
     },
@@ -819,6 +840,7 @@
         7.0,
         10.0,
         10.0,
+        10.0,
         10.0
       ]
     },
@@ -841,6 +863,7 @@
         0,
         0,
         0,
+        9.0,
         9.0,
         9.0,
         9.0,
@@ -871,6 +894,7 @@
         4.0,
         5.0,
         5.0,
+        6.0,
         6.0
       ]
     },
@@ -897,6 +921,7 @@
         0,
         0,
         0,
+        3.0,
         3.0
       ]
     },
@@ -912,6 +937,7 @@
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
+        0.0,
         0.0,
         0.0,
         0.0,
@@ -949,7 +975,8 @@
         0,
         0,
         0,
-        0
+        0,
+        0.0
       ]
     },
     {
@@ -968,6 +995,7 @@
         0,
         0,
         0,
+        0.0,
         0.0,
         0.0,
         0.0,
@@ -1001,6 +1029,7 @@
         0.0,
         0.0,
         0.0,
+        0.0,
         0.0
       ]
     }
@@ -1010,9 +1039,9 @@
       "position": 1,
       "team": "Aprilia",
       "teamColor": "#22A6A0",
-      "points": 836.0,
+      "points": 877.0,
       "wins": 12,
-      "podiums": 35,
+      "podiums": 37,
       "pointsHistory": [
         83.0,
         163.0,
@@ -1025,16 +1054,17 @@
         592.0,
         685.0,
         747.0,
-        836.0
+        836.0,
+        877.0
       ]
     },
     {
       "position": 2,
       "team": "Ducati",
       "teamColor": "#C8102E",
-      "points": 786.0,
-      "wins": 11,
-      "podiums": 30,
+      "points": 868.0,
+      "wins": 13,
+      "podiums": 33,
       "pointsHistory": [
         37.0,
         114.0,
@@ -1047,16 +1077,17 @@
         619.0,
         666.0,
         735.0,
-        786.0
+        786.0,
+        868.0
       ]
     },
     {
       "position": 3,
       "team": "KTM",
       "teamColor": "#FF6900",
-      "points": 324.0,
+      "points": 364.0,
       "wins": 1,
-      "podiums": 7,
+      "podiums": 8,
       "pointsHistory": [
         49.0,
         60.0,
@@ -1069,14 +1100,15 @@
         249.0,
         270.0,
         298.0,
-        324.0
+        324.0,
+        364.0
       ]
     },
     {
       "position": 4,
       "team": "Honda",
       "teamColor": "#1C4E9C",
-      "points": 203.0,
+      "points": 221.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -1091,14 +1123,15 @@
         166.0,
         174.0,
         187.0,
-        203.0
+        203.0,
+        221.0
       ]
     },
     {
       "position": 5,
       "team": "Yamaha",
       "teamColor": "#0A2472",
-      "points": 119.0,
+      "points": 127.0,
       "wins": 0,
       "podiums": 0,
       "pointsHistory": [
@@ -1113,7 +1146,8 @@
         75.0,
         95.0,
         112.0,
-        119.0
+        119.0,
+        127.0
       ]
     }
   ],
@@ -1122,72 +1156,72 @@
       "code": "MAR",
       "name": "Jorge Martin",
       "team": "Aprilia",
-      "pTitle": 0.688,
-      "currentPoints": 240.0,
-      "projMean": 416.478,
-      "projP10": 386.0,
-      "projP90": 447.0,
-      "maxAttainable": 610.0,
+      "pTitle": 0.4698,
+      "currentPoints": 256.0,
+      "projMean": 407.178,
+      "projP10": 378.0,
+      "projP90": 437.0,
+      "maxAttainable": 589.0,
       "canStillWin": true
     },
     {
       "code": "BEZ",
       "name": "Marco Bezzecchi",
       "team": "Aprilia",
-      "pTitle": 0.2357,
-      "currentPoints": 209.0,
-      "projMean": 394.926,
-      "projP10": 364.0,
-      "projP90": 426.0,
-      "maxAttainable": 579.0,
-      "canStillWin": true
-    },
-    {
-      "code": "OGU",
-      "name": "Ai Ogura",
-      "team": "Aprilia",
-      "pTitle": 0.0545,
-      "currentPoints": 203.0,
-      "projMean": 368.843,
-      "projP10": 338.0,
-      "projP90": 400.0,
-      "maxAttainable": 573.0,
+      "pTitle": 0.3137,
+      "currentPoints": 232.0,
+      "projMean": 399.072,
+      "projP10": 370.0,
+      "projP90": 429.0,
+      "maxAttainable": 565.0,
       "canStillWin": true
     },
     {
       "code": "MAM",
       "name": "Marc Marquez",
       "team": "Ducati",
-      "pTitle": 0.0118,
-      "currentPoints": 200.0,
-      "projMean": 349.755,
-      "projP10": 319.0,
-      "projP90": 381.0,
+      "pTitle": 0.204,
+      "currentPoints": 237.0,
+      "projMean": 390.322,
+      "projP10": 361.0,
+      "projP90": 420.0,
       "maxAttainable": 570.0,
+      "canStillWin": true
+    },
+    {
+      "code": "OGU",
+      "name": "Ai Ogura",
+      "team": "Aprilia",
+      "pTitle": 0.0105,
+      "currentPoints": 203.0,
+      "projMean": 349.859,
+      "projP10": 322.0,
+      "projP90": 379.0,
+      "maxAttainable": 536.0,
       "canStillWin": true
     },
     {
       "code": "GIA",
       "name": "Fabio Di Giannantonio",
       "team": "Ducati",
-      "pTitle": 0.0055,
-      "currentPoints": 199.0,
-      "projMean": 339.981,
-      "projP10": 309.0,
-      "projP90": 371.0,
-      "maxAttainable": 569.0,
+      "pTitle": 0.0015,
+      "currentPoints": 208.0,
+      "projMean": 331.904,
+      "projP10": 303.0,
+      "projP90": 362.0,
+      "maxAttainable": 541.0,
       "canStillWin": true
     },
     {
       "code": "FE2",
       "name": "Raul Fernandez",
       "team": "Aprilia",
-      "pTitle": 0.0045,
-      "currentPoints": 184.0,
-      "projMean": 335.233,
-      "projP10": 305.0,
-      "projP90": 367.0,
-      "maxAttainable": 554.0,
+      "pTitle": 0.0005,
+      "currentPoints": 186.0,
+      "projMean": 312.015,
+      "projP10": 284.0,
+      "projP90": 342.0,
+      "maxAttainable": 519.0,
       "canStillWin": true
     },
     {
@@ -1195,11 +1229,11 @@
       "name": "Pedro Acosta",
       "team": "KTM",
       "pTitle": 0.0,
-      "currentPoints": 163.0,
-      "projMean": 270.957,
-      "projP10": 242.0,
-      "projP90": 302.0,
-      "maxAttainable": 533.0,
+      "currentPoints": 189.0,
+      "projMean": 294.257,
+      "projP10": 266.0,
+      "projP90": 324.0,
+      "maxAttainable": 522.0,
       "canStillWin": true
     },
     {
@@ -1207,11 +1241,11 @@
       "name": "Brad Binder",
       "team": "KTM",
       "pTitle": 0.0,
-      "currentPoints": 72.0,
-      "projMean": 116.083,
-      "projP10": 94.0,
-      "projP90": 141.0,
-      "maxAttainable": 442.0,
+      "currentPoints": 78.0,
+      "projMean": 115.229,
+      "projP10": 95.0,
+      "projP90": 138.0999999999999,
+      "maxAttainable": 411.0,
       "canStillWin": true
     },
     {
@@ -1219,11 +1253,11 @@
       "name": "Joan Mir",
       "team": "Honda",
       "pTitle": 0.0,
-      "currentPoints": 29.0,
-      "projMean": 65.279,
-      "projP10": 45.0,
-      "projP90": 87.0,
-      "maxAttainable": 399.0,
+      "currentPoints": 33.0,
+      "projMean": 60.915,
+      "projP10": 43.0,
+      "projP90": 81.0,
+      "maxAttainable": 366.0,
       "canStillWin": true
     },
     {
@@ -1232,10 +1266,10 @@
       "team": "Ducati",
       "pTitle": 0.0,
       "currentPoints": 143.0,
-      "projMean": 248.942,
-      "projP10": 220.90000000000003,
-      "projP90": 279.0,
-      "maxAttainable": 513.0,
+      "projMean": 233.6,
+      "projP10": 207.0,
+      "projP90": 261.0,
+      "maxAttainable": 476.0,
       "canStillWin": true
     },
     {
@@ -1243,11 +1277,11 @@
       "name": "Luca Marini",
       "team": "Honda",
       "pTitle": 0.0,
-      "currentPoints": 86.0,
-      "projMean": 125.908,
-      "projP10": 104.0,
-      "projP90": 150.0,
-      "maxAttainable": 456.0,
+      "currentPoints": 88.0,
+      "projMean": 120.972,
+      "projP10": 102.0,
+      "projP90": 143.0,
+      "maxAttainable": 421.0,
       "canStillWin": true
     },
     {
@@ -1255,11 +1289,11 @@
       "name": "Alex Marquez",
       "team": "Ducati",
       "pTitle": 0.0,
-      "currentPoints": 106.0,
-      "projMean": 245.603,
-      "projP10": 215.0,
-      "projP90": 276.0,
-      "maxAttainable": 476.0,
+      "currentPoints": 128.0,
+      "projMean": 264.563,
+      "projP10": 236.0,
+      "projP90": 293.0,
+      "maxAttainable": 461.0,
       "canStillWin": true
     },
     {
@@ -1267,11 +1301,11 @@
       "name": "Johann Zarco",
       "team": "Honda",
       "pTitle": 0.0,
-      "currentPoints": 34.0,
-      "projMean": 82.956,
-      "projP10": 59.0,
-      "projP90": 109.0,
-      "maxAttainable": 404.0,
+      "currentPoints": 36.0,
+      "projMean": 73.523,
+      "projP10": 53.0,
+      "projP90": 96.0,
+      "maxAttainable": 369.0,
       "canStillWin": true
     },
     {
@@ -1279,11 +1313,11 @@
       "name": "Diogo Moreira",
       "team": "Honda",
       "pTitle": 0.0,
-      "currentPoints": 54.0,
-      "projMean": 87.368,
-      "projP10": 68.0,
-      "projP90": 109.0,
-      "maxAttainable": 424.0,
+      "currentPoints": 64.0,
+      "projMean": 101.814,
+      "projP10": 81.0,
+      "projP90": 124.0,
+      "maxAttainable": 397.0,
       "canStillWin": true
     },
     {
@@ -1292,10 +1326,10 @@
       "team": "Ducati",
       "pTitle": 0.0,
       "currentPoints": 53.0,
-      "projMean": 96.341,
-      "projP10": 74.90000000000003,
-      "projP90": 120.0,
-      "maxAttainable": 423.0,
+      "projMean": 88.253,
+      "projP10": 69.0,
+      "projP90": 110.0,
+      "maxAttainable": 386.0,
       "canStillWin": true
     },
     {
@@ -1303,11 +1337,11 @@
       "name": "Jack Miller",
       "team": "Yamaha",
       "pTitle": 0.0,
-      "currentPoints": 23.0,
-      "projMean": 34.049,
-      "projP10": 23.0,
-      "projP90": 48.0,
-      "maxAttainable": 393.0,
+      "currentPoints": 28.0,
+      "projMean": 40.904,
+      "projP10": 29.0,
+      "projP90": 56.0,
+      "maxAttainable": 361.0,
       "canStillWin": true
     },
     {
@@ -1316,10 +1350,10 @@
       "team": "Yamaha",
       "pTitle": 0.0,
       "currentPoints": 55.0,
-      "projMean": 72.268,
-      "projP10": 58.0,
-      "projP90": 89.0,
-      "maxAttainable": 425.0,
+      "projMean": 68.574,
+      "projP10": 56.0,
+      "projP90": 84.0,
+      "maxAttainable": 388.0,
       "canStillWin": true
     },
     {
@@ -1327,11 +1361,11 @@
       "name": "Enea Bastianini",
       "team": "KTM",
       "pTitle": 0.0,
-      "currentPoints": 76.0,
-      "projMean": 121.907,
-      "projP10": 99.0,
-      "projP90": 147.0,
-      "maxAttainable": 446.0,
+      "currentPoints": 84.0,
+      "projMean": 125.483,
+      "projP10": 104.0,
+      "projP90": 149.0,
+      "maxAttainable": 417.0,
       "canStillWin": true
     },
     {
@@ -1339,11 +1373,11 @@
       "name": "Alex Rins",
       "team": "Yamaha",
       "pTitle": 0.0,
-      "currentPoints": 21.0,
-      "projMean": 30.547,
-      "projP10": 21.0,
-      "projP90": 44.0,
-      "maxAttainable": 391.0,
+      "currentPoints": 24.0,
+      "projMean": 34.609,
+      "projP10": 24.0,
+      "projP90": 49.0,
+      "maxAttainable": 357.0,
       "canStillWin": true
     },
     {
@@ -1352,10 +1386,10 @@
       "team": "KTM",
       "pTitle": 0.0,
       "currentPoints": 10.0,
-      "projMean": 23.547,
-      "projP10": 11.0,
-      "projP90": 39.0,
-      "maxAttainable": 380.0,
+      "projMean": 22.11,
+      "projP10": 10.0,
+      "projP90": 36.0,
+      "maxAttainable": 343.0,
       "canStillWin": true
     },
     {
@@ -1364,10 +1398,10 @@
       "team": "Yamaha",
       "pTitle": 0.0,
       "currentPoints": 14.0,
-      "projMean": 20.698,
+      "projMean": 21.679,
       "projP10": 14.0,
-      "projP90": 32.0,
-      "maxAttainable": 384.0,
+      "projP90": 34.0,
+      "maxAttainable": 347.0,
       "canStillWin": true
     },
     {
@@ -1376,10 +1410,10 @@
       "team": "Ducati",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 11.039,
+      "projMean": 10.585,
       "projP10": 0.0,
-      "projP90": 26.0,
-      "maxAttainable": 370.0,
+      "projP90": 25.0,
+      "maxAttainable": 333.0,
       "canStillWin": true
     },
     {
@@ -1387,11 +1421,11 @@
       "name": "Fermin Aldeguer",
       "team": "Ducati",
       "pTitle": 0.0,
-      "currentPoints": 76.0,
-      "projMean": 163.839,
-      "projP10": 136.0,
-      "projP90": 193.0999999999999,
-      "maxAttainable": 446.0,
+      "currentPoints": 90.0,
+      "projMean": 178.555,
+      "projP10": 152.0,
+      "projP90": 207.0,
+      "maxAttainable": 423.0,
       "canStillWin": true
     },
     {
@@ -1400,10 +1434,10 @@
       "team": "Yamaha",
       "pTitle": 0.0,
       "currentPoints": 6.0,
-      "projMean": 12.542,
+      "projMean": 12.143,
       "projP10": 6.0,
       "projP90": 23.0,
-      "maxAttainable": 376.0,
+      "maxAttainable": 339.0,
       "canStillWin": true
     },
     {
@@ -1412,10 +1446,10 @@
       "team": "Aprilia",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 28.272,
-      "projP10": 10.0,
-      "projP90": 48.0,
-      "maxAttainable": 370.0,
+      "projMean": 16.088,
+      "projP10": 3.0,
+      "projP90": 32.0,
+      "maxAttainable": 333.0,
       "canStillWin": true
     },
     {
@@ -1424,10 +1458,10 @@
       "team": "KTM",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 12.553,
-      "projP10": 1.0,
-      "projP90": 28.0,
-      "maxAttainable": 370.0,
+      "projMean": 11.238,
+      "projP10": 0.0,
+      "projP90": 25.0,
+      "maxAttainable": 333.0,
       "canStillWin": true
     },
     {
@@ -1436,10 +1470,10 @@
       "team": "Honda",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 6.117,
+      "projMean": 5.78,
       "projP10": 0.0,
-      "projP90": 17.0,
-      "maxAttainable": 370.0,
+      "projP90": 16.0,
+      "maxAttainable": 333.0,
       "canStillWin": true
     },
     {
@@ -1448,10 +1482,10 @@
       "team": "Ducati",
       "pTitle": 0.0,
       "currentPoints": 9.0,
-      "projMean": 49.215,
-      "projP10": 27.0,
-      "projP90": 74.0,
-      "maxAttainable": 379.0,
+      "projMean": 46.596,
+      "projP10": 26.0,
+      "projP90": 70.0,
+      "maxAttainable": 342.0,
       "canStillWin": true
     },
     {
@@ -1460,24 +1494,24 @@
       "team": "KTM",
       "pTitle": 0.0,
       "currentPoints": 3.0,
-      "projMean": 26.753,
-      "projP10": 10.0,
-      "projP90": 46.0,
-      "maxAttainable": 373.0,
+      "projMean": 20.179,
+      "projP10": 6.0,
+      "projP90": 37.0,
+      "maxAttainable": 336.0,
       "canStillWin": true
     }
   ],
   "seasonAccuracy": {
-    "roundsScored": 12,
-    "meanPositionError": 4.02,
-    "podiumHitRate": 0.5,
-    "winnerHitRate": 0.25
+    "roundsScored": 13,
+    "meanPositionError": 3.963,
+    "podiumHitRate": 0.5128,
+    "winnerHitRate": 0.2308
   },
   "nextPrediction": {
     "season": 2026,
-    "round": 13,
-    "venueKey": "motorland-arag-n",
-    "venueName": "Alca\u00f1iz",
+    "round": 14,
+    "venueKey": "misano-world-circuit-marco-simoncelli",
+    "venueName": "Misano Adriatico",
     "phase": "pre",
     "qualifyingActual": false,
     "qualifying": [
@@ -1489,38 +1523,38 @@
       },
       {
         "position": 2,
-        "code": "MAR",
-        "name": "Jorge Martin",
-        "team": "Aprilia"
-      },
-      {
-        "position": 3,
-        "code": "OGU",
-        "name": "Ai Ogura",
-        "team": "Aprilia"
-      },
-      {
-        "position": 4,
-        "code": "FE2",
-        "name": "Raul Fernandez",
-        "team": "Aprilia"
-      },
-      {
-        "position": 5,
         "code": "MAM",
         "name": "Marc Marquez",
         "team": "Ducati"
       },
       {
-        "position": 6,
-        "code": "GIA",
-        "name": "Fabio Di Giannantonio",
+        "position": 3,
+        "code": "MAR",
+        "name": "Jorge Martin",
+        "team": "Aprilia"
+      },
+      {
+        "position": 4,
+        "code": "OGU",
+        "name": "Ai Ogura",
+        "team": "Aprilia"
+      },
+      {
+        "position": 5,
+        "code": "MAA",
+        "name": "Alex Marquez",
         "team": "Ducati"
       },
       {
+        "position": 6,
+        "code": "FE2",
+        "name": "Raul Fernandez",
+        "team": "Aprilia"
+      },
+      {
         "position": 7,
-        "code": "MAA",
-        "name": "Alex Marquez",
+        "code": "GIA",
+        "name": "Fabio Di Giannantonio",
         "team": "Ducati"
       },
       {
@@ -1543,63 +1577,63 @@
       },
       {
         "position": 11,
-        "code": "ZAR",
-        "name": "Johann Zarco",
-        "team": "Honda"
-      },
-      {
-        "position": 12,
         "code": "BAS",
         "name": "Enea Bastianini",
         "team": "KTM"
       },
       {
-        "position": 13,
-        "code": "BIN",
-        "name": "Brad Binder",
-        "team": "KTM"
-      },
-      {
-        "position": 14,
-        "code": "MOF",
-        "name": "Franco Morbidelli",
-        "team": "Ducati"
-      },
-      {
-        "position": 15,
-        "code": "LEC",
-        "name": "Iker Lecuona",
-        "team": "Ducati"
-      },
-      {
-        "position": 16,
-        "code": "MAL",
-        "name": "Luca Marini",
-        "team": "Honda"
-      },
-      {
-        "position": 17,
-        "code": "MIR",
-        "name": "Joan Mir",
-        "team": "Honda"
-      },
-      {
-        "position": 18,
+        "position": 12,
         "code": "MOR",
         "name": "Diogo Moreira",
         "team": "Honda"
       },
       {
-        "position": 19,
-        "code": "SAV",
-        "name": "Lorenzo Savadori",
-        "team": "Aprilia"
+        "position": 13,
+        "code": "LEC",
+        "name": "Iker Lecuona",
+        "team": "Ducati"
       },
       {
-        "position": 20,
+        "position": 14,
+        "code": "BIN",
+        "name": "Brad Binder",
+        "team": "KTM"
+      },
+      {
+        "position": 15,
+        "code": "ZAR",
+        "name": "Johann Zarco",
+        "team": "Honda"
+      },
+      {
+        "position": 16,
+        "code": "MOF",
+        "name": "Franco Morbidelli",
+        "team": "Ducati"
+      },
+      {
+        "position": 17,
+        "code": "MAL",
+        "name": "Luca Marini",
+        "team": "Honda"
+      },
+      {
+        "position": 18,
+        "code": "MIR",
+        "name": "Joan Mir",
+        "team": "Honda"
+      },
+      {
+        "position": 19,
         "code": "ESP",
         "name": "Pol Espargaro",
         "team": "KTM"
+      },
+      {
+        "position": 20,
+        "code": "SAV",
+        "name": "Lorenzo Savadori",
+        "team": "Aprilia"
       },
       {
         "position": 21,
@@ -1609,33 +1643,33 @@
       },
       {
         "position": 22,
-        "code": "VIN",
-        "name": "Maverick Vi\u00f1ales",
-        "team": "KTM"
-      },
-      {
-        "position": 23,
-        "code": "FOL",
-        "name": "Jonas Folger",
-        "team": "KTM"
-      },
-      {
-        "position": 24,
         "code": "MIL",
         "name": "Jack Miller",
         "team": "Yamaha"
       },
       {
-        "position": 25,
-        "code": "PIR",
-        "name": "Michele Pirro",
-        "team": "Ducati"
+        "position": 23,
+        "code": "VIN",
+        "name": "Maverick Vi\u00f1ales",
+        "team": "KTM"
       },
       {
-        "position": 26,
+        "position": 24,
+        "code": "FOL",
+        "name": "Jonas Folger",
+        "team": "KTM"
+      },
+      {
+        "position": 25,
         "code": "RIN",
         "name": "Alex Rins",
         "team": "Yamaha"
+      },
+      {
+        "position": 26,
+        "code": "PIR",
+        "name": "Michele Pirro",
+        "team": "Ducati"
       },
       {
         "position": 27,
@@ -1662,91 +1696,83 @@
         "code": "BEZ",
         "name": "Marco Bezzecchi",
         "team": "Aprilia",
-        "pWin": 0.1313,
-        "pPodium": 0.3625
+        "pWin": 0.1283,
+        "pPodium": 0.3578
       },
       {
         "position": 2,
-        "code": "MAR",
-        "name": "Jorge Martin",
-        "team": "Aprilia",
-        "pWin": 0.1202,
-        "pPodium": 0.3475
-      },
-      {
-        "position": 3,
-        "code": "OGU",
-        "name": "Ai Ogura",
-        "team": "Aprilia",
-        "pWin": 0.1077,
-        "pPodium": 0.3137
-      },
-      {
-        "position": 4,
-        "code": "FE2",
-        "name": "Raul Fernandez",
-        "team": "Aprilia",
-        "pWin": 0.0855,
-        "pPodium": 0.259
-      },
-      {
-        "position": 5,
         "code": "MAM",
         "name": "Marc Marquez",
         "team": "Ducati",
-        "pWin": 0.0785,
-        "pPodium": 0.252
+        "pWin": 0.1027,
+        "pPodium": 0.3125
       },
       {
-        "position": 6,
-        "code": "GIA",
-        "name": "Fabio Di Giannantonio",
-        "team": "Ducati",
-        "pWin": 0.0788,
-        "pPodium": 0.2365
+        "position": 3,
+        "code": "MAR",
+        "name": "Jorge Martin",
+        "team": "Aprilia",
+        "pWin": 0.1055,
+        "pPodium": 0.314
       },
       {
-        "position": 7,
+        "position": 4,
+        "code": "OGU",
+        "name": "Ai Ogura",
+        "team": "Aprilia",
+        "pWin": 0.1047,
+        "pPodium": 0.305
+      },
+      {
+        "position": 5,
         "code": "MAA",
         "name": "Alex Marquez",
         "team": "Ducati",
-        "pWin": 0.08,
-        "pPodium": 0.2407
+        "pWin": 0.0925,
+        "pPodium": 0.2787
+      },
+      {
+        "position": 6,
+        "code": "FE2",
+        "name": "Raul Fernandez",
+        "team": "Aprilia",
+        "pWin": 0.0745,
+        "pPodium": 0.2285
+      },
+      {
+        "position": 7,
+        "code": "GIA",
+        "name": "Fabio Di Giannantonio",
+        "team": "Ducati",
+        "pWin": 0.0757,
+        "pPodium": 0.2248
       },
       {
         "position": 8,
         "code": "ACO",
         "name": "Pedro Acosta",
         "team": "KTM",
-        "pWin": 0.058,
-        "pPodium": 0.162
+        "pWin": 0.064,
+        "pPodium": 0.181
       },
       {
         "position": 9,
         "code": "BAG",
         "name": "Francesco Bagnaia",
         "team": "Ducati",
-        "pWin": 0.0473,
-        "pPodium": 0.1497
+        "pWin": 0.0425,
+        "pPodium": 0.1415
       },
       {
         "position": 10,
         "code": "ALD",
         "name": "Fermin Aldeguer",
         "team": "Ducati",
-        "pWin": 0.0437,
-        "pPodium": 0.125
+        "pWin": 0.0512,
+        "pPodium": 0.1415
       },
       {
         "position": 11,
-        "code": "ZAR",
-        "name": "Johann Zarco",
-        "team": "Honda",
-        "pWin": 0.0165,
-        "pPodium": 0.062
-      },
-      {
-        "position": 12,
         "code": "BAS",
         "name": "Enea Bastianini",
         "team": "KTM",
@@ -1754,140 +1780,148 @@
         "pPodium": 0.0505
       },
       {
-        "position": 13,
+        "position": 12,
         "code": "BIN",
         "name": "Brad Binder",
         "team": "KTM",
-        "pWin": 0.0175,
-        "pPodium": 0.0512
+        "pWin": 0.0168,
+        "pPodium": 0.046
+      },
+      {
+        "position": 13,
+        "code": "ZAR",
+        "name": "Johann Zarco",
+        "team": "Honda",
+        "pWin": 0.0143,
+        "pPodium": 0.0503
       },
       {
         "position": 14,
-        "code": "MOF",
-        "name": "Franco Morbidelli",
-        "team": "Ducati",
-        "pWin": 0.0155,
-        "pPodium": 0.0475
+        "code": "MOR",
+        "name": "Diogo Moreira",
+        "team": "Honda",
+        "pWin": 0.0127,
+        "pPodium": 0.048
       },
       {
         "position": 15,
         "code": "LEC",
         "name": "Iker Lecuona",
         "team": "Ducati",
-        "pWin": 0.0125,
-        "pPodium": 0.0423
+        "pWin": 0.013,
+        "pPodium": 0.0435
       },
       {
         "position": 16,
-        "code": "MAL",
-        "name": "Luca Marini",
-        "team": "Honda",
-        "pWin": 0.0145,
-        "pPodium": 0.0478
+        "code": "MOF",
+        "name": "Franco Morbidelli",
+        "team": "Ducati",
+        "pWin": 0.0127,
+        "pPodium": 0.0408
       },
       {
         "position": 17,
-        "code": "MIR",
-        "name": "Joan Mir",
+        "code": "MAL",
+        "name": "Luca Marini",
         "team": "Honda",
-        "pWin": 0.0138,
-        "pPodium": 0.0445
+        "pWin": 0.0118,
+        "pPodium": 0.0442
       },
       {
         "position": 18,
-        "code": "MOR",
-        "name": "Diogo Moreira",
+        "code": "MIR",
+        "name": "Joan Mir",
         "team": "Honda",
-        "pWin": 0.0097,
-        "pPodium": 0.0385
+        "pWin": 0.0125,
+        "pPodium": 0.0367
       },
       {
         "position": 19,
-        "code": "SAV",
-        "name": "Lorenzo Savadori",
-        "team": "Aprilia",
-        "pWin": 0.0085,
-        "pPodium": 0.0323
-      },
-      {
-        "position": 20,
         "code": "ESP",
         "name": "Pol Espargaro",
         "team": "KTM",
-        "pWin": 0.0088,
-        "pPodium": 0.0272
+        "pWin": 0.0073,
+        "pPodium": 0.0215
+      },
+      {
+        "position": 20,
+        "code": "SAV",
+        "name": "Lorenzo Savadori",
+        "team": "Aprilia",
+        "pWin": 0.0055,
+        "pPodium": 0.0198
       },
       {
         "position": 21,
         "code": "QUA",
         "name": "Fabio Quartararo",
         "team": "Yamaha",
-        "pWin": 0.0057,
-        "pPodium": 0.0168
-      },
-      {
-        "position": 22,
-        "code": "VIN",
-        "name": "Maverick Vi\u00f1ales",
-        "team": "KTM",
-        "pWin": 0.007,
-        "pPodium": 0.0198
-      },
-      {
-        "position": 23,
-        "code": "FOL",
-        "name": "Jonas Folger",
-        "team": "KTM",
-        "pWin": 0.0045,
+        "pWin": 0.0035,
         "pPodium": 0.0145
       },
       {
-        "position": 24,
+        "position": 22,
         "code": "MIL",
         "name": "Jack Miller",
         "team": "Yamaha",
-        "pWin": 0.0032,
-        "pPodium": 0.0118
+        "pWin": 0.0047,
+        "pPodium": 0.0163
+      },
+      {
+        "position": 23,
+        "code": "VIN",
+        "name": "Maverick Vi\u00f1ales",
+        "team": "KTM",
+        "pWin": 0.0065,
+        "pPodium": 0.0198
+      },
+      {
+        "position": 24,
+        "code": "FOL",
+        "name": "Jonas Folger",
+        "team": "KTM",
+        "pWin": 0.0047,
+        "pPodium": 0.0138
       },
       {
         "position": 25,
-        "code": "PIR",
-        "name": "Michele Pirro",
-        "team": "Ducati",
-        "pWin": 0.004,
-        "pPodium": 0.0127
-      },
-      {
-        "position": 26,
         "code": "RIN",
         "name": "Alex Rins",
         "team": "Yamaha",
-        "pWin": 0.0047,
-        "pPodium": 0.0115
+        "pWin": 0.0055,
+        "pPodium": 0.014
+      },
+      {
+        "position": 26,
+        "code": "PIR",
+        "name": "Michele Pirro",
+        "team": "Ducati",
+        "pWin": 0.0043,
+        "pPodium": 0.0138
       },
       {
         "position": 27,
         "code": "RAZ",
         "name": "Toprak Razgatlioglu",
         "team": "Yamaha",
-        "pWin": 0.0025,
-        "pPodium": 0.0077
+        "pWin": 0.003,
+        "pPodium": 0.0095
       },
       {
         "position": 28,
         "code": "FER",
         "name": "Augusto Fernandez",
         "team": "Yamaha",
-        "pWin": 0.0013,
-        "pPodium": 0.006
+        "pWin": 0.001,
+        "pPodium": 0.0057
       },
       {
         "position": 29,
         "code": "CRU",
         "name": "Cal Crutchlow",
         "team": "Honda",
-        "pWin": 0.0022,
-        "pPodium": 0.0067
+        "pWin": 0.002,
+        "pPodium": 0.0063
       }
     ]
   }
