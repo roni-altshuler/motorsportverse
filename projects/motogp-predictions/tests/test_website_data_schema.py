@@ -231,8 +231,21 @@ def test_model_health_matches_contract(data_dir):
 
 def test_forward_eval_matches_contract(data_dir):
     season = ForwardEvalSeason.model_validate(_load(data_dir / "forward_eval" / "season.json"))
-    # The validated headline: the post-quali model beats the raw-grid baseline.
-    assert season.phaseComparison.beatsGridBaseline is True
+    # beatsGridBaseline is an EMPIRICAL outcome, not a contract. Assert only that
+    # the flag is consistent with the Briers it summarises — never that the model
+    # is winning. (WRC hard-asserted its equivalent and froze every cron publish
+    # for two days when a round flipped it; see 967f4c4.)
+    pc = season.phaseComparison
+    win, pod = pc.feature["winBrier"], pc.feature["podiumBrier"]
+    expected = bool(
+        win.get("post") is not None
+        and win.get("grid") is not None
+        and win["post"] < win["grid"]
+        and pod.get("post") is not None
+        and pod.get("grid") is not None
+        and pod["post"] < pod["grid"]
+    )
+    assert pc.beatsGridBaseline == expected
     rounds = sorted((data_dir / "forward_eval").glob("round_*.json"))
     assert len(rounds) == config.COMPLETED_ROUNDS
     for f in rounds:

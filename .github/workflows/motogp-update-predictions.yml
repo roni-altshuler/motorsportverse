@@ -95,6 +95,26 @@ jobs:
         working-directory: projects/motogp-predictions
         run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
 
+      - name: Baseline-state annotation (warn while the model trails)
+        # Model-vs-baseline is an EMPIRICAL state, not a crash: never fail the
+        # run over it (WRC hard-asserted its equivalent and froze publishing
+        # for two days, 967f4c4). Emit a ::warning:: while the state holds; it
+        # clears itself when the model regains the edge. Real crashes stay loud.
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/motogp-predictions
+        run: |
+          python - <<'EOF'
+          import json
+          pc = json.load(open("website/public/data/forward_eval/season.json"))["phaseComparison"]
+          if not pc.get("beatsGridBaseline"):
+              f = pc.get("feature", {})
+              print(
+                  "::warning title=MotoGP model trails raw-grid baseline::"
+                  f"win-Brier {f.get('winBrier')} podium-Brier {f.get('podiumBrier')} "
+                  f"over {pc.get('roundsScored')} rounds. Known empirical state - publishing continues."
+              )
+          EOF
+
       - name: Published-data integrity gate
         if: steps.check.outputs.should_run == 'true'
         # Corpus gate before commit. The schema test above proves each FILE is

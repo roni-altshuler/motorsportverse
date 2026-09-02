@@ -273,16 +273,26 @@ def _phase_comparison(source: MotoGPDataSource, year: int, rounds: list[dict]) -
 
     win = {"post": _mean(post_win), "pre": _mean(pre_win), "grid": _mean(grid_win)}
     pod = {"post": _mean(post_pod), "pre": _mean(pre_pod), "grid": _mean(grid_pod)}
-    beats = bool(
-        win["post"] is not None
-        and win["grid"] is not None
-        and win["post"] < win["grid"]
-        and pod["post"] < pod["grid"]
+    win_ok = bool(
+        win["post"] is not None and win["grid"] is not None and win["post"] < win["grid"]
     )
+    pod_ok = bool(
+        pod["post"] is not None and pod["grid"] is not None and pod["post"] < pod["grid"]
+    )
+    beats = win_ok and pod_ok
+    if beats:
+        state = "beats the raw-grid baseline on both the win- and podium-Brier"
+    elif pod_ok:
+        state = "beats the raw-grid baseline on podium-Brier but currently trails it on win-Brier"
+    elif win_ok:
+        state = "beats the raw-grid baseline on win-Brier but currently trails it on podium-Brier"
+    else:
+        state = "currently trails the raw-grid baseline on win- and podium-Brier"
     return {
         "note": (
-            "Headline model is POST-quali (grid-conditioned). Pre-quali form-only is "
-            "weaker than the grid; the post-quali model beats it on win- and podium-Brier."
+            "Headline model is POST-quali (grid-conditioned). Over the scored rounds "
+            f"it {state}. This field is descriptive, not a guarantee — the website "
+            "renders whichever state holds."
         ),
         "roundsScored": n,
         "feature": {

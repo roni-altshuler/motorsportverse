@@ -33,6 +33,15 @@ export default function PhaseComparisonPanel({
   const podiumBrier = pc.feature.podiumBrier;
   const winnerHit = pc.feature.winnerHit;
 
+  const winSharper =
+    winBrier != null && winBrier.post != null && winBrier.grid != null
+      ? winBrier.post < winBrier.grid
+      : false;
+  const podiumSharper =
+    podiumBrier != null && podiumBrier.post != null && podiumBrier.grid != null
+      ? podiumBrier.post < podiumBrier.grid
+      : false;
+
   const rows: {
     label: string;
     hint: string;
@@ -85,9 +94,16 @@ export default function PhaseComparisonPanel({
         </h2>
         <p className="mt-2 text-sm text-[var(--ink-muted)]">
           Our Grand Prix forecast is made after qualifying, so it starts from the real grid. Over{" "}
-          {pc.roundsScored} completed round{pc.roundsScored === 1 ? "" : "s"} it is sharper than the
-          grid order alone on win and podium probabilities. A pre-qualifying, form-only forecast is
-          weaker than the grid — so we don&rsquo;t claim to call the grid from nothing.
+          {pc.roundsScored} completed round{pc.roundsScored === 1 ? "" : "s"}{" "}
+          {winSharper && podiumSharper
+            ? "it is sharper than the grid order alone on win and podium probabilities."
+            : podiumSharper
+              ? "it is sharper than the grid order alone on podium probabilities, while the raw grid currently holds a slim edge on the win score."
+              : winSharper
+                ? "it is sharper than the grid order alone on win probabilities, while the raw grid currently holds a slim edge on the podium score."
+                : "the raw grid order currently holds the edge on the probability scores — shown here honestly rather than hidden."}{" "}
+          A pre-qualifying, form-only forecast is weaker than the grid — so we don&rsquo;t claim to
+          call the grid from nothing.
         </p>
       </div>
 

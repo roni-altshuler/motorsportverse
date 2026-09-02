@@ -25,7 +25,11 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   holds (instead of hard-coding "it beats the baseline"), the accuracy page's
   comparison copy is derived from the numbers it sits above, and the workflow
   emits a `::warning::` annotation while the model trails — publishing
-  continues either way, and real crashes stay loud.
+  continues either way, and real crashes stay loud. A sweep found the same
+  anti-pattern armed in MotoGP (`beatsGridBaseline is True` — currently
+  passing, but one bad round from the same freeze); it got the identical
+  defusal. F1's superficially similar assertion is a deterministic unit test
+  on synthetic fixtures and is fine.
 
 - **Calibrated probabilities did not sum to the size of the set they describe.**
   Per-competitor isotonic calibration does not preserve the simplex, so published
