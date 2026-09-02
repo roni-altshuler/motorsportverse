@@ -13,6 +13,20 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ### Fixed
 
+- **The WRC cron froze publishing for two days because a schema test asserted an
+  empirical outcome.** `test_forward_eval_matches_contract` hard-asserted
+  `beatsStandingsBaseline is True`; when round 11 flipped the win-Brier edge to
+  the standings baseline (model 0.8469 vs 0.8389, podium still won 0.7165 vs
+  0.7321), every scheduled run fetched fresh vendor data, regenerated the site
+  dataset, failed the test, and threw the work away — the live site sat at
+  round 10 while failure mails repeated. Model-vs-baseline is a *state*, not a
+  crash: the test now asserts the flag is consistent with the Briers it
+  summarises, `forward_eval` writes a note describing whichever state actually
+  holds (instead of hard-coding "it beats the baseline"), the accuracy page's
+  comparison copy is derived from the numbers it sits above, and the workflow
+  emits a `::warning::` annotation while the model trails — publishing
+  continues either way, and real crashes stay loud.
+
 - **Calibrated probabilities did not sum to the size of the set they describe.**
   Per-competitor isotonic calibration does not preserve the simplex, so published
   markets across nine of the ten live series were incoherent — worst win-market

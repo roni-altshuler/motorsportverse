@@ -240,8 +240,22 @@ def test_model_health_matches_contract(data_dir):
 
 def test_forward_eval_matches_contract(data_dir):
     season = ForwardEvalSeason.model_validate(_load(data_dir / "forward_eval" / "season.json"))
-    # The validated headline: the ensemble beats the standings-order baseline.
-    assert season.baselineComparison.beatsStandingsBaseline is True
+    # beatsStandingsBaseline is an EMPIRICAL outcome, not a contract. Assert only
+    # that the flag is consistent with the Briers it summarises — never that the
+    # model is winning. (Hard-asserting the outcome froze every cron publish when
+    # round 11 flipped it: fresh vendor data was fetched, failed this test, and
+    # was thrown away while the site sat stale. The workflow now emits a
+    # ::warning:: while the model trails; publishing continues either way.)
+    bc = season.baselineComparison
+    expected = bool(
+        bc.winBrier.get("model") is not None
+        and bc.winBrier.get("standings") is not None
+        and bc.winBrier["model"] <= bc.winBrier["standings"]
+        and bc.podiumBrier.get("model") is not None
+        and bc.podiumBrier.get("standings") is not None
+        and bc.podiumBrier["model"] <= bc.podiumBrier["standings"]
+    )
+    assert bc.beatsStandingsBaseline == expected
     rounds = sorted((data_dir / "forward_eval").glob("round_*.json"))
     assert len(rounds) == config.COMPLETED_ROUNDS
     for f in rounds:

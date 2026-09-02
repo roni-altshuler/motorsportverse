@@ -92,6 +92,25 @@ jobs:
         working-directory: projects/wrc-predictions
         run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
 
+      - name: Baseline-state annotation (warn while the model trails)
+        # Model-vs-baseline is an EMPIRICAL state, not a crash: never fail the
+        # run over it (that froze publishing at round 10 for two days). Emit a
+        # ::warning:: while the state holds; it clears itself when the ensemble
+        # regains the edge. Real crashes above stay loud.
+        if: steps.check.outputs.should_run == 'true'
+        working-directory: projects/wrc-predictions
+        run: |
+          python - <<'EOF'
+          import json
+          bc = json.load(open("website/public/data/forward_eval/season.json"))["baselineComparison"]
+          if not bc.get("beatsStandingsBaseline"):
+              print(
+                  "::warning title=WRC ensemble trails standings baseline::"
+                  f"win-Brier {bc.get('winBrier')} podium-Brier {bc.get('podiumBrier')} "
+                  f"over {bc.get('roundsScored')} rounds. Known empirical state - publishing continues."
+              )
+          EOF
+
       - name: Published-data integrity gate
         if: steps.check.outputs.should_run == 'true'
         # Corpus gate before commit. The schema test above proves each FILE is

@@ -33,6 +33,19 @@ export default function PhaseComparisonPanel({
 
   const { winBrier, podiumBrier, winnerHit } = bc;
 
+  const winSharper =
+    winBrier != null && winBrier.model != null && winBrier.standings != null
+      ? winBrier.model <= winBrier.standings
+      : false;
+  const podiumSharper =
+    podiumBrier != null && podiumBrier.model != null && podiumBrier.standings != null
+      ? podiumBrier.model <= podiumBrier.standings
+      : false;
+  const lastRallySharper =
+    winBrier != null && winBrier.model != null && winBrier.lastRally != null
+      ? winBrier.lastRally < winBrier.model
+      : false;
+
   const rows: {
     label: string;
     hint: string;
@@ -86,9 +99,17 @@ export default function PhaseComparisonPanel({
         <p className="mt-2 text-sm text-[var(--ink-muted)]">
           A rally has no qualifying to lean on, so the fair test is whether the forecast is sharper
           than simply ordering crews by their championship standings. Over {bc.roundsScored} completed
-          round{bc.roundsScored === 1 ? "" : "s"} the model is sharper than championship form on both
-          the win and podium probability scores. A last-rally momentum baseline is a touch sharper on
-          the win score this season — shown here honestly rather than hidden.
+          round{bc.roundsScored === 1 ? "" : "s"}{" "}
+          {winSharper && podiumSharper
+            ? "the model is sharper than championship form on both the win and podium probability scores."
+            : podiumSharper
+              ? "the model is sharper than championship form on the podium probability score, while championship form currently holds a slim edge on the win score."
+              : winSharper
+                ? "the model is sharper than championship form on the win probability score, while championship form currently holds a slim edge on the podium score."
+                : "championship form currently holds the edge on both probability scores."}{" "}
+          {lastRallySharper
+            ? "A last-rally momentum baseline is a touch sharper on the win score this season — shown here honestly rather than hidden."
+            : "Everything here is shown honestly rather than hidden."}
         </p>
       </div>
 
@@ -131,7 +152,9 @@ export default function PhaseComparisonPanel({
         <p className="mt-3 text-xs text-[var(--ink-dim)]">
           The skill model alone scores {num(bc.skillOnly.winBrier)} on the win score and{" "}
           {num(bc.skillOnly.podiumBrier)} on podium — weaker than championship form on its own.
-          Blending it with championship form is what edges the combined forecast ahead.
+          {bc.beatsStandingsBaseline
+            ? " Blending it with championship form is what edges the combined forecast ahead."
+            : " Blending it with championship form keeps the combined forecast competitive with championship form."}
         </p>
       )}
       {bc.beatsStandingsBaseline && (

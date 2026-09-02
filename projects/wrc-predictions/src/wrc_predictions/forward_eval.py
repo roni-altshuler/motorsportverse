@@ -327,18 +327,37 @@ def _baseline_comparison(source: WrcDataSource, year: int, rounds: list[dict]) -
 
     win = {"model": _mean(m_win), "standings": _mean(st_win), "lastRally": _mean(lr_win)}
     pod = {"model": _mean(m_pod), "standings": _mean(st_pod), "lastRally": _mean(lr_pod)}
-    beats = bool(
+    win_ok = bool(
         win["model"] is not None
         and win["standings"] is not None
         and win["model"] <= win["standings"]
+    )
+    pod_ok = bool(
+        pod["model"] is not None
+        and pod["standings"] is not None
         and pod["model"] <= pod["standings"]
     )
+    beats = win_ok and pod_ok
+    if beats:
+        state = "beats the standings-order baseline on both the win- and podium-Brier"
+    elif pod_ok:
+        state = (
+            "beats the standings-order baseline on podium-Brier but currently "
+            "trails it on win-Brier"
+        )
+    elif win_ok:
+        state = (
+            "beats the standings-order baseline on win-Brier but currently "
+            "trails it on podium-Brier"
+        )
+    else:
+        state = "currently trails the standings-order baseline on win- and podium-Brier"
     return {
         "note": (
             "Headline model is the ENSEMBLE of the surface-aware skill model with a "
-            "championship-form prior. It beats the standings-order baseline on win- and "
-            "podium-Brier; the skill model ALONE loses to standings in the dominated "
-            "season, so the ensemble is what wins."
+            f"championship-form prior. Over the scored rounds it {state}; the skill "
+            "model ALONE loses to standings in the dominated season. This field is "
+            "descriptive, not a guarantee — the website renders whichever state holds."
         ),
         "roundsScored": n,
         "winBrier": win,
