@@ -4,23 +4,23 @@
   "surface": "gravel",
   "rally": {
     "n": 12,
-    "mean_position_error": 8.5,
+    "mean_position_error": 8.75,
     "winner_hit": false,
     "podium_hits": 1,
     "within_3": 7,
     "within_5": 7,
     "exact_matches": 1,
-    "spearman_correlation": 0.2937062937062937,
-    "ndcg_at_5": 0.2545932358582992
+    "spearman_correlation": 0.26573426573426573,
+    "ndcg_at_5": 0.23586402174779966
   },
   "markets": {
     "win": {
-      "brier": 0.071043,
-      "logLoss": 0.233687
+      "brier": 0.072351,
+      "logLoss": 0.239487
     },
     "podium": {
-      "brier": 0.21153,
-      "logLoss": 0.697985
+      "brier": 0.211775,
+      "logLoss": 0.712317
     }
   },
   "baselines": {
@@ -34,7 +34,7 @@
         "within_5": 8,
         "exact_matches": 0,
         "spearman_correlation": 0.32867132867132864,
-        "ndcg_at_5": 0.24253718805610014
+        "ndcg_at_5": 0.24253718805610017
       },
       "markets": {
         "win": {
@@ -50,19 +50,19 @@
     "lastRally": {
       "score": {
         "n": 12,
-        "mean_position_error": 7.417,
+        "mean_position_error": 7.5,
         "winner_hit": false,
         "podium_hits": 0,
         "within_3": 6,
         "within_5": 8,
         "exact_matches": 0,
         "spearman_correlation": 0.1888111888111888,
-        "ndcg_at_5": 0.5223389601108347
+        "ndcg_at_5": 0.5223389601108348
       },
       "markets": {
         "win": {
           "brier": 0.080875,
-          "logLoss": 0.270637
+          "logLoss": 0.270565
         },
         "podium": {
           "brier": 0.343575,

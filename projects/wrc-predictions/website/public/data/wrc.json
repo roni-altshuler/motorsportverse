@@ -1,9 +1,9 @@
 {
   "sport": "WRC",
   "season": 2026,
-  "generatedAt": "2026-08-16T18:02:15+00:00",
-  "completedRounds": 10,
-  "lastUpdatedRound": 10,
+  "generatedAt": "2026-09-02T07:29:08+00:00",
+  "completedRounds": 11,
+  "lastUpdatedRound": 11,
   "totalRounds": 14,
   "calendar": [
     {
@@ -124,8 +124,8 @@
       "surface": "gravel",
       "surfaceColor": "#B8722C",
       "date": "2026-08-28",
-      "completed": false,
-      "dataSource": null
+      "completed": true,
+      "dataSource": "snapshot"
     },
     {
       "round": 12,
@@ -169,7 +169,7 @@
       "nationality": "GBR",
       "team": "Toyota",
       "teamColor": "#EB0A1E",
-      "points": 201.0,
+      "points": 216.0,
       "wins": 2,
       "podiums": 6,
       "pointsHistory": [
@@ -182,7 +182,8 @@
         151.0,
         162.0,
         177.0,
-        201.0
+        201.0,
+        216.0
       ]
     },
     {
@@ -192,9 +193,9 @@
       "nationality": "FIN",
       "team": "Toyota",
       "teamColor": "#EB0A1E",
-      "points": 171.0,
-      "wins": 2,
-      "podiums": 7,
+      "points": 196.0,
+      "wins": 3,
+      "podiums": 8,
       "pointsHistory": [
         0.0,
         17.0,
@@ -205,11 +206,36 @@
         96.0,
         116.0,
         144.0,
-        171.0
+        171.0,
+        196.0
       ]
     },
     {
       "position": 3,
+      "code": "SOL",
+      "name": "Oliver Solberg",
+      "nationality": "SWE",
+      "team": "Toyota",
+      "teamColor": "#EB0A1E",
+      "points": 175.0,
+      "wins": 1,
+      "podiums": 4,
+      "pointsHistory": [
+        30.0,
+        47.0,
+        58.0,
+        68.0,
+        68.0,
+        92.0,
+        102.0,
+        103.0,
+        130.0,
+        156.0,
+        175.0
+      ]
+    },
+    {
+      "position": 4,
       "code": "KAT",
       "name": "Takamoto Katsuta",
       "nationality": "JPN",
@@ -228,40 +254,42 @@
         131.0,
         151.0,
         152.0,
+        160.0,
         160.0
       ]
     },
     {
-      "position": 4,
-      "code": "SOL",
-      "name": "Oliver Solberg",
-      "nationality": "SWE",
-      "team": "Toyota",
-      "teamColor": "#EB0A1E",
-      "points": 156.0,
-      "wins": 1,
-      "podiums": 4,
+      "position": 5,
+      "code": "FOU",
+      "name": "Adrien Fourmaux",
+      "nationality": "FRA",
+      "team": "Hyundai",
+      "teamColor": "#0B2C5F",
+      "points": 149.0,
+      "wins": 0,
+      "podiums": 3,
       "pointsHistory": [
-        30.0,
+        17.0,
+        28.0,
         47.0,
-        58.0,
-        68.0,
-        68.0,
-        92.0,
-        102.0,
-        103.0,
-        130.0,
-        156.0
+        49.0,
+        59.0,
+        79.0,
+        89.0,
+        95.0,
+        111.0,
+        129.0,
+        149.0
       ]
     },
     {
-      "position": 5,
+      "position": 6,
       "code": "OGI",
       "name": "S\u00e9bastien Ogier",
       "nationality": "FRA",
       "team": "Toyota",
       "teamColor": "#EB0A1E",
-      "points": 139.0,
+      "points": 148.0,
       "wins": 2,
       "podiums": 4,
       "pointsHistory": [
@@ -274,30 +302,8 @@
         90.0,
         125.0,
         139.0,
-        139.0
-      ]
-    },
-    {
-      "position": 6,
-      "code": "FOU",
-      "name": "Adrien Fourmaux",
-      "nationality": "FRA",
-      "team": "Hyundai",
-      "teamColor": "#0B2C5F",
-      "points": 129.0,
-      "wins": 0,
-      "podiums": 2,
-      "pointsHistory": [
-        17.0,
-        28.0,
-        47.0,
-        49.0,
-        59.0,
-        79.0,
-        89.0,
-        95.0,
-        111.0,
-        129.0
+        139.0,
+        148.0
       ]
     },
     {
@@ -307,7 +313,7 @@
       "nationality": "BEL",
       "team": "Hyundai",
       "teamColor": "#0B2C5F",
-      "points": 125.0,
+      "points": 129.0,
       "wins": 1,
       "podiums": 2,
       "pointsHistory": [
@@ -320,11 +326,60 @@
         73.0,
         95.0,
         111.0,
-        125.0
+        125.0,
+        129.0
       ]
     },
     {
       "position": 8,
+      "code": "PAD",
+      "name": "Hayden Paddon",
+      "nationality": "NZL",
+      "team": "Hyundai",
+      "teamColor": "#0B2C5F",
+      "points": 38.0,
+      "wins": 0,
+      "podiums": 2,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        15.0,
+        15.0,
+        15.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        38.0
+      ]
+    },
+    {
+      "position": 9,
+      "code": "MCE",
+      "name": "Joshua Mcerlean",
+      "nationality": "IRL",
+      "team": "Ford",
+      "teamColor": "#1B3E8C",
+      "points": 29.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        2.0,
+        2.0,
+        2.0,
+        6.0,
+        6.0,
+        7.0,
+        15.0,
+        15.0,
+        21.0,
+        29.0
+      ]
+    },
+    {
+      "position": 10,
       "code": "LAP",
       "name": "Esapekka Lappi",
       "nationality": "FIN",
@@ -343,53 +398,8 @@
         21.0,
         21.0,
         25.0,
+        25.0,
         25.0
-      ]
-    },
-    {
-      "position": 9,
-      "code": "PAD",
-      "name": "Hayden Paddon",
-      "nationality": "NZL",
-      "team": "Hyundai",
-      "teamColor": "#0B2C5F",
-      "points": 21.0,
-      "wins": 0,
-      "podiums": 1,
-      "pointsHistory": [
-        0.0,
-        0.0,
-        0.0,
-        15.0,
-        15.0,
-        15.0,
-        21.0,
-        21.0,
-        21.0,
-        21.0
-      ]
-    },
-    {
-      "position": 10,
-      "code": "MCE",
-      "name": "Joshua Mcerlean",
-      "nationality": "IRL",
-      "team": "Ford",
-      "teamColor": "#1B3E8C",
-      "points": 21.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        0.0,
-        2.0,
-        2.0,
-        2.0,
-        6.0,
-        6.0,
-        7.0,
-        15.0,
-        15.0,
-        21.0
       ]
     },
     {
@@ -412,6 +422,7 @@
         20.0,
         20.0,
         20.0,
+        20.0,
         20.0
       ]
     },
@@ -429,6 +440,7 @@
         8.0,
         8.0,
         8.0,
+        18.0,
         18.0,
         18.0,
         18.0,
@@ -458,6 +470,7 @@
         14.0,
         14.0,
         16.0,
+        16.0,
         16.0
       ]
     },
@@ -481,11 +494,36 @@
         10.0,
         12.0,
         13.0,
+        15.0,
         15.0
       ]
     },
     {
       "position": 15,
+      "code": "GRE",
+      "name": "Gus Greensmith",
+      "nationality": "GBR",
+      "team": "Toyota",
+      "teamColor": "#EB0A1E",
+      "points": 12.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        12.0
+      ]
+    },
+    {
+      "position": 16,
       "code": "SES",
       "name": "M\u0101rtin\u0161 Sesks",
       "nationality": "LAT",
@@ -504,11 +542,12 @@
         2.0,
         6.0,
         12.0,
+        12.0,
         12.0
       ]
     },
     {
-      "position": 16,
+      "position": 17,
       "code": "GRN",
       "name": "Nikolay Gryazin",
       "nationality": "BUL",
@@ -527,11 +566,12 @@
         10.0,
         10.0,
         10.0,
+        10.0,
         10.0
       ]
     },
     {
-      "position": 17,
+      "position": 18,
       "code": "SOR",
       "name": "Daniel Sordo",
       "nationality": "ESP",
@@ -550,14 +590,15 @@
         10.0,
         10.0,
         10.0,
+        10.0,
         10.0
       ]
     },
     {
-      "position": 18,
-      "code": "GRE",
-      "name": "Gus Greensmith",
-      "nationality": "GBR",
+      "position": 19,
+      "code": "DOD",
+      "name": "Diego Dom\u00ednguez",
+      "nationality": "PAR",
       "team": "Toyota",
       "teamColor": "#EB0A1E",
       "points": 8.0,
@@ -566,18 +607,19 @@
       "pointsHistory": [
         0.0,
         0.0,
-        8.0,
-        8.0,
-        8.0,
-        8.0,
-        8.0,
-        8.0,
-        8.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
+        2.0,
         8.0
       ]
     },
     {
-      "position": 19,
+      "position": 20,
       "code": "CAC",
       "name": "Alejandro Cach\u00f3n",
       "nationality": "ESP",
@@ -596,11 +638,12 @@
         7.0,
         7.0,
         7.0,
+        7.0,
         7.0
       ]
     },
     {
-      "position": 20,
+      "position": 21,
       "code": "ZAF",
       "name": "Fau Zaldivar",
       "nationality": "PAR",
@@ -619,11 +662,12 @@
         6.0,
         6.0,
         6.0,
+        6.0,
         6.0
       ]
     },
     {
-      "position": 21,
+      "position": 22,
       "code": "DAP",
       "name": "Roberto Dapr\u00e0",
       "nationality": "ITA",
@@ -642,11 +686,12 @@
         6.0,
         6.0,
         6.0,
+        6.0,
         6.0
       ]
     },
     {
-      "position": 22,
+      "position": 23,
       "code": "KOR",
       "name": "Roope Korhonen",
       "nationality": "FIN",
@@ -665,11 +710,12 @@
         5.0,
         5.0,
         5.0,
+        5.0,
         5.0
       ]
     },
     {
-      "position": 23,
+      "position": 24,
       "code": "MIK",
       "name": "Andreas Mikkelsen",
       "nationality": "NOR",
@@ -688,11 +734,12 @@
         4.0,
         5.0,
         5.0,
+        5.0,
         5.0
       ]
     },
     {
-      "position": 24,
+      "position": 25,
       "code": "LAT",
       "name": "Jari-Matti Latvala",
       "nationality": "FIN",
@@ -711,30 +758,8 @@
         0.0,
         0.0,
         0.0,
+        4.0,
         4.0
-      ]
-    },
-    {
-      "position": 25,
-      "code": "DOD",
-      "name": "Diego Dom\u00ednguez",
-      "nationality": "PAR",
-      "team": "Toyota",
-      "teamColor": "#EB0A1E",
-      "points": 2.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        0.0,
-        0.0,
-        2.0,
-        2.0,
-        2.0,
-        2.0,
-        2.0,
-        2.0,
-        2.0,
-        2.0
       ]
     },
     {
@@ -757,11 +782,36 @@
         2.0,
         2.0,
         2.0,
+        2.0,
         2.0
       ]
     },
     {
       "position": 27,
+      "code": "GAL",
+      "name": "Alejandro Galanti",
+      "nationality": "PAR",
+      "team": "Toyota",
+      "teamColor": "#EB0A1E",
+      "points": 2.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.0
+      ]
+    },
+    {
+      "position": 28,
       "code": "SUN",
       "name": "Teemu Suninen",
       "nationality": "FIN",
@@ -780,11 +830,12 @@
         1.0,
         1.0,
         1.0,
+        2.0,
         2.0
       ]
     },
     {
-      "position": 28,
+      "position": 29,
       "code": "FON",
       "name": "Matteo Fontana",
       "nationality": "ITA",
@@ -803,11 +854,36 @@
         2.0,
         2.0,
         2.0,
+        2.0,
         2.0
       ]
     },
     {
-      "position": 29,
+      "position": 30,
+      "code": "GIL",
+      "name": "Taylor Gill",
+      "nationality": "AUS",
+      "team": "Skoda",
+      "teamColor": "#4BA82E",
+      "points": 1.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "position": 31,
       "code": "CAM",
       "name": "Eric Camilli",
       "nationality": "FRA",
@@ -826,11 +902,12 @@
         1.0,
         1.0,
         1.0,
+        1.0,
         1.0
       ]
     },
     {
-      "position": 30,
+      "position": 32,
       "code": "LIN",
       "name": "Emil Lindholm",
       "nationality": "FIN",
@@ -849,11 +926,12 @@
         1.0,
         1.0,
         1.0,
+        1.0,
         1.0
       ]
     },
     {
-      "position": 31,
+      "position": 33,
       "code": "SER",
       "name": "Jourdan Serderidis",
       "nationality": "GRE",
@@ -864,51 +942,6 @@
       "podiums": 0,
       "pointsHistory": [
         0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "position": 32,
-      "code": "MUN",
-      "name": "Gr\u00e9goire Munster",
-      "nationality": "LUX",
-      "team": "Ford",
-      "teamColor": "#1B3E8C",
-      "points": 0.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "position": 33,
-      "code": "BER",
-      "name": "Lorenzo Bertelli",
-      "nationality": "ITA",
-      "team": "Toyota",
-      "teamColor": "#EB0A1E",
-      "points": 0.0,
-      "wins": 0,
-      "podiums": 0,
-      "pointsHistory": [
         0.0,
         0.0,
         0.0,
@@ -941,6 +974,55 @@
         0.0,
         0.0,
         0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "position": 35,
+      "code": "MUN",
+      "name": "Gr\u00e9goire Munster",
+      "nationality": "LUX",
+      "team": "Ford",
+      "teamColor": "#1B3E8C",
+      "points": 0.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "position": 36,
+      "code": "BER",
+      "name": "Lorenzo Bertelli",
+      "nationality": "ITA",
+      "team": "Toyota",
+      "teamColor": "#EB0A1E",
+      "points": 0.0,
+      "wins": 0,
+      "podiums": 0,
+      "pointsHistory": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
         0.0
       ]
     }
@@ -950,98 +1032,98 @@
       "position": 1,
       "team": "TOYOTA GAZOO RACING WRT",
       "teamColor": "#EB0A1E",
-      "points": 514.0
+      "points": 554.0
     },
     {
       "position": 2,
       "team": "HYUNDAI SHELL MOBIS WORLD RALLY TEAM",
       "teamColor": "#0B2C5F",
-      "points": 340.0
+      "points": 381.0
     },
     {
       "position": 3,
       "team": "TOYOTA GAZOO RACING WRT2",
       "teamColor": "#EB0A1E",
-      "points": 184.0
+      "points": 210.0
     },
     {
       "position": 4,
       "team": "M-SPORT FORD WORLD RALLY TEAM",
       "teamColor": "#1B3E8C",
-      "points": 130.0
+      "points": 138.0
     }
   ],
   "championship": [
     {
-      "code": "EVA",
-      "name": "Elfyn Evans",
-      "team": "Toyota",
-      "pTitle": 0.5225,
-      "currentPoints": 201.0,
-      "projMean": 228.553,
-      "projP10": 209.0,
-      "projP90": 249.0,
-      "maxAttainable": 301.0,
-      "canStillWin": true
-    },
-    {
       "code": "PAJ",
       "name": "Sami Pajari",
       "team": "Toyota",
-      "pTitle": 0.471,
-      "currentPoints": 171.0,
-      "projMean": 226.756,
-      "projP10": 207.0,
-      "projP90": 247.0,
+      "pTitle": 0.6235,
+      "currentPoints": 196.0,
+      "projMean": 243.952,
+      "projP10": 228.0,
+      "projP90": 261.0,
       "maxAttainable": 271.0,
+      "canStillWin": true
+    },
+    {
+      "code": "EVA",
+      "name": "Elfyn Evans",
+      "team": "Toyota",
+      "pTitle": 0.3757,
+      "currentPoints": 216.0,
+      "projMean": 238.642,
+      "projP10": 222.0,
+      "projP90": 256.0,
+      "maxAttainable": 291.0,
       "canStillWin": true
     },
     {
       "code": "SOL",
       "name": "Oliver Solberg",
       "team": "Toyota",
-      "pTitle": 0.0032,
-      "currentPoints": 156.0,
-      "projMean": 175.895,
-      "projP10": 158.0,
-      "projP90": 196.0,
-      "maxAttainable": 256.0,
+      "pTitle": 0.0008,
+      "currentPoints": 175.0,
+      "projMean": 191.481,
+      "projP10": 176.0,
+      "projP90": 208.0999999999999,
+      "maxAttainable": 250.0,
       "canStillWin": true
     },
     {
       "code": "KAT",
       "name": "Takamoto Katsuta",
       "team": "Toyota",
-      "pTitle": 0.0018,
+      "pTitle": 0.0,
       "currentPoints": 160.0,
-      "projMean": 175.748,
+      "projMean": 172.156,
       "projP10": 160.0,
-      "projP90": 194.0,
-      "maxAttainable": 260.0,
-      "canStillWin": true
-    },
-    {
-      "code": "OGI",
-      "name": "S\u00e9bastien Ogier",
-      "team": "Toyota",
-      "pTitle": 0.0013,
-      "currentPoints": 139.0,
-      "projMean": 174.12,
-      "projP10": 155.0,
-      "projP90": 195.0,
-      "maxAttainable": 239.0,
+      "projP90": 187.0,
+      "maxAttainable": 235.0,
       "canStillWin": true
     },
     {
       "code": "FOU",
       "name": "Adrien Fourmaux",
       "team": "Hyundai",
-      "pTitle": 0.0003,
-      "currentPoints": 129.0,
-      "projMean": 161.137,
-      "projP10": 142.0,
-      "projP90": 181.0,
-      "maxAttainable": 229.0,
+      "pTitle": 0.0,
+      "currentPoints": 149.0,
+      "projMean": 176.086,
+      "projP10": 159.0,
+      "projP90": 194.0,
+      "maxAttainable": 224.0,
+      "canStillWin": true
+    },
+    {
+      "code": "OGI",
+      "name": "S\u00e9bastien Ogier",
+      "team": "Toyota",
+      "pTitle": 0.0,
+      "currentPoints": 148.0,
+      "projMean": 155.599,
+      "projP10": 148.0,
+      "projP90": 168.0999999999999,
+      "maxAttainable": 223.0,
       "canStillWin": true
     },
     {
@@ -1049,23 +1131,11 @@
       "name": "Thierry Neuville",
       "team": "Hyundai",
       "pTitle": 0.0,
-      "currentPoints": 125.0,
-      "projMean": 157.893,
-      "projP10": 138.0,
-      "projP90": 179.0,
-      "maxAttainable": 225.0,
-      "canStillWin": true
-    },
-    {
-      "code": "LAP",
-      "name": "Esapekka Lappi",
-      "team": "Hyundai",
-      "pTitle": 0.0,
-      "currentPoints": 25.0,
-      "projMean": 45.772,
-      "projP10": 28.0,
-      "projP90": 65.0,
-      "maxAttainable": 125.0,
+      "currentPoints": 129.0,
+      "projMean": 135.957,
+      "projP10": 129.0,
+      "projP90": 148.0,
+      "maxAttainable": 204.0,
       "canStillWin": false
     },
     {
@@ -1073,11 +1143,11 @@
       "name": "Hayden Paddon",
       "team": "Hyundai",
       "pTitle": 0.0,
-      "currentPoints": 21.0,
-      "projMean": 34.825,
-      "projP10": 21.0,
-      "projP90": 52.0,
-      "maxAttainable": 121.0,
+      "currentPoints": 38.0,
+      "projMean": 66.807,
+      "projP10": 50.0,
+      "projP90": 85.0,
+      "maxAttainable": 113.0,
       "canStillWin": false
     },
     {
@@ -1085,11 +1155,23 @@
       "name": "Joshua Mcerlean",
       "team": "Ford",
       "pTitle": 0.0,
-      "currentPoints": 21.0,
-      "projMean": 22.066,
-      "projP10": 21.0,
-      "projP90": 23.0,
-      "maxAttainable": 121.0,
+      "currentPoints": 29.0,
+      "projMean": 30.49,
+      "projP10": 29.0,
+      "projP90": 35.0,
+      "maxAttainable": 104.0,
+      "canStillWin": false
+    },
+    {
+      "code": "LAP",
+      "name": "Esapekka Lappi",
+      "team": "Hyundai",
+      "pTitle": 0.0,
+      "currentPoints": 25.0,
+      "projMean": 39.844,
+      "projP10": 25.0,
+      "projP90": 56.0,
+      "maxAttainable": 100.0,
       "canStillWin": false
     },
     {
@@ -1098,10 +1180,10 @@
       "team": "Lancia",
       "pTitle": 0.0,
       "currentPoints": 20.0,
-      "projMean": 24.985,
+      "projMean": 23.557,
       "projP10": 20.0,
-      "projP90": 36.0,
-      "maxAttainable": 120.0,
+      "projP90": 32.0,
+      "maxAttainable": 95.0,
       "canStillWin": false
     },
     {
@@ -1110,10 +1192,10 @@
       "team": "Citroen",
       "pTitle": 0.0,
       "currentPoints": 18.0,
-      "projMean": 33.235,
+      "projMean": 29.21,
       "projP10": 18.0,
-      "projP90": 50.0,
-      "maxAttainable": 118.0,
+      "projP90": 44.0,
+      "maxAttainable": 93.0,
       "canStillWin": false
     },
     {
@@ -1122,10 +1204,10 @@
       "team": "Ford",
       "pTitle": 0.0,
       "currentPoints": 16.0,
-      "projMean": 16.34,
+      "projMean": 16.195,
       "projP10": 16.0,
       "projP90": 16.0,
-      "maxAttainable": 116.0,
+      "maxAttainable": 91.0,
       "canStillWin": false
     },
     {
@@ -1134,10 +1216,22 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 15.0,
-      "projMean": 20.451,
+      "projMean": 18.869,
       "projP10": 15.0,
-      "projP90": 33.0,
-      "maxAttainable": 115.0,
+      "projP90": 30.0,
+      "maxAttainable": 90.0,
+      "canStillWin": false
+    },
+    {
+      "code": "GRE",
+      "name": "Gus Greensmith",
+      "team": "Toyota",
+      "pTitle": 0.0,
+      "currentPoints": 12.0,
+      "projMean": 23.269,
+      "projP10": 12.0,
+      "projP90": 38.0,
+      "maxAttainable": 87.0,
       "canStillWin": false
     },
     {
@@ -1146,10 +1240,10 @@
       "team": "Ford",
       "pTitle": 0.0,
       "currentPoints": 12.0,
-      "projMean": 12.775,
+      "projMean": 12.472,
       "projP10": 12.0,
       "projP90": 12.0,
-      "maxAttainable": 112.0,
+      "maxAttainable": 87.0,
       "canStillWin": false
     },
     {
@@ -1158,10 +1252,10 @@
       "team": "Lancia",
       "pTitle": 0.0,
       "currentPoints": 10.0,
-      "projMean": 16.413,
+      "projMean": 14.528,
       "projP10": 10.0,
-      "projP90": 28.0,
-      "maxAttainable": 110.0,
+      "projP90": 25.0,
+      "maxAttainable": 85.0,
       "canStillWin": false
     },
     {
@@ -1170,22 +1264,22 @@
       "team": "Hyundai",
       "pTitle": 0.0,
       "currentPoints": 10.0,
-      "projMean": 20.425,
+      "projMean": 17.031,
       "projP10": 10.0,
-      "projP90": 35.0,
-      "maxAttainable": 110.0,
+      "projP90": 30.0,
+      "maxAttainable": 85.0,
       "canStillWin": false
     },
     {
-      "code": "GRE",
-      "name": "Gus Greensmith",
+      "code": "DOD",
+      "name": "Diego Dom\u00ednguez",
       "team": "Toyota",
       "pTitle": 0.0,
       "currentPoints": 8.0,
-      "projMean": 26.433,
-      "projP10": 10.0,
-      "projP90": 45.0,
-      "maxAttainable": 108.0,
+      "projMean": 17.131,
+      "projP10": 8.0,
+      "projP90": 33.0,
+      "maxAttainable": 83.0,
       "canStillWin": false
     },
     {
@@ -1194,10 +1288,10 @@
       "team": "Toyota",
       "pTitle": 0.0,
       "currentPoints": 7.0,
-      "projMean": 13.197,
+      "projMean": 11.501,
       "projP10": 7.0,
-      "projP90": 25.0,
-      "maxAttainable": 107.0,
+      "projP90": 22.0,
+      "maxAttainable": 82.0,
       "canStillWin": false
     },
     {
@@ -1206,10 +1300,10 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 6.0,
-      "projMean": 17.619,
+      "projMean": 14.075,
       "projP10": 6.0,
-      "projP90": 33.0,
-      "maxAttainable": 106.0,
+      "projP90": 29.0,
+      "maxAttainable": 81.0,
       "canStillWin": false
     },
     {
@@ -1218,10 +1312,10 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 6.0,
-      "projMean": 12.342,
+      "projMean": 10.379,
       "projP10": 6.0,
-      "projP90": 24.0,
-      "maxAttainable": 106.0,
+      "projP90": 21.0,
+      "maxAttainable": 81.0,
       "canStillWin": false
     },
     {
@@ -1230,10 +1324,10 @@
       "team": "Toyota",
       "pTitle": 0.0,
       "currentPoints": 5.0,
-      "projMean": 12.888,
+      "projMean": 10.794,
       "projP10": 5.0,
-      "projP90": 29.0,
-      "maxAttainable": 105.0,
+      "projP90": 23.0,
+      "maxAttainable": 80.0,
       "canStillWin": false
     },
     {
@@ -1242,10 +1336,10 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 5.0,
-      "projMean": 10.858,
+      "projMean": 9.154,
       "projP10": 5.0,
-      "projP90": 23.0,
-      "maxAttainable": 105.0,
+      "projP90": 20.0,
+      "maxAttainable": 80.0,
       "canStillWin": false
     },
     {
@@ -1254,22 +1348,10 @@
       "team": "Toyota",
       "pTitle": 0.0,
       "currentPoints": 4.0,
-      "projMean": 13.375,
+      "projMean": 11.077,
       "projP10": 4.0,
-      "projP90": 29.0,
-      "maxAttainable": 104.0,
-      "canStillWin": false
-    },
-    {
-      "code": "DOD",
-      "name": "Diego Dom\u00ednguez",
-      "team": "Toyota",
-      "pTitle": 0.0,
-      "currentPoints": 2.0,
-      "projMean": 11.039,
-      "projP10": 2.0,
-      "projP90": 27.0,
-      "maxAttainable": 102.0,
+      "projP90": 24.0,
+      "maxAttainable": 79.0,
       "canStillWin": false
     },
     {
@@ -1278,10 +1360,22 @@
       "team": "Hyundai",
       "pTitle": 0.0,
       "currentPoints": 2.0,
-      "projMean": 10.3,
+      "projMean": 7.519,
       "projP10": 2.0,
-      "projP90": 27.0,
-      "maxAttainable": 102.0,
+      "projP90": 20.0,
+      "maxAttainable": 77.0,
+      "canStillWin": false
+    },
+    {
+      "code": "GAL",
+      "name": "Alejandro Galanti",
+      "team": "Toyota",
+      "pTitle": 0.0,
+      "currentPoints": 2.0,
+      "projMean": 8.595,
+      "projP10": 2.0,
+      "projP90": 20.0,
+      "maxAttainable": 77.0,
       "canStillWin": false
     },
     {
@@ -1290,10 +1384,10 @@
       "team": "Toyota",
       "pTitle": 0.0,
       "currentPoints": 2.0,
-      "projMean": 6.665,
+      "projMean": 5.213,
       "projP10": 2.0,
-      "projP90": 18.0,
-      "maxAttainable": 102.0,
+      "projP90": 14.0,
+      "maxAttainable": 77.0,
       "canStillWin": false
     },
     {
@@ -1302,10 +1396,22 @@
       "team": "Ford",
       "pTitle": 0.0,
       "currentPoints": 2.0,
-      "projMean": 2.587,
+      "projMean": 2.398,
       "projP10": 2.0,
       "projP90": 2.0,
-      "maxAttainable": 102.0,
+      "maxAttainable": 77.0,
+      "canStillWin": false
+    },
+    {
+      "code": "GIL",
+      "name": "Taylor Gill",
+      "team": "Skoda",
+      "pTitle": 0.0,
+      "currentPoints": 1.0,
+      "projMean": 4.716,
+      "projP10": 1.0,
+      "projP90": 15.0,
+      "maxAttainable": 76.0,
       "canStillWin": false
     },
     {
@@ -1314,10 +1420,10 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 1.0,
-      "projMean": 5.571,
+      "projMean": 4.101,
       "projP10": 1.0,
-      "projP90": 16.0,
-      "maxAttainable": 101.0,
+      "projP90": 13.0,
+      "maxAttainable": 76.0,
       "canStillWin": false
     },
     {
@@ -1326,10 +1432,10 @@
       "team": "Skoda",
       "pTitle": 0.0,
       "currentPoints": 1.0,
-      "projMean": 6.451,
+      "projMean": 4.573,
       "projP10": 1.0,
-      "projP90": 19.0,
-      "maxAttainable": 101.0,
+      "projP90": 15.0,
+      "maxAttainable": 76.0,
       "canStillWin": false
     },
     {
@@ -1338,34 +1444,10 @@
       "team": "Ford",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 0.124,
+      "projMean": 0.084,
       "projP10": 0.0,
       "projP90": 0.0,
-      "maxAttainable": 100.0,
-      "canStillWin": false
-    },
-    {
-      "code": "MUN",
-      "name": "Gr\u00e9goire Munster",
-      "team": "Ford",
-      "pTitle": 0.0,
-      "currentPoints": 0.0,
-      "projMean": 1.648,
-      "projP10": 0.0,
-      "projP90": 6.0,
-      "maxAttainable": 100.0,
-      "canStillWin": false
-    },
-    {
-      "code": "BER",
-      "name": "Lorenzo Bertelli",
-      "team": "Toyota",
-      "pTitle": 0.0,
-      "currentPoints": 0.0,
-      "projMean": 3.767,
-      "projP10": 0.0,
-      "projP90": 15.0,
-      "maxAttainable": 100.0,
+      "maxAttainable": 75.0,
       "canStillWin": false
     },
     {
@@ -1374,24 +1456,48 @@
       "team": "Ford",
       "pTitle": 0.0,
       "currentPoints": 0.0,
-      "projMean": 1.748,
+      "projMean": 1.301,
       "projP10": 0.0,
-      "projP90": 8.0,
-      "maxAttainable": 100.0,
+      "projP90": 4.0,
+      "maxAttainable": 75.0,
+      "canStillWin": false
+    },
+    {
+      "code": "MUN",
+      "name": "Gr\u00e9goire Munster",
+      "team": "Ford",
+      "pTitle": 0.0,
+      "currentPoints": 0.0,
+      "projMean": 1.385,
+      "projP10": 0.0,
+      "projP90": 4.0,
+      "maxAttainable": 75.0,
+      "canStillWin": false
+    },
+    {
+      "code": "BER",
+      "name": "Lorenzo Bertelli",
+      "team": "Toyota",
+      "pTitle": 0.0,
+      "currentPoints": 0.0,
+      "projMean": 2.858,
+      "projP10": 0.0,
+      "projP90": 12.0,
+      "maxAttainable": 75.0,
       "canStillWin": false
     }
   ],
   "seasonAccuracy": {
-    "roundsScored": 10,
-    "meanPositionError": 8.117,
-    "podiumHitRate": 0.3667,
-    "winnerHitRate": 0.2
+    "roundsScored": 11,
+    "meanPositionError": 8.611,
+    "podiumHitRate": 0.4242,
+    "winnerHitRate": 0.2727
   },
   "nextPrediction": {
     "season": 2026,
-    "round": 11,
-    "venueKey": "ueno-rally-del-paraguay",
-    "venueName": "Ueno Rally Del Paraguay",
+    "round": 12,
+    "venueKey": "rally-chile-bio-bi",
+    "venueName": "Rally Chile Bio Bi\u00f3",
     "surface": "gravel",
     "surfaceColor": "#B8722C",
     "phase": "pre",
@@ -1401,272 +1507,288 @@
         "code": "PAJ",
         "name": "Sami Pajari",
         "team": "Toyota",
-        "pWin": 0.2534,
-        "pPodium": 0.5746
+        "pWin": 0.2843,
+        "pPodium": 0.6206
       },
       {
         "position": 2,
         "code": "EVA",
         "name": "Elfyn Evans",
         "team": "Toyota",
-        "pWin": 0.1404,
-        "pPodium": 0.4161
+        "pWin": 0.1409,
+        "pPodium": 0.4172
       },
       {
         "position": 3,
         "code": "FOU",
         "name": "Adrien Fourmaux",
         "team": "Hyundai",
-        "pWin": 0.091,
-        "pPodium": 0.1887
+        "pWin": 0.099,
+        "pPodium": 0.2111
       },
       {
         "position": 4,
-        "code": "OGI",
-        "name": "S\u00e9bastien Ogier",
-        "team": "Toyota",
-        "pWin": 0.0813,
-        "pPodium": 0.201
+        "code": "PAD",
+        "name": "Hayden Paddon",
+        "team": "Hyundai",
+        "pWin": 0.064,
+        "pPodium": 0.1624
       },
       {
         "position": 5,
-        "code": "NEU",
-        "name": "Thierry Neuville",
-        "team": "Hyundai",
-        "pWin": 0.0658,
-        "pPodium": 0.1894
+        "code": "SOL",
+        "name": "Oliver Solberg",
+        "team": "Toyota",
+        "pWin": 0.0598,
+        "pPodium": 0.1447
       },
       {
         "position": 6,
         "code": "KAT",
         "name": "Takamoto Katsuta",
         "team": "Toyota",
-        "pWin": 0.0886,
-        "pPodium": 0.364
+        "pWin": 0.089,
+        "pPodium": 0.3581
       },
       {
         "position": 7,
-        "code": "SOL",
-        "name": "Oliver Solberg",
-        "team": "Toyota",
-        "pWin": 0.0399,
-        "pPodium": 0.0855
-      },
-      {
-        "position": 8,
         "code": "LAP",
         "name": "Esapekka Lappi",
         "team": "Hyundai",
-        "pWin": 0.0386,
-        "pPodium": 0.0885
+        "pWin": 0.0271,
+        "pPodium": 0.0812
+      },
+      {
+        "position": 8,
+        "code": "OGI",
+        "name": "S\u00e9bastien Ogier",
+        "team": "Toyota",
+        "pWin": 0.0353,
+        "pPodium": 0.1005
       },
       {
         "position": 9,
-        "code": "PAD",
-        "name": "Hayden Paddon",
+        "code": "NEU",
+        "name": "Thierry Neuville",
         "team": "Hyundai",
-        "pWin": 0.0239,
-        "pPodium": 0.062
+        "pWin": 0.0274,
+        "pPodium": 0.0433
       },
       {
         "position": 10,
         "code": "ROL",
         "name": "L\u00e9o Rossel",
         "team": "Citroen",
-        "pWin": 0.0231,
-        "pPodium": 0.069
+        "pWin": 0.0194,
+        "pPodium": 0.0637
       },
       {
         "position": 11,
         "code": "GRE",
         "name": "Gus Greensmith",
         "team": "Toyota",
-        "pWin": 0.0198,
-        "pPodium": 0.0769
+        "pWin": 0.0141,
+        "pPodium": 0.0594
       },
       {
         "position": 12,
         "code": "VIR",
         "name": "Robert Virves",
         "team": "Skoda",
-        "pWin": 0.008,
-        "pPodium": 0.0294
+        "pWin": 0.0086,
+        "pPodium": 0.0329
       },
       {
         "position": 13,
-        "code": "SOR",
-        "name": "Daniel Sordo",
-        "team": "Hyundai",
-        "pWin": 0.0127,
-        "pPodium": 0.0484
+        "code": "DOD",
+        "name": "Diego Dom\u00ednguez",
+        "team": "Toyota",
+        "pWin": 0.0121,
+        "pPodium": 0.0562
       },
       {
         "position": 14,
-        "code": "ROS",
-        "name": "Yohan Rossel",
-        "team": "Lancia",
-        "pWin": 0.0072,
-        "pPodium": 0.0271
+        "code": "SOR",
+        "name": "Daniel Sordo",
+        "team": "Hyundai",
+        "pWin": 0.0082,
+        "pPodium": 0.0419
       },
       {
         "position": 15,
-        "code": "GRN",
-        "name": "Nikolay Gryazin",
+        "code": "ROS",
+        "name": "Yohan Rossel",
         "team": "Lancia",
-        "pWin": 0.0073,
-        "pPodium": 0.0355
+        "pWin": 0.0076,
+        "pPodium": 0.0285
       },
       {
         "position": 16,
-        "code": "ZAF",
-        "name": "Fau Zaldivar",
-        "team": "Skoda",
-        "pWin": 0.0105,
-        "pPodium": 0.0514
-      },
-      {
-        "position": 17,
-        "code": "CAC",
-        "name": "Alejandro Cach\u00f3n",
-        "team": "Toyota",
-        "pWin": 0.0056,
-        "pPodium": 0.0311
-      },
-      {
-        "position": 18,
         "code": "MCE",
         "name": "Joshua Mcerlean",
         "team": "Ford",
-        "pWin": 0.0074,
-        "pPodium": 0.017
+        "pWin": 0.0103,
+        "pPodium": 0.0198
+      },
+      {
+        "position": 17,
+        "code": "ZAF",
+        "name": "Fau Zaldivar",
+        "team": "Skoda",
+        "pWin": 0.0104,
+        "pPodium": 0.0479
+      },
+      {
+        "position": 18,
+        "code": "GRN",
+        "name": "Nikolay Gryazin",
+        "team": "Lancia",
+        "pWin": 0.0061,
+        "pPodium": 0.0294
       },
       {
         "position": 19,
-        "code": "KOR",
-        "name": "Roope Korhonen",
+        "code": "CAC",
+        "name": "Alejandro Cach\u00f3n",
         "team": "Toyota",
-        "pWin": 0.0085,
-        "pPodium": 0.0399
+        "pWin": 0.0067,
+        "pPodium": 0.0327
       },
       {
         "position": 20,
-        "code": "DAP",
-        "name": "Roberto Dapr\u00e0",
-        "team": "Skoda",
-        "pWin": 0.0076,
-        "pPodium": 0.0375
+        "code": "KOR",
+        "name": "Roope Korhonen",
+        "team": "Toyota",
+        "pWin": 0.0081,
+        "pPodium": 0.0379
       },
       {
         "position": 21,
         "code": "LAT",
         "name": "Jari-Matti Latvala",
         "team": "Toyota",
-        "pWin": 0.0099,
-        "pPodium": 0.0434
+        "pWin": 0.0084,
+        "pPodium": 0.0422
       },
       {
         "position": 22,
-        "code": "DOD",
-        "name": "Diego Dom\u00ednguez",
-        "team": "Toyota",
-        "pWin": 0.007,
-        "pPodium": 0.041
+        "code": "DAP",
+        "name": "Roberto Dapr\u00e0",
+        "team": "Skoda",
+        "pWin": 0.0052,
+        "pPodium": 0.033
       },
       {
         "position": 23,
-        "code": "MIK",
-        "name": "Andreas Mikkelsen",
-        "team": "Skoda",
-        "pWin": 0.0049,
-        "pPodium": 0.0305
+        "code": "GAL",
+        "name": "Alejandro Galanti",
+        "team": "Toyota",
+        "pWin": 0.0106,
+        "pPodium": 0.0404
       },
       {
         "position": 24,
         "code": "PEL",
         "name": "Arthur Pelamourgues",
         "team": "Hyundai",
-        "pWin": 0.0101,
-        "pPodium": 0.0413
+        "pWin": 0.0059,
+        "pPodium": 0.0353
       },
       {
         "position": 25,
-        "code": "SES",
-        "name": "M\u0101rtin\u0161 Sesks",
-        "team": "Ford",
-        "pWin": 0.0021,
-        "pPodium": 0.0149
+        "code": "MIK",
+        "name": "Andreas Mikkelsen",
+        "team": "Skoda",
+        "pWin": 0.0049,
+        "pPodium": 0.0308
       },
       {
         "position": 26,
-        "code": "ARM",
-        "name": "Jon Armstrong",
+        "code": "SES",
+        "name": "M\u0101rtin\u0161 Sesks",
         "team": "Ford",
         "pWin": 0.0013,
-        "pPodium": 0.0141
+        "pPodium": 0.0145
       },
       {
         "position": 27,
-        "code": "SUN",
-        "name": "Teemu Suninen",
-        "team": "Toyota",
-        "pWin": 0.0051,
-        "pPodium": 0.0278
+        "code": "ARM",
+        "name": "Jon Armstrong",
+        "team": "Ford",
+        "pWin": 0.001,
+        "pPodium": 0.0137
       },
       {
         "position": 28,
-        "code": "CAM",
-        "name": "Eric Camilli",
-        "team": "Skoda",
-        "pWin": 0.005,
-        "pPodium": 0.0294
+        "code": "SUN",
+        "name": "Teemu Suninen",
+        "team": "Toyota",
+        "pWin": 0.0048,
+        "pPodium": 0.0277
       },
       {
         "position": 29,
-        "code": "LIN",
-        "name": "Emil Lindholm",
+        "code": "GIL",
+        "name": "Taylor Gill",
         "team": "Skoda",
-        "pWin": 0.0055,
-        "pPodium": 0.032
+        "pWin": 0.006,
+        "pPodium": 0.031
       },
       {
         "position": 30,
-        "code": "BER",
-        "name": "Lorenzo Bertelli",
-        "team": "Toyota",
-        "pWin": 0.0044,
-        "pPodium": 0.0255
+        "code": "CAM",
+        "name": "Eric Camilli",
+        "team": "Skoda",
+        "pWin": 0.0038,
+        "pPodium": 0.024
       },
       {
         "position": 31,
-        "code": "MUN",
-        "name": "Gr\u00e9goire Munster",
-        "team": "Ford",
-        "pWin": 0.0013,
-        "pPodium": 0.0179
+        "code": "LIN",
+        "name": "Emil Lindholm",
+        "team": "Skoda",
+        "pWin": 0.0028,
+        "pPodium": 0.0279
       },
       {
         "position": 32,
+        "code": "BER",
+        "name": "Lorenzo Bertelli",
+        "team": "Toyota",
+        "pWin": 0.004,
+        "pPodium": 0.0242
+      },
+      {
+        "position": 33,
         "code": "JUR",
         "name": "Romet J\u00fcrgenson",
+        "team": "Ford",
+        "pWin": 0.0014,
+        "pPodium": 0.0187
+      },
+      {
+        "position": 34,
+        "code": "MUN",
+        "name": "Gr\u00e9goire Munster",
         "team": "Ford",
         "pWin": 0.0018,
         "pPodium": 0.019
       },
       {
-        "position": 33,
+        "position": 35,
         "code": "FON",
         "name": "Matteo Fontana",
         "team": "Ford",
-        "pWin": 0.0008,
-        "pPodium": 0.016
+        "pWin": 0.0003,
+        "pPodium": 0.0149
       },
       {
-        "position": 34,
+        "position": 36,
         "code": "SER",
         "name": "Jourdan Serderidis",
         "team": "Ford",
-        "pWin": 0.0001,
-        "pPodium": 0.0138
+        "pWin": 0.0,
+        "pPodium": 0.0132
       }
     ]
   }

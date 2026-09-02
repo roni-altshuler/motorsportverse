@@ -4,42 +4,42 @@
   "surface": "snow",
   "rally": {
     "n": 12,
-    "mean_position_error": 6.417,
+    "mean_position_error": 6.833,
     "winner_hit": false,
     "podium_hits": 1,
     "within_3": 4,
-    "within_5": 7,
+    "within_5": 6,
     "exact_matches": 0,
     "spearman_correlation": 0.8181818181818182,
-    "ndcg_at_5": 0.8748138038756603
+    "ndcg_at_5": 0.8748138038756604
   },
   "markets": {
     "win": {
-      "brier": 0.06356,
-      "logLoss": 0.19447
+      "brier": 0.064172,
+      "logLoss": 0.196312
     },
     "podium": {
-      "brier": 0.191639,
-      "logLoss": 0.60179
+      "brier": 0.193375,
+      "logLoss": 0.612178
     }
   },
   "baselines": {
     "standingsOrder": {
       "score": {
         "n": 12,
-        "mean_position_error": 7.333,
+        "mean_position_error": 7.667,
         "winner_hit": false,
         "podium_hits": 1,
         "within_3": 4,
         "within_5": 6,
         "exact_matches": 0,
-        "spearman_correlation": 0.8251748251748252,
-        "ndcg_at_5": 0.8748138038756603
+        "spearman_correlation": 0.8041958041958042,
+        "ndcg_at_5": 0.8748138038756604
       },
       "markets": {
         "win": {
-          "brier": 0.060937,
-          "logLoss": 0.179681
+          "brier": 0.060935,
+          "logLoss": 0.179513
         },
         "podium": {
           "brier": 0.20935,
@@ -50,19 +50,19 @@
     "lastRally": {
       "score": {
         "n": 12,
-        "mean_position_error": 8.083,
+        "mean_position_error": 8.333,
         "winner_hit": false,
         "podium_hits": 1,
         "within_3": 4,
         "within_5": 5,
         "exact_matches": 0,
-        "spearman_correlation": 0.8251748251748252,
-        "ndcg_at_5": 0.8748138038756603
+        "spearman_correlation": 0.8041958041958042,
+        "ndcg_at_5": 0.8748138038756604
       },
       "markets": {
         "win": {
           "brier": 0.060928,
-          "logLoss": 0.17871
+          "logLoss": 0.178696
         },
         "podium": {
           "brier": 0.20935,

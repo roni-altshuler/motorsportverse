@@ -4,65 +4,65 @@
   "surface": "tarmac",
   "rally": {
     "n": 13,
-    "mean_position_error": 6.231,
+    "mean_position_error": 6.308,
     "winner_hit": false,
-    "podium_hits": 1,
-    "within_3": 7,
+    "podium_hits": 2,
+    "within_3": 8,
     "within_5": 8,
     "exact_matches": 0,
-    "spearman_correlation": 0.7472527472527473,
-    "ndcg_at_5": 0.9243923227820071
+    "spearman_correlation": 0.7747252747252747,
+    "ndcg_at_5": 0.9483886813798998
   },
   "markets": {
     "win": {
-      "brier": 0.070215,
-      "logLoss": 0.247533
+      "brier": 0.066924,
+      "logLoss": 0.224884
     },
     "podium": {
-      "brier": 0.162485,
-      "logLoss": 0.484457
+      "brier": 0.130436,
+      "logLoss": 0.385682
     }
   },
   "baselines": {
     "standingsOrder": {
       "score": {
         "n": 13,
-        "mean_position_error": 6.231,
+        "mean_position_error": 6.308,
         "winner_hit": false,
-        "podium_hits": 1,
-        "within_3": 7,
+        "podium_hits": 2,
+        "within_3": 8,
         "within_5": 8,
         "exact_matches": 0,
-        "spearman_correlation": 0.7472527472527473,
-        "ndcg_at_5": 0.9243923227820071
+        "spearman_correlation": 0.7747252747252747,
+        "ndcg_at_5": 0.9483886813798998
       },
       "markets": {
         "win": {
-          "brier": 0.071214,
-          "logLoss": 0.229562
+          "brier": 0.064453,
+          "logLoss": 0.198824
         },
         "podium": {
-          "brier": 0.158054,
-          "logLoss": 0.44316
+          "brier": 0.073438,
+          "logLoss": 0.244552
         }
       }
     },
     "lastRally": {
       "score": {
         "n": 13,
-        "mean_position_error": 15.615,
+        "mean_position_error": 15.846,
         "winner_hit": false,
         "podium_hits": 0,
         "within_3": 0,
         "within_5": 1,
         "exact_matches": 0,
-        "spearman_correlation": 0.7472527472527473,
-        "ndcg_at_5": 0.9243923227820071
+        "spearman_correlation": 0.7747252747252747,
+        "ndcg_at_5": 0.9483886813798998
       },
       "markets": {
         "win": {
-          "brier": 0.076706,
-          "logLoss": 0.50484
+          "brier": 0.076612,
+          "logLoss": 0.477364
         },
         "podium": {
           "brier": 0.217823,

@@ -1,0 +1,74 @@
+{
+  "round": 11,
+  "venueName": "Ueno Rally Del Paraguay",
+  "surface": "gravel",
+  "rally": {
+    "n": 12,
+    "mean_position_error": 11.75,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 5,
+    "within_5": 5,
+    "exact_matches": 2,
+    "spearman_correlation": 0.46153846153846156,
+    "ndcg_at_5": 0.05011084730022268
+  },
+  "markets": {
+    "win": {
+      "brier": 0.050528,
+      "logLoss": 0.159309
+    },
+    "podium": {
+      "brier": 0.165839,
+      "logLoss": 0.526124
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 12.25,
+        "winner_hit": true,
+        "podium_hits": 1,
+        "within_3": 4,
+        "within_5": 5,
+        "exact_matches": 1,
+        "spearman_correlation": 0.4755244755244755,
+        "ndcg_at_5": 0.05011084730022268
+      },
+      "markets": {
+        "win": {
+          "brier": 0.046176,
+          "logLoss": 0.145092
+        },
+        "podium": {
+          "brier": 0.19115,
+          "logLoss": 0.622677
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 11.167,
+        "winner_hit": true,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 5,
+        "exact_matches": 1,
+        "spearman_correlation": 0.5454545454545454,
+        "ndcg_at_5": 0.4871234547915581
+      },
+      "markets": {
+        "win": {
+          "brier": 0.04773,
+          "logLoss": 0.152167
+        },
+        "podium": {
+          "brier": 0.230108,
+          "logLoss": 0.709464
+        }
+      }
+    }
+  }
+}
