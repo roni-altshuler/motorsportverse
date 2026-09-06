@@ -1,100 +1,26 @@
 {
   "artifacts": [
-    "gbr",
-    "scaler",
-    "xgb"
+    "calibrator"
   ],
-  "circuitKey": "Italy",
-  "ensemble_weights": {
-    "gb": 0.28110038565391565,
-    "lstm": 0.18,
-    "xgb": 0.5388996143460845
-  },
-  "feature_cols": [
-    "TeamAdjustedPace",
-    "TeamPerformanceScore",
-    "TeamFormDelta",
-    "CleanAirPace",
-    "BestLapTime",
-    "LapTimeStd",
-    "ConsistencyScore",
-    "SectorBalance",
-    "PitTimeLoss",
-    "TyreDegFactor",
-    "ExperienceFactor",
-    "RainProbability",
-    "Temperature",
-    "WeatherRiskScore",
-    "CircuitOvertaking",
-    "CircuitSafetyCar",
-    "CircuitGripPenalty",
-    "ExpectedStopsFeature",
-    "SprintWeekend",
-    "QualifyingRank",
-    "GridAdvantage",
-    "CurrentForm",
-    "SkillPrior",
-    "DriverPrior",
-    "TeamPrior",
-    "SeasonMomentum",
-    "PositionTrend",
-    "DriverPredictionBias",
-    "TeamPredictionBias",
-    "DriverDegComposite",
-    "DriverDegDeltaField",
-    "UndercutEdgeAhead",
-    "OvercutEdgeBehind",
-    "TeamOrderPressure",
-    "TeammateConflictRisk",
-    "FieldPositionVolatility",
-    "LocalBattleIntensity",
-    "DRSOvertakeProbAhead",
-    "driver_elo",
-    "team_elo",
-    "driver_form_elo",
-    "wet_weather_elo",
-    "qualifying_elo",
-    "racecraft_elo",
-    "teammate_delta_elo",
-    "CircuitFinishMeanK",
-    "CircuitPodiumRate",
-    "CircuitDNFRate",
-    "CircuitGridDelta",
-    "CircuitVisits"
+  "calibration": "held-out-logistic",
+  "dbHistoryRounds": 0,
+  "fittedMarkets": [
+    "win",
+    "podium",
+    "top6",
+    "top10"
   ],
-  "gitSha": "bbd17acb0fb6890e5847eca55ee18b3e1ca5a7b4",
-  "gpName": "Italian Grand Prix",
-  "kind": "qualifying-time",
-  "lstm_used": true,
-  "max_spread_s": 3.5,
-  "metrics": [
-    {
-      "MAE (s)": 0.5818381947967367,
-      "Model": "Gradient Boosting",
-      "RMSE (s)": 0.8261601717562077,
-      "R\u00b2": 0.7142899190554531
-    },
-    {
-      "MAE (s)": 0.30349797363281256,
-      "Model": "XGBoost",
-      "RMSE (s)": 0.44128344224622906,
-      "R\u00b2": 0.9184859784097078
-    },
-    {
-      "MAE (s)": 0.0,
-      "Model": "LSTM Neural Network",
-      "RMSE (s)": 0.0,
-      "R\u00b2": 0.0
-    },
-    {
-      "MAE (s)": 0.34540355995579547,
-      "Model": "Ensemble (GBR + XGB + LSTM)",
-      "RMSE (s)": 0.5026787692420767,
-      "R\u00b2": 0.8942261915210652
-    }
-  ],
+  "gitSha": "f31774bc2216d9824532d35c6aef06735aea7272",
+  "historyRecords": 1136,
+  "kind": "probability-calibrator",
   "pythonVersion": "3.11.16",
   "round": 13,
-  "savedAt": "2026-09-05T18:45:44+00:00",
+  "sampleCounts": {
+    "podium": 284,
+    "top10": 284,
+    "top6": 284,
+    "win": 284
+  },
+  "savedAt": "2026-09-06T21:36:39+00:00",
   "season": 2026
 }

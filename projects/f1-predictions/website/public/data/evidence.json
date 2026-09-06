@@ -4,7 +4,7 @@
   "season": null,
   "sport": "F1 Predictions",
   "generatedAt": null,
-  "roundsScored": 12,
+  "roundsScored": 13,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Grid order",
     "raceType": "race",
     "lowerIsBetter": true,
-    "nRounds": 12,
+    "nRounds": 13,
     "rounds": [
       1,
       2,
@@ -25,17 +25,18 @@
       9,
       10,
       11,
-      12
+      12,
+      13
     ],
-    "modelMean": 3.61039,
-    "baselineMean": 3.389667,
-    "delta": 0.220723,
-    "improvement": -0.220723,
-    "ciLow": -0.417715,
-    "ciHigh": -0.038817,
-    "pModelBetter": 0.0075,
-    "verdict": "worse",
-    "note": "the model does NOT beat grid order over 12 paired rounds \u2014 published as measured"
+    "modelMean": 3.519481,
+    "baselineMean": 3.345692,
+    "delta": 0.173788,
+    "improvement": -0.173788,
+    "ciLow": -0.373588,
+    "ciHigh": 0.014189,
+    "pModelBetter": 0.04,
+    "verdict": "inconclusive",
+    "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -44,7 +45,7 @@
       "baselineLabel": "Grid order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 12,
+      "nRounds": 13,
       "rounds": [
         1,
         2,
@@ -57,17 +58,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 3.61039,
-      "baselineMean": 3.389667,
-      "delta": 0.220723,
-      "improvement": -0.220723,
-      "ciLow": -0.417715,
-      "ciHigh": -0.038817,
-      "pModelBetter": 0.0075,
-      "verdict": "worse",
-      "note": "the model does NOT beat grid order over 12 paired rounds \u2014 published as measured"
+      "modelMean": 3.519481,
+      "baselineMean": 3.345692,
+      "delta": 0.173788,
+      "improvement": -0.173788,
+      "ciLow": -0.373588,
+      "ciHigh": 0.014189,
+      "pModelBetter": 0.04,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -75,7 +77,7 @@
       "baselineLabel": "Last race order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 11,
+      "nRounds": 12,
       "rounds": [
         2,
         3,
@@ -87,17 +89,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 3.525384,
-      "baselineMean": 4.837818,
-      "delta": -1.312434,
-      "improvement": 1.312434,
-      "ciLow": 0.841352,
-      "ciHigh": 1.857831,
+      "modelMean": 3.433983,
+      "baselineMean": 4.805917,
+      "delta": -1.371934,
+      "improvement": 1.371934,
+      "ciLow": 0.916629,
+      "ciHigh": 1.881803,
       "pModelBetter": 1.0,
       "verdict": "better",
-      "note": "the model beats last race order over 11 paired rounds"
+      "note": "the model beats last race order over 12 paired rounds"
     },
     {
       "metric": "mean_position_error",
@@ -105,7 +108,7 @@
       "baselineLabel": "Standings order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 11,
+      "nRounds": 12,
       "rounds": [
         2,
         3,
@@ -117,17 +120,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 3.525384,
-      "baselineMean": 4.19,
-      "delta": -0.664616,
-      "improvement": 0.664616,
-      "ciLow": 0.292732,
-      "ciHigh": 1.057678,
-      "pModelBetter": 0.9995,
+      "modelMean": 3.433983,
+      "baselineMean": 4.113583,
+      "delta": -0.679601,
+      "improvement": 0.679601,
+      "ciLow": 0.336459,
+      "ciHigh": 1.045371,
+      "pModelBetter": 1.0,
       "verdict": "better",
-      "note": "the model beats standings order over 11 paired rounds"
+      "note": "the model beats standings order over 12 paired rounds"
     }
   ],
   "calibration": null,
@@ -138,7 +142,7 @@
     "roundsCompared": null
   },
   "caveats": [
-    "The model does not beat grid order on every measured comparison. That is stated rather than hidden.",
+    "Some comparisons straddle zero: a difference has not been demonstrated, in either direction.",
     "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
   ]
 }

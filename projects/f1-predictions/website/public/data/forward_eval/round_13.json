@@ -1,0 +1,77 @@
+{
+  "season": 2026,
+  "round": 13,
+  "drivers_compared": 21,
+  "mean_position_error": 2.4285714285714284,
+  "median_position_error": 1.0,
+  "rmse_position_error": 4.58257569495584,
+  "exact_matches": 3,
+  "within_3": 19,
+  "within_5": 20,
+  "winner_hit": false,
+  "podium_hits": 2,
+  "top10_overlap": 9,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.7324675324675325,
+  "ndcg_at_5": 0.7881063391431052,
+  "biggest_misses": [
+    {
+      "driver": "LEC",
+      "predicted": 3,
+      "actual": 22,
+      "delta": -19,
+      "absDelta": 19
+    },
+    {
+      "driver": "VER",
+      "predicted": 8,
+      "actual": 3,
+      "delta": 5,
+      "absDelta": 5
+    },
+    {
+      "driver": "GAS",
+      "predicted": 4,
+      "actual": 7,
+      "delta": -3,
+      "absDelta": 3
+    },
+    {
+      "driver": "LAW",
+      "predicted": 11,
+      "actual": 14,
+      "delta": -3,
+      "absDelta": 3
+    },
+    {
+      "driver": "NOR",
+      "predicted": 7,
+      "actual": 4,
+      "delta": 3,
+      "absDelta": 3
+    }
+  ],
+  "baselines": {
+    "last_race_winner": {
+      "mean_position_error": 4.455,
+      "winner_hit": false,
+      "podium_hits": 2,
+      "top10_overlap": 6,
+      "spearman_correlation": 0.43873517786561267
+    },
+    "grid_order": {
+      "mean_position_error": 2.818,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "top10_overlap": 9,
+      "spearman_correlation": 0.7108977978543196
+    },
+    "standings_order": {
+      "mean_position_error": 3.273,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "top10_overlap": 8,
+      "spearman_correlation": 0.6645962732919255
+    }
+  }
+}

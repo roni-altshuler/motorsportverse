@@ -194,14 +194,14 @@
     },
     {
       "round": 13,
-      "hasActual": false,
-      "meanError": null,
-      "exactMatches": null,
-      "within3": null,
-      "accuracyPct": null,
-      "podiumAccuracyPct": null,
-      "pointsAccuracyPct": null,
-      "within3AccuracyPct": null,
+      "hasActual": true,
+      "meanError": 2.43,
+      "exactMatches": 3,
+      "within3": 19,
+      "accuracyPct": 80.0,
+      "podiumAccuracyPct": 66.7,
+      "pointsAccuracyPct": 100.0,
+      "within3AccuracyPct": 90.5,
       "meanErrorClassified": null,
       "within3Classified": null,
       "accuracyPctClassified": null,
@@ -354,11 +354,11 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 3.61,
-    "seasonAccuracyPct": 60.3,
-    "seasonPodiumAccuracyPct": 50.0,
-    "seasonPointsAccuracyPct": 75.8,
-    "roundsWithActual": 12,
+    "seasonMeanError": 3.52,
+    "seasonAccuracyPct": 61.8,
+    "seasonPodiumAccuracyPct": 51.3,
+    "seasonPointsAccuracyPct": 77.5,
+    "roundsWithActual": 13,
     "seasonMeanErrorClassified": 3.03,
     "seasonAccuracyPctClassified": 70.9,
     "seasonWithin5PctClassified": 86.6,
@@ -1756,7 +1756,123 @@
           "drivers": 1
         }
       ]
+    },
+    {
+      "round": 13,
+      "name": "Italian Grand Prix",
+      "comparedDrivers": 21,
+      "meanError": 2.43,
+      "medianError": 1.0,
+      "exactMatches": 3,
+      "within3": 19,
+      "within5": 20,
+      "winnerHit": false,
+      "podiumHits": 2,
+      "pointsHits": 9,
+      "pointsTotal": 9,
+      "podiumAccuracyPct": 66.7,
+      "pointsAccuracyPct": 100.0,
+      "accuracyPct": 80.0,
+      "biggestMisses": [
+        {
+          "driver": "LEC",
+          "team": "Ferrari",
+          "predicted": 3,
+          "actual": 22,
+          "delta": -19,
+          "absDelta": 19
+        },
+        {
+          "driver": "VER",
+          "team": "Red Bull Racing",
+          "predicted": 8,
+          "actual": 3,
+          "delta": 5,
+          "absDelta": 5
+        },
+        {
+          "driver": "GAS",
+          "team": "Alpine",
+          "predicted": 4,
+          "actual": 7,
+          "delta": -3,
+          "absDelta": 3
+        },
+        {
+          "driver": "LAW",
+          "team": "Racing Bulls",
+          "predicted": 11,
+          "actual": 14,
+          "delta": -3,
+          "absDelta": 3
+        },
+        {
+          "driver": "NOR",
+          "team": "McLaren",
+          "predicted": 7,
+          "actual": 4,
+          "delta": 3,
+          "absDelta": 3
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "Cadillac",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "Mercedes",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "McLaren",
+          "meanError": 2.0,
+          "drivers": 2
+        },
+        {
+          "team": "Racing Bulls",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 5.0,
+          "drivers": 1
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 10.0,
+          "drivers": 2
+        }
+      ]
     }
   ],
-  "generatedAt": "2026-09-05T18:46:29.535004Z"
+  "generatedAt": "2026-09-06T21:34:40.499177Z"
 }
