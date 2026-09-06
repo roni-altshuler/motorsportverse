@@ -1,0 +1,159 @@
+{
+  "round": 5,
+  "season": 2026,
+  "place": "Austin",
+  "country": "United States",
+  "event": "Circuit Of The Americas",
+  "classes": [
+    {
+      "class": "HYPERCAR",
+      "label": "Hypercar",
+      "color": "#3DDC97",
+      "field": 17,
+      "score": {
+        "n": 17,
+        "mean_position_error": 5.059,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 10,
+        "exact_matches": 1,
+        "spearman_correlation": 0.24754901960784315,
+        "ndcg_at_5": 0.6863463832828759
+      },
+      "markets": {
+        "win": {
+          "brier": 0.045371,
+          "logLoss": 0.157654
+        },
+        "podium": {
+          "brier": 0.125333,
+          "logLoss": 0.389031
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 17,
+            "mean_position_error": 4.941,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 6,
+            "within_5": 11,
+            "exact_matches": 0,
+            "spearman_correlation": 0.26715686274509803,
+            "ndcg_at_5": 0.5957590910500461
+          },
+          "markets": {
+            "win": {
+              "brier": 0.047431,
+              "logLoss": 0.165095
+            },
+            "podium": {
+              "brier": 0.132895,
+              "logLoss": 0.427436
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 17,
+            "mean_position_error": 4.588,
+            "winner_hit": true,
+            "podium_hits": 1,
+            "within_3": 6,
+            "within_5": 12,
+            "exact_matches": 1,
+            "spearman_correlation": 0.41421568627450983,
+            "ndcg_at_5": 0.7933559012634501
+          },
+          "markets": {
+            "win": {
+              "brier": 0.045754,
+              "logLoss": 0.159995
+            },
+            "podium": {
+              "brier": 0.11587,
+              "logLoss": 0.358158
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "LMGT3",
+      "label": "LMGT3",
+      "color": "#F4A259",
+      "field": 18,
+      "score": {
+        "n": 18,
+        "mean_position_error": 6.444,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 7,
+        "within_5": 8,
+        "exact_matches": 1,
+        "spearman_correlation": -0.15583075335397317,
+        "ndcg_at_5": 0.4324620522442595
+      },
+      "markets": {
+        "win": {
+          "brier": 0.05896,
+          "logLoss": 0.28173
+        },
+        "podium": {
+          "brier": 0.190032,
+          "logLoss": 0.652914
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 18,
+            "mean_position_error": 6.111,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 7,
+            "within_5": 8,
+            "exact_matches": 2,
+            "spearman_correlation": -0.08152734778121776,
+            "ndcg_at_5": 0.41551468288982024
+          },
+          "markets": {
+            "win": {
+              "brier": 0.056861,
+              "logLoss": 0.242387
+            },
+            "podium": {
+              "brier": 0.185677,
+              "logLoss": 0.624307
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 18,
+            "mean_position_error": 6.222,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": -0.15170278637770898,
+            "ndcg_at_5": 0.410365150508767
+          },
+          "markets": {
+            "win": {
+              "brier": 0.058842,
+              "logLoss": 0.296539
+            },
+            "podium": {
+              "brier": 0.182114,
+              "logLoss": 0.64865
+            }
+          }
+        }
+      }
+    }
+  ]
+}
