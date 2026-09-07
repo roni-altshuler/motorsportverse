@@ -1,53 +1,54 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 26,
+  "lastEvaluatedRound": 27,
   "featureDrift": [
     {
       "feature": "predictedValue",
-      "psi": 0.1438,
+      "psi": 0.1132,
       "severity": "warn"
     },
     {
       "feature": "pWin",
-      "psi": 0.1782,
-      "severity": "warn"
-    },
-    {
-      "feature": "pPodium",
-      "psi": 0.2185,
-      "severity": "warn"
-    },
-    {
-      "feature": "pDnf",
-      "psi": 0.3049,
+      "psi": 0.3733,
       "severity": "alarm"
     },
     {
+      "feature": "pPodium",
+      "psi": 0.3439,
+      "severity": "alarm"
+    },
+    {
+      "feature": "pDnf",
+      "psi": 0.1164,
+      "severity": "warn"
+    },
+    {
       "feature": "meanFinish",
-      "psi": 0.09,
-      "severity": "ok"
+      "psi": 0.1436,
+      "severity": "warn"
     },
     {
       "feature": "finishRangeHigh",
-      "psi": 1.4978,
+      "psi": 0.689,
       "severity": "alarm"
     }
   ],
   "outputDrift": {
     "rollingBrierRecent": 0.0265,
-    "rollingBrierBaseline": 0.0275,
-    "relativeChange": -0.0353,
+    "rollingBrierBaseline": 0.0272,
+    "relativeChange": -0.0252,
     "severity": "ok",
-    "roundsCompared": 26
+    "roundsCompared": 27
   },
   "warnings": [
-    "predictedValue: PSI 0.144 (moderate drift vs baseline)",
-    "pWin: PSI 0.178 (moderate drift vs baseline)",
-    "pPodium: PSI 0.218 (moderate drift vs baseline)"
+    "predictedValue: PSI 0.113 (moderate drift vs baseline)",
+    "pDnf: PSI 0.116 (moderate drift vs baseline)",
+    "meanFinish: PSI 0.144 (moderate drift vs baseline)"
   ],
   "alarms": [
-    "pDnf: PSI 0.305 (significant drift vs baseline)",
-    "finishRangeHigh: PSI 1.498 (significant drift vs baseline)"
+    "pWin: PSI 0.373 (significant drift vs baseline)",
+    "pPodium: PSI 0.344 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.689 (significant drift vs baseline)"
   ],
   "brierByRound": [
     {
@@ -153,6 +154,10 @@
     {
       "round": 26,
       "brier": 0.02590510025
+    },
+    {
+      "round": 27,
+      "brier": 0.026282622894736846
     }
   ]
 }

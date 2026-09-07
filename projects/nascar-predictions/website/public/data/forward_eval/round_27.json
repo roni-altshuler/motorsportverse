@@ -1,0 +1,63 @@
+{
+  "round": 27,
+  "venueName": "Darlington Raceway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 38,
+    "mean_position_error": 6.368,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 15,
+    "within_5": 21,
+    "exact_matches": 0,
+    "spearman_correlation": 0.7135353977459241,
+    "ndcg_at_5": 0.7810394837711262
+  },
+  "racePostQuali": {
+    "n": 38,
+    "mean_position_error": 8.895,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 14,
+    "exact_matches": 1,
+    "spearman_correlation": 0.45333187438450595,
+    "ndcg_at_5": 0.7170607768079528
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.026285,
+        "logLoss": 0.093354
+      },
+      "podium": {
+        "brier": 0.067391,
+        "logLoss": 0.20223
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 12.028,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 8,
+      "within_5": 9,
+      "exact_matches": 1,
+      "spearman_correlation": 0.07516087516087516,
+      "ndcg_at_5": 0.61314991569007
+    },
+    "gridOrder": {
+      "n": 38,
+      "mean_position_error": 9.947,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 9,
+      "within_5": 16,
+      "exact_matches": 2,
+      "spearman_correlation": 0.33822081190502246,
+      "ndcg_at_5": 0.7308481502886452
+    }
+  }
+}
