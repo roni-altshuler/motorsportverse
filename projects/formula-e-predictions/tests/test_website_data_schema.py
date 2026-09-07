@@ -233,11 +233,16 @@ def test_fe_json_contract(data_dir):
     data = FEData.model_validate(_load(data_dir / "fe.json"))
     assert data.sport == "Formula E"
     assert data.season == config.SEASON
-    assert data.totalRounds == 17
-    assert len(data.calendar) == 17
-    assert len(data.driverStandings) == 20
-    assert len(data.teamStandings) == 10
-    assert data.completedRounds >= 13
+    assert data.totalRounds == len(config.CALENDAR)
+    assert len(data.calendar) == len(config.CALENDAR)
+    # Consistency with config (both derive from the committed snapshot), never
+    # a season-progress literal — literals freeze the cron at every season
+    # boundary (WRC lesson, 967f4c4).
+    assert data.completedRounds == config.COMPLETED_ROUNDS
+    if config.COMPLETED_ROUNDS:
+        # Substitute drivers only ever ADD standings rows beyond the roster.
+        assert len(data.driverStandings) >= len(config.DRIVERS)
+        assert len(data.teamStandings) == len(config.TEAMS)
     assert data.seasonAccuracy.roundsScored == data.completedRounds
     # Completed rounds are real (snapshot/pulselive), never synthetic.
     for c in data.calendar:
@@ -247,14 +252,16 @@ def test_fe_json_contract(data_dir):
 
 
 def test_round_files_contract(data_dir):
-    for rnd in range(1, 18):
+    for rnd in range(1, len(config.CALENDAR) + 1):
         detail = RoundDetail.model_validate(
             _load(data_dir / "rounds" / f"round_{rnd:02d}.json")
         )
         assert detail.round == rnd
         assert detail.venueKind in ("street", "circuit")
-        assert len(detail.race.classification) == 20
-        assert len(detail.race.grid) == 20
+        # Board size is the roster contract (the export builds every board
+        # from config.DRIVERS), so derive it — never a literal field size.
+        assert len(detail.race.classification) == len(config.DRIVERS)
+        assert len(detail.race.grid) == len(config.DRIVERS)
         assert detail.modelConfig["positionModel"]["applied"] is False
         if detail.completed:
             actuals = [
@@ -266,27 +273,32 @@ def test_round_files_contract(data_dir):
 
 
 def test_probability_files_contract(data_dir):
-    for rnd in range(1, 18):
+    for rnd in range(1, len(config.CALENDAR) + 1):
         probs = RoundProbabilities.model_validate(
             _load(data_dir / "probabilities" / f"round_{rnd:02d}.json")
         )
         assert probs.round == rnd
         assert set(probs.race.markets) == {"win", "podium", "top6", "top10"}
         win = probs.race.markets["win"]
-        assert len(win) == 20
+        assert len(win) == len(config.DRIVERS)
         total = sum(v.rawProbability for v in win.values())
         assert abs(total - 1.0) < 0.05
 
 
 def test_calibration_summary_contract(data_dir):
     summary = CalibrationSummary.model_validate(_load(data_dir / "calibration_summary.json"))
-    assert summary.applied is True  # 13 real rounds >> the 4-round gate
-    assert summary.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
+    # One-directional honesty contract: calibration may never be CLAIMED
+    # without enough real rounds. Whether it is applied yet is season state —
+    # early-season False must not fail the cron.
+    if summary.applied:
+        assert summary.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
 
 
 def test_forward_eval_contract(data_dir):
     season = ForwardEvalSeason.model_validate(_load(data_dir / "forward_eval" / "season.json"))
-    assert season.roundsScored >= 13
+    # Every completed round is scoreable — assert agreement with config (both
+    # derive from the committed snapshot), not a season-progress literal.
+    assert season.roundsScored == config.COMPLETED_ROUNDS
     assert season.finishersOnly is True
     block = season.walkForward["race"]
     assert "model" in block and "baselines" in block

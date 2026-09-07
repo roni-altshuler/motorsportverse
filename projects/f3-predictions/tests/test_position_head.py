@@ -61,7 +61,7 @@ def test_gate_env_flag_and_override(monkeypatch):
 
 def test_flag_off_production_path_unchanged(source, monkeypatch):
     monkeypatch.delenv(position_head.ENV_FLAG, raising=False)
-    rnd = config.COMPLETED_ROUNDS
+    rnd = max(config.COMPLETED_ROUNDS, 1)
     fc_default = model.forecast_round(source, SEASON, rnd)
     fc_pinned = model.forecast_round(source, SEASON, rnd, use_position_head=False)
     assert fc_default.position_head is None
@@ -71,10 +71,12 @@ def test_flag_off_production_path_unchanged(source, monkeypatch):
 
 
 def test_flag_on_reranks_both_races(source):
-    rnd = config.COMPLETED_ROUNDS + 1  # enough prior rounds to train
+    # Clamped to the calendar so the test still runs once the season is over
+    # (post-finale it trains on every prior round and forecasts the finale).
+    rnd = min(config.COMPLETED_ROUNDS + 1, len(config.CALENDAR))
     fc = model.forecast_round(source, SEASON, rnd, use_position_head=True)
     assert fc.position_head is not None and fc.position_head["applied"] is True
-    assert fc.position_head["trainedRounds"] == list(range(1, config.COMPLETED_ROUNDS + 1))
+    assert fc.position_head["trainedRounds"] == list(range(1, rnd))
     codes = {d["code"] for d in config.DRIVERS}
     for race in (fc.sprint, fc.feature):
         assert set(race.order) == codes and len(race.order) == len(codes)

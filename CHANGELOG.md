@@ -13,6 +13,29 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ### Fixed
 
+- **Suite-wide sweep of the WRC freeze anti-pattern: cron-gating tests no longer
+  assert season states that legitimately change.** The WRC/MotoGP fix below
+  removed baseline-beating asserts, but the same shape — an empirical season
+  state hard-coded as a test contract — was armed across seven other projects'
+  cron gates, set to fire at the next season boundary rather than on a bad
+  round. Defused everywhere, with the asserts rewritten as internal-consistency
+  contracts instead of deleted: season-progress literals (`completedRounds >=
+  19`, `roundsScored >= 11`, `totalRounds == 36`, hard-coded
+  `probabilities/round_12.json` reads) now derive from `config` (which reads
+  the same committed snapshot the export does); `nextPrediction is not None`
+  (IndyCar, NASCAR, WEC, IMSA, F2/F3 pipeline) now asserts the state the
+  calendar implies — non-None while rounds remain, honest None after the
+  finale — instead of freezing the cron the week the season ends;
+  `calibration_summary.applied is True` became the one-directional honesty
+  contract (calibration may never be *claimed* without enough real rounds, but
+  early-season False is a state, not a failure); Formula E's and F2's
+  hard-coded field sizes (`== 20`, `== 22`) derive from the roster; F2's
+  export-round spot-check adopts F3's finishers-only classification contract;
+  and F2/F3's next-round forecast fixtures and race-weekend suites skip
+  honestly once the season is complete (there is no next round to exercise).
+  Formula E — already sitting at 17/17, season complete — passes the new
+  asserts in the very state that would have frozen several of the old ones.
+
 - **The WRC cron froze publishing for two days because a schema test asserted an
   empirical outcome.** `test_forward_eval_matches_contract` hard-asserted
   `beatsStandingsBaseline is True`; when round 11 flipped the win-Brier edge to

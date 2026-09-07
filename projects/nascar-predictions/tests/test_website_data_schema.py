@@ -278,20 +278,32 @@ class PromotionStatus(_Loose):
 def test_nascar_json_contract(data_dir):
     payload = NascarData.model_validate(_load(data_dir / "nascar.json"))
     assert payload.season == config.SEASON
-    assert payload.totalRounds == 36
-    assert payload.regularSeasonRaces == 26
-    assert len(payload.calendar) == 36
-    assert payload.completedRounds >= 19
-    assert sum(1 for c in payload.calendar if c.isPlayoff) == 10
+    assert payload.totalRounds == len(config.CALENDAR)
+    assert payload.regularSeasonRaces == config.REGULAR_SEASON_RACES
+    assert len(payload.calendar) == len(config.CALENDAR)
+    # Consistency with the committed snapshot config derives from — never a
+    # season-progress literal (a literal freezes the cron at every season
+    # boundary; WRC lesson, 967f4c4).
+    assert payload.completedRounds == config.COMPLETED_ROUNDS
+    assert (
+        sum(1 for c in payload.calendar if c.isPlayoff)
+        == len(config.CALENDAR) - config.REGULAR_SEASON_RACES
+    )
     assert len(payload.driverStandings) >= 36
     assert len(payload.manufacturerStandings) == 3
-    assert payload.nextPrediction is not None
+    # The export honestly emits None once the finale's result is in.
+    if config.COMPLETED_ROUNDS < len(config.CALENDAR):
+        assert payload.nextPrediction is not None
+    else:
+        assert payload.nextPrediction is None
     # Championship agrees with the playoff file's leader.
     leader = payload.championship[0]
     assert leader.pTitle > 0
 
 
 def test_round_files_contract(data_dir):
+    if config.COMPLETED_ROUNDS == 0:
+        pytest.skip("new season — no completed round committed yet")
     completed = _load(data_dir / "rounds" / "round_01.json")
     detail = RoundDetail.model_validate(completed)
     assert detail.completed is True
@@ -318,12 +330,18 @@ def test_round_files_contract(data_dir):
 
 
 def test_probabilities_contract(data_dir):
+    # The next unraced round while the season runs, else the finale — derived
+    # so the file exists at every season stage.
+    rnd = min(config.COMPLETED_ROUNDS + 1, len(config.CALENDAR))
     payload = RoundProbabilities.model_validate(
-        _load(data_dir / "probabilities" / "round_20.json")
+        _load(data_dir / "probabilities" / f"round_{rnd:02d}.json")
     )
     assert payload.race.trackType in config.TRACK_TYPES
     assert set(payload.race.markets) == {"win", "podium", "top6", "top10"}
-    assert payload.calibration["applied"] is True  # 19 real rounds > gate
+    # Consistency, not season state: the round file's calibration flag must
+    # agree with the published summary (both written by the same export pass).
+    summary = _load(data_dir / "calibration_summary.json")
+    assert payload.calibration["applied"] == summary["applied"]
     win = payload.race.markets["win"]
     assert abs(sum(v.rawProbability for v in win.values()) - 1.0) < 0.02
 
@@ -331,7 +349,7 @@ def test_probabilities_contract(data_dir):
 def test_playoff_projection_contract(data_dir):
     payload = PlayoffProjection.model_validate(_load(data_dir / "playoff_projection.json"))
     assert payload.format.name == "chase-2026"
-    assert payload.format.playoffFieldSize == 16
+    assert payload.format.playoffFieldSize == config.PLAYOFF_FIELD_SIZE
     assert payload.format.eliminations is False
     assert payload.format.probabilityKeys == ["p_make_playoffs", "p_title"]
     assert len(payload.drivers) >= 36
@@ -350,17 +368,24 @@ def test_seasons_index_contract(data_dir):
 
 def test_calibration_summary_contract(data_dir):
     payload = CalibrationSummary.model_validate(_load(data_dir / "calibration_summary.json"))
-    assert payload.applied is True
-    assert payload.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
+    # One-directional honesty contract: calibration may never be CLAIMED
+    # without enough real rounds. Whether it is applied yet is season state —
+    # early-season False must not fail the cron.
+    if payload.applied:
+        assert payload.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
 
 
 def test_forward_eval_contract(data_dir):
     season = ForwardEvalSeason.model_validate(_load(data_dir / "forward_eval" / "season.json"))
-    assert season.roundsScored >= 19
+    # Every completed round is scoreable (results come from the same snapshot
+    # config derives COMPLETED_ROUNDS from) — assert agreement, not a literal.
+    assert season.roundsScored == config.COMPLETED_ROUNDS
     assert season.finishersOnly is False
     wf = season.walkForward["race"]
     assert "model" in wf and "modelPostQuali" in wf
     assert set(wf["baselines"]) == {"lastRace", "gridOrder"}
+    if season.roundsScored == 0:
+        return  # new season — no scored round files to spot-check yet
     rnd = _load(data_dir / "forward_eval" / "round_01.json")
     assert rnd["race"]["n"] > 0
     assert "baselines" in rnd
@@ -369,8 +394,9 @@ def test_forward_eval_contract(data_dir):
 def test_model_health_contract(data_dir):
     payload = ModelHealth.model_validate(_load(data_dir / "model_health.json"))
     assert payload.season == config.SEASON
-    assert payload.lastEvaluatedRound is not None
-    assert any(f["feature"] == "pDnf" for f in payload.featureDrift)
+    if config.COMPLETED_ROUNDS:
+        assert payload.lastEvaluatedRound is not None
+        assert any(f["feature"] == "pDnf" for f in payload.featureDrift)
 
 
 def test_promotion_status_contract(data_dir):

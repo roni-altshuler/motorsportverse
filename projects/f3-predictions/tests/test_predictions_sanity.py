@@ -16,6 +16,8 @@ def source():
 
 @pytest.fixture
 def forecast(source):
+    if config.COMPLETED_ROUNDS >= len(config.CALENDAR):
+        pytest.skip("season complete — no next round to forecast")
     return model.forecast_round(source, config.SEASON, config.COMPLETED_ROUNDS + 1, n_samples=3000)
 
 
@@ -56,12 +58,16 @@ def test_exported_rounds_are_complete(tmp_path):
 
 
 def test_completed_rounds_have_actuals_upcoming_do_not(tmp_path):
+    if config.COMPLETED_ROUNDS == 0:
+        pytest.skip("new season — no completed round yet")
     export.write(tmp_path)
     completed = json.loads((tmp_path / "rounds" / "round_01.json").read_text())
+    assert completed["completed"] is True
+    assert "accuracy" in completed["feature"]
+    if config.COMPLETED_ROUNDS >= len(config.CALENDAR):
+        return  # season complete — no upcoming round file to check
     upcoming = json.loads(
         (tmp_path / "rounds" / f"round_{config.COMPLETED_ROUNDS + 1:02d}.json").read_text()
     )
-    assert completed["completed"] is True
-    assert "accuracy" in completed["feature"]
     assert upcoming["completed"] is False
     assert all(e["actualPosition"] is None for e in upcoming["feature"]["classification"])

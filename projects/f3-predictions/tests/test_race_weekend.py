@@ -23,6 +23,14 @@ from f3_predictions.sources.synthetic import SyntheticF3Source
 CODES = [d["code"] for d in config.DRIVERS]
 NEXT = config.COMPLETED_ROUNDS + 1
 
+# The whole module exercises the NEXT race weekend's pre/post-quali flow; once
+# the finale's result is in there is no next weekend — skipping is the honest
+# state, not a failure (WRC cron-freeze lesson, 967f4c4).
+pytestmark = pytest.mark.skipif(
+    NEXT > len(config.CALENDAR),
+    reason="season complete — no next race weekend to exercise",
+)
+
 
 # --------------------------------------------------------------------------- #
 # Calendar-based detection (no snapshot, no network)

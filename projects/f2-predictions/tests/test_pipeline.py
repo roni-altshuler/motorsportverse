@@ -117,8 +117,11 @@ def test_export_payload_is_valid_json(tmp_path):
     path = export.write(tmp_path)
     data = json.loads(path.read_text())
     assert data["sport"] == "Formula 2"
-    assert len(data["driverStandings"]) == 22
+    assert len(data["driverStandings"]) >= len(config.DRIVERS)
     assert len(data["teamStandings"]) == len(config.TEAMS)
-    assert len(data["championship"]) == 22
-    assert data["nextPrediction"]["round"] == config.COMPLETED_ROUNDS + 1
+    assert len(data["championship"]) == len(config.DRIVERS)
+    if config.COMPLETED_ROUNDS < len(config.CALENDAR):
+        assert data["nextPrediction"]["round"] == config.COMPLETED_ROUNDS + 1
+    else:
+        assert data["nextPrediction"] is None  # season complete — honest None
     assert len(data["calendar"]) == len(config.CALENDAR)

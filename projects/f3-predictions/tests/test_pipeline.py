@@ -120,5 +120,8 @@ def test_export_payload_is_valid_json(tmp_path):
     assert len(data["driverStandings"]) >= len(config.DRIVERS)
     assert len(data["teamStandings"]) == len(config.TEAMS)
     assert len(data["championship"]) == len(config.DRIVERS)
-    assert data["nextPrediction"]["round"] == config.COMPLETED_ROUNDS + 1
+    if config.COMPLETED_ROUNDS < len(config.CALENDAR):
+        assert data["nextPrediction"]["round"] == config.COMPLETED_ROUNDS + 1
+    else:
+        assert data["nextPrediction"] is None  # season complete — honest None
     assert len(data["calendar"]) == len(config.CALENDAR)

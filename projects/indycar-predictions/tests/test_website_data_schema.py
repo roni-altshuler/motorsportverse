@@ -249,21 +249,31 @@ class PromotionStatus(_Loose):
 def test_indycar_json_contract(data_dir):
     payload = IndycarData.model_validate(_load(data_dir / "indycar.json"))
     assert payload.season == config.SEASON
-    assert payload.totalRounds == 18
-    assert len(payload.calendar) == 18
-    assert payload.completedRounds >= 11
+    assert payload.totalRounds == len(config.CALENDAR)
+    assert len(payload.calendar) == len(config.CALENDAR)
+    # Consistency with the committed snapshot (the same source config derives
+    # from), never a season-progress literal — literals freeze the cron the
+    # moment a season boundary moves them (WRC lesson, 967f4c4).
+    assert payload.completedRounds == config.COMPLETED_ROUNDS
     # The oval / road / street split is first-class on every surface.
     assert set(payload.trackTypeCounts) == set(config.TRACK_TYPES)
-    assert sum(payload.trackTypeCounts.values()) == 18
-    assert sum(1 for c in payload.calendar if c.isIndy500) == 1
+    assert sum(payload.trackTypeCounts.values()) == len(config.CALENDAR)
+    assert sum(1 for c in payload.calendar if c.isIndy500) == len(config.INDY500_ROUNDS)
     assert all(c.trackGroup in config.ELO_TRACK_GROUPS for c in payload.calendar)
     assert len(payload.driverStandings) >= 25
     assert len(payload.engineStandings) == 2  # Chevrolet + Honda
-    assert payload.nextPrediction is not None
+    # The export honestly emits None once the finale's result is in — assert
+    # whichever state the calendar implies rather than freezing on season end.
+    if config.COMPLETED_ROUNDS < len(config.CALENDAR):
+        assert payload.nextPrediction is not None
+    else:
+        assert payload.nextPrediction is None
     assert payload.championship[0].pTitle > 0
 
 
 def test_round_files_contract(data_dir):
+    if config.COMPLETED_ROUNDS == 0:
+        pytest.skip("new season — no completed round committed yet")
     completed = _load(data_dir / "rounds" / "round_01.json")
     detail = RoundDetail.model_validate(completed)
     assert detail.completed is True
@@ -275,9 +285,16 @@ def test_round_files_contract(data_dir):
     assert "accuracy" in completed["race"]
 
     # The 500 carries the traditional 33-car field, one-off entries included.
-    indy500 = RoundDetail.model_validate(_load(data_dir / "rounds" / "round_07.json"))
-    assert indy500.isIndy500 is True
-    assert len(indy500.race.classification) == 33
+    # Round number is derived from config (not a literal) and the 33-car board
+    # is only asserted once the race has actually run this season.
+    if config.INDY500_ROUNDS:
+        indy_round = config.INDY500_ROUNDS[0]
+        indy500 = RoundDetail.model_validate(
+            _load(data_dir / "rounds" / f"round_{indy_round:02d}.json")
+        )
+        assert indy500.isIndy500 is True
+        if config.COMPLETED_ROUNDS >= indy_round:
+            assert len(indy500.race.classification) == 33
 
     # The first round the committed snapshot does not yet carry.  Derived, never
     # hardcoded: a literal upcoming round starts failing the moment that round's
@@ -297,12 +314,19 @@ def test_round_files_contract(data_dir):
 
 
 def test_probabilities_contract(data_dir):
+    # The next unraced round while the season runs, else the finale — derived
+    # so the file exists at every season stage (a literal starts failing the
+    # moment the season advances past it).
+    rnd = min(config.COMPLETED_ROUNDS + 1, len(config.CALENDAR))
     payload = RoundProbabilities.model_validate(
-        _load(data_dir / "probabilities" / "round_12.json")
+        _load(data_dir / "probabilities" / f"round_{rnd:02d}.json")
     )
     assert payload.race.trackType in config.TRACK_TYPES
     assert set(payload.race.markets) == {"win", "podium", "top6", "top10"}
-    assert payload.calibration["applied"] is True  # 11 real rounds > gate
+    # Consistency, not season state: the round file's calibration flag must
+    # agree with the published summary (both written by the same export pass).
+    summary = _load(data_dir / "calibration_summary.json")
+    assert payload.calibration["applied"] == summary["applied"]
     win = payload.race.markets["win"]
     assert abs(sum(v.rawProbability for v in win.values()) - 1.0) < 0.02
 
@@ -315,17 +339,25 @@ def test_seasons_index_contract(data_dir):
 
 def test_calibration_summary_contract(data_dir):
     payload = CalibrationSummary.model_validate(_load(data_dir / "calibration_summary.json"))
-    assert payload.applied is True
-    assert payload.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
+    # One-directional honesty contract: calibration may never be CLAIMED
+    # without enough real rounds. Whether it is applied yet is season state —
+    # early-season False must not fail the cron.
+    if payload.applied:
+        assert payload.trainingRounds >= config.MIN_REAL_ROUNDS_FOR_CALIBRATION
 
 
 def test_forward_eval_contract(data_dir):
     season = ForwardEvalSeason.model_validate(_load(data_dir / "forward_eval" / "season.json"))
-    assert season.roundsScored >= 11
+    # Every completed round is scoreable (snapshot-primary: results and
+    # predictions come from the same committed history) — assert agreement
+    # with config, which derives from that same snapshot.
+    assert season.roundsScored == config.COMPLETED_ROUNDS
     assert season.finishersOnly is False  # IndyCar classifies every car
     wf = season.walkForward["race"]
     assert "model" in wf and "modelPostQuali" in wf
     assert set(wf["baselines"]) == {"lastRace", "gridOrder"}
+    if season.roundsScored == 0:
+        return  # new season — no scored round files to spot-check yet
     rnd = _load(data_dir / "forward_eval" / "round_01.json")
     assert rnd["race"]["n"] > 0
     assert "baselines" in rnd
@@ -336,8 +368,9 @@ def test_forward_eval_contract(data_dir):
 def test_model_health_contract(data_dir):
     payload = ModelHealth.model_validate(_load(data_dir / "model_health.json"))
     assert payload.season == config.SEASON
-    assert payload.lastEvaluatedRound is not None
-    assert any(f["feature"] == "pDnf" for f in payload.featureDrift)
+    if config.COMPLETED_ROUNDS:
+        assert payload.lastEvaluatedRound is not None
+        assert any(f["feature"] == "pDnf" for f in payload.featureDrift)
 
 
 def test_promotion_status_contract(data_dir):

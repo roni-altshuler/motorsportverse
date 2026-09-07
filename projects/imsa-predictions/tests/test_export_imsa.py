@@ -56,12 +56,16 @@ def test_imsa_json_top_level_shape(data_dir):
 def test_next_prediction_and_season_accuracy(data_dir):
     imsa = _load(data_dir / "imsa.json")
     pred = imsa["nextPrediction"]
-    assert pred is not None, "no next-round prediction exported"
-    assert pred["classes"], "next prediction has no classes"
-    for cls in pred["classes"]:
-        assert cls["race"], "empty class race board"
-        for row in cls["race"]:
-            assert "pWin" in row and "pPodium" in row
+    # The export honestly emits None once the finale's result is in — only a
+    # missing prediction DURING the season is a failure (WRC lesson, 967f4c4).
+    if config.COMPLETED_ROUNDS < (config.TOTAL_ROUNDS or 0):
+        assert pred is not None, "no next-round prediction exported"
+    if pred is not None:
+        assert pred["classes"], "next prediction has no classes"
+        for cls in pred["classes"]:
+            assert cls["race"], "empty class race board"
+            for row in cls["race"]:
+                assert "pWin" in row and "pPodium" in row
 
     acc = imsa["seasonAccuracy"]
     assert "overall" in acc and "byClass" in acc
