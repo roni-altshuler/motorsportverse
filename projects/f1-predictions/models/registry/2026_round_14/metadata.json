@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Madrid",
   "ensemble_weights": {
-    "gb": 0.5669050399586003,
-    "lstm": 0.0,
-    "xgb": 0.4330949600413996
+    "gb": 0.40474637076980235,
+    "lstm": 0.18,
+    "xgb": 0.4152536292301977
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -33,7 +33,9 @@
     "QualifyingRank",
     "GridAdvantage",
     "CurrentForm",
-    "PreviousPosition",
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
     "SeasonMomentum",
     "PositionTrend",
     "DriverPredictionBias",
@@ -46,35 +48,53 @@
     "TeammateConflictRisk",
     "FieldPositionVolatility",
     "LocalBattleIntensity",
-    "DRSOvertakeProbAhead"
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo",
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "ffa44fcc832bda3908794ff61077fd15f7d87deb",
   "gpName": "Spanish Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.11711266549191919,
+      "MAE (s)": 0.6321548747213115,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.12806708214130422,
-      "R\u00b2": 0.9580515378425012
+      "RMSE (s)": 0.7952883485513235,
+      "R\u00b2": 0.8845451788811882
     },
     {
-      "MAE (s)": 0.1532960815429675,
+      "MAE (s)": 0.6161593139648431,
       "Model": "XGBoost",
-      "RMSE (s)": 0.16558509510202357,
-      "R\u00b2": 0.9298732845335203
+      "RMSE (s)": 0.8358352633049959,
+      "R\u00b2": 0.8724723923490005
     },
     {
-      "MAE (s)": 0.09279542540962496,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.12144392288076511,
-      "R\u00b2": 0.9622781842615831
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.5742330314601333,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.7576669810713029,
+      "R\u00b2": 0.8952100687257345
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.16",
   "round": 14,
-  "savedAt": "2026-05-24T11:56:22+00:00",
+  "savedAt": "2026-09-12T20:02:30+00:00",
   "season": 2026
 }
