@@ -192,37 +192,6 @@ export default function HomePage() {
         </div>
       </HeroParallax>
 
-      {/* ── Trust band ── */}
-      <TrustBand
-        roundsScored={roundsScored}
-        totalRounds={data.totalRounds}
-        podiumHitRate={acc?.podiumHitRate ?? null}
-        winnerHitRate={acc?.winnerHitRate ?? null}
-        meanPositionError={acc?.meanPositionError ?? null}
-        generatedAt={data.generatedAt ?? null}
-      />
-
-      {/* ── How it works — sticky scroll-story ── */}
-      <section
-        aria-labelledby="how-heading"
-        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
-      >
-        <div className="mb-12 max-w-2xl">
-          <p className="eyebrow mb-2">How it works</p>
-          <h2 id="how-heading" className="display-md">
-            Results → model → forecast
-          </h2>
-          <p className="body-md mt-4 text-[color:var(--body)]">
-            From each round&apos;s finishing orders to a probability for every car
-            — here is the path each forecast travels before it reaches you.
-          </p>
-        </div>
-        <HowItWorksDiagram variant="scrollstory" />
-      </section>
-
-      {/* ── Features as outcomes ── */}
-      <FeatureOutcomes />
-
       {/* ── Race window ── */}
       <section
         aria-labelledby="race-window-heading"
@@ -345,14 +314,57 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* ── Technical credibility ── */}
-      <TechnicalCredibility
+      {/* ── Trust band ── */}
+      <TrustBand
+        roundsScored={roundsScored}
+        totalRounds={data.totalRounds}
+        podiumHitRate={acc?.podiumHitRate ?? null}
+        winnerHitRate={acc?.winnerHitRate ?? null}
+        meanPositionError={acc?.meanPositionError ?? null}
         generatedAt={data.generatedAt ?? null}
-        roundsGraded={roundsScored}
       />
 
-      {/* ── FAQ ── */}
-      <FAQ />
+      {/* ── How it works — sticky scroll-story ── */}
+      <section
+        aria-labelledby="how-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
+      >
+        <div className="mb-12 max-w-2xl">
+          <p className="eyebrow mb-2">How it works</p>
+          <h2 id="how-heading" className="display-md">
+            Results → model → forecast
+          </h2>
+          <p className="body-md mt-4 text-[color:var(--body)]">
+            From each round&apos;s finishing orders to a probability for every car
+            — here is the path each forecast travels before it reaches you.
+          </p>
+        </div>
+        <HowItWorksDiagram variant="scrollstory" />
+      </section>
+
+      {/* ── Features as outcomes ── */}
+      <FeatureOutcomes />
+
+      {/* ── How the model works — credibility + FAQ folded into one native
+          disclosure, placed AFTER the data modules so numbers come first
+          (DESIGN.md §0 "data first, method folded") ── */}
+      <section
+        aria-labelledby="method-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
+      >
+        <details className="deep-dive-section">
+          <summary id="method-heading" className="deep-dive-summary">
+            How the model works
+          </summary>
+          <div className="deep-dive-section-body !p-0">
+            <TechnicalCredibility
+              generatedAt={data.generatedAt ?? null}
+              roundsGraded={roundsScored}
+            />
+            <FAQ />
+          </div>
+        </details>
+      </section>
 
       {/* ── Final CTA ── */}
       <FinalCTA />

@@ -102,9 +102,10 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   }, [season, tracker, basePath]);
 
   // Season-derived view data — computed only once the season JSON has loaded.
-  // The static marketing scaffold (value prop, trust, how-it-works, features,
-  // technical credibility, FAQ, final CTA) renders regardless, so the
-  // prerendered HTML communicates value before any fetch resolves.
+  // The data modules render first and appear as soon as the fetch resolves;
+  // the static scaffold (trust, how-it-works, features, the folded "How the
+  // model works" disclosure, final CTA) sits BELOW them and is always in the
+  // prerendered HTML, so the page never reads empty.
   const roundsWithActual = (tracker?.rounds || [])
     .filter((r) => r.hasActual)
     .map((r) => r.round);
@@ -247,30 +248,6 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
           )}
         </div>
       </HeroParallax>
-
-      {/* ── Trust band — honest, understated credibility ── */}
-      <TrustBand trustStats={trustStats} />
-
-      {/* ── How it works — sticky scroll-story ── */}
-      <section
-        aria-labelledby="how-heading"
-        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
-      >
-        <div className="mb-12 max-w-2xl">
-          <p className="eyebrow mb-2">How it works</p>
-          <h2 id="how-heading" className="display-md">
-            Live data → model → forecast
-          </h2>
-          <p className="body-md mt-4 text-[color:var(--body)]">
-            From raw timing sheets to a probability for every car — here is the
-            path each forecast travels before it reaches you.
-          </p>
-        </div>
-        <HowItWorksDiagram variant="scrollstory" />
-      </section>
-
-      {/* ── Features as outcomes ── */}
-      <FeatureOutcomes />
 
       {/* ── Live product proof — renders once the season JSON loads ── */}
       {season && (
@@ -521,11 +498,47 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       </>
       )}
 
-      {/* ── Technical credibility — honest, no algorithm names ── */}
-      <TechnicalCredibility trustStats={trustStats} />
+      {/* ── Trust band — honest, understated credibility ── */}
+      <TrustBand trustStats={trustStats} />
 
-      {/* ── FAQ — native disclosure ── */}
-      <FAQ />
+      {/* ── How it works — sticky scroll-story ── */}
+      <section
+        aria-labelledby="how-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
+      >
+        <div className="mb-12 max-w-2xl">
+          <p className="eyebrow mb-2">How it works</p>
+          <h2 id="how-heading" className="display-md">
+            Live data → model → forecast
+          </h2>
+          <p className="body-md mt-4 text-[color:var(--body)]">
+            From raw timing sheets to a probability for every car — here is the
+            path each forecast travels before it reaches you.
+          </p>
+        </div>
+        <HowItWorksDiagram variant="scrollstory" />
+      </section>
+
+      {/* ── Features as outcomes ── */}
+      <FeatureOutcomes />
+
+      {/* ── How the model works — credibility + FAQ folded into one native
+          disclosure, placed AFTER the data modules so numbers come first
+          (DESIGN.md §0 "data first, method folded") ── */}
+      <section
+        aria-labelledby="method-heading"
+        className="mx-auto max-w-7xl px-6 lg:px-10 section-bugatti"
+      >
+        <details className="deep-dive-section">
+          <summary id="method-heading" className="deep-dive-summary">
+            How the model works
+          </summary>
+          <div className="deep-dive-section-body !p-0">
+            <TechnicalCredibility trustStats={trustStats} />
+            <FAQ />
+          </div>
+        </details>
+      </section>
 
       {/* ── Final CTA — dominant conversion path ── */}
       <FinalCTA />

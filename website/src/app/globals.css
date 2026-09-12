@@ -42,6 +42,17 @@ body {
   background-attachment: fixed;
 }
 
+/* Reader-controlled ambient dial — DESIGN.md §6. `data-ambient` is stamped on
+   <html> before first paint by the inline script in app/layout.tsx; the
+   AmbientToggle rewrites it. A missing attribute (no JS) reads as 'soft'. */
+html:not([data-ambient="vivid"]) .speed-field {
+  opacity: 0.55;
+  filter: blur(1px);
+}
+html[data-ambient="off"] .speed-field {
+  display: none;
+}
+
 ::selection {
   background: var(--accent-soft);
   color: var(--ink-strong);
@@ -141,6 +152,13 @@ h1, h2, h3, h4 {
   to {
     background-position: 220% center;
   }
+}
+/* 'soft' and 'off' hold the sheen still: a static crimson→white→crimson
+   gradient. Only 'vivid' pans. */
+html:not([data-ambient="vivid"]) .hero-sheen {
+  animation: none;
+  background-size: 100% auto;
+  background-position: 0 center;
 }
 
 /* ---- Layout helpers ---- */

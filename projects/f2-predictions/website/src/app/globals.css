@@ -230,7 +230,7 @@ h1, h2, h3, h4, h5, h6 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.55;
+  opacity: 0.45;
   z-index: 0;
 }
 .hero-photo-band__scrim {
@@ -255,7 +255,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.6;
   -webkit-mask-image: radial-gradient(
     ellipse 85% 90% at 50% 50%,
     #000 0%,
@@ -289,7 +289,7 @@ h1, h2, h3, h4, h5, h6 {
   stroke-linecap: round;
   stroke-dasharray: 900 3200;
   filter: drop-shadow(0 0 10px rgba(30, 155, 215, 0.75));
-  animation: hero-track-sweep 9s linear infinite;
+  animation: hero-track-sweep 14s linear infinite;
 }
 .hero-track-ribbon .ribbon-sweep-trail {
   fill: none;
@@ -299,7 +299,7 @@ h1, h2, h3, h4, h5, h6 {
   stroke-linecap: round;
   stroke-dasharray: 500 3600;
   filter: blur(8px);
-  animation: hero-track-sweep 9s linear infinite;
+  animation: hero-track-sweep 14s linear infinite;
 }
 @keyframes hero-track-sweep {
   from {

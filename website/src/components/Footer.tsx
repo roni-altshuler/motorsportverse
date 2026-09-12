@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { AmbientToggle } from "@/components/AmbientToggle";
 import { asset } from "@/lib/asset";
 
 export function Footer() {
@@ -46,6 +47,7 @@ export function Footer() {
       <div className="relative border-t border-[var(--line)]">
         <div className="shell flex flex-col gap-2 py-6 text-xs text-[var(--ink-dim)] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} MotorsportVerse · MIT licensed</p>
+          <AmbientToggle />
           <p>Forecasts are model estimates, not betting advice.</p>
         </div>
       </div>

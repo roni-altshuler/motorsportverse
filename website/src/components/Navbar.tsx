@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { AmbientToggle } from "@/components/AmbientToggle";
 import { NavProjectsMenu } from "@/components/NavProjectsMenu";
 import { PaletteButton } from "@/components/PaletteButton";
 import { asset } from "@/lib/asset";
@@ -39,7 +40,8 @@ export function Navbar() {
             className="h-7 w-7"
             priority
           />
-          <span className="font-display text-base font-semibold tracking-tight text-[var(--ink)]">
+          {/* Wordmark yields to the backdrop dial below sm; the mark alone identifies the site. */}
+          <span className="hidden font-display text-base font-semibold tracking-tight text-[var(--ink)] sm:inline">
             Motorsport<span className="text-[var(--accent-text)]">Verse</span>
           </span>
         </Link>
@@ -57,6 +59,8 @@ export function Navbar() {
               </Link>
             ))}
           </div>
+          {/* Backdrop dial — stays visible on mobile; caption appears from md. */}
+          <AmbientToggle compact className="mr-0.5" />
           <PaletteButton />
           <a
             href="https://github.com/roni-altshuler/motorsportverse"

@@ -63,12 +63,27 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", images: ["brand/motorsportverse-logo.png"] },
 };
 
+// Pre-paint ambient preference (DESIGN.md §6). Reads the reader's stored dial
+// and stamps `data-ambient` on <html> before anything renders, so there is no
+// flash from 'soft' to 'vivid'/'off'. Must stay tiny and must never throw.
+const AMBIENT_BOOT =
+  'try{var v=localStorage.getItem("motorsportverse-ambient");' +
+  'document.documentElement.dataset.ambient=v==="vivid"||v==="off"?v:"soft"}' +
+  'catch(e){document.documentElement.dataset.ambient="soft"}';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html
+      lang="en"
+      className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}
+      // `data-ambient` is set by the boot script below before React hydrates.
+      suppressHydrationWarning
+    >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: AMBIENT_BOOT }} />
         {/* Site-wide cinematic light-trail background (fixed, z-0). Content
-            below is lifted above it so the streaks show through behind it. */}
+            below is lifted above it so the streaks show through behind it.
+            Softened + reader-dimmable via the ambient dial. */}
         <SpeedFieldLoader />
         <Navbar />
         <main className="relative z-[1] min-h-[70vh]">{children}</main>

@@ -40,6 +40,17 @@ probability, and every pixel that is not helping you read one is in the way.
 > If a change makes a series page louder without making a number clearer, it is
 > wrong.
 
+**2026-09-12 — data first, method folded.** On every golden-template series home
+page the order is now hero → data modules (race window, forecast, latest result,
+championship, constellation) → trust band → how-it-works → features → ONE native
+`<details>` titled "How the model works" (technical credibility + FAQ, collapsed
+by default) → final CTA. The owner's feedback was that prose was crowding the
+numbers; a series site is an instrument, so the numbers lead and the method is
+one click away rather than deleted. StatusBanner, EvidencePanel, BaselineLadder,
+backtest labels and the calibration-gate notice did not move. WEC and IMSA never
+carried the marketing scaffold and are unchanged. On the hub every section lead
+is one line (≤ 14 words); the visual sections carry the rest.
+
 The shared component set in §5 is written to work under **both** token sets. That
 is why every shared component styles through CSS custom properties and never
 hardcodes a colour.
@@ -285,6 +296,24 @@ The hub is allowed reveals, marquees and card tilt, subject to two hard rules:
 2. **Scroll-reveal must never leave content permanently invisible.** Use the
    failsafe `useReveal` pattern — if the observer never fires, the content is
    visible anyway. A reveal that fails closed is a blank page in the wild.
+
+**2026-09-12 — the backdrop dial.** The hub's SpeedField canvas was "too sharp
+to focus on the information", so it is quieter by construction and the reader
+holds the dial. Budget inside the canvas (was → is): trails 46 → ≤ 28, trail
+alpha 0.18–0.68 → 0.09–0.34, head dots full → 0.4×, speed 0.05–0.21 → 0.03–0.13
+px/ms, glows 0.05–0.10 → 0.035–0.07; body mesh alphas −30% (`--mesh-1..3`). On
+top of that sits a three-state preference `ambient` = soft (default) | vivid |
+off: persisted in localStorage `motorsportverse-ambient`, stamped as
+`data-ambient` on `<html>` by a ~200-byte inline script in the root layout
+before first paint, switched by `AmbientToggle` ("Backdrop · soft / vivid /
+off") in the navbar and footer, and broadcast as a window `ambientchange`
+event. `soft` fades the canvas to 0.55 with a 1px blur and holds the hero bloom
+(static, 0.6) and the headline sheen still; `vivid` is the full, already
+reduced look with the pan and the breathing; `off` hides the canvas and stops
+its rAF loop. `prefers-reduced-motion` behaviour is unchanged. Series sites
+have no ambient canvas; their only ambient motion, the hero photo band and the
+circuit ribbon, was dimmed (photo 0.55 → 0.45, ribbon 0.9 → 0.6, sweep 9 s →
+14 s) on every site that carries that CSS.
 
 ---
 

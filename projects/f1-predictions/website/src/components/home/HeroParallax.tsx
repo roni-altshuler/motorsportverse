@@ -5,7 +5,7 @@ import type { CircuitGeometry } from "@/types";
 
 interface HeroParallaxProps {
   /**
-   * Full-bleed hero photograph. When provided, renders the image at 0.55
+   * Full-bleed hero photograph. When provided, renders the image at 0.45
    * opacity behind a top-to-bottom scrim. When omitted, the dot pattern is
    * exposed as the depth substrate.
    */

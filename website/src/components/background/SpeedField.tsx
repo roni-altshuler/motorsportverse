@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { AMBIENT_EVENT, readAmbient } from "@/lib/ambient";
+
 /**
  * SpeedField — site-wide cinematic motorsport background.
  *
@@ -13,6 +15,11 @@ import { useEffect, useRef } from "react";
  * Lightweight + a11y by design: a single 2D canvas (no WebGL), DPR capped at 2,
  * additive blending for the glow, RAF paused when the tab is hidden, and a
  * frozen single frame under `prefers-reduced-motion`.
+ *
+ * Budget (2026-09-12, DESIGN.md §6): ≤28 trails, alpha 0.09–0.34, head dots at
+ * 0.4× the trail alpha, speed 0.03–0.13 px/ms, glows 0.035–0.07. The reader's
+ * `data-ambient` dial (soft / vivid / off) sits on top: CSS fades and blurs the
+ * canvas in 'soft', hides it in 'off', and the loop stops while 'off'.
  */
 
 // Palette pulled from the design tokens (crimson identity + cool data hues).
@@ -25,9 +32,9 @@ const TRAIL_COLORS = [
 
 // Drifting ambient glows — give the flat field depth behind the streaks.
 const GLOWS = [
-  { hx: 0.5, hy: -0.05, r: 0.55, rgb: "231, 16, 47", a: 0.1, sx: 0.6, sy: 0.0, ph: 0 },
-  { hx: 0.85, hy: 0.1, r: 0.4, rgb: "56, 225, 198", a: 0.06, sx: -0.4, sy: 0.3, ph: 2 },
-  { hx: 0.1, hy: 0.4, r: 0.45, rgb: "106, 166, 255", a: 0.05, sx: 0.3, sy: -0.2, ph: 4 },
+  { hx: 0.5, hy: -0.05, r: 0.55, rgb: "231, 16, 47", a: 0.07, sx: 0.6, sy: 0.0, ph: 0 },
+  { hx: 0.85, hy: 0.1, r: 0.4, rgb: "56, 225, 198", a: 0.042, sx: -0.4, sy: 0.3, ph: 2 },
+  { hx: 0.1, hy: 0.4, r: 0.45, rgb: "106, 166, 255", a: 0.035, sx: 0.3, sy: -0.2, ph: 4 },
 ];
 
 interface Trail {
@@ -46,6 +53,8 @@ interface FieldState {
   height: number;
   trails: Trail[];
   reducedMotion: boolean;
+  /** Reader set the dial to 'off' — canvas is display:none and the loop sleeps. */
+  off: boolean;
   rafId: number;
   running: boolean;
   last: number;
@@ -75,6 +84,7 @@ export default function SpeedField() {
       height: 0,
       trails: [],
       reducedMotion: false,
+      off: readAmbient() === "off",
       rafId: 0,
       running: false,
       last: 0,
@@ -87,16 +97,16 @@ export default function SpeedField() {
       const depth = Math.random();
       const len = 120 + depth * 460;
       const thick = 0.6 + depth * 2.2;
-      const speed = (0.05 + (1 - depth) * 0.16) * (state.width / 1280);
+      const speed = (0.03 + (1 - depth) * 0.096) * (state.width / 1280);
       const x = offscreen ? -len - Math.random() * state.width : Math.random() * state.width;
       return {
         x,
         y: Math.random() * h,
         len,
         thick,
-        speed: Math.max(0.03, speed),
+        speed: Math.max(0.018, speed),
         rgb: pickColor(),
-        alpha: 0.18 + depth * 0.5,
+        alpha: 0.09 + depth * 0.25,
       };
     };
 
@@ -110,7 +120,7 @@ export default function SpeedField() {
       ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
 
       // Density scales with area but stays capped for perf.
-      const target = Math.min(46, Math.round((w * h) / 46000));
+      const target = Math.min(28, Math.round((w * h) / 76000));
       if (state.trails.length !== target) {
         state.trails = Array.from({ length: target }, () => spawn(false));
       }
@@ -138,8 +148,9 @@ export default function SpeedField() {
       grad.addColorStop(1, `rgba(${tr.rgb}, ${tr.alpha})`);
       ctx.fillStyle = grad;
       ctx.fillRect(tr.x, tr.y - tr.thick / 2, tr.len, tr.thick);
-      // Bright head dot for the "light source".
-      ctx.fillStyle = `rgba(${tr.rgb}, ${Math.min(1, tr.alpha + 0.15)})`;
+      // Faint head dot for the "light source" (0.4× — the bright pinpoints were
+      // what made the field read as sharp).
+      ctx.fillStyle = `rgba(${tr.rgb}, ${Math.min(1, tr.alpha + 0.15) * 0.4})`;
       ctx.beginPath();
       ctx.arc(tr.x + tr.len, tr.y, tr.thick * 0.9, 0, Math.PI * 2);
       ctx.fill();
@@ -168,7 +179,7 @@ export default function SpeedField() {
       state.rafId = requestAnimationFrame(loop);
     };
     const start = () => {
-      if (state.running) return;
+      if (state.running || state.off) return;
       state.running = true;
       state.last = 0;
       state.rafId = requestAnimationFrame(loop);
@@ -181,6 +192,18 @@ export default function SpeedField() {
     const handleVisibility = () => {
       if (document.hidden) stop();
       else if (!state.reducedMotion) start();
+    };
+
+    // The reader's dial. 'off' must cost nothing: no rAF while hidden.
+    const handleAmbient = () => {
+      state.off = readAmbient() === "off";
+      if (state.off) {
+        stop();
+        return;
+      }
+      layout();
+      if (state.reducedMotion) draw(0);
+      else start();
     };
 
     const resizeObserver = new ResizeObserver(() => {
@@ -207,9 +230,11 @@ export default function SpeedField() {
     resizeObserver.observe(canvas);
     motionQuery.addEventListener("change", handleMotionChange);
     document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener(AMBIENT_EVENT, handleAmbient);
 
     return () => {
       stop();
+      window.removeEventListener(AMBIENT_EVENT, handleAmbient);
       document.removeEventListener("visibilitychange", handleVisibility);
       motionQuery.removeEventListener("change", handleMotionChange);
       resizeObserver.disconnect();
@@ -219,6 +244,7 @@ export default function SpeedField() {
   return (
     <canvas
       ref={canvasRef}
+      className="speed-field"
       aria-hidden="true"
       style={{
         position: "fixed",

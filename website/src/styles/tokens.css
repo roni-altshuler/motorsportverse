@@ -111,10 +111,12 @@
   --accent-glow-soft: rgba(231, 16, 47, 0.10);
   --accent-text: #ff5168;
 
-  /* Mesh / ambient gradients (subtle, cinematic, restrained) */
-  --mesh-1: radial-gradient(50% 40% at 50% -8%, rgba(231, 16, 47, 0.10) 0%, transparent 60%);
-  --mesh-2: radial-gradient(40% 35% at 88% 8%, rgba(56, 225, 198, 0.06) 0%, transparent 55%);
-  --mesh-3: radial-gradient(45% 40% at 8% 28%, rgba(106, 166, 255, 0.045) 0%, transparent 55%);
+  /* Mesh / ambient gradients (subtle, cinematic, restrained). Alphas cut ~30%
+     on 2026-09-12 (0.10 / 0.06 / 0.045 → 0.07 / 0.042 / 0.032) so the body
+     wash stops competing with the light-trail canvas — DESIGN.md §6. */
+  --mesh-1: radial-gradient(50% 40% at 50% -8%, rgba(231, 16, 47, 0.07) 0%, transparent 60%);
+  --mesh-2: radial-gradient(40% 35% at 88% 8%, rgba(56, 225, 198, 0.042) 0%, transparent 55%);
+  --mesh-3: radial-gradient(45% 40% at 8% 28%, rgba(106, 166, 255, 0.032) 0%, transparent 55%);
 
   /* Refined shadow stack — softer, more disciplined */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);

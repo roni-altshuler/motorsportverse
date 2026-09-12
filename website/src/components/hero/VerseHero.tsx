@@ -4,15 +4,18 @@
  * VerseHero — the flagship hero.
  *
  * Sits over the site-wide SpeedField light-trail canvas. Fluid, staggered
- * entrance (framer-motion), a slow breathing glow + gentle float behind the
- * logo, an animated gradient headline, and a scroll cue — Apple/Google-grade
- * restraint over a moving background. Honors reduced motion.
+ * entrance (framer-motion), a glow + gentle float behind the logo, a gradient
+ * headline, and a scroll cue — Apple/Google-grade restraint over a moving
+ * background. Honors reduced motion, and the reader's ambient dial: the bloom
+ * breathes and the headline sheen pans only in 'vivid'; 'soft' (default) and
+ * 'off' hold both still.
  */
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useAmbient } from "@/lib/ambient";
 import { asset } from "@/lib/asset";
 
 interface VerseHeroProps {
@@ -23,6 +26,9 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function VerseHero({ stats }: VerseHeroProps) {
   const reduce = useReducedMotion();
+  const ambient = useAmbient();
+  // Static bloom unless the reader asked for the vivid backdrop.
+  const calm = ambient !== "vivid";
 
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 22 },
@@ -50,8 +56,18 @@ export function VerseHero({ stats }: VerseHeroProps) {
             "radial-gradient(50% 50% at 50% 50%, rgba(231,16,47,0.22) 0%, transparent 70%)",
           filter: "blur(20px)",
         }}
-        animate={reduce ? undefined : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.06, 1] }}
-        transition={{ duration: 6.5, ease: "easeInOut", repeat: Infinity }}
+        animate={
+          reduce
+            ? undefined
+            : calm
+              ? { opacity: 0.6, scale: 1 }
+              : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.06, 1] }
+        }
+        transition={
+          calm
+            ? { duration: 0.6, ease: "easeInOut" }
+            : { duration: 6.5, ease: "easeInOut", repeat: Infinity }
+        }
         aria-hidden
       />
 
@@ -102,9 +118,7 @@ export function VerseHero({ stats }: VerseHeroProps) {
         </motion.h1>
 
         <motion.p {...rise(0.24)} className="lead mt-7 max-w-2xl text-balance">
-          One open-source core — calibrated probabilities, championship simulation,
-          continuous-learning guardrails — powering live forecast products for Formula&nbsp;1, 2,
-          and&nbsp;3 today, with the rest of the grid scaffolded on the same two seams.
+          One open-source core powering live forecasts for every racing series.
         </motion.p>
 
         <motion.div {...rise(0.32)} className="mt-10 flex flex-wrap items-center justify-center gap-3">

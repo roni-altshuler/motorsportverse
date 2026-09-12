@@ -100,8 +100,7 @@ export default function HomePage() {
             <p className="eyebrow eyebrow-accent eyebrow-tick">The architecture</p>
             <h2 className="mt-3 text-[length:var(--text-4xl)]">One core. Every motorsport.</h2>
             <p className="lead mt-4">
-              Data sources flow through two shared packages into every sport. Nothing numerically
-              heavy is rebuilt — each project just adds a data adapter and a predictor.
+              Two shared packages; each sport adds only a data adapter and a predictor.
             </p>
           </Reveal>
           <EcosystemDiagram sports={diagramSports} />
@@ -115,8 +114,7 @@ export default function HomePage() {
             <p className="eyebrow eyebrow-accent eyebrow-tick">Built once, reused everywhere</p>
             <h2 className="mt-3 text-[length:var(--text-4xl)]">The shared core</h2>
             <p className="lead mt-4">
-              Calibration, simulation, drift detection, and a model registry — the hard parts,
-              solved once and pip-installable.
+              Calibration, simulation, drift detection and a model registry, solved once.
             </p>
           </Reveal>
           <FeatureBento />
@@ -153,9 +151,7 @@ export default function HomePage() {
               {seriesCovered} series. One playbook.
             </h2>
             <p className="lead mt-4">
-              {liveProducts} products publish calibrated forecasts today. Every other series is
-              already scaffolded on the same two seams — and inherits the shared core the day its
-              data feed lands.
+              {liveProducts} products forecast today; every other series sits on the same two seams.
             </p>
           </Reveal>
           <CoverageWall items={wallItems} />
@@ -179,8 +175,7 @@ export default function HomePage() {
                   Bring your sport to the grid.
                 </h2>
                 <p className="lead mt-5 max-w-xl">
-                  The shared core does the heavy lifting. You bring the data and the domain
-                  knowledge.
+                  The core does the heavy lifting; you bring the data and domain knowledge.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
                   <Link href="/contribute" className="btn-accent px-6 py-3 text-sm font-semibold">
