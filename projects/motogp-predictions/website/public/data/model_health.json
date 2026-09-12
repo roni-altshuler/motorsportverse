@@ -448,7 +448,7 @@
       }
     },
     "phaseComparison": {
-      "note": "Headline model is POST-quali (grid-conditioned). Pre-quali form-only is weaker than the grid; the post-quali model beats it on win- and podium-Brier.",
+      "note": "Headline model is POST-quali (grid-conditioned). Over the scored rounds it beats the raw-grid baseline on both the win- and podium-Brier. This field is descriptive, not a guarantee \u2014 the website renders whichever state holds.",
       "roundsScored": 13,
       "feature": {
         "winBrier": {
