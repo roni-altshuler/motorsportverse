@@ -1,0 +1,77 @@
+{
+  "season": 2026,
+  "round": 14,
+  "drivers_compared": 21,
+  "mean_position_error": 2.238095238095238,
+  "median_position_error": 1.0,
+  "rmse_position_error": 4.445436397239844,
+  "exact_matches": 7,
+  "within_3": 18,
+  "within_5": 19,
+  "winner_hit": true,
+  "podium_hits": 3,
+  "top10_overlap": 9,
+  "log_loss_uniform_baseline": 3.091042453358316,
+  "spearman_correlation": 0.7571428571428571,
+  "ndcg_at_5": 0.8577550995968941,
+  "biggest_misses": [
+    {
+      "driver": "HAM",
+      "predicted": 4,
+      "actual": 22,
+      "delta": -18,
+      "absDelta": 18
+    },
+    {
+      "driver": "BEA",
+      "predicted": 22,
+      "actual": 16,
+      "delta": 6,
+      "absDelta": 6
+    },
+    {
+      "driver": "SAI",
+      "predicted": 15,
+      "actual": 19,
+      "delta": -4,
+      "absDelta": 4
+    },
+    {
+      "driver": "COL",
+      "predicted": 10,
+      "actual": 7,
+      "delta": 3,
+      "absDelta": 3
+    },
+    {
+      "driver": "PER",
+      "predicted": 17,
+      "actual": 20,
+      "delta": -3,
+      "absDelta": 3
+    }
+  ],
+  "baselines": {
+    "last_race_winner": {
+      "mean_position_error": 4.0,
+      "winner_hit": true,
+      "podium_hits": 2,
+      "top10_overlap": 7,
+      "spearman_correlation": 0.5448898927159797
+    },
+    "grid_order": {
+      "mean_position_error": 2.2,
+      "winner_hit": false,
+      "podium_hits": 3,
+      "top10_overlap": 9,
+      "spearman_correlation": 0.7744360902255639
+    },
+    "standings_order": {
+      "mean_position_error": 3.091,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "top10_overlap": 8,
+      "spearman_correlation": 0.6713721061547149
+    }
+  }
+}

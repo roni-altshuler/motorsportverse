@@ -210,14 +210,14 @@
     },
     {
       "round": 14,
-      "hasActual": false,
-      "meanError": null,
-      "exactMatches": null,
-      "within3": null,
-      "accuracyPct": null,
-      "podiumAccuracyPct": null,
-      "pointsAccuracyPct": null,
-      "within3AccuracyPct": null,
+      "hasActual": true,
+      "meanError": 2.24,
+      "exactMatches": 7,
+      "within3": 18,
+      "accuracyPct": 96.0,
+      "podiumAccuracyPct": 100.0,
+      "pointsAccuracyPct": 90.0,
+      "within3AccuracyPct": 85.7,
       "meanErrorClassified": null,
       "within3Classified": null,
       "accuracyPctClassified": null,
@@ -354,11 +354,11 @@
     }
   ],
   "overallAccuracy": {
-    "seasonMeanError": 3.52,
-    "seasonAccuracyPct": 61.8,
-    "seasonPodiumAccuracyPct": 51.3,
-    "seasonPointsAccuracyPct": 77.5,
-    "roundsWithActual": 13,
+    "seasonMeanError": 3.43,
+    "seasonAccuracyPct": 64.2,
+    "seasonPodiumAccuracyPct": 54.8,
+    "seasonPointsAccuracyPct": 78.4,
+    "roundsWithActual": 14,
     "seasonMeanErrorClassified": 3.03,
     "seasonAccuracyPctClassified": 70.9,
     "seasonWithin5PctClassified": 86.6,
@@ -1872,7 +1872,123 @@
           "drivers": 2
         }
       ]
+    },
+    {
+      "round": 14,
+      "name": "Spanish Grand Prix",
+      "comparedDrivers": 21,
+      "meanError": 2.24,
+      "medianError": 1.0,
+      "exactMatches": 7,
+      "within3": 18,
+      "within5": 19,
+      "winnerHit": true,
+      "podiumHits": 3,
+      "pointsHits": 9,
+      "pointsTotal": 10,
+      "podiumAccuracyPct": 100.0,
+      "pointsAccuracyPct": 90.0,
+      "accuracyPct": 96.0,
+      "biggestMisses": [
+        {
+          "driver": "HAM",
+          "team": "Ferrari",
+          "predicted": 4,
+          "actual": 22,
+          "delta": -18,
+          "absDelta": 18
+        },
+        {
+          "driver": "BEA",
+          "team": "Haas",
+          "predicted": 22,
+          "actual": 16,
+          "delta": 6,
+          "absDelta": 6
+        },
+        {
+          "driver": "SAI",
+          "team": "Williams",
+          "predicted": 15,
+          "actual": 19,
+          "delta": -4,
+          "absDelta": 4
+        },
+        {
+          "driver": "COL",
+          "team": "Alpine",
+          "predicted": 10,
+          "actual": 7,
+          "delta": 3,
+          "absDelta": 3
+        },
+        {
+          "driver": "PER",
+          "team": "Cadillac",
+          "predicted": 17,
+          "actual": 20,
+          "delta": -3,
+          "absDelta": 3
+        }
+      ],
+      "teamMeanError": [
+        {
+          "team": "Mercedes",
+          "meanError": 0.0,
+          "drivers": 2
+        },
+        {
+          "team": "Red Bull Racing",
+          "meanError": 0.0,
+          "drivers": 1
+        },
+        {
+          "team": "Aston Martin",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "McLaren",
+          "meanError": 0.5,
+          "drivers": 2
+        },
+        {
+          "team": "Audi",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Racing Bulls",
+          "meanError": 1.0,
+          "drivers": 2
+        },
+        {
+          "team": "Alpine",
+          "meanError": 1.5,
+          "drivers": 2
+        },
+        {
+          "team": "Williams",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Cadillac",
+          "meanError": 2.5,
+          "drivers": 2
+        },
+        {
+          "team": "Haas",
+          "meanError": 4.0,
+          "drivers": 2
+        },
+        {
+          "team": "Ferrari",
+          "meanError": 10.0,
+          "drivers": 2
+        }
+      ]
     }
   ],
-  "generatedAt": "2026-09-12T20:03:17.331827Z"
+  "generatedAt": "2026-09-13T21:32:19.941586Z"
 }
