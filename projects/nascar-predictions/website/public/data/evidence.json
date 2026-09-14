@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "NASCAR Predictions",
-  "generatedAt": "2026-09-13T00:24:24Z",
-  "roundsScored": 27,
+  "generatedAt": "2026-09-14T00:10:15Z",
+  "roundsScored": 28,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Grid order",
     "raceType": "race",
     "lowerIsBetter": true,
-    "nRounds": 27,
+    "nRounds": 28,
     "rounds": [
       1,
       2,
@@ -40,17 +40,18 @@
       24,
       25,
       26,
-      27
+      27,
+      28
     ],
-    "modelMean": 9.615667,
-    "baselineMean": 9.279815,
-    "delta": 0.335852,
-    "improvement": -0.335852,
-    "ciLow": -0.839148,
-    "ciHigh": 0.212481,
-    "pModelBetter": 0.116,
+    "modelMean": 9.700821,
+    "baselineMean": 9.317429,
+    "delta": 0.383393,
+    "improvement": -0.383393,
+    "ciLow": -0.864821,
+    "ciHigh": 0.190536,
+    "pModelBetter": 0.094,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 27 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 28 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -59,7 +60,7 @@
       "baselineLabel": "Grid order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 27,
+      "nRounds": 28,
       "rounds": [
         1,
         2,
@@ -87,17 +88,18 @@
         24,
         25,
         26,
-        27
+        27,
+        28
       ],
-      "modelMean": 9.615667,
-      "baselineMean": 9.279815,
-      "delta": 0.335852,
-      "improvement": -0.335852,
-      "ciLow": -0.839148,
-      "ciHigh": 0.212481,
-      "pModelBetter": 0.116,
+      "modelMean": 9.700821,
+      "baselineMean": 9.317429,
+      "delta": 0.383393,
+      "improvement": -0.383393,
+      "ciLow": -0.864821,
+      "ciHigh": 0.190536,
+      "pModelBetter": 0.094,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 27 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 28 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -105,7 +107,7 @@
       "baselineLabel": "Last race order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 26,
+      "nRounds": 27,
       "rounds": [
         2,
         3,
@@ -132,17 +134,18 @@
         24,
         25,
         26,
-        27
+        27,
+        28
       ],
-      "modelMean": 9.408577,
-      "baselineMean": 10.236308,
-      "delta": -0.827731,
-      "improvement": 0.827731,
-      "ciLow": 0.340615,
-      "ciHigh": 1.404654,
-      "pModelBetter": 0.9995,
+      "modelMean": 9.504556,
+      "baselineMean": 10.299556,
+      "delta": -0.795,
+      "improvement": 0.795,
+      "ciLow": 0.323185,
+      "ciHigh": 1.343778,
+      "pModelBetter": 0.9985,
       "verdict": "better",
-      "note": "the model beats last race order over 26 paired rounds"
+      "note": "the model beats last race order over 27 paired rounds"
     },
     {
       "metric": "ndcg_at_5",
@@ -150,7 +153,7 @@
       "baselineLabel": "Grid order",
       "raceType": "race",
       "lowerIsBetter": false,
-      "nRounds": 27,
+      "nRounds": 28,
       "rounds": [
         1,
         2,
@@ -178,17 +181,18 @@
         24,
         25,
         26,
-        27
+        27,
+        28
       ],
-      "modelMean": 0.724837,
-      "baselineMean": 0.716494,
-      "delta": 0.008343,
-      "improvement": 0.008343,
-      "ciLow": -0.052435,
-      "ciHigh": 0.069383,
-      "pModelBetter": 0.609,
+      "modelMean": 0.717667,
+      "baselineMean": 0.71422,
+      "delta": 0.003447,
+      "improvement": 0.003447,
+      "ciLow": -0.055291,
+      "ciHigh": 0.064189,
+      "pModelBetter": 0.5505,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 27 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 28 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -196,7 +200,7 @@
       "baselineLabel": "Last race order",
       "raceType": "race",
       "lowerIsBetter": false,
-      "nRounds": 26,
+      "nRounds": 27,
       "rounds": [
         2,
         3,
@@ -223,22 +227,23 @@
         24,
         25,
         26,
-        27
+        27,
+        28
       ],
-      "modelMean": 0.732846,
-      "baselineMean": 0.657298,
-      "delta": 0.075548,
-      "improvement": 0.075548,
-      "ciLow": 0.021732,
-      "ciHigh": 0.131479,
-      "pModelBetter": 0.9965,
+      "modelMean": 0.725114,
+      "baselineMean": 0.650896,
+      "delta": 0.074218,
+      "improvement": 0.074218,
+      "ciLow": 0.021548,
+      "ciHigh": 0.126633,
+      "pModelBetter": 0.9975,
       "verdict": "better",
-      "note": "the model beats last race order over 26 paired rounds"
+      "note": "the model beats last race order over 27 paired rounds"
     }
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 27,
+    "trainingRounds": 28,
     "dataLimitation": "Calibrated on real NASCAR Cup results, stratified by track type (superspeedway / intermediate / short / road).",
     "note": "probabilities are calibrated on real results"
   },
