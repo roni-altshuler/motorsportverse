@@ -4,23 +4,23 @@
   "surface": "gravel",
   "rally": {
     "n": 12,
-    "mean_position_error": 8.75,
+    "mean_position_error": 9.0,
     "winner_hit": false,
     "podium_hits": 1,
     "within_3": 7,
     "within_5": 7,
-    "exact_matches": 1,
+    "exact_matches": 0,
     "spearman_correlation": 0.26573426573426573,
     "ndcg_at_5": 0.23586402174779966
   },
   "markets": {
     "win": {
-      "brier": 0.072351,
-      "logLoss": 0.239487
+      "brier": 0.072401,
+      "logLoss": 0.239322
     },
     "podium": {
-      "brier": 0.211775,
-      "logLoss": 0.712317
+      "brier": 0.211304,
+      "logLoss": 0.711222
     }
   },
   "baselines": {

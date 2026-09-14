@@ -1,0 +1,74 @@
+{
+  "round": 12,
+  "venueName": "Rally Chile B\u00edo B\u00edo",
+  "surface": "gravel",
+  "rally": {
+    "n": 12,
+    "mean_position_error": 6.083,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 6,
+    "within_5": 7,
+    "exact_matches": 1,
+    "spearman_correlation": 0.5594405594405595,
+    "ndcg_at_5": 0.4423568554439726
+  },
+  "markets": {
+    "win": {
+      "brier": 0.083917,
+      "logLoss": 0.301696
+    },
+    "podium": {
+      "brier": 0.238868,
+      "logLoss": 0.666124
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 6.917,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 5,
+        "within_5": 10,
+        "exact_matches": 0,
+        "spearman_correlation": 0.5034965034965035,
+        "ndcg_at_5": 0.30569238298849066
+      },
+      "markets": {
+        "win": {
+          "brier": 0.085873,
+          "logLoss": 0.298872
+        },
+        "podium": {
+          "brier": 0.303575,
+          "logLoss": 0.790503
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 12,
+        "mean_position_error": 6.75,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 6,
+        "exact_matches": 1,
+        "spearman_correlation": 0.6433566433566433,
+        "ndcg_at_5": 0.8529251936810858
+      },
+      "markets": {
+        "win": {
+          "brier": 0.082215,
+          "logLoss": 0.27925
+        },
+        "podium": {
+          "brier": 0.19115,
+          "logLoss": 0.622677
+        }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "surface": "tarmac",
   "rally": {
     "n": 15,
-    "mean_position_error": 15.4,
+    "mean_position_error": 15.267,
     "winner_hit": true,
     "podium_hits": 2,
     "within_3": 3,
@@ -15,19 +15,19 @@
   },
   "markets": {
     "win": {
-      "brier": 0.042972,
-      "logLoss": 0.133614
+      "brier": 0.04255,
+      "logLoss": 0.132495
     },
     "podium": {
-      "brier": 0.150542,
-      "logLoss": 0.505288
+      "brier": 0.150837,
+      "logLoss": 0.504101
     }
   },
   "baselines": {
     "standingsOrder": {
       "score": {
         "n": 15,
-        "mean_position_error": 15.733,
+        "mean_position_error": 15.667,
         "winner_hit": true,
         "podium_hits": 1,
         "within_3": 3,
@@ -50,7 +50,7 @@
     "lastRally": {
       "score": {
         "n": 15,
-        "mean_position_error": 14.667,
+        "mean_position_error": 14.6,
         "winner_hit": true,
         "podium_hits": 2,
         "within_3": 3,

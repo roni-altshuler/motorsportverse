@@ -4,37 +4,37 @@
   "surface": "tarmac",
   "rally": {
     "n": 13,
-    "mean_position_error": 6.308,
+    "mean_position_error": 6.0,
     "winner_hit": false,
     "podium_hits": 2,
     "within_3": 8,
     "within_5": 8,
     "exact_matches": 0,
-    "spearman_correlation": 0.7747252747252747,
-    "ndcg_at_5": 0.9483886813798998
+    "spearman_correlation": 0.8186813186813187,
+    "ndcg_at_5": 0.963030289197457
   },
   "markets": {
     "win": {
-      "brier": 0.066924,
-      "logLoss": 0.224884
+      "brier": 0.066943,
+      "logLoss": 0.225547
     },
     "podium": {
-      "brier": 0.130436,
-      "logLoss": 0.385682
+      "brier": 0.130712,
+      "logLoss": 0.387376
     }
   },
   "baselines": {
     "standingsOrder": {
       "score": {
         "n": 13,
-        "mean_position_error": 6.308,
+        "mean_position_error": 6.0,
         "winner_hit": false,
         "podium_hits": 2,
         "within_3": 8,
         "within_5": 8,
         "exact_matches": 0,
-        "spearman_correlation": 0.7747252747252747,
-        "ndcg_at_5": 0.9483886813798998
+        "spearman_correlation": 0.8186813186813187,
+        "ndcg_at_5": 0.963030289197457
       },
       "markets": {
         "win": {
@@ -56,8 +56,8 @@
         "within_3": 0,
         "within_5": 1,
         "exact_matches": 0,
-        "spearman_correlation": 0.7747252747252747,
-        "ndcg_at_5": 0.9483886813798998
+        "spearman_correlation": 0.8186813186813187,
+        "ndcg_at_5": 0.963030289197457
       },
       "markets": {
         "win": {
