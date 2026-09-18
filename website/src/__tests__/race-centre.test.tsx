@@ -52,3 +52,12 @@ it('copies a shareable link to the selected race', async () => {
   await waitFor(() => expect(screen.getByText('Race link copied.')).toBeInTheDocument());
   expect(writeText).toHaveBeenCalledWith(expect.stringContaining('?race=f1-1#race-centre'));
 });
+
+it('keeps a linked historical race visible without expanding the whole season', () => {
+  const events = Array.from({ length: 20 }, (_, i) => ({ ...feed.events[0], id: `past-${i}`, name: `Race ${i}`, date: `2000-01-${String(i + 1).padStart(2, '0')}`, completed: true }));
+  window.history.replaceState({}, '', '/?race=past-0#race-centre');
+  render(<RaceCentre feed={{ ...feed, events }} />);
+  expect(screen.getByRole('button', { name: /Race 0 .*Results recorded/ })).toHaveAttribute('aria-pressed', 'true');
+  expect(document.querySelectorAll('.race-row')).toHaveLength(9);
+  expect(screen.getByRole('button', { name: 'Results', exact: true })).toHaveAttribute('aria-pressed', 'true');
+});

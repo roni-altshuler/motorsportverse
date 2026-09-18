@@ -93,7 +93,7 @@ Frontend tests cover comparison selection, full-field expansion, missing podium
 data, shared links and filter transitions. The browser script additionally
 checks clipboard sharing, reload/navigation and desktop/mobile rendering.
 
-All six frontend suites passed: 73 tests with eight existing skips. Focused
+All six frontend suites passed: 74 tests with eight existing skips. Focused
 numerical regressions, Python lint and shared UI synchronization also passed.
 The complete package/project suites and browser verification gate publication
 to main; CI provides the revision-specific result.

@@ -28,7 +28,11 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
     const openSharedRace = () => {
       const id = new URLSearchParams(window.location.search).get('race');
       const race = feed.events.find(e => e.id === id);
-      if (race) { setSelectedId(race.id); setSeries(race.slug); setView('all'); setLimit(feed.events.length); setReadyOnly(false); setQuery(''); }
+      if (race) {
+        setSelectedId(race.id); setSeries(race.slug);
+        setView(race.completed ? 'recent' : raceStatus(race, new Date().toISOString().slice(0, 10)) === 'upcoming' ? 'upcoming' : 'all');
+        setLimit(8); setReadyOnly(false); setQuery('');
+      }
     };
     openSharedRace();
     window.addEventListener('popstate', openSharedRace);
@@ -55,6 +59,9 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
     return direction * (a.date ?? '9999').localeCompare(b.date ?? '9999') || a.round - b.round || a.sport.localeCompare(b.sport);
   }), [feed.events, series, view, query, today, favourites, readyOnly]);
   const selected = filtered.find(event => event.id === selectedId) ?? filtered[0];
+  const visible = filtered.slice(0, limit);
+  // Keep a directly linked race visible even outside the first calendar page.
+  if (selected && !visible.some(event => event.id === selected.id)) visible.unshift(selected);
   const evidence = feed.series.find(s => s.slug === selected?.slug);
   const awaiting = feed.events.filter(e => raceStatus(e, today) === 'awaiting').length;
   const upcoming = feed.events.filter(e => raceStatus(e, today) === 'upcoming').length;
@@ -100,7 +107,7 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
         {!filtered.length && <div className="race-empty"><h3>{series === 'favourites' && !favourites.length ? 'Build your own grid.' : 'No races in this view.'}</h3>
           <p>{series === 'favourites' && !favourites.length ? 'Choose a race, then follow its series to keep it here.' : 'Try another series, clear your search, or explore the full calendar.'}</p>
           <button className="btn-ghost" onClick={() => { setSeries('all'); setView('all'); setQuery(''); setReadyOnly(false); }}>Explore the calendar</button></div>}
-        {filtered.slice(0, limit).map(event => <button key={event.id} type="button" className="race-row"
+        {visible.map(event => <button key={event.id} type="button" className="race-row"
           aria-pressed={selected?.id === event.id} onClick={() => { setSelectedId(event.id); setShareMessage(''); }}>
           <span className="race-date">{displayDate(event.date)}<small>R{String(event.round).padStart(2, '0')}</small></span>
           <span className="race-row-main"><span className="race-sport"><span className="race-series-dot" style={{ background: event.accent }} aria-hidden />{event.sport}</span>
