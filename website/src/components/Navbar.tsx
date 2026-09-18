@@ -8,6 +8,7 @@ import { asset } from "@/lib/asset";
 import { getProjects } from "@/lib/registry";
 
 const LINKS = [
+  { href: "/#race-centre", label: "Race centre" },
   { href: "/docs", label: "Docs" },
   { href: "/contribute", label: "Contribute" },
 ];

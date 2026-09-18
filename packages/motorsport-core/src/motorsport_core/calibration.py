@@ -431,6 +431,11 @@ class ProbabilityCalibrator:
         odds-from-the-market backfill doesn't have to know which markets we
         currently price.
         """
+        # fit replaces the old fit. Retaining a market absent in a shorter
+        # replay leaks observations from the previous (possibly future) fit.
+        self._models.clear()
+        self._fit_sample_counts.clear()
+        self._pos_counts.clear()
         by_market: dict[str, list[tuple[float, int]]] = {m: [] for m in MARKETS}
         for rec in history:
             market = rec.get("market")
@@ -438,7 +443,7 @@ class ProbabilityCalibrator:
                 continue
             try:
                 p = float(rec["predicted"])
-                y = int(rec["observed"])
+                y = float(rec["observed"])
             except (KeyError, TypeError, ValueError):
                 continue
             if not (0.0 <= p <= 1.0) or y not in (0, 1):
@@ -525,6 +530,8 @@ class StratifiedProbabilityCalibrator:
         """
         # Always fit a global model on every record (we strip the stratum
         # before passing to the base class).
+        self._stratum_models.clear()
+        self._stratum_pos_counts.clear()
         self._global.fit_from_history(history)
 
         # Bucket by (stratum, market) for the stratified fits.
@@ -536,7 +543,7 @@ class StratifiedProbabilityCalibrator:
                 continue
             try:
                 p = float(rec["predicted"])
-                y = int(rec["observed"])
+                y = float(rec["observed"])
             except (KeyError, TypeError, ValueError):
                 continue
             if not (0.0 <= p <= 1.0) or y not in (0, 1):

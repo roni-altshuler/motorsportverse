@@ -34,7 +34,9 @@ artefacts + committed `metadata.json` under `<season>_round_<NN>/`. Atomic write
 
 `evaluate_promotion(production_scores, candidate_scores, …) -> PromotionDecision`
 — guarded A/B gate (min overlap, relative-improvement threshold, per-round
-regression cap). Scores are lower-is-better.
+regression cap, and a positive paired-round bootstrap improvement interval).
+The overlap floor applies to the trailing window; scores must be finite and
+nonnegative. Perfect-score regressions block promotion.
 
 ## `eval`
 
@@ -92,3 +94,16 @@ Conformal prediction intervals; reliability diagrams + ECE/MCE
 `assert_prior_only(rounds_map, current_round, label)` and
 `assert_seasons_prior_only(...)` — temporal-leakage guards to call at every
 multi-round aggregation boundary.
+
+## `temporal_skill` (research candidate)
+
+`predict_temporal_skill(prior_rounds, feature_columns, features_before, actual_for,
+half_life_rounds=6, min_training_rows=8) -> TemporalSkillPrediction | None`
+
+Builds one set of training rows per historical target event, with features from
+strictly earlier rounds. Holds out the last completed event to choose a blend
+of gradient boosting and historical mean, then refits using recency weights.
+Returns predictions, the chosen weight, validation errors and training cutoffs.
+Feature callbacks must replay their historical information set; never pass
+current-cutoff Elo into old training rows. This module does not promote a model.
+See the [platform audit](PLATFORM_IMPROVEMENT_AUDIT.md) and the F2/F3 opt-in adapters.

@@ -113,3 +113,20 @@ def test_ordering_is_still_lower_is_faster(source):
     pace = model.estimate_skill(source, config.SEASON, cr)
     fc = model.forecast_round(source, config.SEASON, cr, n_samples=2000)
     assert fc.feature.grid[0] == min(pace, key=lambda c: pace[c])
+
+
+def test_temporal_candidate_holds_out_events_and_is_opt_in(source, monkeypatch):
+    cr = config.COMPLETED_ROUNDS + 1
+    prior = _prior_rounds(cr)
+    result = ml_skill.predict_temporal_candidate(source, config.SEASON, prior, 11.0)
+    assert result is not None
+    assert result.validation_round == max(prior)
+    assert max(result.training_rounds) < result.validation_round
+    assert set(result.predictions) == {d["code"] for d in config.DRIVERS}
+    monkeypatch.setenv("F2_USE_TEMPORAL_SKILL", "1")
+    assert ml_skill.predict_ml_skill(source, config.SEASON, prior, {}, 11.0) == result.predictions
+
+
+def test_temporal_candidate_does_not_train_on_synthetic_results(source, monkeypatch):
+    monkeypatch.setattr(source, "provenance", lambda *args, **kwargs: "synthetic")
+    assert ml_skill.predict_temporal_candidate(source, config.SEASON, _prior_rounds(7), 11.0) is None

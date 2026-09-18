@@ -1,0 +1,104 @@
+{
+  "experiments": [
+    {
+      "series": "f2",
+      "season": 2026,
+      "basis": "retrospective walk-forward skill-signal experiment on real committed rounds; not live accuracy or a full forecast A/B test",
+      "target": "mean finishing position across the next sprint and feature race",
+      "rounds": [
+        {
+          "round": 4,
+          "n": 22,
+          "legacyMAE": 3.2674296310371718,
+          "candidateMAE": 4.853116999518425,
+          "historicalMeanMAE": 3.2674242424242426,
+          "learnedWeight": 1.0,
+          "validationRound": 3,
+          "trainingRounds": [
+            2
+          ]
+        },
+        {
+          "round": 5,
+          "n": 22,
+          "legacyMAE": 3.97870641399346,
+          "candidateMAE": 3.978679653679653,
+          "historicalMeanMAE": 3.978679653679653,
+          "learnedWeight": 0.0,
+          "validationRound": 4,
+          "trainingRounds": [
+            2,
+            3
+          ]
+        },
+        {
+          "round": 6,
+          "n": 22,
+          "legacyMAE": 4.006661089143844,
+          "candidateMAE": 3.9632148889415793,
+          "historicalMeanMAE": 4.006818181818182,
+          "learnedWeight": 0.25,
+          "validationRound": 5,
+          "trainingRounds": [
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "nRounds": 3,
+      "legacyMAE": 3.7509323780581583,
+      "candidateMAE": 4.265003847379886,
+      "improvement95CI": [
+        -1.5856873684812536,
+        0.04344620020226442
+      ],
+      "gateDecision": "hold",
+      "gateReason": "insufficient overlap (3 common rounds; need >= 5)",
+      "productionChanged": false
+    },
+    {
+      "series": "f3",
+      "season": 2026,
+      "basis": "retrospective walk-forward skill-signal experiment on real committed rounds; not live accuracy or a full forecast A/B test",
+      "target": "mean finishing position across the next sprint and feature race",
+      "rounds": [
+        {
+          "round": 4,
+          "n": 30,
+          "legacyMAE": 5.056424743327996,
+          "candidateMAE": 5.05611111111111,
+          "historicalMeanMAE": 5.05611111111111,
+          "learnedWeight": 0.0,
+          "validationRound": 3,
+          "trainingRounds": [
+            2
+          ]
+        },
+        {
+          "round": 5,
+          "n": 29,
+          "legacyMAE": 5.69031332329037,
+          "candidateMAE": 5.611485488839512,
+          "historicalMeanMAE": 5.689655172413793,
+          "learnedWeight": 0.5,
+          "validationRound": 4,
+          "trainingRounds": [
+            2,
+            3
+          ]
+        }
+      ],
+      "nRounds": 2,
+      "legacyMAE": 5.373369033309183,
+      "candidateMAE": 5.333798299975311,
+      "improvement95CI": [
+        0.0003136322168861838,
+        0.07882783445085817
+      ],
+      "gateDecision": "hold",
+      "gateReason": "insufficient overlap (2 common rounds; need >= 5)",
+      "productionChanged": false
+    }
+  ]
+}

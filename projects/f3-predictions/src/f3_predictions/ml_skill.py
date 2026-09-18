@@ -33,6 +33,8 @@ the other signals before folding it into the pace blend.
 """
 from __future__ import annotations
 
+import logging
+import os
 import warnings
 from typing import TYPE_CHECKING
 
@@ -169,6 +171,11 @@ def predict_ml_skill(
     """
     if not config.USE_ML_SKILL or len(prior_rounds) < config.ML_MIN_PRIOR_ROUNDS:
         return None
+    # Research path: historical features predict the following race, and the
+    # latest complete weekend is held out for ensemble selection.
+    if os.getenv("F3_USE_TEMPORAL_SKILL", "0") == "1":
+        result = predict_temporal_candidate(source, year, prior_rounds, field_mean)
+        return result.predictions if result is not None else None
     try:
         # scikit-learn is a hard dependency of motorsport-core, so it is always
         # present. xgboost is optional: with it we run the full GBR+XGB ensemble
@@ -220,7 +227,7 @@ def predict_ml_skill(
             pred = gb.predict(Xs_all)
             return {c: float(pred[i]) for i, c in enumerate(codes)}
 
-        xgb = XGBRegressor(n_estimators=250, learning_rate=0.05, max_depth=2, random_state=42, verbosity=0)
+        xgb = XGBRegressor(n_estimators=250, learning_rate=0.05, max_depth=2, random_state=42, verbosity=0, n_jobs=1)
         xgb.fit(Xtr, ytr)
 
         inv_gb = 1.0 / max(mean_absolute_error(yte, gb.predict(Xte)), 1e-6)
@@ -235,4 +242,36 @@ def predict_ml_skill(
         pred = w_gb * gb.predict(Xs_all) + w_xgb * xgb.predict(Xs_all)
         return {c: float(pred[i]) for i, c in enumerate(codes)}
     except Exception:  # pragma: no cover - optional path, never breaks the run
+        return None
+
+
+def predict_temporal_candidate(source, year, prior_rounds, field_mean):
+    """Chronological candidate; legacy production is unchanged unless opted in.
+
+    Omit current-cutoff Elo: replaying it in an earlier training row would leak
+    later results. All other features are recomputed at each historical cutoff.
+    """
+    from motorsport_core.temporal_skill import predict_temporal_skill
+    from .sources import CompositeF3Source
+
+    def features_before(rounds):
+        return _per_driver_features(source, year, rounds, {}, field_mean)
+
+    def actual_for(rnd):
+        races = source.race_results_for_round(year, rnd)
+        positions = {}
+        for race_type in (SPRINT, FEATURE):
+            for row in races[race_type]:
+                positions.setdefault(row.competitor, []).append(float(row.position))
+        return {code: float(np.mean(values)) for code, values in positions.items()}
+
+    try:
+        # Only recorded, real rounds are eligible for this research path.
+        real_rounds = [r for r in prior_rounds if all(CompositeF3Source.is_real(source.provenance(year, r, race_index=i)) for i in (0, 1))]
+        return predict_temporal_skill(
+            real_rounds, [c for c in FEATURE_COLUMNS if c != "driver_elo"],
+            features_before, actual_for,
+        )
+    except (ImportError, ValueError, KeyError) as exc:
+        logging.getLogger(__name__).warning("Temporal skill unavailable: %s", exc)
         return None

@@ -141,6 +141,7 @@ ready for the same path the moment a data feed is wired.
 
 ## Documentation
 
+[Platform improvement audit](docs/PLATFORM_IMPROVEMENT_AUDIT.md) ·
 [Architecture](docs/architecture.md) · [Adding a sport](docs/adding-a-sport.md) ·
 [Core API](docs/core-api.md) · [Data schema](docs/data-schema.md) ·
 [Design system](docs/design-system.md) · [Branding system](docs/BRANDING_SYSTEM.md) ·

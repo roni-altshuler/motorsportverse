@@ -11,6 +11,23 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Race centre and chronological model research — 2026-09-18
+
+- Replaced the hub's invented live prediction ticker with a race centre built
+  from published calendars, driver probabilities and model evidence. Added
+  series filters, race search, locally saved following, win/podium views and
+  explicit upcoming, recorded-result and missing-result states.
+- Shared promotion now checks sample size within the actual trailing window,
+  rejects invalid errors, guards regressions against perfect scores and requires
+  a paired-round confidence interval supporting improvement. Calibration refits
+  now discard old fitted markets and reject non-binary observations.
+- Added an opt-in next-weekend skill candidate for F2/F3 with chronological
+  training, event-level validation and recency weighting. The committed
+  walk-forward experiment holds both candidates; F2 regresses in this small
+  sample. Production defaults and historical forecasts remain unchanged.
+- Limited F2/F3 XGBoost fits to one thread, pinned the hub's bundler root and
+  added repeatable unit and browser verification plus the platform audit.
+
 ### Fixed
 
 - **Suite-wide sweep of the WRC freeze anti-pattern: cron-gating tests no longer

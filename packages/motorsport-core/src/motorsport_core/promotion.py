@@ -25,7 +25,7 @@ The promotion rule reads forward_eval JSONs that have been tagged with
 the same variant, computes the mean error over the trailing window, and
 applies the configured threshold.
 
-Promotion rule v1
+Promotion rule v2
 -----------------
 A candidate is recommended for promotion when **all** of:
   1. It has been scored on at least ``min_rounds_to_decide`` distinct
@@ -36,6 +36,8 @@ A candidate is recommended for promotion when **all** of:
   3. There is no round in the window where the candidate is *worse* than
      production by more than ``max_per_round_regression`` (default 20%).
      This guards against a "won on average, blew up in one race" candidate.
+
+  4. The paired-round 95% bootstrap interval supports an improvement.
 
 When (1) fails → ``"hold"``.  When (1) passes but (2) or (3) fails →
 ``"hold"``.  Significant *negative* improvement triggers ``"demote"``
@@ -55,6 +57,8 @@ import logging
 import math
 from dataclasses import dataclass
 from typing import Sequence
+
+from .evidence import paired_bootstrap
 
 LOGGER = logging.getLogger(__name__)
 
@@ -90,6 +94,8 @@ class PromotionDecision:
     relative_change: float | None        # (candidate - production) / production
     worst_round_regression: float | None  # max per-round (cand - prod) / prod
     blocked_by_per_round_guard: bool
+    improvement_ci_low: float | None = None
+    improvement_ci_high: float | None = None
 
 
 @dataclass
@@ -109,12 +115,12 @@ def _align_by_round(
     and sort ascending."""
     prod_map: dict[int, float] = {}
     for rnd, score in production_scores:
-        if score is None or _isnan(score):
+        if not _valid_score(score):
             continue
         prod_map[int(rnd)] = float(score)
     cand_map: dict[int, float] = {}
     for rnd, score in candidate_scores:
-        if score is None or _isnan(score):
+        if not _valid_score(score):
             continue
         cand_map[int(rnd)] = float(score)
     common = sorted(set(prod_map) & set(cand_map))
@@ -125,9 +131,9 @@ def _align_by_round(
     )
 
 
-def _isnan(value: object) -> bool:
+def _valid_score(value: object) -> bool:
     try:
-        return math.isnan(float(value))
+        return not isinstance(value, bool) and math.isfinite(float(value)) and float(value) >= 0
     except (TypeError, ValueError):
         return False
 
@@ -141,7 +147,7 @@ def evaluate_promotion(
     max_per_round_regression: float = DEFAULT_MAX_PER_ROUND_REGRESSION,
     trailing_window: int = DEFAULT_TRAILING_WINDOW,
 ) -> PromotionDecision:
-    """Apply the v1 promotion rule to two aligned score streams.
+    """Apply the paired-evidence promotion rule to two aligned score streams.
 
     Scores are "lower is better" (e.g. RMSE position error or Brier).
 
@@ -163,7 +169,19 @@ def evaluate_promotion(
     trailing_window
         How many of the most-recent common rounds to compare on.
     """
+    for name, value in (("min_rounds_to_decide", min_rounds_to_decide), ("trailing_window", trailing_window)):
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            raise ValueError(f"{name} must be a positive integer")
+    for name, value in (("relative_improvement_threshold", relative_improvement_threshold),
+                        ("max_per_round_regression", max_per_round_regression)):
+        if not math.isfinite(value) or value <= 0:
+            raise ValueError(f"{name} must be finite and positive")
     aligned = _align_by_round(production_scores, candidate_scores)
+    # The sample floor applies to the evidence actually used, not old rounds
+    # that are about to be discarded by the trailing window.
+    aligned = _AlignedScores(aligned.rounds[-trailing_window:],
+                             aligned.production[-trailing_window:],
+                             aligned.candidate[-trailing_window:])
     if len(aligned.rounds) < min_rounds_to_decide:
         return PromotionDecision(
             decision=DECISION_HOLD,
@@ -190,11 +208,11 @@ def evaluate_promotion(
         relative_change = (mean_cand - mean_prod) / mean_prod
 
     # Per-round guard: find the worst per-round regression of the candidate.
-    worst_regression = -math.inf
+    worst_regression = -1.0
     for prod, cand in zip(window_prod, window_cand):
-        if prod <= 0:
-            continue
-        worst_regression = max(worst_regression, (cand - prod) / prod)
+        # A miss against a perfect production score is always a regression.
+        regression = (cand - prod) / prod if prod > 0 else (math.inf if cand > 0 else 0.0)
+        worst_regression = max(worst_regression, regression)
     blocked = worst_regression > max_per_round_regression
 
     if blocked:
@@ -208,17 +226,18 @@ def evaluate_promotion(
             mean_production=round(mean_prod, 4),
             mean_candidate=round(mean_cand, 4),
             relative_change=round(relative_change, 4),
-            worst_round_regression=round(worst_regression, 4),
+            worst_round_regression=round(worst_regression, 4) if math.isfinite(worst_regression) else None,
             blocked_by_per_round_guard=True,
         )
 
-    if relative_change <= -relative_improvement_threshold:
+    ci_low, ci_high, _ = paired_bootstrap([p - c for p, c in zip(window_prod, window_cand)])
+    if relative_change <= -relative_improvement_threshold and ci_low is not None and ci_low > 0:
         decision = DECISION_PROMOTE
         reason = (
             f"candidate {abs(relative_change):.1%} better than production "
             f"(threshold {relative_improvement_threshold:.0%})"
         )
-    elif relative_change >= relative_improvement_threshold:
+    elif relative_change >= relative_improvement_threshold and ci_high is not None and ci_high < 0:
         decision = DECISION_DEMOTE
         reason = (
             f"candidate {relative_change:.1%} *worse* than production "
@@ -227,8 +246,8 @@ def evaluate_promotion(
     else:
         decision = DECISION_HOLD
         reason = (
-            f"candidate within ±{relative_improvement_threshold:.0%} of "
-            f"production (mean change {relative_change:+.1%})"
+            "improvement is too small or uncertain across paired rounds "
+            f"(mean change {relative_change:+.1%}; 95% improvement interval {ci_low}, {ci_high})"
         )
 
     return PromotionDecision(
@@ -240,4 +259,6 @@ def evaluate_promotion(
         relative_change=round(relative_change, 4),
         worst_round_regression=round(worst_regression, 4),
         blocked_by_per_round_guard=False,
+        improvement_ci_low=ci_low,
+        improvement_ci_high=ci_high,
     )

@@ -50,13 +50,13 @@ const jetbrains = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://roni-altshuler.github.io/motorsportverse/"),
-  title: "MotorsportVerse — open-source motorsport AI ecosystem",
+  title: "MotorsportVerse — every grid, every possibility",
   description:
-    "A unified ecosystem of open-source motorsport prediction projects, built on shared ML and data infrastructure. Discover F1, F2, and more from one place.",
+    "Follow the racing calendar, explore AI race predictions, and see the evidence behind every forecast. Formula 1, MotoGP, NASCAR and more in one race centre.",
   openGraph: {
-    title: "MotorsportVerse — open-source motorsport AI ecosystem",
+    title: "MotorsportVerse — every grid, every possibility",
     description:
-      "A unified ecosystem of open-source motorsport prediction projects on shared ML & data infrastructure.",
+      "Your racing world, connected. Race calendars, published AI forecasts and honest model comparisons across motorsport.",
     images: ["brand/motorsportverse-logo.png"],
     type: "website",
   },

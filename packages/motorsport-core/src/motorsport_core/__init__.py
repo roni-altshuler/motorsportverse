@@ -43,4 +43,5 @@ __all__ = [
     "features",
     "evidence",
     "integrity",
+    "temporal_skill",
 ]
