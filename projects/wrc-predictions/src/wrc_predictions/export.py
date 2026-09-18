@@ -414,7 +414,7 @@ def _championship(source: WrcDataSource, year: int, current_points: dict[str, fl
                 "code": t.key,
                 "name": config.DRIVER_NAME.get(t.key, t.key),
                 "team": config.TEAM_OF.get(t.key, "Privateer"),
-                "pTitle": round(t.p_title, 4),
+                "pTitle": t.p_title,
                 "currentPoints": t.current_points,
                 "projMean": round(t.proj_mean, 3),
                 "projP10": t.proj_p10,

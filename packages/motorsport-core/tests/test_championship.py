@@ -56,3 +56,9 @@ def test_races_per_round_scales_points():
     mean_one = sum(p.proj_mean for p in one)
     mean_two = sum(p.proj_mean for p in two)
     assert mean_two > mean_one * 1.5
+
+
+def test_serialized_title_probabilities_preserve_distribution_precision():
+    from motorsport_core.championship import TitleProjection
+    projections = [TitleProjection(str(i), 1 / 6, 0, 0, 0, 0) for i in range(6)]
+    assert abs(sum(p.as_dict()['p_title'] for p in projections) - 1) < 1e-12

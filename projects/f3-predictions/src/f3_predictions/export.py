@@ -345,7 +345,7 @@ def _championship(source: F3DataSource, year: int) -> list[dict]:
                 "code": t.key,
                 "name": config.DRIVER_NAME.get(t.key, t.key),
                 "team": config.TEAM_OF.get(t.key, ""),
-                "pTitle": round(t.p_title, 4),
+                "pTitle": t.p_title,
                 "currentPoints": t.current_points,
                 "projMean": t.proj_mean,
                 "projP10": t.proj_p10,

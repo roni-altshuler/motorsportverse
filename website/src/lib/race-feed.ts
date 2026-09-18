@@ -44,10 +44,14 @@ export function extractContenders(raw: RecordValue, roster: RecordValue[]): { co
   if (!wins.size || Math.abs([...wins.values()].reduce((a, b) => a + b, 0) - 1) > 0.02) {
     return { contenders: [], session };
   }
+  // A partial or contradictory podium column cannot support comparisons.
+  const validPodium = podium.size === wins.size
+    && [...wins].every(([code, win]) => (podium.get(code) ?? -1) + 1e-8 >= win)
+    && Math.abs([...podium.values()].reduce((a, b) => a + b, 0) - Math.min(3, wins.size)) <= 0.02;
   const names = new Map(roster.map(row => [str(row.code), row]));
   const contenders = [...wins].sort((a, b) => b[1] - a[1]).map(([code, win]) => {
     const driver = names.get(code) ?? {};
-    const p = podium.get(code);
+    const p = validPodium ? podium.get(code) : undefined;
     return { code, name: str(driver.fullName) ?? str(driver.name) ?? code, team: str(driver.team) ?? '',
       win, podium: p !== undefined && p >= win ? p : null };
   });

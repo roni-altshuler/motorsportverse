@@ -11,6 +11,23 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Forecast exploration and coherent probabilities — 2026-09-18
+
+- Added full-field exploration, side-by-side driver comparisons, favourite-versus-field
+  probabilities, race sharing and deep links, a forecast availability filter and
+  a seven-day calendar summary. Incomplete or contradictory podium markets are
+  hidden from comparisons. Kept the model evidence visible below forecasts.
+- Shared export normalization now enforces nested top-k markets jointly while
+  preserving each market total and raw simulation probabilities. Fixed lost
+  probability mass when favourites saturate and other inputs are zero.
+- Preserved championship probability precision in shared serialization and seven
+  series exports, fixing the MotoGP distribution invariant exposed by CI.
+- Corrected finite-sample conformal ranks, rejected unattainable finite intervals,
+  and cleared stale global/stratum state on refit.
+- Added a reproducible, in-memory audit: 459 nesting contradictions across 218
+  market blocks become zero. This measures consistency, not predictive accuracy;
+  historical published files are not rewritten by the audit.
+
 ### Race centre and chronological model research — 2026-09-18
 
 - Replaced the hub's invented live prediction ticker with a race centre built

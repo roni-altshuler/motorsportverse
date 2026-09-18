@@ -33,7 +33,7 @@ class TitleProjection:
     def as_dict(self) -> dict[str, object]:
         return {
             "key": self.key,
-            "p_title": round(self.p_title, 4),
+            "p_title": self.p_title,
             "current_points": self.current_points,
             "proj_mean": round(self.proj_mean, 1),
             "proj_p10": round(self.proj_p10, 1),

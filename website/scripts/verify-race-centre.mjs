@@ -47,10 +47,30 @@ try {
   await page.getByText('No races in this view.', { exact: true }).waitFor();
   await page.getByRole('button', { name: 'Explore the calendar', exact: true }).click();
   await page.getByRole('button', { name: 'Upcoming', exact: true }).click();
-  if (await page.getByRole('button', { name: 'Podium', exact: true }).count()) {
+  if (await page.getByRole('button', { name: 'Podium', exact: true }).count() && await page.getByRole('button', { name: 'Podium', exact: true }).isEnabled()) {
     await page.getByRole('button', { name: 'Podium', exact: true }).click();
     assert.equal(await page.getByRole('button', { name: 'Podium', exact: true }).getAttribute('aria-pressed'), 'true');
   }
+  await page.getByRole('checkbox', { name: 'Forecasts ready' }).check();
+  const allDrivers = page.getByRole('button', { name: /Explore all .* drivers/ });
+  if (await allDrivers.count()) {
+    await allDrivers.click();
+    assert.ok(await page.locator('.contender-list li').count() > 5);
+    await page.getByRole('button', { name: 'Show top five' }).click();
+  }
+  await page.getByRole('button', { name: 'Compare drivers', exact: true }).click();
+  const second = page.getByLabel('Second driver');
+  await second.selectOption(await second.locator('option').last().getAttribute('value'));
+  assert.ok((await page.locator('.comparison-gap').innerText()).length > 20);
+  const selectedRace = await page.locator('.race-focus > h3').innerText();
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.getByRole('button', { name: /Copy race link/ }).click();
+  await page.getByText('Race link copied.', { exact: true }).waitFor();
+  const sharedUrl = await page.evaluate(() => navigator.clipboard.readText());
+  assert.ok(new URL(sharedUrl).searchParams.get('race'));
+  await page.goto(sharedUrl, { waitUntil: 'networkidle' });
+  assert.equal(await page.locator('.race-focus > h3').innerText(), selectedRace);
+  await page.getByRole('button', { name: 'Compare drivers', exact: true }).click();
   await page.locator('.fan-coverage').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => [...document.querySelectorAll('.fan-coverage .card-premium')].every(card => getComputedStyle(card.parentElement).opacity === '1'));
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -68,7 +88,7 @@ try {
   await page.goto(`${url}/docs/`, { waitUntil: 'networkidle' });
   assert.ok((await page.locator('main').innerText()).length > 100);
   assert.deepEqual(errors, [], 'no browser errors or hydration errors');
-  console.log(JSON.stringify({ status: 'passed', checks: ['render', 'series filter', 'follow persistence', 'search', 'empty state', 'market switch when available', 'mobile overflow', 'results integrity', 'docs navigation', 'browser errors'], screenshots }, null, 2));
+  console.log(JSON.stringify({ status: 'passed', checks: ['render', 'series filter', 'follow persistence', 'search', 'empty state', 'market switch when available', 'full field', 'driver comparison', 'forecast availability filter', 'clipboard share and deep link', 'mobile overflow', 'results integrity', 'docs navigation', 'browser errors'], screenshots }, null, 2));
 } finally {
   await browser?.close();
   await new Promise(resolve => server.close(resolve));

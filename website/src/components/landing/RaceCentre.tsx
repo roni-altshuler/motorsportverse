@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { ForecastExplorer } from './ForecastExplorer';
 import { displayDate, isStale, raceStatus, type RaceEvent, type RaceFeed } from '@/lib/race-centre';
 
 const STORAGE = 'motorsportverse:favourite-series:v1';
@@ -18,18 +19,26 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
   const [view, setView] = useState('upcoming');
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [market, setMarket] = useState<'win' | 'podium'>('win');
+  const [readyOnly, setReadyOnly] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
   const [limit, setLimit] = useState(8);
   useEffect(() => {
     const update = () => setToday(new Date().toISOString().slice(0, 10));
     update();
+    const openSharedRace = () => {
+      const id = new URLSearchParams(window.location.search).get('race');
+      const race = feed.events.find(e => e.id === id);
+      if (race) { setSelectedId(race.id); setSeries(race.slug); setView('all'); setLimit(feed.events.length); setReadyOnly(false); setQuery(''); }
+    };
+    openSharedRace();
+    window.addEventListener('popstate', openSharedRace);
     const timer = window.setInterval(update, 60000);
     try {
       const saved: unknown = JSON.parse(localStorage.getItem(STORAGE) ?? '[]');
       if (Array.isArray(saved)) setFavourites(saved.filter((s): s is string => typeof s === 'string' && feed.series.some(p => p.slug === s)));
     } catch { /* Privacy mode or invalid saved preferences must not block browsing. */ }
-    return () => window.clearInterval(timer);
-  }, [feed.series]);
+    return () => { window.clearInterval(timer); window.removeEventListener('popstate', openSharedRace); };
+  }, [feed.series, feed.events]);
   function toggleFavourite(slug: string) {
     const next = favourites.includes(slug) ? favourites.filter(s => s !== slug) : [...favourites, slug];
     setFavourites(next);
@@ -39,23 +48,37 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
     const status = raceStatus(event, today);
     return (series === 'all' || series === 'favourites' && favourites.includes(event.slug) || series === event.slug)
       && (view === 'all' || view === 'upcoming' && status === 'upcoming' || view === 'recent' && status === 'completed')
+      && (!readyOnly || status === 'upcoming' && event.contenders.length > 0)
       && `${event.name} ${event.sport} ${event.location}`.toLowerCase().includes(query.toLowerCase().trim());
   }).sort((a, b) => {
     const direction = view === 'recent' ? -1 : 1;
     return direction * (a.date ?? '9999').localeCompare(b.date ?? '9999') || a.round - b.round || a.sport.localeCompare(b.sport);
-  }), [feed.events, series, view, query, today, favourites]);
+  }), [feed.events, series, view, query, today, favourites, readyOnly]);
   const selected = filtered.find(event => event.id === selectedId) ?? filtered[0];
   const evidence = feed.series.find(s => s.slug === selected?.slug);
   const awaiting = feed.events.filter(e => raceStatus(e, today) === 'awaiting').length;
   const upcoming = feed.events.filter(e => raceStatus(e, today) === 'upcoming').length;
   const canShowForecast = selected && raceStatus(selected, today) === 'upcoming' && selected.contenders.length > 0;
-  const contenders = selected ? [...selected.contenders].sort((a, b) => (b[market] ?? -1) - (a[market] ?? -1)).slice(0, 5) : [];
+  const ready = feed.events.filter(e => raceStatus(e, today) === 'upcoming' && e.contenders.length > 0).length;
+  const weekEnd = new Date(`${today}T00:00:00Z`); weekEnd.setUTCDate(weekEnd.getUTCDate() + 7);
+  const thisWeek = feed.events.filter(e => raceStatus(e, today) === 'upcoming' && e.date! < weekEnd.toISOString().slice(0, 10)).length;
+  async function shareRace() {
+    if (!selected) return;
+    const url = new URL(window.location.href); url.searchParams.set('race', selected.id); url.hash = 'race-centre';
+    try { await navigator.clipboard.writeText(url.toString()); setShareMessage('Race link copied.'); }
+    catch { setShareMessage(url.toString()); }
+  }
 
   return <section id="race-centre" className="race-centre shell" aria-labelledby="race-centre-title">
     <div className="race-centre-heading">
       <div><p className="eyebrow eyebrow-accent">The race centre</p><h2 id="race-centre-title">Your weekend. Across every grid.</h2>
         <p className="text-[var(--ink-muted)]">Find the next race, explore the probabilities, and follow the series you love.</p></div>
       <div className="race-count"><strong>{upcoming}</strong><span>scheduled races ahead</span></div>
+    </div>
+    <div className="race-pulse" aria-label="Calendar coverage">
+      <div><b>{thisWeek}</b><span>races in the next 7 days</span></div>
+      <div><b>{ready}</b><span>upcoming forecasts available</span></div>
+      <div><b>{feed.series.length}</b><span>racing series to explore</span></div>
     </div>
     <div className="series-filters" aria-label="Filter by racing series">
       {[{ slug: 'all', sport: 'All series' }, { slug: 'favourites', sport: '★ Following' }, ...feed.series].map(s =>
@@ -65,19 +88,20 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
     <div className="race-toolbar">
       <div className="race-view-switch" aria-label="Race schedule view">
         {[['upcoming', 'Upcoming'], ['recent', 'Results'], ['all', 'Full calendar']].map(([key, label]) =>
-          <button key={key} type="button" aria-pressed={view === key} onClick={() => { setView(key); setLimit(8); }}>{label}</button>)}
+          <button key={key} type="button" aria-pressed={view === key} onClick={() => { setView(key); setLimit(8); if (key !== 'upcoming') setReadyOnly(false); }}>{label}</button>)}
       </div>
       <label className="race-search"><span className="sr-only">Search races</span><span aria-hidden>⌕</span>
         <input type="search" placeholder="Find a race or circuit…" value={query} onChange={e => { setQuery(e.target.value); setLimit(8); }} /></label>
     </div>
+    <div className="forecast-filter"><label><input type="checkbox" checked={readyOnly} onChange={e => { setReadyOnly(e.target.checked); if (e.target.checked) setView('upcoming'); setLimit(8); }} /> Forecasts ready</label><span>Only races with a published forecast</span></div>
     <div className="race-workspace">
       <div className="race-list">
         <p className="mono-label race-list-caption" aria-live="polite">{filtered.length} races · dates in UTC</p>
         {!filtered.length && <div className="race-empty"><h3>{series === 'favourites' && !favourites.length ? 'Build your own grid.' : 'No races in this view.'}</h3>
           <p>{series === 'favourites' && !favourites.length ? 'Choose a race, then follow its series to keep it here.' : 'Try another series, clear your search, or explore the full calendar.'}</p>
-          <button className="btn-ghost" onClick={() => { setSeries('all'); setView('all'); setQuery(''); }}>Explore the calendar</button></div>}
+          <button className="btn-ghost" onClick={() => { setSeries('all'); setView('all'); setQuery(''); setReadyOnly(false); }}>Explore the calendar</button></div>}
         {filtered.slice(0, limit).map(event => <button key={event.id} type="button" className="race-row"
-          aria-pressed={selected?.id === event.id} onClick={() => setSelectedId(event.id)}>
+          aria-pressed={selected?.id === event.id} onClick={() => { setSelectedId(event.id); setShareMessage(''); }}>
           <span className="race-date">{displayDate(event.date)}<small>R{String(event.round).padStart(2, '0')}</small></span>
           <span className="race-row-main"><span className="race-sport"><span className="race-series-dot" style={{ background: event.accent }} aria-hidden />{event.sport}</span>
             <strong>{event.name}</strong><span className="race-row-location">{event.location || `${event.season} season`}</span></span>
@@ -93,17 +117,8 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
               aria-label={`${favourites.includes(selected.slug) ? 'Unfollow' : 'Follow'} ${selected.sport}`}
               onClick={() => toggleFavourite(selected.slug)}>{favourites.includes(selected.slug) ? '★ Following' : '☆ Follow'}</button></div>
           <h3>{selected.name}</h3><p className="text-[var(--ink-muted)]">{displayDate(selected.date)} · {selected.season}</p>
-          {canShowForecast ? <>
-            <div className="forecast-title"><span className="mono-label">{selected.session} probabilities</span>
-              <div className="race-view-switch compact" aria-label="Forecast market">{(['win', 'podium'] as const).map(m =>
-                <button key={m} aria-pressed={market === m} onClick={() => setMarket(m)}>{m === 'win' ? 'Win' : 'Podium'}</button>)}</div></div>
-            <ol className="contender-list">{contenders.map((driver, i) => <li key={driver.code}>
-              <span className="contender-rank">{String(i + 1).padStart(2, '0')}</span>
-              <div className="contender-info"><div><strong>{driver.name}</strong><span>{driver[market] === null ? '—' : `${(driver[market]! * 100).toFixed(1)}%`}</span></div>
-                <small>{driver.team || driver.code}</small><div className="probability-track" aria-hidden><span style={{ width: `${(driver[market] ?? 0) * 100}%`, background: selected.accent }} /></div></div>
-            </li>)}</ol>
-            <p className="forecast-caption">Top five shown. {market === 'win' ? 'Win probabilities cover the full field.' : 'Each driver’s chance of a top-three finish.'} {selected.calibrated ? 'Calibration applied.' : 'Calibration not confirmed.'}</p>
-          </> : <div className="forecast-pending"><span aria-hidden>◎</span><h4>{selected.completed ? 'The result is in.' : raceStatus(selected, today) === 'awaiting' ? 'Waiting for the result.' : 'The forecast is still taking shape.'}</h4>
+          <div className="race-share"><button type="button" onClick={shareRace}>Copy race link ↗</button><p role="status">{shareMessage}</p></div>
+          {canShowForecast ? <ForecastExplorer key={selected.id} event={selected} /> : <div className="forecast-pending"><span aria-hidden>◎</span><h4>{selected.completed ? 'The result is in.' : raceStatus(selected, today) === 'awaiting' ? 'Waiting for the result.' : 'The forecast is still taking shape.'}</h4>
             <p>{selected.completed ? 'Open the series dashboard for classifications and the model’s race review.' : raceStatus(selected, today) === 'awaiting' ? 'The scheduled date has passed. A result has not been recorded in this feed.' : 'No verified race forecast is available here yet. Explore the series dashboard for more detail.'}</p></div>}
           {evidence && <div className="race-evidence"><p className="mono-label">Does the model have an edge?</p><strong>{VERDICTS[evidence.verdict] ?? VERDICTS.unavailable}</strong>
             {evidence.modelError !== null && evidence.baselineError !== null && <div className="evidence-values">

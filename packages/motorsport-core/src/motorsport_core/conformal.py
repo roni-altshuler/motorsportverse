@@ -81,12 +81,15 @@ def split_conformal_quantile(
     if not 0.0 < alpha < 1.0:
         raise ValueError(f"alpha must be in (0, 1); got {alpha}")
     res = np.abs(np.asarray(residuals, dtype=np.float64))
+    if res.ndim != 1 or not np.isfinite(res).all():
+        raise ValueError('residuals must be a finite one-dimensional array')
     n = len(res)
     if n == 0:
         raise ValueError("residuals array is empty")
-    # Numpy quantile with the higher-side empirical convention.
-    q_level = np.clip((1.0 - alpha) * (1.0 + 1.0 / n), 0.0, 1.0)
-    return float(np.quantile(res, q_level, method="higher"))
+    rank = int(np.ceil((n + 1) * (1 - alpha)))
+    if rank > n:
+        raise ValueError('Too few residuals for a finite interval at the requested coverage')
+    return float(np.partition(res, rank - 1)[rank - 1])
 
 
 @dataclass
@@ -115,6 +118,8 @@ class ConformalIntervals:
         y_pred_calibration: Sequence[float] | np.ndarray,
     ) -> "ConformalIntervals":
         """Estimate the conformal quantile from held-out residuals."""
+        self._quantile = None
+        self._calibration_n = 0
         y = np.asarray(y_calibration, dtype=np.float64)
         yhat = np.asarray(y_pred_calibration, dtype=np.float64)
         if y.shape != yhat.shape:
@@ -122,6 +127,8 @@ class ConformalIntervals:
                 f"y_calibration and y_pred_calibration must have the same shape; "
                 f"got {y.shape} vs {yhat.shape}"
             )
+        if y.ndim != 1 or not np.isfinite(y).all() or not np.isfinite(yhat).all():
+            raise ValueError('Calibration arrays must be finite and one-dimensional')
         if len(y) < MIN_CALIBRATION_SAMPLES:
             raise ValueError(
                 f"need >= {MIN_CALIBRATION_SAMPLES} calibration samples; "
@@ -177,6 +184,8 @@ class StratifiedConformal:
         strata: Sequence[str],
     ) -> "StratifiedConformal":
         """Fit one calibrator per stratum plus the global fallback."""
+        self._per_stratum.clear()
+        self._global = ConformalIntervals(alpha=self.alpha)
         y = np.asarray(y_calibration, dtype=np.float64)
         yhat = np.asarray(y_pred_calibration, dtype=np.float64)
         s = list(strata)
@@ -192,7 +201,7 @@ class StratifiedConformal:
             grouped.setdefault(str(key), []).append(i)
 
         for key, idx in grouped.items():
-            if len(idx) < self.min_samples_per_stratum:
+            if len(idx) < max(self.min_samples_per_stratum, MIN_CALIBRATION_SAMPLES) or np.ceil((len(idx) + 1) * (1 - self.alpha)) > len(idx):
                 continue
             sub_y = y[idx]
             sub_yhat = yhat[idx]

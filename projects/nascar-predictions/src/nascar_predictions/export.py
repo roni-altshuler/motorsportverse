@@ -369,7 +369,7 @@ def _championship(source: NascarDataSource, year: int, ladder: dict) -> list[dic
                 "name": config.DRIVER_NAME.get(t.key, t.key),
                 "team": config.TEAM_OF.get(t.key, ""),
                 "make": config.MAKE_OF.get(t.key, ""),
-                "pTitle": round(t.p_title, 4),
+                "pTitle": t.p_title,
                 "pMakePlayoffs": round(float(probs.get("p_make_playoffs", 0.0)), 4),
                 "currentPoints": t.current_points,
                 # Projection horizon = end of the REGULAR season (the Chase

@@ -19,6 +19,19 @@ Plackett-Luce ranking sampler + isotonic / stratified calibration.
   enough history exists.
 - `calibrate_market_probabilities(...)`, `collect_history_from_rounds(...)`.
 
+## `probability_coherence`
+
+`coherent_top_k(probabilities, targets, floor=0) -> ndarray` projects a
+competitor-by-market matrix onto nested top-k probabilities with fixed column
+sums and bounds. Dykstra's algorithm combines row isotonic projections with
+bounded-simplex column projections; non-convergence fails explicitly.
+
+`calibration.renormalize_market_struct` applies this after per-market
+normalization when markets share a field, then rounds once. Raw simulation
+probabilities remain unchanged. The repair enforces logical constraints; it
+is not a claim of better calibration or out-of-time accuracy. Unknown, empty,
+and all-zero markets retain their existing handling.
+
 ## `registry`
 
 `ModelRegistry().save(season, round_num, models, metadata)` → joblib/torch
@@ -80,6 +93,12 @@ seasons outside the configured `ERAS` table, so sports without regulation-era
 awareness incur no penalty. Replace `ERAS` to enable it.
 
 ## `conformal`, `reliability`, `hierarchical_bayes`
+
+Conformal refits discard old state, including absent strata. The finite-sample
+quantile is the `ceil((n+1)*(1-alpha))`th residual. If that rank exceeds the
+sample size, fitting raises rather than advertising a finite coverage guarantee.
+Calibration inputs must be finite one-dimensional arrays. Coverage still relies
+on exchangeability; this change does not establish that assumption for racing.
 
 Conformal prediction intervals; reliability diagrams + ECE/MCE
 (plotting needs the optional `matplotlib`); Bayesian skill priors.

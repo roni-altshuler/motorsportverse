@@ -57,3 +57,12 @@ it('uses explicit completed round IDs for the F1 calendar, including gaps', () =
   ] });
   expect(getRaceFeed([project], root).events.map(e => e.completed)).toEqual([true, false, true]);
 });
+
+it('suppresses the whole podium column if its field, mass or nesting is invalid', () => {
+  const win = { A: { probability: .7 }, B: { probability: .1 }, C: { probability: .1 }, D: { probability: .1 } };
+  const valid = { A: { probability: .9 }, B: { probability: .7 }, C: { probability: .7 }, D: { probability: .7 } };
+  expect(extractContenders({ markets: { win, podium: valid } }, []).contenders.every(d => d.podium !== null)).toBe(true);
+  for (const podium of [{ ...valid, A: { probability: .6 }, B: { probability: 1 } }, { ...valid, D: { probability: .1 } }, { A: valid.A }]) {
+    expect(extractContenders({ markets: { win, podium } }, []).contenders.every(d => d.podium === null)).toBe(true);
+  }
+});

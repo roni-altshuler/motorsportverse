@@ -22,8 +22,8 @@ def _normal_residuals(n: int = 200, seed: int = 0) -> tuple[np.ndarray, np.ndarr
 def test_quantile_strictly_increases_with_more_extreme_residuals():
     base = np.array([0.1, 0.2, 0.3, 0.4, 0.5])
     extreme = np.array([0.1, 0.2, 0.3, 0.4, 5.0])
-    assert split_conformal_quantile(base, alpha=0.1) < split_conformal_quantile(
-        extreme, alpha=0.1
+    assert split_conformal_quantile(base, alpha=0.2) < split_conformal_quantile(
+        extreme, alpha=0.2
     )
 
 
@@ -105,3 +105,30 @@ def test_width_to_confidence_label_buckets():
     assert labels[0] == "High"
     assert labels[-1] == "Low"
     assert "Medium" in labels
+
+
+def test_exact_finite_sample_rank_and_unattainable_coverage():
+    assert split_conformal_quantile(range(1, 11), alpha=.2) == 9
+    # The previous np.quantile(..., method='higher') selected 9 here.
+    assert split_conformal_quantile(range(1, 10), alpha=.2) == 8
+    with pytest.raises(ValueError, match='requested coverage'):
+        split_conformal_quantile(range(8), alpha=.1)
+
+
+def test_refit_drops_strata_absent_from_new_history():
+    cal = StratifiedConformal(alpha=.2).fit([10.] * 10 + [1.] * 10, [0.] * 20, ['wet'] * 10 + ['dry'] * 10)
+    cal.fit([1.] * 10, [0.] * 10, ['dry'] * 10)
+    assert cal.stratum_coverage() == {'dry': 10}
+    low, high = cal.predict_intervals([0.], ['wet'])
+    np.testing.assert_allclose([low[0], high[0]], [-1., 1.])
+    with pytest.raises(ValueError):
+        cal.fit([1.], [0.], ['dry'])
+    assert not cal.is_fitted
+    assert cal.stratum_coverage() == {}
+
+
+def test_invalid_refit_cannot_reuse_old_intervals():
+    cal = ConformalIntervals(alpha=.2).fit([1.] * 10, [0.] * 10)
+    with pytest.raises(ValueError, match='finite'):
+        cal.fit([np.nan] * 10, [0.] * 10)
+    assert not cal.is_fitted

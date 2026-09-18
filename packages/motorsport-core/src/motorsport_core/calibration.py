@@ -129,36 +129,37 @@ def water_fill_to_target(
     a zero misleads only about one competitor.
     """
     probs = np.clip(np.asarray(list(values), dtype=np.float64), 0.0, None)
+    if probs.ndim != 1 or not np.isfinite(probs).all():
+        raise ValueError('Market values must be a finite one-dimensional array')
+    if not np.isfinite([target, floor, cap]).all() or not 0 <= floor <= cap or cap <= 0:
+        raise ValueError('Target and bounds must be finite, with 0 <= floor <= cap and cap > 0')
     n = probs.size
     if n == 0:
         return probs
-    # A market can be larger than the field it describes — a five-car class has
-    # no meaningful "top ten".  Everyone finishes in it, so the honest target is
-    # the field size, not the market's nominal one.
     target = float(min(target, n * cap))
-    if target <= 0 or probs.sum() <= 0:
-        return probs
+    if target <= 0:
+        return np.zeros_like(probs)
+    if probs.sum() <= 0:
+        return probs  # No signal: do not invent a uniform forecast.
     use_floor = floor if n * floor <= target else 0.0
+    positive = probs > 0
+    # If positive support saturates, remaining mass belongs to the zero entries.
+    # Pinning high and low entries simultaneously can otherwise lose this mass.
+    supported_mass = int(positive.sum()) * cap + int((~positive).sum()) * use_floor
+    if target >= supported_mass:
+        result = np.full(n, cap)
+        if (~positive).any():
+            result[~positive] = (target - int(positive.sum()) * cap) / int((~positive).sum())
+        return result
+    lo, hi = 0.0, cap / float(probs[positive].min())
+    for _ in range(100):
+        scale = (lo + hi) / 2
+        if np.clip(probs * scale, use_floor, cap).sum() < target:
+            lo = scale
+        else:
+            hi = scale
+    return np.clip(probs * ((lo + hi) / 2), use_floor, cap)
 
-    pinned_hi = np.zeros(n, dtype=bool)
-    pinned_lo = np.zeros(n, dtype=bool)
-    # Each pass pins at least one more entry, so this terminates in <= n passes.
-    for _ in range(n + 1):
-        free = ~(pinned_hi | pinned_lo)
-        remaining = target - float(pinned_hi.sum()) * cap - float(pinned_lo.sum()) * use_floor
-        free_sum = float(probs[free].sum())
-        if not free.any() or free_sum <= 0:
-            break
-        probs[free] = probs[free] * (remaining / free_sum)
-        over = free & (probs > cap)
-        under = free & (probs < use_floor)
-        if not over.any() and not under.any():
-            break
-        probs[over] = cap
-        probs[under] = use_floor
-        pinned_hi |= over
-        pinned_lo |= under
-    return probs
 
 
 def renormalize_market_struct(
@@ -202,8 +203,33 @@ def renormalize_market_struct(
         out[market] = {}
         for i, c in enumerate(names):
             row = dict(entries[c])
-            row["probability"] = round(float(probs[i]), digits) if digits else float(probs[i])
+            row["probability"] = float(probs[i])
             out[market][c] = row
+    # Only join nested markets sharing exactly the same competitor set. Keep
+    # absent/all-zero markets absent, and never mix separate endurance classes.
+    from .probability_coherence import coherent_top_k
+
+    groups: dict[frozenset[str], list[str]] = {}
+    for market in ("win", "podium", "top6", "top10"):
+        entries = out.get(market, {})
+        if market in targets and entries and sum(v["probability"] for v in entries.values()) > 0:
+            groups.setdefault(frozenset(entries), []).append(market)
+    for competitors, markets in groups.items():
+        if len(markets) < 2:
+            continue
+        names = sorted(competitors)
+        markets.sort(key=lambda m: targets[m])
+        matrix = [[out[m][c]["probability"] for m in markets] for c in names]
+        repaired = coherent_top_k(matrix, [targets[m] for m in markets],
+                                  floor=CALIBRATION_PROB_FLOOR)
+        for i, code in enumerate(names):
+            for j, market in enumerate(markets):
+                out[market][code]["probability"] = float(repaired[i, j])
+    if digits is not None:
+        for market, entries in out.items():
+            if market in targets:
+                for row in entries.values():
+                    row["probability"] = round(row["probability"], digits)
     return out
 
 
