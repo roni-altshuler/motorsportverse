@@ -1,161 +1,741 @@
 {
   "round": 10,
   "season": 2026,
-  "place": "Round 10",
+  "place": "Indianapolis",
   "calibration": {
     "applied": true,
-    "reason": "calibrated on 9 real round(s)"
+    "reason": "calibrated on 10 real round(s)"
   },
   "classes": [
+    {
+      "key": "GTP",
+      "label": "GTP",
+      "color": "#E10600",
+      "markets": {
+        "win": {
+          "GTP-24": {
+            "probability": 0.0504,
+            "rawProbability": 0.025
+          },
+          "GTP-31": {
+            "probability": 0.4455,
+            "rawProbability": 0.4703
+          },
+          "GTP-6": {
+            "probability": 0.086,
+            "rawProbability": 0.1025
+          },
+          "GTP-40": {
+            "probability": 0.0542,
+            "rawProbability": 0.0333
+          },
+          "GTP-60": {
+            "probability": 0.0577,
+            "rawProbability": 0.0408
+          },
+          "GTP-10": {
+            "probability": 0.0538,
+            "rawProbability": 0.0325
+          },
+          "GTP-93": {
+            "probability": 0.1039,
+            "rawProbability": 0.1415
+          },
+          "GTP-23": {
+            "probability": 0.0108,
+            "rawProbability": 0.0235
+          },
+          "GTP-5": {
+            "probability": 0.0557,
+            "rawProbability": 0.0365
+          },
+          "GTP-25": {
+            "probability": 0.0088,
+            "rawProbability": 0.0192
+          },
+          "GTP-7": {
+            "probability": 0.0733,
+            "rawProbability": 0.0748
+          }
+        },
+        "podium": {
+          "GTP-24": {
+            "probability": 0.1799,
+            "rawProbability": 0.1192
+          },
+          "GTP-31": {
+            "probability": 0.9482,
+            "rawProbability": 0.8858
+          },
+          "GTP-6": {
+            "probability": 0.3,
+            "rawProbability": 0.4048
+          },
+          "GTP-40": {
+            "probability": 0.1849,
+            "rawProbability": 0.1397
+          },
+          "GTP-60": {
+            "probability": 0.1906,
+            "rawProbability": 0.1628
+          },
+          "GTP-10": {
+            "probability": 0.1841,
+            "rawProbability": 0.1363
+          },
+          "GTP-93": {
+            "probability": 0.3272,
+            "rawProbability": 0.5158
+          },
+          "GTP-23": {
+            "probability": 0.147,
+            "rawProbability": 0.0985
+          },
+          "GTP-5": {
+            "probability": 0.1898,
+            "rawProbability": 0.1595
+          },
+          "GTP-25": {
+            "probability": 0.1244,
+            "rawProbability": 0.0778
+          },
+          "GTP-7": {
+            "probability": 0.2241,
+            "rawProbability": 0.2997
+          }
+        },
+        "top6": {
+          "GTP-24": {
+            "probability": 0.4619,
+            "rawProbability": 0.3607
+          },
+          "GTP-31": {
+            "probability": 0.9482,
+            "rawProbability": 0.9963
+          },
+          "GTP-6": {
+            "probability": 0.7152,
+            "rawProbability": 0.8012
+          },
+          "GTP-40": {
+            "probability": 0.4688,
+            "rawProbability": 0.4115
+          },
+          "GTP-60": {
+            "probability": 0.4753,
+            "rawProbability": 0.4595
+          },
+          "GTP-10": {
+            "probability": 0.4658,
+            "rawProbability": 0.3895
+          },
+          "GTP-93": {
+            "probability": 0.7271,
+            "rawProbability": 0.8893
+          },
+          "GTP-23": {
+            "probability": 0.4541,
+            "rawProbability": 0.3028
+          },
+          "GTP-5": {
+            "probability": 0.4737,
+            "rawProbability": 0.4483
+          },
+          "GTP-25": {
+            "probability": 0.3028,
+            "rawProbability": 0.246
+          },
+          "GTP-7": {
+            "probability": 0.507,
+            "rawProbability": 0.6948
+          }
+        },
+        "top10": {
+          "GTP-24": {
+            "probability": 0.9023,
+            "rawProbability": 0.8588
+          },
+          "GTP-31": {
+            "probability": 0.9852,
+            "rawProbability": 1.0
+          },
+          "GTP-6": {
+            "probability": 0.9146,
+            "rawProbability": 0.9958
+          },
+          "GTP-40": {
+            "probability": 0.9069,
+            "rawProbability": 0.9103
+          },
+          "GTP-60": {
+            "probability": 0.9084,
+            "rawProbability": 0.9265
+          },
+          "GTP-10": {
+            "probability": 0.9051,
+            "rawProbability": 0.8895
+          },
+          "GTP-93": {
+            "probability": 0.985,
+            "rawProbability": 0.9983
+          },
+          "GTP-23": {
+            "probability": 0.8392,
+            "rawProbability": 0.7983
+          },
+          "GTP-5": {
+            "probability": 0.9079,
+            "rawProbability": 0.9208
+          },
+          "GTP-25": {
+            "probability": 0.8317,
+            "rawProbability": 0.7147
+          },
+          "GTP-7": {
+            "probability": 0.9138,
+            "rawProbability": 0.9868
+          }
+        }
+      },
+      "h2h": {
+        "GTP-31": {
+          "GTP-93": 0.7718,
+          "GTP-6": 0.8218,
+          "GTP-7": 0.8647,
+          "GTP-60": 0.9223,
+          "GTP-5": 0.9258,
+          "GTP-40": 0.9338,
+          "GTP-10": 0.94,
+          "GTP-24": 0.943,
+          "GTP-23": 0.9507
+        },
+        "GTP-93": {
+          "GTP-31": 0.2282,
+          "GTP-6": 0.5775,
+          "GTP-7": 0.6587,
+          "GTP-60": 0.7865,
+          "GTP-5": 0.7928,
+          "GTP-40": 0.813,
+          "GTP-10": 0.8125,
+          "GTP-24": 0.8393,
+          "GTP-23": 0.8635
+        },
+        "GTP-6": {
+          "GTP-31": 0.1782,
+          "GTP-93": 0.4225,
+          "GTP-7": 0.585,
+          "GTP-60": 0.7265,
+          "GTP-5": 0.7287,
+          "GTP-40": 0.7533,
+          "GTP-10": 0.7575,
+          "GTP-24": 0.7883,
+          "GTP-23": 0.816
+        },
+        "GTP-7": {
+          "GTP-31": 0.1353,
+          "GTP-93": 0.3413,
+          "GTP-6": 0.415,
+          "GTP-60": 0.653,
+          "GTP-5": 0.658,
+          "GTP-40": 0.685,
+          "GTP-10": 0.7005,
+          "GTP-24": 0.7208,
+          "GTP-23": 0.7628
+        },
+        "GTP-60": {
+          "GTP-31": 0.0777,
+          "GTP-93": 0.2135,
+          "GTP-6": 0.2735,
+          "GTP-7": 0.347,
+          "GTP-5": 0.5055,
+          "GTP-40": 0.5333,
+          "GTP-10": 0.55,
+          "GTP-24": 0.581,
+          "GTP-23": 0.6268
+        },
+        "GTP-5": {
+          "GTP-31": 0.0742,
+          "GTP-93": 0.2072,
+          "GTP-6": 0.2713,
+          "GTP-7": 0.342,
+          "GTP-60": 0.4945,
+          "GTP-40": 0.5238,
+          "GTP-10": 0.5392,
+          "GTP-24": 0.5672,
+          "GTP-23": 0.6198
+        },
+        "GTP-40": {
+          "GTP-31": 0.0662,
+          "GTP-93": 0.187,
+          "GTP-6": 0.2467,
+          "GTP-7": 0.315,
+          "GTP-60": 0.4667,
+          "GTP-5": 0.4762,
+          "GTP-10": 0.5097,
+          "GTP-24": 0.545,
+          "GTP-23": 0.6
+        },
+        "GTP-10": {
+          "GTP-31": 0.06,
+          "GTP-93": 0.1875,
+          "GTP-6": 0.2425,
+          "GTP-7": 0.2995,
+          "GTP-60": 0.45,
+          "GTP-5": 0.4608,
+          "GTP-40": 0.4903,
+          "GTP-24": 0.5298,
+          "GTP-23": 0.5818
+        },
+        "GTP-24": {
+          "GTP-31": 0.057,
+          "GTP-93": 0.1607,
+          "GTP-6": 0.2117,
+          "GTP-7": 0.2792,
+          "GTP-60": 0.419,
+          "GTP-5": 0.4328,
+          "GTP-40": 0.455,
+          "GTP-10": 0.4702,
+          "GTP-23": 0.5547
+        },
+        "GTP-23": {
+          "GTP-31": 0.0493,
+          "GTP-93": 0.1365,
+          "GTP-6": 0.184,
+          "GTP-7": 0.2372,
+          "GTP-60": 0.3732,
+          "GTP-5": 0.3802,
+          "GTP-40": 0.4,
+          "GTP-10": 0.4182,
+          "GTP-24": 0.4453
+        }
+      },
+      "method": "monte-carlo",
+      "monteCarloSamples": 6000,
+      "temperature": 0.6
+    },
+    {
+      "key": "LMP2",
+      "label": "LMP2",
+      "color": "#4EA8DE",
+      "markets": {
+        "win": {
+          "LMP2-18": {
+            "probability": 0.1079,
+            "rawProbability": 0.0763
+          },
+          "LMP2-52": {
+            "probability": 0.1115,
+            "rawProbability": 0.0827
+          },
+          "LMP2-22": {
+            "probability": 0.0552,
+            "rawProbability": 0.0482
+          },
+          "LMP2-8": {
+            "probability": 0.0442,
+            "rawProbability": 0.0285
+          },
+          "LMP2-73": {
+            "probability": 0.008,
+            "rawProbability": 0.0142
+          },
+          "LMP2-43": {
+            "probability": 0.2431,
+            "rawProbability": 0.3165
+          },
+          "LMP2-11": {
+            "probability": 0.0592,
+            "rawProbability": 0.0552
+          },
+          "LMP2-99": {
+            "probability": 0.1679,
+            "rawProbability": 0.183
+          },
+          "LMP2-04": {
+            "probability": 0.1582,
+            "rawProbability": 0.1657
+          },
+          "LMP2-2": {
+            "probability": 0.0449,
+            "rawProbability": 0.0298
+          }
+        },
+        "podium": {
+          "LMP2-18": {
+            "probability": 0.3762,
+            "rawProbability": 0.274
+          },
+          "LMP2-52": {
+            "probability": 0.3778,
+            "rawProbability": 0.2792
+          },
+          "LMP2-22": {
+            "probability": 0.1831,
+            "rawProbability": 0.1853
+          },
+          "LMP2-8": {
+            "probability": 0.151,
+            "rawProbability": 0.0988
+          },
+          "LMP2-73": {
+            "probability": 0.0165,
+            "rawProbability": 0.0535
+          },
+          "LMP2-43": {
+            "probability": 0.6444,
+            "rawProbability": 0.7422
+          },
+          "LMP2-11": {
+            "probability": 0.1898,
+            "rawProbability": 0.207
+          },
+          "LMP2-99": {
+            "probability": 0.458,
+            "rawProbability": 0.5397
+          },
+          "LMP2-04": {
+            "probability": 0.4512,
+            "rawProbability": 0.5177
+          },
+          "LMP2-2": {
+            "probability": 0.1521,
+            "rawProbability": 0.1027
+          }
+        },
+        "top6": {
+          "LMP2-18": {
+            "probability": 0.7083,
+            "rawProbability": 0.6705
+          },
+          "LMP2-52": {
+            "probability": 0.7081,
+            "rawProbability": 0.6692
+          },
+          "LMP2-22": {
+            "probability": 0.4495,
+            "rawProbability": 0.5218
+          },
+          "LMP2-8": {
+            "probability": 0.4039,
+            "rawProbability": 0.3072
+          },
+          "LMP2-73": {
+            "probability": 0.3671,
+            "rawProbability": 0.168
+          },
+          "LMP2-43": {
+            "probability": 0.9587,
+            "rawProbability": 0.9758
+          },
+          "LMP2-11": {
+            "probability": 0.4572,
+            "rawProbability": 0.5658
+          },
+          "LMP2-99": {
+            "probability": 0.7729,
+            "rawProbability": 0.9143
+          },
+          "LMP2-04": {
+            "probability": 0.7699,
+            "rawProbability": 0.8973
+          },
+          "LMP2-2": {
+            "probability": 0.4044,
+            "rawProbability": 0.31
+          }
+        },
+        "top10": {
+          "LMP2-18": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-52": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-22": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-8": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-73": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-43": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-11": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-99": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-04": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "LMP2-2": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          }
+        }
+      },
+      "h2h": {
+        "LMP2-43": {
+          "LMP2-99": 0.6323,
+          "LMP2-04": 0.6492,
+          "LMP2-52": 0.8,
+          "LMP2-18": 0.8013,
+          "LMP2-11": 0.8405,
+          "LMP2-22": 0.869,
+          "LMP2-8": 0.9222,
+          "LMP2-2": 0.9212,
+          "LMP2-73": 0.9568
+        },
+        "LMP2-99": {
+          "LMP2-43": 0.3677,
+          "LMP2-04": 0.5162,
+          "LMP2-52": 0.695,
+          "LMP2-18": 0.6993,
+          "LMP2-11": 0.7585,
+          "LMP2-22": 0.785,
+          "LMP2-8": 0.8715,
+          "LMP2-2": 0.8698,
+          "LMP2-73": 0.928
+        },
+        "LMP2-04": {
+          "LMP2-43": 0.3508,
+          "LMP2-99": 0.4838,
+          "LMP2-52": 0.6843,
+          "LMP2-18": 0.6823,
+          "LMP2-11": 0.7363,
+          "LMP2-22": 0.7585,
+          "LMP2-8": 0.857,
+          "LMP2-2": 0.8582,
+          "LMP2-73": 0.9217
+        },
+        "LMP2-52": {
+          "LMP2-43": 0.2,
+          "LMP2-99": 0.305,
+          "LMP2-04": 0.3157,
+          "LMP2-18": 0.497,
+          "LMP2-11": 0.5722,
+          "LMP2-22": 0.6,
+          "LMP2-8": 0.744,
+          "LMP2-2": 0.738,
+          "LMP2-73": 0.8517
+        },
+        "LMP2-18": {
+          "LMP2-43": 0.1987,
+          "LMP2-99": 0.3007,
+          "LMP2-04": 0.3177,
+          "LMP2-52": 0.503,
+          "LMP2-11": 0.5682,
+          "LMP2-22": 0.5993,
+          "LMP2-8": 0.738,
+          "LMP2-2": 0.7402,
+          "LMP2-73": 0.8405
+        },
+        "LMP2-11": {
+          "LMP2-43": 0.1595,
+          "LMP2-99": 0.2415,
+          "LMP2-04": 0.2637,
+          "LMP2-52": 0.4278,
+          "LMP2-18": 0.4318,
+          "LMP2-22": 0.532,
+          "LMP2-8": 0.6773,
+          "LMP2-2": 0.6837,
+          "LMP2-73": 0.806
+        },
+        "LMP2-22": {
+          "LMP2-43": 0.131,
+          "LMP2-99": 0.215,
+          "LMP2-04": 0.2415,
+          "LMP2-52": 0.4,
+          "LMP2-18": 0.4007,
+          "LMP2-11": 0.468,
+          "LMP2-8": 0.6505,
+          "LMP2-2": 0.657,
+          "LMP2-73": 0.7875
+        },
+        "LMP2-8": {
+          "LMP2-43": 0.0778,
+          "LMP2-99": 0.1285,
+          "LMP2-04": 0.143,
+          "LMP2-52": 0.256,
+          "LMP2-18": 0.262,
+          "LMP2-11": 0.3227,
+          "LMP2-22": 0.3495,
+          "LMP2-2": 0.4965,
+          "LMP2-73": 0.6575
+        },
+        "LMP2-2": {
+          "LMP2-43": 0.0788,
+          "LMP2-99": 0.1302,
+          "LMP2-04": 0.1418,
+          "LMP2-52": 0.262,
+          "LMP2-18": 0.2598,
+          "LMP2-11": 0.3163,
+          "LMP2-22": 0.343,
+          "LMP2-8": 0.5035,
+          "LMP2-73": 0.6578
+        },
+        "LMP2-73": {
+          "LMP2-43": 0.0432,
+          "LMP2-99": 0.072,
+          "LMP2-04": 0.0783,
+          "LMP2-52": 0.1483,
+          "LMP2-18": 0.1595,
+          "LMP2-11": 0.194,
+          "LMP2-22": 0.2125,
+          "LMP2-8": 0.3425,
+          "LMP2-2": 0.3422
+        }
+      },
+      "method": "monte-carlo",
+      "monteCarloSamples": 6000,
+      "temperature": 0.6
+    },
     {
       "key": "GTDPRO",
       "label": "GTD PRO",
       "color": "#F4A259",
       "markets": {
         "win": {
-          "GTDP-9": {
-            "probability": 0.1664,
-            "rawProbability": 0.1955
-          },
           "GTDP-64": {
-            "probability": 0.1646,
-            "rawProbability": 0.192
-          },
-          "GTDP-65": {
-            "probability": 0.1589,
-            "rawProbability": 0.1808
-          },
-          "GTDP-68": {
-            "probability": 0.0704,
-            "rawProbability": 0.0615
-          },
-          "GTDP-1": {
-            "probability": 0.1197,
-            "rawProbability": 0.1037
+            "probability": 0.1566,
+            "rawProbability": 0.1717
           },
           "GTDP-4": {
-            "probability": 0.128,
-            "rawProbability": 0.12
+            "probability": 0.1374,
+            "rawProbability": 0.1313
           },
-          "GTDP-14": {
-            "probability": 0.0667,
-            "rawProbability": 0.0542
-          },
-          "GTDP-59": {
-            "probability": 0.0039,
-            "rawProbability": 0.0077
-          },
-          "GTDP-77": {
-            "probability": 0.0653,
-            "rawProbability": 0.0513
+          "GTDP-9": {
+            "probability": 0.1715,
+            "rawProbability": 0.203
           },
           "GTDP-3": {
-            "probability": 0.0561,
-            "rawProbability": 0.0333
+            "probability": 0.0515,
+            "rawProbability": 0.0297
+          },
+          "GTDP-14": {
+            "probability": 0.0648,
+            "rawProbability": 0.0575
+          },
+          "GTDP-1": {
+            "probability": 0.1245,
+            "rawProbability": 0.1043
+          },
+          "GTDP-65": {
+            "probability": 0.1595,
+            "rawProbability": 0.1778
+          },
+          "GTDP-59": {
+            "probability": 0.0037,
+            "rawProbability": 0.0077
+          },
+          "GTDP-68": {
+            "probability": 0.0629,
+            "rawProbability": 0.0535
+          },
+          "GTDP-77": {
+            "probability": 0.0677,
+            "rawProbability": 0.0635
           }
         },
         "podium": {
-          "GTDP-9": {
-            "probability": 0.4375,
-            "rawProbability": 0.5453
-          },
           "GTDP-64": {
-            "probability": 0.428,
-            "rawProbability": 0.5068
-          },
-          "GTDP-65": {
-            "probability": 0.4325,
-            "rawProbability": 0.5252
-          },
-          "GTDP-68": {
-            "probability": 0.2962,
-            "rawProbability": 0.2055
-          },
-          "GTDP-1": {
-            "probability": 0.3866,
-            "rawProbability": 0.338
+            "probability": 0.4865,
+            "rawProbability": 0.5035
           },
           "GTDP-4": {
-            "probability": 0.3949,
-            "rawProbability": 0.3718
+            "probability": 0.4572,
+            "rawProbability": 0.3837
           },
-          "GTDP-14": {
-            "probability": 0.1492,
-            "rawProbability": 0.1787
-          },
-          "GTDP-59": {
-            "probability": 0.0509,
-            "rawProbability": 0.0305
-          },
-          "GTDP-77": {
-            "probability": 0.2945,
-            "rawProbability": 0.1985
+          "GTDP-9": {
+            "probability": 0.5003,
+            "rawProbability": 0.56
           },
           "GTDP-3": {
-            "probability": 0.1298,
-            "rawProbability": 0.0997
+            "probability": 0.1282,
+            "rawProbability": 0.1022
+          },
+          "GTDP-14": {
+            "probability": 0.1484,
+            "rawProbability": 0.1848
+          },
+          "GTDP-1": {
+            "probability": 0.4348,
+            "rawProbability": 0.3307
+          },
+          "GTDP-65": {
+            "probability": 0.4878,
+            "rawProbability": 0.5087
+          },
+          "GTDP-59": {
+            "probability": 0.0539,
+            "rawProbability": 0.0328
+          },
+          "GTDP-68": {
+            "probability": 0.1515,
+            "rawProbability": 0.1973
+          },
+          "GTDP-77": {
+            "probability": 0.1513,
+            "rawProbability": 0.1963
           }
         },
         "top6": {
-          "GTDP-9": {
-            "probability": 0.7087,
-            "rawProbability": 0.8975
-          },
           "GTDP-64": {
-            "probability": 0.7056,
-            "rawProbability": 0.8763
-          },
-          "GTDP-65": {
-            "probability": 0.7055,
-            "rawProbability": 0.8758
-          },
-          "GTDP-68": {
-            "probability": 0.6036,
-            "rawProbability": 0.5128
-          },
-          "GTDP-1": {
-            "probability": 0.6716,
-            "rawProbability": 0.7192
+            "probability": 0.7365,
+            "rawProbability": 0.8723
           },
           "GTDP-4": {
-            "probability": 0.6903,
-            "rawProbability": 0.7723
+            "probability": 0.7239,
+            "rawProbability": 0.7805
           },
-          "GTDP-14": {
-            "probability": 0.5977,
-            "rawProbability": 0.4725
-          },
-          "GTDP-59": {
-            "probability": 0.3439,
-            "rawProbability": 0.0935
-          },
-          "GTDP-77": {
-            "probability": 0.601,
-            "rawProbability": 0.4952
+          "GTDP-9": {
+            "probability": 0.74,
+            "rawProbability": 0.898
           },
           "GTDP-3": {
-            "probability": 0.372,
-            "rawProbability": 0.2848
+            "probability": 0.3913,
+            "rawProbability": 0.2828
+          },
+          "GTDP-14": {
+            "probability": 0.5278,
+            "rawProbability": 0.4753
+          },
+          "GTDP-1": {
+            "probability": 0.7154,
+            "rawProbability": 0.7183
+          },
+          "GTDP-65": {
+            "probability": 0.7373,
+            "rawProbability": 0.878
+          },
+          "GTDP-59": {
+            "probability": 0.3654,
+            "rawProbability": 0.0938
+          },
+          "GTDP-68": {
+            "probability": 0.5322,
+            "rawProbability": 0.507
+          },
+          "GTDP-77": {
+            "probability": 0.5304,
+            "rawProbability": 0.4938
           }
         },
         "top10": {
-          "GTDP-9": {
-            "probability": 1.0,
-            "rawProbability": 1.0
-          },
           "GTDP-64": {
-            "probability": 1.0,
-            "rawProbability": 1.0
-          },
-          "GTDP-65": {
-            "probability": 1.0,
-            "rawProbability": 1.0
-          },
-          "GTDP-68": {
-            "probability": 1.0,
-            "rawProbability": 1.0
-          },
-          "GTDP-1": {
             "probability": 1.0,
             "rawProbability": 1.0
           },
@@ -163,7 +743,23 @@
             "probability": 1.0,
             "rawProbability": 1.0
           },
+          "GTDP-9": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "GTDP-3": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
           "GTDP-14": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "GTDP-1": {
+            "probability": 1.0,
+            "rawProbability": 1.0
+          },
+          "GTDP-65": {
             "probability": 1.0,
             "rawProbability": 1.0
           },
@@ -171,11 +767,11 @@
             "probability": 1.0,
             "rawProbability": 1.0
           },
-          "GTDP-77": {
+          "GTDP-68": {
             "probability": 1.0,
             "rawProbability": 1.0
           },
-          "GTDP-3": {
+          "GTDP-77": {
             "probability": 1.0,
             "rawProbability": 1.0
           }
@@ -183,114 +779,114 @@
       },
       "h2h": {
         "GTDP-9": {
-          "GTDP-65": 0.5172,
-          "GTDP-64": 0.5258,
-          "GTDP-4": 0.6152,
-          "GTDP-1": 0.6567,
-          "GTDP-68": 0.7627,
-          "GTDP-77": 0.7705,
-          "GTDP-14": 0.7843,
-          "GTDP-3": 0.8735,
-          "GTDP-59": 0.9602
+          "GTDP-65": 0.527,
+          "GTDP-64": 0.5338,
+          "GTDP-4": 0.6125,
+          "GTDP-1": 0.6595,
+          "GTDP-68": 0.7672,
+          "GTDP-77": 0.7755,
+          "GTDP-14": 0.7842,
+          "GTDP-3": 0.8705,
+          "GTDP-59": 0.9567
         },
         "GTDP-65": {
-          "GTDP-9": 0.4828,
+          "GTDP-9": 0.473,
           "GTDP-64": 0.5035,
-          "GTDP-4": 0.605,
-          "GTDP-1": 0.6323,
-          "GTDP-68": 0.7523,
-          "GTDP-77": 0.7537,
-          "GTDP-14": 0.7687,
-          "GTDP-3": 0.8617,
-          "GTDP-59": 0.9537
+          "GTDP-4": 0.586,
+          "GTDP-1": 0.631,
+          "GTDP-68": 0.7498,
+          "GTDP-77": 0.756,
+          "GTDP-14": 0.7632,
+          "GTDP-3": 0.8635,
+          "GTDP-59": 0.9522
         },
         "GTDP-64": {
-          "GTDP-9": 0.4742,
+          "GTDP-9": 0.4662,
           "GTDP-65": 0.4965,
-          "GTDP-4": 0.5963,
-          "GTDP-1": 0.6243,
-          "GTDP-68": 0.7522,
-          "GTDP-77": 0.7562,
-          "GTDP-14": 0.7697,
-          "GTDP-3": 0.858,
-          "GTDP-59": 0.95
+          "GTDP-4": 0.5813,
+          "GTDP-1": 0.6233,
+          "GTDP-68": 0.7497,
+          "GTDP-77": 0.7505,
+          "GTDP-14": 0.7573,
+          "GTDP-3": 0.8565,
+          "GTDP-59": 0.954
         },
         "GTDP-4": {
-          "GTDP-9": 0.3848,
-          "GTDP-65": 0.395,
-          "GTDP-64": 0.4037,
-          "GTDP-1": 0.5327,
-          "GTDP-68": 0.6682,
-          "GTDP-77": 0.6715,
-          "GTDP-14": 0.6905,
-          "GTDP-3": 0.8077,
-          "GTDP-59": 0.9313
+          "GTDP-9": 0.3875,
+          "GTDP-65": 0.414,
+          "GTDP-64": 0.4187,
+          "GTDP-1": 0.5425,
+          "GTDP-68": 0.679,
+          "GTDP-77": 0.682,
+          "GTDP-14": 0.6935,
+          "GTDP-3": 0.8135,
+          "GTDP-59": 0.9323
         },
         "GTDP-1": {
-          "GTDP-9": 0.3433,
-          "GTDP-65": 0.3677,
-          "GTDP-64": 0.3757,
-          "GTDP-4": 0.4673,
-          "GTDP-68": 0.6362,
-          "GTDP-77": 0.6397,
-          "GTDP-14": 0.6607,
-          "GTDP-3": 0.7828,
-          "GTDP-59": 0.9192
+          "GTDP-9": 0.3405,
+          "GTDP-65": 0.369,
+          "GTDP-64": 0.3767,
+          "GTDP-4": 0.4575,
+          "GTDP-68": 0.6363,
+          "GTDP-77": 0.6373,
+          "GTDP-14": 0.6538,
+          "GTDP-3": 0.7857,
+          "GTDP-59": 0.9198
         },
         "GTDP-68": {
-          "GTDP-9": 0.2373,
-          "GTDP-65": 0.2477,
-          "GTDP-64": 0.2478,
-          "GTDP-4": 0.3318,
-          "GTDP-1": 0.3638,
-          "GTDP-77": 0.5103,
-          "GTDP-14": 0.5302,
-          "GTDP-3": 0.6783,
-          "GTDP-59": 0.8683
+          "GTDP-9": 0.2328,
+          "GTDP-65": 0.2502,
+          "GTDP-64": 0.2503,
+          "GTDP-4": 0.321,
+          "GTDP-1": 0.3637,
+          "GTDP-77": 0.505,
+          "GTDP-14": 0.5213,
+          "GTDP-3": 0.6705,
+          "GTDP-59": 0.8707
         },
         "GTDP-77": {
-          "GTDP-9": 0.2295,
-          "GTDP-65": 0.2463,
-          "GTDP-64": 0.2438,
-          "GTDP-4": 0.3285,
-          "GTDP-1": 0.3603,
-          "GTDP-68": 0.4897,
-          "GTDP-14": 0.513,
-          "GTDP-3": 0.6752,
-          "GTDP-59": 0.869
+          "GTDP-9": 0.2245,
+          "GTDP-65": 0.244,
+          "GTDP-64": 0.2495,
+          "GTDP-4": 0.318,
+          "GTDP-1": 0.3627,
+          "GTDP-68": 0.495,
+          "GTDP-14": 0.5137,
+          "GTDP-3": 0.6665,
+          "GTDP-59": 0.8672
         },
         "GTDP-14": {
-          "GTDP-9": 0.2157,
-          "GTDP-65": 0.2313,
-          "GTDP-64": 0.2303,
-          "GTDP-4": 0.3095,
-          "GTDP-1": 0.3393,
-          "GTDP-68": 0.4698,
-          "GTDP-77": 0.487,
-          "GTDP-3": 0.6607,
-          "GTDP-59": 0.8618
+          "GTDP-9": 0.2158,
+          "GTDP-65": 0.2368,
+          "GTDP-64": 0.2427,
+          "GTDP-4": 0.3065,
+          "GTDP-1": 0.3462,
+          "GTDP-68": 0.4787,
+          "GTDP-77": 0.4863,
+          "GTDP-3": 0.6557,
+          "GTDP-59": 0.8545
         },
         "GTDP-3": {
-          "GTDP-9": 0.1265,
-          "GTDP-65": 0.1383,
-          "GTDP-64": 0.142,
-          "GTDP-4": 0.1923,
-          "GTDP-1": 0.2172,
-          "GTDP-68": 0.3217,
-          "GTDP-77": 0.3248,
-          "GTDP-14": 0.3393,
-          "GTDP-59": 0.7628
+          "GTDP-9": 0.1295,
+          "GTDP-65": 0.1365,
+          "GTDP-64": 0.1435,
+          "GTDP-4": 0.1865,
+          "GTDP-1": 0.2143,
+          "GTDP-68": 0.3295,
+          "GTDP-77": 0.3335,
+          "GTDP-14": 0.3443,
+          "GTDP-59": 0.762
         },
         "GTDP-59": {
-          "GTDP-9": 0.0398,
-          "GTDP-65": 0.0463,
-          "GTDP-64": 0.05,
-          "GTDP-4": 0.0687,
-          "GTDP-1": 0.0808,
-          "GTDP-68": 0.1317,
-          "GTDP-77": 0.131,
-          "GTDP-14": 0.1382,
-          "GTDP-3": 0.2372
+          "GTDP-9": 0.0433,
+          "GTDP-65": 0.0478,
+          "GTDP-64": 0.046,
+          "GTDP-4": 0.0677,
+          "GTDP-1": 0.0802,
+          "GTDP-68": 0.1293,
+          "GTDP-77": 0.1328,
+          "GTDP-14": 0.1455,
+          "GTDP-3": 0.238
         }
       },
       "method": "monte-carlo",
@@ -303,332 +899,332 @@
       "color": "#B57BFF",
       "markets": {
         "win": {
-          "GTD-57": {
-            "probability": 0.1761,
-            "rawProbability": 0.2168
-          },
           "GTD-96": {
-            "probability": 0.2807,
-            "rawProbability": 0.2337
+            "probability": 0.3196,
+            "rawProbability": 0.2353
           },
-          "GTD-70": {
-            "probability": 0.0709,
-            "rawProbability": 0.0845
-          },
-          "GTD-27": {
-            "probability": 0.1146,
-            "rawProbability": 0.1205
-          },
-          "GTD-45": {
-            "probability": 0.0533,
-            "rawProbability": 0.0488
+          "GTD-57": {
+            "probability": 0.24,
+            "rawProbability": 0.2242
           },
           "GTD-13": {
-            "probability": 0.061,
-            "rawProbability": 0.0643
-          },
-          "GTD-34": {
-            "probability": 0.0522,
-            "rawProbability": 0.0467
-          },
-          "GTD-36": {
-            "probability": 0.0285,
-            "rawProbability": 0.029
-          },
-          "GTD-12": {
-            "probability": 0.07,
-            "rawProbability": 0.0825
-          },
-          "GTD-120": {
-            "probability": 0.0269,
-            "rawProbability": 0.0258
-          },
-          "GTD-66": {
-            "probability": 0.0233,
-            "rawProbability": 0.0185
+            "probability": 0.0481,
+            "rawProbability": 0.0625
           },
           "GTD-81": {
-            "probability": 0.0232,
-            "rawProbability": 0.0183
+            "probability": 0.0194,
+            "rawProbability": 0.0185
+          },
+          "GTD-27": {
+            "probability": 0.096,
+            "rawProbability": 0.1192
+          },
+          "GTD-120": {
+            "probability": 0.0245,
+            "rawProbability": 0.0312
+          },
+          "GTD-66": {
+            "probability": 0.0186,
+            "rawProbability": 0.0163
+          },
+          "GTD-12": {
+            "probability": 0.0542,
+            "rawProbability": 0.0775
           },
           "GTD-16": {
-            "probability": 0.0193,
+            "probability": 0.0162,
             "rawProbability": 0.0105
+          },
+          "GTD-70": {
+            "probability": 0.0541,
+            "rawProbability": 0.0773
+          },
+          "GTD-34": {
+            "probability": 0.0409,
+            "rawProbability": 0.0445
+          },
+          "GTD-36": {
+            "probability": 0.0234,
+            "rawProbability": 0.0283
+          },
+          "GTD-45": {
+            "probability": 0.045,
+            "rawProbability": 0.0547
           }
         },
         "podium": {
-          "GTD-57": {
-            "probability": 0.5101,
-            "rawProbability": 0.5787
-          },
           "GTD-96": {
-            "probability": 0.6514,
-            "rawProbability": 0.6017
+            "probability": 0.6834,
+            "rawProbability": 0.606
           },
-          "GTD-70": {
-            "probability": 0.2948,
-            "rawProbability": 0.2775
-          },
-          "GTD-27": {
-            "probability": 0.3477,
-            "rawProbability": 0.3887
-          },
-          "GTD-45": {
-            "probability": 0.1878,
-            "rawProbability": 0.175
+          "GTD-57": {
+            "probability": 0.678,
+            "rawProbability": 0.5798
           },
           "GTD-13": {
-            "probability": 0.2012,
-            "rawProbability": 0.2035
-          },
-          "GTD-34": {
-            "probability": 0.1809,
-            "rawProbability": 0.16
-          },
-          "GTD-36": {
-            "probability": 0.0903,
-            "rawProbability": 0.1037
-          },
-          "GTD-12": {
-            "probability": 0.2147,
-            "rawProbability": 0.2577
-          },
-          "GTD-120": {
-            "probability": 0.0879,
-            "rawProbability": 0.0938
-          },
-          "GTD-66": {
-            "probability": 0.0792,
-            "rawProbability": 0.0592
+            "probability": 0.1968,
+            "rawProbability": 0.202
           },
           "GTD-81": {
-            "probability": 0.0804,
-            "rawProbability": 0.0642
+            "probability": 0.0694,
+            "rawProbability": 0.0658
+          },
+          "GTD-27": {
+            "probability": 0.3033,
+            "rawProbability": 0.3935
+          },
+          "GTD-120": {
+            "probability": 0.0765,
+            "rawProbability": 0.1002
+          },
+          "GTD-66": {
+            "probability": 0.0679,
+            "rawProbability": 0.0583
+          },
+          "GTD-12": {
+            "probability": 0.2081,
+            "rawProbability": 0.2567
           },
           "GTD-16": {
-            "probability": 0.0735,
-            "rawProbability": 0.0365
+            "probability": 0.0635,
+            "rawProbability": 0.0373
+          },
+          "GTD-70": {
+            "probability": 0.2294,
+            "rawProbability": 0.2662
+          },
+          "GTD-34": {
+            "probability": 0.1557,
+            "rawProbability": 0.1575
+          },
+          "GTD-36": {
+            "probability": 0.0758,
+            "rawProbability": 0.0965
+          },
+          "GTD-45": {
+            "probability": 0.1923,
+            "rawProbability": 0.1802
           }
         },
         "top6": {
-          "GTD-57": {
-            "probability": 0.8184,
-            "rawProbability": 0.9047
-          },
           "GTD-96": {
-            "probability": 0.8192,
-            "rawProbability": 0.91
+            "probability": 0.8875,
+            "rawProbability": 0.9182
           },
-          "GTD-70": {
-            "probability": 0.5815,
-            "rawProbability": 0.6098
-          },
-          "GTD-27": {
-            "probability": 0.6023,
-            "rawProbability": 0.7468
-          },
-          "GTD-45": {
-            "probability": 0.5508,
-            "rawProbability": 0.4373
+          "GTD-57": {
+            "probability": 0.8845,
+            "rawProbability": 0.896
           },
           "GTD-13": {
-            "probability": 0.5573,
-            "rawProbability": 0.4807
-          },
-          "GTD-34": {
-            "probability": 0.4298,
-            "rawProbability": 0.3837
-          },
-          "GTD-36": {
-            "probability": 0.2437,
-            "rawProbability": 0.258
-          },
-          "GTD-12": {
-            "probability": 0.5763,
-            "rawProbability": 0.5752
-          },
-          "GTD-120": {
-            "probability": 0.2164,
-            "rawProbability": 0.2473
-          },
-          "GTD-66": {
-            "probability": 0.2037,
-            "rawProbability": 0.1633
+            "probability": 0.5236,
+            "rawProbability": 0.4852
           },
           "GTD-81": {
-            "probability": 0.2061,
-            "rawProbability": 0.1795
+            "probability": 0.2176,
+            "rawProbability": 0.178
+          },
+          "GTD-27": {
+            "probability": 0.6053,
+            "rawProbability": 0.7498
+          },
+          "GTD-120": {
+            "probability": 0.2275,
+            "rawProbability": 0.251
+          },
+          "GTD-66": {
+            "probability": 0.2149,
+            "rawProbability": 0.1583
+          },
+          "GTD-12": {
+            "probability": 0.536,
+            "rawProbability": 0.5763
           },
           "GTD-16": {
-            "probability": 0.1946,
-            "rawProbability": 0.1037
+            "probability": 0.2081,
+            "rawProbability": 0.1083
+          },
+          "GTD-70": {
+            "probability": 0.5387,
+            "rawProbability": 0.5965
+          },
+          "GTD-34": {
+            "probability": 0.4104,
+            "rawProbability": 0.3842
+          },
+          "GTD-36": {
+            "probability": 0.2291,
+            "rawProbability": 0.263
+          },
+          "GTD-45": {
+            "probability": 0.5168,
+            "rawProbability": 0.4352
           }
         },
         "top10": {
-          "GTD-57": {
-            "probability": 1.0,
-            "rawProbability": 0.9977
-          },
           "GTD-96": {
             "probability": 1.0,
-            "rawProbability": 0.9985
+            "rawProbability": 0.9978
           },
-          "GTD-70": {
-            "probability": 0.8372,
-            "rawProbability": 0.9485
-          },
-          "GTD-27": {
-            "probability": 0.8408,
-            "rawProbability": 0.9832
-          },
-          "GTD-45": {
-            "probability": 0.8276,
-            "rawProbability": 0.8568
+          "GTD-57": {
+            "probability": 1.0,
+            "rawProbability": 0.9973
           },
           "GTD-13": {
-            "probability": 0.8306,
-            "rawProbability": 0.8857
-          },
-          "GTD-34": {
-            "probability": 0.8233,
-            "rawProbability": 0.8162
-          },
-          "GTD-36": {
-            "probability": 0.7698,
-            "rawProbability": 0.6665
-          },
-          "GTD-12": {
-            "probability": 0.8353,
-            "rawProbability": 0.9305
-          },
-          "GTD-120": {
-            "probability": 0.7666,
-            "rawProbability": 0.6358
-          },
-          "GTD-66": {
-            "probability": 0.4928,
-            "rawProbability": 0.4577
+            "probability": 0.8544,
+            "rawProbability": 0.8887
           },
           "GTD-81": {
-            "probability": 0.4978,
-            "rawProbability": 0.5052
+            "probability": 0.5197,
+            "rawProbability": 0.502
+          },
+          "GTD-27": {
+            "probability": 0.8766,
+            "rawProbability": 0.9798
+          },
+          "GTD-120": {
+            "probability": 0.7444,
+            "rawProbability": 0.6497
+          },
+          "GTD-66": {
+            "probability": 0.5154,
+            "rawProbability": 0.4558
+          },
+          "GTD-12": {
+            "probability": 0.8585,
+            "rawProbability": 0.9332
           },
           "GTD-16": {
-            "probability": 0.4782,
-            "rawProbability": 0.3178
+            "probability": 0.5029,
+            "rawProbability": 0.3213
+          },
+          "GTD-70": {
+            "probability": 0.8596,
+            "rawProbability": 0.9443
+          },
+          "GTD-34": {
+            "probability": 0.7598,
+            "rawProbability": 0.8152
+          },
+          "GTD-36": {
+            "probability": 0.7454,
+            "rawProbability": 0.6603
+          },
+          "GTD-45": {
+            "probability": 0.7635,
+            "rawProbability": 0.8545
           }
         }
       },
       "h2h": {
         "GTD-96": {
-          "GTD-57": 0.5177,
-          "GTD-27": 0.6515,
-          "GTD-70": 0.7357,
-          "GTD-12": 0.7467,
-          "GTD-13": 0.792,
-          "GTD-45": 0.8187,
-          "GTD-34": 0.8292,
-          "GTD-36": 0.8883,
-          "GTD-120": 0.8968
+          "GTD-57": 0.515,
+          "GTD-27": 0.6508,
+          "GTD-70": 0.7417,
+          "GTD-12": 0.7537,
+          "GTD-13": 0.7973,
+          "GTD-45": 0.82,
+          "GTD-34": 0.8323,
+          "GTD-36": 0.8942,
+          "GTD-120": 0.8913
         },
         "GTD-57": {
-          "GTD-96": 0.4823,
-          "GTD-27": 0.6385,
-          "GTD-70": 0.7208,
-          "GTD-12": 0.7388,
-          "GTD-13": 0.7863,
-          "GTD-45": 0.8115,
-          "GTD-34": 0.8233,
-          "GTD-36": 0.8812,
-          "GTD-120": 0.8953
+          "GTD-96": 0.485,
+          "GTD-27": 0.639,
+          "GTD-70": 0.7253,
+          "GTD-12": 0.729,
+          "GTD-13": 0.7813,
+          "GTD-45": 0.7998,
+          "GTD-34": 0.8305,
+          "GTD-36": 0.881,
+          "GTD-120": 0.8817
         },
         "GTD-27": {
-          "GTD-96": 0.3485,
-          "GTD-57": 0.3615,
-          "GTD-70": 0.591,
-          "GTD-12": 0.6122,
-          "GTD-13": 0.6745,
-          "GTD-45": 0.6965,
-          "GTD-34": 0.7388,
-          "GTD-36": 0.8188,
-          "GTD-120": 0.8225
+          "GTD-96": 0.3492,
+          "GTD-57": 0.361,
+          "GTD-70": 0.6112,
+          "GTD-12": 0.6218,
+          "GTD-13": 0.676,
+          "GTD-45": 0.7095,
+          "GTD-34": 0.7318,
+          "GTD-36": 0.8162,
+          "GTD-120": 0.8152
         },
         "GTD-70": {
-          "GTD-96": 0.2643,
-          "GTD-57": 0.2792,
-          "GTD-27": 0.409,
-          "GTD-12": 0.524,
-          "GTD-13": 0.5908,
-          "GTD-45": 0.6255,
-          "GTD-34": 0.6547,
-          "GTD-36": 0.7498,
-          "GTD-120": 0.7548
+          "GTD-96": 0.2583,
+          "GTD-57": 0.2747,
+          "GTD-27": 0.3888,
+          "GTD-12": 0.5172,
+          "GTD-13": 0.5727,
+          "GTD-45": 0.6092,
+          "GTD-34": 0.6425,
+          "GTD-36": 0.7443,
+          "GTD-120": 0.747
         },
         "GTD-12": {
-          "GTD-96": 0.2533,
-          "GTD-57": 0.2612,
-          "GTD-27": 0.3878,
-          "GTD-70": 0.476,
-          "GTD-13": 0.5668,
-          "GTD-45": 0.6012,
-          "GTD-34": 0.6313,
-          "GTD-36": 0.7255,
-          "GTD-120": 0.7448
+          "GTD-96": 0.2463,
+          "GTD-57": 0.271,
+          "GTD-27": 0.3782,
+          "GTD-70": 0.4828,
+          "GTD-13": 0.5565,
+          "GTD-45": 0.5948,
+          "GTD-34": 0.6342,
+          "GTD-36": 0.723,
+          "GTD-120": 0.7375
         },
         "GTD-13": {
-          "GTD-96": 0.208,
-          "GTD-57": 0.2137,
-          "GTD-27": 0.3255,
-          "GTD-70": 0.4092,
-          "GTD-12": 0.4332,
-          "GTD-45": 0.5332,
-          "GTD-34": 0.5723,
-          "GTD-36": 0.6747,
-          "GTD-120": 0.6933
+          "GTD-96": 0.2027,
+          "GTD-57": 0.2187,
+          "GTD-27": 0.324,
+          "GTD-70": 0.4273,
+          "GTD-12": 0.4435,
+          "GTD-45": 0.536,
+          "GTD-34": 0.5738,
+          "GTD-36": 0.686,
+          "GTD-120": 0.6852
         },
         "GTD-45": {
-          "GTD-96": 0.1813,
-          "GTD-57": 0.1885,
-          "GTD-27": 0.3035,
-          "GTD-70": 0.3745,
-          "GTD-12": 0.3988,
-          "GTD-13": 0.4668,
-          "GTD-34": 0.5323,
-          "GTD-36": 0.6445,
-          "GTD-120": 0.6642
+          "GTD-96": 0.18,
+          "GTD-57": 0.2002,
+          "GTD-27": 0.2905,
+          "GTD-70": 0.3908,
+          "GTD-12": 0.4052,
+          "GTD-13": 0.464,
+          "GTD-34": 0.539,
+          "GTD-36": 0.65,
+          "GTD-120": 0.6572
         },
         "GTD-34": {
-          "GTD-96": 0.1708,
-          "GTD-57": 0.1767,
-          "GTD-27": 0.2612,
-          "GTD-70": 0.3453,
-          "GTD-12": 0.3687,
-          "GTD-13": 0.4277,
-          "GTD-45": 0.4677,
-          "GTD-36": 0.6107,
-          "GTD-120": 0.6248
+          "GTD-96": 0.1677,
+          "GTD-57": 0.1695,
+          "GTD-27": 0.2682,
+          "GTD-70": 0.3575,
+          "GTD-12": 0.3658,
+          "GTD-13": 0.4262,
+          "GTD-45": 0.461,
+          "GTD-36": 0.6092,
+          "GTD-120": 0.621
         },
         "GTD-36": {
-          "GTD-96": 0.1117,
-          "GTD-57": 0.1188,
-          "GTD-27": 0.1812,
-          "GTD-70": 0.2502,
-          "GTD-12": 0.2745,
-          "GTD-13": 0.3253,
-          "GTD-45": 0.3555,
-          "GTD-34": 0.3893,
-          "GTD-120": 0.5187
+          "GTD-96": 0.1058,
+          "GTD-57": 0.119,
+          "GTD-27": 0.1838,
+          "GTD-70": 0.2557,
+          "GTD-12": 0.277,
+          "GTD-13": 0.314,
+          "GTD-45": 0.35,
+          "GTD-34": 0.3908,
+          "GTD-120": 0.5107
         },
         "GTD-120": {
-          "GTD-96": 0.1032,
-          "GTD-57": 0.1047,
-          "GTD-27": 0.1775,
-          "GTD-70": 0.2452,
-          "GTD-12": 0.2552,
-          "GTD-13": 0.3067,
-          "GTD-45": 0.3358,
-          "GTD-34": 0.3752,
-          "GTD-36": 0.4813
+          "GTD-96": 0.1087,
+          "GTD-57": 0.1183,
+          "GTD-27": 0.1848,
+          "GTD-70": 0.253,
+          "GTD-12": 0.2625,
+          "GTD-13": 0.3148,
+          "GTD-45": 0.3428,
+          "GTD-34": 0.379,
+          "GTD-36": 0.4893
         }
       },
       "method": "monte-carlo",

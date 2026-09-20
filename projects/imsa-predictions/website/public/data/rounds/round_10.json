@@ -1,12 +1,619 @@
 {
   "round": 10,
   "season": 2026,
-  "place": "Round 10",
-  "country": null,
-  "event": "Round 10",
-  "completed": false,
-  "dataSource": null,
+  "place": "Indianapolis",
+  "country": "United States",
+  "event": "Indianapolis Motor Speedway Rc",
+  "completed": true,
+  "dataSource": "snapshot",
   "classes": [
+    {
+      "key": "GTP",
+      "label": "GTP",
+      "color": "#E10600",
+      "classification": [
+        {
+          "position": 1,
+          "code": "GTP-31",
+          "number": "31",
+          "team": "Cadillac Whelen",
+          "manufacturer": "Cadillac",
+          "vehicle": "Cadillac V-Series.R",
+          "drivers": [
+            "Jack Aitken",
+            "Earl Bamber"
+          ],
+          "teamColor": "#941E32",
+          "predictedValue": 98.687,
+          "pWin": 0.4703,
+          "pPodium": 0.8858,
+          "pTop6": 0.9963,
+          "pTop10": 1.0,
+          "meanFinish": 1.97,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 4,
+          "confidence": "High",
+          "actualPosition": 2
+        },
+        {
+          "position": 2,
+          "code": "GTP-93",
+          "number": "93",
+          "team": "Acura Meyer Shank Racing w/Curb Agajanian",
+          "manufacturer": "Acura",
+          "vehicle": "Acura ARX-06",
+          "drivers": [
+            "Renger van der Zande",
+            "Nick Yelloly"
+          ],
+          "teamColor": "#CE0E2D",
+          "predictedValue": 99.394,
+          "pWin": 0.1415,
+          "pPodium": 0.5158,
+          "pTop6": 0.8893,
+          "pTop10": 0.9983,
+          "meanFinish": 3.74,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 7,
+          "confidence": "High",
+          "actualPosition": 7
+        },
+        {
+          "position": 3,
+          "code": "GTP-6",
+          "number": "6",
+          "team": "Porsche Penske Motorsport",
+          "manufacturer": "Porsche",
+          "vehicle": "Porsche 963",
+          "drivers": [
+            "Laurin Heinrich",
+            "Kevin Estre"
+          ],
+          "teamColor": "#B9975B",
+          "predictedValue": 99.613,
+          "pWin": 0.1025,
+          "pPodium": 0.4048,
+          "pTop6": 0.8012,
+          "pTop10": 0.9958,
+          "meanFinish": 4.4,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 8,
+          "confidence": "High",
+          "actualPosition": 3
+        },
+        {
+          "position": 4,
+          "code": "GTP-7",
+          "number": "7",
+          "team": "Porsche Penske Motorsport",
+          "manufacturer": "Porsche",
+          "vehicle": "Porsche 963",
+          "drivers": [
+            "Felipe Nasr",
+            "Julien Andlauer"
+          ],
+          "teamColor": "#B9975B",
+          "predictedValue": 99.808,
+          "pWin": 0.0748,
+          "pPodium": 0.2997,
+          "pTop6": 0.6948,
+          "pTop10": 0.9868,
+          "meanFinish": 5.12,
+          "finishRangeLow": 2,
+          "finishRangeHigh": 9,
+          "confidence": "High",
+          "actualPosition": 11
+        },
+        {
+          "position": 5,
+          "code": "GTP-60",
+          "number": "60",
+          "team": "Acura Meyer Shank Racing w/Curb Agajanian",
+          "manufacturer": "Acura",
+          "vehicle": "Acura ARX-06",
+          "drivers": [
+            "Tom Blomqvist",
+            "Colin Braun"
+          ],
+          "teamColor": "#CE0E2D",
+          "predictedValue": 100.184,
+          "pWin": 0.0408,
+          "pPodium": 0.1628,
+          "pTop6": 0.4595,
+          "pTop10": 0.9265,
+          "meanFinish": 6.62,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 10,
+          "confidence": "High",
+          "actualPosition": 5
+        },
+        {
+          "position": 6,
+          "code": "GTP-5",
+          "number": "5",
+          "team": "JDC-Miller MotorSports",
+          "manufacturer": "Porsche",
+          "vehicle": "Porsche 963",
+          "drivers": [
+            "Tijmen van der Helm",
+            "Nico Mueller"
+          ],
+          "teamColor": "#B9975B",
+          "predictedValue": 100.212,
+          "pWin": 0.0365,
+          "pPodium": 0.1595,
+          "pTop6": 0.4483,
+          "pTop10": 0.9208,
+          "meanFinish": 6.7,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 10,
+          "confidence": "High",
+          "actualPosition": 9
+        },
+        {
+          "position": 7,
+          "code": "GTP-40",
+          "number": "40",
+          "team": "Cadillac Wayne Taylor Racing",
+          "manufacturer": "Cadillac",
+          "vehicle": "Cadillac V-Series.R",
+          "drivers": [
+            "Jordan Taylor",
+            "Louis Deletraz"
+          ],
+          "teamColor": "#941E32",
+          "predictedValue": 100.279,
+          "pWin": 0.0333,
+          "pPodium": 0.1397,
+          "pTop6": 0.4115,
+          "pTop10": 0.9103,
+          "meanFinish": 6.94,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 10,
+          "confidence": "High",
+          "actualPosition": 4
+        },
+        {
+          "position": 8,
+          "code": "GTP-10",
+          "number": "10",
+          "team": "Cadillac Wayne Taylor Racing",
+          "manufacturer": "Cadillac",
+          "vehicle": "Cadillac V-Series.R",
+          "drivers": [
+            "Ricky Taylor",
+            "Filipe Albuquerque"
+          ],
+          "teamColor": "#941E32",
+          "predictedValue": 100.303,
+          "pWin": 0.0325,
+          "pPodium": 0.1363,
+          "pTop6": 0.3895,
+          "pTop10": 0.8895,
+          "meanFinish": 7.06,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 11,
+          "confidence": "Low",
+          "actualPosition": 6
+        },
+        {
+          "position": 9,
+          "code": "GTP-24",
+          "number": "24",
+          "team": "BMW M Team WRT",
+          "manufacturer": "BMW",
+          "vehicle": "BMW M Hybrid V8",
+          "drivers": [
+            "Dries Vanthoor",
+            "Sheldon van der Linde"
+          ],
+          "teamColor": "#0166B1",
+          "predictedValue": 100.385,
+          "pWin": 0.025,
+          "pPodium": 0.1192,
+          "pTop6": 0.3607,
+          "pTop10": 0.8588,
+          "meanFinish": 7.36,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 11,
+          "confidence": "Low",
+          "actualPosition": 1
+        },
+        {
+          "position": 10,
+          "code": "GTP-23",
+          "number": "23",
+          "team": "ASTON MARTIN THOR Team",
+          "manufacturer": "Aston Martin",
+          "vehicle": "Aston Martin Valkyrie",
+          "drivers": [
+            "Ross Gunn",
+            "Roman De Angelis"
+          ],
+          "teamColor": "#00665E",
+          "predictedValue": 100.509,
+          "pWin": 0.0235,
+          "pPodium": 0.0985,
+          "pTop6": 0.3028,
+          "pTop10": 0.7983,
+          "meanFinish": 7.82,
+          "finishRangeLow": 4,
+          "finishRangeHigh": 11,
+          "confidence": "High",
+          "actualPosition": 8
+        },
+        {
+          "position": 11,
+          "code": "GTP-25",
+          "number": "25",
+          "team": "BMW M Team WRT",
+          "manufacturer": "BMW",
+          "vehicle": "BMW M Hybrid V8",
+          "drivers": [
+            "Philipp Eng",
+            "Marco Wittmann"
+          ],
+          "teamColor": "#0166B1",
+          "predictedValue": 100.627,
+          "pWin": 0.0192,
+          "pPodium": 0.0778,
+          "pTop6": 0.246,
+          "pTop10": 0.7147,
+          "meanFinish": 8.28,
+          "finishRangeLow": 4,
+          "finishRangeHigh": 11,
+          "confidence": "High",
+          "actualPosition": 10
+        }
+      ],
+      "actualResults": [
+        {
+          "position": 1,
+          "code": "GTP-24"
+        },
+        {
+          "position": 2,
+          "code": "GTP-31"
+        },
+        {
+          "position": 3,
+          "code": "GTP-6"
+        },
+        {
+          "position": 4,
+          "code": "GTP-40"
+        },
+        {
+          "position": 5,
+          "code": "GTP-60"
+        },
+        {
+          "position": 6,
+          "code": "GTP-10"
+        },
+        {
+          "position": 7,
+          "code": "GTP-93"
+        },
+        {
+          "position": 8,
+          "code": "GTP-23"
+        },
+        {
+          "position": 9,
+          "code": "GTP-5"
+        },
+        {
+          "position": 10,
+          "code": "GTP-25"
+        },
+        {
+          "position": 11,
+          "code": "GTP-7"
+        }
+      ],
+      "accuracy": {
+        "n": 11,
+        "mean_position_error": 2.909,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 8,
+        "within_5": 9,
+        "exact_matches": 2,
+        "spearman_correlation": 0.24545454545454545,
+        "ndcg_at_5": 0.7133876442329647
+      }
+    },
+    {
+      "key": "LMP2",
+      "label": "LMP2",
+      "color": "#4EA8DE",
+      "classification": [
+        {
+          "position": 1,
+          "code": "LMP2-43",
+          "number": "43",
+          "team": "Inter Europol Competition",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Jeremy Clarke",
+            "Tom Dillmann"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 99.068,
+          "pWin": 0.3165,
+          "pPodium": 0.7422,
+          "pTop6": 0.9758,
+          "pTop10": 1.0,
+          "meanFinish": 2.61,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 5,
+          "confidence": "High",
+          "actualPosition": 6
+        },
+        {
+          "position": 2,
+          "code": "LMP2-99",
+          "number": "99",
+          "team": "AO Racing",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "PJ Hyett",
+            "Dane Cameron"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 99.401,
+          "pWin": 0.183,
+          "pPodium": 0.5397,
+          "pTop6": 0.9143,
+          "pTop10": 1.0,
+          "meanFinish": 3.51,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 6,
+          "confidence": "High",
+          "actualPosition": 8
+        },
+        {
+          "position": 3,
+          "code": "LMP2-04",
+          "number": "04",
+          "team": "Crowdstrike Racing by APR",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "George Kurtz",
+            "Alex Quinn"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 99.452,
+          "pWin": 0.1657,
+          "pPodium": 0.5177,
+          "pTop6": 0.8973,
+          "pTop10": 1.0,
+          "meanFinish": 3.67,
+          "finishRangeLow": 1,
+          "finishRangeHigh": 7,
+          "confidence": "High",
+          "actualPosition": 9
+        },
+        {
+          "position": 4,
+          "code": "LMP2-52",
+          "number": "52",
+          "team": "Bryan Herta Autosport with PR1/Mathiasen",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Misha Goikhberg",
+            "Harry Tincknell"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 99.923,
+          "pWin": 0.0827,
+          "pPodium": 0.2792,
+          "pTop6": 0.6692,
+          "pTop10": 1.0,
+          "meanFinish": 5.18,
+          "finishRangeLow": 2,
+          "finishRangeHigh": 8,
+          "confidence": "High",
+          "actualPosition": 2
+        },
+        {
+          "position": 5,
+          "code": "LMP2-18",
+          "number": "18",
+          "team": "Era Motorsport",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Nick Boulle",
+            "Christian Rasmussen"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 99.913,
+          "pWin": 0.0763,
+          "pPodium": 0.274,
+          "pTop6": 0.6705,
+          "pTop10": 1.0,
+          "meanFinish": 5.19,
+          "finishRangeLow": 2,
+          "finishRangeHigh": 8,
+          "confidence": "High",
+          "actualPosition": 1
+        },
+        {
+          "position": 6,
+          "code": "LMP2-11",
+          "number": "11",
+          "team": "TDS Racing",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Tobi Lutke",
+            "Mathias Beche"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 100.067,
+          "pWin": 0.0552,
+          "pPodium": 0.207,
+          "pTop6": 0.5658,
+          "pTop10": 1.0,
+          "meanFinish": 5.78,
+          "finishRangeLow": 2,
+          "finishRangeHigh": 9,
+          "confidence": "Low",
+          "actualPosition": 7
+        },
+        {
+          "position": 7,
+          "code": "LMP2-22",
+          "number": "22",
+          "team": "United Autosports USA",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Daniel Goldburg",
+            "Paul Di Resta"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 100.169,
+          "pWin": 0.0482,
+          "pPodium": 0.1853,
+          "pTop6": 0.5218,
+          "pTop10": 1.0,
+          "meanFinish": 6.05,
+          "finishRangeLow": 2,
+          "finishRangeHigh": 9,
+          "confidence": "Low",
+          "actualPosition": 3
+        },
+        {
+          "position": 8,
+          "code": "LMP2-8",
+          "number": "8",
+          "team": "Tower Motorsports",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "John Farano",
+            "Tristan Vautier"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 100.542,
+          "pWin": 0.0285,
+          "pPodium": 0.0988,
+          "pTop6": 0.3072,
+          "pTop10": 1.0,
+          "meanFinish": 7.31,
+          "finishRangeLow": 4,
+          "finishRangeHigh": 10,
+          "confidence": "High",
+          "actualPosition": 4
+        },
+        {
+          "position": 9,
+          "code": "LMP2-2",
+          "number": "2",
+          "team": "United Autosports USA",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Phil Fayer",
+            "Mikkel Jensen"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 100.528,
+          "pWin": 0.0298,
+          "pPodium": 0.1027,
+          "pTop6": 0.31,
+          "pTop10": 1.0,
+          "meanFinish": 7.31,
+          "finishRangeLow": 3,
+          "finishRangeHigh": 10,
+          "confidence": "Low",
+          "actualPosition": 10
+        },
+        {
+          "position": 10,
+          "code": "LMP2-73",
+          "number": "73",
+          "team": "Pratt Miller Motorsports",
+          "manufacturer": "Oreca",
+          "vehicle": "ORECA LMP2 07",
+          "drivers": [
+            "Pietro Fittipaldi",
+            "Chris Cumming"
+          ],
+          "teamColor": "#5B6670",
+          "predictedValue": 100.937,
+          "pWin": 0.0142,
+          "pPodium": 0.0535,
+          "pTop6": 0.168,
+          "pTop10": 1.0,
+          "meanFinish": 8.41,
+          "finishRangeLow": 5,
+          "finishRangeHigh": 10,
+          "confidence": "High",
+          "actualPosition": 5
+        }
+      ],
+      "actualResults": [
+        {
+          "position": 1,
+          "code": "LMP2-18"
+        },
+        {
+          "position": 2,
+          "code": "LMP2-52"
+        },
+        {
+          "position": 3,
+          "code": "LMP2-22"
+        },
+        {
+          "position": 4,
+          "code": "LMP2-8"
+        },
+        {
+          "position": 5,
+          "code": "LMP2-73"
+        },
+        {
+          "position": 6,
+          "code": "LMP2-43"
+        },
+        {
+          "position": 7,
+          "code": "LMP2-11"
+        },
+        {
+          "position": 8,
+          "code": "LMP2-99"
+        },
+        {
+          "position": 9,
+          "code": "LMP2-04"
+        },
+        {
+          "position": 10,
+          "code": "LMP2-2"
+        }
+      ],
+      "accuracy": {
+        "n": 10,
+        "mean_position_error": 3.8,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 3,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": -0.06666666666666667,
+        "ndcg_at_5": 0.5750514110634333
+      }
+    },
     {
       "key": "GTDPRO",
       "label": "GTD PRO",
@@ -25,15 +632,15 @@
           ],
           "teamColor": "#B4A46A",
           "predictedValue": 99.402,
-          "pWin": 0.1955,
-          "pPodium": 0.5453,
-          "pTop6": 0.8975,
+          "pWin": 0.203,
+          "pPodium": 0.56,
+          "pTop6": 0.898,
           "pTop10": 1.0,
-          "meanFinish": 3.53,
+          "meanFinish": 3.51,
           "finishRangeLow": 1,
           "finishRangeHigh": 7,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 3
         },
         {
           "position": 2,
@@ -48,15 +655,15 @@
           ],
           "teamColor": "#00274D",
           "predictedValue": 99.454,
-          "pWin": 0.1808,
-          "pPodium": 0.5252,
-          "pTop6": 0.8758,
+          "pWin": 0.1778,
+          "pPodium": 0.5087,
+          "pTop6": 0.878,
           "pTop10": 1.0,
-          "meanFinish": 3.69,
+          "meanFinish": 3.72,
           "finishRangeLow": 1,
           "finishRangeHigh": 7,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 7
         },
         {
           "position": 3,
@@ -71,15 +678,15 @@
           ],
           "teamColor": "#00274D",
           "predictedValue": 99.472,
-          "pWin": 0.192,
-          "pPodium": 0.5068,
-          "pTop6": 0.8763,
+          "pWin": 0.1717,
+          "pPodium": 0.5035,
+          "pTop6": 0.8723,
           "pTop10": 1.0,
-          "meanFinish": 3.72,
+          "meanFinish": 3.76,
           "finishRangeLow": 1,
           "finishRangeHigh": 7,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 1
         },
         {
           "position": 4,
@@ -94,15 +701,15 @@
           ],
           "teamColor": "#C5B358",
           "predictedValue": 99.686,
-          "pWin": 0.12,
-          "pPodium": 0.3718,
-          "pTop6": 0.7723,
+          "pWin": 0.1313,
+          "pPodium": 0.3837,
+          "pTop6": 0.7805,
           "pTop10": 1.0,
-          "meanFinish": 4.51,
+          "meanFinish": 4.44,
           "finishRangeLow": 1,
           "finishRangeHigh": 8,
           "confidence": "Medium",
-          "actualPosition": null
+          "actualPosition": 2
         },
         {
           "position": 5,
@@ -117,15 +724,15 @@
           ],
           "teamColor": "#0166B1",
           "predictedValue": 99.774,
-          "pWin": 0.1037,
-          "pPodium": 0.338,
-          "pTop6": 0.7192,
+          "pWin": 0.1043,
+          "pPodium": 0.3307,
+          "pTop6": 0.7183,
           "pTop10": 1.0,
-          "meanFinish": 4.81,
+          "meanFinish": 4.82,
           "finishRangeLow": 1,
           "finishRangeHigh": 8,
           "confidence": "Medium",
-          "actualPosition": null
+          "actualPosition": 6
         },
         {
           "position": 6,
@@ -135,20 +742,20 @@
           "manufacturer": "Aston Martin",
           "vehicle": "Aston Martin Vantage GT3 Evo",
           "drivers": [
-            "Marco Sorensen",
-            "Valentin Hasse Clot"
+            "Valentin Hasse Clot",
+            "Marco Sorensen"
           ],
           "teamColor": "#00665E",
           "predictedValue": 100.116,
-          "pWin": 0.0615,
-          "pPodium": 0.2055,
-          "pTop6": 0.5128,
+          "pWin": 0.0535,
+          "pPodium": 0.1973,
+          "pTop6": 0.507,
           "pTop10": 1.0,
-          "meanFinish": 5.98,
+          "meanFinish": 6.01,
           "finishRangeLow": 2,
           "finishRangeHigh": 9,
           "confidence": "Medium",
-          "actualPosition": null
+          "actualPosition": 9
         },
         {
           "position": 7,
@@ -163,15 +770,15 @@
           ],
           "teamColor": "#B9975B",
           "predictedValue": 100.122,
-          "pWin": 0.0513,
-          "pPodium": 0.1985,
-          "pTop6": 0.4952,
+          "pWin": 0.0635,
+          "pPodium": 0.1963,
+          "pTop6": 0.4938,
           "pTop10": 1.0,
-          "meanFinish": 6.04,
+          "meanFinish": 6.06,
           "finishRangeLow": 2,
           "finishRangeHigh": 9,
           "confidence": "Medium",
-          "actualPosition": null
+          "actualPosition": 10
         },
         {
           "position": 8,
@@ -186,15 +793,15 @@
           ],
           "teamColor": "#1A1A1A",
           "predictedValue": 100.162,
-          "pWin": 0.0542,
-          "pPodium": 0.1787,
-          "pTop6": 0.4725,
+          "pWin": 0.0575,
+          "pPodium": 0.1848,
+          "pTop6": 0.4753,
           "pTop10": 1.0,
-          "meanFinish": 6.19,
+          "meanFinish": 6.18,
           "finishRangeLow": 2,
           "finishRangeHigh": 9,
           "confidence": "Medium",
-          "actualPosition": null
+          "actualPosition": 5
         },
         {
           "position": 9,
@@ -209,15 +816,15 @@
           ],
           "teamColor": "#C5B358",
           "predictedValue": 100.557,
-          "pWin": 0.0333,
-          "pPodium": 0.0997,
-          "pTop6": 0.2848,
+          "pWin": 0.0297,
+          "pPodium": 0.1022,
+          "pTop6": 0.2828,
           "pTop10": 1.0,
-          "meanFinish": 7.43,
-          "finishRangeLow": 4,
+          "meanFinish": 7.42,
+          "finishRangeLow": 3,
           "finishRangeHigh": 10,
-          "confidence": "High",
-          "actualPosition": null
+          "confidence": "Medium",
+          "actualPosition": 4
         },
         {
           "position": 10,
@@ -233,16 +840,69 @@
           "teamColor": "#FF8000",
           "predictedValue": 101.255,
           "pWin": 0.0077,
-          "pPodium": 0.0305,
-          "pTop6": 0.0935,
+          "pPodium": 0.0328,
+          "pTop6": 0.0938,
           "pTop10": 1.0,
-          "meanFinish": 9.08,
+          "meanFinish": 9.07,
           "finishRangeLow": 7,
           "finishRangeHigh": 10,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 8
         }
-      ]
+      ],
+      "actualResults": [
+        {
+          "position": 1,
+          "code": "GTDP-64"
+        },
+        {
+          "position": 2,
+          "code": "GTDP-4"
+        },
+        {
+          "position": 3,
+          "code": "GTDP-9"
+        },
+        {
+          "position": 4,
+          "code": "GTDP-3"
+        },
+        {
+          "position": 5,
+          "code": "GTDP-14"
+        },
+        {
+          "position": 6,
+          "code": "GTDP-1"
+        },
+        {
+          "position": 7,
+          "code": "GTDP-65"
+        },
+        {
+          "position": 8,
+          "code": "GTDP-59"
+        },
+        {
+          "position": 9,
+          "code": "GTDP-68"
+        },
+        {
+          "position": 10,
+          "code": "GTDP-77"
+        }
+      ],
+      "accuracy": {
+        "n": 10,
+        "mean_position_error": 2.8,
+        "winner_hit": false,
+        "podium_hits": 2,
+        "within_3": 8,
+        "within_5": 10,
+        "exact_matches": 0,
+        "spearman_correlation": 0.4303030303030303,
+        "ndcg_at_5": 0.8332190587021355
+      }
     },
     {
       "key": "GTD",
@@ -262,15 +922,15 @@
           ],
           "teamColor": "#0166B1",
           "predictedValue": 99.095,
-          "pWin": 0.2337,
-          "pPodium": 0.6017,
-          "pTop6": 0.91,
-          "pTop10": 0.9985,
-          "meanFinish": 3.31,
+          "pWin": 0.2353,
+          "pPodium": 0.606,
+          "pTop6": 0.9182,
+          "pTop10": 0.9978,
+          "meanFinish": 3.29,
           "finishRangeLow": 1,
           "finishRangeHigh": 6,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 1
         },
         {
           "position": 2,
@@ -285,15 +945,15 @@
           ],
           "teamColor": "#00A19B",
           "predictedValue": 99.135,
-          "pWin": 0.2168,
-          "pPodium": 0.5787,
-          "pTop6": 0.9047,
-          "pTop10": 0.9977,
-          "meanFinish": 3.42,
+          "pWin": 0.2242,
+          "pPodium": 0.5798,
+          "pTop6": 0.896,
+          "pTop10": 0.9973,
+          "meanFinish": 3.44,
           "finishRangeLow": 1,
-          "finishRangeHigh": 6,
+          "finishRangeHigh": 7,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 2
         },
         {
           "position": 3,
@@ -308,15 +968,15 @@
           ],
           "teamColor": "#00665E",
           "predictedValue": 99.458,
-          "pWin": 0.1205,
-          "pPodium": 0.3887,
-          "pTop6": 0.7468,
-          "pTop10": 0.9832,
-          "meanFinish": 4.66,
+          "pWin": 0.1192,
+          "pPodium": 0.3935,
+          "pTop6": 0.7498,
+          "pTop10": 0.9798,
+          "meanFinish": 4.63,
           "finishRangeLow": 1,
           "finishRangeHigh": 8,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 5
         },
         {
           "position": 4,
@@ -331,15 +991,15 @@
           ],
           "teamColor": "#DA291C",
           "predictedValue": 99.704,
-          "pWin": 0.0845,
-          "pPodium": 0.2775,
-          "pTop6": 0.6098,
-          "pTop10": 0.9485,
-          "meanFinish": 5.61,
+          "pWin": 0.0773,
+          "pPodium": 0.2662,
+          "pTop6": 0.5965,
+          "pTop10": 0.9443,
+          "meanFinish": 5.72,
           "finishRangeLow": 2,
           "finishRangeHigh": 10,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 10
         },
         {
           "position": 5,
@@ -354,15 +1014,15 @@
           ],
           "teamColor": "#1A1A1A",
           "predictedValue": 99.756,
-          "pWin": 0.0825,
-          "pPodium": 0.2577,
-          "pTop6": 0.5752,
-          "pTop10": 0.9305,
-          "meanFinish": 5.86,
+          "pWin": 0.0775,
+          "pPodium": 0.2567,
+          "pTop6": 0.5763,
+          "pTop10": 0.9332,
+          "meanFinish": 5.88,
           "finishRangeLow": 2,
           "finishRangeHigh": 10,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 8
         },
         {
           "position": 6,
@@ -377,15 +1037,15 @@
           ],
           "teamColor": "#C5B358",
           "predictedValue": 99.905,
-          "pWin": 0.0643,
-          "pPodium": 0.2035,
-          "pTop6": 0.4807,
-          "pTop10": 0.8857,
-          "meanFinish": 6.54,
+          "pWin": 0.0625,
+          "pPodium": 0.202,
+          "pTop6": 0.4852,
+          "pTop10": 0.8887,
+          "meanFinish": 6.52,
           "finishRangeLow": 2,
           "finishRangeHigh": 11,
           "confidence": "Low",
-          "actualPosition": null
+          "actualPosition": 3
         },
         {
           "position": 7,
@@ -400,15 +1060,15 @@
           ],
           "teamColor": "#B4A46A",
           "predictedValue": 99.984,
-          "pWin": 0.0488,
-          "pPodium": 0.175,
-          "pTop6": 0.4373,
-          "pTop10": 0.8568,
-          "meanFinish": 6.93,
+          "pWin": 0.0547,
+          "pPodium": 0.1802,
+          "pTop6": 0.4352,
+          "pTop10": 0.8545,
+          "meanFinish": 6.9,
           "finishRangeLow": 2,
           "finishRangeHigh": 11,
           "confidence": "Low",
-          "actualPosition": null
+          "actualPosition": 13
         },
         {
           "position": 8,
@@ -423,15 +1083,15 @@
           ],
           "teamColor": "#DA291C",
           "predictedValue": 100.066,
-          "pWin": 0.0467,
-          "pPodium": 0.16,
-          "pTop6": 0.3837,
-          "pTop10": 0.8162,
-          "meanFinish": 7.3,
+          "pWin": 0.0445,
+          "pPodium": 0.1575,
+          "pTop6": 0.3842,
+          "pTop10": 0.8152,
+          "meanFinish": 7.32,
           "finishRangeLow": 2,
           "finishRangeHigh": 11,
           "confidence": "Low",
-          "actualPosition": null
+          "actualPosition": 11
         },
         {
           "position": 9,
@@ -446,15 +1106,15 @@
           ],
           "teamColor": "#C5B358",
           "predictedValue": 100.341,
-          "pWin": 0.029,
-          "pPodium": 0.1037,
-          "pTop6": 0.258,
-          "pTop10": 0.6665,
-          "meanFinish": 8.5,
-          "finishRangeLow": 3,
+          "pWin": 0.0283,
+          "pPodium": 0.0965,
+          "pTop6": 0.263,
+          "pTop10": 0.6603,
+          "meanFinish": 8.54,
+          "finishRangeLow": 4,
           "finishRangeHigh": 12,
-          "confidence": "Low",
-          "actualPosition": null
+          "confidence": "High",
+          "actualPosition": 12
         },
         {
           "position": 10,
@@ -469,15 +1129,15 @@
           ],
           "teamColor": "#B9975B",
           "predictedValue": 100.37,
-          "pWin": 0.0258,
-          "pPodium": 0.0938,
-          "pTop6": 0.2473,
-          "pTop10": 0.6358,
-          "meanFinish": 8.7,
-          "finishRangeLow": 4,
+          "pWin": 0.0312,
+          "pPodium": 0.1002,
+          "pTop6": 0.251,
+          "pTop10": 0.6497,
+          "meanFinish": 8.61,
+          "finishRangeLow": 3,
           "finishRangeHigh": 12,
-          "confidence": "High",
-          "actualPosition": null
+          "confidence": "Low",
+          "actualPosition": 6
         },
         {
           "position": 11,
@@ -492,15 +1152,15 @@
           ],
           "teamColor": "#C5B358",
           "predictedValue": 100.585,
-          "pWin": 0.0183,
-          "pPodium": 0.0642,
-          "pTop6": 0.1795,
-          "pTop10": 0.5052,
+          "pWin": 0.0185,
+          "pPodium": 0.0658,
+          "pTop6": 0.178,
+          "pTop10": 0.502,
           "meanFinish": 9.55,
           "finishRangeLow": 5,
           "finishRangeHigh": 13,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 4
         },
         {
           "position": 12,
@@ -515,15 +1175,15 @@
           ],
           "teamColor": "#00274D",
           "predictedValue": 100.666,
-          "pWin": 0.0185,
-          "pPodium": 0.0592,
-          "pTop6": 0.1633,
-          "pTop10": 0.4577,
-          "meanFinish": 9.86,
+          "pWin": 0.0163,
+          "pPodium": 0.0583,
+          "pTop6": 0.1583,
+          "pTop10": 0.4558,
+          "meanFinish": 9.87,
           "finishRangeLow": 5,
           "finishRangeHigh": 13,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 7
         },
         {
           "position": 13,
@@ -539,16 +1199,81 @@
           "teamColor": "#00274D",
           "predictedValue": 100.934,
           "pWin": 0.0105,
-          "pPodium": 0.0365,
-          "pTop6": 0.1037,
-          "pTop10": 0.3178,
-          "meanFinish": 10.77,
+          "pPodium": 0.0373,
+          "pTop6": 0.1083,
+          "pTop10": 0.3213,
+          "meanFinish": 10.73,
           "finishRangeLow": 6,
           "finishRangeHigh": 13,
           "confidence": "High",
-          "actualPosition": null
+          "actualPosition": 9
         }
-      ]
+      ],
+      "actualResults": [
+        {
+          "position": 1,
+          "code": "GTD-96"
+        },
+        {
+          "position": 2,
+          "code": "GTD-57"
+        },
+        {
+          "position": 3,
+          "code": "GTD-13"
+        },
+        {
+          "position": 4,
+          "code": "GTD-81"
+        },
+        {
+          "position": 5,
+          "code": "GTD-27"
+        },
+        {
+          "position": 6,
+          "code": "GTD-120"
+        },
+        {
+          "position": 7,
+          "code": "GTD-66"
+        },
+        {
+          "position": 8,
+          "code": "GTD-12"
+        },
+        {
+          "position": 9,
+          "code": "GTD-16"
+        },
+        {
+          "position": 10,
+          "code": "GTD-70"
+        },
+        {
+          "position": 11,
+          "code": "GTD-34"
+        },
+        {
+          "position": 12,
+          "code": "GTD-36"
+        },
+        {
+          "position": 13,
+          "code": "GTD-45"
+        }
+      ],
+      "accuracy": {
+        "n": 13,
+        "mean_position_error": 3.538,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 7,
+        "within_5": 10,
+        "exact_matches": 2,
+        "spearman_correlation": 0.4010989010989011,
+        "ndcg_at_5": 0.8465078298967124
+      }
     }
   ]
 }
