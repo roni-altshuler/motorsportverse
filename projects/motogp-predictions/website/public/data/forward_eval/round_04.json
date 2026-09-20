@@ -3,45 +3,45 @@
   "venueName": "Jerez de la Frontera",
   "sprint": {
     "n": 17,
-    "mean_position_error": 6.0,
+    "mean_position_error": 5.941,
     "winner_hit": true,
     "podium_hits": 1,
     "within_3": 5,
-    "within_5": 8,
+    "within_5": 9,
     "exact_matches": 2,
     "spearman_correlation": 0.40441176470588236,
     "ndcg_at_5": 0.8073982133162929
   },
   "feature": {
     "n": 20,
-    "mean_position_error": 2.85,
+    "mean_position_error": 2.75,
     "winner_hit": false,
     "podium_hits": 2,
     "within_3": 14,
     "within_5": 18,
-    "exact_matches": 2,
-    "spearman_correlation": 0.9293233082706767,
+    "exact_matches": 3,
+    "spearman_correlation": 0.9323308270676691,
     "ndcg_at_5": 0.9727521675964903
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.035208,
-        "logLoss": 0.10489
+        "brier": 0.033635,
+        "logLoss": 0.100968
       },
       "podium": {
-        "brier": 0.142838,
-        "logLoss": 0.636014
+        "brier": 0.141201,
+        "logLoss": 0.670093
       }
     },
     "feature": {
       "win": {
-        "brier": 0.048414,
-        "logLoss": 0.168974
+        "brier": 0.048813,
+        "logLoss": 0.173432
       },
       "podium": {
-        "brier": 0.049002,
-        "logLoss": 0.157566
+        "brier": 0.049799,
+        "logLoss": 0.159981
       }
     }
   },
