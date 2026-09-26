@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Azerbaijan",
   "ensemble_weights": {
-    "gb": 0.6527269841625498,
-    "lstm": 0.0,
-    "xgb": 0.3472730158374501
+    "gb": 0.6160555136293927,
+    "lstm": 0.18,
+    "xgb": 0.20394448637060736
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -33,7 +33,9 @@
     "QualifyingRank",
     "GridAdvantage",
     "CurrentForm",
-    "PreviousPosition",
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
     "SeasonMomentum",
     "PositionTrend",
     "DriverPredictionBias",
@@ -46,35 +48,53 @@
     "TeammateConflictRisk",
     "FieldPositionVolatility",
     "LocalBattleIntensity",
-    "DRSOvertakeProbAhead"
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo",
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits"
   ],
-  "gitSha": "a7a5ae27b0412838fec962568c8d8f94d05e7266",
+  "gitSha": "6e5d07e1e3c388141b310a0657c9c0a623dce273",
   "gpName": "Azerbaijan Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.10734129001988606,
+      "MAE (s)": 0.20008055080549808,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.1345281741167647,
-      "R\u00b2": 0.9693701517270018
+      "RMSE (s)": 0.20290893090716416,
+      "R\u00b2": 0.9667651670552765
     },
     {
-      "MAE (s)": 0.20175640869140637,
+      "MAE (s)": 0.6043837158203132,
       "Model": "XGBoost",
-      "RMSE (s)": 0.21350193472920453,
-      "R\u00b2": 0.9228524782127733
+      "RMSE (s)": 0.6949763891585914,
+      "R\u00b2": 0.610119714487487
     },
     {
-      "MAE (s)": 0.11858317634651598,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.1432606078417685,
-      "R\u00b2": 0.9652646300296637
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.27416156582826545,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.3006774390079354,
+      "R\u00b2": 0.9270218483017519
     }
   ],
-  "pythonVersion": "3.12.3",
+  "pythonVersion": "3.11.16",
   "round": 15,
-  "savedAt": "2026-05-24T11:57:06+00:00",
+  "savedAt": "2026-09-26T09:00:57+00:00",
   "season": 2026
 }
