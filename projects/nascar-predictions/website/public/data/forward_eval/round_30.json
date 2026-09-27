@@ -1,0 +1,63 @@
+{
+  "round": 30,
+  "venueName": "Kansas Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 36,
+    "mean_position_error": 5.889,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 14,
+    "within_5": 22,
+    "exact_matches": 3,
+    "spearman_correlation": 0.7047619047619048,
+    "ndcg_at_5": 0.8270450014633072
+  },
+  "racePostQuali": {
+    "n": 36,
+    "mean_position_error": 6.833,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 17,
+    "within_5": 18,
+    "exact_matches": 3,
+    "spearman_correlation": 0.5801801801801801,
+    "ndcg_at_5": 0.819091456045611
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.028001,
+        "logLoss": 0.10895
+      },
+      "podium": {
+        "brier": 0.053662,
+        "logLoss": 0.181275
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 8.778,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 14,
+      "within_5": 19,
+      "exact_matches": 4,
+      "spearman_correlation": 0.2993564993564994,
+      "ndcg_at_5": 0.6062559430987913
+    },
+    "gridOrder": {
+      "n": 36,
+      "mean_position_error": 7.778,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 16,
+      "within_5": 19,
+      "exact_matches": 1,
+      "spearman_correlation": 0.46074646074646075,
+      "ndcg_at_5": 0.6252148662604403
+    }
+  }
+}
