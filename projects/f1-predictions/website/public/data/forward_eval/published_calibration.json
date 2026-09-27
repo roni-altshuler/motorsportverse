@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T09:03:58Z",
+  "generatedAt": "2026-09-27T01:06:56Z",
   "season": 2026,
   "scores": "published",
   "roundsScored": [
@@ -16,25 +16,26 @@
     11,
     12,
     13,
-    14
+    14,
+    15
   ],
   "note": "Each round is calibrated strictly out-of-sample: the calibrator is fit only on rounds that completed BEFORE it (expanding window), never on its own result. A round with fewer than --min-completed-rounds prior races publishes raw Monte Carlo probabilities (calibration.applied=false) \u2014 publishing raw is strictly better than over-fitting a handful of events. Published probabilities carry a small floor (no driver is ever 0.0) and are renormalized per market (win sums to 1, podium to 3, top6 to 6, top10 to 10). The metrics below score the FINAL PUBLISHED probabilities against actual results, not the raw inputs.",
   "perMarket": {
     "win": {
-      "brierScore": 0.033383,
-      "logLoss": 0.111708,
-      "ece": 0.02702,
-      "mce": 0.254185,
+      "brierScore": 0.031856,
+      "logLoss": 0.107451,
+      "ece": 0.027236,
+      "mce": 0.45017,
       "reliability": [
         {
-          "meanPred": 0.01666260016338507,
+          "meanPred": 0.016660138391693082,
           "empirical": 0.0,
-          "count": 247
+          "count": 267
         },
         {
-          "meanPred": 0.14810183341125877,
-          "empirical": 0.17391304347826086,
-          "count": 46
+          "meanPred": 0.14745232450670026,
+          "empirical": 0.1702127659574468,
+          "count": 47
         },
         {
           "meanPred": 0.24581494120014064,
@@ -45,40 +46,45 @@
           "meanPred": 0.3018644404649755,
           "empirical": 0.5,
           "count": 2
+        },
+        {
+          "meanPred": 0.5498303748770508,
+          "empirical": 1.0,
+          "count": 1
         }
       ],
-      "sampleCount": 305
+      "sampleCount": 327
     },
     "podium": {
-      "brierScore": 0.073973,
-      "logLoss": 0.226409,
-      "ece": 0.03177,
+      "brierScore": 0.073391,
+      "logLoss": 0.224307,
+      "ece": 0.032151,
       "mce": 0.214455,
       "reliability": [
         {
-          "meanPred": 0.019771217288232393,
+          "meanPred": 0.019404701753926737,
           "empirical": 0.0,
-          "count": 195
+          "count": 210
         },
         {
-          "meanPred": 0.15448816915210503,
-          "empirical": 0.12,
-          "count": 25
+          "meanPred": 0.1543071272503058,
+          "empirical": 0.11538461538461539,
+          "count": 26
         },
         {
-          "meanPred": 0.25058901311402665,
-          "empirical": 0.2608695652173913,
-          "count": 23
+          "meanPred": 0.2517674084978576,
+          "empirical": 0.25,
+          "count": 24
         },
         {
-          "meanPred": 0.36229413039255004,
-          "empirical": 0.42857142857142855,
-          "count": 21
+          "meanPred": 0.35950610354564105,
+          "empirical": 0.4583333333333333,
+          "count": 24
         },
         {
-          "meanPred": 0.4453474745843112,
-          "empirical": 0.47619047619047616,
-          "count": 21
+          "meanPred": 0.445890990229799,
+          "empirical": 0.45454545454545453,
+          "count": 22
         },
         {
           "meanPred": 0.5355445297916159,
@@ -89,25 +95,30 @@
           "meanPred": 0.6403574333011004,
           "empirical": 0.625,
           "count": 8
-        }
-      ],
-      "sampleCount": 305
-    },
-    "top6": {
-      "brierScore": 0.100141,
-      "logLoss": 0.31963,
-      "ece": 0.04681,
-      "mce": 0.226146,
-      "reliability": [
-        {
-          "meanPred": 0.03231741698451879,
-          "empirical": 0.014705882352941176,
-          "count": 136
         },
         {
-          "meanPred": 0.14159341884375679,
-          "empirical": 0.025,
-          "count": 40
+          "meanPred": 0.8744738552125274,
+          "empirical": 1.0,
+          "count": 1
+        }
+      ],
+      "sampleCount": 327
+    },
+    "top6": {
+      "brierScore": 0.100995,
+      "logLoss": 0.322495,
+      "ece": 0.045644,
+      "mce": 0.243653,
+      "reliability": [
+        {
+          "meanPred": 0.03209143192213224,
+          "empirical": 0.02040816326530612,
+          "count": 147
+        },
+        {
+          "meanPred": 0.14361566655103294,
+          "empirical": 0.023255813953488372,
+          "count": 43
         },
         {
           "meanPred": 0.22680680858576413,
@@ -115,14 +126,14 @@
           "count": 16
         },
         {
-          "meanPred": 0.34958677393404075,
-          "empirical": 0.4166666666666667,
-          "count": 12
+          "meanPred": 0.34621147096115057,
+          "empirical": 0.38461538461538464,
+          "count": 13
         },
         {
-          "meanPred": 0.4405207529743767,
-          "empirical": 0.6666666666666666,
-          "count": 15
+          "meanPred": 0.443847416318891,
+          "empirical": 0.6875,
+          "count": 16
         },
         {
           "meanPred": 0.5464299736387899,
@@ -130,48 +141,53 @@
           "count": 19
         },
         {
-          "meanPred": 0.6526964067952956,
-          "empirical": 0.75,
-          "count": 20
+          "meanPred": 0.6524725665259404,
+          "empirical": 0.7391304347826086,
+          "count": 23
         },
         {
-          "meanPred": 0.7450045738351605,
-          "empirical": 0.7428571428571429,
-          "count": 35
+          "meanPred": 0.7450124573653806,
+          "empirical": 0.7297297297297297,
+          "count": 37
         },
         {
           "meanPred": 0.8324228725909334,
           "empirical": 0.8333333333333334,
           "count": 12
+        },
+        {
+          "meanPred": 0.9232943751447147,
+          "empirical": 1.0,
+          "count": 1
         }
       ],
-      "sampleCount": 305
+      "sampleCount": 327
     },
     "top10": {
-      "brierScore": 0.15061,
-      "logLoss": 0.463463,
-      "ece": 0.053416,
-      "mce": 0.110403,
+      "brierScore": 0.154541,
+      "logLoss": 0.470807,
+      "ece": 0.048293,
+      "mce": 0.099284,
       "reliability": [
         {
-          "meanPred": 0.04647647366965073,
-          "empirical": 0.03773584905660377,
-          "count": 53
+          "meanPred": 0.046520792537652386,
+          "empirical": 0.034482758620689655,
+          "count": 58
         },
         {
-          "meanPred": 0.1519007103932689,
-          "empirical": 0.10344827586206896,
-          "count": 29
+          "meanPred": 0.15065751488688908,
+          "empirical": 0.1,
+          "count": 30
         },
         {
-          "meanPred": 0.24883466168834237,
-          "empirical": 0.1935483870967742,
-          "count": 31
+          "meanPred": 0.2495251777675763,
+          "empirical": 0.21212121212121213,
+          "count": 33
         },
         {
-          "meanPred": 0.35086128422554924,
-          "empirical": 0.2413793103448276,
-          "count": 29
+          "meanPred": 0.35029393052982843,
+          "empirical": 0.3125,
+          "count": 32
         },
         {
           "meanPred": 0.4521470911461889,
@@ -179,9 +195,9 @@
           "count": 20
         },
         {
-          "meanPred": 0.5562639136702643,
-          "empirical": 0.6666666666666666,
-          "count": 24
+          "meanPred": 0.556889751733125,
+          "empirical": 0.6296296296296297,
+          "count": 27
         },
         {
           "meanPred": 0.6607161947913484,
@@ -189,17 +205,17 @@
           "count": 25
         },
         {
-          "meanPred": 0.7587612772071047,
-          "empirical": 0.7105263157894737,
-          "count": 38
+          "meanPred": 0.7599648503464568,
+          "empirical": 0.6744186046511628,
+          "count": 43
         },
         {
-          "meanPred": 0.846197619543717,
-          "empirical": 0.8571428571428571,
-          "count": 56
+          "meanPred": 0.8466334694646315,
+          "empirical": 0.864406779661017,
+          "count": 59
         }
       ],
-      "sampleCount": 305
+      "sampleCount": 327
     }
   }
 }

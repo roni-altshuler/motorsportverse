@@ -4,7 +4,7 @@
   "season": null,
   "sport": "F1 Predictions",
   "generatedAt": null,
-  "roundsScored": 14,
+  "roundsScored": 15,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Grid order",
     "raceType": "race",
     "lowerIsBetter": true,
-    "nRounds": 14,
+    "nRounds": 15,
     "rounds": [
       1,
       2,
@@ -27,17 +27,18 @@
       11,
       12,
       13,
-      14
+      14,
+      15
     ],
-    "modelMean": 3.427953,
-    "baselineMean": 3.263857,
-    "delta": 0.164096,
-    "improvement": -0.164096,
-    "ciLow": -0.346191,
-    "ciHigh": 0.012176,
-    "pModelBetter": 0.033,
+    "modelMean": 3.508514,
+    "baselineMean": 3.3796,
+    "delta": 0.128914,
+    "improvement": -0.128914,
+    "ciLow": -0.315326,
+    "ciHigh": 0.036342,
+    "pModelBetter": 0.073,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 14 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -46,7 +47,7 @@
       "baselineLabel": "Grid order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 14,
+      "nRounds": 15,
       "rounds": [
         1,
         2,
@@ -61,17 +62,18 @@
         11,
         12,
         13,
-        14
+        14,
+        15
       ],
-      "modelMean": 3.427953,
-      "baselineMean": 3.263857,
-      "delta": 0.164096,
-      "improvement": -0.164096,
-      "ciLow": -0.346191,
-      "ciHigh": 0.012176,
-      "pModelBetter": 0.033,
+      "modelMean": 3.508514,
+      "baselineMean": 3.3796,
+      "delta": 0.128914,
+      "improvement": -0.128914,
+      "ciLow": -0.315326,
+      "ciHigh": 0.036342,
+      "pModelBetter": 0.073,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 14 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -79,7 +81,7 @@
       "baselineLabel": "Last race order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 13,
+      "nRounds": 14,
       "rounds": [
         2,
         3,
@@ -93,17 +95,18 @@
         11,
         12,
         13,
-        14
+        14,
+        15
       ],
-      "modelMean": 3.341991,
-      "baselineMean": 4.743923,
-      "delta": -1.401932,
-      "improvement": 1.401932,
-      "ciLow": 0.969365,
-      "ciHigh": 1.856817,
+      "modelMean": 3.434447,
+      "baselineMean": 4.775786,
+      "delta": -1.341339,
+      "improvement": 1.341339,
+      "ciLow": 0.939611,
+      "ciHigh": 1.778484,
       "pModelBetter": 1.0,
       "verdict": "better",
-      "note": "the model beats last race order over 13 paired rounds"
+      "note": "the model beats last race order over 14 paired rounds"
     },
     {
       "metric": "mean_position_error",
@@ -111,7 +114,7 @@
       "baselineLabel": "Standings order",
       "raceType": "race",
       "lowerIsBetter": true,
-      "nRounds": 13,
+      "nRounds": 14,
       "rounds": [
         2,
         3,
@@ -125,17 +128,18 @@
         11,
         12,
         13,
-        14
+        14,
+        15
       ],
-      "modelMean": 3.341991,
-      "baselineMean": 4.034923,
-      "delta": -0.692932,
-      "improvement": 0.692932,
-      "ciLow": 0.363191,
-      "ciHigh": 1.029858,
-      "pModelBetter": 1.0,
+      "modelMean": 3.434447,
+      "baselineMean": 4.077857,
+      "delta": -0.643411,
+      "improvement": 0.643411,
+      "ciLow": 0.327224,
+      "ciHigh": 0.977555,
+      "pModelBetter": 0.9995,
       "verdict": "better",
-      "note": "the model beats standings order over 13 paired rounds"
+      "note": "the model beats standings order over 14 paired rounds"
     }
   ],
   "calibration": null,
