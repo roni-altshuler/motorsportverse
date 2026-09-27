@@ -1,0 +1,159 @@
+{
+  "round": 6,
+  "season": 2026,
+  "place": "Fuji",
+  "country": "Japan",
+  "event": "Fuji Speedway",
+  "classes": [
+    {
+      "class": "HYPERCAR",
+      "label": "Hypercar",
+      "color": "#3DDC97",
+      "field": 15,
+      "score": {
+        "n": 15,
+        "mean_position_error": 4.0,
+        "winner_hit": false,
+        "podium_hits": 0,
+        "within_3": 5,
+        "within_5": 12,
+        "exact_matches": 2,
+        "spearman_correlation": 0.33214285714285713,
+        "ndcg_at_5": 0.6312018176302898
+      },
+      "markets": {
+        "win": {
+          "brier": 0.065596,
+          "logLoss": 0.250027
+        },
+        "podium": {
+          "brier": 0.16602,
+          "logLoss": 0.482582
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 15,
+            "mean_position_error": 3.733,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 9,
+            "within_5": 12,
+            "exact_matches": 1,
+            "spearman_correlation": 0.39285714285714285,
+            "ndcg_at_5": 0.7730634040167511
+          },
+          "markets": {
+            "win": {
+              "brier": 0.06376,
+              "logLoss": 0.233951
+            },
+            "podium": {
+              "brier": 0.162734,
+              "logLoss": 0.466861
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 15,
+            "mean_position_error": 4.933,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 6,
+            "within_5": 9,
+            "exact_matches": 0,
+            "spearman_correlation": 0.19285714285714287,
+            "ndcg_at_5": 0.6682705107642818
+          },
+          "markets": {
+            "win": {
+              "brier": 0.065909,
+              "logLoss": 0.26124
+            },
+            "podium": {
+              "brier": 0.166005,
+              "logLoss": 0.512104
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "LMGT3",
+      "label": "LMGT3",
+      "color": "#F4A259",
+      "field": 13,
+      "score": {
+        "n": 13,
+        "mean_position_error": 4.308,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 9,
+        "exact_matches": 1,
+        "spearman_correlation": 0.06043956043956044,
+        "ndcg_at_5": 0.695618967157875
+      },
+      "markets": {
+        "win": {
+          "brier": 0.0884,
+          "logLoss": 0.396894
+        },
+        "podium": {
+          "brier": 0.190184,
+          "logLoss": 0.604398
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 4.0,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": 0.11538461538461539,
+            "ndcg_at_5": 0.6556618291373203
+          },
+          "markets": {
+            "win": {
+              "brier": 0.085875,
+              "logLoss": 0.377812
+            },
+            "podium": {
+              "brier": 0.194297,
+              "logLoss": 0.616595
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 13,
+            "mean_position_error": 3.846,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 2,
+            "spearman_correlation": 0.16483516483516483,
+            "ndcg_at_5": 0.6580739763263943
+          },
+          "markets": {
+            "win": {
+              "brier": 0.083021,
+              "logLoss": 0.361346
+            },
+            "podium": {
+              "brier": 0.189479,
+              "logLoss": 0.569508
+            }
+          }
+        }
+      }
+    }
+  ]
+}

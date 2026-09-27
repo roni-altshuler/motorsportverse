@@ -53,6 +53,15 @@
    "country": "United States",
    "venue": "circuit-of-the-americas",
    "completed": true
+  },
+  {
+   "round": 6,
+   "event": "Fuji Speedway",
+   "eventFolder": "06_FUJI SPEEDWAY",
+   "place": "Fuji",
+   "country": "Japan",
+   "venue": "fuji-speedway",
+   "completed": true
   }
  ],
  "completedRounds": [
@@ -60,9 +69,10 @@
   2,
   3,
   4,
-  5
+  5,
+  6
  ],
- "totalRounds": 5,
+ "totalRounds": 6,
  "manufacturers": [
   "Alpine",
   "Aston Martin",
@@ -495,8 +505,7 @@
    "manufacturer": "Cadillac",
    "drivers": [
     "Will STEVENS",
-    "Norman NATO",
-    "Ricky TAYLOR"
+    "Norman NATO"
    ]
   },
   {
@@ -564,7 +573,6 @@
    "vehicle": "Alpine A424",
    "manufacturer": "Alpine",
    "drivers": [
-    "António FÉLIX DA COSTA",
     "Charles MILESI",
     "Ferdinand HABSBURG"
    ]
@@ -578,7 +586,6 @@
    "vehicle": "Alpine A424",
    "manufacturer": "Alpine",
    "drivers": [
-    "Frédéric MAKOWIECKI",
     "Jules GOUNON",
     "Victor MARTINS"
    ]
@@ -2481,12 +2488,12 @@
   "5": {
    "HYPERCAR": [
     {
-     "code": "HYP-51",
-     "number": "51",
+     "code": "HYP-50",
+     "number": "50",
      "position": 1,
      "overall": 1,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
      "points": 25.0
     },
     {
@@ -2495,16 +2502,16 @@
      "position": 2,
      "overall": 2,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
      "points": 18.0
     },
     {
-     "code": "HYP-7",
-     "number": "7",
+     "code": "HYP-35",
+     "number": "35",
      "position": 3,
      "overall": 3,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
      "points": 15.0
     },
     {
@@ -2513,7 +2520,7 @@
      "position": 4,
      "overall": 4,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
      "points": 12.0
     },
     {
@@ -2522,279 +2529,600 @@
      "position": 5,
      "overall": 5,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
      "points": 10.0
-    },
-    {
-     "code": "HYP-20",
-     "number": "20",
-     "position": 6,
-     "overall": 6,
-     "status": "Classified",
-     "laps": 58,
-     "points": 8.0
-    },
-    {
-     "code": "HYP-19",
-     "number": "19",
-     "position": 7,
-     "overall": 7,
-     "status": "Classified",
-     "laps": 58,
-     "points": 6.0
-    },
-    {
-     "code": "HYP-009",
-     "number": "009",
-     "position": 8,
-     "overall": 8,
-     "status": "Classified",
-     "laps": 58,
-     "points": 4.0
-    },
-    {
-     "code": "HYP-94",
-     "number": "94",
-     "position": 9,
-     "overall": 9,
-     "status": "Classified",
-     "laps": 58,
-     "points": 2.0
-    },
-    {
-     "code": "HYP-15",
-     "number": "15",
-     "position": 10,
-     "overall": 10,
-     "status": "Classified",
-     "laps": 58,
-     "points": 1.0
-    },
-    {
-     "code": "HYP-17",
-     "number": "17",
-     "position": 11,
-     "overall": 11,
-     "status": "Classified",
-     "laps": 58,
-     "points": 0.0
-    },
-    {
-     "code": "HYP-50",
-     "number": "50",
-     "position": 12,
-     "overall": 12,
-     "status": "Classified",
-     "laps": 58,
-     "points": 0.0
     },
     {
      "code": "HYP-8",
      "number": "8",
-     "position": 13,
-     "overall": 13,
+     "position": 6,
+     "overall": 6,
      "status": "Classified",
-     "laps": 58,
-     "points": 0.0
+     "laps": 167,
+     "points": 8.0
+    },
+    {
+     "code": "HYP-17",
+     "number": "17",
+     "position": 7,
+     "overall": 7,
+     "status": "Classified",
+     "laps": 167,
+     "points": 6.0
+    },
+    {
+     "code": "HYP-15",
+     "number": "15",
+     "position": 8,
+     "overall": 8,
+     "status": "Classified",
+     "laps": 167,
+     "points": 4.0
     },
     {
      "code": "HYP-12",
      "number": "12",
-     "position": 14,
-     "overall": 14,
+     "position": 9,
+     "overall": 9,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
+     "points": 2.0
+    },
+    {
+     "code": "HYP-94",
+     "number": "94",
+     "position": 10,
+     "overall": 10,
+     "status": "Classified",
+     "laps": 167,
+     "points": 1.0
+    },
+    {
+     "code": "HYP-51",
+     "number": "51",
+     "position": 11,
+     "overall": 11,
+     "status": "Classified",
+     "laps": 167,
      "points": 0.0
     },
     {
-     "code": "HYP-35",
-     "number": "35",
-     "position": 15,
-     "overall": 15,
+     "code": "HYP-20",
+     "number": "20",
+     "position": 12,
+     "overall": 12,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-009",
+     "number": "009",
+     "position": 13,
+     "overall": 13,
+     "status": "Classified",
+     "laps": 167,
      "points": 0.0
     },
     {
      "code": "HYP-83",
      "number": "83",
-     "position": 16,
-     "overall": 16,
+     "position": 14,
+     "overall": 14,
      "status": "Classified",
-     "laps": 58,
+     "laps": 167,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-19",
+     "number": "19",
+     "position": 15,
+     "overall": 15,
+     "status": "Classified",
+     "laps": 167,
      "points": 0.0
     },
     {
      "code": "HYP-93",
      "number": "93",
-     "position": 17,
-     "overall": 17,
+     "position": 16,
+     "overall": 16,
      "status": "Classified",
-     "laps": 57,
+     "laps": 165,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-7",
+     "number": "7",
+     "position": null,
+     "overall": null,
+     "status": "Retired",
+     "laps": 161,
      "points": 0.0
     }
    ],
    "LMGT3": [
     {
-     "code": "GT3-77",
-     "number": "77",
-     "position": 1,
-     "overall": 18,
-     "status": "Classified",
-     "laps": 53,
-     "points": 25.0
-    },
-    {
-     "code": "GT3-79",
-     "number": "79",
-     "position": 2,
-     "overall": 19,
-     "status": "Classified",
-     "laps": 53,
-     "points": 18.0
-    },
-    {
      "code": "GT3-27",
      "number": "27",
-     "position": 3,
-     "overall": 20,
+     "position": 1,
+     "overall": 17,
      "status": "Classified",
-     "laps": 52,
-     "points": 15.0
+     "laps": 154,
+     "points": 25.0
     },
     {
      "code": "GT3-91",
      "number": "91",
-     "position": 4,
-     "overall": 21,
+     "position": 2,
+     "overall": 18,
      "status": "Classified",
-     "laps": 52,
+     "laps": 154,
+     "points": 18.0
+    },
+    {
+     "code": "GT3-23",
+     "number": "23",
+     "position": 3,
+     "overall": 19,
+     "status": "Classified",
+     "laps": 154,
+     "points": 15.0
+    },
+    {
+     "code": "GT3-21",
+     "number": "21",
+     "position": 4,
+     "overall": 20,
+     "status": "Classified",
+     "laps": 154,
      "points": 12.0
     },
     {
-     "code": "GT3-87",
-     "number": "87",
+     "code": "GT3-77",
+     "number": "77",
      "position": 5,
-     "overall": 22,
+     "overall": 21,
      "status": "Classified",
-     "laps": 52,
+     "laps": 154,
      "points": 10.0
     },
     {
      "code": "GT3-61",
      "number": "61",
      "position": 6,
-     "overall": 23,
+     "overall": 22,
      "status": "Classified",
-     "laps": 52,
+     "laps": 154,
      "points": 8.0
     },
     {
-     "code": "GT3-23",
-     "number": "23",
+     "code": "GT3-79",
+     "number": "79",
      "position": 7,
-     "overall": 24,
+     "overall": 23,
      "status": "Classified",
-     "laps": 52,
+     "laps": 154,
      "points": 6.0
-    },
-    {
-     "code": "GT3-21",
-     "number": "21",
-     "position": 8,
-     "overall": 25,
-     "status": "Classified",
-     "laps": 52,
-     "points": 4.0
-    },
-    {
-     "code": "GT3-54",
-     "number": "54",
-     "position": 9,
-     "overall": 26,
-     "status": "Classified",
-     "laps": 52,
-     "points": 2.0
     },
     {
      "code": "GT3-58",
      "number": "58",
-     "position": 10,
-     "overall": 27,
+     "position": 8,
+     "overall": 24,
      "status": "Classified",
-     "laps": 52,
+     "laps": 154,
+     "points": 4.0
+    },
+    {
+     "code": "GT3-88",
+     "number": "88",
+     "position": 9,
+     "overall": 25,
+     "status": "Classified",
+     "laps": 153,
+     "points": 2.0
+    },
+    {
+     "code": "GT3-54",
+     "number": "54",
+     "position": 10,
+     "overall": 26,
+     "status": "Classified",
+     "laps": 153,
      "points": 1.0
     },
     {
-     "code": "GT3-34",
-     "number": "34",
+     "code": "GT3-69",
+     "number": "69",
      "position": 11,
-     "overall": 28,
+     "overall": 27,
      "status": "Classified",
-     "laps": 52,
+     "laps": 153,
      "points": 0.0
     },
     {
      "code": "GT3-33",
      "number": "33",
      "position": 12,
+     "overall": 28,
+     "status": "Classified",
+     "laps": 153,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-87",
+     "number": "87",
+     "position": 13,
      "overall": 29,
      "status": "Classified",
-     "laps": 52,
+     "laps": 152,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-34",
+     "number": "34",
+     "position": 14,
+     "overall": 30,
+     "status": "Classified",
+     "laps": 151,
      "points": 0.0
     },
     {
      "code": "GT3-92",
      "number": "92",
-     "position": 13,
-     "overall": 30,
-     "status": "Classified",
-     "laps": 51,
-     "points": 0.0
-    },
-    {
-     "code": "GT3-88",
-     "number": "88",
-     "position": 14,
+     "position": 15,
      "overall": 31,
      "status": "Classified",
-     "laps": 51,
+     "laps": 147,
      "points": 0.0
     },
     {
-     "code": "GT3-69",
-     "number": "69",
-     "position": 15,
+     "code": "GT3-32",
+     "number": "32",
+     "position": 16,
      "overall": 32,
      "status": "Classified",
-     "laps": 51,
-     "points": 0.0
-    },
-    {
-     "code": "GT3-78",
-     "number": "78",
-     "position": 16,
-     "overall": 33,
-     "status": "Classified",
-     "laps": 51,
+     "laps": 142,
      "points": 0.0
     },
     {
      "code": "GT3-10",
      "number": "10",
      "position": 17,
-     "overall": 34,
+     "overall": 33,
      "status": "Classified",
-     "laps": 51,
+     "laps": 140,
      "points": 0.0
     },
     {
+     "code": "GT3-78",
+     "number": "78",
+     "position": null,
+     "overall": null,
+     "status": "Not classified",
+     "laps": 122,
+     "points": 0.0
+    }
+   ]
+  },
+  "6": {
+   "HYPERCAR": [
+    {
+     "code": "HYP-8",
+     "number": "8",
+     "position": 1,
+     "overall": 1,
+     "status": "Classified",
+     "laps": 203,
+     "points": 25.0
+    },
+    {
+     "code": "HYP-36",
+     "number": "36",
+     "position": 2,
+     "overall": 2,
+     "status": "Classified",
+     "laps": 203,
+     "points": 18.0
+    },
+    {
+     "code": "HYP-15",
+     "number": "15",
+     "position": 3,
+     "overall": 3,
+     "status": "Classified",
+     "laps": 203,
+     "points": 15.0
+    },
+    {
+     "code": "HYP-35",
+     "number": "35",
+     "position": 4,
+     "overall": 4,
+     "status": "Classified",
+     "laps": 203,
+     "points": 12.0
+    },
+    {
+     "code": "HYP-38",
+     "number": "38",
+     "position": 5,
+     "overall": 5,
+     "status": "Classified",
+     "laps": 203,
+     "points": 10.0
+    },
+    {
+     "code": "HYP-94",
+     "number": "94",
+     "position": 6,
+     "overall": 6,
+     "status": "Classified",
+     "laps": 203,
+     "points": 8.0
+    },
+    {
+     "code": "HYP-12",
+     "number": "12",
+     "position": 7,
+     "overall": 7,
+     "status": "Classified",
+     "laps": 203,
+     "points": 6.0
+    },
+    {
+     "code": "HYP-7",
+     "number": "7",
+     "position": 8,
+     "overall": 8,
+     "status": "Classified",
+     "laps": 203,
+     "points": 4.0
+    },
+    {
+     "code": "HYP-009",
+     "number": "009",
+     "position": 9,
+     "overall": 9,
+     "status": "Classified",
+     "laps": 203,
+     "points": 2.0
+    },
+    {
+     "code": "HYP-51",
+     "number": "51",
+     "position": 10,
+     "overall": 10,
+     "status": "Classified",
+     "laps": 203,
+     "points": 1.0
+    },
+    {
+     "code": "HYP-19",
+     "number": "19",
+     "position": 11,
+     "overall": 11,
+     "status": "Classified",
+     "laps": 203,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-83",
+     "number": "83",
+     "position": 12,
+     "overall": 12,
+     "status": "Classified",
+     "laps": 202,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-20",
+     "number": "20",
+     "position": 13,
+     "overall": 13,
+     "status": "Classified",
+     "laps": 202,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-007",
+     "number": "007",
+     "position": 14,
+     "overall": 14,
+     "status": "Classified",
+     "laps": 202,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-17",
+     "number": "17",
+     "position": 15,
+     "overall": 15,
+     "status": "Classified",
+     "laps": 202,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-50",
+     "number": "50",
+     "position": null,
+     "overall": null,
+     "status": "Not classified",
+     "laps": 145,
+     "points": 0.0
+    },
+    {
+     "code": "HYP-93",
+     "number": "93",
+     "position": null,
+     "overall": null,
+     "status": "Retired",
+     "laps": 67,
+     "points": 0.0
+    }
+   ],
+   "LMGT3": [
+    {
      "code": "GT3-32",
      "number": "32",
-     "position": 18,
-     "overall": 35,
+     "position": 1,
+     "overall": 16,
      "status": "Classified",
-     "laps": 43,
+     "laps": 187,
+     "points": 25.0
+    },
+    {
+     "code": "GT3-27",
+     "number": "27",
+     "position": 2,
+     "overall": 17,
+     "status": "Classified",
+     "laps": 187,
+     "points": 18.0
+    },
+    {
+     "code": "GT3-34",
+     "number": "34",
+     "position": 3,
+     "overall": 18,
+     "status": "Classified",
+     "laps": 187,
+     "points": 15.0
+    },
+    {
+     "code": "GT3-54",
+     "number": "54",
+     "position": 4,
+     "overall": 19,
+     "status": "Classified",
+     "laps": 187,
+     "points": 12.0
+    },
+    {
+     "code": "GT3-33",
+     "number": "33",
+     "position": 5,
+     "overall": 20,
+     "status": "Classified",
+     "laps": 187,
+     "points": 10.0
+    },
+    {
+     "code": "GT3-69",
+     "number": "69",
+     "position": 6,
+     "overall": 21,
+     "status": "Classified",
+     "laps": 187,
+     "points": 8.0
+    },
+    {
+     "code": "GT3-91",
+     "number": "91",
+     "position": 7,
+     "overall": 22,
+     "status": "Classified",
+     "laps": 187,
+     "points": 6.0
+    },
+    {
+     "code": "GT3-10",
+     "number": "10",
+     "position": 8,
+     "overall": 23,
+     "status": "Classified",
+     "laps": 187,
+     "points": 4.0
+    },
+    {
+     "code": "GT3-77",
+     "number": "77",
+     "position": 9,
+     "overall": 24,
+     "status": "Classified",
+     "laps": 187,
+     "points": 2.0
+    },
+    {
+     "code": "GT3-78",
+     "number": "78",
+     "position": 10,
+     "overall": 25,
+     "status": "Classified",
+     "laps": 187,
+     "points": 1.0
+    },
+    {
+     "code": "GT3-87",
+     "number": "87",
+     "position": 11,
+     "overall": 26,
+     "status": "Classified",
+     "laps": 185,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-92",
+     "number": "92",
+     "position": 12,
+     "overall": 27,
+     "status": "Classified",
+     "laps": 181,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-79",
+     "number": "79",
+     "position": 13,
+     "overall": 28,
+     "status": "Classified",
+     "laps": 178,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-21",
+     "number": "21",
+     "position": null,
+     "overall": null,
+     "status": "Not classified",
+     "laps": 184,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-58",
+     "number": "58",
+     "position": null,
+     "overall": null,
+     "status": "Not classified",
+     "laps": 160,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-23",
+     "number": "23",
+     "position": null,
+     "overall": null,
+     "status": "Retired",
+     "laps": 37,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-88",
+     "number": "88",
+     "position": null,
+     "overall": null,
+     "status": "Retired",
+     "laps": 1,
+     "points": 0.0
+    },
+    {
+     "code": "GT3-61",
+     "number": "61",
+     "position": null,
+     "overall": null,
+     "status": "Retired",
+     "laps": 1,
      "points": 0.0
     }
    ]

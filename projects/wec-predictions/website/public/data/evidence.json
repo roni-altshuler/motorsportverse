@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "RaceIQ WEC",
-  "generatedAt": "2026-09-06T20:42:22Z",
-  "roundsScored": 5,
+  "generatedAt": "2026-09-27T12:21:30Z",
+  "roundsScored": 6,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,23 +12,24 @@
     "baselineLabel": "Last race order",
     "raceType": "HYPERCAR",
     "lowerIsBetter": true,
-    "nRounds": 5,
+    "nRounds": 6,
     "rounds": [
       1,
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
-    "modelMean": 3.835,
-    "baselineMean": 4.2066,
-    "delta": -0.3716,
-    "improvement": 0.3716,
-    "ciLow": -0.205,
-    "ciHigh": 0.9528,
-    "pModelBetter": 0.8965,
+    "modelMean": 3.831833,
+    "baselineMean": 4.2,
+    "delta": -0.368167,
+    "improvement": 0.368167,
+    "ciLow": -0.137167,
+    "ciHigh": 0.882333,
+    "pModelBetter": 0.921,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -37,23 +38,24 @@
       "baselineLabel": "Last race order",
       "raceType": "HYPERCAR",
       "lowerIsBetter": true,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 3.835,
-      "baselineMean": 4.2066,
-      "delta": -0.3716,
-      "improvement": 0.3716,
-      "ciLow": -0.205,
-      "ciHigh": 0.9528,
-      "pModelBetter": 0.8965,
+      "modelMean": 3.831833,
+      "baselineMean": 4.2,
+      "delta": -0.368167,
+      "improvement": 0.368167,
+      "ciLow": -0.137167,
+      "ciHigh": 0.882333,
+      "pModelBetter": 0.921,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -61,23 +63,24 @@
       "baselineLabel": "Last race order",
       "raceType": "LMGT3",
       "lowerIsBetter": true,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 5.4576,
-      "baselineMean": 5.2582,
-      "delta": 0.1994,
-      "improvement": -0.1994,
-      "ciLow": -0.749,
-      "ciHigh": 0.6172,
-      "pModelBetter": 0.2705,
+      "modelMean": 5.29,
+      "baselineMean": 5.088833,
+      "delta": 0.201167,
+      "improvement": -0.201167,
+      "ciLow": -0.696,
+      "ciHigh": 0.467167,
+      "pModelBetter": 0.2325,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -105,23 +108,24 @@
       "baselineLabel": "Season form order",
       "raceType": "HYPERCAR",
       "lowerIsBetter": true,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 3.835,
-      "baselineMean": 3.7698,
-      "delta": 0.0652,
-      "improvement": -0.0652,
-      "ciLow": -0.492,
-      "ciHigh": 0.4302,
-      "pModelBetter": 0.39,
+      "modelMean": 3.831833,
+      "baselineMean": 3.907333,
+      "delta": -0.0755,
+      "improvement": 0.0755,
+      "ciLow": -0.410167,
+      "ciHigh": 0.6035,
+      "pModelBetter": 0.611,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -129,23 +133,24 @@
       "baselineLabel": "Season form order",
       "raceType": "LMGT3",
       "lowerIsBetter": true,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 5.4576,
-      "baselineMean": 4.8062,
-      "delta": 0.6514,
-      "improvement": -0.6514,
-      "ciLow": -1.0714,
-      "ciHigh": -0.271,
+      "modelMean": 5.29,
+      "baselineMean": 4.707167,
+      "delta": 0.582833,
+      "improvement": -0.582833,
+      "ciLow": -0.969833,
+      "ciHigh": -0.231,
       "pModelBetter": 0.0,
       "verdict": "worse",
-      "note": "the model does NOT beat season form order over 5 paired rounds \u2014 published as measured"
+      "note": "the model does NOT beat season form order over 6 paired rounds \u2014 published as measured"
     },
     {
       "metric": "mean_position_error",
@@ -173,23 +178,24 @@
       "baselineLabel": "Last race order",
       "raceType": "HYPERCAR",
       "lowerIsBetter": false,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 0.697333,
-      "baselineMean": 0.673899,
-      "delta": 0.023434,
-      "improvement": 0.023434,
-      "ciLow": -0.070675,
-      "ciHigh": 0.088205,
-      "pModelBetter": 0.7005,
+      "modelMean": 0.665119,
+      "baselineMean": 0.681088,
+      "delta": -0.015969,
+      "improvement": -0.015969,
+      "ciLow": -0.096034,
+      "ciHigh": 0.061446,
+      "pModelBetter": 0.3425,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -197,23 +203,24 @@
       "baselineLabel": "Last race order",
       "raceType": "LMGT3",
       "lowerIsBetter": false,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 0.538607,
-      "baselineMean": 0.525646,
-      "delta": 0.012961,
-      "improvement": 0.012961,
-      "ciLow": -0.013343,
-      "ciHigh": 0.036761,
-      "pModelBetter": 0.834,
+      "modelMean": 0.555845,
+      "baselineMean": 0.545738,
+      "delta": 0.010107,
+      "improvement": 0.010107,
+      "ciLow": -0.017047,
+      "ciHigh": 0.03447,
+      "pModelBetter": 0.752,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -241,23 +248,24 @@
       "baselineLabel": "Season form order",
       "raceType": "HYPERCAR",
       "lowerIsBetter": false,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 0.697333,
-      "baselineMean": 0.738861,
-      "delta": -0.041528,
-      "improvement": -0.041528,
-      "ciLow": -0.0954,
-      "ciHigh": 0.012344,
-      "pModelBetter": 0.07,
+      "modelMean": 0.665119,
+      "baselineMean": 0.695162,
+      "delta": -0.030043,
+      "improvement": -0.030043,
+      "ciLow": -0.07252,
+      "ciHigh": 0.004109,
+      "pModelBetter": 0.049,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -265,23 +273,24 @@
       "baselineLabel": "Season form order",
       "raceType": "LMGT3",
       "lowerIsBetter": false,
-      "nRounds": 5,
+      "nRounds": 6,
       "rounds": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "modelMean": 0.538607,
-      "baselineMean": 0.558077,
-      "delta": -0.01947,
-      "improvement": -0.01947,
-      "ciLow": -0.079642,
-      "ciHigh": 0.040702,
-      "pModelBetter": 0.2775,
+      "modelMean": 0.555845,
+      "baselineMean": 0.57941,
+      "delta": -0.023565,
+      "improvement": -0.023565,
+      "ciLow": -0.077187,
+      "ciHigh": 0.032049,
+      "pModelBetter": 0.211,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 5 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -306,7 +315,7 @@
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 5,
+    "trainingRounds": 6,
     "dataLimitation": "Calibrated on real WEC results, per class stratum.",
     "note": "probabilities are calibrated on real results"
   },

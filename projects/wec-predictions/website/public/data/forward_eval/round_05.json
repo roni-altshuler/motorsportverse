@@ -9,72 +9,72 @@
       "class": "HYPERCAR",
       "label": "Hypercar",
       "color": "#3DDC97",
-      "field": 17,
+      "field": 16,
       "score": {
-        "n": 17,
-        "mean_position_error": 5.059,
+        "n": 16,
+        "mean_position_error": 4.875,
         "winner_hit": false,
-        "podium_hits": 1,
-        "within_3": 6,
-        "within_5": 10,
-        "exact_matches": 1,
-        "spearman_correlation": 0.24754901960784315,
-        "ndcg_at_5": 0.6863463832828759
+        "podium_hits": 0,
+        "within_3": 5,
+        "within_5": 7,
+        "exact_matches": 2,
+        "spearman_correlation": 0.28823529411764703,
+        "ndcg_at_5": 0.5591921520262719
       },
       "markets": {
         "win": {
-          "brier": 0.045371,
-          "logLoss": 0.157654
+          "brier": 0.059655,
+          "logLoss": 0.224218
         },
         "podium": {
-          "brier": 0.125333,
-          "logLoss": 0.389031
+          "brier": 0.161814,
+          "logLoss": 0.481067
         }
       },
       "baselines": {
         "lastRace": {
           "score": {
-            "n": 17,
-            "mean_position_error": 4.941,
+            "n": 16,
+            "mean_position_error": 5.375,
             "winner_hit": false,
-            "podium_hits": 1,
-            "within_3": 6,
-            "within_5": 11,
+            "podium_hits": 0,
+            "within_3": 5,
+            "within_5": 7,
             "exact_matches": 0,
-            "spearman_correlation": 0.26715686274509803,
-            "ndcg_at_5": 0.5957590910500461
+            "spearman_correlation": 0.15294117647058825,
+            "ndcg_at_5": 0.5397310500522456
           },
           "markets": {
             "win": {
-              "brier": 0.047431,
-              "logLoss": 0.165095
+              "brier": 0.062392,
+              "logLoss": 0.246657
             },
             "podium": {
-              "brier": 0.132895,
-              "logLoss": 0.427436
+              "brier": 0.166856,
+              "logLoss": 0.498327
             }
           }
         },
         "seasonForm": {
           "score": {
-            "n": 17,
-            "mean_position_error": 4.588,
-            "winner_hit": true,
-            "podium_hits": 1,
-            "within_3": 6,
-            "within_5": 12,
+            "n": 16,
+            "mean_position_error": 4.25,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 9,
+            "within_5": 9,
             "exact_matches": 1,
-            "spearman_correlation": 0.41421568627450983,
-            "ndcg_at_5": 0.7933559012634501
+            "spearman_correlation": 0.3558823529411765,
+            "ndcg_at_5": 0.6017510594957075
           },
           "markets": {
             "win": {
-              "brier": 0.045754,
-              "logLoss": 0.159995
+              "brier": 0.058538,
+              "logLoss": 0.216405
             },
             "podium": {
-              "brier": 0.11587,
-              "logLoss": 0.358158
+              "brier": 0.157576,
+              "logLoss": 0.46273
             }
           }
         }
@@ -84,72 +84,72 @@
       "class": "LMGT3",
       "label": "LMGT3",
       "color": "#F4A259",
-      "field": 18,
+      "field": 17,
       "score": {
-        "n": 18,
-        "mean_position_error": 6.444,
+        "n": 17,
+        "mean_position_error": 6.588,
         "winner_hit": false,
         "podium_hits": 0,
-        "within_3": 7,
-        "within_5": 8,
+        "within_3": 5,
+        "within_5": 7,
         "exact_matches": 1,
-        "spearman_correlation": -0.15583075335397317,
-        "ndcg_at_5": 0.4324620522442595
+        "spearman_correlation": -0.19852941176470587,
+        "ndcg_at_5": 0.37887835868650327
       },
       "markets": {
         "win": {
-          "brier": 0.05896,
-          "logLoss": 0.28173
+          "brier": 0.060674,
+          "logLoss": 0.258326
         },
         "podium": {
-          "brier": 0.190032,
-          "logLoss": 0.652914
+          "brier": 0.171534,
+          "logLoss": 0.563117
         }
       },
       "baselines": {
         "lastRace": {
           "score": {
-            "n": 18,
-            "mean_position_error": 6.111,
+            "n": 17,
+            "mean_position_error": 6.353,
             "winner_hit": false,
             "podium_hits": 0,
-            "within_3": 7,
-            "within_5": 8,
-            "exact_matches": 2,
-            "spearman_correlation": -0.08152734778121776,
-            "ndcg_at_5": 0.41551468288982024
+            "within_3": 4,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": -0.18872549019607843,
+            "ndcg_at_5": 0.40605454635635213
           },
           "markets": {
             "win": {
-              "brier": 0.056861,
-              "logLoss": 0.242387
+              "brier": 0.062209,
+              "logLoss": 0.289917
             },
             "podium": {
-              "brier": 0.185677,
-              "logLoss": 0.624307
+              "brier": 0.178712,
+              "logLoss": 0.612662
             }
           }
         },
         "seasonForm": {
           "score": {
-            "n": 18,
-            "mean_position_error": 6.222,
+            "n": 17,
+            "mean_position_error": 6.588,
             "winner_hit": false,
-            "podium_hits": 0,
-            "within_3": 7,
-            "within_5": 9,
-            "exact_matches": 1,
-            "spearman_correlation": -0.15170278637770898,
-            "ndcg_at_5": 0.410365150508767
+            "podium_hits": 1,
+            "within_3": 5,
+            "within_5": 7,
+            "exact_matches": 0,
+            "spearman_correlation": -0.12990196078431374,
+            "ndcg_at_5": 0.4383654117347633
           },
           "markets": {
             "win": {
-              "brier": 0.058842,
-              "logLoss": 0.296539
+              "brier": 0.057385,
+              "logLoss": 0.227057
             },
             "podium": {
-              "brier": 0.182114,
-              "logLoss": 0.64865
+              "brier": 0.154261,
+              "logLoss": 0.492228
             }
           }
         }
