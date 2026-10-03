@@ -7,8 +7,17 @@
 </div>
 
 Qualifying, race, and championship forecasts for the **FIA Formula 2**
-championship — the first fully operational expansion in the
+championship - the first fully operational expansion in the
 [MotorsportVerse](../../README.md) ecosystem.
+
+The forward evaluator reports retrospective walk-forward replays. Its position
+metrics score classified finishers; win/podium probability scores include every
+reported entrant, with DNF/DNS as negative outcomes and absent results excluded.
+Each probability score includes its denominator. Older committed metrics use
+the previous finishers-only scope and require regeneration before comparison;
+this change does not report a new benchmark or freeze historical exports.
+Run `python -m pytest tests/test_forward_eval_markets.py -q` with the shared
+packages and `src` on `PYTHONPATH` for the offline regression checks.
 
 > **Maturity: experimental.** Full pipeline + website run end-to-end on the
 > shared core. Results currently come from a reproducible latent-pace model

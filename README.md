@@ -18,6 +18,9 @@ One repository. One catalog. Many sport-specific prediction projects on shared M
 
 ## Vision
 
+The [October quality roadmap](docs/QUALITY_ROADMAP_2026-10.md) records the next
+model-evaluation and race-weekend product priorities.
+
 MotorsportVerse is a single home for predicting motorsport outcomes with AI and
 machine learning. The goal is one coherent "universe" of projects — Formula 1,
 Formula 2, and every series after them — that all forecast race results, then
