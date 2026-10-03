@@ -49,10 +49,31 @@ export default function AccuracyPage() {
         Model accuracy
       </h1>
       <p className="mt-3 text-[var(--ink-muted)]">
-        How the F2 model&rsquo;s leakage-safe pre-race forecasts have scored against the actual
+        How the F2 model&rsquo;s evaluation forecasts have scored against the actual
         results, over {acc?.roundsScored ?? data.completedRounds} completed rounds of {data.season}.
-        Every number is scored finishers-only, using only data available before each race.
       </p>
+
+      <section aria-label="Scoring scope" className="mt-6 rounded-[var(--radius-lg)] border border-[var(--hairline)] bg-[var(--surface)] p-5">
+        <dl className="grid gap-4 text-sm sm:grid-cols-2">
+          <div>
+            <dt className="mono-label">Position metrics</dt>
+            <dd className="mt-1 text-[var(--ink-muted)]">
+              {season?.finishersOnly === false ? "Scope not recorded" : "Ranked finishers only"}
+            </dd>
+          </div>
+          <div>
+            <dt className="mono-label">Win / podium probabilities</dt>
+            <dd className="mt-1 text-[var(--ink-muted)]">
+              {season?.marketScope ?? (season?.finishersOnly ? "Finishers only (legacy artifact)" : "Scope not recorded")}
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-4 border-t border-[var(--hairline)] pt-4 text-sm text-[var(--ink-muted)]">
+          {season?.basis === "walk_forward_replay"
+            ? "Retrospective walk-forward replay, using prior-round data. This is not an immutable record of forecasts published before each race."
+            : "Evaluation basis and publication timing are not recorded in this artifact."}
+        </p>
+      </section>
 
       <div className="mt-6">
         <ShareButton
@@ -87,7 +108,7 @@ export default function AccuracyPage() {
       {rounds.length > 0 && (
         <section className="mt-12">
           <h2 className="mb-4 text-xl font-semibold text-[var(--ink)]">Per round (feature race)</h2>
-          <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--hairline)]">
+          <div role="region" aria-label="Feature race score table" tabIndex={0} className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--hairline)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--surface-2)] text-left text-xs uppercase tracking-wider text-[var(--ink-dim)]">
@@ -96,12 +117,12 @@ export default function AccuracyPage() {
                   <th className="px-4 py-3 font-medium">Podium hits</th>
                   <th className="px-4 py-3 font-medium">Mean error</th>
                   <th className="hidden px-4 py-3 font-medium sm:table-cell">NDCG@5</th>
-                  <th className="hidden px-4 py-3 font-medium sm:table-cell">Win Brier</th>
+                  <th className="px-4 py-3 font-medium">Win Brier</th>
                 </tr>
               </thead>
               <tbody>
                 {rounds.map((r) => {
-                  const winBrier = r.markets?.feature?.win?.brier;
+                  const winScore = r.markets?.feature?.win;
                   return (
                     <tr key={r.round} className="border-t border-[var(--hairline)] bg-[var(--surface)]">
                       <td className="px-4 py-3 text-[var(--ink)]">
@@ -116,13 +137,19 @@ export default function AccuracyPage() {
                         {r.feature.podium_hits ?? 0}/3
                       </td>
                       <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
-                        {r.feature.mean_position_error ?? "—"}
+                        {r.feature.mean_position_error ?? "-"}
+                        <span className="block whitespace-nowrap text-xs text-[var(--ink-dim)]">n={r.feature.n} ranked</span>
                       </td>
                       <td className="hidden px-4 py-3 tabular-nums text-[var(--ink-muted)] sm:table-cell">
                         {r.feature.ndcg_at_5 != null ? r.feature.ndcg_at_5.toFixed(2) : "—"}
                       </td>
-                      <td className="hidden px-4 py-3 tabular-nums text-[var(--ink-muted)] sm:table-cell">
-                        {fmt(winBrier, 4)}
+                      <td className="px-4 py-3 tabular-nums text-[var(--ink-muted)]">
+                        {fmt(winScore?.brier, 4)}
+                        {winScore && (
+                          <span className="block whitespace-nowrap text-xs text-[var(--ink-dim)]">
+                            {winScore.n != null ? `n=${winScore.n} entrants` : winScore.brier != null ? "Sample count not recorded" : "Not scored"}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   );
@@ -131,8 +158,11 @@ export default function AccuracyPage() {
             </table>
           </div>
           <p className="mt-2 text-xs text-[var(--ink-dim)]">
-            Win Brier scores the model&rsquo;s win probabilities against who actually won — lower is
+            Win Brier scores the model&rsquo;s win probabilities against who actually won - lower is
             sharper and better calibrated.
+          </p>
+          <p className="mt-1 text-xs text-[var(--ink-muted)] sm:hidden">
+            Scroll the table horizontally to see probability scores.
           </p>
         </section>
       )}

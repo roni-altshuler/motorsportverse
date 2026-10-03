@@ -228,6 +228,8 @@ export interface CalibrationSummary {
 // --------------------------------------------------------------------------- //
 /** Per-market probability quality (Brier + log-loss) for one scored race. */
 export interface MarketScore {
+  /** Scored forecast/result intersection; absent from legacy artifacts. */
+  n?: number;
   brier: number | null;
   logLoss: number | null;
 }
@@ -275,6 +277,10 @@ export interface ForwardEvalSeason {
   /** Additive: walk-forward headline block (F1 parity), race type → summary. */
   generatedAt?: string;
   finishersOnly?: boolean;
+  /** Probability-market population, separate from positional finishersOnly. */
+  marketScope?: string;
+  /** Replay metadata is not evidence of an immutable pre-race publication. */
+  basis?: string;
   walkForward?: Record<string, WalkForwardRaceType>;
 }
 

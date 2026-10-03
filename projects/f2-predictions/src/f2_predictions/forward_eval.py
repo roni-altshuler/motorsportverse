@@ -5,10 +5,12 @@
 data (the same leakage-safe forecast the website shows pre-race) and score it
 against the actual classification, per race-type and pooled. The metrics are
 the shared :func:`motorsport_core.eval.score_round` bundle, so F2's accuracy
-page renders with the same components as F1's. Scoring is **finishers-only**:
-the actual classifications carry classified finishers exclusively (retirements
-are unranked), so every metric compares the prediction to drivers who took the
-flag — the same convention as the F1 flagship's headline accuracy.
+page renders with the same components as F1's. Position metrics are
+**finishers-only** because retirements have no finishing rank. Win/podium
+probability metrics include reported DNF/DNS entrants as negative outcomes;
+drivers absent from the results are excluded rather than assigned an outcome.
+These forecasts are retrospective walk-forward replays, not an immutable
+record of probabilities published before the race.
 
 The season is scored by walking forward one completed round at a time and
 aggregating the per-round metrics via
@@ -58,18 +60,20 @@ def _score_race(fc_race, actual: dict[str, int]) -> dict:
     return core_eval.score_round(predicted, actual)
 
 
-def _market_scores(fc_race, actual: dict[str, int]) -> dict:
+def _market_scores(fc_race, actual: dict[str, int | None]) -> dict:
     """Per-market probability quality (Brier + log-loss) for one race.
 
     Scores the model's win and podium probabilities against the realised binary
-    outcomes over the classified finishers — the per-market headline metrics the
-    F1 flagship reports alongside positional accuracy.
+    outcomes over all reported entrants, including unranked DNF/DNS results.
+    A missing winner is an incomplete result, so no probability score is emitted.
     """
     if not actual:
         return {}
-    winner = min(actual, key=actual.get)
+    winner = next((c for c, p in actual.items() if p == 1), None)
+    if winner is None:
+        return {}
     win_outcomes = {c: 1.0 if c == winner else 0.0 for c in actual}
-    podium = {c for c, p in actual.items() if p <= 3}
+    podium = {c for c, p in actual.items() if p is not None and p <= 3}
     podium_outcomes = {c: 1.0 if c in podium else 0.0 for c in actual}
     out: dict[str, dict] = {}
     for market, probs, outcomes in (
@@ -79,6 +83,7 @@ def _market_scores(fc_race, actual: dict[str, int]) -> dict:
         brier = core_eval.brier_score(probs, outcomes)
         ll = core_eval.log_loss(probs, outcomes)
         out[market] = {
+            "n": len(set(probs) & set(outcomes)),
             "brier": round(brier, 6) if brier is not None else None,
             "logLoss": round(ll, 6) if ll is not None else None,
         }
@@ -86,9 +91,16 @@ def _market_scores(fc_race, actual: dict[str, int]) -> dict:
 
 
 def _actuals(source: F2DataSource, year: int, rnd: int) -> dict[str, dict[str, int]]:
+    return {
+        rt: {c: p for c, p in rows.items() if p is not None}
+        for rt, rows in _reported_actuals(source, year, rnd).items()
+    }
+
+
+def _reported_actuals(source: F2DataSource, year: int, rnd: int) -> dict[str, dict[str, int | None]]:
     races = source.race_results_for_round(year, rnd)
     return {
-        rt: {r.competitor: r.position for r in races[rt] if r.position is not None}
+        rt: {r.competitor: r.position for r in races[rt]}
         for rt in RACE_TYPES
     }
 
@@ -107,7 +119,9 @@ def evaluate_season(year: int) -> list[dict]:
     prev_actual: dict[str, dict[str, int]] | None = None
     for rnd in range(1, config.COMPLETED_ROUNDS + 1):
         fc = pipeline.forecast_round(source, year, rnd)
-        actual = _actuals(source, year, rnd)
+        reported = _reported_actuals(source, year, rnd)
+        actual = {rt: {c: p for c, p in rows.items() if p is not None}
+                  for rt, rows in reported.items()}
         if not actual[model.FEATURE]:
             continue
         baselines: dict[str, dict | None] = {rt: None for rt in RACE_TYPES}
@@ -123,7 +137,7 @@ def evaluate_season(year: int) -> list[dict]:
                 "sprint": _score_race(fc.sprint, actual[model.SPRINT]),
                 "feature": _score_race(fc.feature, actual[model.FEATURE]),
                 "markets": {
-                    rt: _market_scores(getattr(fc, rt), actual[rt]) for rt in RACE_TYPES
+                    rt: _market_scores(getattr(fc, rt), reported[rt]) for rt in RACE_TYPES
                 },
                 "baselines": baselines,
             }
@@ -155,6 +169,8 @@ def _round_metric_bundle(r: dict, race_type: str) -> dict[str, float]:
         out[key] = float(val)
     for market, metrics in (r.get("markets", {}).get(race_type) or {}).items():
         for name, val in (metrics or {}).items():
+            if name == "n":
+                continue
             if isinstance(val, (int, float)) and not isinstance(val, bool):
                 out[f"{market}{name[0].upper()}{name[1:]}"] = float(val)
     return out
@@ -222,6 +238,8 @@ def _season_summary(year: int, rounds: list[dict]) -> dict:
         # Additive: the walk-forward headline block (F1 parity).
         "generatedAt": _utc_now_iso(),
         "finishersOnly": True,
+        "marketScope": "reported entrants including DNF/DNS; absent results excluded",
+        "basis": "walk_forward_replay",
         "walkForward": build_walk_forward_summary(rounds),
     }
 
