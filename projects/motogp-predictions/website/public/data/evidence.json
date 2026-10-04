@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "RaceIQ MotoGP",
-  "generatedAt": "2026-10-03T22:59:26Z",
-  "roundsScored": 15,
+  "generatedAt": "2026-10-04T12:24:11Z",
+  "roundsScored": 16,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Grid order",
     "raceType": "feature",
     "lowerIsBetter": true,
-    "nRounds": 15,
+    "nRounds": 16,
     "rounds": [
       1,
       2,
@@ -28,17 +28,18 @@
       12,
       13,
       14,
-      15
+      15,
+      16
     ],
-    "modelMean": 3.8434,
-    "baselineMean": 3.740733,
-    "delta": 0.102667,
-    "improvement": -0.102667,
-    "ciLow": -0.304533,
-    "ciHigh": 0.1002,
-    "pModelBetter": 0.172,
+    "modelMean": 3.8415,
+    "baselineMean": 3.772562,
+    "delta": 0.068938,
+    "improvement": -0.068938,
+    "ciLow": -0.259375,
+    "ciHigh": 0.106375,
+    "pModelBetter": 0.237,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 16 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -47,7 +48,7 @@
       "baselineLabel": "Grid order",
       "raceType": "feature",
       "lowerIsBetter": true,
-      "nRounds": 15,
+      "nRounds": 16,
       "rounds": [
         1,
         2,
@@ -63,17 +64,18 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 3.8434,
-      "baselineMean": 3.740733,
-      "delta": 0.102667,
-      "improvement": -0.102667,
-      "ciLow": -0.304533,
-      "ciHigh": 0.1002,
-      "pModelBetter": 0.172,
+      "modelMean": 3.8415,
+      "baselineMean": 3.772562,
+      "delta": 0.068938,
+      "improvement": -0.068938,
+      "ciLow": -0.259375,
+      "ciHigh": 0.106375,
+      "pModelBetter": 0.237,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 16 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -81,7 +83,7 @@
       "baselineLabel": "Grid order",
       "raceType": "sprint",
       "lowerIsBetter": true,
-      "nRounds": 15,
+      "nRounds": 16,
       "rounds": [
         1,
         2,
@@ -97,17 +99,18 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 3.468,
-      "baselineMean": 3.249867,
-      "delta": 0.218133,
-      "improvement": -0.218133,
-      "ciLow": -0.474333,
-      "ciHigh": 0.0556,
-      "pModelBetter": 0.0545,
-      "verdict": "inconclusive",
-      "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
+      "modelMean": 3.534375,
+      "baselineMean": 3.272437,
+      "delta": 0.261937,
+      "improvement": -0.261937,
+      "ciLow": -0.480375,
+      "ciHigh": -0.037688,
+      "pModelBetter": 0.0145,
+      "verdict": "worse",
+      "note": "the model does NOT beat grid order over 16 paired rounds \u2014 published as measured"
     },
     {
       "metric": "mean_position_error",
@@ -115,7 +118,7 @@
       "baselineLabel": "lastStandings",
       "raceType": "feature",
       "lowerIsBetter": true,
-      "nRounds": 14,
+      "nRounds": 15,
       "rounds": [
         2,
         3,
@@ -130,17 +133,18 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 3.877357,
-      "baselineMean": 4.186857,
-      "delta": -0.3095,
-      "improvement": 0.3095,
-      "ciLow": 0.047929,
-      "ciHigh": 0.566357,
-      "pModelBetter": 0.9905,
-      "verdict": "better",
-      "note": "the model beats laststandings over 14 paired rounds"
+      "modelMean": 3.887067,
+      "baselineMean": 4.1042,
+      "delta": -0.217133,
+      "improvement": 0.217133,
+      "ciLow": -0.082667,
+      "ciHigh": 0.498867,
+      "pModelBetter": 0.9235,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -148,7 +152,7 @@
       "baselineLabel": "lastStandings",
       "raceType": "sprint",
       "lowerIsBetter": true,
-      "nRounds": 14,
+      "nRounds": 15,
       "rounds": [
         2,
         3,
@@ -163,17 +167,18 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 3.460643,
-      "baselineMean": 4.114143,
-      "delta": -0.6535,
-      "improvement": 0.6535,
-      "ciLow": 0.201929,
-      "ciHigh": 1.064571,
-      "pModelBetter": 0.999,
+      "modelMean": 3.5414,
+      "baselineMean": 4.130067,
+      "delta": -0.588667,
+      "improvement": 0.588667,
+      "ciLow": 0.183267,
+      "ciHigh": 1.0002,
+      "pModelBetter": 0.9985,
       "verdict": "better",
-      "note": "the model beats laststandings over 14 paired rounds"
+      "note": "the model beats laststandings over 15 paired rounds"
     },
     {
       "metric": "ndcg_at_5",
@@ -181,7 +186,7 @@
       "baselineLabel": "Grid order",
       "raceType": "feature",
       "lowerIsBetter": false,
-      "nRounds": 15,
+      "nRounds": 16,
       "rounds": [
         1,
         2,
@@ -197,17 +202,18 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 0.916986,
-      "baselineMean": 0.891993,
-      "delta": 0.024994,
-      "improvement": 0.024994,
-      "ciLow": 0.001241,
-      "ciHigh": 0.050562,
-      "pModelBetter": 0.9815,
+      "modelMean": 0.914163,
+      "baselineMean": 0.890296,
+      "delta": 0.023867,
+      "improvement": 0.023867,
+      "ciLow": 0.003083,
+      "ciHigh": 0.04594,
+      "pModelBetter": 0.9915,
       "verdict": "better",
-      "note": "the model beats grid order over 15 paired rounds"
+      "note": "the model beats grid order over 16 paired rounds"
     },
     {
       "metric": "ndcg_at_5",
@@ -215,7 +221,7 @@
       "baselineLabel": "Grid order",
       "raceType": "sprint",
       "lowerIsBetter": false,
-      "nRounds": 15,
+      "nRounds": 16,
       "rounds": [
         1,
         2,
@@ -231,15 +237,50 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 0.909185,
-      "baselineMean": 0.906905,
-      "delta": 0.00228,
-      "improvement": 0.00228,
-      "ciLow": -0.013827,
-      "ciHigh": 0.015734,
-      "pModelBetter": 0.6205,
+      "modelMean": 0.906665,
+      "baselineMean": 0.907207,
+      "delta": -0.000542,
+      "improvement": -0.000542,
+      "ciLow": -0.014122,
+      "ciHigh": 0.012727,
+      "pModelBetter": 0.483,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 16 paired rounds; no difference has been demonstrated"
+    },
+    {
+      "metric": "ndcg_at_5",
+      "baseline": "lastStandings",
+      "baselineLabel": "lastStandings",
+      "raceType": "feature",
+      "lowerIsBetter": false,
+      "nRounds": 15,
+      "rounds": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "modelMean": 0.91019,
+      "baselineMean": 0.884015,
+      "delta": 0.026176,
+      "improvement": 0.026176,
+      "ciLow": -0.027012,
+      "ciHigh": 0.072406,
+      "pModelBetter": 0.8465,
       "verdict": "inconclusive",
       "note": "the interval straddles zero over 15 paired rounds; no difference has been demonstrated"
     },
@@ -247,42 +288,9 @@
       "metric": "ndcg_at_5",
       "baseline": "lastStandings",
       "baselineLabel": "lastStandings",
-      "raceType": "feature",
-      "lowerIsBetter": false,
-      "nRounds": 14,
-      "rounds": [
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15
-      ],
-      "modelMean": 0.915206,
-      "baselineMean": 0.885562,
-      "delta": 0.029643,
-      "improvement": 0.029643,
-      "ciLow": -0.030609,
-      "ciHigh": 0.08097,
-      "pModelBetter": 0.87,
-      "verdict": "inconclusive",
-      "note": "the interval straddles zero over 14 paired rounds; no difference has been demonstrated"
-    },
-    {
-      "metric": "ndcg_at_5",
-      "baseline": "lastStandings",
-      "baselineLabel": "lastStandings",
       "raceType": "sprint",
       "lowerIsBetter": false,
-      "nRounds": 14,
+      "nRounds": 15,
       "rounds": [
         2,
         3,
@@ -297,27 +305,29 @@
         12,
         13,
         14,
-        15
+        15,
+        16
       ],
-      "modelMean": 0.91162,
-      "baselineMean": 0.838796,
-      "delta": 0.072824,
-      "improvement": 0.072824,
-      "ciLow": 0.01938,
-      "ciHigh": 0.128252,
-      "pModelBetter": 0.9965,
+      "modelMean": 0.90877,
+      "baselineMean": 0.84258,
+      "delta": 0.066191,
+      "improvement": 0.066191,
+      "ciLow": 0.016779,
+      "ciHigh": 0.115735,
+      "pModelBetter": 0.9975,
       "verdict": "better",
-      "note": "the model beats laststandings over 14 paired rounds"
+      "note": "the model beats laststandings over 15 paired rounds"
     }
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 15,
+    "trainingRounds": 16,
     "dataLimitation": "Calibrated on real MotoGP results (Sprint + Grand Prix, per race-type stratum).",
     "note": "probabilities are calibrated on real results"
   },
   "promotion": null,
   "caveats": [
+    "The model does not beat grid order on every measured comparison. That is stated rather than hidden.",
     "Some comparisons straddle zero: a difference has not been demonstrated, in either direction.",
     "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
   ]

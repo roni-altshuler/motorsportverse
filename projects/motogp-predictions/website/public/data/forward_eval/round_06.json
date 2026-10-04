@@ -3,45 +3,45 @@
   "venueName": "Barcelona",
   "sprint": {
     "n": 18,
-    "mean_position_error": 3.5,
+    "mean_position_error": 3.611,
     "winner_hit": false,
     "podium_hits": 2,
     "within_3": 11,
     "within_5": 13,
-    "exact_matches": 0,
-    "spearman_correlation": 0.936016511867905,
+    "exact_matches": 1,
+    "spearman_correlation": 0.8947368421052632,
     "ndcg_at_5": 0.969610297111251
   },
   "feature": {
     "n": 17,
-    "mean_position_error": 7.294,
+    "mean_position_error": 7.118,
     "winner_hit": false,
     "podium_hits": 0,
-    "within_3": 3,
-    "within_5": 5,
+    "within_3": 4,
+    "within_5": 6,
     "exact_matches": 0,
-    "spearman_correlation": 0.37254901960784315,
+    "spearman_correlation": 0.34558823529411764,
     "ndcg_at_5": 0.5124422031994379
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.040915,
-        "logLoss": 0.128635
+        "brier": 0.041778,
+        "logLoss": 0.131751
       },
       "podium": {
-        "brier": 0.061553,
-        "logLoss": 0.19731
+        "brier": 0.059794,
+        "logLoss": 0.192051
       }
     },
     "feature": {
       "win": {
-        "brier": 0.052536,
-        "logLoss": 0.175483
+        "brier": 0.051118,
+        "logLoss": 0.164597
       },
       "podium": {
-        "brier": 0.163001,
-        "logLoss": 0.680955
+        "brier": 0.162216,
+        "logLoss": 0.676344
       }
     }
   },

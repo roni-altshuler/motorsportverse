@@ -3,7 +3,7 @@
   "venueName": "Austin",
   "sprint": {
     "n": 17,
-    "mean_position_error": 5.765,
+    "mean_position_error": 5.706,
     "winner_hit": false,
     "podium_hits": 0,
     "within_3": 3,
@@ -14,11 +14,11 @@
   },
   "feature": {
     "n": 18,
-    "mean_position_error": 3.0,
+    "mean_position_error": 2.944,
     "winner_hit": false,
     "podium_hits": 2,
     "within_3": 9,
-    "within_5": 16,
+    "within_5": 17,
     "exact_matches": 2,
     "spearman_correlation": 0.8926728586171311,
     "ndcg_at_5": 0.896305482673942
@@ -26,22 +26,22 @@
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.054849,
-        "logLoss": 0.198583
+        "brier": 0.055187,
+        "logLoss": 0.202671
       },
       "podium": {
-        "brier": 0.15106,
-        "logLoss": 0.550598
+        "brier": 0.152973,
+        "logLoss": 0.555544
       }
     },
     "feature": {
       "win": {
-        "brier": 0.03362,
-        "logLoss": 0.105148
+        "brier": 0.034205,
+        "logLoss": 0.106297
       },
       "podium": {
-        "brier": 0.108824,
-        "logLoss": 0.306068
+        "brier": 0.107529,
+        "logLoss": 0.305126
       }
     }
   },

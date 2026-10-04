@@ -3,7 +3,7 @@
   "venueName": "Brno",
   "sprint": {
     "n": 15,
-    "mean_position_error": 4.067,
+    "mean_position_error": 4.0,
     "winner_hit": false,
     "podium_hits": 1,
     "within_3": 9,
@@ -19,29 +19,29 @@
     "podium_hits": 1,
     "within_3": 8,
     "within_5": 12,
-    "exact_matches": 0,
-    "spearman_correlation": 0.8602941176470589,
+    "exact_matches": 1,
+    "spearman_correlation": 0.8382352941176471,
     "ndcg_at_5": 0.9591725451806213
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.05447,
-        "logLoss": 0.171085
+        "brier": 0.053139,
+        "logLoss": 0.165795
       },
       "podium": {
-        "brier": 0.073723,
-        "logLoss": 0.219159
+        "brier": 0.076122,
+        "logLoss": 0.22364
       }
     },
     "feature": {
       "win": {
-        "brier": 0.052452,
-        "logLoss": 0.167286
+        "brier": 0.05399,
+        "logLoss": 0.174322
       },
       "podium": {
-        "brier": 0.061215,
-        "logLoss": 0.182019
+        "brier": 0.063591,
+        "logLoss": 0.186656
       }
     }
   },

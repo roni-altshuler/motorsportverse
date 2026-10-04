@@ -19,29 +19,29 @@
     "podium_hits": 1,
     "within_3": 6,
     "within_5": 11,
-    "exact_matches": 2,
-    "spearman_correlation": 0.9088235294117647,
+    "exact_matches": 3,
+    "spearman_correlation": 0.8970588235294118,
     "ndcg_at_5": 0.9699137566619541
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.063744,
-        "logLoss": 0.230915
+        "brier": 0.065124,
+        "logLoss": 0.241875
       },
       "podium": {
-        "brier": 0.072788,
-        "logLoss": 0.226006
+        "brier": 0.075413,
+        "logLoss": 0.233775
       }
     },
     "feature": {
       "win": {
-        "brier": 0.063471,
-        "logLoss": 0.234559
+        "brier": 0.064619,
+        "logLoss": 0.244024
       },
       "podium": {
-        "brier": 0.120496,
-        "logLoss": 0.378942
+        "brier": 0.122568,
+        "logLoss": 0.388864
       }
     }
   },

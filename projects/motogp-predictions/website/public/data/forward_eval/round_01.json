@@ -3,45 +3,45 @@
   "venueName": "Buriram",
   "sprint": {
     "n": 21,
-    "mean_position_error": 3.571,
+    "mean_position_error": 3.429,
     "winner_hit": false,
     "podium_hits": 1,
-    "within_3": 10,
+    "within_3": 11,
     "within_5": 19,
     "exact_matches": 0,
-    "spearman_correlation": 0.8311688311688312,
+    "spearman_correlation": 0.8402597402597403,
     "ndcg_at_5": 0.8750891896637116
   },
   "feature": {
     "n": 19,
-    "mean_position_error": 3.368,
+    "mean_position_error": 3.158,
     "winner_hit": false,
     "podium_hits": 1,
-    "within_3": 11,
+    "within_3": 12,
     "within_5": 15,
-    "exact_matches": 0,
-    "spearman_correlation": 0.9421052631578948,
-    "ndcg_at_5": 0.9419174003822646
+    "exact_matches": 1,
+    "spearman_correlation": 0.9491228070175438,
+    "ndcg_at_5": 0.9737558971576271
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.054725,
-        "logLoss": 0.188015
+        "brier": 0.053404,
+        "logLoss": 0.18767
       },
       "podium": {
-        "brier": 0.068399,
-        "logLoss": 0.199732
+        "brier": 0.065893,
+        "logLoss": 0.192483
       }
     },
     "feature": {
       "win": {
-        "brier": 0.035666,
-        "logLoss": 0.098864
+        "brier": 0.033435,
+        "logLoss": 0.092219
       },
       "podium": {
-        "brier": 0.077146,
-        "logLoss": 0.213651
+        "brier": 0.07497,
+        "logLoss": 0.207045
       }
     }
   },

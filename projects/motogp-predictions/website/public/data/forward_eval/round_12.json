@@ -6,42 +6,42 @@
     "mean_position_error": 2.95,
     "winner_hit": true,
     "podium_hits": 2,
-    "within_3": 13,
+    "within_3": 12,
     "within_5": 17,
     "exact_matches": 2,
-    "spearman_correlation": 0.8992481203007519,
+    "spearman_correlation": 0.8872180451127819,
     "ndcg_at_5": 0.9616280454513199
   },
   "feature": {
     "n": 16,
-    "mean_position_error": 4.125,
+    "mean_position_error": 4.188,
     "winner_hit": false,
     "podium_hits": 2,
-    "within_3": 9,
+    "within_3": 10,
     "within_5": 11,
     "exact_matches": 0,
-    "spearman_correlation": 0.8411764705882353,
+    "spearman_correlation": 0.8264705882352941,
     "ndcg_at_5": 0.9495899245630705
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.028119,
-        "logLoss": 0.08999
+        "brier": 0.028673,
+        "logLoss": 0.091545
       },
       "podium": {
-        "brier": 0.048206,
-        "logLoss": 0.155159
+        "brier": 0.048901,
+        "logLoss": 0.156676
       }
     },
     "feature": {
       "win": {
-        "brier": 0.050755,
-        "logLoss": 0.152256
+        "brier": 0.04901,
+        "logLoss": 0.147587
       },
       "podium": {
-        "brier": 0.05068,
-        "logLoss": 0.165446
+        "brier": 0.050909,
+        "logLoss": 0.166667
       }
     }
   },
