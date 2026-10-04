@@ -1,0 +1,74 @@
+{
+  "round": 13,
+  "venueName": "Rally Italia Sardegna",
+  "surface": "gravel",
+  "rally": {
+    "n": 14,
+    "mean_position_error": 6.786,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 6,
+    "within_5": 7,
+    "exact_matches": 0,
+    "spearman_correlation": 0.6600664060208367,
+    "ndcg_at_5": 0.9465654785043149
+  },
+  "markets": {
+    "win": {
+      "brier": 0.069906,
+      "logLoss": 0.246848
+    },
+    "podium": {
+      "brier": 0.144847,
+      "logLoss": 0.416314
+    }
+  },
+  "baselines": {
+    "standingsOrder": {
+      "score": {
+        "n": 14,
+        "mean_position_error": 6.286,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 5,
+        "within_5": 9,
+        "exact_matches": 0,
+        "spearman_correlation": 0.6094613148925725,
+        "ndcg_at_5": 0.8905264273926953
+      },
+      "markets": {
+        "win": {
+          "brier": 0.073682,
+          "logLoss": 0.257604
+        },
+        "podium": {
+          "brier": 0.181764,
+          "logLoss": 0.497504
+        }
+      }
+    },
+    "lastRally": {
+      "score": {
+        "n": 14,
+        "mean_position_error": 4.143,
+        "winner_hit": true,
+        "podium_hits": 2,
+        "within_3": 9,
+        "within_5": 10,
+        "exact_matches": 5,
+        "spearman_correlation": 0.7018706117354896,
+        "ndcg_at_5": 0.9979526206378919
+      },
+      "markets": {
+        "win": {
+          "brier": 0.04095,
+          "logLoss": 0.133441
+        },
+        "podium": {
+          "brier": 0.10165,
+          "logLoss": 0.30365
+        }
+      }
+    }
+  }
+}

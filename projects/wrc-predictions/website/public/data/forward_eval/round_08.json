@@ -15,12 +15,12 @@
   },
   "markets": {
     "win": {
-      "brier": 0.074446,
-      "logLoss": 0.263721
+      "brier": 0.074418,
+      "logLoss": 0.263882
     },
     "podium": {
-      "brier": 0.160439,
-      "logLoss": 0.460672
+      "brier": 0.161024,
+      "logLoss": 0.462755
     }
   },
   "baselines": {
@@ -50,19 +50,19 @@
     "lastRally": {
       "score": {
         "n": 13,
-        "mean_position_error": 5.0,
+        "mean_position_error": 4.923,
         "winner_hit": false,
         "podium_hits": 1,
         "within_3": 5,
-        "within_5": 9,
+        "within_5": 10,
         "exact_matches": 0,
         "spearman_correlation": 0.7637362637362637,
         "ndcg_at_5": 0.8637352271558398
       },
       "markets": {
         "win": {
-          "brier": 0.058066,
-          "logLoss": 0.181556
+          "brier": 0.058067,
+          "logLoss": 0.181623
         },
         "podium": {
           "brier": 0.195677,

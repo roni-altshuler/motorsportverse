@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "RaceIQ WRC",
-  "generatedAt": "2026-09-14T00:15:40Z",
-  "roundsScored": 12,
+  "generatedAt": "2026-10-04T21:33:26Z",
+  "roundsScored": 13,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Last rally order",
     "raceType": "rally",
     "lowerIsBetter": true,
-    "nRounds": 12,
+    "nRounds": 13,
     "rounds": [
       1,
       2,
@@ -25,17 +25,18 @@
       9,
       10,
       11,
-      12
+      12,
+      13
     ],
-    "modelMean": 8.39175,
-    "baselineMean": 8.803167,
-    "delta": -0.411417,
-    "improvement": 0.411417,
-    "ciLow": -0.895667,
-    "ciHigh": 2.4325,
-    "pModelBetter": 0.6515,
+    "modelMean": 8.249538,
+    "baselineMean": 8.326923,
+    "delta": -0.077385,
+    "improvement": 0.077385,
+    "ciLow": -1.139923,
+    "ciHigh": 1.932308,
+    "pModelBetter": 0.51,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 12 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -44,7 +45,7 @@
       "baselineLabel": "Last rally order",
       "raceType": "rally",
       "lowerIsBetter": true,
-      "nRounds": 12,
+      "nRounds": 13,
       "rounds": [
         1,
         2,
@@ -57,17 +58,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 8.39175,
-      "baselineMean": 8.803167,
-      "delta": -0.411417,
-      "improvement": 0.411417,
-      "ciLow": -0.895667,
-      "ciHigh": 2.4325,
-      "pModelBetter": 0.6515,
+      "modelMean": 8.249538,
+      "baselineMean": 8.326923,
+      "delta": -0.077385,
+      "improvement": 0.077385,
+      "ciLow": -1.139923,
+      "ciHigh": 1.932308,
+      "pModelBetter": 0.51,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 12 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -75,7 +77,7 @@
       "baselineLabel": "Standings order",
       "raceType": "rally",
       "lowerIsBetter": true,
-      "nRounds": 12,
+      "nRounds": 13,
       "rounds": [
         1,
         2,
@@ -88,17 +90,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 8.39175,
-      "baselineMean": 8.117833,
-      "delta": 0.273917,
-      "improvement": -0.273917,
-      "ciLow": -0.910667,
-      "ciHigh": 0.312917,
-      "pModelBetter": 0.1975,
+      "modelMean": 8.249538,
+      "baselineMean": 7.962077,
+      "delta": 0.287462,
+      "improvement": -0.287462,
+      "ciLow": -0.847846,
+      "ciHigh": 0.262077,
+      "pModelBetter": 0.1655,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 12 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -106,7 +109,7 @@
       "baselineLabel": "Last rally order",
       "raceType": "rally",
       "lowerIsBetter": false,
-      "nRounds": 12,
+      "nRounds": 13,
       "rounds": [
         1,
         2,
@@ -119,17 +122,18 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 0.59706,
-      "baselineMean": 0.633522,
-      "delta": -0.036462,
-      "improvement": -0.036462,
-      "ciLow": -0.179914,
-      "ciHigh": 0.115402,
-      "pModelBetter": 0.316,
+      "modelMean": 0.623945,
+      "baselineMean": 0.661555,
+      "delta": -0.03761,
+      "improvement": -0.03761,
+      "ciLow": -0.170865,
+      "ciHigh": 0.098605,
+      "pModelBetter": 0.291,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 12 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 13 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -137,7 +141,7 @@
       "baselineLabel": "Standings order",
       "raceType": "rally",
       "lowerIsBetter": false,
-      "nRounds": 12,
+      "nRounds": 13,
       "rounds": [
         1,
         2,
@@ -150,22 +154,23 @@
         9,
         10,
         11,
-        12
+        12,
+        13
       ],
-      "modelMean": 0.59706,
-      "baselineMean": 0.539211,
-      "delta": 0.057849,
-      "improvement": 0.057849,
-      "ciLow": 0.017906,
-      "ciHigh": 0.107664,
+      "modelMean": 0.623945,
+      "baselineMean": 0.566235,
+      "delta": 0.05771,
+      "improvement": 0.05771,
+      "ciLow": 0.021667,
+      "ciHigh": 0.103491,
       "pModelBetter": 1.0,
       "verdict": "better",
-      "note": "the model beats standings order over 12 paired rounds"
+      "note": "the model beats standings order over 13 paired rounds"
     }
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 12,
+    "trainingRounds": 13,
     "dataLimitation": "Calibrated on real WRC rally results (one classification per round).",
     "note": "probabilities are calibrated on real results"
   },
