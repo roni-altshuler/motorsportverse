@@ -3,8 +3,8 @@
   "reason": null,
   "season": 2026,
   "sport": "RaceIQ IMSA",
-  "generatedAt": "2026-09-20T23:34:14Z",
-  "roundsScored": 10,
+  "generatedAt": "2026-10-04T06:23:51Z",
+  "roundsScored": 11,
   "basis": "forward evaluation \u2014 each round was forecast before it ran and scored afterwards; not a backtest",
   "headline": {
     "metric": "mean_position_error",
@@ -12,7 +12,7 @@
     "baselineLabel": "Last race order",
     "raceType": "GTD",
     "lowerIsBetter": true,
-    "nRounds": 9,
+    "nRounds": 10,
     "rounds": [
       1,
       2,
@@ -22,17 +22,18 @@
       7,
       8,
       9,
-      10
+      10,
+      11
     ],
-    "modelMean": 4.771667,
-    "baselineMean": 4.865,
-    "delta": -0.093333,
-    "improvement": 0.093333,
-    "ciLow": -0.186222,
-    "ciHigh": 0.342556,
-    "pModelBetter": 0.7425,
+    "modelMean": 4.8501,
+    "baselineMean": 5.1007,
+    "delta": -0.2506,
+    "improvement": 0.2506,
+    "ciLow": -0.1248,
+    "ciHigh": 0.6364,
+    "pModelBetter": 0.8965,
     "verdict": "inconclusive",
-    "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+    "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
   },
   "comparisons": [
     {
@@ -41,7 +42,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTD",
       "lowerIsBetter": true,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -51,17 +52,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 4.771667,
-      "baselineMean": 4.865,
-      "delta": -0.093333,
-      "improvement": 0.093333,
-      "ciLow": -0.186222,
-      "ciHigh": 0.342556,
-      "pModelBetter": 0.7425,
+      "modelMean": 4.8501,
+      "baselineMean": 5.1007,
+      "delta": -0.2506,
+      "improvement": 0.2506,
+      "ciLow": -0.1248,
+      "ciHigh": 0.6364,
+      "pModelBetter": 0.8965,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -69,7 +71,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTDPRO",
       "lowerIsBetter": true,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -79,17 +81,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 3.315556,
-      "baselineMean": 3.053556,
-      "delta": 0.262,
-      "improvement": -0.262,
-      "ciLow": -0.604889,
-      "ciHigh": 0.055222,
-      "pModelBetter": 0.0595,
+      "modelMean": 3.4983,
+      "baselineMean": 3.2911,
+      "delta": 0.2072,
+      "improvement": -0.2072,
+      "ciLow": -0.5391,
+      "ciHigh": 0.0864,
+      "pModelBetter": 0.091,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -97,7 +100,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTP",
       "lowerIsBetter": true,
-      "nRounds": 8,
+      "nRounds": 9,
       "rounds": [
         1,
         2,
@@ -106,17 +109,18 @@
         5,
         6,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 2.8635,
-      "baselineMean": 2.88625,
-      "delta": -0.02275,
-      "improvement": 0.02275,
-      "ciLow": -0.272625,
-      "ciHigh": 0.340875,
-      "pModelBetter": 0.5495,
+      "modelMean": 2.848333,
+      "baselineMean": 2.787778,
+      "delta": 0.060556,
+      "improvement": -0.060556,
+      "ciLow": -0.363667,
+      "ciHigh": 0.262667,
+      "pModelBetter": 0.352,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -124,24 +128,25 @@
       "baselineLabel": "Last race order",
       "raceType": "LMP2",
       "lowerIsBetter": true,
-      "nRounds": 6,
+      "nRounds": 7,
       "rounds": [
         1,
         2,
         6,
         7,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 2.954833,
-      "baselineMean": 2.959333,
-      "delta": -0.0045,
-      "improvement": 0.0045,
-      "ciLow": -0.4415,
-      "ciHigh": 0.631,
-      "pModelBetter": 0.47,
+      "modelMean": 2.948286,
+      "baselineMean": 2.978143,
+      "delta": -0.029857,
+      "improvement": 0.029857,
+      "ciLow": -0.363857,
+      "ciHigh": 0.550286,
+      "pModelBetter": 0.5135,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -149,7 +154,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTD",
       "lowerIsBetter": true,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -159,17 +164,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 4.771667,
-      "baselineMean": 4.861,
-      "delta": -0.089333,
-      "improvement": 0.089333,
-      "ciLow": -0.189111,
-      "ciHigh": 0.381222,
-      "pModelBetter": 0.723,
+      "modelMean": 4.8501,
+      "baselineMean": 4.9305,
+      "delta": -0.0804,
+      "improvement": 0.0804,
+      "ciLow": -0.1581,
+      "ciHigh": 0.339,
+      "pModelBetter": 0.718,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -177,7 +183,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTDPRO",
       "lowerIsBetter": true,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -187,17 +193,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 3.315556,
-      "baselineMean": 3.491889,
-      "delta": -0.176333,
-      "improvement": 0.176333,
-      "ciLow": -0.110889,
-      "ciHigh": 0.428111,
-      "pModelBetter": 0.896,
+      "modelMean": 3.4983,
+      "baselineMean": 3.5713,
+      "delta": -0.073,
+      "improvement": 0.073,
+      "ciLow": -0.2393,
+      "ciHigh": 0.3653,
+      "pModelBetter": 0.698,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -205,7 +212,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTP",
       "lowerIsBetter": true,
-      "nRounds": 8,
+      "nRounds": 9,
       "rounds": [
         1,
         2,
@@ -214,17 +221,18 @@
         5,
         6,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 2.8635,
-      "baselineMean": 2.68175,
-      "delta": 0.18175,
-      "improvement": -0.18175,
-      "ciLow": -0.545375,
-      "ciHigh": 0.159,
-      "pModelBetter": 0.1575,
+      "modelMean": 2.848333,
+      "baselineMean": 2.868667,
+      "delta": -0.020333,
+      "improvement": 0.020333,
+      "ciLow": -0.444333,
+      "ciHigh": 0.525333,
+      "pModelBetter": 0.5225,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "mean_position_error",
@@ -232,24 +240,25 @@
       "baselineLabel": "Season form order",
       "raceType": "LMP2",
       "lowerIsBetter": true,
-      "nRounds": 6,
+      "nRounds": 7,
       "rounds": [
         1,
         2,
         6,
         7,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 2.954833,
-      "baselineMean": 2.959667,
-      "delta": -0.004833,
-      "improvement": 0.004833,
-      "ciLow": -0.277167,
-      "ciHigh": 0.314833,
-      "pModelBetter": 0.483,
+      "modelMean": 2.948286,
+      "baselineMean": 2.926429,
+      "delta": 0.021857,
+      "improvement": -0.021857,
+      "ciLow": -0.267714,
+      "ciHigh": 0.252143,
+      "pModelBetter": 0.399,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -257,7 +266,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTD",
       "lowerIsBetter": false,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -267,17 +276,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.670683,
-      "baselineMean": 0.680067,
-      "delta": -0.009384,
-      "improvement": -0.009384,
-      "ciLow": -0.052622,
-      "ciHigh": 0.031553,
-      "pModelBetter": 0.319,
+      "modelMean": 0.641682,
+      "baselineMean": 0.65458,
+      "delta": -0.012898,
+      "improvement": -0.012898,
+      "ciLow": -0.052936,
+      "ciHigh": 0.023684,
+      "pModelBetter": 0.2495,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -285,7 +295,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTDPRO",
       "lowerIsBetter": false,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -295,17 +305,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.653674,
-      "baselineMean": 0.729121,
-      "delta": -0.075447,
-      "improvement": -0.075447,
-      "ciLow": -0.127483,
-      "ciHigh": -0.010178,
-      "pModelBetter": 0.0145,
-      "verdict": "worse",
-      "note": "the model does NOT beat last race order over 9 paired rounds \u2014 published as measured"
+      "modelMean": 0.63795,
+      "baselineMean": 0.701671,
+      "delta": -0.06372,
+      "improvement": -0.06372,
+      "ciLow": -0.118197,
+      "ciHigh": 0.001675,
+      "pModelBetter": 0.026,
+      "verdict": "inconclusive",
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -313,7 +324,7 @@
       "baselineLabel": "Last race order",
       "raceType": "GTP",
       "lowerIsBetter": false,
-      "nRounds": 8,
+      "nRounds": 9,
       "rounds": [
         1,
         2,
@@ -322,17 +333,18 @@
         5,
         6,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.723285,
-      "baselineMean": 0.705807,
-      "delta": 0.017478,
-      "improvement": 0.017478,
-      "ciLow": -0.026776,
-      "ciHigh": 0.062188,
-      "pModelBetter": 0.764,
+      "modelMean": 0.724362,
+      "baselineMean": 0.724677,
+      "delta": -0.000315,
+      "improvement": -0.000315,
+      "ciLow": -0.053937,
+      "ciHigh": 0.050762,
+      "pModelBetter": 0.4765,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -340,24 +352,25 @@
       "baselineLabel": "Last race order",
       "raceType": "LMP2",
       "lowerIsBetter": false,
-      "nRounds": 6,
+      "nRounds": 7,
       "rounds": [
         1,
         2,
         6,
         7,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.72645,
-      "baselineMean": 0.700528,
-      "delta": 0.025921,
-      "improvement": 0.025921,
-      "ciLow": -0.079457,
-      "ciHigh": 0.14773,
-      "pModelBetter": 0.6525,
+      "modelMean": 0.741547,
+      "baselineMean": 0.701702,
+      "delta": 0.039846,
+      "improvement": 0.039846,
+      "ciLow": -0.05228,
+      "ciHigh": 0.144848,
+      "pModelBetter": 0.766,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -365,7 +378,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTD",
       "lowerIsBetter": false,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -375,17 +388,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.670683,
-      "baselineMean": 0.698471,
-      "delta": -0.027788,
-      "improvement": -0.027788,
-      "ciLow": -0.072239,
-      "ciHigh": 0.025393,
-      "pModelBetter": 0.1295,
+      "modelMean": 0.641682,
+      "baselineMean": 0.667763,
+      "delta": -0.026081,
+      "improvement": -0.026081,
+      "ciLow": -0.06517,
+      "ciHigh": 0.019087,
+      "pModelBetter": 0.1095,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 10 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -393,7 +407,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTDPRO",
       "lowerIsBetter": false,
-      "nRounds": 9,
+      "nRounds": 10,
       "rounds": [
         1,
         2,
@@ -403,17 +417,18 @@
         7,
         8,
         9,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.653674,
-      "baselineMean": 0.575196,
-      "delta": 0.078477,
-      "improvement": 0.078477,
-      "ciLow": 0.021563,
-      "ciHigh": 0.125752,
+      "modelMean": 0.63795,
+      "baselineMean": 0.568376,
+      "delta": 0.069575,
+      "improvement": 0.069575,
+      "ciLow": 0.020696,
+      "ciHigh": 0.11669,
       "pModelBetter": 0.998,
       "verdict": "better",
-      "note": "the model beats season form order over 9 paired rounds"
+      "note": "the model beats season form order over 10 paired rounds"
     },
     {
       "metric": "ndcg_at_5",
@@ -421,7 +436,7 @@
       "baselineLabel": "Season form order",
       "raceType": "GTP",
       "lowerIsBetter": false,
-      "nRounds": 8,
+      "nRounds": 9,
       "rounds": [
         1,
         2,
@@ -430,17 +445,18 @@
         5,
         6,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.723285,
-      "baselineMean": 0.758198,
-      "delta": -0.034912,
-      "improvement": -0.034912,
-      "ciLow": -0.089488,
-      "ciHigh": 0.020264,
-      "pModelBetter": 0.1075,
+      "modelMean": 0.724362,
+      "baselineMean": 0.723754,
+      "delta": 0.000609,
+      "improvement": 0.000609,
+      "ciLow": -0.073927,
+      "ciHigh": 0.091867,
+      "pModelBetter": 0.4705,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 8 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 9 paired rounds; no difference has been demonstrated"
     },
     {
       "metric": "ndcg_at_5",
@@ -448,35 +464,35 @@
       "baselineLabel": "Season form order",
       "raceType": "LMP2",
       "lowerIsBetter": false,
-      "nRounds": 6,
+      "nRounds": 7,
       "rounds": [
         1,
         2,
         6,
         7,
         8,
-        10
+        10,
+        11
       ],
-      "modelMean": 0.72645,
-      "baselineMean": 0.700015,
-      "delta": 0.026435,
-      "improvement": 0.026435,
-      "ciLow": -0.031208,
-      "ciHigh": 0.075742,
-      "pModelBetter": 0.8175,
+      "modelMean": 0.741547,
+      "baselineMean": 0.712918,
+      "delta": 0.02863,
+      "improvement": 0.02863,
+      "ciLow": -0.020778,
+      "ciHigh": 0.071315,
+      "pModelBetter": 0.8785,
       "verdict": "inconclusive",
-      "note": "the interval straddles zero over 6 paired rounds; no difference has been demonstrated"
+      "note": "the interval straddles zero over 7 paired rounds; no difference has been demonstrated"
     }
   ],
   "calibration": {
     "applied": true,
-    "trainingRounds": 10,
+    "trainingRounds": 11,
     "dataLimitation": "Calibrated on real IMSA results, per class stratum.",
     "note": "probabilities are calibrated on real results"
   },
   "promotion": null,
   "caveats": [
-    "The model does not beat last race order on every measured comparison. That is stated rather than hidden.",
     "Some comparisons straddle zero: a difference has not been demonstrated, in either direction.",
     "Metrics are only comparable within this series. A position error over this field size means nothing next to another series' number."
   ]
