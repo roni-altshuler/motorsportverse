@@ -298,8 +298,12 @@ export function RaceDetail({
                 className=""
               />
               <p className="body-sm mt-4 text-[color:var(--muted)]">
-                Only a verified layout for this event can appear here. Per-lap speed,
-                sector and tyre-stint data are unavailable here.
+                {geometry
+                  ? "This existing circuit outline is retained while layout review is pending. "
+                  : "No circuit outline is available for this event. "}
+                An interactive circuit explorer requires a reviewed layout and is
+                not available here. Per-lap speed, sector and tyre-stint data are
+                unavailable here.
               </p>
             </motion.div>
           </div>

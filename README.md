@@ -49,6 +49,9 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 
 ## Circuit map availability
 
+F2/F3 race disclosures distinguish existing outlines awaiting layout review from
+the unavailable interactive explorer, which requires a reviewed layout.
+
 The shared **Explore circuit** feature remains unfinished. The
 [circuit evidence audit](docs/CIRCUIT_GEOMETRY.md) records 43 stored paths across
 168 published calendar rounds, **37 eligible for continued legacy display** and

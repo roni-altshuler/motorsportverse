@@ -28,9 +28,13 @@ async function shiftWallClock(context) {
 
 const results = [];
 const heroOnly = process.argv.includes("--hero-only");
+const copyOnly = process.argv.includes("--copy-only");
+assert.equal(heroOnly && copyOnly, false, 'Choose one focused browser mode');
 try {
   for (const [series, rounds] of [['f1', [8, 9, 6, 11, 1]], ['f2', [6, 7, 4, 9, 1, 2]], ['f3', [4, 5, 2, 7, 1]]]) {
     if (heroOnly && series !== 'f1') continue;
+    if (copyOnly && series === 'f1') continue;
+    const activeRounds = heroOnly ? [] : copyOnly ? [rounds[1], rounds[2]] : rounds;
     const exported = resolve(root, `projects/${series}-predictions/website/out`);
     const server = createServer(async (request, response) => {
       try {
@@ -55,11 +59,12 @@ try {
     const url = `http://127.0.0.1:${server.address().port}`;
     try {
       for (const [size, viewport] of [['desktop', { width: 1440, height: 1000 }], ['mobile', { width: 390, height: 844 }]]) {
-        for (const motion of ['reduce', 'no-preference']) {
+        for (const motion of copyOnly ? ['reduce'] : ['reduce', 'no-preference']) {
           const context = await browser.newContext({ viewport, reducedMotion: motion });
           await shiftWallClock(context);
           let page = await context.newPage();
           const errors = [], missingResources = [], requests = [];
+          const circuitCopy = [];
           const observe = target => {
             target.on('pageerror', error => errors.push({ kind: 'pageerror', message: error.message }));
             target.on('console', message => { if (message.type() === 'error') errors.push({ kind: 'console', message: message.text() }); });
@@ -67,7 +72,7 @@ try {
             target.on('request', request => requests.push(request.url()));
           };
           observe(page);
-          for (const round of heroOnly ? [] : rounds) {
+          for (const round of activeRounds) {
             console.log(JSON.stringify({ checking: series, round, size, motion }));
             assert.equal((await page.goto(`${url}/race/${round}/`, { waitUntil: 'networkidle' })).status(), 200);
             if (series !== 'f1') {
@@ -95,13 +100,24 @@ try {
                 assert.equal(labels.includes('1') || labels.includes('12'), false);
               }
             }
+            if (series !== 'f1') {
+              const section = page.getByText('Venue & circuit', { exact: true }).locator('..');
+              const text = (await section.innerText()).replace(/\s+/g, ' ').trim();
+              assert.doesNotMatch(text, /\bverified\b/i);
+              assert.ok(text.includes('An interactive circuit explorer requires a reviewed layout and is not available here.'));
+              assert.ok(text.includes(unavailable
+                ? 'No circuit outline is available for this event.'
+                : 'This existing circuit outline is retained while layout review is pending.'));
+              circuitCopy.push({ round, outline: unavailable ? 'unavailable' : 'legacy-unreviewed', text });
+              if (copyOnly) await section.screenshot({ path: resolve(output, `${series}-${unavailable ? 'unavailable' : 'retained'}-copy-${size}.png`) });
+            }
             assert.equal(await state.evaluate(element => getComputedStyle(element).animationName), 'none');
             assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
             const parent = state.locator('..');
             const box = await state.boundingBox(), parentBox = await parent.boundingBox();
             assert.ok(box && parentBox && box.height <= parentBox.height, `${series}/${round}/${size} clipped map state`);
             assert.equal(await page.locator('[data-nextjs-dialog], .vite-error-overlay').count(), 0);
-            if ((round === rounds[1] || round === rounds[2]) && motion === 'reduce') {
+            if (!copyOnly && (round === rounds[1] || round === rounds[2]) && motion === 'reduce') {
               const capture = series === 'f1' ? state.locator('xpath=ancestor::section[1]') : state.locator('xpath=ancestor::div[header][1]');
               await capture.screenshot({ path: resolve(output, `${series}-${round === rounds[2] ? 'preserved-' : ''}${size}.png`) });
             }
@@ -177,7 +193,7 @@ try {
             await heroContext.close();
           }
           assert.equal(requests.filter(request => request.includes('/data/replays/')).length, 0);
-          results.push({ series, viewport: size, motion, rounds: heroOnly ? [] : rounds, quarantined: heroOnly ? [] : rounds.slice(0, 2), preserved: heroOnly ? [] : rounds.slice(2, 5), missing: heroOnly ? [] : rounds.slice(5), ambiguousMarkersSuppressed: heroOnly ? null : true, hero, keyboardDisclosure: series === 'f1' ? 'not applicable (static maps)' : 'passed', clipped: false, horizontalOverflow: false, mapAnimation: 'none', replayRequests: 0, errors, missingResources });
+          results.push({ series, viewport: size, motion, rounds: activeRounds, quarantined: activeRounds.filter(round => rounds.indexOf(round) < 2), preserved: activeRounds.filter(round => rounds.slice(2, 5).includes(round)), missing: activeRounds.filter(round => rounds.slice(5).includes(round)), ambiguousMarkersSuppressed: activeRounds.includes(rounds[3]) ? true : null, circuitCopy, hero, keyboardDisclosure: series === 'f1' ? 'not applicable (static maps)' : 'passed', clipped: false, horizontalOverflow: false, mapAnimation: 'none', replayRequests: 0, errors, missingResources });
           await context.close();
         }
       }
