@@ -18,6 +18,9 @@ Existing telemetry outlines and the decorative F1 hero are unchanged.
 - A local manifest and PNG load only after user intent. A trusted manifest hash
   binds the exact descriptor bytes; identity, asset hash, complete credit, source
   revision, resize metadata and ordered corner coordinates are checked before display.
+  The downloaded PNG must match its reviewed SHA-256 and byte count, have a PNG
+  signature, decode successfully and match the declared dimensions. The shell
+  renders those immutable blob bytes, never the mutable asset path.
   These checks establish descriptor integrity, not independent configuration or
   rights approval. A real source review is still necessary before registration.
 - The shell supports three map buttons and a parallel corner list, arrow/Home/End
@@ -26,8 +29,11 @@ Existing telemetry outlines and the decorative F1 hero are unchanged.
 - An optional six-second highlight tour pauses when less than 15% of the explorer
   is visible, when the document is hidden, and when closed. Reduced motion keeps
   manual controls and omits the automatic tour. No replay endpoint is used.
-- Missing reviews render nothing. Failed manifest loading is an explicit,
-  retryable unavailable state; event changes discard the previous schematic.
+- Missing reviews render nothing. Checked claims, hotspots, corner lists and tour
+  controls wait for the rendered image's load and dimension checks. An image error
+  removes them and shows an explicit unavailable state with a **Try again** action;
+  closing/reopening also retries. Closing, changing events, unmounting and pending
+  decode cancellation release object URLs and discard late responses.
 
 All test artwork and metadata live in `src/test-support/circuitExplorer.ts`, marked
 synthetic QA only. They are not published assets or evidence for Zandvoort.
@@ -74,14 +80,55 @@ To finish the bounded pilot:
    offscreen/hidden pauses. The schematic must not claim telemetry or survey accuracy,
    or invent speed, spatial DRS, sector, tyre-stint or replay information.
 
-## Validation and limits
+## Image verification regressions and browser evidence
+
+The image-byte binding and decode gate address two independently reported shell
+defects: a valid manifest previously allowed changed image bytes at its declared
+path, and checked claims/controls could appear before the image actually rendered.
+
+- **1,752 frontend tests passed**, eight existing hub skips; all **11 explicit
+  typechecks and static builds passed** after the final image-binding changes.
+  F1 used explicit `next build --webpack`; generic CI still skips its F1 build.
+- **45 shared regressions per site** cover identity/provenance, actual image hash
+  and byte count, dimensions, corrupt/non-PNG payloads, missing files, pending
+  decode, rendered-image failure, changed rendered source, retry/reopen, event
+  changes, stale responses and URL cleanup. jsdom decoder mocks are supplemented
+  by actual native Chromium decoding below.
+- **20 controlled Chromium cases passed**, ten cases at desktop 1440 × 1000 and
+  mobile 390 × 844: valid, hash mismatch, dimensions, corrupt PNG, missing PNG,
+  retry, reopen, rendered-image error, delayed decode and cancelled decode.
+  The harness uses the current component/helper and built F1 styles, with a
+  synthetic 12 × 9 checkerboard served only by a local controlled HTTP server.
+  No product page or production review is registered. The report records **zero
+  page errors**, **eight expected fault console errors**, and **20 created / 20
+  revoked object URLs**, with exact URL matching and no duplicate revocations.
+- Canonical component/helper, shared tests, synthetic support and browser-script
+  lint pass. Shared drift and diff checks pass. The root lint invocation reports
+  existing React/pages-directory configuration warnings; this is not a claim
+  about whole-repository lint.
+
+Reproduce after the F1 static build:
+
+```bash
+node scripts/qa_circuit_explorer_image.mjs /tmp/motorsport-explorer-image-browser
+```
+
+See [current cross-site validation](image-validation.json) and
+[controlled browser report](image-browser-qa.json). Fixture screenshots:
+[desktop success](image-fixture-valid-desktop.png) ·
+[mobile success](image-fixture-valid-mobile.png) ·
+[mobile unavailable/retry](image-fixture-missing-mobile.png).
+These demonstrate shell rendering and fault handling, not real Zandvoort artwork,
+source approval, configuration matching or delivered production explorer UX.
+
+## Earlier preservation evidence
 
 - **1,598 frontend tests passed**, eight existing hub skips; all **11 explicit
   typechecks and static builds passed**. The final intersection-threshold assertion
   was followed by another full test/typecheck run. Builds precede that small
   threshold alignment; the unused shell has no production bundle/HTML effect.
   F1 used explicit `next build --webpack`; generic CI still skips its F1 build.
-- The shell has **31 meaningful shared regressions per site**. Canonical shell,
+- The initial shell had **31 meaningful shared regressions per site**. Canonical shell,
   guard, tests, synthetic support data and sync-script lint pass. Shared drift and
   diff checks pass. No claim about whole-repository lint is made.
 - Actual static-export browser QA checked **four unchanged F1 hero cases**:
@@ -91,7 +138,8 @@ To finish the bounded pilot:
   24 console errors and zero recorded HTTP resource failures. Existing image gaps
   remain visible in screenshots; this is not an error-free whole-site result.
 
-See [cross-site validation](validation.json), [final test/typecheck rerun](final-validation.json)
+The following reports predate the image verification fixes. See
+[initial cross-site validation](validation.json), [initial final test/typecheck rerun](final-validation.json)
 and [legacy hero browser report](legacy-hero-qa.json).
 
 Legacy hero screenshots: [desktop](f1-hero-desktop-no-preference.png) ·

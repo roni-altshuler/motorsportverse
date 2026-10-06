@@ -11,6 +11,15 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Prepared circuit explorer shell — 2026-10-06
+
+- Bound the unused shared explorer to downloaded PNG bytes, reviewed hashes,
+  byte counts and decoded dimensions; render verified blob bytes.
+- Gate checked claims and controls on actual image loading; image failure clears
+  them and offers retry, with cancellation and object URL cleanup.
+- Added controlled fixture browser/regression evidence. No real map is approved,
+  registered or exposed; Zandvoort source uploads and real-map review remain pending.
+
 ### Circuit identity and provenance guard — 2026-10-06
 
 - Added separate legacy-outline and new-explorer eligibility checks and a

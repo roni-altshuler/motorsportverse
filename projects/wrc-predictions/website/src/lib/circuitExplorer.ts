@@ -119,16 +119,60 @@ export function validateSchematic(value: unknown, review: ExplorerReview): Circu
   return schematic;
 }
 
-export async function loadSchematic(review: ExplorerReview, basePath = ""): Promise<CircuitSchematic> {
+export interface VerifiedSchematic {
+  schematic: CircuitSchematic;
+  /** Immutable downloaded bytes, never the mutable server asset path. */
+  imageUrl: string;
+  release: () => void;
+}
+
+async function digest(bytes: BufferSource): Promise<string> {
+  const hash = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(hash), byte => byte.toString(16).padStart(2, "0")).join("");
+}
+function checkAbort(signal?: AbortSignal) {
+  if (signal?.aborted) throw new DOMException("Schematic loading cancelled", "AbortError");
+}
+
+export async function loadSchematic(review: ExplorerReview, basePath = "", signal?: AbortSignal): Promise<VerifiedSchematic> {
+  checkAbort(signal);
   if (!localAsset(review.manifestPath) || !review.manifestPath.endsWith(".json"))
     throw new Error("Invalid schematic manifest path");
-  const response = await fetch(`${basePath}${review.manifestPath}`);
+  const response = await fetch(`${basePath}${review.manifestPath}`, { signal });
   if (!response.ok) throw new Error("Schematic unavailable");
   const body = await response.text();
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body));
-  const hash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
+  const hash = await digest(new TextEncoder().encode(body));
   if (!sha256(review.manifestSha256) || hash !== review.manifestSha256) throw new Error("Schematic manifest changed");
   const schematic = validateSchematic(JSON.parse(body), review);
   if (!schematic) throw new Error("Schematic review does not match");
-  return schematic;
+  checkAbort(signal);
+  const imageResponse = await fetch(`${basePath}${schematic.asset.path}`, { signal });
+  if (!imageResponse.ok) throw new Error("Schematic image unavailable");
+  const bytes = await imageResponse.arrayBuffer();
+  if (bytes.byteLength !== schematic.asset.bytes || await digest(bytes) !== review.assetSha256)
+    throw new Error("Schematic image bytes changed");
+  const signature = [137, 80, 78, 71, 13, 10, 26, 10];
+  const header = new Uint8Array(bytes, 0, Math.min(bytes.byteLength, signature.length));
+  if (signature.some((value, index) => header[index] !== value)) throw new Error("Schematic image is not PNG");
+  checkAbort(signal);
+  const imageUrl = URL.createObjectURL(new Blob([bytes], { type: "image/png" }));
+  let released = false;
+  const release = () => { if (!released) { released = true; URL.revokeObjectURL(imageUrl); } };
+  const image = new Image();
+  let rejectAbort: ((reason: DOMException) => void) | undefined;
+  const cancelled = new Promise<never>((_, reject) => { rejectAbort = reject; });
+  const cancel = () => {
+    release(); image.src = "";
+    rejectAbort?.(new DOMException("Schematic loading cancelled", "AbortError"));
+  };
+  signal?.addEventListener("abort", cancel, { once: true });
+  try {
+    image.src = imageUrl;
+    await (signal ? Promise.race([image.decode(), cancelled]) : image.decode());
+    checkAbort(signal);
+    if (image.naturalWidth !== schematic.asset.width || image.naturalHeight !== schematic.asset.height)
+      throw new Error("Schematic image dimensions changed");
+    return { schematic, imageUrl, release };
+  } catch (error) { release(); throw error; }
+  finally { signal?.removeEventListener("abort", cancel); }
 }

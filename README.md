@@ -51,6 +51,8 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 
 The [shared explorer shell](docs/reviews/2026-10-06-zandvoort-explorer/README.md)
 is prepared but has no registered event or production-page integration. The
+shell binds reviewed image hashes to downloaded, decoded bytes and hides checked
+claims and controls on image failure, with retry and cleanup regressions. The
 Zandvoort pilot still needs source-byte inspection, hashing and real-map browser QA.
 
 F2/F3 race disclosures distinguish existing outlines awaiting layout review from

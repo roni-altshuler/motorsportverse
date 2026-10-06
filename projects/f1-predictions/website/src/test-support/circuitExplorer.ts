@@ -2,12 +2,16 @@
 import { createHash } from "node:crypto";
 import type { CircuitSchematic, ExplorerReview } from "@/lib/circuitExplorer";
 
+// A locally generated 12×9 checkerboard PNG, not a circuit or source artwork.
+export const pngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJCAYAAAAGuM1UAAAAHklEQVR4nGNQVlb+f+fOnf/E0gykKAbRDKM20MIGAEsADQLeHbMGAAAAAElFTkSuQmCC";
+export const pngBytes = Buffer.from(pngBase64, "base64");
+
 export const schematic: CircuitSchematic = {
   id: "qa-schematic",
   event: { series: "qa", season: 2026, round: 1, venueKey: "qa-venue", layoutId: "qa-layout", date: "2026-10-06" },
   checkedAt: "2026-10-06", totalCorners: 14,
-  asset: { path: "/circuit-explorer/qa/map.png", width: 1000, height: 900, sha256: "a".repeat(64), bytes: 1234 },
-  source: { creator: "QA author", title: "QA schematic", page: "https://example.org/source", originalUrl: "https://example.org/source.png", revision: "qa-revision", sha1: "b".repeat(40), sha256: "c".repeat(64), bytes: 12345, width: 10000, height: 9000 },
+  asset: { path: "/circuit-explorer/qa/map.png", width: 12, height: 9, sha256: createHash("sha256").update(pngBytes).digest("hex"), bytes: pngBytes.length },
+  source: { creator: "QA author", title: "QA schematic", page: "https://example.org/source", originalUrl: "https://example.org/source.png", revision: "qa-revision", sha1: "b".repeat(40), sha256: "c".repeat(64), bytes: 12345, width: 120, height: 90 },
   license: { id: "CC-BY-SA-4.0", url: "https://creativecommons.org/licenses/by-sa/4.0/" },
   modifications: "Resized; three interactive highlights added.",
   transform: { kind: "resize", algorithm: "lanczos3", crop: null, rotationDegrees: 0, colors: "unchanged", overlay: "three interactive highlights" },
