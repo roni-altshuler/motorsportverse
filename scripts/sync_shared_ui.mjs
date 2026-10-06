@@ -69,6 +69,7 @@ const SHARED_FILES = [];
 // number with nothing next to it, which is the failure mode the whole
 // evidence discipline exists to prevent. So they are pushed, not intersected.
 const REQUIRED_FILES = [
+  "ui/CircuitExplorer.tsx",
   "ui/format.ts",
   "ui/EvidencePanel.tsx",
   "ui/BaselineLadder.tsx",
@@ -84,6 +85,8 @@ const REQUIRED_TEST_DIR = "src/__tests__/shared";
 // Shared loaders that live under src/lib rather than src/components. Managed
 // against the site root, like the tests.
 const REQUIRED_SRC_FILES = [
+  "src/lib/circuitExplorer.ts",
+  "src/test-support/circuitExplorer.ts",
   "src/lib/evidence.ts",
   "src/lib/circuitGeometry.ts",
   "src/lib/circuitGeometryReviews.ts",

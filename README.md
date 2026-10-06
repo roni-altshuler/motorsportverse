@@ -49,6 +49,10 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 
 ## Circuit map availability
 
+The [shared explorer shell](docs/reviews/2026-10-06-zandvoort-explorer/README.md)
+is prepared but has no registered event or production-page integration. The
+Zandvoort pilot still needs source-byte inspection, hashing and real-map browser QA.
+
 F2/F3 race disclosures distinguish existing outlines awaiting layout review from
 the unavailable interactive explorer, which requires a reviewed layout.
 
