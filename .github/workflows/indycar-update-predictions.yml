@@ -102,7 +102,7 @@ jobs:
           if [ "$PENDING" = "yes" ]; then SHOULD_RUN=true; fi
           echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
           if [ "$SHOULD_RUN" != "true" ]; then
-            echo "⏭️  Nothing new to publish — skipping the heavy pipeline this poll."
+            echo "⏭️  No ingestible update detected — skipping refresh; coverage is audited separately."
           fi
 
       - name: Refresh the snapshot (live scrape behind clean-parse gates)
@@ -163,6 +163,25 @@ jobs:
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           bash .github/scripts/safe_push.sh
           echo "committed=true" >> "$GITHUB_OUTPUT"
+
+  coverage:
+    name: Published result coverage
+    needs: predict
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Check the branch after predict, including any data it just committed.
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Audit calendar coverage even when the live gate reports no work
+        run: python scripts/check_result_coverage.py indycar
 
   deploy:
     needs: predict

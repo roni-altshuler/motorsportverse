@@ -15,6 +15,8 @@
  * as the crown jewel.
  */
 import Link from "next/link";
+import ResultCoverage from "@/components/ResultCoverage";
+import { resultCoverage } from "@/lib/resultCoverage";
 
 import { getCircuit, getIndycarData, getRound } from "@/lib/indycardata";
 import { teamColor } from "@/lib/teams";
@@ -39,6 +41,9 @@ import FinalCTA from "@/components/marketing/FinalCTA";
 
 export default function HomePage() {
   const data = getIndycarData();
+  const asOf = new Date().toISOString();
+  const coverage = resultCoverage(data.calendar, asOf);
+  const forecastPastDue = coverage.pastDue.some((round) => round.round === data.nextPrediction?.round);
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
@@ -123,21 +128,23 @@ export default function HomePage() {
               Race and championship forecasts for the NTT IndyCar Series — all{" "}
               {data.totalRounds} races, from the streets of St. Petersburg to the
               season finale, across ovals, road courses and street circuits.{" "}
-              {data.completedRounds} of {data.totalRounds} rounds complete, on the
+              {data.completedRounds} of {data.totalRounds} rounds with imported results, on the
               same MotorsportVerse core that powers RaceIQ F1.
             </p>
           </div>
+
+          <ResultCoverage calendar={data.calendar} generatedAt={data.generatedAt} asOf={asOf} />
 
           {/* ── Featured round + CTAs ── */}
           {next && nextCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
               <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant="live">Next up</Badge>
+                <Badge variant="default">{forecastPastDue ? "Past-due forecast" : "Snapshot forecast"}</Badge>
                 <span className="eyebrow">
                   R{next.round} ·{" "}
                   {trackTypeLabel(nextCalendarRound.trackType)}
                   {nextCalendarRound.isIndy500 ? " · Indy 500" : ""}
-                  {nextCalendarRound.raceDate ? (
+                  {nextCalendarRound.raceDate && !forecastPastDue ? (
                     <>
                       {" · "}
                       <HeroCountdown targetDate={nextCalendarRound.raceDate} />
@@ -146,7 +153,7 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="mb-8">
-                <p className="eyebrow mb-2">Next round · Predicted next</p>
+                <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">
                   {next.raceName || next.venueName}
                 </h2>
@@ -160,7 +167,7 @@ export default function HomePage() {
                   href={`/race/${next.round}`}
                   className={buttonVariants({ variant: "primary" })}
                 >
-                  Next-round prediction →
+                  View snapshot forecast →
                 </Link>
                 <Link href="/standings" className={buttonVariants({ variant: "primary" })}>
                   Standings

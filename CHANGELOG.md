@@ -11,6 +11,16 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Published result coverage — 2026-10-06
+
+- Added independent offline coverage audits to F2/F3/IndyCar polls, including
+  no-work and failed-source runs. Past-due calendar gaps now fail a separate
+  check and appear in its summary; source availability remains explicitly
+  unverified by this audit.
+- Added homepage coverage panels with latest imported results, export dates and
+  past-due round links; labelled old snapshot forecasts accurately. No results
+  were imported or model performance claims changed.
+
 ### Forecast exploration and coherent probabilities — 2026-09-18
 
 - Added full-field exploration, side-by-side driver comparisons, favourite-versus-field

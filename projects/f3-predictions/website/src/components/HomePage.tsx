@@ -15,6 +15,8 @@
  * teams that run the grid, not a constructors' title.
  */
 import Link from "next/link";
+import ResultCoverage from "@/components/ResultCoverage";
+import { resultCoverage } from "@/lib/resultCoverage";
 
 import { getCircuit, getF3Data, getRound } from "@/lib/f3data";
 import { teamColor } from "@/lib/teams";
@@ -38,6 +40,9 @@ import FinalCTA from "@/components/marketing/FinalCTA";
 
 export default function HomePage() {
   const data = getF3Data();
+  const asOf = new Date().toISOString();
+  const coverage = resultCoverage(data.calendar, asOf);
+  const forecastPastDue = coverage.pastDue.some((round) => round.round === data.nextPrediction?.round);
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
@@ -123,19 +128,21 @@ export default function HomePage() {
               3 championship — from a model built for a spec series, where the
               cars are equal so driver skill rules. The sprint runs a reversed
               grid; the feature race is earned on merit. {data.completedRounds} of{" "}
-              {data.totalRounds} rounds complete, on the same MotorsportVerse core
+              {data.totalRounds} rounds with imported results, on the same MotorsportVerse core
               that powers RaceIQ F1.
             </p>
           </div>
+
+          <ResultCoverage calendar={data.calendar} generatedAt={data.generatedAt} asOf={asOf} />
 
           {/* ── Featured round + CTAs ── */}
           {next && nextCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
               <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant="live">Next up</Badge>
+                <Badge variant="default">{forecastPastDue ? "Past-due forecast" : "Snapshot forecast"}</Badge>
                 <span className="eyebrow">
                   R{next.round} · Sprint + Feature
-                  {nextCalendarRound.featureDate ? (
+                  {nextCalendarRound.featureDate && !forecastPastDue ? (
                     <>
                       {" · "}
                       <HeroCountdown targetDate={nextCalendarRound.featureDate} />
@@ -144,7 +151,7 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="mb-8">
-                <p className="eyebrow mb-2">Next round · Predicted next</p>
+                <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">{next.venueName}</h2>
                 <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
                   {nextCalendarRound.country ?? "Round " + next.round} · two races,
@@ -156,7 +163,7 @@ export default function HomePage() {
                   href={`/race/${next.round}`}
                   className={buttonVariants({ variant: "primary" })}
                 >
-                  Next-round prediction →
+                  View snapshot forecast →
                 </Link>
                 <Link href="/standings" className={buttonVariants({ variant: "primary" })}>
                   Standings

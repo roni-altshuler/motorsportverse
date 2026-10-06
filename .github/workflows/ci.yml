@@ -56,6 +56,9 @@ jobs:
           ruff check packages/motorsport-core packages/motorsport-data scripts \
             $(ls -d projects/*/ | grep -v f1-predictions)
 
+      - name: Test offline result-coverage detection
+        run: pytest scripts/tests/test_result_coverage.py -q
+
       - name: Test motorsport-core
         run: pytest packages/motorsport-core -q
 
