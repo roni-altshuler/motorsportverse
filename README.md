@@ -145,6 +145,8 @@ past-due gaps fail a separate coverage job without blocking valid updates.
 Homepage coverage, forecast badges and carousel labels recheck at hydration
 and hourly. A passed schedule date remains a snapshot forecast during the
 grace period, then becomes past due; time never marks a result as imported.
+Forecast status and calendar actions use the displayed prediction's own round,
+so an earlier coverage gap cannot mark a later forecast as past due.
 See the [verified findings and browser QA](docs/reviews/2026-10-06-result-coverage/README.md).
 
 ## How a series gets promoted

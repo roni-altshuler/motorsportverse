@@ -76,7 +76,7 @@ Do not bypass wrong-event guards or relabel a result to force ingestion.
 - Published-data integrity: **115 checks passed** across the three datasets.
   Separately, the new coverage audit correctly exits **1** for all three with
   the six/four/seven overdue counts above; it does not claim the data was fixed.
-- F2/F3/IndyCar: **79 / 75 / 75** frontend tests, typechecks, changed-file ESLint and production
+- F2/F3/IndyCar: **81 / 77 / 77** frontend tests, typechecks, changed-file ESLint and production
   static builds were run. `next lint` is unavailable in Next 16; direct ESLint
   used the installed Next core-web-vitals and TypeScript configs.
 - Shared-UI drift and workflow YAML parsing passed. Dependency declarations and
@@ -164,3 +164,36 @@ Preexisting calendar/navigation/live-context labels elsewhere still derive
 “next” from imported-round order. This bounded change fixes the reviewed
 homepage coverage/forecast/carousel path; broader navigation chronology remains
 follow-up work.
+
+### Forecast identity across earlier coverage gaps
+
+The homepage now resolves forecast metadata by `data.nextPrediction.round`,
+independently of the first unimported calendar round. The status badge,
+countdown, country/track metadata, calendar download and championship forecast
+context all receive the matching calendar entry. The coverage panel continues
+to assess every round; an old gap does not imply that a later forecast is past
+due. An unmatched forecast does not borrow an unrelated calendar entry.
+
+Two new **actual homepage integration tests per site** cover an unimported old
+R1, a later imported R2, and a future R3 forecast, plus an unmatched forecast.
+All six failed at the previous head and pass with the correction. They exercise
+the real coverage/status components and verify the future countdown, round
+link and calendar-action date while R1 remains a visible coverage gap.
+
+An isolated temporary F2 static build rendered the **actual homepage**, loading
+that explicitly labelled QA calendar through the normal loader. Desktop and
+mobile Chromium checks verified R3's snapshot badge/countdown/link, R1's
+keyboard-expandable coverage gap, and the actual downloaded calendar file's
+`DTSTART;VALUE=DATE:20261206`. Both had zero page errors and no overflow; a 404
+resource console error was recorded at each size. No temporary route or
+fixture dataset was added to the published site. The helper is
+`scripts/qa_homepage_forecast_gap.mjs`, run against a temporary static export
+with the fixture from `homepageForecastCoverage.test.tsx` and a
+`/forecast-gap-qa` wrapper importing the unchanged homepage component.
+
+See [browser results](homepage-gap-browser-qa.json),
+[desktop screenshot](forecast-gap-desktop.png) and
+[mobile screenshot](forecast-gap-mobile.png), with separate
+[desktop coverage](forecast-gap-coverage-desktop.png) and
+[mobile coverage](forecast-gap-coverage-mobile.png) captures. The three real static exports
+also passed the refreshed coverage/navigation browser checks.

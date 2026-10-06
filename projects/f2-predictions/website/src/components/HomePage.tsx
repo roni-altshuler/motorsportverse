@@ -44,8 +44,9 @@ export default function HomePage() {
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
   const nextRound =
     data.calendar.find((c) => !c.completed)?.round ?? null;
-  const nextCalendarRound = nextRound
-    ? data.calendar.find((c) => c.round === nextRound) ?? null
+  // Forecast metadata follows the displayed prediction, independently of older gaps.
+  const forecastCalendarRound = next
+    ? data.calendar.find((c) => c.round === next.round) ?? null
     : null;
   const roundsRemaining = data.totalRounds - data.completedRounds;
   const roundsScored = acc?.roundsScored ?? data.completedRounds;
@@ -132,14 +133,14 @@ export default function HomePage() {
           <ResultCoverage calendar={data.calendar} generatedAt={data.generatedAt} asOf={asOf} />
 
           {/* ── Featured round + CTAs ── */}
-          {next && nextCalendarRound ? (
+          {next && forecastCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
-              <SnapshotForecastStatus round={nextCalendarRound} asOf={asOf} description={`R${next.round} · Sprint + Feature`} />
+              <SnapshotForecastStatus round={forecastCalendarRound} asOf={asOf} description={`R${next.round} · Sprint + Feature`} />
               <div className="mb-8">
                 <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">{next.venueName}</h2>
                 <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
-                  {nextCalendarRound.country ?? "Round " + next.round} · two races,
+                  {forecastCalendarRound.country ?? "Round " + next.round} · two races,
                   modelled separately — reversed-grid sprint and merit feature.
                 </p>
               </div>
@@ -156,14 +157,14 @@ export default function HomePage() {
                 <Link href="/accuracy" className={buttonVariants({ variant: "ghost" })}>
                   Accuracy
                 </Link>
-                {nextCalendarRound.featureDate && (
+                {forecastCalendarRound.featureDate && (
                   <AddToCalendar
                     race={{
                       round: next.round,
                       name: next.venueName,
-                      circuit: nextCalendarRound.city,
-                      date: nextCalendarRound.featureDate,
-                      country: nextCalendarRound.country ?? undefined,
+                      circuit: forecastCalendarRound.city,
+                      date: forecastCalendarRound.featureDate,
+                      country: forecastCalendarRound.country ?? undefined,
                     }}
                     season={data.season}
                     variant="ghost"
@@ -270,7 +271,7 @@ export default function HomePage() {
               driverStandings={data.driverStandings}
               teamStandings={data.teamStandings}
               championship={data.championship}
-              nextRace={nextCalendarRound}
+              nextRace={forecastCalendarRound}
               roundsRemaining={roundsRemaining}
               totalRounds={data.totalRounds}
               seasonAccuracy={acc}

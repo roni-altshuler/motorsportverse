@@ -25,6 +25,8 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 - Corrected WRC's season-complete test boundary: validate every scheduled round
   and assert no next prediction after the final round, with pending/completed
   payload and calendar-boundary regressions.
+- Matched homepage forecast status, metadata and calendar actions to the
+  displayed prediction's round. Earlier coverage gaps remain visible separately.
 
 ### Forecast exploration and coherent probabilities — 2026-09-18
 
