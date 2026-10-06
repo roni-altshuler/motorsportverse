@@ -80,7 +80,58 @@ To finish the bounded pilot:
    offscreen/hidden pauses. The schematic must not claim telemetry or survey accuracy,
    or invent speed, spatial DRS, sector, tyre-stint or replay information.
 
-## Image verification regressions and browser evidence
+## Selection and keyboard focus — latest controlled browser evidence
+
+The previous shell used F1's shadcn `--accent` alias as a selection signal. That
+alias is dark `#1f1f1f`, and F1 has no `--accent-ink`. The new browser regression
+first failed on head `ca8a0a66b5210412db3d87350058bb11be0e343d`, measuring the
+expanded glyph at **1.12:1** against its background; see the
+[expected pre-fix failure](contrast-before.log).
+
+The explorer now uses supported **`--ink` / `--canvas`** values for the glyph,
+inverted selected markers, selected list borders and keyboard focus. Both tokens
+are explicitly present in all 11 copied sites. Global accents and token files
+are unchanged. A canvas backdrop beneath a focused map button keeps the outline
+legible over artwork. Scoped two-pixel focus utilities override F1's existing
+unlayered one-pixel global focus rule; the browser checks their actual computed
+width and style.
+
+The **20 controlled Chromium image cases still pass**. Desktop/mobile success
+cases additionally test collapsed/expanded glyphs, keyboard Tab navigation,
+arrow-key transfer of selection/focus, matching map/list pressed states, selected
+list focus and no horizontal overflow. Applying every site's real token CSS to
+the shared fixture gives **22 computed palette checks**. Assertions require at
+least 4.5:1 for glyph/marker text and 3:1 for selection/focus indicators.
+
+| Computed pair | F1 desktop | Minimum across 11 palettes, desktop/mobile |
+| --- | ---: | ---: |
+| Expanded glyph / header | 18.42:1 | 17.61:1 |
+| Selected marker text / fill | 21.00:1 | 18.54:1 |
+| Selected / unselected marker fill | 18.42:1 | 17.61:1 |
+| Selected list border / panel | 19.44:1 | 18.09:1 |
+| Selected / ordinary list border | 15.13:1 | 14.02:1 |
+| Focused map outline / canvas backdrop | 21.00:1 | 18.54:1 |
+
+Four screenshots were visually inspected: the selected Turn 3 marker is inverted,
+its matching row has a bright border, and keyboard focus is a separate two-pixel
+outline on both map and list at desktop/mobile sizes. This is a styled local
+synthetic fixture, not real-map approval or an audit of every production page.
+
+After the final focus-width correction, **1,752 frontend tests passed**, with eight
+existing hub skips; all **11 typechecks and static builds passed**. Relevant
+component/browser-script lint, shared drift and diff checks passed. Native browser
+QA records zero page errors, eight expected fault console errors and 20 created /
+20 exactly matching revoked image URLs. The shell still has 45 shared regressions
+per site; contrast assertions live in the controlled real-browser script.
+
+See [latest browser report](contrast-browser-qa.json) and
+[latest cross-site validation](contrast-validation.json). Screenshots:
+[desktop marker focus](contrast-marker-desktop.png) ·
+[mobile marker focus](contrast-marker-mobile.png) ·
+[desktop list focus](contrast-list-desktop.png) ·
+[mobile list focus](contrast-list-mobile.png).
+
+## Image verification regressions and earlier browser evidence
 
 The image-byte binding and decode gate address two independently reported shell
 defects: a valid manifest previously allowed changed image bytes at its declared
@@ -113,7 +164,7 @@ Reproduce after the F1 static build:
 node scripts/qa_circuit_explorer_image.mjs /tmp/motorsport-explorer-image-browser
 ```
 
-See [current cross-site validation](image-validation.json) and
+See [image verification cross-site validation](image-validation.json) and
 [controlled browser report](image-browser-qa.json). Fixture screenshots:
 [desktop success](image-fixture-valid-desktop.png) ·
 [mobile success](image-fixture-valid-mobile.png) ·

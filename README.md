@@ -54,6 +54,8 @@ is prepared but has no registered event or production-page integration. The
 shell binds reviewed image hashes to downloaded, decoded bytes and hides checked
 claims and controls on image failure, with retry and cleanup regressions. The
 Zandvoort pilot still needs source-byte inspection, hashing and real-map browser QA.
+Selected markers, list borders and keyboard focus now use the supported ink/canvas
+pair, with computed contrast checks across all 11 palettes and fixture screenshots.
 
 F2/F3 race disclosures distinguish existing outlines awaiting layout review from
 the unavailable interactive explorer, which requires a reviewed layout.

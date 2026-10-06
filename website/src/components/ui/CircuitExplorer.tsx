@@ -92,19 +92,19 @@ function CircuitExplorerView({ review, basePath }: { review: ExplorerReview; bas
     <section ref={root} className="border border-[color:var(--hairline)] bg-[color:var(--surface-soft)]" aria-label={`${review.title} circuit explorer`}>
       <button
         type="button" onClick={reveal} aria-expanded={open} aria-controls={`${id}-body`}
-        className="flex min-h-20 w-full items-center justify-between gap-4 px-5 py-5 text-left hover:bg-[color:var(--surface-card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
+        className="flex min-h-20 w-full items-center justify-between gap-4 px-5 py-5 text-left hover:bg-[color:var(--surface-card)] focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
       >
         <span><span className="eyebrow block text-[color:var(--muted)]">Venue guide</span><span className="title-md mt-1 block">Explore {review.title}</span></span>
-        <span aria-hidden="true" className="font-mono text-xl text-[color:var(--accent)]">{open ? "−" : "+"}</span>
+        <span aria-hidden="true" className="font-mono text-xl text-[color:var(--ink)]">{open ? "−" : "+"}</span>
       </button>
       <div id={`${id}-body`} hidden={!open}>
         {(loading || (loaded && !imageReady)) && <p role="status" className="body-sm border-t border-[color:var(--hairline)] p-5">Loading circuit schematic…</p>}
-        {failed && <div className="border-t border-[color:var(--hairline)] p-5"><p role="status" className="body-sm">Circuit explorer unavailable.</p><button type="button" onClick={() => void startLoading()} className="mt-3 min-h-11 border border-[color:var(--hairline)] px-4 py-2 focus-visible:outline-2 focus-visible:outline-offset-2">Try again</button></div>}
+        {failed && <div className="border-t border-[color:var(--hairline)] p-5"><p role="status" className="body-sm">Circuit explorer unavailable.</p><button type="button" onClick={() => void startLoading()} className="mt-3 min-h-11 border border-[color:var(--hairline)] px-4 py-2 focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]">Try again</button></div>}
         {loaded && schematic && (
           <div className="border-t border-[color:var(--hairline)]">
             {imageReady && <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--hairline)] px-5 py-4">
               <div><p className="eyebrow">{schematic.totalCorners} turns · {schematic.corners.length} highlights</p><p className="body-sm mt-1 text-[color:var(--muted)]">Schematic checked against {review.event.season} references</p></div>
-              {!reduced && <button type="button" aria-pressed={tour} onClick={() => setTour(value => !value)} className="min-h-11 border border-[color:var(--hairline-strong)] px-4 py-2 font-mono text-xs focus-visible:outline-2 focus-visible:outline-offset-2">{tour ? "Pause tour" : "Tour highlights"}</button>}
+              {!reduced && <button type="button" aria-pressed={tour} onClick={() => setTour(value => !value)} className="min-h-11 border border-[color:var(--hairline-strong)] px-4 py-2 font-mono text-xs focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]">{tour ? "Pause tour" : "Tour highlights"}</button>}
             </div>}
             <div className={imageReady ? "grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]" : ""}>
               <div className="p-6 sm:p-8">
@@ -126,18 +126,18 @@ function CircuitExplorerView({ review, basePath }: { review: ExplorerReview; bas
                           : ["ArrowLeft", "ArrowUp"].includes(event.key) ? (index + schematic.corners.length - 1) % schematic.corners.length : null;
                         if (next !== null) { event.preventDefault(); select(schematic.corners[next].number); hotspots.current[next]?.focus(); }
                       }}
-                      className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
+                      className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center focus-visible:bg-[color:var(--canvas)] focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
                       style={{ left: `${entry.x * 100}%`, top: `${entry.y * 100}%` }}>
-                      <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center rounded-full border-2 font-mono text-xs font-bold" style={{ background: selected === entry.number ? "var(--accent)" : "var(--surface-card)", color: selected === entry.number ? "var(--accent-ink)" : "var(--ink)", borderColor: "var(--ink)" }}>{entry.number}</span>
+                      <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center rounded-full border-2 font-mono text-xs font-bold" style={{ background: selected === entry.number ? "var(--ink)" : "var(--surface-card)", color: selected === entry.number ? "var(--canvas)" : "var(--ink)", borderColor: "var(--ink)" }}>{entry.number}</span>
                     </button>
                   ))}
                 </div>
               </div>
               {imageReady && <div className="border-t border-[color:var(--hairline)] p-5 lg:border-l lg:border-t-0 sm:p-7">
                 <p className="eyebrow mb-4 text-[color:var(--muted)]">Choose a corner</p>
-                <ol className="space-y-2">{schematic.corners.map(entry => <li key={entry.number}><button type="button" aria-pressed={selected === entry.number} aria-controls={`${id}-corner`} onClick={() => select(entry.number)} className="flex min-h-12 w-full items-center gap-4 border px-4 py-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2" style={{ borderColor: selected === entry.number ? "var(--accent)" : "var(--hairline)" }}><span className="font-mono text-sm text-[color:var(--muted)]">T{String(entry.number).padStart(2, "0")}</span><span className="body-sm">{entry.name}</span></button></li>)}</ol>
+                <ol className="space-y-2">{schematic.corners.map(entry => <li key={entry.number}><button type="button" aria-pressed={selected === entry.number} aria-controls={`${id}-corner`} onClick={() => select(entry.number)} className="flex min-h-12 w-full items-center gap-4 border px-4 py-3 text-left focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]" style={{ borderColor: selected === entry.number ? "var(--ink)" : "var(--hairline)" }}><span className="font-mono text-sm text-[color:var(--muted)]">T{String(entry.number).padStart(2, "0")}</span><span className="body-sm">{entry.name}</span></button></li>)}</ol>
                 <div id={`${id}-corner`} aria-live="polite" className="mt-6 border-t border-[color:var(--hairline)] pt-5">
-                  {corner && <><p className="eyebrow text-[color:var(--accent)]">Turn {corner.number}</p><h3 className="title-md mt-2">{corner.name}</h3><p className="body-sm mt-3 text-[color:var(--body)]">{corner.description}</p></>}
+                  {corner && <><p className="eyebrow text-[color:var(--ink)]">Turn {corner.number}</p><h3 className="title-md mt-2">{corner.name}</h3><p className="body-sm mt-3 text-[color:var(--body)]">{corner.description}</p></>}
                 </div>
                 <p className="body-sm mt-6 text-[color:var(--muted)]">Select a marker or use the list. Arrow keys move between map highlights.</p>
               </div>}

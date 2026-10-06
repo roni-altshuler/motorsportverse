@@ -17,6 +17,8 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   byte counts and decoded dimensions; render verified blob bytes.
 - Gate checked claims and controls on actual image loading; image failure clears
   them and offers retry, with cancellation and object URL cleanup.
+- Corrected faint F1 explorer glyph/selection styling with the supported ink/canvas
+  pair and scoped two-pixel keyboard focus, checked against all 11 site palettes.
 - Added controlled fixture browser/regression evidence. No real map is approved,
   registered or exposed; Zandvoort source uploads and real-map review remain pending.
 

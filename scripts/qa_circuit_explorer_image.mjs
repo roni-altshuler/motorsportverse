@@ -16,6 +16,73 @@ await mkdir(output, { recursive: true });
 const fixture = JSON.parse(execFileSync(resolve(site, 'node_modules/.bin/tsx'), ['-e', 'import { schematic, review, pngBase64 } from "./src/test-support/circuitExplorer"; process.stdout.write(JSON.stringify({ schematic, review, pngBase64 }));'], { cwd: site, encoding: 'utf8' }));
 const png = Buffer.from(fixture.pngBase64, 'base64');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const palettes = await Promise.all(['f1', 'f2', 'f3', 'formula-e', 'nascar', 'indycar', 'motogp', 'wrc', 'wec', 'imsa', 'hub'].map(async name => {
+  const directory = name === 'hub' ? resolve(root, 'website') : resolve(root, `projects/${name}-predictions/website`);
+  const css = await readFile(resolve(directory, 'src/styles/tokens.css'), 'utf8');
+  for (const token of ['ink', 'canvas']) assert.match(css, new RegExp(`--${token}:\\s*#[0-9a-f]{6}`, 'i'), `${name}: supported ${token} token`);
+  return { name, css };
+}));
+function contrast(first, second) {
+  const luminance = color => {
+    const rgb = color.match(/^rgb\((\d+), (\d+), (\d+)\)$/);
+    assert.ok(rgb, `expected opaque computed color: ${color}`);
+    const values = rgb.slice(1).map(value => {
+      const channel = Number(value) / 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    });
+    return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
+  };
+  const values = [luminance(first), luminance(second)].sort((a, b) => b - a);
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
+async function selectedStyles(page) {
+  return page.evaluate(() => {
+    const root = document.querySelector('section[aria-label="QA venue circuit explorer"]');
+    const paintedBackground = element => {
+      for (let current = element; current; current = current.parentElement) {
+        const color = getComputedStyle(current).backgroundColor;
+        if (color !== 'rgba(0, 0, 0, 0)') return color;
+      }
+      throw new Error('No opaque background');
+    };
+    const tokenColor = token => {
+      const probe = document.createElement('span'); probe.style.color = `var(--${token})`; root.append(probe);
+      const color = getComputedStyle(probe).color; probe.remove(); return color;
+    };
+    const marker = root.querySelector('button[aria-label^="Show Turn"][aria-pressed="true"] span');
+    const otherMarker = root.querySelector('button[aria-label^="Show Turn"][aria-pressed="false"] span');
+    const list = root.querySelector('ol button[aria-pressed="true"]');
+    const otherList = root.querySelector('ol button[aria-pressed="false"]');
+    const header = root.querySelector('button[aria-expanded]');
+    const focused = root.querySelector('button:focus-visible');
+    if (!focused) throw new Error('Expected keyboard focus-visible');
+    const focus = getComputedStyle(focused);
+    return {
+      ink: tokenColor('ink'), canvas: tokenColor('canvas'),
+      glyph: getComputedStyle(header.querySelector('[aria-hidden]')).color, headerBackground: paintedBackground(header),
+      markerBackground: getComputedStyle(marker).backgroundColor, markerForeground: getComputedStyle(marker).color,
+      otherMarkerBackground: getComputedStyle(otherMarker).backgroundColor,
+      listBorder: getComputedStyle(list).borderTopColor, listBackground: paintedBackground(list),
+      otherListBorder: getComputedStyle(otherList).borderTopColor,
+      focus: { name: focused.getAttribute('aria-label') || focused.textContent, color: focus.outlineColor, width: focus.outlineWidth, style: focus.outlineStyle, offset: focus.outlineOffset, background: paintedBackground(focused) },
+    };
+  });
+}
+function assertSelectedContrast(styles, label) {
+  const ratios = {
+    glyph: contrast(styles.glyph, styles.headerBackground),
+    markerText: contrast(styles.markerForeground, styles.markerBackground),
+    markerSelection: contrast(styles.markerBackground, styles.otherMarkerBackground),
+    listBorder: contrast(styles.listBorder, styles.listBackground),
+    listSelection: contrast(styles.listBorder, styles.otherListBorder),
+    keyboardFocus: contrast(styles.focus.color, styles.focus.background),
+  };
+  for (const [name, ratio] of Object.entries(ratios)) assert.ok(ratio >= (['glyph', 'markerText'].includes(name) ? 4.5 : 3), `${label}: ${name} contrast ${ratio.toFixed(2)}:1`);
+  assert.equal(styles.markerBackground, styles.ink); assert.equal(styles.markerForeground, styles.canvas);
+  assert.equal(styles.listBorder, styles.ink); assert.equal(styles.focus.color, styles.ink);
+  assert.ok(parseFloat(styles.focus.width) >= 2, `${label}: focus outline ${JSON.stringify(styles.focus)}`); assert.equal(styles.focus.style, 'solid');
+  return { styles, ratios };
+}
 const modes = ['valid', 'hash-mismatch', 'dimensions', 'corrupt', 'missing', 'retry', 'reopen', 'render-error', 'decode-delay', 'cancel-decode'];
 const configs = {}, requests = {};
 for (const mode of modes) for (const size of ['desktop', 'mobile']) {
@@ -91,7 +158,20 @@ try {
     await page.goto(`${url}/case/${id}/`, { waitUntil: 'networkidle' });
     const launch = page.getByRole('button', { name: /Explore QA venue/ });
     await launch.waitFor(); assert.equal(requests[id].manifests + requests[id].images, 0);
+    let collapsedGlyph;
+    if (mode === 'valid') {
+      collapsedGlyph = await launch.evaluate(button => {
+        const glyph = button.querySelector('[aria-hidden]');
+        let current = button;
+        while (current && getComputedStyle(current).backgroundColor === 'rgba(0, 0, 0, 0)') current = current.parentElement;
+        return { text: glyph.textContent, foreground: getComputedStyle(glyph).color, background: getComputedStyle(current).backgroundColor };
+      });
+      assert.equal(collapsedGlyph.text, '+');
+      collapsedGlyph.contrast = contrast(collapsedGlyph.foreground, collapsedGlyph.background);
+      assert.ok(collapsedGlyph.contrast >= 4.5, `${id}: collapsed glyph contrast`);
+    }
     await launch.click();
+    let selectionEvidence;
     const assertAbsent = async () => {
       assert.equal(await page.getByRole('button', { name: /Show Turn|Tour highlights|Pause tour/ }).count(), 0);
       assert.equal(await page.getByText(/checked against/).count(), 0);
@@ -119,6 +199,31 @@ try {
       if (mode === 'reopen') { await launch.click(); await launch.click(); await ready(); }
     } else {
       await ready(); assert.equal(requests[id].images, 1);
+      if (mode === 'valid') {
+        // Traverse actual keyboard stops, then transfer map selection with an arrow.
+        await launch.focus(); await page.keyboard.press('Tab'); await page.keyboard.press('Tab');
+        const first = page.getByRole('button', { name: 'Show Turn 1: QA first' });
+        assert.ok(await first.evaluate(element => element === document.activeElement && element.matches(':focus-visible')));
+        const initial = assertSelectedContrast(await selectedStyles(page), `${id}: Turn 1 focus`);
+        await page.keyboard.press('ArrowRight');
+        const middle = page.getByRole('button', { name: 'Show Turn 3: QA middle' });
+        assert.ok(await middle.evaluate(element => element === document.activeElement && element.getAttribute('aria-pressed') === 'true'));
+        assert.equal(await first.getAttribute('aria-pressed'), 'false');
+        assert.equal(await page.getByRole('button', { name: 'T03 QA middle' }).getAttribute('aria-pressed'), 'true');
+        const byPalette = [];
+        for (const palette of palettes) {
+          const style = await page.addStyleTag({ content: palette.css });
+          byPalette.push({ site: palette.name, ...assertSelectedContrast(await selectedStyles(page), `${id}: ${palette.name}`) });
+          await style.evaluate(element => element.remove());
+        }
+        await page.screenshot({ path: resolve(output, `${id}-marker-focus.png`), fullPage: true });
+        await page.keyboard.press('Tab'); await page.keyboard.press('Tab'); await page.keyboard.press('Tab');
+        const list = page.getByRole('button', { name: 'T03 QA middle' });
+        assert.ok(await list.evaluate(element => element === document.activeElement && element.matches(':focus-visible')));
+        const listFocus = assertSelectedContrast(await selectedStyles(page), `${id}: selected list focus`);
+        assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${id}: horizontal overflow`);
+        selectionEvidence = { collapsedGlyph, initial, byPalette, listFocus };
+      }
       if (mode === 'render-error') {
         await page.getByRole('img').evaluate(image => { image.src = 'blob:invalid-for-controlled-test'; });
         await page.getByText('Circuit explorer unavailable.', { exact: true }).waitFor(); await assertAbsent();
@@ -134,9 +239,9 @@ try {
     const expectedError = ['missing', 'retry', 'reopen'].includes(mode) ? /404/ : mode === 'render-error' ? /blob:invalid-for-controlled-test/ : null;
     assert.equal(errors.length, expectedError ? 1 : 0, `${id}: unexpected browser errors`);
     if (expectedError) assert.match(errors[0].message, expectedError);
-    results.push({ mode, viewport: size, fixtureOnly: true, styles: 'F1 static export', requests: requests[id], createdUrls: urls.created.length, revokedUrls: urls.revoked.length, assertions: 'passed', errors });
+    results.push({ mode, viewport: size, fixtureOnly: true, styles: 'F1 static export', selectionEvidence, requests: requests[id], createdUrls: urls.created.length, revokedUrls: urls.revoked.length, assertions: 'passed', errors });
     await context.close();
   }
 } finally { await browser.close(); await new Promise(resolve => server.close(resolve)); }
 await writeFile(resolve(output, 'browser-qa.json'), JSON.stringify(results, null, 2) + '\n');
-console.log(JSON.stringify(results.map(({ errors, ...result }) => ({ ...result, consoleErrors: errors.length })), null, 2));
+console.log(JSON.stringify(results.map(({ errors, selectionEvidence, ...result }) => ({ ...result, selectionPalettesChecked: selectionEvidence?.byPalette.length ?? 0, consoleErrors: errors.length })), null, 2));
