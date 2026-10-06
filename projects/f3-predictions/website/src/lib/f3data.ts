@@ -4,8 +4,7 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { assessCircuitGeometry } from "./circuitGeometry";
-import { CIRCUIT_GEOMETRY_REVIEWS } from "./circuitGeometryReviews";
+import { assessCircuitOutline } from "./circuitGeometry";
 
 import type { CircuitGeometry, CircuitLibrary } from "@/types/circuit";
 import type {
@@ -104,9 +103,9 @@ export function getCircuit(venueKey: string | undefined | null): CircuitGeometry
   const catalog = Object.entries(library).map(([key, geometry]) => ({
     series: "f3", season: data.season, venueKey: key, geometry,
   }));
-  return assessCircuitGeometry(
+  return assessCircuitOutline(
     { series: "f3", season: data.season, venueKey, layoutId: event.layoutId },
-    library[venueKey], catalog, CIRCUIT_GEOMETRY_REVIEWS,
+    library[venueKey], catalog,
   ).geometry;
 }
 

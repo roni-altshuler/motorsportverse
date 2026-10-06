@@ -5,8 +5,8 @@ export default function CircuitMapUnavailable({ venue }: { venue?: string | null
       <p className="eyebrow text-[color:var(--ink)]">Circuit map unavailable</p>
       <p className="mt-3 text-sm text-[color:var(--muted)]">
         {venue
-          ? `A verified layout is not published for ${venue}.`
-          : "A verified layout is not published for this event."}
+          ? `A circuit layout is not available for ${venue}.`
+          : "A circuit layout is not available for this event."}
       </p>
     </div>
   );

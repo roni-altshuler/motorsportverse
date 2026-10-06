@@ -1,6 +1,6 @@
 import type { CircuitGeometryReview } from "./circuitGeometry";
 
-// No existing export records its resolved source session/year, verified layout,
-// and reuse evidence. Do not turn provider labels or generatedAt into approval.
+// New explorer review only. No existing candidate has a reviewed configuration,
+// source-appropriate provenance and reuse evidence. Legacy display is separate.
 // Add an entry only with the evidence contract in docs/CIRCUIT_GEOMETRY.md.
 export const CIRCUIT_GEOMETRY_REVIEWS: readonly CircuitGeometryReview[] = [];

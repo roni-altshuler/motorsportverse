@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   assessCircuitGeometry,
+  assessCircuitOutline,
   circuitGeometrySignature,
   type CircuitGeometryReview,
   type CircuitIdentity,
@@ -27,6 +28,7 @@ function review(): CircuitGeometryReview {
     layoutId: "qa-layout",
     geometrySignature: circuitGeometrySignature(geometry),
     source: {
+      kind: "telemetry",
       season: 2025,
       event: "QA event",
       session: "R",
@@ -53,6 +55,19 @@ describe("circuit identity and provenance gate", () => {
   });
   it("treats absent geometry as missing", () => {
     expect(assessCircuitGeometry(identity, null).status).toBe("missing");
+  });
+  it("accepts a reviewed geographic source without inventing a timed session", () => {
+    const entry = review();
+    entry.source = {
+      kind: "geographic",
+      revision: "QA map revision 1",
+      venueKey: "qa-venue",
+      layoutId: "qa-layout",
+      url: "https://example.com/qa-map",
+    };
+    expect(assessCircuitGeometry(identity, geometry, [], [entry]).status).toBe("verified");
+    entry.source.revision = "";
+    expect(assessCircuitGeometry(identity, geometry, [], [entry]).status).toBe("review-invalid");
   });
   it("does not approve provider labels, timestamps, or self-declared verification", () => {
     const candidate = { ...geometry, source: "fastf1", generatedAt: "2026-10-06", verified: true };
@@ -157,6 +172,37 @@ describe("circuit identity and provenance gate", () => {
   });
 });
 
+describe("legacy outline eligibility is separate from explorer approval", () => {
+  it("preserves existing unreviewed geometry without approving an explorer", () => {
+    expect(assessCircuitOutline(identity, geometry).geometry).toBe(geometry);
+    expect(assessCircuitOutline(identity, geometry).status).toBe("legacy-unreviewed");
+    expect(assessCircuitGeometry(identity, geometry).geometry).toBeNull();
+  });
+  it("preserves a nonconflicting outline when its season context is unavailable", () => {
+    expect(assessCircuitOutline({ series: "qa", venueKey: "qa-venue" }, geometry).geometry).toBe(
+      geometry,
+    );
+  });
+  it("suppresses only ambiguous corner markers, retaining the outline and unambiguous markers", () => {
+    const candidate = {
+      ...geometry,
+      corners: [geometry.corners[0], geometry.corners[0], { number: 2, x: 90, y: 90 }],
+    };
+    const result = assessCircuitOutline(identity, candidate);
+    expect(result.geometry?.path).toBe(candidate.path);
+    expect(result.geometry?.corners).toEqual([{ number: 2, x: 90, y: 90 }]);
+    expect(result.cornersSuppressed).toBe(true);
+    expect(candidate.corners).toHaveLength(3);
+    expect(assessCircuitGeometry(identity, candidate, [], [review()]).status).toBe("invalid");
+  });
+  it("rejects confirmed cross-venue conflicts for legacy outlines too", () => {
+    expect(
+      assessCircuitOutline(identity, geometry, [{ ...identity, venueKey: "other", geometry }])
+        .geometry,
+    ).toBeNull();
+  });
+});
+
 describe("committed geometry regression", () => {
   // All independent site test jobs run in this monorepo. Locate its data root.
   const root = resolve(
@@ -188,7 +234,29 @@ describe("committed geometry regression", () => {
             CIRCUIT_GEOMETRY_REVIEWS,
           ),
         ).toEqual({ status: "identity-conflict", geometry: null });
+        expect(
+          assessCircuitOutline({ series, season: 2026, venueKey }, candidate).geometry,
+        ).toBeNull();
       }
+    },
+  );
+  it.each(["f1", "f2", "f3"])(
+    "keeps the actual Hungaroring outline while suppressing duplicate numbers in %s",
+    (series) => {
+      const dataRoot = resolve(root, `projects/${series}-predictions/website/public/data`);
+      const candidate: CircuitShape =
+        series === "f1"
+          ? JSON.parse(readFileSync(resolve(dataRoot, "rounds/round_11.json"), "utf8")).circuitInfo
+              .geometry
+          : JSON.parse(readFileSync(resolve(dataRoot, "circuits.json"), "utf8")).hungaroring;
+      const result = assessCircuitOutline(
+        { series, season: 2026, venueKey: series === "f1" ? "Hungary" : "hungaroring" },
+        candidate,
+      );
+      expect(result.geometry?.path).toBe(candidate.path);
+      expect(result.geometry?.corners.some((c) => c.number === 1 || c.number === 12)).toBe(false);
+      expect(result.geometry?.corners).toHaveLength(12);
+      expect(candidate.corners).toHaveLength(16);
     },
   );
 });

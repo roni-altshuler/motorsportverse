@@ -18,8 +18,6 @@ export type VenueKind = "street" | "circuit";
 export interface CalendarRound {
   round: number;
   key: string;
-  /** Verified event configuration; omitted in legacy exports. */
-  layoutId?: string;
   name: string;
   country: string | null;
   kind: VenueKind;

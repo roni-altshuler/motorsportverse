@@ -22,8 +22,6 @@ export type VenueKind = "oval" | "circuit" | "street";
 export interface CalendarRound {
   round: number;
   key: string;
-  /** Verified event configuration; omitted in legacy exports. */
-  layoutId?: string;
   name: string;
   /** Marketing race title, e.g. "DAYTONA 500". */
   raceName?: string;

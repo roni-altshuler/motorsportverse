@@ -13,13 +13,14 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ### Circuit identity and provenance guard — 2026-10-06
 
-- Added a shared reviewed-geometry gate and read-only per-series coverage audit;
-  quarantined identical Austria/Silverstone outlines and rejected ambiguous
-  corner identifiers. Stored paths and provider labels do not imply verification.
-- Gated existing SVG map loaders, preserved raw exports and venue facts, and
-  replaced F1's generic fallback outline with an explicit unavailable state.
-- Deferred the interactive circuit explorer until source-session/layout and
-  reuse evidence exists. No new geometry, replay integration or provider crawl.
+- Added separate legacy-outline and new-explorer eligibility checks and a
+  read-only per-series inventory. Missing reviews do not remove existing display.
+- Quarantined confirmed identical Austria/Silverstone outlines; suppressed
+  ambiguous corner markers while preserving their outline and other markers.
+- Preserved the existing decorative F1 sweep and nonconflicting maps without
+  calling them verified; removed F1's invented generic fallback.
+- The interactive explorer remains unfinished pending source-appropriate
+  configuration/provenance and reuse evidence. No new geometry or provider crawl.
 
 ### Published result coverage — 2026-10-06
 

@@ -4,6 +4,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   assessCircuitGeometry,
+  assessCircuitOutline,
   type CircuitCandidate,
   type CircuitShape,
 } from "../projects/f1-predictions/website/src/lib/circuitGeometry";
@@ -81,6 +82,8 @@ export function auditCircuitGeometry(repoRoot = root) {
       round: data.calendar[index].round,
       venueKey: candidate.venueKey,
       venue: data.calendar[index].circuit ?? data.calendar[index].name,
+      outlineStatus: assessCircuitOutline(candidate, candidate.geometry, candidates).status,
+      cornerMarkersSuppressed: assessCircuitOutline(candidate, candidate.geometry, candidates).cornersSuppressed ?? false,
       status: assessCircuitGeometry(
         candidate,
         candidate.geometry,
@@ -92,6 +95,7 @@ export function auditCircuitGeometry(repoRoot = root) {
       series,
       rounds: data.calendar.length,
       stored: candidates.filter((entry) => entry.geometry?.path).length,
+      legacyDisplay: entries.filter((entry) => entry.outlineStatus === "legacy-unreviewed").length,
       verified: entries.filter((entry) => entry.status === "verified").length,
       status: "audited",
       entries,

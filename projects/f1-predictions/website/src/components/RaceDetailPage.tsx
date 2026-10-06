@@ -507,6 +507,9 @@ export default function RaceDetailPage({ round }: Props) {
                   strokeWidth={2.5}
                   accentColor="var(--ink)"
                 />
+                <p className="absolute inset-x-0 bottom-2 text-center text-xs text-[color:var(--muted)]">
+                  Layout review pending
+                </p>
               </div>
             ) : (
               <div

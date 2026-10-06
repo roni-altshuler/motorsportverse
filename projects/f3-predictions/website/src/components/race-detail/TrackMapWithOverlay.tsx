@@ -35,7 +35,7 @@ export default function TrackMapWithOverlay({
       kicker={kicker}
       title={title}
       rightSlot={
-        <span className="eyebrow">{hasGeometry ? "Vector layout" : "Map unavailable"}</span>
+        <span className="eyebrow">{hasGeometry ? "Layout review pending" : "Map unavailable"}</span>
       }
       className={className}
       bodyClassName="p-0"

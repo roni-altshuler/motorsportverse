@@ -1,87 +1,83 @@
-# Circuit provenance guard — 6 October 2026
+# Circuit identity guard revision — 6 October 2026
 
-This is the approved fallback for the proposed cross-series circuit explorer.
-The inventory found no existing geometry with complete source-session/layout and
-reuse evidence. An interactive explorer was therefore **not shipped**. Existing
-SVG map loaders now reject unreviewed/conflicting geometry; the raw corpus remains
-unchanged. F1's generic fallback outline is replaced by a compact unavailable
-state, using the original series tokens. F2/F3's existing disclosure remains
-keyboard accessible and no longer claims shared geometry is ready.
+The requested interactive **Explore circuit** feature remains **unfinished**.
+This revision separates legacy display from new explorer approval. Missing review
+records no longer strip all F1/F2/F3 geometry or the decorative F1 ribbon.
+**43 stored paths / 168 calendar rounds; 37 legacy outlines retained; zero
+explorer-reviewed layouts.** See [coverage and prerequisites](../../CIRCUIT_GEOMETRY.md)
+and the [read-only inventory](coverage-audit.json).
 
-See [the coverage table and prerequisite](../../CIRCUIT_GEOMETRY.md) and the
-machine-readable [coverage audit](coverage-audit.json). Stored coverage is
-43/168 calendar rounds; eligible coverage is 0/168. The audit reports six
-Austria/Silverstone identity conflicts, three ambiguous Hungaroring corner-number
-representations, 34 unreviewed paths and 125 missing paths. Le Mans has no website
-or calendar and is recorded separately.
+Confirmed Austria/Silverstone conflicts remain quarantined without relabelling
+which venue is correct. Hungaroring retains its outline and 12 unambiguous markers;
+only repeated numbers 1/12 are suppressed, without invented suffixes. The generator
+drops FastF1's Letter field, so duplicate numbers do not establish a wrong outline.
+The generic F1 fallback is removed. Other sites' loaders/presentation stay unchanged;
+there are no new empty explorer panels. No raw data, package/lockfiles or replay
+behavior changed.
 
-## Verification
+## Validation
 
-- **1,157 frontend tests passed**, with **eight existing hub skips**, across all
-  ten series websites plus the hub. Wrong season/series/venue/layout, conflicting
-  outlines, missing/incomplete evidence, changed coordinates, malformed corners
-  and real stored duplicates are covered. Synthetic accepted-path tests are
-  explicitly QA-only and their reviews are never in the product registry.
-- All **11 site typechecks and static builds passed**. F1 used
-  `next build --webpack` directly to avoid its unrelated image-generation
-  prebuild; it produced the real static site used below. The other sites used
-  their existing build command. The previously missing Jest matcher type import
-  is supplied by the new DOM test. Four unsupported Testing Library `exact`
-  options in existing hub role queries were removed; those queries already use
-  exact string-name matching.
-- ESLint passed for the new guard, unavailable component, tests, audit script and
-  adapted map loaders. The full F2 RaceDetail file retains its preexisting
-  `react-hooks/set-state-in-effect` error in the archival overlay effect,
-  unchanged from merged base `71ee2a6`. Broader legacy-component lint cleanup is
-  outside this guard. Two existing `prefer-const` errors in the touched F2/F3
-  loaders were corrected without changing behavior.
-- Shared-copy drift and `git diff --check` passed. All **407 published-corpus
-  checks passed**. No package manifest, lockfile or published-data file changed.
-  Six existing site locks omit declared test dependencies; local installs used
-  `npm install --ignore-scripts --package-lock=false`, preserving those files.
-- The ordinary circuit inventory exits 0 after producing its report. The same
-  command with `--require-verified` correctly exits **1** for current coverage.
-  CI labels the ordinary inventory **report only**; green regression tests are
-  not a claim of verified map coverage.
+- **1,253 frontend tests passed**, eight existing hub skips; all **11 explicit
+  typechecks and static builds passed**. F1's actual static export was built with
+  `next build --webpack`, bypassing its unrelated image-generation prebuild.
+  The generic frontend CI still skips F1's build; a CI test pass is not a claim
+  that it ran that build. See [validation](validation.json).
+- New guard/component/tests, F1 loader/RaceDetail and touched F2/F3 loader/panel
+  ESLint passed using the existing F1 config. The unchanged full F2 RaceDetail
+  archival-overlay effect retains its preexisting hook-lint error. No clean
+  whole-site lint claim is made.
+- Shared-copy drift, diff checks and all **407 published-corpus checks passed**.
+  The report-only inventory separates legacy outline, corner and explorer states;
+  `--require-verified` still correctly exits 1 for current explorer coverage.
 
-## Actual browser QA
+## Browser evidence
 
-`node scripts/qa_circuit_geometry.mjs <output-dir>` serves the actual static
-exports and uses existing Playwright with system Chromium. The clock is fixed
-to 6 October 2026 at 12:00 UTC. It checks **48 actual race-page cases**: four rounds
-per F1/F2/F3, two viewports (1440/390 pixels) and both motion preferences.
+`node scripts/qa_circuit_geometry.mjs <output-dir>` serves actual static exports
+with system Chromium and the installed Playwright. It checks **64 actual race
+cases** (F1/F2/F3, 1440/390 pixels, normal/reduced motion): quarantined maps,
+positive Monaco/Australia maps, retained Hungaroring outlines with ambiguous
+markers suppressed, and F2's missing Miami map. Existing F2/F3 native disclosures
+are checked by keyboard through open/close/reopen. No map clipping or horizontal
+overflow was observed in these cases, and no replay requests were made.
 
-All map rejection, readable-state, clipping, horizontal-overflow, native keyboard
-disclosure and reopening assertions passed. The native disclosure is the existing
-F2/F3 interaction; F1's absence is static. Homepages contain no gated-out circuit
-ribbon, and there are **zero replay requests**. The unavailable state has no SVG,
-image, controls or animation, including while closed/offscreen. This does not
-claim that other preexisting page animations or `RaceTheatre` redraws were fixed.
+There are **four positive F1 home cases**, selecting the real Monaco event with
+an advancing clock starting 5 June 2026. The headline is visible and the ribbon
+path equals the actual stored Monaco path. CSS dash offset moves under the 14s
+infinite sweep with normal motion; reduced motion keeps the ribbon present with
+one near-zero-duration iteration and a stable dash offset. The advancing wall clock leaves native performance/animation timing intact,
+and finite headline entrance animations settle before screenshots. This preserves existing
+motion, without claiming to fix offscreen behavior or deliver an explorer.
 
+Hero screenshots:
+[desktop normal](f1-hero-desktop-no-preference.png) ·
+[desktop reduced](f1-hero-desktop-reduce.png) ·
+[mobile normal](f1-hero-mobile-no-preference.png) ·
+[mobile reduced](f1-hero-mobile-reduce.png).
+
+Preserved map screenshots:
+[F1 desktop](f1-preserved-desktop.png) · [F1 mobile](f1-preserved-mobile.png) ·
+[F2 desktop](f2-preserved-desktop.png) · [F2 mobile](f2-preserved-mobile.png) ·
+[F3 desktop](f3-preserved-desktop.png) · [F3 mobile](f3-preserved-mobile.png).
+
+Quarantine screenshots:
 [F1 desktop](f1-desktop.png) · [F1 mobile](f1-mobile.png) ·
 [F2 desktop](f2-desktop.png) · [F2 mobile](f2-mobile.png) ·
 [F3 desktop](f3-desktop.png) · [F3 mobile](f3-mobile.png).
 
-The [full report](browser-qa.json) retains errors and failed resources rather
-than hiding them. F1 had **zero page errors** in all four viewport/motion runs,
-but remote-asset console failures remained. F2/F3 reduced-motion runs each
-recorded the existing React hydration error #418, with asset failures in both
-motion modes. This is not an error-free whole-site QA result. The prior merged
-coverage work reproduced F2/F3 hydration errors at the unchanged base; see
-[its baseline comparison](../2026-10-06-result-coverage/baseline-comparison.json).
+The [full browser report](browser-qa.json) retains console/page errors and failed
+resources. Asset failures remain recorded; prior F2/F3 hydration #418 is documented at
+baseline. This is not a clean whole-site browser result. [The prior baseline comparison](../2026-10-06-result-coverage/baseline-comparison.json)
+records F2/F3 hydration at the unchanged base. The [initial-guard comparison](baseline-comparison.json)
+is explicitly historical at fb922e2, not evidence for the revised hero.
 
-A separately built archive of merged main `71ee2a6` was compared with the final
-F1 export under the same fixed clock and both viewport sizes. After waiting for
-the actual race heading, the base rendered one Silverstone circuit SVG and the
-guarded build rendered none. Both builds had zero page errors in that paired
-home/race check; see [the comparison](baseline-comparison.json). The baseline
-comparison does not establish that the base SVG depicted the correct venue.
+## Scope and next prerequisite
 
-## Scope preserved
+Monaco is the first candidate: identical existing F1/F2/F3 paths and 19 unique
+markers, with official 2026 venue/length facts. A viewable current layout reference,
+source-appropriate provenance and documented reuse basis are still required;
+older freely licensed diagrams do not approve our telemetry path. Geographic
+sources need a pinned revision, not a timed session. No layout is approved here.
 
-PR10's exact head was verified as an ancestor of its merge commit
-`71ee2a6d15a80d1b3617501a031caa2f2efcc527`. Its remote branch was deleted only with
-an exact-head lease for `e9267b8`; the PR and local recovery branch remain.
-This work starts on that merged main commit in a separate branch. No merge,
-production dispatch, new credentials, broad provider collection, model change,
-data replacement or laptop-branch transfer occurred.
+PR10 merge ancestry/local recovery, main and laptop-only work are preserved.
+No merge, production dispatch, provider crawl, new credentials, model change or
+laptop branch transfer occurred. This remains a draft for independent review.

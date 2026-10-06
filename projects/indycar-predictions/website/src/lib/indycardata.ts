@@ -5,8 +5,6 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { assessCircuitGeometry } from "./circuitGeometry";
-import { CIRCUIT_GEOMETRY_REVIEWS } from "./circuitGeometryReviews";
 
 import type { CircuitGeometry, CircuitLibrary } from "@/types/circuit";
 import type {
@@ -99,17 +97,7 @@ export function getCircuits(): CircuitLibrary {
 }
 export function getCircuit(venueKey: string | undefined | null): CircuitGeometry | null {
   if (!venueKey) return null;
-  const data = getIndycarData();
-  const event = data.calendar.find(entry => entry.key === venueKey);
-  if (!event) return null;
-  const library = getCircuits();
-  const catalog = Object.entries(library).map(([key, geometry]) => ({
-    series: "indycar", season: data.season, venueKey: key, geometry,
-  }));
-  return assessCircuitGeometry(
-    { series: "indycar", season: data.season, venueKey, layoutId: event.layoutId },
-    library[venueKey], catalog, CIRCUIT_GEOMETRY_REVIEWS,
-  ).geometry;
+  return getCircuits()[venueKey] ?? null;
 }
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
