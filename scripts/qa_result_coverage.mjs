@@ -54,6 +54,14 @@ try {
         assert.equal(await carousel.getByText(/Next up|Upcoming/).count(), 0);
         assert.equal(await carousel.getByText(/Past-due forecast/).count(), 2);
         assert.equal(await status.getByText(/this weekend|in \d/).count(), 0);
+        for (const card of await carousel.getByRole('link').all()) {
+          const credit = card.locator('[class*="bottom-1.5"]');
+          if (await credit.count()) {
+            const captionBox = await card.locator('p.caption-uppercase').boundingBox();
+            const creditBox = await credit.boundingBox();
+            assert.ok(captionBox.y + captionBox.height <= creditBox.y, `${series}/${size} caption overlaps image credit`);
+          }
+        }
         const disclosure = panel.locator('summary');
         await disclosure.focus();
         await page.keyboard.press('Enter');

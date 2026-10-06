@@ -131,7 +131,7 @@ export default function RaceCardCarousel({
             }}
             aria-hidden
           />
-          <div className="relative z-10 flex h-full w-full flex-col justify-between p-5 sm:p-7">
+          <div className="relative z-10 flex h-full w-full flex-col justify-between p-5 pb-10 sm:p-7">
             <div className="flex items-center gap-2">
               <Badge variant={meta.variant}>{meta.shortLabel}</Badge>
               <span className="eyebrow text-[color:var(--ink)]/80">

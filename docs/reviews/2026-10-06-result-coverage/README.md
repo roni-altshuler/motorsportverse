@@ -140,6 +140,8 @@ errors**. See [aged mobile](aged-mobile.png), [aged desktop](aged-desktop.png) a
 the updated `fixture-browser-qa.json`. The actual homepages' carousel labels
 were checked at both sizes too; see [F2 mobile](f2-carousel-mobile.png),
 [F3 mobile](f3-carousel-mobile.png), [IndyCar mobile](indycar-carousel-mobile.png).
+Mobile cards reserve space for wrapped photo credits. Browser geometry checks
+confirm that forecast captions do not overlap those credits.
 
 ### Independent-review correction: WRC final-round boundary
 
