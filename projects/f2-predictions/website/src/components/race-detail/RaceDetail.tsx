@@ -283,7 +283,7 @@ export function RaceDetail({
 
         {/* Circuit & Telemetry — framed track map (F2 has no live telemetry). */}
         <details className="deep-dive-section">
-          <summary className="deep-dive-summary">Circuit &amp; Telemetry</summary>
+          <summary className="deep-dive-summary">Venue &amp; circuit</summary>
           <div className="deep-dive-section-body">
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -292,14 +292,18 @@ export function RaceDetail({
             >
               <TrackMapWithOverlay
                 geometry={geometry}
+                venue={round.venueName}
                 kicker="Circuit"
                 title={round.venueName}
                 className=""
               />
               <p className="body-sm mt-4 text-[color:var(--muted)]">
-                F2 races the same circuits as the lead category; layout geometry is shared.
-                Per-lap telemetry (speed traps, sector times, tyre stints) isn&rsquo;t published
-                for F2, so this round focuses on the forecast itself.
+                {geometry
+                  ? "This existing circuit outline is retained while layout review is pending. "
+                  : "No circuit outline is available for this event. "}
+                An interactive circuit explorer requires a reviewed layout and is
+                not available here. Per-lap speed, sector and tyre-stint data are
+                unavailable here.
               </p>
             </motion.div>
           </div>

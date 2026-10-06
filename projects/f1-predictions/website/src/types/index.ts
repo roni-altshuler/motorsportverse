@@ -5,6 +5,8 @@ export interface RaceCalendarEntry {
   name: string;
   gpKey: string;
   circuit: string;
+  /** Explicit configuration identifier; absent legacy geometry is not reviewed. */
+  layoutId?: string;
   date: string;
   postponed?: boolean;
   originalDate?: string | null;

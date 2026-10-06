@@ -1,0 +1,51 @@
+{
+  "scope": "F2/F3 RaceDetail wording only; no geometry or hero behavior changes",
+  "priorFullValidationHead": "43930c8cfefcad680018441b295018e736de80f2",
+  "regressionOriginalCopy": {
+    "f2": "two new tests fail as expected",
+    "f3": "two new tests fail as expected"
+  },
+  "affectedSites": [
+    {
+      "site": "f2",
+      "testsPassed": 130,
+      "typecheck": "passed",
+      "staticBuild": "passed"
+    },
+    {
+      "site": "f3",
+      "testsPassed": 126,
+      "typecheck": "passed",
+      "staticBuild": "passed"
+    }
+  ],
+  "newTestAndBrowserScriptLint": "passed",
+  "fullRaceDetailLint": {
+    "f2": "existing react-hooks/set-state-in-effect at line 85",
+    "f3": "existing react-hooks/set-state-in-effect at line 83",
+    "baseline": "both reproduced from prior committed head; no new errors"
+  },
+  "sharedDrift": "passed",
+  "browserCommand": "node scripts/qa_circuit_geometry.mjs <output-dir> --copy-only",
+  "browserRaceCases": 8,
+  "browserCopyAssertions": 8,
+  "browserPageErrors": 0,
+  "browserConsoleErrors": 258,
+  "browserResourceFailures": 250,
+  "replayRequests": 0,
+  "screenshots": [
+    "f2-retained-copy-desktop.png",
+    "f2-retained-copy-mobile.png",
+    "f2-unavailable-copy-desktop.png",
+    "f2-unavailable-copy-mobile.png",
+    "f3-retained-copy-desktop.png",
+    "f3-retained-copy-mobile.png",
+    "f3-unavailable-copy-desktop.png",
+    "f3-unavailable-copy-mobile.png"
+  ],
+  "limitations": [
+    "Prior 64-race and four-hero reports are from 43930c8, not rerun for copy-only change",
+    "Interactive explorer remains unavailable pending reviewed layout evidence",
+    "No whole-site clean lint/browser claim"
+  ]
+}

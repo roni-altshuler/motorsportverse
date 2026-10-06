@@ -13,6 +13,7 @@ import {
   ReplayData,
   ForwardEvalSummaryData,
 } from "@/types";
+import { assessCircuitOutline } from "./circuitGeometry";
 
 const PREFIX = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export const BASE_PATH = PREFIX + "/data";
@@ -32,11 +33,33 @@ export async function fetchSeasonData(base: string = BASE_PATH): Promise<SeasonD
   return res.json();
 }
 
-export async function fetchRoundData(round: number, base: string = BASE_PATH): Promise<RoundData> {
+export async function fetchRoundData(
+  round: number,
+  base: string = BASE_PATH,
+  context?: Pick<SeasonData, "season" | "calendar">,
+): Promise<RoundData> {
   const pad = round.toString().padStart(2, "0");
   const res = await fetch(`${base}/rounds/round_${pad}.json`);
   if (!res.ok) throw new Error(`Failed to fetch round ${round} data`);
-  return res.json();
+  const data: RoundData = await res.json();
+  if (data.round !== round) throw new Error(`Round ${round} data has a different round identity`);
+  const expected = context?.calendar.find((entry) => entry.round === round);
+  const matches = expected && expected.gpKey === data.gpKey && expected.circuit === data.circuit;
+  // Legacy presentation is preserved unless identity conflicts are known. New
+  // explorer eligibility is assessed separately; missing reviews are not removal evidence.
+  const geometry =
+    context && !matches
+      ? null
+      : assessCircuitOutline(
+          {
+            series: "f1",
+            season: context?.season,
+            venueKey: data.gpKey,
+            layoutId: expected?.layoutId,
+          },
+          data.circuitInfo?.geometry,
+        ).geometry;
+  return { ...data, circuitInfo: { ...data.circuitInfo, geometry } };
 }
 
 /**

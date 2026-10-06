@@ -47,6 +47,47 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 - **Each series is first-class.** Open-wheel, stock car, endurance, rally, and
   formula-electric all belong; none is an afterthought.
 
+## Circuit map availability
+
+F2/F3 race disclosures distinguish existing outlines awaiting layout review from
+the unavailable interactive explorer, which requires a reviewed layout.
+
+The shared **Explore circuit** feature remains unfinished. The
+[circuit evidence audit](docs/CIRCUIT_GEOMETRY.md) records 43 stored paths across
+168 published calendar rounds, **37 eligible for continued legacy display** and
+**zero reviewed for a new explorer**. These are separate states: absent review
+records do not establish that existing display is forbidden or incorrect.
+
+Existing nonconflicting outlines and the decorative F1 hero sweep are preserved
+without a verification claim. Confirmed Austria/Silverstone conflicts are
+quarantined. Ambiguous corner numbers are suppressed while their outline and
+unambiguous markers remain. F1's invented generic fallback is removed. No empty
+explorer panels are added to other sites.
+
+As of 6 October 2026, counts refer to **committed calendar rounds**, including
+double headers, rather than independently verified official calendar coverage.
+
+| Series | Stored paths / published rounds | Legacy outlines retained | Explorer-reviewed layouts |
+| --- | ---: | ---: | ---: |
+| F1 | 22 / 22 | 20 | 0 |
+| F2 | 12 / 14 | 10 | 0 |
+| F3 | 9 / 9 | 7 | 0 |
+| Formula E | 0 / 17 | 0 | 0 |
+| IndyCar | 0 / 18 | 0 | 0 |
+| NASCAR | 0 / 36 | 0 | 0 |
+| MotoGP | 0 / 22 | 0 | 0 |
+| WRC | 0 / 13 | 0 | 0 |
+| WEC | 0 / 6 | 0 | 0 |
+| IMSA | 0 / 11 | 0 | 0 |
+| Le Mans | No site or published calendar | 0 | 0 |
+
+A new explorer requires an explicit configuration, source-appropriate provenance
+and documented reuse basis. Geographic maps need a pinned map revision, not a
+fictional timed session. Telemetry sources need their resolved session/year.
+Rally stages, ovals and road configurations stay distinct; no sectors, DRS
+locations or live telemetry are inferred. [The Monaco pilot prerequisites](docs/CIRCUIT_GEOMETRY.md#bounded-pilot-prerequisite)
+are recorded without claiming a verified or delivered interactive feature.
+
 ## What's here
 
 ```

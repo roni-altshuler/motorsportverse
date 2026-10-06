@@ -4,6 +4,7 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { assessCircuitOutline } from "./circuitGeometry";
 
 import type { CircuitGeometry, CircuitLibrary } from "@/types/circuit";
 import type {
@@ -95,7 +96,17 @@ export function getCircuits(): CircuitLibrary {
 }
 export function getCircuit(venueKey: string | undefined | null): CircuitGeometry | null {
   if (!venueKey) return null;
-  return getCircuits()[venueKey] ?? null;
+  const data = getF3Data();
+  const event = data.calendar.find(entry => entry.key === venueKey);
+  if (!event) return null;
+  const library = getCircuits();
+  const catalog = Object.entries(library).map(([key, geometry]) => ({
+    series: "f3", season: data.season, venueKey: key, geometry,
+  }));
+  return assessCircuitOutline(
+    { series: "f3", season: data.season, venueKey, layoutId: event.layoutId },
+    library[venueKey], catalog,
+  ).geometry;
 }
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -147,7 +158,7 @@ export function getPointsProgression(): PointsProgression {
     teamByCode[d.code] = d.team;
   }
 
-  let running: Record<string, number> = {};
+  const running: Record<string, number> = {};
   for (const code of Object.keys(codeTotals)) running[code] = 0;
 
   for (const round of completed) {

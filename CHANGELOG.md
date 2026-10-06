@@ -11,6 +11,17 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Circuit identity and provenance guard — 2026-10-06
+
+- Added separate legacy-outline and new-explorer eligibility checks and a
+  read-only per-series inventory. Missing reviews do not remove existing display.
+- Quarantined confirmed identical Austria/Silverstone outlines; suppressed
+  ambiguous corner markers while preserving their outline and other markers.
+- Preserved the existing decorative F1 sweep and nonconflicting maps without
+  calling them verified; removed F1's invented generic fallback.
+- The interactive explorer remains unfinished pending source-appropriate
+  configuration/provenance and reuse evidence. No new geometry or provider crawl.
+
 ### Published result coverage — 2026-10-06
 
 - Added independent offline coverage audits to F2/F3/IndyCar polls, including
