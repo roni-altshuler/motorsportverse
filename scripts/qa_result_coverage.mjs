@@ -48,8 +48,12 @@ try {
         await panel.getByRole('heading', { name: 'Result coverage is behind' }).waitFor();
         assert.match(await panel.innerText(), new RegExp(`${count} scheduled rounds are past due`));
         assert.match(await panel.innerText(), /Source availability has not been verified here/);
-        assert.equal(await page.getByText('Past-due forecast', { exact: true }).count(), 1);
-        assert.equal(await page.getByText('Next up', { exact: true }).count(), 0);
+        const status = page.getByLabel('Snapshot forecast status');
+        await status.getByText('Past-due forecast', { exact: true }).waitFor();
+        const carousel = page.getByRole('region', { name: 'Race forecast carousel' });
+        assert.equal(await carousel.getByText(/Next up|Upcoming/).count(), 0);
+        assert.equal(await carousel.getByText(/Past-due forecast/).count(), 2);
+        assert.equal(await status.getByText(/this weekend|in \d/).count(), 0);
         const disclosure = panel.locator('summary');
         await disclosure.focus();
         await page.keyboard.press('Enter');
@@ -58,6 +62,12 @@ try {
         await panel.evaluate(element => element.scrollIntoView({ block: 'center' }));
         await page.evaluate(() => window.scrollBy(0, -60));
         await panel.screenshot({ path: resolve(output, `${series}-${size}.png`) });
+        if (size === 'mobile') {
+          await carousel.locator('[data-lenis-prevent]').evaluate(element => {
+            element.scrollLeft = element.children[1].offsetLeft - element.offsetLeft;
+          });
+        }
+        await carousel.screenshot({ path: resolve(output, `${series}-carousel-${size}.png`) });
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${series}/${size} horizontal overflow`);
         await panel.getByRole('link').first().click();
         await page.waitForURL(`**/race/${firstRound}/`);
@@ -72,7 +82,7 @@ try {
         await page.getByText('Snapshot Forecast', { exact: true }).waitFor();
         // Retain existing asset/network/framework issues instead of hiding them.
         // Assertions above verify the changed feature even on a degraded route.
-        results.push({ series, viewport: size, pastDueRounds: count, keyboardDisclosure: 'passed', raceNavigation: 'passed', backForward: 'passed', horizontalOverflow: false, errorsCount: errors.length, failedRequestsCount: failedRequests.length, missingResourcesCount: missingResources.length, errors: unique(errors), failedRequests: unique(failedRequests), missingResources: unique(missingResources) });
+        results.push({ series, viewport: size, pastDueRounds: count, runtimeForecastStatus: 'passed', carouselPastDueLabels: 'passed', keyboardDisclosure: 'passed', raceNavigation: 'passed', backForward: 'passed', horizontalOverflow: false, errorsCount: errors.length, failedRequestsCount: failedRequests.length, missingResourcesCount: missingResources.length, errors: unique(errors), failedRequests: unique(failedRequests), missingResources: unique(missingResources) });
         await context.close();
       }
     } finally { await new Promise(resolve => server.close(resolve)); }

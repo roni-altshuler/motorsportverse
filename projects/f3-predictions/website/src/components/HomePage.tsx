@@ -16,16 +16,14 @@
  */
 import Link from "next/link";
 import ResultCoverage from "@/components/ResultCoverage";
-import { resultCoverage } from "@/lib/resultCoverage";
 
 import { getCircuit, getF3Data, getRound } from "@/lib/f3data";
 import { teamColor } from "@/lib/teams";
 import type { RaceBlock } from "@/types/f3";
 import AddToCalendar from "@/components/AddToCalendar";
-import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
-import HeroCountdown from "@/components/home/HeroCountdown";
+import SnapshotForecastStatus from "@/components/SnapshotForecastStatus";
 import PodiumStage from "@/components/home/PodiumStage";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import ChampionshipBento from "@/components/home/ChampionshipBento";
@@ -41,8 +39,6 @@ import FinalCTA from "@/components/marketing/FinalCTA";
 export default function HomePage() {
   const data = getF3Data();
   const asOf = new Date().toISOString();
-  const coverage = resultCoverage(data.calendar, asOf);
-  const forecastPastDue = coverage.pastDue.some((round) => round.round === data.nextPrediction?.round);
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
@@ -138,18 +134,7 @@ export default function HomePage() {
           {/* ── Featured round + CTAs ── */}
           {next && nextCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
-              <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant="default">{forecastPastDue ? "Past-due forecast" : "Snapshot forecast"}</Badge>
-                <span className="eyebrow">
-                  R{next.round} · Sprint + Feature
-                  {nextCalendarRound.featureDate && !forecastPastDue ? (
-                    <>
-                      {" · "}
-                      <HeroCountdown targetDate={nextCalendarRound.featureDate} />
-                    </>
-                  ) : null}
-                </span>
-              </div>
+              <SnapshotForecastStatus round={nextCalendarRound} asOf={asOf} description={`R${next.round} · Sprint + Feature`} />
               <div className="mb-8">
                 <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">{next.venueName}</h2>
@@ -209,7 +194,7 @@ export default function HomePage() {
             Full Season →
           </Link>
         </div>
-        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} mode="featured" />
+        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} asOf={asOf} mode="featured" />
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">

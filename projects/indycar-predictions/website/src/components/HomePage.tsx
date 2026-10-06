@@ -16,17 +16,15 @@
  */
 import Link from "next/link";
 import ResultCoverage from "@/components/ResultCoverage";
-import { resultCoverage } from "@/lib/resultCoverage";
 
 import { getCircuit, getIndycarData, getRound } from "@/lib/indycardata";
 import { teamColor } from "@/lib/teams";
 import { trackTypeLabel } from "@/lib/track";
 import type { RaceBlock } from "@/types/indycar";
-import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import AddToCalendar from "@/components/AddToCalendar";
 import HeroParallax from "@/components/home/HeroParallax";
-import HeroCountdown from "@/components/home/HeroCountdown";
+import SnapshotForecastStatus from "@/components/SnapshotForecastStatus";
 import PodiumStage from "@/components/home/PodiumStage";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import ChampionshipBento from "@/components/home/ChampionshipBento";
@@ -42,8 +40,6 @@ import FinalCTA from "@/components/marketing/FinalCTA";
 export default function HomePage() {
   const data = getIndycarData();
   const asOf = new Date().toISOString();
-  const coverage = resultCoverage(data.calendar, asOf);
-  const forecastPastDue = coverage.pastDue.some((round) => round.round === data.nextPrediction?.round);
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
@@ -138,20 +134,7 @@ export default function HomePage() {
           {/* ── Featured round + CTAs ── */}
           {next && nextCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
-              <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant="default">{forecastPastDue ? "Past-due forecast" : "Snapshot forecast"}</Badge>
-                <span className="eyebrow">
-                  R{next.round} ·{" "}
-                  {trackTypeLabel(nextCalendarRound.trackType)}
-                  {nextCalendarRound.isIndy500 ? " · Indy 500" : ""}
-                  {nextCalendarRound.raceDate && !forecastPastDue ? (
-                    <>
-                      {" · "}
-                      <HeroCountdown targetDate={nextCalendarRound.raceDate} />
-                    </>
-                  ) : null}
-                </span>
-              </div>
+              <SnapshotForecastStatus round={nextCalendarRound} asOf={asOf} description={`R${next.round} · ${trackTypeLabel(nextCalendarRound.trackType)}${nextCalendarRound.isIndy500 ? " · Indy 500" : ""}`} />
               <div className="mb-8">
                 <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">
@@ -221,7 +204,7 @@ export default function HomePage() {
             Full Season →
           </Link>
         </div>
-        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} mode="featured" />
+        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} asOf={asOf} mode="featured" />
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">

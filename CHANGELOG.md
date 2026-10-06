@@ -20,6 +20,11 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 - Added homepage coverage panels with latest imported results, export dates and
   past-due round links; labelled old snapshot forecasts accurately. No results
   were imported or model performance claims changed.
+- Kept forecast badges and homepage carousel labels consistent with coverage as
+  static exports age, and removed the countdown's indefinite “this weekend” label.
+- Corrected WRC's season-complete test boundary: validate every scheduled round
+  and assert no next prediction after the final round, with pending/completed
+  payload and calendar-boundary regressions.
 
 ### Forecast exploration and coherent probabilities — 2026-09-18
 

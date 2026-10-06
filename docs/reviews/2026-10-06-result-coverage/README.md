@@ -58,6 +58,12 @@ Do not bypass wrong-event guards or relabel a result to force ingestion.
   exports do not freeze the date comparison. An old forecast is labelled
   **Past-due forecast** instead of **Next up**. Unimported race details say
   **Snapshot Forecast**, avoiding an unsupported “Upcoming” claim.
+- The forecast badge and homepage carousel now use the same hydration/hourly
+  clock and grace policy as the coverage panel. During the saved race day and
+  grace period they say **Snapshot forecast**; after grace they say **Past-due
+  forecast**. Only dates still ahead can say **Next up** or **Upcoming**. Missing
+  or invalid dates stay snapshot forecasts. The standalone countdown says
+  **Scheduled date passed** after its target rather than “this weekend” forever.
 - No model, probability, production job, repository visibility, main branch, or
   laptop-only unpublished navigation branch was changed. This work exists only
   in the saved cloud checkout and its draft PR.
@@ -70,7 +76,7 @@ Do not bypass wrong-event guards or relabel a result to force ingestion.
 - Published-data integrity: **115 checks passed** across the three datasets.
   Separately, the new coverage audit correctly exits **1** for all three with
   the six/four/seven overdue counts above; it does not claim the data was fixed.
-- F2/F3/IndyCar: **75 / 71 / 71** frontend tests, typechecks, changed-file ESLint and production
+- F2/F3/IndyCar: **79 / 75 / 75** frontend tests, typechecks, changed-file ESLint and production
   static builds were run. `next lint` is unavailable in Next 16; direct ESLint
   used the installed Next core-web-vitals and TypeScript configs.
 - Shared-UI drift and workflow YAML parsing passed. Dependency declarations and
@@ -81,6 +87,12 @@ Do not bypass wrong-event guards or relabel a result to force ingestion.
   disclosure, all gap links, race navigation/back/forward, console/page errors and horizontal
   overflow; resource/framework errors are recorded rather than suppressed. The screenshot clock is fixed to 6 October 2026 for reproducibility.
   See `browser-qa.json` and the screenshots in this directory for the final run.
+- WRC: **36 tests passed**, including five additional boundary/payload cases.
+- Aggregate checks: **407 corpus checks** and registry/shared-UI/palette checks
+  passed. All **10 evidence artifacts** match under CI's Python **3.11**.
+  Python 3.12's changed floating-point summation rounds one MotoGP baseline mean
+  differently at the sixth decimal; regenerating with 3.11 reproduced the
+  committed file exactly. No MotoGP artifact, evaluation or evidence gate changed.
 
 Screenshots: [F2 desktop](f2-desktop.png) · [F2 mobile](f2-mobile.png) ·
 [F3 desktop](f3-desktop.png) · [F3 mobile](f3-mobile.png) ·
@@ -119,3 +131,34 @@ render and post-hydration time recheck are covered.
 Fixture screenshots: [empty mobile](empty-mobile.png), [unknown mobile](unknown-mobile.png),
 [future desktop](future-desktop.png). Every state also has desktop/mobile captures
 in this directory.
+
+The revised isolated build also uses an explicitly old serialized build time.
+Both viewports verified that hydration brings the panel, forecast badge and
+carousel into agreement, and advancing the browser clock across the 48-hour
+grace boundary changes all three together. These fixtures emitted **zero page
+errors**. See [aged mobile](aged-mobile.png), [aged desktop](aged-desktop.png) and
+the updated `fixture-browser-qa.json`. The actual homepages' carousel labels
+were checked at both sizes too; see [F2 mobile](f2-carousel-mobile.png),
+[F3 mobile](f3-carousel-mobile.png), [IndyCar mobile](indycar-carousel-mobile.png).
+
+### Independent-review correction: WRC final-round boundary
+
+The [official WRC calendar](https://www.wrc.com/en/calendar) lists **13 rounds**,
+ending with Sardegna on **1–4 October 2026**. The
+[FIA event review](https://www.fia.com/news/2026-fia-world-rally-championship-rally-italia-sardegna-event-review)
+explicitly identifies it as the season finale. The saved WRC calendar,
+`totalRounds`, completion list and result blocks all cover R1–R13; its published
+summary has `nextPrediction: null`. The preexisting test nevertheless tried to
+read `round_14.json` when `COMPLETED_ROUNDS == 13`.
+
+The correction checks actuals/accuracy for **every scheduled completed round**
+and their absence for every pending round. A completed season must have no next
+prediction and no extra round file. Additional cases retain pending-payload
+checks even when the real saved season is complete, and exercise not-started,
+final-round-pending and complete calendar boundaries. No WRC source, calendar,
+result, configuration or model was changed; no extra round was invented.
+
+Preexisting calendar/navigation/live-context labels elsewhere still derive
+“next” from imported-round order. This bounded change fixes the reviewed
+homepage coverage/forecast/carousel path; broader navigation chronology remains
+follow-up work.

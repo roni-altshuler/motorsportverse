@@ -62,15 +62,49 @@ def test_exported_rounds_are_complete(exported):
                 assert not math.isnan(float(e[k]))
 
 
-def test_completed_rounds_have_actuals_upcoming_do_not(exported):
-    completed = json.loads((exported / "rounds" / "round_01.json").read_text())
-    upcoming = json.loads(
-        (exported / "rounds" / f"round_{config.COMPLETED_ROUNDS + 1:02d}.json").read_text()
-    )
-    assert completed["completed"] is True
-    assert "accuracy" in completed["rally"]
-    assert upcoming["completed"] is False
-    assert all(e["actualPosition"] is None for e in upcoming["rally"]["classification"])
+def test_completed_rounds_have_actuals_upcoming_do_not(exported, source):
+    completed = set(source.completed_rounds(config.SEASON))
+    assert len(completed) == config.COMPLETED_ROUNDS
+    for rnd in range(1, len(config.CALENDAR) + 1):
+        payload = json.loads((exported / "rounds" / f"round_{rnd:02d}.json").read_text())
+        assert payload["completed"] is (rnd in completed)
+        _assert_rally_actuals(payload["rally"], rnd in completed)
+
+    summary = json.loads((exported / "wrc.json").read_text())
+    upcoming = sorted(set(range(1, len(config.CALENDAR) + 1)) - completed)
+    if upcoming:
+        assert summary["nextPrediction"]["round"] == upcoming[0]
+    else:
+        assert summary["nextPrediction"] is None
+        assert not (exported / "rounds" / f"round_{len(config.CALENDAR) + 1:02d}.json").exists()
+
+
+def _assert_rally_actuals(rally, completed):
+    if completed:
+        assert "accuracy" in rally
+        assert rally["actualResults"]
+        assert any(e["actualPosition"] is not None for e in rally["classification"])
+    else:
+        assert "accuracy" not in rally
+        assert "actualResults" not in rally
+        assert all(e["actualPosition"] is None for e in rally["classification"])
+
+
+@pytest.mark.parametrize("completed", [False, True])
+def test_round_payload_only_exposes_actuals_when_completed(forecast, source, completed):
+    # Retain upcoming-round integrity coverage even when the saved season is over.
+    payload = export.round_payload(forecast, source, completed)
+    assert payload["completed"] is completed
+    _assert_rally_actuals(payload["rally"], completed)
+
+
+@pytest.mark.parametrize("boundary", ["not_started", "final_round_pending", "complete"])
+def test_next_round_stays_within_the_calendar(source, monkeypatch, boundary):
+    total = len(config.CALENDAR)
+    count = {"not_started": 0, "final_round_pending": total - 1, "complete": total}[boundary]
+    monkeypatch.setattr(source, "completed_rounds", lambda year: list(range(1, count + 1)))
+    expected = count + 1 if count < total else None
+    assert export._next_round(source, config.SEASON) == expected
 
 
 def test_standings_are_ordered_and_consistent(exported):

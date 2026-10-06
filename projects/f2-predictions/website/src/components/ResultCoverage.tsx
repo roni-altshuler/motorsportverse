@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { resultCoverage, type CoverageRound } from "@/lib/resultCoverage";
+import { useCoverageClock } from "@/lib/useCoverageClock";
 
 function utcDate(value?: string) {
   const date = value ? new Date(value) : null;
@@ -16,14 +16,7 @@ export default function ResultCoverage({ calendar, generatedAt, asOf }: {
   generatedAt?: string;
   asOf: string;
 }) {
-  // Static exports age between builds. Recheck at hydration and hourly while open.
-  // Seed with the serialized build time so server/client markup remains identical.
-  const [now, setNow] = useState(asOf);
-  useEffect(() => {
-    const initial = window.setTimeout(() => setNow(new Date().toISOString()), 0);
-    const timer = window.setInterval(() => setNow(new Date().toISOString()), 60 * 60 * 1000);
-    return () => { window.clearTimeout(initial); window.clearInterval(timer); };
-  }, []);
+  const now = useCoverageClock(asOf);
   const coverage = resultCoverage(calendar, now);
   const behind = coverage.pastDue.length > 0;
   const empty = calendar.length === 0;

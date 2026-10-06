@@ -142,6 +142,9 @@ past weekends. Ingestion is still pending separate source/session verification.
 Run `python scripts/check_result_coverage.py f2` (or `f3`, `indycar`) for an
 offline coverage audit. The polling workflows run it even after a no-work gate;
 past-due gaps fail a separate coverage job without blocking valid updates.
+Homepage coverage, forecast badges and carousel labels recheck at hydration
+and hourly. A passed schedule date remains a snapshot forecast during the
+grace period, then becomes past due; time never marks a result as imported.
 See the [verified findings and browser QA](docs/reviews/2026-10-06-result-coverage/README.md).
 
 ## How a series gets promoted
