@@ -11,6 +11,21 @@ const output = resolve(process.argv[2] || '/tmp/motorsport-circuit-browser');
 await mkdir(output, { recursive: true });
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.woff2': 'font/woff2', '.jpg': 'image/jpeg' };
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', args: ['--no-sandbox'] });
+async function shiftWallClock(context) {
+  // Shift only the advancing wall clock. Mocking performance/RAF interferes
+  // with native Web Animations used by the existing hero entrance effects.
+  await context.addInitScript(() => {
+    const NativeDate = Date, startedAt = NativeDate.now();
+    const epoch = NativeDate.parse(location.pathname === '/' ? '2026-06-05T12:00:00Z' : '2026-10-06T12:00:00Z');
+    const now = () => epoch + NativeDate.now() - startedAt;
+    globalThis.Date = new Proxy(NativeDate, {
+      construct(target, args) { return Reflect.construct(target, args.length ? args : [now()]); },
+      apply() { return new NativeDate(now()).toString(); },
+      get(target, key) { return key === 'now' ? now : Reflect.get(target, key); },
+    });
+  });
+}
+
 const results = [];
 const heroOnly = process.argv.includes("--hero-only");
 try {
@@ -42,24 +57,16 @@ try {
       for (const [size, viewport] of [['desktop', { width: 1440, height: 1000 }], ['mobile', { width: 390, height: 844 }]]) {
         for (const motion of ['reduce', 'no-preference']) {
           const context = await browser.newContext({ viewport, reducedMotion: motion });
-          // Shift only the advancing wall clock. Mocking performance/RAF interferes
-          // with native Web Animations used by the existing hero entrance effects.
-          await context.addInitScript(() => {
-            const NativeDate = Date, startedAt = NativeDate.now();
-            const epoch = NativeDate.parse(location.pathname === '/' ? '2026-06-05T12:00:00Z' : '2026-10-06T12:00:00Z');
-            const now = () => epoch + NativeDate.now() - startedAt;
-            globalThis.Date = new Proxy(NativeDate, {
-              construct(target, args) { return Reflect.construct(target, args.length ? args : [now()]); },
-              apply() { return new NativeDate(now()).toString(); },
-              get(target, key) { return key === 'now' ? now : Reflect.get(target, key); },
-            });
-          });
-          const page = await context.newPage();
+          await shiftWallClock(context);
+          let page = await context.newPage();
           const errors = [], missingResources = [], requests = [];
-          page.on('pageerror', error => errors.push({ kind: 'pageerror', message: error.message }));
-          page.on('console', message => { if (message.type() === 'error') errors.push({ kind: 'console', message: message.text() }); });
-          page.on('response', response => { if (response.status() >= 400) missingResources.push({ url: response.url(), status: response.status() }); });
-          page.on('request', request => requests.push(request.url()));
+          const observe = target => {
+            target.on('pageerror', error => errors.push({ kind: 'pageerror', message: error.message }));
+            target.on('console', message => { if (message.type() === 'error') errors.push({ kind: 'console', message: message.text() }); });
+            target.on('response', response => { if (response.status() >= 400) missingResources.push({ url: response.url(), status: response.status() }); });
+            target.on('request', request => requests.push(request.url()));
+          };
+          observe(page);
           for (const round of heroOnly ? [] : rounds) {
             console.log(JSON.stringify({ checking: series, round, size, motion }));
             assert.equal((await page.goto(`${url}/race/${round}/`, { waitUntil: 'networkidle' })).status(), 200);
@@ -110,7 +117,13 @@ try {
             assert.equal(requests.filter(request => request.includes('/data/replays/')).length, 0);
           }
           let hero = null;
-          if (series === 'f1') {
+          if (series === 'f1' && heroOnly) {
+            // This historical home scenario gets a fresh context: do not jump
+            // months backward in a tab already used for October race cases.
+            const heroContext = await browser.newContext({ viewport, reducedMotion: motion });
+            await shiftWallClock(heroContext);
+            page = await heroContext.newPage();
+            observe(page);
             // Select the real existing Monaco event, not a fixture or intercepted payload.
             await page.goto(url, { waitUntil: 'networkidle' });
             const heading = page.getByRole('heading', { name: 'Read the grid before lights out', exact: true });
@@ -161,9 +174,10 @@ try {
             assert.ok(headline.y >= 0 && headline.y + headline.height <= viewport.height);
             await page.screenshot({ path: resolve(output, `f1-hero-${size}-${motion}.png`) });
             hero = { event: 'Monaco', realStoredPath: true, present: true, headlineVisible: true, headline, duration: before.duration, iterations: before.iterations, dashOffsetChanged: Math.abs(after - before.offset) > 1 };
+            await heroContext.close();
           }
           assert.equal(requests.filter(request => request.includes('/data/replays/')).length, 0);
-          results.push({ series, viewport: size, motion, rounds: heroOnly ? [] : rounds, quarantined: rounds.slice(0, 2), preserved: rounds.slice(2, 5), missing: rounds.slice(5), ambiguousMarkersSuppressed: true, hero, keyboardDisclosure: series === 'f1' ? 'not applicable (static maps)' : 'passed', clipped: false, horizontalOverflow: false, mapAnimation: 'none', replayRequests: 0, errors, missingResources });
+          results.push({ series, viewport: size, motion, rounds: heroOnly ? [] : rounds, quarantined: heroOnly ? [] : rounds.slice(0, 2), preserved: heroOnly ? [] : rounds.slice(2, 5), missing: heroOnly ? [] : rounds.slice(5), ambiguousMarkersSuppressed: heroOnly ? null : true, hero, keyboardDisclosure: series === 'f1' ? 'not applicable (static maps)' : 'passed', clipped: false, horizontalOverflow: false, mapAnimation: 'none', replayRequests: 0, errors, missingResources });
           await context.close();
         }
       }

@@ -40,13 +40,12 @@ markers suppressed, and F2's missing Miami map. Existing F2/F3 native disclosure
 are checked by keyboard through open/close/reopen. No map clipping or horizontal
 overflow was observed in these cases, and no replay requests were made.
 
-There are **four positive F1 home cases**, selecting the real Monaco event with
-an advancing clock starting 5 June 2026. The headline is visible and the ribbon
+A separate `--hero-only` browser run checks **four positive F1 home cases**,
+selecting the real Monaco event with an advancing clock starting 5 June 2026. The headline is visible and the ribbon
 path equals the actual stored Monaco path. CSS dash offset moves under the 14s
 infinite sweep with normal motion; reduced motion keeps the ribbon present with
-one near-zero-duration iteration and a stable dash offset. The advancing wall clock leaves native performance/animation timing intact,
-and finite headline entrance animations settle before screenshots. This preserves existing
-motion, without claiming to fix offscreen behavior or deliver an explorer.
+one near-zero-duration iteration and a stable dash offset. The wall clock advances while native animation timing stays intact. Finite
+headline entrance animations settle before screenshots. This preserves existing motion, without claiming to fix offscreen behavior or deliver an explorer.
 
 Hero screenshots:
 [desktop normal](f1-hero-desktop-no-preference.png) ·
@@ -64,7 +63,8 @@ Quarantine screenshots:
 [F2 desktop](f2-desktop.png) · [F2 mobile](f2-mobile.png) ·
 [F3 desktop](f3-desktop.png) · [F3 mobile](f3-mobile.png).
 
-The [full browser report](browser-qa.json) retains console/page errors and failed
+The [race report](browser-qa.json) and [separate hero report](hero-qa.json) retain
+console/page errors and failed
 resources. Asset failures remain recorded; prior F2/F3 hydration #418 is documented at
 baseline. This is not a clean whole-site browser result. [The prior baseline comparison](../2026-10-06-result-coverage/baseline-comparison.json)
 records F2/F3 hydration at the unchanged base. The [initial-guard comparison](baseline-comparison.json)
