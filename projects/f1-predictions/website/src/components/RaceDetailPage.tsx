@@ -37,6 +37,7 @@ import CircuitHistoryPanel, {
 } from "@/components/race-detail/CircuitHistoryPanel";
 import PredictedClassificationTable from "@/components/race-detail/PredictedClassificationTable";
 import CircuitMap from "@/components/race-detail/CircuitMap";
+import CircuitMapUnavailable from "@/components/ui/CircuitMapUnavailable";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
 import GridProvenanceBadge from "@/components/race-detail/GridProvenanceBadge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
@@ -156,7 +157,7 @@ export default function RaceDetailPage({ round }: Props) {
         if (!active) return;
         setSeason(seasonData);
         const expectedRace = seasonData.calendar.find((race) => race.round === round);
-        fetchRoundData(round, basePath)
+        fetchRoundData(round, basePath, seasonData)
           .then((roundData) => {
             if (!active) return;
             const matchesCalendar =
@@ -491,7 +492,7 @@ export default function RaceDetailPage({ round }: Props) {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
           <div
-            className="shrink-0 w-full sm:w-64 md:w-72 lg:w-80 aspect-square relative"
+            className={`shrink-0 w-full sm:w-64 md:w-72 lg:w-80 relative ${data.circuitInfo?.geometry ? "aspect-square" : "min-h-36"}`}
             style={{
               border: "1px solid var(--hairline)",
               background: "var(--surface-card)",
@@ -510,21 +511,9 @@ export default function RaceDetailPage({ round }: Props) {
             ) : (
               <div
                 className="absolute inset-0 flex items-center justify-center"
-                aria-label={`${data.circuit} circuit map`}
-                role="img"
+                aria-label={`${data.circuit} map availability`}
               >
-                <svg
-                  viewBox="0 0 100 100"
-                  className="w-1/2 h-1/2 opacity-40"
-                  fill="none"
-                  stroke="var(--ink)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden
-                >
-                  <path d="M20 50 Q 20 20 50 20 T 80 50 Q 80 80 50 80 T 20 50 Z" />
-                </svg>
+                <CircuitMapUnavailable venue={data.circuit} />
               </div>
             )}
           </div>

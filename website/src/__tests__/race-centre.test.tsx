@@ -8,7 +8,7 @@ const feed: RaceFeed = { asOf: '2099-01-01', series: [{ slug: 'f1-predictions', 
 beforeEach(() => { localStorage.clear(); window.history.replaceState({}, '', '/'); });
 it('searches, switches forecast markets and shows measured evidence', () => {
   render(<RaceCentre feed={feed} />); expect(screen.getAllByText('50.0%').length).toBeGreaterThan(0);
-  fireEvent.click(screen.getByRole('button', { name: 'Podium', exact: true }));
+  fireEvent.click(screen.getByRole('button', { name: 'Podium' }));
   expect(screen.getByText('80.0%')).toBeInTheDocument(); expect(screen.getByText('No clear edge yet')).toBeInTheDocument();
   fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'no match' } });
   expect(screen.getByText('No races in this view.')).toBeInTheDocument();
@@ -39,7 +39,7 @@ it('filters to available forecasts and clears that restriction for results', () 
   render(<RaceCentre feed={{ ...feed, events: [...feed.events, { ...feed.events[0], id: 'missing', name: 'Missing forecast', contenders: [] }, { ...feed.events[0], id: 'done', name: 'Finished race', completed: true }] }} />);
   fireEvent.click(screen.getByRole('checkbox', { name: 'Forecasts ready' }));
   expect(screen.queryByText('Missing forecast')).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Results', exact: true }));
+  fireEvent.click(screen.getByRole('button', { name: 'Results' }));
   expect(screen.getByRole('heading', { name: 'Finished race' })).toBeInTheDocument();
   expect(screen.getByRole('checkbox', { name: 'Forecasts ready' })).not.toBeChecked();
 });
@@ -59,5 +59,5 @@ it('keeps a linked historical race visible without expanding the whole season', 
   render(<RaceCentre feed={{ ...feed, events }} />);
   expect(screen.getByRole('button', { name: /Race 0 .*Results recorded/ })).toHaveAttribute('aria-pressed', 'true');
   expect(document.querySelectorAll('.race-row')).toHaveLength(9);
-  expect(screen.getByRole('button', { name: 'Results', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByRole('button', { name: 'Results' })).toHaveAttribute('aria-pressed', 'true');
 });

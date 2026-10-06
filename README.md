@@ -47,6 +47,37 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 - **Each series is first-class.** Open-wheel, stock car, endurance, rally, and
   formula-electric all belong; none is an afterthought.
 
+## Circuit map availability
+
+The shared **Explore circuit** feature is awaiting verified geometry. The
+[circuit evidence audit](docs/CIRCUIT_GEOMETRY.md) records per-series coverage:
+43 stored paths across 168 published calendar rounds, **zero currently eligible
+layouts**, known conflicting venue outlines, and Le Mans's absent site. Existing
+SVG map loaders now require reviewed identity/provenance; unavailable maps retain
+venue facts and never substitute a generic circuit. No interactive explorer is
+claimed as shipped.
+
+As of 6 October 2026, counts refer to **committed calendar rounds**, including
+double headers, rather than independently verified official calendar coverage.
+
+| Series | Stored paths / published rounds | Eligible layouts |
+| --- | ---: | ---: |
+| F1 | 22 / 22 | 0 |
+| F2 | 12 / 14 | 0 |
+| F3 | 9 / 9 | 0 |
+| Formula E | 0 / 17 | 0 |
+| IndyCar | 0 / 18 | 0 |
+| NASCAR | 0 / 36 | 0 |
+| MotoGP | 0 / 22 | 0 |
+| WRC | 0 / 13 | 0 |
+| WEC | 0 / 6 | 0 |
+| IMSA | 0 / 11 | 0 |
+| Le Mans | No site or published calendar | 0 |
+
+The explorer needs verified source-session/layout and reuse evidence before
+release. Rally stage routes, oval and road configurations remain distinct; no
+sectors, DRS locations or live telemetry are inferred from these paths.
+
 ## What's here
 
 ```

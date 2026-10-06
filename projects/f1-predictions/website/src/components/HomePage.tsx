@@ -95,7 +95,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
     const target =
       ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0];
     if (target) {
-      fetchRoundData(target.round, basePath)
+      fetchRoundData(target.round, basePath, season)
         .then(setFeaturedRound)
         .catch(() => {});
     }

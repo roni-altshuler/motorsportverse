@@ -75,6 +75,7 @@ const REQUIRED_FILES = [
   "ui/EmptyState.tsx",
   "ui/StatusBanner.tsx",
   "ui/Skeleton.tsx",
+  "ui/CircuitMapUnavailable.tsx",
 ];
 // The shared component tests travel with the components they pin. A site that
 // carried the components but not their tests would pass CI while rendering a
@@ -82,7 +83,12 @@ const REQUIRED_FILES = [
 const REQUIRED_TEST_DIR = "src/__tests__/shared";
 // Shared loaders that live under src/lib rather than src/components. Managed
 // against the site root, like the tests.
-const REQUIRED_SRC_FILES = ["src/lib/evidence.ts"];
+const REQUIRED_SRC_FILES = [
+  "src/lib/evidence.ts",
+  "src/lib/circuitGeometry.ts",
+  "src/lib/circuitGeometryReviews.ts",
+  "src/lib/circuitGeometryQuarantines.ts",
+];
 // Managed-dir files that are legitimately site-specific — never synced.
 const SITE_SPECIFIC = new Set(["ui/DriverHeadshot.tsx"]);
 

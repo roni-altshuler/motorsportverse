@@ -161,6 +161,9 @@ jobs:
       - run: npm install
       - name: Test
         run: npm test -- --ci
+      - name: Inventory circuit provenance (report only)
+        if: matrix.site == 'projects/f1-predictions/website'
+        run: npx --no-install tsx ../../../scripts/check_circuit_geometry.ts
       - name: Build
         if: matrix.build != 'skip'
         # The hub's prebuild regenerates public/data/registry.json; the series

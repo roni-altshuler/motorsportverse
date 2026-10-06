@@ -1,12 +1,14 @@
 "use client";
 
 import CircuitMap from "@/components/race-detail/CircuitMap";
+import CircuitMapUnavailable from "@/components/ui/CircuitMapUnavailable";
 import HUDPanel from "@/components/ui/HUDPanel";
 import type { CircuitGeometry } from "@/types/circuit";
 
 interface TrackMapWithOverlayProps {
   /** Vector geometry (F1 fastest-lap telemetry, shared circuits). */
   geometry?: CircuitGeometry | null;
+  venue?: string | null;
   kicker?: string;
   title?: string;
   className?: string;
@@ -21,6 +23,7 @@ interface TrackMapWithOverlayProps {
  */
 export default function TrackMapWithOverlay({
   geometry,
+  venue,
   kicker = "Circuit",
   title = "Track Map",
   className = "mb-8",
@@ -32,7 +35,7 @@ export default function TrackMapWithOverlay({
       kicker={kicker}
       title={title}
       rightSlot={
-        <span className="eyebrow">{hasGeometry ? "Vector layout" : "Layout pending"}</span>
+        <span className="eyebrow">{hasGeometry ? "Vector layout" : "Map unavailable"}</span>
       }
       className={className}
       bodyClassName="p-0"
@@ -62,8 +65,8 @@ export default function TrackMapWithOverlay({
             />
           </div>
         ) : (
-          <div className="flex aspect-[16/9] w-full items-center justify-center">
-            <p className="eyebrow">Circuit layout unavailable</p>
+          <div className="flex min-h-36 w-full items-center justify-center py-8">
+            <CircuitMapUnavailable venue={venue} />
           </div>
         )}
       </div>

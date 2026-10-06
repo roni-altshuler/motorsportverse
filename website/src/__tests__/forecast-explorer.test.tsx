@@ -19,7 +19,7 @@ it('expands the full field and compares two drivers with percentage-point differ
 });
 it('leaves unavailable podium probabilities unavailable', () => {
   render(<ForecastExplorer event={{ ...event, contenders: event.contenders.map(d => ({ ...d, podium: null })) }} />);
-  expect(screen.getByRole('button', { name: 'Podium', exact: true })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Podium' })).toBeDisabled();
   fireEvent.click(screen.getByRole('button', { name: 'Compare drivers' }));
   expect(within(screen.getByRole('table')).getAllByText('—')).toHaveLength(2);
 });

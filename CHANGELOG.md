@@ -11,6 +11,16 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Circuit identity and provenance guard — 2026-10-06
+
+- Added a shared reviewed-geometry gate and read-only per-series coverage audit;
+  quarantined identical Austria/Silverstone outlines and rejected ambiguous
+  corner identifiers. Stored paths and provider labels do not imply verification.
+- Gated existing SVG map loaders, preserved raw exports and venue facts, and
+  replaced F1's generic fallback outline with an explicit unavailable state.
+- Deferred the interactive circuit explorer until source-session/layout and
+  reuse evidence exists. No new geometry, replay integration or provider crawl.
+
 ### Published result coverage — 2026-10-06
 
 - Added independent offline coverage audits to F2/F3/IndyCar polls, including
