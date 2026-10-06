@@ -15,15 +15,15 @@
  * teams that run the grid, not a constructors' title.
  */
 import Link from "next/link";
+import ResultCoverage from "@/components/ResultCoverage";
 
 import { getCircuit, getF3Data, getRound } from "@/lib/f3data";
 import { teamColor } from "@/lib/teams";
 import type { RaceBlock } from "@/types/f3";
 import AddToCalendar from "@/components/AddToCalendar";
-import { Badge } from "@/components/ui/Badge";
 import { buttonVariants } from "@/components/ui/Button";
 import HeroParallax from "@/components/home/HeroParallax";
-import HeroCountdown from "@/components/home/HeroCountdown";
+import SnapshotForecastStatus from "@/components/SnapshotForecastStatus";
 import PodiumStage from "@/components/home/PodiumStage";
 import RaceCardCarousel from "@/components/home/RaceCardCarousel";
 import ChampionshipBento from "@/components/home/ChampionshipBento";
@@ -38,13 +38,15 @@ import FinalCTA from "@/components/marketing/FinalCTA";
 
 export default function HomePage() {
   const data = getF3Data();
+  const asOf = new Date().toISOString();
   const acc = data.seasonAccuracy;
   const next = data.nextPrediction;
   const nextGeometry = next ? getCircuit(next.venueKey) : null;
   const nextRound =
     data.calendar.find((c) => !c.completed)?.round ?? null;
-  const nextCalendarRound = nextRound
-    ? data.calendar.find((c) => c.round === nextRound) ?? null
+  // Forecast metadata follows the displayed prediction, independently of older gaps.
+  const forecastCalendarRound = next
+    ? data.calendar.find((c) => c.round === next.round) ?? null
     : null;
   const roundsRemaining = data.totalRounds - data.completedRounds;
   const roundsScored = acc?.roundsScored ?? data.completedRounds;
@@ -123,31 +125,22 @@ export default function HomePage() {
               3 championship — from a model built for a spec series, where the
               cars are equal so driver skill rules. The sprint runs a reversed
               grid; the feature race is earned on merit. {data.completedRounds} of{" "}
-              {data.totalRounds} rounds complete, on the same MotorsportVerse core
+              {data.totalRounds} rounds with imported results, on the same MotorsportVerse core
               that powers RaceIQ F1.
             </p>
           </div>
 
+          <ResultCoverage calendar={data.calendar} generatedAt={data.generatedAt} asOf={asOf} />
+
           {/* ── Featured round + CTAs ── */}
-          {next && nextCalendarRound ? (
+          {next && forecastCalendarRound ? (
             <div className="mt-12 border-t border-[color:var(--hairline)] pt-8">
-              <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant="live">Next up</Badge>
-                <span className="eyebrow">
-                  R{next.round} · Sprint + Feature
-                  {nextCalendarRound.featureDate ? (
-                    <>
-                      {" · "}
-                      <HeroCountdown targetDate={nextCalendarRound.featureDate} />
-                    </>
-                  ) : null}
-                </span>
-              </div>
+              <SnapshotForecastStatus round={forecastCalendarRound} asOf={asOf} description={`R${next.round} · Sprint + Feature`} />
               <div className="mb-8">
-                <p className="eyebrow mb-2">Next round · Predicted next</p>
+                <p className="eyebrow mb-2">Forecast in this snapshot</p>
                 <h2 className="display-md text-balance">{next.venueName}</h2>
                 <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
-                  {nextCalendarRound.country ?? "Round " + next.round} · two races,
+                  {forecastCalendarRound.country ?? "Round " + next.round} · two races,
                   modelled separately — reversed-grid sprint and merit feature.
                 </p>
               </div>
@@ -156,7 +149,7 @@ export default function HomePage() {
                   href={`/race/${next.round}`}
                   className={buttonVariants({ variant: "primary" })}
                 >
-                  Next-round prediction →
+                  View snapshot forecast →
                 </Link>
                 <Link href="/standings" className={buttonVariants({ variant: "primary" })}>
                   Standings
@@ -165,7 +158,7 @@ export default function HomePage() {
                   Accuracy
                 </Link>
                 <AddToCalendar
-                  race={nextCalendarRound}
+                  race={forecastCalendarRound}
                   season={data.season}
                   variant="ghost"
                   size="md"
@@ -202,7 +195,7 @@ export default function HomePage() {
             Full Season →
           </Link>
         </div>
-        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} mode="featured" />
+        <RaceCardCarousel calendar={data.calendar} nextRound={nextRound} asOf={asOf} mode="featured" />
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
@@ -272,7 +265,7 @@ export default function HomePage() {
               driverStandings={data.driverStandings}
               teamStandings={data.teamStandings}
               championship={data.championship}
-              nextRace={nextCalendarRound}
+              nextRace={forecastCalendarRound}
               roundsRemaining={roundsRemaining}
               totalRounds={data.totalRounds}
               seasonAccuracy={acc}

@@ -130,6 +130,25 @@ python scripts/new_project.py <slug>-predictions --sport "<Sport>" \
   --category <category> --summary "<one-line blurb>" --added <ISO date>
 ```
 
+## Published result coverage
+
+The F2, F3 and IndyCar dashboards distinguish imported results from scheduled
+race dates and show past-due coverage beside the snapshot forecast. A dataset
+export time or a successful no-work poll does not establish source freshness.
+As of 6 October 2026, published coverage remains **6/14**, **5/9** and **11/18**
+rounds respectively; official free calendars show results for the uncovered
+past weekends. Ingestion is still pending separate source/session verification.
+
+Run `python scripts/check_result_coverage.py f2` (or `f3`, `indycar`) for an
+offline coverage audit. The polling workflows run it even after a no-work gate;
+past-due gaps fail a separate coverage job without blocking valid updates.
+Homepage coverage, forecast badges and carousel labels recheck at hydration
+and hourly. A passed schedule date remains a snapshot forecast during the
+grace period, then becomes past due; time never marks a result as imported.
+Forecast status and calendar actions use the displayed prediction's own round,
+so an earlier coverage gap cannot mark a later forecast as past due.
+See the [verified findings and browser QA](docs/reviews/2026-10-06-result-coverage/README.md).
+
 ## How a series gets promoted
 
 Every sport moves through the same honest ladder: **scaffolded** (project tree +

@@ -14,7 +14,7 @@ function formatCountdown(targetIso: string, now: Date): string {
   const target = new Date(targetIso).getTime();
   if (Number.isNaN(target)) return "";
   const ms = target - now.getTime();
-  if (ms <= 0) return "this weekend";
+  if (ms <= 0) return "Scheduled date passed";
   const days = Math.floor(ms / MS_PER_DAY);
   const hours = Math.floor((ms % MS_PER_DAY) / (60 * 60 * 1000));
   if (days > 0) return `in ${days}d ${hours}h`;
@@ -33,9 +33,9 @@ export default function HeroCountdown({ targetDate, className }: HeroCountdownPr
 
   useEffect(() => {
     const tick = () => setLabel(formatCountdown(targetDate, new Date()));
-    tick();
+    const initial = window.setTimeout(tick, 0);
     const id = setInterval(tick, 60 * 60 * 1000);
-    return () => clearInterval(id);
+    return () => { window.clearTimeout(initial); clearInterval(id); };
   }, [targetDate]);
 
   if (!label) return null;

@@ -10,8 +10,10 @@ import { Badge } from "@/components/ui/Badge";
 import { Spotlight } from "@/components/magicui/spotlight";
 import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 import { getRaceArt } from "@/lib/raceArt";
+import { forecastState } from "@/lib/resultCoverage";
+import { useCoverageClock } from "@/lib/useCoverageClock";
 
-type Lifecycle = "completed" | "next" | "upcoming";
+type Lifecycle = "completed" | "next" | "upcoming" | "past-due" | "snapshot";
 
 interface StatusMeta {
   label: string;
@@ -23,6 +25,8 @@ const STATUS: Record<Lifecycle, StatusMeta> = {
   completed: { label: "Result in", shortLabel: "Done", variant: "positive" },
   next: { label: "Next up", shortLabel: "Next", variant: "live" },
   upcoming: { label: "Upcoming", shortLabel: "Soon", variant: "muted" },
+  "past-due": { label: "Past-due forecast", shortLabel: "Past due", variant: "default" },
+  snapshot: { label: "Snapshot forecast", shortLabel: "Forecast", variant: "muted" },
 };
 
 interface RaceCardCarouselProps {
@@ -30,6 +34,8 @@ interface RaceCardCarouselProps {
   calendar: CalendarRound[];
   /** Round number of the next (first not-yet-completed) round, if any. */
   nextRound: number | null;
+  /** Serialized build time keeps server/client markup identical. */
+  asOf: string;
   /**
    *   `featured`     — 3 cards: previous / next / following (default for home).
    *   `full-season`  — every round, horizontally scrollable.
@@ -40,21 +46,23 @@ interface RaceCardCarouselProps {
 
 /**
  * Photographic race-card carousel, ported from RaceIQ F1's RaceCardCarousel.
- * F2 shares the F1 weekends and circuits, so `getRaceArt(round.key)` resolves
- * an aerial photo for all 13 rounds. The F2 export carries no per-round dates
- * or sprint flags and no lifecycle helper, so status is derived locally from
- * `completed` + the next-round number. Each card links to `/race/<round>`.
+ * F2 shares F1 weekends and circuits; `getRaceArt(round.key)` selects the
+ * artwork. Imported flags and runtime schedule coverage determine status.
+ * Each card links to `/race/<round>`.
  */
 export default function RaceCardCarousel({
   calendar,
   nextRound,
+  asOf,
   mode = "featured",
   className,
 }: RaceCardCarouselProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const now = useCoverageClock(asOf);
 
   const lifecycleOf = (race: CalendarRound): Lifecycle => {
-    if (race.completed) return "completed";
+    const state = forecastState(race, now);
+    if (state !== "scheduled") return state;
     if (nextRound != null && race.round === nextRound) return "next";
     return "upcoming";
   };
@@ -79,7 +87,7 @@ export default function RaceCardCarousel({
   const renderCard = (race: CalendarRound) => {
     const lifecycle = lifecycleOf(race);
     const meta = STATUS[lifecycle];
-    const isNext = lifecycle === "next";
+    const isNext = nextRound === race.round;
     const art = getRaceArt(race.key);
 
     const inner = (
@@ -121,7 +129,7 @@ export default function RaceCardCarousel({
             }}
             aria-hidden
           />
-          <div className="relative z-10 flex h-full w-full flex-col justify-between p-5 sm:p-7">
+          <div className="relative z-10 flex h-full w-full flex-col justify-between p-5 pb-10 sm:p-7">
             <div className="flex items-center gap-2">
               <Badge variant={meta.variant}>{meta.shortLabel}</Badge>
               <span className="eyebrow text-[color:var(--ink)]/80">
@@ -186,7 +194,7 @@ export default function RaceCardCarousel({
   };
 
   return (
-    <div className={`relative ${className ?? ""}`}>
+    <div role="region" aria-label="Race forecast carousel" className={`relative ${className ?? ""}`}>
       {mode === "full-season" && (
         <div className="absolute -top-12 right-0 z-10 hidden gap-2 sm:flex">
           <button

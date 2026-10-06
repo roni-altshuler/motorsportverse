@@ -13,7 +13,7 @@ interface HUDHeaderProps {
   name: string;
   /** Country string for the flag + meta line. */
   country: string | null;
-  /** Whether the round has run (drives the live/upcoming pill). */
+  /** Whether this snapshot carries results for the round. */
   completed: boolean;
   /** Which race tab is active — surfaces in the dual-race indicator. */
   activeRace: "feature" | "sprint";
@@ -61,7 +61,7 @@ export default function HUDHeader({
           <div className="flex flex-wrap items-center justify-end gap-2">
             <Badge variant="info">Sprint + Feature</Badge>
             <Badge variant={completed ? "positive" : "live"}>
-              {completed ? "Result + Forecast" : "Upcoming Forecast"}
+              {completed ? "Result + Forecast" : "Snapshot Forecast"}
             </Badge>
           </div>
         }

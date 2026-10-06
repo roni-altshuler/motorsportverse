@@ -17,7 +17,7 @@ interface HUDHeaderProps {
   raceName?: string | null;
   /** Country string for the flag + meta line. */
   country: string | null;
-  /** Whether the round has run (drives the live/upcoming pill). */
+  /** Whether this snapshot carries results for the round. */
   completed: boolean;
   /** IndyCar track archetype — surfaced as the format indicator. */
   trackType: TrackType;
@@ -66,7 +66,7 @@ export default function HUDHeader({
             <Badge variant="info">{kindLabel}</Badge>
             {isIndy500 && <Badge variant="live">Indy 500</Badge>}
             <Badge variant={completed ? "positive" : "live"}>
-              {completed ? "Result + Forecast" : "Upcoming Forecast"}
+              {completed ? "Result + Forecast" : "Snapshot Forecast"}
             </Badge>
           </div>
         }
