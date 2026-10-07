@@ -37,6 +37,11 @@ const results = [];
 const unique = values => [...new Map(values.map(value => [JSON.stringify(value), value])).values()];
 async function capture(page, name) {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${name}: horizontal overflow`);
+  // Reset the viewport before a full-page capture so sticky navigation is not
+  // painted midway through the document after a control scrolled into focus.
+  await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' }));
+  await page.waitForFunction(() => window.scrollY < 2);
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   await page.screenshot({ path: resolve(output, `${name}.png`), fullPage: true, animations: 'disabled' });
 }
 try {
