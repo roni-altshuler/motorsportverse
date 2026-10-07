@@ -388,6 +388,13 @@ export default function Navbar() {
                           </span>
                         </Link>
                       )}
+                      <Link
+                        href="/compare/laps"
+                        onClick={() => setRacesOpen(false)}
+                        className="nav-link-text flex items-center gap-3 px-3 py-2.5 text-[color:var(--ink)] hover:bg-[color:var(--surface-elevated)]"
+                      >
+                        Lap comparison · 2025 archive
+                      </Link>
                       <div className="h-px my-1" style={{ background: "var(--hairline)" }} />
                       {season.calendar.map((race) => {
                         const completed = season.completedRounds.includes(race.round);
@@ -553,6 +560,7 @@ export default function Navbar() {
                 {[
                   { href: "/", label: "Home" },
                   { href: withSeason("/calendar"), label: "Season Calendar" },
+                  { href: "/compare/laps", label: "Lap comparison · 2025 archive" },
                   { href: withSeason("/standings"), label: "Standings" },
                   { href: withSeason(`/driver/${defaultDriverCode}`), label: "Drivers" },
                   { href: "/accuracy", label: "Accuracy" },
