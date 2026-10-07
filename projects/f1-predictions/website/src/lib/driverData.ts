@@ -65,8 +65,6 @@ export async function fetchRoundJson(
 // Pure aggregation helpers (unit-testable; operate on already-fetched data).
 // ---------------------------------------------------------------------------
 
-/** Statuses that represent a classified running finish (still counts as a start). */
-const FINISHED_STATUSES = new Set(["Finished", "Lapped"]);
 /** Statuses that represent a did-not-finish (started, but retired/excluded). */
 const DNF_STATUSES = new Set(["Retired", "Disqualified"]);
 /** Status that represents a non-start (excluded from the "starts" denominator). */

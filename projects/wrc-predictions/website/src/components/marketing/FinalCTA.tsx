@@ -37,7 +37,7 @@ export default function FinalCTA() {
           Ready before the first stage
         </h2>
         <p className="body-md mt-5 mx-auto max-w-xl text-[color:var(--body)]">
-          Open the next rally's forecast, then judge it against the classification.
+          Open the next rally&apos;s forecast, then judge it against the classification.
           That is the whole deal.
         </p>
 

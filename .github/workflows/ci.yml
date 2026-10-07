@@ -158,9 +158,15 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "20"
-      - run: npm install
+      # A clean locked install must work; npm install silently repaired omitted
+      # Jest/testing-library entries in eight committed site locks.
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Test
         run: npm test -- --ci
+      - name: Typecheck
+        run: npm run typecheck
       - name: Inventory circuit provenance (report only)
         if: matrix.site == 'projects/f1-predictions/website'
         run: npx --no-install tsx ../../../scripts/check_circuit_geometry.ts
@@ -176,7 +182,7 @@ jobs:
         # and this matrix building ten sites made that ten times likelier to be
         # hit. The fonts are vendored now (`next/font/local`, files committed
         # under each site's src/app/fonts/), so the build no longer touches the
-        # network. Kept because `npm install` still can, and a genuine build
+        # network. Kept because `npm ci` still can, and a genuine build
         # error fails all three attempts identically.
         run: |
           for attempt in 1 2 3; do

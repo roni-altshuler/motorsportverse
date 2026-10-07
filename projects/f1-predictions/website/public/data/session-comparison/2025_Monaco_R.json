@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "session": {
+    "id": "2025_Monaco_R",
+    "season": 2025,
+    "event": "Monaco Grand Prix",
+    "kind": "Race",
+    "date": "2025-05-25"
+  },
+  "source": {
+    "provider": "FastF1",
+    "path": "features/data/lap_cache/2025_Monaco_R.parquet",
+    "sha256": "efb689f9d0f6a9c8133c54b37171084314cb812460b710ab4c206326ee6dd56a",
+    "selection": "fastest-complete-stored-row",
+    "missingFields": [
+      "lapNumber",
+      "tyre",
+      "pitStatus",
+      "accuracy",
+      "trackStatus"
+    ]
+  },
+  "drivers": [
+    {
+      "code": "NOR",
+      "fullName": "Lando Norris",
+      "portraitPath": "/headshots/NOR.webp",
+      "lapMs": 73221,
+      "sectorMs": [
+        19145,
+        34697,
+        19379
+      ],
+      "storedRows": 77,
+      "completeRows": 77
+    },
+    {
+      "code": "RUS",
+      "fullName": "George Russell",
+      "portraitPath": "/headshots/RUS.webp",
+      "lapMs": 73405,
+      "sectorMs": [
+        19211,
+        34690,
+        19504
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "ANT",
+      "fullName": "Kimi Antonelli",
+      "portraitPath": "/headshots/ANT.webp",
+      "lapMs": 73518,
+      "sectorMs": [
+        19187,
+        34864,
+        19467
+      ],
+      "storedRows": 74,
+      "completeRows": 74
+    },
+    {
+      "code": "PIA",
+      "fullName": "Oscar Piastri",
+      "portraitPath": "/headshots/PIA.webp",
+      "lapMs": 73745,
+      "sectorMs": [
+        19388,
+        34787,
+        19570
+      ],
+      "storedRows": 77,
+      "completeRows": 77
+    },
+    {
+      "code": "SAI",
+      "fullName": "Carlos Sainz Jr.",
+      "portraitPath": "/headshots/SAI.webp",
+      "lapMs": 73988,
+      "sectorMs": [
+        19340,
+        35166,
+        19482
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "LEC",
+      "fullName": "Charles Leclerc",
+      "portraitPath": "/headshots/LEC.webp",
+      "lapMs": 74055,
+      "sectorMs": [
+        19337,
+        35063,
+        19655
+      ],
+      "storedRows": 77,
+      "completeRows": 77
+    },
+    {
+      "code": "HAM",
+      "fullName": "Lewis Hamilton",
+      "portraitPath": "/headshots/HAM.webp",
+      "lapMs": 74090,
+      "sectorMs": [
+        19375,
+        35138,
+        19577
+      ],
+      "storedRows": 77,
+      "completeRows": 77
+    },
+    {
+      "code": "VER",
+      "fullName": "Max Verstappen",
+      "portraitPath": "/headshots/VER.webp",
+      "lapMs": 74230,
+      "sectorMs": [
+        19363,
+        35111,
+        19756
+      ],
+      "storedRows": 77,
+      "completeRows": 77
+    },
+    {
+      "code": "ALB",
+      "fullName": "Alexander Albon",
+      "portraitPath": "/headshots/ALB.webp",
+      "lapMs": 74597,
+      "sectorMs": [
+        19592,
+        35332,
+        19673
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "BEA",
+      "fullName": "Oliver Bearman",
+      "portraitPath": "/headshots/BEA.webp",
+      "lapMs": 74855,
+      "sectorMs": [
+        19719,
+        35412,
+        19724
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "STR",
+      "fullName": "Lance Stroll",
+      "portraitPath": "/headshots/STR.webp",
+      "lapMs": 74877,
+      "sectorMs": [
+        19652,
+        35303,
+        19922
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "BOR",
+      "fullName": "Gabriel Bortoleto",
+      "portraitPath": "/headshots/BOR.webp",
+      "lapMs": 74884,
+      "sectorMs": [
+        19720,
+        35188,
+        19976
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "TSU",
+      "fullName": "Yuki Tsunoda",
+      "portraitPath": null,
+      "lapMs": 74913,
+      "sectorMs": [
+        19624,
+        35388,
+        19901
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "OCO",
+      "fullName": "Esteban Ocon",
+      "portraitPath": "/headshots/OCO.webp",
+      "lapMs": 75157,
+      "sectorMs": [
+        19852,
+        35503,
+        19802
+      ],
+      "storedRows": 76,
+      "completeRows": 76
+    },
+    {
+      "code": "HUL",
+      "fullName": "Nico Hülkenberg",
+      "portraitPath": "/headshots/HUL.webp",
+      "lapMs": 75223,
+      "sectorMs": [
+        19847,
+        35445,
+        19931
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "COL",
+      "fullName": "Franco Colapinto",
+      "portraitPath": "/headshots/COL.webp",
+      "lapMs": 75298,
+      "sectorMs": [
+        19799,
+        35484,
+        20015
+      ],
+      "storedRows": 75,
+      "completeRows": 75
+    },
+    {
+      "code": "LAW",
+      "fullName": "Liam Lawson",
+      "portraitPath": "/headshots/LAW.webp",
+      "lapMs": 75321,
+      "sectorMs": [
+        19595,
+        35608,
+        20118
+      ],
+      "storedRows": 76,
+      "completeRows": 76
+    },
+    {
+      "code": "ALO",
+      "fullName": "Fernando Alonso",
+      "portraitPath": "/headshots/ALO.webp",
+      "lapMs": 75593,
+      "sectorMs": [
+        19849,
+        35665,
+        20079
+      ],
+      "storedRows": 35,
+      "completeRows": 35
+    },
+    {
+      "code": "HAD",
+      "fullName": "Isack Hadjar",
+      "portraitPath": "/headshots/HAD.webp",
+      "lapMs": 75981,
+      "sectorMs": [
+        19975,
+        36083,
+        19923
+      ],
+      "storedRows": 76,
+      "completeRows": 76
+    },
+    {
+      "code": "GAS",
+      "fullName": "Pierre Gasly",
+      "portraitPath": "/headshots/GAS.webp",
+      "lapMs": 78054,
+      "sectorMs": [
+        20587,
+        36799,
+        20668
+      ],
+      "storedRows": 6,
+      "completeRows": 6
+    }
+  ]
+}
