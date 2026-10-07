@@ -97,29 +97,32 @@ The saved cloud executor was verified usable again at **11:54:43 UTC** after a
 lifecycle disconnection notice. The same worktree, edits and Chromium were present;
 no environment switch occurred.
 
-## Narrow dependency patch and remaining gates
+## Dependency patch, locked-install repair and remaining gates
 
 [GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)
 affects `source-map-js` versions ≥1.0.0 and <1.2.2. The indexed source-map offset issue can hang
-the event loop. All 11 site locks contained 1.2.1; each changes only that leaf's
-version, resolved tarball and integrity to 1.2.2. No manifest, direct dependency,
-override, other lock package or credentials change. Fresh F1/F3/hub installs
-confirmed 1.2.2, followed by the checks above. Presence in the build dependency
+the event loop. All 11 site locks contained 1.2.1; the initial security commit
+changes only each leaf's version, resolved tarball and integrity to 1.2.2. No manifest, direct dependency,
+override or credentials change. The later locked-install repair adds the missing
+declared test dependency trees in eight locks while preserving all existing
+package entries. [The install audit](LOCKFILE_INSTALL_AUDIT.md) records base/head
+error comparisons, Node 20/npm 10 checks and the `npm ci` CI guard. Presence in the build dependency
 tree does not establish exploitation of the static deployed site.
 
-Remaining repository checks are not green:
+Remaining local lint checks fail on base and head:
 
 - Full F1 ESLint reports five errors in **unchanged** `jest.config.js`,
   `jest.setup.js` and replay ref assignments, plus an existing unused-variable
   warning. The same base files reproduce those findings; changed files pass.
-- F3 and hub's existing `npm run lint` invoke unsupported `next lint`.
-- Fresh `npm ci` fails for F2, Formula E, IMSA, IndyCar, MotoGP, NASCAR, WEC and
-  WRC: existing manifests require six Jest/testing-library packages missing from
-  their base locks. Baseline F2 `npm ci --legacy-peer-deps` reproduces this; the
-  other base locks have the same missing package entries. Their build/type/test
-  checks could not run on a fresh locked installation. This patch leaves those
-  unrelated lock inconsistencies for separate work rather than claiming green
-  cross-series installs.
+- The other ten sites' existing `npm run lint` invoke unsupported `next lint`.
+  Their base and head scripts match. No comparison-code lint regression was found.
+
+The eight original locked-install failures are resolved, rather than carried as
+remaining gates. Every site's supported clean install, frontend tests, types and
+static build are checked separately from these unchanged lint failures. The F1
+comparison browser flows were rerun on the supported rebuilt export; the
+[additional raw report](qa/archived-lap-comparison/browser-qa-node20.json) retains
+external proxy failures without bypassing access.
 
 Keep the new PR **draft** for the parent's independent review and resolution of
 remaining check gates. No main update, merge, production dispatch, external

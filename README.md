@@ -96,6 +96,11 @@ lap records, keeps sectors from the same stored lap, and explains the absent lap
 context. It does not add live timing, reviewed geometry or a current-season
 comparison to F1 or the other series.
 
+[The locked-install audit](docs/LOCKFILE_INSTALL_AUDIT.md) records the repaired
+test dependency omissions in eight site locks. All 11 sites pass clean Node 20 /
+npm 10 installs, frontend tests, types and static builds; website CI now enforces
+`npm ci`. Existing base lint failures remain separately documented.
+
 ```
 motorsportverse/
 ├── website/                 ecosystem landing site + project catalog (Next.js, static export)
