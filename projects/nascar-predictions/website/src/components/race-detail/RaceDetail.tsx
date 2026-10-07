@@ -69,6 +69,7 @@ export function RaceDetail({
   const { basePath, year, index } = useSeason();
   const isArchived = !!index && year !== index.current;
   const [overlay, setOverlay] = useState<{
+    basePath: string;
     round: RoundDetail;
     probabilities: ProbabilitiesRound | null;
     driverStandings: DriverStanding[];
@@ -76,10 +77,7 @@ export function RaceDetail({
   } | null>(null);
 
   useEffect(() => {
-    if (!isArchived) {
-      setOverlay(null);
-      return;
-    }
+    if (!isArchived) return;
     let active = true;
     Promise.all([
       fetchRoundDetail(bakedRound.round, basePath),
@@ -90,6 +88,7 @@ export function RaceDetail({
       setOverlay(
         r
           ? {
+              basePath,
               round: r,
               probabilities: p,
               driverStandings: d?.driverStandings ?? [],
@@ -103,11 +102,14 @@ export function RaceDetail({
     };
   }, [isArchived, basePath, bakedRound.round]);
 
-  const round = (isArchived && overlay?.round) || bakedRound;
-  const probabilities = isArchived && overlay ? overlay.probabilities : bakedProbabilities;
-  const driverStandings =
-    isArchived && overlay ? overlay.driverStandings : bakedStandings;
-  const championship = isArchived && overlay ? overlay.championship : bakedChampionship;
+  // Select only the archive that belongs to this route; current-season props
+  // need no state reset or extra effect render.
+  const activeOverlay = isArchived && overlay?.basePath === basePath
+    && overlay.round.round === bakedRound.round ? overlay : null;
+  const round = activeOverlay?.round ?? bakedRound;
+  const probabilities = activeOverlay ? activeOverlay.probabilities : bakedProbabilities;
+  const driverStandings = activeOverlay ? activeOverlay.driverStandings : bakedStandings;
+  const championship = activeOverlay ? activeOverlay.championship : bakedChampionship;
   // The trend is baked from the current season's files only — never show it
   // against an archived season's rounds.
   const trend = isArchived ? null : winTrend;

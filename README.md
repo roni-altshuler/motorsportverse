@@ -98,8 +98,9 @@ comparison to F1 or the other series.
 
 [The locked-install audit](docs/LOCKFILE_INSTALL_AUDIT.md) records the repaired
 test dependency omissions in eight site locks. All 11 sites pass clean Node 20 /
-npm 10 installs, frontend tests, types and static builds; website CI now enforces
-`npm ci`. Existing base lint failures remain separately documented.
+npm 10 installs, ESLint, frontend tests, types and static builds; website CI now
+enforces the locked install, lint and type checks. [The lint repair](docs/LINT_TOOLING_REPAIR.md)
+records the exact errors, fixes and remaining warnings without rule suppression.
 
 ```
 motorsportverse/

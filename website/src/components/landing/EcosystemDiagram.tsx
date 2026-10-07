@@ -10,7 +10,7 @@
  */
 
 import Image from "next/image";
-import { createRef, useCallback, useMemo, useRef, type RefObject } from "react";
+import { createRef, useCallback, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
@@ -33,10 +33,10 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
 
   const shownSports = useMemo(() => sports.slice(0, 5), [sports]);
   // Stable per-sport refs (identity preserved across renders).
-  const sportRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
-  if (sportRefs.current.length !== shownSports.length) {
-    sportRefs.current = shownSports.map(() => createRef<HTMLDivElement>());
-  }
+  const sportRefs = useMemo(
+    () => Array.from({ length: shownSports.length }, () => createRef<HTMLDivElement>()),
+    [shownSports.length],
+  );
 
   // Failsafe reveal; merge its ref with the beam container ref (one node).
   const { ref: revealRef, shown } = useReveal("-80px");
@@ -83,7 +83,7 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
         {shownSports.map((s, i) => (
           <DiagramNode
             key={s.slug}
-            innerRef={sportRefs.current[i]}
+            innerRef={sportRefs[i]}
             label={s.sport}
             icon={s.icon}
             accent={s.accent}
@@ -116,7 +116,7 @@ export function EcosystemDiagram({ sports }: { sports: SportNode[] }) {
           key={s.slug}
           containerRef={containerRef}
           fromRef={coreRef}
-          toRef={sportRefs.current[i]}
+          toRef={sportRefs[i]}
           duration={4}
           delay={i * 0.35}
           curvature={(i - 2) * 22}

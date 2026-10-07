@@ -161,8 +161,12 @@ jobs:
       # A clean locked install must work; npm install silently repaired omitted
       # Jest/testing-library entries in eight committed site locks.
       - run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Test
         run: npm test -- --ci
+      - name: Typecheck
+        run: npm run typecheck
       - name: Inventory circuit provenance (report only)
         if: matrix.site == 'projects/f1-predictions/website'
         run: npx --no-install tsx ../../../scripts/check_circuit_geometry.ts

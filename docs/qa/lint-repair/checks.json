@@ -1,0 +1,1693 @@
+{
+  "priorHead": "ce47bfb8810d612807a1a681940103a049bae763",
+  "toolchain": {
+    "node": "20.20.2",
+    "npm": "10.9.9",
+    "pythonCI": "3.11.16"
+  },
+  "originalF1BaseFindings": {
+    "identical": true,
+    "base": [
+      {
+        "file": "jest.config.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 4,
+            "column": 18,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 4,
+            "endColumn": 38
+          }
+        ]
+      },
+      {
+        "file": "jest.setup.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 1,
+            "column": 1,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 1,
+            "endColumn": 37
+          }
+        ]
+      },
+      {
+        "file": "src/components/theatre/RaceTheatre.tsx",
+        "errors": 3,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:111:3\n  109 |   const dimsRef = useRef({ w: 0, h: 0, dpr: 1 });\n  110 |\n> 111 |   playingRef.current = playing;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  112 |   speedRef.current = speed;\n  113 |   focusedRef.current = focused;\n  114 |",
+            "line": 111,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 111,
+            "endColumn": 21
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:112:3\n  110 |\n  111 |   playingRef.current = playing;\n> 112 |   speedRef.current = speed;\n      |   ^^^^^^^^^^^^^^^^ Cannot update ref during render\n  113 |   focusedRef.current = focused;\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */",
+            "line": 112,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 112,
+            "endColumn": 19
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:113:3\n  111 |   playingRef.current = playing;\n  112 |   speedRef.current = speed;\n> 113 |   focusedRef.current = focused;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */\n  116 |   useEffect(() => {",
+            "line": 113,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 113,
+            "endColumn": 21
+          }
+        ]
+      },
+      {
+        "file": "src/lib/driverData.ts",
+        "errors": 0,
+        "warnings": 1,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-unused-vars",
+            "severity": 1,
+            "message": "'FINISHED_STATUSES' is assigned a value but never used.",
+            "line": 69,
+            "column": 7,
+            "nodeType": "Identifier",
+            "messageId": "unusedVar",
+            "endLine": 69,
+            "endColumn": 24
+          }
+        ]
+      }
+    ],
+    "head": [
+      {
+        "file": "jest.config.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 4,
+            "column": 18,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 4,
+            "endColumn": 38
+          }
+        ]
+      },
+      {
+        "file": "jest.setup.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 1,
+            "column": 1,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 1,
+            "endColumn": 37
+          }
+        ]
+      },
+      {
+        "file": "src/components/theatre/RaceTheatre.tsx",
+        "errors": 3,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:111:3\n  109 |   const dimsRef = useRef({ w: 0, h: 0, dpr: 1 });\n  110 |\n> 111 |   playingRef.current = playing;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  112 |   speedRef.current = speed;\n  113 |   focusedRef.current = focused;\n  114 |",
+            "line": 111,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 111,
+            "endColumn": 21
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:112:3\n  110 |\n  111 |   playingRef.current = playing;\n> 112 |   speedRef.current = speed;\n      |   ^^^^^^^^^^^^^^^^ Cannot update ref during render\n  113 |   focusedRef.current = focused;\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */",
+            "line": 112,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 112,
+            "endColumn": 19
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:113:3\n  111 |   playingRef.current = playing;\n  112 |   speedRef.current = speed;\n> 113 |   focusedRef.current = focused;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */\n  116 |   useEffect(() => {",
+            "line": 113,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 113,
+            "endColumn": 21
+          }
+        ]
+      },
+      {
+        "file": "src/lib/driverData.ts",
+        "errors": 0,
+        "warnings": 1,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-unused-vars",
+            "severity": 1,
+            "message": "'FINISHED_STATUSES' is assigned a value but never used.",
+            "line": 69,
+            "column": 7,
+            "nodeType": "Identifier",
+            "messageId": "unusedVar",
+            "endLine": 69,
+            "endColumn": 24
+          }
+        ]
+      }
+    ]
+  },
+  "postInitialFixInventory": [
+    {
+      "site": "projects/f1-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 0,
+      "findings": [
+        {
+          "file": "src/components/theatre/RaceTheatre.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 122,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f2-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 85,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f3-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 83,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 78,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 5,
+              "severity": 1,
+              "message": "'useMemo' is defined but never used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 79,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 78,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "exit": 1,
+      "errors": 1,
+      "warnings": 5,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/driver/DriverProfilePage.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 23,
+              "severity": 1,
+              "message": "'NascarData' is defined but never used."
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 80,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 5,
+              "severity": 1,
+              "message": "'useMemo' is defined but never used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "exit": 1,
+      "errors": 3,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 78,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 141) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            }
+          ]
+        },
+        {
+          "file": "src/components/marketing/FinalCTA.tsx",
+          "messages": [
+            {
+              "rule": "react/no-unescaped-entities",
+              "line": 40,
+              "severity": 2,
+              "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+            }
+          ]
+        },
+        {
+          "file": "src/components/marketing/TrustBand.tsx",
+          "messages": [
+            {
+              "rule": "react/no-unescaped-entities",
+              "line": 89,
+              "severity": 2,
+              "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+            }
+          ]
+        },
+        {
+          "file": "src/components/race-detail/RaceDetail.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 74,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "website",
+      "exit": 1,
+      "errors": 6,
+      "warnings": 0,
+      "findings": [
+        {
+          "file": "src/components/CommandPalette.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 92,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        },
+        {
+          "file": "src/components/landing/EcosystemDiagram.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/refs",
+              "line": 37,
+              "severity": 2,
+              "message": "Error: Cannot access refs during render"
+            },
+            {
+              "rule": "react-hooks/refs",
+              "line": 38,
+              "severity": 2,
+              "message": "Error: Cannot access refs during render"
+            },
+            {
+              "rule": "react-hooks/refs",
+              "line": 83,
+              "severity": 2,
+              "message": "Error: Cannot access refs during render"
+            },
+            {
+              "rule": "react-hooks/refs",
+              "line": 114,
+              "severity": 2,
+              "message": "Error: Cannot access refs during render"
+            }
+          ]
+        },
+        {
+          "file": "src/components/landing/RaceCentre.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/set-state-in-effect",
+              "line": 42,
+              "severity": 2,
+              "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "finalLint": [
+    {
+      "site": "projects/f1-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0,
+      "findings": []
+    },
+    {
+      "site": "projects/f2-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f3-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 5,
+              "severity": 1,
+              "message": "'useMemo' is defined but never used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 4,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 25,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 114,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 5,
+      "findings": [
+        {
+          "file": "src/components/Footer.tsx",
+          "messages": [
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 24,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 113,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 54,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 117) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            },
+            {
+              "rule": "@next/next/no-img-element",
+              "line": 200,
+              "severity": 1,
+              "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+            }
+          ]
+        },
+        {
+          "file": "src/components/driver/DriverProfilePage.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 23,
+              "severity": 1,
+              "message": "'NascarData' is defined but never used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "@typescript-eslint/no-unused-vars",
+              "line": 5,
+              "severity": 1,
+              "message": "'useMemo' is defined but never used."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 1,
+      "findings": [
+        {
+          "file": "src/components/Navbar.tsx",
+          "messages": [
+            {
+              "rule": "react-hooks/exhaustive-deps",
+              "line": 78,
+              "severity": 1,
+              "message": "The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 141) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "site": "website",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0,
+      "findings": []
+    }
+  ],
+  "supportedChecks": [
+    {
+      "site": "projects/f2-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "b4f9cff25f6b8d37605abce11ce5cab6f86632feb7d33d80dce2c4efd4a7a83b",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 33.0,
+          "log": "/tmp/motorsport-lint-repair-projects_f2-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 12.7,
+          "log": "/tmp/motorsport-lint-repair-projects_f2-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 9.3,
+          "log": "/tmp/motorsport-lint-repair-projects_f2-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 9.7,
+          "log": "/tmp/motorsport-lint-repair-projects_f2-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 20.5,
+          "log": "/tmp/motorsport-lint-repair-projects_f2-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "133 passed, 133 total"
+    },
+    {
+      "site": "projects/f3-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "739172096d6c963db82d8359336ffb603205075b3718cccf304d64369ba21845",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 16.0,
+          "log": "/tmp/motorsport-lint-repair-projects_f3-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 9.1,
+          "log": "/tmp/motorsport-lint-repair-projects_f3-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 7.0,
+          "log": "/tmp/motorsport-lint-repair-projects_f3-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 4.0,
+          "log": "/tmp/motorsport-lint-repair-projects_f3-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 28.9,
+          "log": "/tmp/motorsport-lint-repair-projects_f3-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "126 passed, 126 total"
+    },
+    {
+      "site": "projects/f1-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "3a343a17fbfb0698742344eb4114f75e1263342bd50d6036b60c0c9e74b71605",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 31.8,
+          "log": "/tmp/motorsport-lint-repair-projects_f1-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 17.5,
+          "log": "/tmp/motorsport-lint-repair-projects_f1-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 3.6,
+          "log": "/tmp/motorsport-lint-repair-projects_f1-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 5.3,
+          "log": "/tmp/motorsport-lint-repair-projects_f1-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 96.7,
+          "log": "/tmp/motorsport-lint-repair-projects_f1-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "130 passed, 130 total"
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "e1f2746c67ebc9b58c6a96d3b77c04bb287458f77fe0b63cd3bce77345909f00",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 23.3,
+          "log": "/tmp/motorsport-lint-repair-projects_imsa-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 8.8,
+          "log": "/tmp/motorsport-lint-repair-projects_imsa-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 4.9,
+          "log": "/tmp/motorsport-lint-repair-projects_imsa-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 7.7,
+          "log": "/tmp/motorsport-lint-repair-projects_imsa-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 22.7,
+          "log": "/tmp/motorsport-lint-repair-projects_imsa-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "8649aafba216ea690afa4672e5a9c64bf0bfb7790b8c09a5f6ff571cf2a33822",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 24.9,
+          "log": "/tmp/motorsport-lint-repair-projects_formula-e-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 13.5,
+          "log": "/tmp/motorsport-lint-repair-projects_formula-e-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 4.2,
+          "log": "/tmp/motorsport-lint-repair-projects_formula-e-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 9.2,
+          "log": "/tmp/motorsport-lint-repair-projects_formula-e-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 32.7,
+          "log": "/tmp/motorsport-lint-repair-projects_formula-e-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "fc630a4f2f37b6cbb6770bc4b49e551043227c42a7d85c0b13c0a5344b8175e5",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 30.7,
+          "log": "/tmp/motorsport-lint-repair-projects_indycar-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 17.4,
+          "log": "/tmp/motorsport-lint-repair-projects_indycar-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 6.3,
+          "log": "/tmp/motorsport-lint-repair-projects_indycar-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 14.8,
+          "log": "/tmp/motorsport-lint-repair-projects_indycar-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 31.7,
+          "log": "/tmp/motorsport-lint-repair-projects_indycar-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "120 passed, 120 total"
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "3b4edd4e1836c1f6ba151f7c58f0b5a13924a6a3c1f32dcd1202c0fcad923ed8",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 23.9,
+          "log": "/tmp/motorsport-lint-repair-projects_motogp-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 16.7,
+          "log": "/tmp/motorsport-lint-repair-projects_motogp-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 5.3,
+          "log": "/tmp/motorsport-lint-repair-projects_motogp-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 10.8,
+          "log": "/tmp/motorsport-lint-repair-projects_motogp-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 33.9,
+          "log": "/tmp/motorsport-lint-repair-projects_motogp-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "e1f2746c67ebc9b58c6a96d3b77c04bb287458f77fe0b63cd3bce77345909f00",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 29.3,
+          "log": "/tmp/motorsport-lint-repair-projects_wec-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 8.1,
+          "log": "/tmp/motorsport-lint-repair-projects_wec-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 4.6,
+          "log": "/tmp/motorsport-lint-repair-projects_wec-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 7.4,
+          "log": "/tmp/motorsport-lint-repair-projects_wec-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 23.0,
+          "log": "/tmp/motorsport-lint-repair-projects_wec-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "af3eb3857acf7d83863085828382e3a9cc7a1ce51c19b7fc70907f129d7f63bb",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 31.5,
+          "log": "/tmp/motorsport-lint-repair-projects_nascar-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 13.6,
+          "log": "/tmp/motorsport-lint-repair-projects_nascar-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 4.5,
+          "log": "/tmp/motorsport-lint-repair-projects_nascar-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 9.9,
+          "log": "/tmp/motorsport-lint-repair-projects_nascar-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 42.9,
+          "log": "/tmp/motorsport-lint-repair-projects_nascar-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    },
+    {
+      "site": "website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "c1ecd0ee96b681f84181c2c87651b495843ead0a593cf30d21f879b5a4cb8791",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 33.1,
+          "log": "/tmp/motorsport-lint-repair-website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 11.9,
+          "log": "/tmp/motorsport-lint-repair-website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 8.1,
+          "log": "/tmp/motorsport-lint-repair-website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 10.1,
+          "log": "/tmp/motorsport-lint-repair-website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 46.7,
+          "log": "/tmp/motorsport-lint-repair-website-build.log"
+        }
+      ],
+      "testSummary": "8 skipped, 122 passed, 130 total"
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "0b7a6053feb3d13f1c8670b8864aa2040f2e8a436a3089dc491bc57963225da2",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 35.5,
+          "log": "/tmp/motorsport-lint-repair-projects_wrc-predictions_website-ci.log"
+        },
+        {
+          "stage": "lint",
+          "exit": 0,
+          "seconds": 19.1,
+          "log": "/tmp/motorsport-lint-repair-projects_wrc-predictions_website-lint.log"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 6.7,
+          "log": "/tmp/motorsport-lint-repair-projects_wrc-predictions_website-tests.log"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 19.7,
+          "log": "/tmp/motorsport-lint-repair-projects_wrc-predictions_website-types.log"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 62.3,
+          "log": "/tmp/motorsport-lint-repair-projects_wrc-predictions_website-build.log"
+        }
+      ],
+      "testSummary": "108 passed, 108 total"
+    }
+  ],
+  "evidenceArtifacts": {
+    "python3.11": "10 pass",
+    "python3.12": "unchanged MotoGP baselineMean 3.272437 -> 3.272438; exact baseline reproduces; artifact unchanged"
+  },
+  "dependencyDeclarationsChanged": false,
+  "rulesDisabled": false,
+  "productionDispatch": false,
+  "eslintConfigHashes": {
+    "projects/f1-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/indycar-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/wec-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/f2-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/nascar-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/wrc-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/f3-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/motogp-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/imsa-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "projects/formula-e-predictions/website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+    "website/eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493"
+  },
+  "browserSummary": {
+    "flows": 18,
+    "pageExceptions": 0,
+    "portrait404sVerifiedAbsentAtBase": 102,
+    "observedLayoutIssues": [
+      {
+        "series": "motogp",
+        "viewport": "mobile",
+        "viewportWidth": 390,
+        "documentWidth": 406
+      }
+    ],
+    "motoGpBaseOverflowVerified": {
+      "browser": "151.0.7922.173",
+      "results": [
+        {
+          "label": "exact-base",
+          "sourceCommit": "b9408e3a56bd08e51220709aae5f017dabcda272",
+          "site": "motogp",
+          "route": "/race/1/",
+          "staticBuild": true,
+          "toolchain": "Node20.20.2; base uses unchanged declared dependencies from repaired installation and standard Next build",
+          "viewportWidth": 390,
+          "documentWidth": 406,
+          "overflowingElements": [
+            {
+              "tag": "DIV",
+              "className": "flex-shrink-0",
+              "right": 405.890625,
+              "text": "Sprint + Grand PrixResult + Forecast"
+            },
+            {
+              "tag": "DIV",
+              "className": "flex flex-wrap items-center justify-end gap-2",
+              "right": 405.890625,
+              "text": "Sprint + Grand PrixResult + Forecast"
+            },
+            {
+              "tag": "SPAN",
+              "className": "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono uppercase text-[11px] tracking-[0.18em] transition-colors border border-[color:rgba(95,166,87,0.4)] bg-transparent text-[color:var(--success)]",
+              "right": 405.890625,
+              "text": "Result + Forecast"
+            },
+            {
+              "tag": "TABLE",
+              "className": "border-separate",
+              "right": 637,
+              "text": "12345678910111213141516171819202122232425262728293031MAMBEZGIAMAAFE2ACOMARMOFOGU"
+            },
+            {
+              "tag": "THEAD",
+              "className": "",
+              "right": 635,
+              "text": "12345678910111213141516171819202122232425262728293031"
+            },
+            {
+              "tag": "TR",
+              "className": "",
+              "right": 635,
+              "text": "12345678910111213141516171819202122232425262728293031"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 401,
+              "text": "18"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 419,
+              "text": "19"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 437,
+              "text": "20"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 455,
+              "text": "21"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 473,
+              "text": "22"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 491,
+              "text": "23"
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "label": "head",
+          "sourceCommit": "working lint repair",
+          "site": "motogp",
+          "route": "/race/1/",
+          "staticBuild": true,
+          "toolchain": "Node20.20.2; base uses unchanged declared dependencies from repaired installation and standard Next build",
+          "viewportWidth": 390,
+          "documentWidth": 406,
+          "overflowingElements": [
+            {
+              "tag": "DIV",
+              "className": "flex-shrink-0",
+              "right": 405.890625,
+              "text": "Sprint + Grand PrixResult + Forecast"
+            },
+            {
+              "tag": "DIV",
+              "className": "flex flex-wrap items-center justify-end gap-2",
+              "right": 405.890625,
+              "text": "Sprint + Grand PrixResult + Forecast"
+            },
+            {
+              "tag": "SPAN",
+              "className": "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono uppercase text-[11px] tracking-[0.18em] transition-colors border border-[color:rgba(95,166,87,0.4)] bg-transparent text-[color:var(--success)]",
+              "right": 405.890625,
+              "text": "Result + Forecast"
+            },
+            {
+              "tag": "TABLE",
+              "className": "border-separate",
+              "right": 637,
+              "text": "12345678910111213141516171819202122232425262728293031MAMBEZGIAMAAFE2ACOMARMOFOGU"
+            },
+            {
+              "tag": "THEAD",
+              "className": "",
+              "right": 635,
+              "text": "12345678910111213141516171819202122232425262728293031"
+            },
+            {
+              "tag": "TR",
+              "className": "",
+              "right": 635,
+              "text": "12345678910111213141516171819202122232425262728293031"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 401,
+              "text": "18"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 419,
+              "text": "19"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 437,
+              "text": "20"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 455,
+              "text": "21"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 473,
+              "text": "22"
+            },
+            {
+              "tag": "TH",
+              "className": "font-tabular pb-1 text-center",
+              "right": 491,
+              "text": "23"
+            }
+          ],
+          "pageErrors": []
+        }
+      ]
+    }
+  }
+}

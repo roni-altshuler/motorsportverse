@@ -1,11 +1,25 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { ForecastExplorer } from './ForecastExplorer';
 import { displayDate, isStale, raceStatus, type RaceEvent, type RaceFeed } from '@/lib/race-centre';
 
 const STORAGE = 'motorsportverse:favourite-series:v1';
+const utcDay = () => new Date().toISOString().slice(0, 10);
+function subscribeDay(onChange: () => void) {
+  const timer = window.setInterval(onChange, 60000);
+  return () => window.clearInterval(timer);
+}
+// The first browser snapshot seeds preferences and a shared link after hydration.
+// Subsequent navigation is handled by the popstate listener, and preferences by
+// the follow button. A string snapshot remains stable between unchanged reads.
+function initialBrowserSnapshot() {
+  let saved = '[]';
+  try { saved = localStorage.getItem(STORAGE) ?? '[]'; } catch { /* Session-only favourites. */ }
+  return JSON.stringify([window.location.search, saved]);
+}
+const subscribeInitialBrowser = () => () => {};
 const VERDICTS: Record<string, string> = {
   better: 'Beating the baseline', worse: 'Behind the baseline', inconclusive: 'No clear edge yet',
   insufficient: 'Building the evidence', unavailable: 'Not yet benchmarked',
@@ -13,7 +27,9 @@ const VERDICTS: Record<string, string> = {
 const STATUS = { upcoming: 'Upcoming', completed: 'Results recorded', awaiting: 'Awaiting results', undated: 'Schedule pending' };
 
 export function RaceCentre({ feed }: { feed: RaceFeed }) {
-  const [today, setToday] = useState(feed.asOf);
+  const today = useSyncExternalStore(subscribeDay, utcDay, () => feed.asOf);
+  const browserSnapshot = useSyncExternalStore(subscribeInitialBrowser, initialBrowserSnapshot, () => null);
+  const [initializedFrom, setInitializedFrom] = useState<string | null>(null);
   const [favourites, setFavourites] = useState<string[]>([]);
   const [series, setSeries] = useState('all');
   const [view, setView] = useState('upcoming');
@@ -22,27 +38,34 @@ export function RaceCentre({ feed }: { feed: RaceFeed }) {
   const [readyOnly, setReadyOnly] = useState(false);
   const [shareMessage, setShareMessage] = useState('');
   const [limit, setLimit] = useState(8);
+  // Adjust once when the hydration snapshot arrives, before rendering children.
+  // This avoids an effect-driven second render of stale date/link/preferences.
+  if (initializedFrom === null && browserSnapshot !== null) {
+    setInitializedFrom(browserSnapshot);
+    const [search, saved] = JSON.parse(browserSnapshot) as [string, string];
+    try {
+      const parsed: unknown = JSON.parse(saved);
+      if (Array.isArray(parsed)) setFavourites(parsed.filter((s): s is string => typeof s === 'string' && feed.series.some(p => p.slug === s)));
+    } catch { /* Invalid saved preferences must not block browsing. */ }
+    const race = feed.events.find(e => e.id === new URLSearchParams(search).get('race'));
+    if (race) {
+      setSelectedId(race.id); setSeries(race.slug);
+      setView(race.completed ? 'recent' : raceStatus(race, today) === 'upcoming' ? 'upcoming' : 'all');
+    }
+  }
   useEffect(() => {
-    const update = () => setToday(new Date().toISOString().slice(0, 10));
-    update();
     const openSharedRace = () => {
       const id = new URLSearchParams(window.location.search).get('race');
       const race = feed.events.find(e => e.id === id);
       if (race) {
         setSelectedId(race.id); setSeries(race.slug);
-        setView(race.completed ? 'recent' : raceStatus(race, new Date().toISOString().slice(0, 10)) === 'upcoming' ? 'upcoming' : 'all');
+        setView(race.completed ? 'recent' : raceStatus(race, utcDay()) === 'upcoming' ? 'upcoming' : 'all');
         setLimit(8); setReadyOnly(false); setQuery('');
       }
     };
-    openSharedRace();
     window.addEventListener('popstate', openSharedRace);
-    const timer = window.setInterval(update, 60000);
-    try {
-      const saved: unknown = JSON.parse(localStorage.getItem(STORAGE) ?? '[]');
-      if (Array.isArray(saved)) setFavourites(saved.filter((s): s is string => typeof s === 'string' && feed.series.some(p => p.slug === s)));
-    } catch { /* Privacy mode or invalid saved preferences must not block browsing. */ }
-    return () => { window.clearInterval(timer); window.removeEventListener('popstate', openSharedRace); };
-  }, [feed.series, feed.events]);
+    return () => window.removeEventListener('popstate', openSharedRace);
+  }, [feed.events]);
   function toggleFavourite(slug: string) {
     const next = favourites.includes(slug) ? favourites.filter(s => s !== slug) : [...favourites, slug];
     setFavourites(next);

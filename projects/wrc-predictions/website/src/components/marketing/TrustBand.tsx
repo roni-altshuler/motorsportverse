@@ -86,7 +86,7 @@ export default function TrustBand({
           className="body-md text-[color:var(--body)] max-w-2xl"
         >
           Every forecast is scored against the official classification once each
-          rally's result is final — no cherry-picking. The figures below cover the
+          rally&apos;s result is final — no cherry-picking. The figures below cover the
           season so far.
         </motion.p>
       </motion.div>

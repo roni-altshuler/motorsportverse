@@ -26,12 +26,13 @@ npm error Missing: jest-environment-jsdom@30.5.2 from lock file
 Each base install reported **310 missing packages**, including the transitive
 test dependency tree. These omissions also existed at the initial PR head
 `871d1df7c300b9f9eb1b9b76984f1beab58905b2`; the source-map security update
-did not cause them. Base and head manifests are identical.
+did not cause them. Base and initial install-head manifests were identical;
+the later lint follow-up changes only ten lint scripts.
 
 The repair materializes those already-declared dev dependencies: six root
 metadata entries and 310 dev-only locked packages per affected site. Every
 existing package entry is preserved byte-for-byte at the JSON-object level,
-including versions, resolutions and integrity. No manifest, direct dependency,
+including versions, resolutions and integrity. No dependency declaration, direct dependency,
 production dependency version or access setting changes. The authorized
 source-map-js 1.2.2 update remains present in all 11 locks.
 
@@ -73,11 +74,12 @@ loading/error/retry/empty/wrong-session cases. The
 retains external proxy failures. No external image access was bypassed, and no
 page exceptions or local resource failures occurred.
 
-## Unrelated base lint failures, preserved separately
+## Original base lint findings and their subsequent repair
 
-Full F1 ESLint exits 1 with five errors and one warning. The exact base files were
-linted through the same installed toolchain and compared with the head. Their
-normalized structured findings are identical:
+Before the lint follow-up, full F1 ESLint exited 1 with five errors and one
+warning. The exact base files were linted through the same installed toolchain
+and compared with the initial comparison/install head. Their normalized
+structured findings were identical:
 
 | File | Rule | Line | Severity |
 | --- | --- | ---: | --- |
@@ -86,20 +88,21 @@ normalized structured findings are identical:
 | `src/components/theatre/RaceTheatre.tsx` | `react-hooks/refs` | 111, 112, 113 | Three errors |
 | `src/lib/driverData.ts` | `@typescript-eslint/no-unused-vars` | 69 | Warning |
 
-All four files are identical to base. The comparison's seven changed/new F1
-frontend files report **zero errors and zero warnings**. No touched-code lint
-regression was found or suppressed.
+Those four files were identical to base at that point. The comparison's seven
+changed/new F1 frontend files reported **zero errors and zero warnings**.
 
-The other ten sites' `npm run lint` exits 1 because their unchanged script invokes
+The other ten sites' `npm run lint` exited 1 because their script invoked
 `next lint`, unsupported by their locked Next 16.1.6 CLI. For example the hub says:
 
 ```text
 Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/website/lint
 ```
 
-Each base/head manifest retains the same command. These unrelated lint tooling
-and replay fixes are not folded into the install repair. CI does not run these
-local lint commands, so a green CI result does not mean they passed.
+The follow-up [lint repair](LINT_TOOLING_REPAIR.md) replaces those unsupported
+commands with `eslint`, adopts the existing flagship configuration and fixes
+the listed errors without suppressions. All 11 lint commands now pass. Manifest
+changes are limited to the ten lint scripts; dependency declarations remain
+unchanged. The CI matrix now runs lint and type checks explicitly.
 
 The [machine-readable evidence](qa/archived-lap-comparison/locked-install-checks.json)
 records the exact base error snippets, counts, scope, tested lock hashes,

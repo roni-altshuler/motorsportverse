@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import Link from "next/link";
 import type { ReplayData, ReplayDriver, SeasonData } from "@/types";
@@ -88,7 +88,13 @@ export default function RaceTheatre({ round }: Props) {
 
   const [replay, setReplay] = useState<ReplayData | null>(null);
   const [season, setSeason] = useState<SeasonData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadedFor, setLoadedFor] = useState<{
+    round: number;
+    basePath: string;
+    reduced: boolean;
+  } | null>(null);
+  const loading = loadedFor?.round !== round || loadedFor?.basePath !== basePath
+    || loadedFor?.reduced !== reduced;
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [focused, setFocused] = useState<string | null>(null);
@@ -108,20 +114,23 @@ export default function RaceTheatre({ round }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const dimsRef = useRef({ w: 0, h: 0, dpr: 1 });
 
-  playingRef.current = playing;
-  speedRef.current = speed;
-  focusedRef.current = focused;
+  // The RAF must see committed controls before the next paint. Writing these
+  // during render could publish values from a render React later abandons.
+  useLayoutEffect(() => {
+    playingRef.current = playing;
+    speedRef.current = speed;
+    focusedRef.current = focused;
+  }, [playing, speed, focused]);
 
   /* ── data load ── */
   useEffect(() => {
     let active = true;
-    setLoading(true);
     Promise.all([fetchReplayData(round, basePath), fetchSeasonData(basePath).catch(() => null)]).then(
       ([r, s]) => {
         if (!active) return;
         setReplay(r);
         setSeason(s);
-        setLoading(false);
+        setLoadedFor({ round, basePath, reduced });
         cursorRef.current = 0;
         setUiCursor(0);
         // Autoplay the full experience on desktop, but never force the heavy

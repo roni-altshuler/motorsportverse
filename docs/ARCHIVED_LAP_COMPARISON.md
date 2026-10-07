@@ -2,7 +2,9 @@
 
 The proposed F1 `/compare/laps` route compares two drivers' stored race laps
 sector by sector. It is a review-branch feature, not a deployment claim. The
-existing hero, forecasts, replay, circuit geometry and held PR #12 are unchanged.
+existing hero, forecasts, replay data, circuit geometry and held PR #12 are unchanged.
+The later lint repair adjusts replay control synchronization and loading state;
+its scope and regression checks are recorded separately.
 
 ## Scope and provenance
 
@@ -97,7 +99,7 @@ The saved cloud executor was verified usable again at **11:54:43 UTC** after a
 lifecycle disconnection notice. The same worktree, edits and Chromium were present;
 no environment switch occurred.
 
-## Dependency patch, locked-install repair and remaining gates
+## Dependency patch, locked-install and lint repair
 
 [GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)
 affects `source-map-js` versions ≥1.0.0 and <1.2.2. The indexed source-map offset issue can hang
@@ -109,22 +111,20 @@ package entries. [The install audit](LOCKFILE_INSTALL_AUDIT.md) records base/hea
 error comparisons, Node 20/npm 10 checks and the `npm ci` CI guard. Presence in the build dependency
 tree does not establish exploitation of the static deployed site.
 
-Remaining local lint checks fail on base and head:
+The original five F1 lint errors and ten unsupported `next lint` commands are
+also resolved. Every site uses the flagship's existing Next core-web-vitals and
+TypeScript ESLint configuration, with no rule disables. All 11 lint commands
+pass; F1 and the hub have zero warnings. The
+[lint repair audit](LINT_TOOLING_REPAIR.md) identifies each fix, the 16 additional
+errors exposed during migration, remaining nonblocking warnings and actual
+browser regressions. Website CI now gates lint and type checks as well as `npm ci`.
 
-- Full F1 ESLint reports five errors in **unchanged** `jest.config.js`,
-  `jest.setup.js` and replay ref assignments, plus an existing unused-variable
-  warning. The same base files reproduce those findings; changed files pass.
-- The other ten sites' existing `npm run lint` invoke unsupported `next lint`.
-  Their base and head scripts match. No comparison-code lint regression was found.
+Every site's supported clean install, frontend tests, types and static build
+pass. The original [Node 20 browser report](qa/archived-lap-comparison/browser-qa-node20.json)
+remains historical evidence; the lint audit links the latest rebuilt-export QA.
+Reports retain external proxy failures without bypassing access.
 
-The eight original locked-install failures are resolved, rather than carried as
-remaining gates. Every site's supported clean install, frontend tests, types and
-static build are checked separately from these unchanged lint failures. The F1
-comparison browser flows were rerun on the supported rebuilt export; the
-[additional raw report](qa/archived-lap-comparison/browser-qa-node20.json) retains
-external proxy failures without bypassing access.
-
-Keep the new PR **draft** for the parent's independent review and resolution of
-remaining check gates. No main update, merge, production dispatch, external
+Keep the new PR **draft** for the parent's independent review of the expanded
+lock/lint delta. No main update, merge, production dispatch, external
 announcement, research edit, provider scraping or production model retraining
 was performed. Existing model unit tests ran on their test fixtures.
