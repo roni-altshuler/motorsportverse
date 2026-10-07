@@ -125,6 +125,14 @@ Screenshots: [replay desktop](qa/lint-repair/replay-desktop.png),
 [replay mobile](qa/lint-repair/replay-mobile.png), and
 [hub mobile](qa/lint-repair/hub-mobile.png).
 
+The original series checks above did not verify the race body's painted
+visibility. [The MotoGP mobile visibility follow-up](MOTOGP_MOBILE_VISIBILITY.md)
+adds real scrolling and opacity/viewport/hit-test assertions for its podium,
+12 probability rows and 31 classification rows. Four matched base/head mobile
+cases pass in both motion modes; the shared 18-flow runner passes again.
+Readable section pairs and retained pixel differences address the visual
+review without claiming an application regression or changing application code.
+
 PR #13 stays **draft** for independent parent review of the full lock/lint delta.
 Main remains `b9408e3a`; held PR #12 remains `073fd947`. Exact new-head commit and
 completed CI/check links belong in the PR body so reporting them does not move

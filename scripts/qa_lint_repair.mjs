@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import assert from 'node:assert/strict';
+import { revealRaceContent, scrollWholePage } from './qa_race_content.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = resolve(process.argv[2] || '/tmp/motorsport-lint-repair-qa');
@@ -216,6 +217,10 @@ try {
       report.viewportWidth = viewport.width;
       report.documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       report.horizontalOverflow = report.documentWidth > viewport.width;
+      if (code === 'motogp') {
+        report.raceContent = await revealRaceContent(page, round);
+        report.scrollStops = await scrollWholePage(page);
+      }
       // Record all series layout findings; this lint patch changes no markup or
       // CSS. Replay/hub control flows still require no horizontal overflow.
       await capture(page, `${code}-${size}`, false);
