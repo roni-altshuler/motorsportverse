@@ -100,6 +100,13 @@ are recorded without claiming a verified or delivered interactive feature.
 
 ## What's here
 
+The [theme and navigation audit](docs/THEME_JOURNEYS.md) covers the hub and all
+ten published series sites. Their intentional dark palettes and individual
+series accents remain distinct; recovery pages and project launch labels use
+readable, consistent controls. The shared motion preference now hydrates from
+the same initial state as the static export. This changes presentation, not
+published result coverage or model performance.
+
 The F1 [circuit workspace](docs/UPSTREAM_CIRCUIT_WORKSPACE.md) lets users explore
 browser-local captures in Tom Shaw's replay output format, or try a clearly
 fictional demo. Upstream code vendoring and real Zandvoort artwork remain blocked

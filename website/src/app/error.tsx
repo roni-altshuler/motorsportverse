@@ -27,10 +27,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-6 text-center">
+    <section
+      aria-label="Page recovery"
+      className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-5 px-6 py-16 text-center"
+    >
       <p className="eyebrow">Error</p>
-      <h1 className="display-md">This page failed to render</h1>
-      <p className="body-md text-[color:var(--muted)]">
+      <h1 className="display">This page failed to render</h1>
+      <p className="lead">
         Something went wrong building this view. Nothing here is a partial
         result — the page stopped rather than showing an incomplete one.
       </p>
@@ -39,9 +42,13 @@ export default function Error({
           digest {error.digest}
         </p>
       ) : null}
-      <button type="button" onClick={reset} className="btn-bugatti mt-2">
+      <button
+        type="button"
+        onClick={reset}
+        className="btn-ghost mt-2 inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-sm font-medium"
+      >
         Try again
       </button>
-    </main>
+    </section>
   );
 }

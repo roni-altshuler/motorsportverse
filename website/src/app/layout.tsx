@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
 import SpeedFieldLoader from "@/components/background/SpeedFieldLoader";
@@ -7,6 +7,11 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 
 import "./globals.css";
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#060910",
+};
 
 // Fonts are VENDORED, not fetched.
 //
@@ -75,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      data-theme="dark"
       className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}
       // `data-ambient` is set by the boot script below before React hydrates.
       suppressHydrationWarning

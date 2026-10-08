@@ -27,7 +27,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-6 text-center">
+    <section aria-label="Page recovery" className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-6 text-center">
       <p className="eyebrow">Error</p>
       <h1 className="display-md">This page failed to render</h1>
       <p className="body-md text-[color:var(--muted)]">
@@ -42,6 +42,6 @@ export default function Error({
       <button type="button" onClick={reset} className="btn-bugatti mt-2">
         Try again
       </button>
-    </main>
+    </section>
   );
 }

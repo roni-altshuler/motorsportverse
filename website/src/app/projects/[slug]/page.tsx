@@ -7,7 +7,7 @@ import { MaturityBadge } from "@/components/MaturityBadge";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ArchitecturePreview } from "@/components/project/ArchitecturePreview";
 import { asset } from "@/lib/asset";
-import { accentText } from "@/lib/color";
+import { accentInk, accentText } from "@/lib/color";
 import { coreLabel, modelLabel, scrubTech, tagLabel } from "@/lib/labels";
 import { getProject, getProjects } from "@/lib/registry";
 
@@ -166,7 +166,7 @@ export default async function ProjectDetailPage({
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] px-5 py-2.5 text-sm font-semibold"
-                style={{ color: "var(--accent-ink)", background: accent }}
+                style={{ color: accentInk(accent), background: accent }}
               >
                 Live demo
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>

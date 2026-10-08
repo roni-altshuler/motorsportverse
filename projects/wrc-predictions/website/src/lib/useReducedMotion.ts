@@ -1,11 +1,20 @@
 "use client";
 
-import { useReducedMotion as fmUseReducedMotion } from "framer-motion";
+import { useSyncExternalStore } from "react";
 
-/**
- * Coerced wrapper around framer-motion's useReducedMotion hook so
- * consumers don't need to handle the boolean | null tri-state.
- */
+const query = "(prefers-reduced-motion: reduce)";
+const serverSnapshot = () => false;
+function snapshot() {
+  return typeof window.matchMedia === "function" && window.matchMedia(query).matches;
+}
+function subscribe(changed: () => void) {
+  if (typeof window.matchMedia !== "function") return () => {};
+  const media = window.matchMedia(query);
+  media.addEventListener("change", changed);
+  return () => media.removeEventListener("change", changed);
+}
+
+/** Match the static markup first, then honor and track the browser preference. */
 export function useReducedMotion(): boolean {
-  return fmUseReducedMotion() ?? false;
+  return useSyncExternalStore(subscribe, snapshot, serverSnapshot);
 }

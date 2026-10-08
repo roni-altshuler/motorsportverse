@@ -15,7 +15,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" style={{ colorScheme: "dark" }}>
       <body
         style={{
           margin: 0,
@@ -25,22 +25,42 @@ export default function GlobalError({
           alignItems: "center",
           justifyContent: "center",
           gap: "1rem",
-          background: "#000000",
-          color: "#ffffff",
-          fontFamily: "ui-monospace, monospace",
+          background: "var(--canvas, #060910)",
+          color: "var(--ink, #f4f7fb)",
+          fontFamily: "var(--font-sans, ui-sans-serif, system-ui, sans-serif)",
           textAlign: "center",
           padding: "2rem",
         }}
       >
-        <h1 style={{ fontSize: "1.25rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+        <h1
+          style={{
+            fontSize: "1.25rem",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+          }}
+        >
           MotorsportVerse failed to load
         </h1>
-        <p style={{ color: "#999999", maxWidth: "34rem", lineHeight: 1.6 }}>
+        <p
+          style={{
+            color: "var(--ink-muted, #aeb8c6)",
+            maxWidth: "34rem",
+            lineHeight: 1.6,
+          }}
+        >
           The application shell itself threw. Reloading is the only useful
           action from here.
         </p>
         {error.digest ? (
-          <p style={{ color: "#666666", fontSize: "0.75rem" }}>digest {error.digest}</p>
+          <p
+            style={{
+              color: "var(--ink-dim, #8994a4)",
+              fontSize: "0.75rem",
+              fontFamily: "ui-monospace, monospace",
+            }}
+          >
+            digest {error.digest}
+          </p>
         ) : null}
         <button
           type="button"
@@ -48,9 +68,11 @@ export default function GlobalError({
           style={{
             marginTop: "0.5rem",
             padding: "0.6rem 1.2rem",
-            border: "1px solid #3a3a3a",
+            border: "1px solid var(--hairline-strong, #2c3848)",
+            borderRadius: "999px",
+            minHeight: "44px",
             background: "transparent",
-            color: "#ffffff",
+            color: "var(--ink, #f4f7fb)",
             cursor: "pointer",
             fontFamily: "inherit",
             letterSpacing: "0.08em",

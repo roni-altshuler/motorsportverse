@@ -530,8 +530,8 @@ export default function Navbar() {
       {/* ── Mobile drawer ─────────────────────────────────────────── */}
       <AnimatePresence>
         {mobileOpen && (
-          <>
             <motion.div
+              key="mobile-backdrop"
               className="fixed inset-0 z-40 bg-black/60"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -539,7 +539,10 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               aria-hidden
             />
+        )}
+        {mobileOpen && (
             <motion.aside
+              key="mobile-drawer"
               className="fixed top-0 right-0 bottom-0 z-50 w-[320px] max-w-[88vw] bg-[color:var(--canvas)] border-l border-[color:var(--hairline)] overflow-y-auto"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -646,7 +649,6 @@ export default function Navbar() {
                 )}
               </nav>
             </motion.aside>
-          </>
         )}
       </AnimatePresence>
     </nav>

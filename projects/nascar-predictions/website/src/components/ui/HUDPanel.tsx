@@ -51,7 +51,7 @@ export function HUDPanel({
             {kicker && <p className="eyebrow mb-1">{kicker}</p>}
             {title && <h3 className="title-md">{title}</h3>}
           </div>
-          {rightSlot && <div className="flex-shrink-0">{rightSlot}</div>}
+          {rightSlot && <div className="max-w-full flex-shrink-0">{rightSlot}</div>}
         </header>
       )}
       <div className={cn("p-5 sm:p-6", bodyClassName)}>{children}</div>

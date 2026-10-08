@@ -86,6 +86,7 @@ const REQUIRED_TEST_DIR = "src/__tests__/shared";
 // Shared loaders that live under src/lib rather than src/components. Managed
 // against the site root, like the tests.
 const REQUIRED_SRC_FILES = [
+  "src/lib/useReducedMotion.ts",
   "src/lib/replayStream.ts",
   "src/lib/replayStreamDemo.ts",
   "src/lib/circuitExplorer.ts",
