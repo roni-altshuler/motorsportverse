@@ -1,0 +1,29 @@
+desktop-reduce: static export
+desktop-reduce: passed
+desktop-no-preference: static export
+desktop-no-preference: passed
+mobile-reduce: static export
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   'Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.'
++ ]
+- []
+
+    at file:///workspace/motorsportverse-fastf1-workspace/scripts/qa_circuit_workspace.mjs:563:14 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [
+    'Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.'
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

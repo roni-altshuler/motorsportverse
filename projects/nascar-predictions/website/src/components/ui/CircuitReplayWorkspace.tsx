@@ -400,25 +400,25 @@ export default function CircuitReplayWorkspace() {
                           : "Interpolated"}
                     </dd>
                     <dt>Position X / Y</dt>
-                    <dd className="break-words">
+                    <dd className="break-words font-mono">
                       {driver.x === null ? "Unavailable" : `${driver.x} / ${driver.y} m`}
                     </dd>
                     <dt>Speed</dt>
-                    <dd>
+                    <dd className="font-mono">
                       {driver.telemetry?.speed_kph == null
                         ? "Unavailable"
                         : `${driver.telemetry.speed_kph} km/h`}
                     </dd>
                     <dt>RPM</dt>
-                    <dd>{driver.telemetry?.rpm ?? "Unavailable"}</dd>
+                    <dd className="font-mono">{driver.telemetry?.rpm ?? "Unavailable"}</dd>
                     <dt>Throttle</dt>
-                    <dd>
+                    <dd className="font-mono">
                       {driver.telemetry?.throttle_pct == null
                         ? "Unavailable"
                         : `${driver.telemetry.throttle_pct}%`}
                     </dd>
                     <dt>Gear</dt>
-                    <dd>{driver.telemetry?.gear ?? "Unavailable"}</dd>
+                    <dd className="font-mono">{driver.telemetry?.gear ?? "Unavailable"}</dd>
                     <dt>Brake applied</dt>
                     <dd>
                       {driver.telemetry?.brake == null

@@ -181,7 +181,17 @@ try {
         resources = [],
         failedRequests = [],
         requests = [];
-      page.on("pageerror", (e) => pageErrors.push(e.message));
+      page.on("pageerror", (e) => {
+        pageErrors.push(e.message);
+        console.log(
+          JSON.stringify({
+            case: label,
+            route: new URL(page.url()).pathname,
+            pageError: e.message,
+            stack: e.stack,
+          }),
+        );
+      });
       page.on("console", (m) => {
         if (m.type() === "error") consoleErrors.push(m.text());
       });

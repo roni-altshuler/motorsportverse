@@ -11,13 +11,14 @@ their synthetic filename and invented driver name.
 - [Local check matrix](local-checks.json): all eleven sites' lint/tests/types/build
   pass; 2,214 frontend tests pass with eight existing hub skips. Ten sites have
   fresh locked installs; F1 reuses its existing dependency tree. Locks remain
-  unchanged. F1's production build used Node 24.19.0; the other ten sites and
-  full frontend tests used Node 20.20.2/npm 10.9.9.
+  unchanged. F1's initial prebuild used Node 24.19.0; its final Next production
+  build used Node 20.20.2 with those generated prebuild outputs. F1's final
+  frontend tests used Node 24.19.0; the other ten sites used Node
+  20.20.2/npm 10.9.9.
 - Thirteen final Python adapter tests pass, including installed FastF1 3.8.3's
-  empty-cache behavior with network sends denied. The initial local F1 full suite
-  passed 1,099 tests with two existing skips. A final timestamp guard and an
-  additional cache-miss test were checked afterward by the focused suite;
-  exact-head F1 CI is the authoritative final full-suite check.
+  empty-cache behavior with network sends denied. The final local F1 full suite
+  passed 1,100 tests with two existing skips using `OMP_NUM_THREADS=1`.
+  Exact-head F1 CI provides a separate full-suite check.
 - F1 Ruff, shared-copy drift, JS syntax, formatting and whitespace checks pass.
 
 The browser follows the existing menu/event navigation, import/cancel/retry,
@@ -28,6 +29,12 @@ exceptions, zero failed local HTTP resources and no upload. All ten non-F1
 selector choices reject the file in each case: **40 unsupported-input checks**.
 Existing external flag-image failures and cancelled framework HEAD requests are
 retained, not hidden. This is local-export QA, not public deployment QA.
+
+An earlier refreshed run recorded one React hydration error 418 in the mobile
+reduced-motion case; its route was not captured by that version of the runner.
+The [original log](earlier-mobile-hydration.log) is retained. The runner now
+records the case, route and stack for page errors. The latest complete four-case
+run did not reproduce the error; no hydration fix is claimed.
 
 [Desktop synthetic car sample](desktop-synthetic-car.png) ·
 [Mobile synthetic position sample](mobile-synthetic-position.png) ·
