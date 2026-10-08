@@ -1,0 +1,322 @@
+[
+  {
+    "mode": "valid",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "valid",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "hash-mismatch",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 0,
+    "revokedUrls": 0,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "hash-mismatch",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 0,
+    "revokedUrls": 0,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "dimensions",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "dimensions",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "corrupt",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "corrupt",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "missing",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 0,
+    "revokedUrls": 0,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "missing",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 0,
+    "revokedUrls": 0,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "retry",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "retry",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "reopen",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "reopen",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ]
+  },
+  {
+    "mode": "render-error",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 2,
+    "revokedUrls": 2,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Not allowed to load local resource: blob:invalid-for-controlled-test"
+      }
+    ]
+  },
+  {
+    "mode": "render-error",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 2,
+    "revokedUrls": 2,
+    "assertions": "passed",
+    "errors": [
+      {
+        "kind": "console",
+        "message": "Not allowed to load local resource: blob:invalid-for-controlled-test"
+      }
+    ]
+  },
+  {
+    "mode": "decode-delay",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "decode-delay",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 1,
+      "images": 1
+    },
+    "createdUrls": 1,
+    "revokedUrls": 1,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "cancel-decode",
+    "viewport": "desktop",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 2,
+    "revokedUrls": 2,
+    "assertions": "passed",
+    "errors": []
+  },
+  {
+    "mode": "cancel-decode",
+    "viewport": "mobile",
+    "fixtureOnly": true,
+    "styles": "F1 static export",
+    "requests": {
+      "manifests": 2,
+      "images": 2
+    },
+    "createdUrls": 2,
+    "revokedUrls": 2,
+    "assertions": "passed",
+    "errors": []
+  }
+]

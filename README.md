@@ -49,6 +49,16 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 
 ## Circuit map availability
 
+The [shared explorer shell](docs/reviews/2026-10-06-zandvoort-explorer/README.md)
+has no registered event or production consumer. The independent
+[F1 local workspace](docs/UPSTREAM_CIRCUIT_WORKSPACE.md) previews user-supplied
+captures and an explicitly fictional demo; it does not approve the image shell.
+The shell binds reviewed image hashes to downloaded, decoded bytes and hides checked
+claims and controls on image failure, with retry and cleanup regressions. The
+Zandvoort pilot still needs source-byte inspection, hashing and real-map browser QA.
+Selected markers, list borders and keyboard focus now use the supported ink/canvas
+pair, with computed contrast checks across all 11 palettes and fixture screenshots.
+
 F2/F3 race disclosures distinguish existing outlines awaiting layout review from
 the unavailable interactive explorer, which requires a reviewed layout.
 
@@ -90,8 +100,14 @@ are recorded without claiming a verified or delivered interactive feature.
 
 ## What's here
 
+The F1 [circuit workspace](docs/UPSTREAM_CIRCUIT_WORKSPACE.md) lets users explore
+browser-local captures in Tom Shaw's replay output format, or try a clearly
+fictional demo. Upstream code vendoring and real Zandvoort artwork remain blocked
+by their respective license/source dependencies; no new historical telemetry is
+published. The shared adapter is available to all series without map approval.
+
 The F1 [archived lap comparison](docs/ARCHIVED_LAP_COMPARISON.md) is a bounded
-2025 Monaco timing pilot on a separate review branch. It uses existing committed
+2025 Monaco timing pilot merged through PR #13. It uses existing committed
 lap records, keeps sectors from the same stored lap, and explains the absent lap
 context. It does not add live timing, reviewed geometry or a current-season
 comparison to F1 or the other series.

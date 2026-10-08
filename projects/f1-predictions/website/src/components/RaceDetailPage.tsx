@@ -533,6 +533,7 @@ export default function RaceDetailPage({ round }: Props) {
               {/* Shares the page URL — the per-round OG card at
                   public/og/round_NN.png unfurls automatically on link preview. */}
               <ShareButton title={`${data.name} — race prediction`} />
+              <Link href="/circuits" className="button-label inline-flex min-h-11 items-center border border-[color:var(--hairline-strong)] px-4 py-2.5 text-[color:var(--ink)] hover:border-[color:var(--ink)]">Circuit workspace</Link>
               {/* Add-to-Calendar is only useful ahead of the race — hidden once
                   the round is completed. */}
               {!isCompletedRound && (

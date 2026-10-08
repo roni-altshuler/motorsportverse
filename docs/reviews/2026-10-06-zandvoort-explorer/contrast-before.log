@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: valid-desktop: Turn 1 focus: glyph contrast 1.12:1
+    at assertSelectedContrast (file:///workspace/motorsportverse/scripts/qa_circuit_explorer_image.mjs:80:62)
+    at file:///workspace/motorsportverse/scripts/qa_circuit_explorer_image.mjs:195:25 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

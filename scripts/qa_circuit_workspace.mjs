@@ -1,0 +1,495 @@
+// Actual static-export QA. Every imported file below is original synthetic data;
+// no upstream software, historical telemetry or network stream is executed.
+import { chromium } from "../projects/f1-predictions/website/node_modules/playwright/index.mjs";
+import { createServer } from "node:http";
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { resolve, extname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import assert from "node:assert/strict";
+const root = fileURLToPath(new URL("../", import.meta.url));
+const exported = resolve(root, "projects/f1-predictions/website/out");
+const output = resolve(
+  process.argv[2] || "/tmp/motorsport-circuit-workspace-qa",
+);
+const basePath = process.argv[3] || "";
+await mkdir(output, { recursive: true });
+const mime = {
+  ".html": "text/html",
+  ".txt": "text/plain",
+  ".js": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+};
+const server = createServer(async (req, res) => {
+  try {
+    const pathname = decodeURIComponent(
+      new URL(req.url, "http://localhost").pathname,
+    );
+    if (pathname === "/favicon.ico") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+    if (
+      basePath &&
+      pathname !== basePath &&
+      !pathname.startsWith(basePath + "/")
+    )
+      throw new Error("wrong base");
+    const path = pathname.slice(basePath.length) || "/";
+    let file = resolve(
+      exported,
+      `.${path.endsWith("/") ? path + "index.html" : path}`,
+    );
+    if (!file.startsWith(exported + "/")) throw new Error("invalid path");
+    let bytes;
+    try {
+      bytes = await readFile(file);
+    } catch {
+      if (extname(file)) throw new Error("missing asset");
+      try {
+        file += ".html";
+        bytes = await readFile(file);
+      } catch {
+        file = resolve(exported, `.${path}/index.html`);
+        bytes = await readFile(file);
+      }
+    }
+    res.writeHead(200, {
+      "Content-Type": mime[extname(file)] || "application/octet-stream",
+    });
+    res.end(bytes);
+  } catch {
+    res.writeHead(404);
+    res.end("Not found");
+  }
+});
+await new Promise((done) => server.listen(0, "127.0.0.1", done));
+const origin = `http://127.0.0.1:${server.address().port}`;
+const browser = await chromium.launch({
+  executablePath: "/usr/bin/chromium",
+  args: ["--no-sandbox"],
+});
+const results = [];
+const sourceSha256 = {};
+for (const file of [
+  "src/lib/replayStream.ts",
+  "src/lib/replayStreamDemo.ts",
+  "src/components/ui/CircuitReplayWorkspace.tsx",
+  "src/app/circuits/page.tsx",
+])
+  sourceSha256[file] = createHash("sha256")
+    .update(
+      await readFile(resolve(root, "projects/f1-predictions/website", file)),
+    )
+    .digest("hex");
+const shape = {
+  x: [0, 100, 100, 0, 0],
+  y: [0, 0, 100, 100, 0],
+  rotation_deg: 30,
+};
+const fixture = [
+  { frame_index: 0, frame: { t: 0, drivers: {} } },
+  {
+    frame_index: 8,
+    frame: {
+      t: 2.5,
+      drivers: { SYN: { name: "QA Local Driver", x: 20, y: 20 } },
+    },
+    track_geometry: shape,
+  },
+  {
+    frame_index: 1,
+    frame: {
+      t: 0,
+      drivers: { SYN: { name: "QA Local Driver", x: null, y: null } },
+    },
+  },
+]
+  .map((x) => JSON.stringify(x))
+  .join("\n");
+async function shot(page, name) {
+  // Use an actual upward wheel gesture so the site's smooth-scroll target
+  // and native position settle together. No scroll/provider injection.
+  await page.mouse.move(
+    page.viewportSize().width - 2,
+    page.viewportSize().height / 2,
+  );
+  await page.mouse.wheel(0, -10000);
+  await page.waitForFunction(() => window.scrollY === 0);
+  await page.waitForTimeout(400);
+  await page.screenshot({
+    path: resolve(output, name + ".png"),
+    fullPage: true,
+  });
+}
+try {
+  for (const [size, viewport] of [
+    ["desktop", { width: 1440, height: 1000 }],
+    ["mobile", { width: 390, height: 844 }],
+  ]) {
+    for (const motion of ["reduce", "no-preference"]) {
+      const label = `${size}-${motion}`;
+      console.log(label + ": static export");
+      const context = await browser.newContext({
+        viewport,
+        reducedMotion: motion,
+      });
+      const page = await context.newPage(),
+        pageErrors = [],
+        consoleErrors = [],
+        resources = [],
+        failedRequests = [],
+        requests = [];
+      page.on("pageerror", (e) => pageErrors.push(e.message));
+      page.on("console", (m) => {
+        if (m.type() === "error") consoleErrors.push(m.text());
+      });
+      page.on("response", (r) => {
+        if (r.status() >= 400)
+          resources.push({
+            url: r.url().replace(origin, ""),
+            status: r.status(),
+          });
+      });
+      page.on("request", (r) =>
+        requests.push({ method: r.method(), url: r.url().replace(origin, "") }),
+      );
+      page.on("requestfailed", (r) =>
+        failedRequests.push({
+          method: r.method(),
+          url: r.url().replace(origin, ""),
+          error: r.failure()?.errorText,
+        }),
+      );
+      await page.clock.setFixedTime(new Date("2026-10-08T12:00:00Z"));
+      assert.equal(
+        (
+          await page.goto(origin + basePath + "/circuits", {
+            waitUntil: "networkidle",
+          })
+        ).status(),
+        200,
+      );
+      await page
+        .getByRole("heading", { name: "Explore the circuit.", exact: true })
+        .waitFor();
+      await page
+        .getByText("Circuit map unavailable", { exact: true })
+        .waitFor();
+      // Enter through the shipped menu with keyboard activation, on both sizes.
+      await page.goto(origin + basePath + "/race/12", {
+        waitUntil: "networkidle",
+      });
+      const nav = page.getByRole("navigation", {
+        name: "Primary",
+        exact: true,
+      });
+      if (size === "mobile") {
+        await nav
+          .getByRole("button", { name: "Open menu", exact: true })
+          .focus();
+        await page.keyboard.press("Enter");
+        const drawer = page.getByRole("dialog", {
+          name: "Mobile navigation",
+          exact: true,
+        });
+        await drawer
+          .getByRole("link", { name: "Circuit workspace", exact: true })
+          .focus();
+        await page.keyboard.press("Enter");
+        await drawer.waitFor({ state: "hidden" });
+      } else {
+        await nav.getByRole("button", { name: "Races", exact: true }).focus();
+        const entry = nav.getByRole("link", {
+          name: "Circuit workspace",
+          exact: true,
+        });
+        await entry.waitFor();
+        await entry.focus();
+        await page.keyboard.press("Enter");
+      }
+      await page
+        .getByRole("heading", { name: "Explore the circuit.", exact: true })
+        .waitFor();
+      assert.equal(new URL(page.url()).pathname, basePath + "/circuits");
+      await page
+        .getByRole("heading", { name: "Explore the circuit.", exact: true })
+        .click();
+      const series = page.getByRole("combobox");
+      const options = await series.locator("option").allTextContents();
+      for (const option of options) {
+        await series.selectOption(option);
+        assert.equal(await page.locator("main svg").count(), 0);
+        await page
+          .getByText("Circuit map unavailable", { exact: true })
+          .waitFor();
+      }
+      await series.selectOption("Formula 1");
+      await shot(page, label + "-unavailable");
+      await page
+        .getByRole("button", { name: "Try fictional demo", exact: true })
+        .click();
+      await page
+        .getByText("Fictional demo · Not a real circuit or race", {
+          exact: true,
+        })
+        .waitFor();
+      const figure = page.getByRole("img", { name: "Fictional circuit view" });
+      await figure.waitFor();
+      const positions = async () =>
+        figure
+          .locator("circle")
+          .evaluateAll((nodes) =>
+            nodes.map((n) => [n.getAttribute("cx"), n.getAttribute("cy")]),
+          );
+      const before = await positions();
+      await page.waitForTimeout(350);
+      assert.deepEqual(await positions(), before);
+      const alex = page.getByRole("button", {
+        name: "Alex Rivera",
+        exact: true,
+      });
+      await alex.focus();
+      await page.keyboard.press("Space");
+      assert.equal(await alex.getAttribute("aria-pressed"), "true");
+      const focus = await alex.evaluate((el) => {
+        const c = getComputedStyle(el);
+        return {
+          width: c.outlineWidth,
+          style: c.outlineStyle,
+          color: c.outlineColor,
+        };
+      });
+      assert.equal(focus.width, "2px");
+      await shot(page, label + "-demo-keyboard");
+      await alex.click();
+      for (let i = 0; i < 6; i++)
+        for (const name of ["Alex Rivera", "Jamie Brooks", "Morgan Lee"]) {
+          const b = page.getByRole("button", { name, exact: true });
+          await b.click();
+          assert.equal(await b.getAttribute("aria-pressed"), "true");
+        }
+      const slider = page.getByRole("slider", { name: "Capture snapshot" });
+      await slider.focus();
+      await page.keyboard.press("End");
+      assert.equal(await slider.inputValue(), "23");
+      await page
+        .getByRole("button", { name: "Return to start", exact: true })
+        .click();
+      assert.equal(await slider.inputValue(), "0");
+      for (let i = 0; i < 5; i++)
+        await page
+          .getByRole("button", { name: "Next snapshot", exact: true })
+          .click();
+      assert.equal(await slider.inputValue(), "5");
+      assert.notDeepEqual(await positions(), before);
+      await page
+        .getByRole("button", { name: "Clear capture", exact: true })
+        .click();
+      assert.equal(await page.locator("main svg").count(), 0);
+      const fileInput = page.locator("input[type=file]");
+      // Explicitly labelled test injection: delay browser-local File.text only.
+      await page.evaluate(() => {
+        window.__originalText = File.prototype.text;
+        File.prototype.text = async function () {
+          await new Promise((resolve) => (window.__finishRead = resolve));
+          return window.__originalText.call(this);
+        };
+      });
+      await fileInput.setInputFiles({
+        name: "qa-delayed.ndjson",
+        mimeType: "application/x-ndjson",
+        buffer: Buffer.from(fixture),
+      });
+      await page.getByText("Opening capture…", { exact: true }).waitFor();
+      await shot(page, label + "-loading");
+      await page
+        .getByRole("button", { name: "Cancel import", exact: true })
+        .click();
+      await page.evaluate(() => {
+        window.__finishRead();
+        File.prototype.text = window.__originalText;
+      });
+      await page.waitForTimeout(50);
+      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page.getByText("qa-delayed.ndjson", { exact: true }).count(),
+        0,
+      );
+      await fileInput.setInputFiles({
+        name: "qa-invalid.ndjson",
+        mimeType: "application/x-ndjson",
+        buffer: Buffer.from("{"),
+      });
+      await page
+        .getByRole("region", { name: "Circuit workspace", exact: true })
+        .getByRole("alert")
+        .waitFor();
+      assert.ok(
+        (
+          await page
+            .getByRole("region", { name: "Circuit workspace", exact: true })
+            .getByRole("alert")
+            .innerText()
+        ).includes("not valid JSON"),
+      );
+      await shot(page, label + "-error");
+      const requestCount = requests.length;
+      await fileInput.setInputFiles({
+        name: "qa-synthetic-contract.ndjson",
+        mimeType: "application/x-ndjson",
+        buffer: Buffer.from(fixture),
+      });
+      await page
+        .getByText("Local capture · Source and layout unverified", {
+          exact: true,
+        })
+        .waitFor();
+      assert.equal(await page.locator("main svg").count(), 0);
+      await page
+        .getByText("No driver positions supplied in this snapshot.", {
+          exact: true,
+        })
+        .waitFor();
+      await page
+        .getByRole("button", { name: "Next snapshot", exact: true })
+        .click();
+      await page
+        .getByRole("img", { name: "Unverified local circuit view" })
+        .waitFor();
+      await page
+        .getByRole("button", { name: "QA Local Driver", exact: true })
+        .click();
+      // Check the native SVG matrix against the upstream world-rotation convention.
+      const matrix = await page.locator("main svg g").evaluate((el) => {
+        const m = el.transform.baseVal.consolidate().matrix;
+        return { a: m.a, b: m.b, c: m.c, d: m.d };
+      });
+      assert.ok(Math.abs(matrix.a - Math.cos(Math.PI / 6)) < 1e-6);
+      assert.ok(Math.abs(matrix.b + Math.sin(Math.PI / 6)) < 1e-6);
+      assert.ok(Math.abs(matrix.c + Math.sin(Math.PI / 6)) < 1e-6);
+      assert.ok(Math.abs(matrix.d + Math.cos(Math.PI / 6)) < 1e-6);
+      await shot(page, label + "-local-fixture");
+      await page.getByRole("slider", { name: "Capture snapshot" }).focus();
+      await page.keyboard.press("End");
+      await page
+        .getByText("Position missing in this snapshot.", { exact: true })
+        .waitFor();
+      const importRequests = requests.slice(requestCount);
+      assert.equal(
+        importRequests.filter((r) => !["GET", "HEAD"].includes(r.method))
+          .length,
+        0,
+        JSON.stringify(importRequests),
+      );
+      for (let i = 0; i < 2; i++) {
+        await page
+          .getByRole("button", { name: "Clear capture", exact: true })
+          .click();
+        await fileInput.setInputFiles({
+          name: "qa-synthetic-contract.ndjson",
+          mimeType: "application/x-ndjson",
+          buffer: Buffer.from(fixture),
+        });
+        await page
+          .getByText("Local capture · Source and layout unverified", {
+            exact: true,
+          })
+          .waitFor();
+      }
+      await series.selectOption("WRC");
+      assert.equal(await page.locator("main svg").count(), 0);
+      await page.reload({ waitUntil: "networkidle" });
+      await page
+        .getByText("Circuit map unavailable", { exact: true })
+        .waitFor();
+      assert.equal(await page.locator("main svg").count(), 0);
+      for (let i = 0; i < 2; i++) {
+        await page.goto(origin + basePath + "/race/12", {
+          waitUntil: "networkidle",
+        });
+        await page
+          .getByRole("main")
+          .getByRole("link", { name: "Circuit workspace", exact: true })
+          .click();
+        await page
+          .getByRole("heading", { name: "Explore the circuit.", exact: true })
+          .waitFor();
+        await page
+          .getByText("Circuit map unavailable", { exact: true })
+          .waitFor();
+        await page
+          .getByRole("button", { name: "Try fictional demo", exact: true })
+          .click();
+        await page
+          .getByRole("img", { name: "Fictional circuit view" })
+          .waitFor();
+      }
+      const metrics = await page.evaluate(() => ({
+        width: document.documentElement.scrollWidth,
+        viewport: innerWidth,
+      }));
+      assert.ok(metrics.width <= metrics.viewport);
+      assert.deepEqual(pageErrors, []);
+      const localFailures = resources.filter((r) => r.url.startsWith("/"));
+      assert.deepEqual(localFailures, []);
+      results.push({
+        label,
+        viewport,
+        motion,
+        fictionalDataOnly: true,
+        realUpstreamSoftwareExecuted: false,
+        fixtureInjections: [
+          "delayed browser-local File.text",
+          "synthetic NDJSON upload",
+        ],
+        seriesAvailabilityChecks: options.length,
+        driverSelectionClicks: 18,
+        menuKeyboardNavigationCycles: 1,
+        eventSoftNavigationCycles: 2,
+        staticBeforeInput: true,
+        keyboardFocus: focus,
+        rotationMatrix: matrix,
+        postImportRequests: importRequests,
+        metrics,
+        pageErrors,
+        consoleErrors,
+        resources,
+        failedRequests,
+      });
+      await context.close();
+      console.log(label + ": passed");
+    }
+  }
+  await writeFile(
+    resolve(output, "browser-qa.json"),
+    JSON.stringify(
+      {
+        browser: browser.version(),
+        basePath,
+        upstreamContractRevision: "efdb8a31900d64e3f269d66601ab9726b7dc5923",
+        sourceSha256,
+        results,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+  console.log(
+    JSON.stringify({
+      output,
+      cases: results.length,
+      pageErrors: results.flatMap((r) => r.pageErrors).length,
+    }),
+  );
+} finally {
+  await browser.close();
+  await new Promise((done) => server.close(done));
+}
