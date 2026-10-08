@@ -88,7 +88,7 @@ export default function CircuitReplayWorkspace() {
         throw new Error("This capture exceeds the 4 MiB limit.");
       const text = await file.text();
       if (generation.current !== token) return;
-      commit(parseReplayCapture(text, file.name));
+      commit(parseReplayCapture(text, file.name, series));
     } catch (cause) {
       if (generation.current === token)
         setError(cause instanceof Error ? cause.message : "This capture could not be read.");
@@ -163,6 +163,7 @@ export default function CircuitReplayWorkspace() {
       <p className="body-sm mb-6 text-[color:var(--muted)]">
         Files stay in this browser tab. Maximum 4 MiB · 2,000 snapshots. Changing series clears the
         capture.
+        {series !== "Formula 1" && " FastF1 captures are F1-only and unsupported in this series."}
       </p>
       {loading && (
         <div className="mb-6 border border-[color:var(--hairline)] p-6">
@@ -204,7 +205,9 @@ export default function CircuitReplayWorkspace() {
               <p className="eyebrow text-[color:var(--ink)]">
                 {capture.source === "fictional"
                   ? "Fictional demo · Not a real circuit or race"
-                  : "Local capture · Source and layout unverified"}
+                  : capture.fastf1
+                    ? "Local FastF1 capture · Unverified samples"
+                    : "Local capture · Source and layout unverified"}
               </p>
               <h2 className="title-md mt-2 break-all">{capture.label}</h2>
             </div>
@@ -214,6 +217,25 @@ export default function CircuitReplayWorkspace() {
                 : "Coordinates are supplied by your file; event identity and rights are not certified."}
             </p>
           </div>
+          {capture.fastf1 && (
+            <aside
+              aria-label="Capture provenance"
+              className="body-sm mb-5 max-w-3xl space-y-2 border-l-2 border-[color:var(--ink)] pl-4 text-[color:var(--muted)]"
+            >
+              <p>
+                Formula 1 · {capture.fastf1.season} round {capture.fastf1.round} ·{" "}
+                {capture.fastf1.session}
+              </p>
+              <p>
+                Session-relative seconds · X/Y in metres. Native car and position samples have
+                independent timestamps; missing channels stay unavailable.
+              </p>
+              <p>
+                Sparse, jittery samples are not exact coordinates. No interpolation or circuit
+                outline is added. Event identity, accuracy and data rights are not certified.
+              </p>
+            </aside>
+          )}
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.8fr)_minmax(240px,1fr)]">
             <HUDPanel title="Circuit view" kicker={series} bodyClassName="p-0!">
               <div
@@ -279,6 +301,7 @@ export default function CircuitReplayWorkspace() {
                   </p>
                   <p className="font-mono text-xs text-[color:var(--muted)]">
                     Captured frame {frame.index} · {frame.time.toFixed(2)}s
+                    {capture.fastf1 && " session time"}
                   </p>
                 </div>
                 <label htmlFor={`${id}-snapshot`} className="sr-only">
@@ -317,7 +340,7 @@ export default function CircuitReplayWorkspace() {
                 </div>
                 <p className="body-sm mt-4 text-[color:var(--muted)]">
                   Snapshots follow saved message order, including pauses and rewinds. No movement is
-                  interpolated.
+                  interpolated by this view.
                 </p>
               </div>
             </HUDPanel>
@@ -366,6 +389,46 @@ export default function CircuitReplayWorkspace() {
                       ? "The selected driver is not present in this snapshot."
                       : "Select a driver to highlight their recorded position."}
                 </p>
+                {driver && capture.fastf1 && (
+                  <dl className="body-sm mt-4 grid grid-cols-2 gap-x-4 gap-y-2">
+                    <dt>Sample source</dt>
+                    <dd>
+                      {driver.sampleSource === "pos"
+                        ? "Position"
+                        : driver.sampleSource === "car"
+                          ? "Car"
+                          : "Interpolated"}
+                    </dd>
+                    <dt>Position X / Y</dt>
+                    <dd className="break-words">
+                      {driver.x === null ? "Unavailable" : `${driver.x} / ${driver.y} m`}
+                    </dd>
+                    <dt>Speed</dt>
+                    <dd>
+                      {driver.telemetry?.speed_kph == null
+                        ? "Unavailable"
+                        : `${driver.telemetry.speed_kph} km/h`}
+                    </dd>
+                    <dt>RPM</dt>
+                    <dd>{driver.telemetry?.rpm ?? "Unavailable"}</dd>
+                    <dt>Throttle</dt>
+                    <dd>
+                      {driver.telemetry?.throttle_pct == null
+                        ? "Unavailable"
+                        : `${driver.telemetry.throttle_pct}%`}
+                    </dd>
+                    <dt>Gear</dt>
+                    <dd>{driver.telemetry?.gear ?? "Unavailable"}</dd>
+                    <dt>Brake applied</dt>
+                    <dd>
+                      {driver.telemetry?.brake == null
+                        ? "Unavailable"
+                        : driver.telemetry.brake
+                          ? "Yes"
+                          : "No"}
+                    </dd>
+                  </dl>
+                )}
               </div>
               <p className="body-sm mt-6 text-[color:var(--muted)]">
                 Ordering, safety-car locations and sector times are not reconstructed in this view.
@@ -381,7 +444,7 @@ export default function CircuitReplayWorkspace() {
             Tom Shaw’s F1 Race Replay
           </a>
           . Original browser adapter; the desktop application supplies processed geometry and
-          positions.
+          positions. The local FastF1 exporter also supplies bounded F1-only samples without a map.
         </p>
         <p>
           Real circuit artwork and historical replay data are unavailable here. The demonstration

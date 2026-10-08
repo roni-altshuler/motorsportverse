@@ -87,3 +87,50 @@ test("reduced-motion imports remain static until explicit snapshot selection", a
   expect(container.querySelector('[data-motion="reduced-static"]')).toBeInTheDocument();
   expect(screen.queryByRole("button", { name: /play|auto|tour/i })).not.toBeInTheDocument();
 });
+
+const syntheticFastF1 = JSON.stringify({
+  frame_index: 0,
+  capture_metadata: {
+    provider: "FastF1",
+    schema_version: 1,
+    series: "Formula 1",
+    season: 2025,
+    round: 1,
+    session: "Race",
+    software_version: "synthetic",
+    time_basis: "session-relative-seconds",
+    coordinate_units: "metres",
+    sampling: "native-independent",
+    data_rights: "not-certified",
+  },
+  frame: {
+    t: 100,
+    drivers: {
+      AAA: {
+        name: "Original Sample Driver",
+        x: null,
+        y: null,
+        sample_source: "car",
+        telemetry: { speed_kph: 123, rpm: 9000, throttle_pct: 0, gear: 0, brake: false },
+      },
+    },
+  },
+});
+test("FastF1 input shows provenance, native channels and boolean brake without an invented map", async () => {
+  render(<CircuitReplayWorkspace />);
+  upload(file(Promise.resolve(syntheticFastF1), "synthetic-fastf1.ndjson"));
+  expect(await screen.findByText("Local FastF1 capture · Unverified samples")).toBeVisible();
+  expect(screen.getByLabelText("Capture provenance")).toHaveTextContent("not exact coordinates");
+  fireEvent.click(screen.getByRole("button", { name: "Original Sample Driver" }));
+  expect(screen.getByText("123 km/h")).toBeVisible();
+  expect(screen.getByText("Brake applied").nextSibling).toHaveTextContent("No");
+  expect(screen.getByText("Circuit map unavailable")).toBeVisible();
+});
+test("a non-F1 selection rejects the same capture and offers recovery", async () => {
+  render(<CircuitReplayWorkspace />);
+  fireEvent.change(screen.getByRole("combobox"), { target: { value: "WRC" } });
+  upload(file(Promise.resolve(syntheticFastF1)));
+  expect(await screen.findByRole("alert")).toHaveTextContent("unsupported in WRC");
+  expect(screen.queryByText("123 km/h")).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Choose another capture" })).toBeVisible();
+});

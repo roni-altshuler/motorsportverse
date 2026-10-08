@@ -107,3 +107,80 @@ test("native SVG viewport includes the whole rotated coordinate set", () => {
   expect(view.radius).toBeGreaterThan(Math.hypot(5, 5));
   expect(view.viewBox).not.toMatch(/NaN|Infinity/);
 });
+
+const fastf1Message = () =>
+  message({
+    capture_metadata: {
+      provider: "FastF1",
+      schema_version: 1,
+      series: "Formula 1",
+      season: 2025,
+      round: 1,
+      session: "Race",
+      software_version: "synthetic",
+      time_basis: "session-relative-seconds",
+      coordinate_units: "metres",
+      sampling: "native-independent",
+      data_rights: "not-certified",
+    },
+    frame: {
+      t: 100,
+      drivers: {
+        AAA: {
+          x: null,
+          y: null,
+          sample_source: "car",
+          telemetry: { speed_kph: 123, rpm: 9000, throttle_pct: 0, gear: 0, brake: false },
+        },
+      },
+    },
+  });
+test("local FastF1 metadata keeps units, session time and honest optional channels", () => {
+  const parsed = parseReplayCapture(JSON.stringify(fastf1Message()), "synthetic.ndjson");
+  expect(parsed.fastf1).toEqual({ season: 2025, round: 1, session: "Race", version: "synthetic" });
+  expect(parsed.frames[0].time).toBe(100);
+  expect(parsed.frames[0].geometry).toBeNull();
+  expect(parsed.frames[0].drivers[0]).toMatchObject({
+    sampleSource: "car",
+    x: null,
+    telemetry: { throttle_pct: 0, gear: 0, brake: false },
+  });
+});
+test.each([
+  "Formula 2",
+  "Formula 3",
+  "Formula E",
+  "IndyCar",
+  "NASCAR",
+  "MotoGP",
+  "WRC",
+  "WEC",
+  "IMSA",
+  "Le Mans",
+])("F1-only input is explicitly unsupported in %s", (series) => {
+  expect(() =>
+    parseReplayCapture(JSON.stringify(fastf1Message()), "synthetic.ndjson", series),
+  ).toThrow(`unsupported in ${series}`);
+});
+test("wrong units, time basis, late metadata and malformed brake fail closed", () => {
+  const fixture = JSON.parse(JSON.stringify(fastf1Message()));
+  for (const field of ["coordinate_units", "time_basis", "data_rights"]) {
+    expect(() =>
+      parseReplayCapture(
+        JSON.stringify({
+          ...fixture,
+          capture_metadata: { ...fixture.capture_metadata, [field]: "incorrect" },
+        }),
+        "bad.ndjson",
+      ),
+    ).toThrow(/metadata/);
+  }
+  expect(() =>
+    parseReplayCapture(
+      [JSON.stringify(message()), JSON.stringify(fixture)].join("\n"),
+      "late.ndjson",
+    ),
+  ).toThrow(/metadata/);
+  fixture.frame.drivers.AAA.telemetry.brake = 50;
+  expect(() => parseReplayCapture(JSON.stringify(fixture), "brake.ndjson")).toThrow(/telemetry/);
+});

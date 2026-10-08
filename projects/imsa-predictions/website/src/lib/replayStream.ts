@@ -18,6 +18,14 @@ export interface CaptureDriver {
   x: number | null;
   y: number | null;
   color: string;
+  sampleSource?: string;
+  telemetry?: {
+    speed_kph: number | null;
+    rpm: number | null;
+    throttle_pct: number | null;
+    gear: number | null;
+    brake: boolean | null;
+  } | null;
 }
 export interface CaptureFrame {
   index: number;
@@ -29,6 +37,7 @@ export interface ReplayCapture {
   frames: CaptureFrame[];
   source: "local" | "fictional";
   label: string;
+  fastf1?: { season: number; round: number; session: string; version: string };
 }
 
 function record(value: unknown): value is Record<string, unknown> {
@@ -63,7 +72,11 @@ function geometry(value: unknown): CaptureGeometry {
  * Geometry only applies from the message that supplies it onward. A later
  * geometry update never rewrites earlier snapshots; frame times aren't guessed.
  */
-export function parseReplayCapture(text: string, label: string): ReplayCapture {
+export function parseReplayCapture(
+  text: string,
+  label: string,
+  series = "Formula 1",
+): ReplayCapture {
   if (new Blob([text]).size > CAPTURE_LIMITS.bytes)
     throw new Error("This capture exceeds the 4 MiB limit.");
   const lines = text
@@ -73,6 +86,7 @@ export function parseReplayCapture(text: string, label: string): ReplayCapture {
   if (!lines.length || lines.length > CAPTURE_LIMITS.frames)
     throw new Error("Choose a capture containing 1–2000 JSON snapshots.");
   let currentGeometry: CaptureGeometry | null = null;
+  let fastf1: ReplayCapture["fastf1"];
   const frames = lines.map((line, lineIndex): CaptureFrame => {
     let message: unknown;
     try {
@@ -90,6 +104,47 @@ export function parseReplayCapture(text: string, label: string): ReplayCapture {
       message.frame.t < 0
     )
       throw new Error(`Snapshot ${lineIndex + 1} needs frame_index, frame.t and frame.drivers.`);
+    if (message.capture_metadata !== undefined) {
+      const meta = message.capture_metadata;
+      if (
+        lineIndex !== 0 ||
+        !record(meta) ||
+        meta.provider !== "FastF1" ||
+        meta.schema_version !== 1 ||
+        meta.series !== "Formula 1" ||
+        meta.time_basis !== "session-relative-seconds" ||
+        meta.coordinate_units !== "metres" ||
+        meta.sampling !== "native-independent" ||
+        meta.data_rights !== "not-certified" ||
+        !Number.isInteger(meta.season) ||
+        (meta.season as number) < 2018 ||
+        (meta.season as number) > 2100 ||
+        !Number.isInteger(meta.round) ||
+        (meta.round as number) < 1 ||
+        (meta.round as number) > 30 ||
+        typeof meta.session !== "string" ||
+        ![
+          "Race",
+          "Qualifying",
+          "Sprint",
+          "Sprint Qualifying",
+          "Practice 1",
+          "Practice 2",
+          "Practice 3",
+        ].includes(meta.session) ||
+        typeof meta.software_version !== "string" ||
+        meta.software_version.length > 40
+      )
+        throw new Error("Unsupported FastF1 capture metadata. Use the local exporter format.");
+      if (series !== "Formula 1")
+        throw new Error(`FastF1 input supports Formula 1 only; it is unsupported in ${series}.`);
+      fastf1 = {
+        season: meta.season as number,
+        round: meta.round as number,
+        session: meta.session,
+        version: meta.software_version,
+      };
+    }
     if (message.track_geometry !== undefined) currentGeometry = geometry(message.track_geometry);
     const entries = Object.entries(message.frame.drivers);
     if (entries.length > CAPTURE_LIMITS.drivers)
@@ -111,6 +166,31 @@ export function parseReplayCapture(text: string, label: string): ReplayCapture {
         typeof value.name === "string" && value.name.trim() && value.name.length <= 80
           ? value.name.trim()
           : `Driver ${code}`;
+      let extension: Pick<CaptureDriver, "sampleSource" | "telemetry"> = {};
+      if (fastf1) {
+        if (
+          !["car", "pos", "interpolation", "interpolated"].includes(value.sample_source as string)
+        )
+          throw new Error(`Snapshot ${lineIndex + 1} needs a supported sample source.`);
+        const tel = value.telemetry;
+        const bounded = (n: unknown, max: number) =>
+          n === null || (typeof n === "number" && Number.isFinite(n) && n >= 0 && n <= max);
+        if (
+          tel !== null &&
+          (!record(tel) ||
+            !bounded(tel.speed_kph, 500) ||
+            !bounded(tel.rpm, 30000) ||
+            !bounded(tel.throttle_pct, 100) ||
+            !bounded(tel.gear, 8) ||
+            (tel.gear !== null && !Number.isInteger(tel.gear)) ||
+            (tel.brake !== null && typeof tel.brake !== "boolean"))
+        )
+          throw new Error(`Snapshot ${lineIndex + 1} has invalid native telemetry channels.`);
+        extension = {
+          sampleSource: value.sample_source as string,
+          telemetry: tel as CaptureDriver["telemetry"],
+        };
+      }
       return {
         code,
         name,
@@ -120,6 +200,7 @@ export function parseReplayCapture(text: string, label: string): ReplayCapture {
           typeof colors[code] === "string" && /^#[a-f0-9]{6}$/i.test(colors[code] as string)
             ? (colors[code] as string)
             : "var(--ink)",
+        ...extension,
       };
     });
     return {
@@ -129,7 +210,7 @@ export function parseReplayCapture(text: string, label: string): ReplayCapture {
       geometry: currentGeometry,
     };
   });
-  return { frames, source: "local", label };
+  return { frames, source: "local", label, ...(fastf1 ? { fastf1 } : {}) };
 }
 
 export function captureViewport(shape: CaptureGeometry) {
