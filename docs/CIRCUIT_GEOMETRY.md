@@ -1,5 +1,9 @@
 # Circuit geometry evidence and eligibility
 
+The [browser-local circuit workspace](UPSTREAM_CIRCUIT_WORKSPACE.md) now offers
+a source-labelled fictional demonstration and an upstream-format file adapter.
+It grants no map approval and includes no new real telemetry or licensed artwork.
+
 The requested shared **Explore circuit** feature is **unfinished**. Of 43 stored
 paths across 168 published calendar rounds, 37 outlines remain eligible for
 legacy display and zero are reviewed for a new explorer. Legacy presentation

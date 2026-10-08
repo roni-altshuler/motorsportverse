@@ -1,3 +1,13 @@
+# 2026-10-08 continuation
+
+The [browser-local interoperability workspace](../../UPSTREAM_CIRCUIT_WORKSPACE.md)
+is a new visible F1 capability on this same PR, with an original fictional demo
+and strict upstream-format local import. It leaves the source-dependent Zandvoort
+schematic unfinished. The records below describe the earlier held image-shell
+review and controlled fixtures; they do not establish a production map approval.
+
+---
+
 # Shared circuit explorer preparation — 6 October 2026
 
 **Held, unfinished draft. No Zandvoort map is approved or exposed by this change.**

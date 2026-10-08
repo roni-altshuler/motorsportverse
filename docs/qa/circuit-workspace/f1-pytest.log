@@ -1,0 +1,48 @@
+........................................................................ [  6%]
+........................................................................ [ 13%]
+........................................................................ [ 19%]
+........................................................................ [ 26%]
+........................................................................ [ 33%]
+........................................................................ [ 39%]
+........................................................................ [ 46%]
+........................................................................ [ 52%]
+........................................................................ [ 59%]
+........................................................................ [ 66%]
+........................................................................ [ 72%]
+.......................s................................................ [ 79%]
+........................................................................ [ 85%]
+........................................................................ [ 92%]
+...................................s.................................... [ 99%]
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_conversion_model.py::test_p_win_sums_sensibly_across_field
+tests/test_conversion_model.py::test_p_win_sums_sensibly_across_field
+tests/test_conversion_model.py::test_head_learns_signal_on_constructed_example
+tests/test_conversion_model.py::test_head_learns_signal_on_constructed_example
+tests/test_conversion_model.py::test_save_load_round_trip
+tests/test_conversion_model.py::test_save_load_round_trip
+tests/test_conversion_model.py::test_save_load_round_trip
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/sklearn/impute/_base.py:641: UserWarning: Skipping features without any observed values: [5]. At least one non-missing value is needed for imputation with strategy='mean'.
+    warnings.warn(
+
+tests/test_history_db.py::test_backfill_handles_network_failures_per_season
+  /workspace/motorsportverse/projects/f1-predictions/src/ergast_backfill.py:333: UserWarning: [ergast] season 1980: no races returned
+    warnings.warn(f"[ergast] season {season}: no races returned")
+
+tests/test_race_simulator_runner.py: 600 warnings
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/sklearn/utils/validation.py:2684: UserWarning: X has feature names, but GradientBoostingRegressor was fitted without feature names
+    warnings.warn(
+
+tests/test_season_bootstrap.py: 10 warnings
+  /workspace/motorsportverse/projects/f1-predictions/src/f1_prediction_utils.py:291: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return min(dates) <= datetime.utcnow().date()
+
+tests/test_volatility_model.py::test_output_in_unit_interval
+tests/test_volatility_model.py::test_output_in_unit_interval
+tests/test_volatility_model.py::test_save_and_load_round_trip
+tests/test_volatility_model.py::test_save_and_load_round_trip
+tests/test_volatility_model.py::test_save_and_load_round_trip
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/sklearn/impute/_base.py:641: UserWarning: Skipping features without any observed values: [4]. At least one non-missing value is needed for imputation with strategy='mean'.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

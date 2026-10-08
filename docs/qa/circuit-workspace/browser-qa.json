@@ -1,0 +1,1695 @@
+{
+  "browser": "151.0.7922.173",
+  "basePath": "/motorsportverse/projects/f1",
+  "upstreamContractRevision": "efdb8a31900d64e3f269d66601ab9726b7dc5923",
+  "sourceSha256": {
+    "src/lib/replayStream.ts": "d0a6dc5070de2f240e79970e3e03300a582554ffe53bce49e6b5b51422389eeb",
+    "src/lib/replayStreamDemo.ts": "0beb4c205a80bbda44735800f229be001d5654d0dbfce331515957425c0f4e15",
+    "src/components/ui/CircuitReplayWorkspace.tsx": "f46c0a0c24645205d03ffa5794f1feb34387704af64b82d29ab9e85245853cc1",
+    "src/app/circuits/page.tsx": "7d0cec95d65f6553d5d565beb8f0e70cfcda22a1955aead6c7e8374146594424"
+  },
+  "results": [
+    {
+      "label": "desktop-reduce",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 1440,
+        "viewport": 1440
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ],
+      "resources": [],
+      "failedRequests": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/VER",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/cn.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/jp.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ca.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/hu.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/br.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/15",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mx.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/14",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/13",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/az.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/it.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/es.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/at.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/gb.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/be.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/qa.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ae.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/11",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/10",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/9",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/8",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/7",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/6",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/5",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/4",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/2",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/compare/laps",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/3",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/15",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/VER",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "label": "desktop-no-preference",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 1440,
+        "viewport": 1440
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ],
+      "resources": [],
+      "failedRequests": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/VER",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/cn.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/jp.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/gb.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/hu.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/it.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/az.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/15",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/br.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mx.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/14",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/13",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/be.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ca.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/es.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/at.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/qa.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ae.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/11",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/10",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/9",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/8",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/7",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/6",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/5",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/4",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/2",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/compare/laps",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/3",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/15",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/VER",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "label": "mobile-reduce",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "motion": "reduce",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._tree.txt?_rsc=1ia33"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._head.txt?_rsc=1b7fu"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.txt?_rsc=z1z4o"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.__PAGE__.txt?_rsc=1l1sl"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/about/page-0d9d2dae3e63ab9c.js"
+        }
+      ],
+      "metrics": {
+        "width": 390,
+        "viewport": 390
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ],
+      "resources": [],
+      "failedRequests": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/cn.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/jp.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ca.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/es.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/at.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/gb.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/be.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/hu.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/it.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/compare/laps",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "label": "mobile-no-preference",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "motion": "no-preference",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 390,
+        "viewport": 390
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ],
+      "resources": [],
+      "failedRequests": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/cn.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/jp.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/ca.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/es.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/at.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/gb.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/be.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/hu.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/it.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/compare/laps",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "GET",
+          "url": "https://flagcdn.com/w80/nl.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/theatre/12",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/circuits",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    }
+  ]
+}
