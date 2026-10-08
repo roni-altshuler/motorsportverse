@@ -9,7 +9,7 @@ their synthetic filename and invented driver name.
   desktop 1440×1000/mobile 390×844, reduced/normal motion, native browser clock.
   Actual static export at `/motorsportverse/projects/f1`.
 - [Local check matrix](local-checks.json): all eleven sites' lint/tests/types/build
-  pass; 2,214 frontend tests pass with eight existing hub skips. Ten sites have
+  pass; 2,216 frontend tests pass with eight existing hub skips. Ten sites have
   fresh locked installs; F1 reuses its existing dependency tree. Locks remain
   unchanged. F1's initial prebuild used Node 24.19.0; its final Next production
   build used Node 20.20.2 with those generated prebuild outputs. F1's final
@@ -34,7 +34,10 @@ An earlier refreshed run recorded one React hydration error 418 in the mobile
 reduced-motion case; its route was not captured by that version of the runner.
 The [original log](earlier-mobile-hydration.log) is retained. The runner now
 records the case, route and stack for page errors. The latest complete four-case
-run did not reproduce the error; no hydration fix is claimed.
+run did not reproduce the error. A later investigation proves and repairs a
+controlled root-layout replay defect; the historical event's cause remains
+unattributed. See the [separate investigation](HYDRATION_INVESTIGATION.md) and its
+explicit production-versus-controlled-test limits.
 
 [Desktop synthetic car sample](desktop-synthetic-car.png) ·
 [Mobile synthetic position sample](mobile-synthetic-position.png) ·

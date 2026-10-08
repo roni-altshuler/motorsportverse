@@ -3,6 +3,7 @@
 import { chromium } from "../projects/f1-predictions/website/node_modules/playwright/index.mjs";
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { appendFileSync } from "node:fs";
 import { resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
@@ -102,6 +103,8 @@ for (const file of [
   "src/lib/replayStreamDemo.ts",
   "src/components/ui/CircuitReplayWorkspace.tsx",
   "src/app/circuits/page.tsx",
+  "src/app/layout.tsx",
+  "src/components/RouteMain.tsx",
 ])
   sourceSha256[file] = createHash("sha256")
     .update(
@@ -183,14 +186,21 @@ try {
         requests = [];
       page.on("pageerror", (e) => {
         pageErrors.push(e.message);
-        console.log(
-          JSON.stringify({
-            case: label,
-            route: new URL(page.url()).pathname,
-            pageError: e.message,
-            stack: e.stack,
-          }),
+        const observation = {
+          case: label,
+          route: new URL(page.url()).pathname,
+          motion,
+          viewport,
+          at: new Date().toISOString(),
+          pageError: e.message,
+          stack: e.stack,
+        };
+        // Preserve failures even when an assertion prevents the final report.
+        appendFileSync(
+          resolve(output, "page-errors.ndjson"),
+          JSON.stringify(observation) + "\n",
         );
+        console.log(JSON.stringify(observation));
       });
       page.on("console", (m) => {
         if (m.type() === "error") consoleErrors.push(m.text());

@@ -21,6 +21,10 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 - Verified the Python-to-browser boundary with original synthetic fixtures.
   No new real telemetry, circuit assets, hosted stream, provider coverage or data
   rights are supplied; sparse/jittery samples remain explicitly unverified.
+- Repaired a controlled F1 root-layout hydration replay defect while preserving
+  the main container's markup. Added actual-source production/development
+  regressions and negative controls; the retained earlier browser event remains
+  unattributed.
 
 ### Prepared circuit explorer shell — 2026-10-06
 
