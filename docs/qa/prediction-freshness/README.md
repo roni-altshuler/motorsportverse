@@ -44,7 +44,9 @@ PAGES_BASE_PATH=/motorsportverse/projects/f1 node node_modules/next/dist/bin/nex
 
 Results: **239 tests passed in 15 suites**, including 23 new artifact/context
 regressions. Lint, types and a clean production static export passed. The local
-build used existing committed prebuild images; CI runs the standard build.
+build used existing committed prebuild images. PR/push CI runs the F1 frontend
+checks with its Build step skipped; dedicated F1 CI runs Python checks only.
+The F1 production export was verified locally, not by those CI runs.
 The Python source and every published data file are unchanged. Shared UI drift,
 edited-source formatting, harness syntax and whitespace checks passed.
 
