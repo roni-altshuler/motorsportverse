@@ -1,3 +1,33 @@
+/** One fixed, archived session; timings selected from a single stored row. */
+export interface SessionComparisonDriver {
+  code: string;
+  fullName: string;
+  portraitPath: string | null;
+  lapMs: number;
+  sectorMs: [number, number, number];
+  storedRows: number;
+  completeRows: number;
+}
+
+export interface SessionComparisonData {
+  schemaVersion: 1;
+  session: {
+    id: "2025_Monaco_R";
+    season: 2025;
+    event: "Monaco Grand Prix";
+    kind: "Race";
+    date: "2025-05-25";
+  };
+  source: {
+    provider: "FastF1";
+    path: string;
+    sha256: string;
+    selection: "fastest-complete-stored-row";
+    missingFields: string[];
+  };
+  drivers: SessionComparisonDriver[];
+}
+
 // RaceIQ Website – Core Types
 
 export interface RaceCalendarEntry {

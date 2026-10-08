@@ -98,6 +98,20 @@ are recorded without claiming a verified or delivered interactive feature.
 
 ## What's here
 
+The F1 [archived lap comparison](docs/ARCHIVED_LAP_COMPARISON.md) is a bounded
+2025 Monaco timing pilot on a separate review branch. It uses existing committed
+lap records, keeps sectors from the same stored lap, and explains the absent lap
+context. It does not add live timing, reviewed geometry or a current-season
+comparison to F1 or the other series.
+
+[The locked-install audit](docs/LOCKFILE_INSTALL_AUDIT.md) records the repaired
+test dependency omissions in eight site locks. All 11 sites pass clean Node 20 /
+npm 10 installs, ESLint, frontend tests, types and static builds; website CI now
+enforces the locked install, lint and type checks. [The lint repair](docs/LINT_TOOLING_REPAIR.md)
+records the exact errors, fixes and remaining warnings without rule suppression.
+[Matched MotoGP mobile browser evidence](docs/MOTOGP_MOBILE_VISIBILITY.md) verifies
+painted podium, probability and classification content after real scrolling.
+
 ```
 motorsportverse/
 ├── website/                 ecosystem landing site + project catalog (Next.js, static export)

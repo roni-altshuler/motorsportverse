@@ -25,6 +25,52 @@ class _Loose(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
+class SessionComparisonDriver(_Loose):
+    code: str
+    fullName: str
+    portraitPath: Optional[str] = None
+    lapMs: int = Field(gt=0)
+    sectorMs: tuple[int, int, int]
+    storedRows: int = Field(gt=0)
+    completeRows: int = Field(gt=0)
+
+
+class SessionComparisonSession(_Loose):
+    id: str
+    season: int
+    event: str
+    kind: str
+    date: str
+
+
+class SessionComparisonSource(_Loose):
+    provider: str
+    path: str
+    sha256: str
+    selection: str
+    missingFields: list[str]
+
+
+class SessionComparisonData(_Loose):
+    schemaVersion: int
+    session: SessionComparisonSession
+    source: SessionComparisonSource
+    drivers: list[SessionComparisonDriver]
+
+
+def test_archived_session_comparison_schema():
+    payload = SessionComparisonData.model_validate_json(
+        (WEBSITE_DATA / "session-comparison/2025_Monaco_R.json").read_text()
+    )
+    assert payload.schemaVersion == 1
+    assert payload.session.id == "2025_Monaco_R"
+    assert payload.session.season == 2025
+    for driver in payload.drivers:
+        assert all(ms > 0 for ms in driver.sectorMs)
+        assert abs(driver.lapMs - sum(driver.sectorMs)) <= 2
+        assert driver.completeRows <= driver.storedRows
+
+
 class CalendarEntry(_Loose):
     round: int
     name: str

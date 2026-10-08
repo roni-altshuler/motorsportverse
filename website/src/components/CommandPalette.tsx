@@ -88,10 +88,6 @@ export function CommandPalette({ items }: { items: PaletteItem[] }) {
     );
   }, [items, query]);
 
-  useEffect(() => {
-    setActive(0);
-  }, [query]);
-
   const go = useCallback(
     (it: PaletteItem | undefined) => {
       if (!it) return;
@@ -166,7 +162,7 @@ export function CommandPalette({ items }: { items: PaletteItem[] }) {
           <input
             ref={inputRef}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => { setQuery(e.target.value); setActive(0); }}
             placeholder="Search projects, docs, pages…"
             className="w-full bg-transparent py-4 text-sm text-[var(--ink)] outline-none placeholder:text-[var(--ink-dim)]"
             aria-label="Search"

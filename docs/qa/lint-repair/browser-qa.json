@@ -1,0 +1,2317 @@
+{
+  "browser": "151.0.7922.173",
+  "results": [
+    {
+      "feature": "replay controls",
+      "viewport": "desktop",
+      "raceData": "committed 2026 round_01 replay",
+      "injectedRaceData": false,
+      "flows": [
+        "pause remains stable",
+        "1× and 4× measured UI timing",
+        "repeated controls",
+        "keyboard space / ±5s seek",
+        "scrub to 120s",
+        "focus redraw and restore",
+        "restart"
+      ],
+      "mobileReducedMotionGate": false,
+      "canvasHashes": {
+        "beforeFocus": "f0512744b7d27d37dd34466fb916a88303f106e863eff69136c5c3faac14b680",
+        "focused": "705685d59404490b15e5ca6c6d6ebbe10259657b6f6c331aebafcb0999813395"
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/sg.png"
+        }
+      ],
+      "missingResources": [],
+      "failedRequests": [
+        {
+          "url": "/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/accuracy",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/standings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/calendar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/driver/ANT",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "baselineMissingPortraits": []
+    },
+    {
+      "feature": "replay controls",
+      "viewport": "mobile",
+      "raceData": "committed 2026 round_01 replay",
+      "injectedRaceData": false,
+      "flows": [
+        "pause remains stable",
+        "1× and 4× measured UI timing",
+        "repeated controls",
+        "keyboard space / ±5s seek",
+        "scrub to 120s",
+        "focus redraw and restore",
+        "restart"
+      ],
+      "mobileReducedMotionGate": true,
+      "canvasHashes": {
+        "beforeFocus": "1e68c6c3842167cdccb33cba24b61f2a3d9e9e50186d847e3355de89a81a3616",
+        "focused": "192e958d839f9ee1dc7cf0debd155ae9e3a45a177b6df944088cacce3d623b05"
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/sg.png"
+        }
+      ],
+      "missingResources": [],
+      "failedRequests": [
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "https://flagcdn.com/w80/sg.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/race/16",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "baselineMissingPortraits": []
+    },
+    {
+      "feature": "hub state and command palette",
+      "viewport": "desktop",
+      "injectedRaceData": false,
+      "clockOnly": [
+        "2026-10-07",
+        "2030-01-01"
+      ],
+      "flows": [
+        "completed race deep link",
+        "stored favourites / following after reload",
+        "search / popstate reset",
+        "keyboard search selection / close / reopen / navigation",
+        "browser UTC day replaces static snapshot"
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "missingResources": [],
+      "failedRequests": [
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/contribute/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/docs/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/contribute/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/docs/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f2-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/lemans-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f1-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f3-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/contribute/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/docs/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "baselineMissingPortraits": []
+    },
+    {
+      "feature": "hub state and command palette",
+      "viewport": "mobile",
+      "injectedRaceData": false,
+      "clockOnly": [
+        "2026-10-07",
+        "2030-01-01"
+      ],
+      "flows": [
+        "completed race deep link",
+        "stored favourites / following after reload",
+        "search / popstate reset",
+        "keyboard search selection / close / reopen / navigation",
+        "browser UTC day replaces static snapshot"
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "missingResources": [],
+      "failedRequests": [
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/docs/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/lemans-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/contribute/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f3-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f2-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/f1-predictions/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/projects/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "baselineMissingPortraits": []
+    },
+    {
+      "feature": "current season race detail",
+      "series": "f2",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Australia",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CAM.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/au.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/TSO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/VAN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BIL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MIN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MIY.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SHI.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BEG.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/GOE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MAI.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/VIL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/LEO.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/CAM.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/TSO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/VAN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BIL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MIN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MIY.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/SHI.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BEG.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/GOE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MAI.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/VIL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/LEO.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/7/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/CAM.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/CAM.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/TSO.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/TSO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/VAN.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/VAN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BIL.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/BIL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MIN.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/MIN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MIY.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/MIY.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/SHI.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/SHI.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BEG.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/BEG.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/GOE.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/GOE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MAI.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/MAI.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/VIL.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/VIL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/LEO.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/LEO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "f2",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Australia",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CAM.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/TSO.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/au.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/VAN.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/CAM.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/TSO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/VAN.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/7/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/CAM.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/CAM.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/TSO.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/TSO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/VAN.webp",
+          "status": 404,
+          "baseFile": "projects/f2-predictions/website/public/headshots/VAN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "f3",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Australia",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SLA.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/au.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/UGO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/KAT.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/NAK.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MCL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SHI.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BDE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SHA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/HO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/LE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/EDE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/LAC.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CLE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BAD.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/HAN.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/SLA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/UGO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/KAT.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/NAK.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MCL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/SHI.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BDE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/SHA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/HO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/LE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/EDE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/LAC.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CLE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BAD.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/HAN.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/6/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/SLA.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/SLA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/UGO.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/UGO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/KAT.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/KAT.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/NAK.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/NAK.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MCL.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/MCL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/SHI.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/SHI.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BDE.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/BDE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/SHA.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/SHA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/HO.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/HO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/LE.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/LE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/EDE.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/EDE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/LAC.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/LAC.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CLE.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/CLE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BAD.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/BAD.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/HAN.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/HAN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "f3",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Australia",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SLA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/UGO.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/au.png"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/SLA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/UGO.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/au.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/6/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/SLA.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/SLA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/UGO.webp",
+          "status": 404,
+          "baseFile": "projects/f3-predictions/website/public/headshots/UGO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "formula-e",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "São Paulo",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ROW.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/br.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/DEN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CAS.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/DEV.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/GUE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MOR.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/EVA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/WEH.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/DAC.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BAR.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BUE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/JEV.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/ROW.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/DEN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CAS.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/DEV.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/GUE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MOR.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/EVA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/WEH.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/DAC.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BAR.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BUE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/JEV.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/br.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/17/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/ROW.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/ROW.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/DEN.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/DEN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CAS.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/CAS.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/DEV.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/DEV.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/GUE.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/GUE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MOR.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/MOR.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/EVA.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/EVA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/WEH.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/WEH.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/DAC.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/DAC.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BAR.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/BAR.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BUE.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/BUE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/JEV.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/JEV.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "formula-e",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "São Paulo",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ROW.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/DEN.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/br.png"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/ROW.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/DEN.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/br.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/ROW.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/ROW.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/DEN.webp",
+          "status": 404,
+          "baseFile": "projects/formula-e-predictions/website/public/headshots/DEN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "indycar",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Streets of St. Petersburg",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SCMCLAUGHLIN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ALPALOU.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHLUNDGAARD.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SCDIXON.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MAARMSTRONG.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/WIPOWER.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/us.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/KYKIRKWOOD.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ALROSSI.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/GRRAHAL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/PAWARD.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/FEROSENQVIST.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHRASMUSSEN.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/SCMCLAUGHLIN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/ALPALOU.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHLUNDGAARD.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/SCDIXON.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MAARMSTRONG.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/WIPOWER.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/KYKIRKWOOD.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/ALROSSI.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/GRRAHAL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/PAWARD.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/FEROSENQVIST.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHRASMUSSEN.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/12/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/SCMCLAUGHLIN.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/SCMCLAUGHLIN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/ALPALOU.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/ALPALOU.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHLUNDGAARD.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/CHLUNDGAARD.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/SCDIXON.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/SCDIXON.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MAARMSTRONG.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/MAARMSTRONG.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/WIPOWER.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/WIPOWER.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/KYKIRKWOOD.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/KYKIRKWOOD.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/ALROSSI.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/ALROSSI.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/GRRAHAL.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/GRRAHAL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/PAWARD.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/PAWARD.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/FEROSENQVIST.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/FEROSENQVIST.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHRASMUSSEN.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/CHRASMUSSEN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "indycar",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Streets of St. Petersburg",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SCMCLAUGHLIN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ALPALOU.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/us.png"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/SCMCLAUGHLIN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/ALPALOU.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/12/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/SCMCLAUGHLIN.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/SCMCLAUGHLIN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/ALPALOU.webp",
+          "status": 404,
+          "baseFile": "projects/indycar-predictions/website/public/headshots/ALPALOU.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "motogp",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Buriram",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ACO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BEZ.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/FE2.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MAM.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/GIA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MAA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MAR.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MOF.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/OGU.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BIN.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BAG.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MIR.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/ACO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BEZ.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/FE2.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MAM.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/GIA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MAA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MAR.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MOF.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/OGU.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BIN.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BAG.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MIR.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/17/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/ACO.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/ACO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BEZ.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/BEZ.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/FE2.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/FE2.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MAM.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/MAM.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/GIA.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/GIA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MAA.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/MAA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MAR.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/MAR.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MOF.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/MOF.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/OGU.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/OGU.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BIN.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/BIN.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BAG.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/BAG.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MIR.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/MIR.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "motogp",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Buriram",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ACO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/BEZ.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/ACO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/BEZ.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/17/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 406,
+      "horizontalOverflow": true,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/ACO.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/ACO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/BEZ.webp",
+          "status": 404,
+          "baseFile": "projects/motogp-predictions/website/public/headshots/BEZ.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "nascar",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Daytona International Speedway",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/RISTENHOUSE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/TYREDDICK.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/us.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/JOLOGANO.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/KYLARSON.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHELLIOTT.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/JUALLGAIER.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHBELL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/RYPREECE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/TYGIBBS.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHBUESCHER.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MIMCDOWELL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/COZILISCH.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/CHSMITH.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/RYBLANEY.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/RISTENHOUSE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/TYREDDICK.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/JOLOGANO.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/KYLARSON.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHELLIOTT.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/JUALLGAIER.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHBELL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/RYPREECE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/TYGIBBS.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHBUESCHER.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MIMCDOWELL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/COZILISCH.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/CHSMITH.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/RYBLANEY.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/32/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/RISTENHOUSE.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/RISTENHOUSE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/TYREDDICK.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/TYREDDICK.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/JOLOGANO.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/JOLOGANO.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/KYLARSON.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/KYLARSON.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHELLIOTT.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/CHELLIOTT.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/JUALLGAIER.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/JUALLGAIER.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHBELL.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/CHBELL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/RYPREECE.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/RYPREECE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/TYGIBBS.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/TYGIBBS.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHBUESCHER.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/CHBUESCHER.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MIMCDOWELL.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/MIMCDOWELL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/COZILISCH.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/COZILISCH.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/CHSMITH.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/CHSMITH.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/RYBLANEY.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/RYBLANEY.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "nascar",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Daytona International Speedway",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/us.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/RISTENHOUSE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/TYREDDICK.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/RISTENHOUSE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/TYREDDICK.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/us.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/32/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/RISTENHOUSE.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/RISTENHOUSE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/TYREDDICK.webp",
+          "status": 404,
+          "baseFile": "projects/nascar-predictions/website/public/headshots/TYREDDICK.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "wrc",
+      "viewport": "desktop",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Rallye Monte Carlo",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/EVA.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/SOL.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/PAJ.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/OGI.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/FOU.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/KAT.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/NEU.webp"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/mc.png"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/PAD.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/MCE.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/LAP.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ROS.webp"
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "url": "/headshots/ARM.webp"
+        }
+      ],
+      "missingResources": [
+        {
+          "url": "/headshots/EVA.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/SOL.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/PAJ.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/OGI.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/FOU.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/KAT.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/NEU.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/PAD.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/MCE.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/LAP.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/ROS.webp",
+          "status": 404
+        },
+        {
+          "url": "/headshots/ARM.webp",
+          "status": 404
+        }
+      ],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/about/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/race/13/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 1440,
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": [
+        {
+          "url": "/headshots/EVA.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/EVA.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/SOL.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/SOL.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/PAJ.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/PAJ.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/OGI.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/OGI.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/FOU.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/FOU.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/KAT.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/KAT.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/NEU.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/NEU.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/PAD.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/PAD.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/MCE.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/MCE.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/LAP.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/LAP.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/ROS.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/ROS.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        },
+        {
+          "url": "/headshots/ARM.webp",
+          "status": 404,
+          "baseFile": "projects/wrc-predictions/website/public/headshots/ARM.webp",
+          "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272"
+        }
+      ]
+    },
+    {
+      "feature": "current season race detail",
+      "series": "wrc",
+      "viewport": "mobile",
+      "availableSeasons": [
+        2026
+      ],
+      "archiveBrowserFlow": "not available; explicit archive fixtures tested in F2 Jest",
+      "injectedRaceData": false,
+      "round": 1,
+      "venue": "Rallye Monte Carlo",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+          "url": "https://flagcdn.com/w80/mc.png"
+        }
+      ],
+      "missingResources": [],
+      "failedRequests": [
+        {
+          "url": "https://flagcdn.com/w80/mc.png",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED"
+        },
+        {
+          "url": "/",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/accuracy/",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "viewportWidth": 390,
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "baselineMissingPortraits": []
+    }
+  ]
+}

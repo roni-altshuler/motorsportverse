@@ -1,0 +1,907 @@
+{
+  "baseCommit": "b9408e3a56bd08e51220709aae5f017dabcda272",
+  "priorPRHead": "871d1df7c300b9f9eb1b9b76984f1beab58905b2",
+  "toolchain": {
+    "node": "20.20.2",
+    "npm": "10.9.9"
+  },
+  "baselineLockedInstallFailures": [
+    {
+      "series": "f2",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "formula-e",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "imsa",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "indycar",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "motogp",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "nascar",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "wec",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    },
+    {
+      "series": "wrc",
+      "baseExit": 1,
+      "missingPackages": 310,
+      "firstMissing": [
+        "npm error Missing: @testing-library/dom@10.4.2 from lock file",
+        "npm error Missing: @testing-library/jest-dom@6.9.1 from lock file",
+        "npm error Missing: @testing-library/react@16.3.3 from lock file",
+        "npm error Missing: @types/jest@30.0.0 from lock file",
+        "npm error Missing: jest@30.5.2 from lock file",
+        "npm error Missing: jest-environment-jsdom@30.5.2 from lock file"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "errorCode": "EUSAGE"
+    }
+  ],
+  "repairScope": [
+    {
+      "site": "projects/f2-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "addedPackages": 310,
+      "existingPackageChanges": 0,
+      "manifestChanges": 0
+    }
+  ],
+  "supportedChecks": [
+    {
+      "site": "projects/f1-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "3a343a17fbfb0698742344eb4114f75e1263342bd50d6036b60c0c9e74b71605",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 24.3,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 17.1,
+          "errorEvidence": [
+            "  4:18  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports",
+            "  1:1  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports",
+            "  111:3  error  Error: Cannot access refs during render",
+            "  112:3  error  Error: Cannot access refs during render",
+            "  113:3  error  Error: Cannot access refs during render",
+            "  69:7  warning  'FINISHED_STATUSES' is assigned a value but never used  @typescript-eslint/no-unused-vars",
+            "\u2716 6 problems (5 errors, 1 warning)"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 6.2,
+          "summary": "Tests:       130 passed, 130 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 6.0,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 102.5,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/f2-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "b4f9cff25f6b8d37605abce11ce5cab6f86632feb7d33d80dce2c4efd4a7a83b",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 23.6,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/f2-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 7.5,
+          "summary": "Tests:       130 passed, 130 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 11.0,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 24.3,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/f3-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "739172096d6c963db82d8359336ffb603205075b3718cccf304d64369ba21845",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 19.7,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/f3-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 6.8,
+          "summary": "Tests:       126 passed, 126 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 8.0,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 32.1,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "8649aafba216ea690afa4672e5a9c64bf0bfb7790b8c09a5f6ff571cf2a33822",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 19.8,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/formula-e-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 3.6,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 8.5,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 40.2,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "e1f2746c67ebc9b58c6a96d3b77c04bb287458f77fe0b63cd3bce77345909f00",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 23.7,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.6,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/imsa-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 7.5,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 8.1,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 33.6,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "fc630a4f2f37b6cbb6770bc4b49e551043227c42a7d85c0b13c0a5344b8175e5",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 27.5,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/indycar-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 5.7,
+          "summary": "Tests:       120 passed, 120 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 8.6,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 33.6,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "3b4edd4e1836c1f6ba151f7c58f0b5a13924a6a3c1f32dcd1202c0fcad923ed8",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 13.9,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.5,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/motogp-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 3.4,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 10.2,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 31.5,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "af3eb3857acf7d83863085828382e3a9cc7a1ce51c19b7fc70907f129d7f63bb",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 20.9,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/nascar-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 3.1,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 11.1,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 31.9,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "e1f2746c67ebc9b58c6a96d3b77c04bb287458f77fe0b63cd3bce77345909f00",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 15.9,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/wec-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 2.7,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 6.1,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 21.8,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "0b7a6053feb3d13f1c8670b8864aa2040f2e8a436a3089dc491bc57963225da2",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 18.6,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/projects/wrc-predictions/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 4.4,
+          "summary": "Tests:       108 passed, 108 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 9.5,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 27.9,
+          "command": "npm run build"
+        }
+      ]
+    },
+    {
+      "site": "website",
+      "node": "20.20.2",
+      "npm": "10.9.9",
+      "lockSha256": "c1ecd0ee96b681f84181c2c87651b495843ead0a593cf30d21f879b5a4cb8791",
+      "lockUnchanged": true,
+      "sourceMapJs": "1.2.2",
+      "stages": [
+        {
+          "stage": "ci",
+          "exit": 0,
+          "seconds": 18.2,
+          "command": "npm ci --no-audit --no-fund"
+        },
+        {
+          "stage": "lint",
+          "exit": 1,
+          "seconds": 0.4,
+          "errorEvidence": [
+            "Invalid project directory provided, no such directory: /workspace/motorsportverse-lap-comparison/website/lint"
+          ],
+          "command": "npm run lint"
+        },
+        {
+          "stage": "tests",
+          "exit": 0,
+          "seconds": 5.9,
+          "summary": "Tests:       8 skipped, 117 passed, 125 total",
+          "command": "npm test -- --runInBand"
+        },
+        {
+          "stage": "types",
+          "exit": 0,
+          "seconds": 7.4,
+          "command": "npm run typecheck"
+        },
+        {
+          "stage": "build",
+          "exit": 0,
+          "seconds": 18.4,
+          "command": "npm run build"
+        }
+      ]
+    }
+  ],
+  "f1BaseHeadLintIdentical": {
+    "identical": true,
+    "base": [
+      {
+        "file": "jest.config.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 4,
+            "column": 18,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 4,
+            "endColumn": 38
+          }
+        ]
+      },
+      {
+        "file": "jest.setup.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 1,
+            "column": 1,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 1,
+            "endColumn": 37
+          }
+        ]
+      },
+      {
+        "file": "src/components/theatre/RaceTheatre.tsx",
+        "errors": 3,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:111:3\n  109 |   const dimsRef = useRef({ w: 0, h: 0, dpr: 1 });\n  110 |\n> 111 |   playingRef.current = playing;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  112 |   speedRef.current = speed;\n  113 |   focusedRef.current = focused;\n  114 |",
+            "line": 111,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 111,
+            "endColumn": 21
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:112:3\n  110 |\n  111 |   playingRef.current = playing;\n> 112 |   speedRef.current = speed;\n      |   ^^^^^^^^^^^^^^^^ Cannot update ref during render\n  113 |   focusedRef.current = focused;\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */",
+            "line": 112,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 112,
+            "endColumn": 19
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:113:3\n  111 |   playingRef.current = playing;\n  112 |   speedRef.current = speed;\n> 113 |   focusedRef.current = focused;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */\n  116 |   useEffect(() => {",
+            "line": 113,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 113,
+            "endColumn": 21
+          }
+        ]
+      },
+      {
+        "file": "src/lib/driverData.ts",
+        "errors": 0,
+        "warnings": 1,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-unused-vars",
+            "severity": 1,
+            "message": "'FINISHED_STATUSES' is assigned a value but never used.",
+            "line": 69,
+            "column": 7,
+            "nodeType": "Identifier",
+            "messageId": "unusedVar",
+            "endLine": 69,
+            "endColumn": 24
+          }
+        ]
+      }
+    ],
+    "head": [
+      {
+        "file": "jest.config.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 4,
+            "column": 18,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 4,
+            "endColumn": 38
+          }
+        ]
+      },
+      {
+        "file": "jest.setup.js",
+        "errors": 1,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-require-imports",
+            "severity": 2,
+            "message": "A `require()` style import is forbidden.",
+            "line": 1,
+            "column": 1,
+            "nodeType": "CallExpression",
+            "messageId": "noRequireImports",
+            "endLine": 1,
+            "endColumn": 37
+          }
+        ]
+      },
+      {
+        "file": "src/components/theatre/RaceTheatre.tsx",
+        "errors": 3,
+        "warnings": 0,
+        "messages": [
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:111:3\n  109 |   const dimsRef = useRef({ w: 0, h: 0, dpr: 1 });\n  110 |\n> 111 |   playingRef.current = playing;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  112 |   speedRef.current = speed;\n  113 |   focusedRef.current = focused;\n  114 |",
+            "line": 111,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 111,
+            "endColumn": 21
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:112:3\n  110 |\n  111 |   playingRef.current = playing;\n> 112 |   speedRef.current = speed;\n      |   ^^^^^^^^^^^^^^^^ Cannot update ref during render\n  113 |   focusedRef.current = focused;\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */",
+            "line": 112,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 112,
+            "endColumn": 19
+          },
+          {
+            "ruleId": "react-hooks/refs",
+            "severity": 2,
+            "message": "Error: Cannot access refs during render\n\nReact refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).\n\n<site>/src/components/theatre/RaceTheatre.tsx:113:3\n  111 |   playingRef.current = playing;\n  112 |   speedRef.current = speed;\n> 113 |   focusedRef.current = focused;\n      |   ^^^^^^^^^^^^^^^^^^ Cannot update ref during render\n  114 |\n  115 |   /* \u2500\u2500 data load \u2500\u2500 */\n  116 |   useEffect(() => {",
+            "line": 113,
+            "column": 3,
+            "nodeType": null,
+            "endLine": 113,
+            "endColumn": 21
+          }
+        ]
+      },
+      {
+        "file": "src/lib/driverData.ts",
+        "errors": 0,
+        "warnings": 1,
+        "messages": [
+          {
+            "ruleId": "@typescript-eslint/no-unused-vars",
+            "severity": 1,
+            "message": "'FINISHED_STATUSES' is assigned a value but never used.",
+            "line": 69,
+            "column": 7,
+            "nodeType": "Identifier",
+            "messageId": "unusedVar",
+            "endLine": 69,
+            "endColumn": 24
+          }
+        ]
+      }
+    ]
+  },
+  "changedF1FilesLint": {
+    "errors": 0,
+    "warnings": 0,
+    "files": [
+      "projects/f1-predictions/website/src/__tests__/sessionComparison.test.ts",
+      "projects/f1-predictions/website/src/app/compare/laps/page.tsx",
+      "projects/f1-predictions/website/src/components/Navbar.tsx",
+      "projects/f1-predictions/website/src/components/comparison/LapComparison.tsx",
+      "projects/f1-predictions/website/src/components/standings/DriverPortrait.tsx",
+      "projects/f1-predictions/website/src/lib/sessionComparison.ts",
+      "projects/f1-predictions/website/src/types/index.ts"
+    ]
+  },
+  "priorExactHeadCI": [
+    {
+      "name": "CI push",
+      "run": "https://github.com/roni-altshuler/motorsportverse/actions/runs/37618244217",
+      "conclusion": "success"
+    },
+    {
+      "name": "CI pull_request",
+      "run": "https://github.com/roni-altshuler/motorsportverse/actions/runs/37618396900",
+      "conclusion": "success"
+    },
+    {
+      "name": "F1 CI",
+      "run": "https://github.com/roni-altshuler/motorsportverse/actions/runs/37618396965",
+      "conclusion": "success"
+    }
+  ]
+}

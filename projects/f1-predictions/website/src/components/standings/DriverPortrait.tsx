@@ -34,6 +34,8 @@ interface DriverPortraitProps {
   teamColor?: string;
   /** Optional headshot URL — when present, displayed inside the circle. */
   headshotUrl?: string | null;
+  /** Use the existing fallback when an archive has no verified local portrait. */
+  fallbackOnly?: boolean;
   /** Diameter in px. Default 64 (F1.com sizing). */
   size?: number;
   /** Optional class on the outer wrapper. */
@@ -51,6 +53,7 @@ export default function DriverPortrait({
   team,
   teamColor,
   headshotUrl,
+  fallbackOnly = false,
   size = 64,
   className,
 }: DriverPortraitProps) {
@@ -59,7 +62,9 @@ export default function DriverPortrait({
   // When the data layer omits headshotUrl, synthesize the conventional asset
   // path `/headshots/<CODE>.webp`. onError below still falls back to the
   // conic-gradient avatar for reserves and mid-season debuts.
-  const candidate = headshotUrl || (driver ? `/headshots/${driver}.webp` : null);
+  const candidate = fallbackOnly
+    ? null
+    : headshotUrl || (driver ? `/headshots/${driver}.webp` : null);
   const resolvedSrc = resolveHeadshotSrc(candidate);
   const showFallback = !resolvedSrc || imageFailed;
 

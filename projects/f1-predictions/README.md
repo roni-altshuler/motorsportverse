@@ -47,6 +47,26 @@ interactive dashboard.
 
 ## Explore the live dashboard
 
+The proposed `/compare/laps` page adds a **2025 Monaco race archive** comparison;
+it is held for review and is not a claim about the live deployment. Its 20 driver
+records come from the committed `2025_Monaco_R.parquet` snapshot (1,403 timing
+rows). Each driver's three sectors stay on the same fastest complete stored lap.
+The source has no lap numbers, tyres, pit/track-status or accuracy flags, so the
+page does not describe these as verified clean laps or an official pace ranking.
+Portraits may be from a later season. Current-season predictions are separate.
+
+Regenerate or check this small JSON artifact **offline**, with the project's
+existing pandas/pyarrow dependencies:
+
+```bash
+python src/export_session_comparison.py
+python src/export_session_comparison.py --check
+```
+
+No provider session loading, live timing subscription, circuit geometry or new
+model training is needed. [The comparison review](../../docs/ARCHIVED_LAP_COMPARISON.md)
+records source provenance, verification and remaining checks.
+
 The deployed site is the best way to see RaceIQ in action — every page is live
 and updates automatically within minutes of each session:
 
