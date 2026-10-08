@@ -25,6 +25,7 @@
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -60,7 +61,7 @@ html[data-ambient="off"] .speed-field {
 
 /* Tasteful focus ring for keyboard users (palette, nav, chips). */
 :focus-visible {
-  outline: 2px solid var(--accent-line);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
   border-radius: 4px;
 }

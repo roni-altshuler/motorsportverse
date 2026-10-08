@@ -149,7 +149,7 @@ export default function StandingsPage() {
       </div>
 
       {/* Tab Navigation with sliding active underline */}
-      <div className="flex justify-center gap-2 mb-10 relative">
+      <div className="flex flex-wrap justify-center gap-2 mb-10 relative">
         {(
           [
             { key: "drivers" as Tab, label: "Drivers" },

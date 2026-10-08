@@ -40,7 +40,7 @@ export default function GlobalError({
           action from here.
         </p>
         {error.digest ? (
-          <p style={{ color: "#666666", fontSize: "0.75rem" }}>digest {error.digest}</p>
+          <p style={{ color: "#808080", fontSize: "0.75rem" }}>digest {error.digest}</p>
         ) : null}
         <button
           type="button"

@@ -9,7 +9,7 @@ import Link from "next/link";
  */
 export default function NotFound() {
   return (
-    <main className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-6 text-center">
+    <section aria-label="Page not found" className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-6 text-center">
       <p className="eyebrow">404</p>
       <h1 className="display-md">Page not found</h1>
       <p className="body-md text-[color:var(--muted)]">
@@ -20,6 +20,6 @@ export default function NotFound() {
       <Link href="/" className="link-bugatti mt-2">
         Back to the season
       </Link>
-    </main>
+    </section>
   );
 }
