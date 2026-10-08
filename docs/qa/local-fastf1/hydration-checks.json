@@ -1663,7 +1663,7 @@
         "errors": [
           {
             "message": "Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
-            "stack": "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at throwOnHydrationMismatch (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:2900:15)\n    at beginWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7927:21)\n    at replaySuspendedUnitOfWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12515:17)\n    at renderRootConcurrent (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12410:17)\n    at performWorkOnRoot (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:11843:9)\n    at performWorkOnRootViaSchedulerTask (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:13304:3)\n    at flushWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.production.js:126:38)\n    at Object.unstable_flushAllWithoutAsserting (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.production.js:179:24)\n    at /workspace/motorsportverse-fastf1-workspace/scripts/qa/root_layout_hydration.cjs:139:13\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+            "stack": "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at throwOnHydrationMismatch (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:2900:15)\n    at beginWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7927:21)\n    at replaySuspendedUnitOfWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12515:17)\n    at renderRootConcurrent (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12410:17)\n    at performWorkOnRoot (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:11843:9)\n    at performWorkOnRootViaSchedulerTask (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:13304:3)\n    at flushWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.production.js:126:38)\n    at Object.unstable_flushAllWithoutAsserting (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.production.js:179:24)\n    at /workspace/motorsportverse-fastf1-workspace/scripts/qa/root_layout_hydration.cjs:145:13\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
           }
         ],
         "mainReused": false,
@@ -1687,7 +1687,8 @@
         "mainReused": true,
         "contentReused": true
       }
-    }
+    },
+    "finalProbeNode": "20.20.2"
   },
   "browserNegativeControl": {
     "label": "Explicit differing server h1/h2 fixture",
@@ -2460,7 +2461,7 @@
     "rootLayoutRegressionTests": 2,
     "sharedDrift": 0,
     "buildNode": "20.20.2",
-    "testNode": "24.19.0",
+    "testNode": "20.20.2; two-mode regression also rechecked on 24.19.0",
     "pythonSourceUnchanged": true
   },
   "sourceSha256": {
@@ -2468,8 +2469,15 @@
     "projects/f1-predictions/website/src/components/RouteMain.tsx": "549c627b982c05a5f599fa764c5fb53278989bd7b378b852357dd6bf5827d3ec",
     "projects/f1-predictions/website/src/components/SmoothScrollProvider.tsx": "38b5b24b506b031ffdd3220d28711aa073a9270b55c327e3f6110b2d365216c4",
     "projects/f1-predictions/website/src/__tests__/rootLayoutHydration.test.ts": "d34ba3d3a640828104f86d270481bfacdc9c098e29cb5c3969baf21432685213",
-    "scripts/qa/root_layout_hydration.cjs": "25f4e5e71a940ea0897cbb6f13704f9678822da7b90a92b759bc697a6a4d1205",
+    "scripts/qa/root_layout_hydration.cjs": "dcdf5bb938af98256d1c9225bcbd90f2bd123d200395d313abf9892b613d093a",
     "scripts/qa/hydration_routes.mjs": "07d158633b643d19e07c75ef7368d9c7521a8a44d01ea031200a08668a59094d",
     "scripts/qa_circuit_workspace.mjs": "33239fe0348f77dd9aad7ff747c6826458d6566ebc79377652d131a1cc1fc68b"
+  },
+  "earlierFrontendCIFailure": {
+    "head": "4ae48e5871d13fac5cd6fc0f8070ac2e68e25001",
+    "job": "https://github.com/roni-altshuler/motorsportverse/actions/runs/37828943284/job/113488953883",
+    "message": "ReferenceError: navigator is not defined",
+    "scope": "isolated development-renderer probe on Node 20; application source unchanged by correction",
+    "correction": "install JSDOM navigator before requiring browser renderer on both Node versions"
   }
 }

@@ -94,6 +94,12 @@ for (const key of [
   "HTMLIFrameElement",
 ])
   global[key] = dom.window[key];
+// Node 24 has a built-in navigator; Node 20 does not. Use this isolated DOM's
+// navigator in both cases before loading React's development browser renderer.
+Object.defineProperty(globalThis, "navigator", {
+  configurable: true,
+  value: dom.window.navigator,
+});
 window.matchMedia = () => ({
   matches: true,
   addEventListener() {},

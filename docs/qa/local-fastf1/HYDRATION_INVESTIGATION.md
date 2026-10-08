@@ -95,6 +95,13 @@ mobile/reduced-motion cases, including exact route and stack observations.
 It also verifies the opt-in throw-point observer. These deliberate fixture
 failures are distinct from the unattributed historical event.
 
+An initial frontend CI run exposed a separate test-harness gap: Node 20 lacks
+Node 24's built-in navigator, so the development renderer failed to initialize.
+The isolated probe now installs its JSDOM navigator explicitly on both versions.
+The complete 216-test F1 suite passes on Node 20.20.2, and the two-mode replay
+regression also passes on Node 24.19.0. No application behavior changed for this
+harness correction; the earlier failed CI is retained in the evidence record.
+
 The next-reel audit remains separate from this repair. Existing factor panels
 and strategy comparisons are already present. The next ranking snapshot lacks
 per-driver factors and a published cutoff; its ranking-export and probability-
