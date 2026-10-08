@@ -1,0 +1,759 @@
+{
+  "browser": "151.0.7922.173",
+  "base": "/motorsportverse/projects/f1",
+  "hashes": {
+    "projects/f1-predictions/website/src/components/RaceDetailPage.tsx": "d4aaf4c7c57884beb31caf9f44a64a6adaebeb9fa74a99bbb7e70e2a0daf239d",
+    "projects/f1-predictions/website/src/components/race-detail/PredictionFreshnessPanel.tsx": "881734ea2d7d46d7a9213f4e6009547e243af994ee06941319e774475cf3e72f",
+    "projects/f1-predictions/website/src/components/race-detail/KeyFactorsPanel.tsx": "ec49788ceb0c95cc6843dd7c72c984b76f34ad3210ace27e070cea75da94ff71",
+    "projects/f1-predictions/website/src/lib/predictionFreshness.ts": "5ae8f3ef15ae8739b1cde4bfea305204fae7b5808fae86462e9fe60a6c4131b4",
+    "projects/f1-predictions/website/public/data/rounds/round_15.json": "fbe423ae6a0cdc149f14d6c1de614b4fe58511e5d7994c71d48d012b2e093428",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+  },
+  "cases": [
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "actual-journey",
+      "controlledMetadataFixture": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:30.348Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 42,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "accessibilitySnapshot": "- region \"Freshness & Sources\":\n  - paragraph: Prediction context\n  - heading \"Freshness & Sources\" [level=3]\n  - status: Different export times\n  - term: Ranking export\n  - definition:\n    - time: 27 Jun 2026, 17:06:41 UTC\n  - definition: Timestamp stored in the ranking file.\n  - term: Probability export\n  - definition:\n    - time: 27 Sept 2026, 01:06:55 UTC\n  - definition: Timestamp stored in the probability file.\n  - paragraph: The ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n  - term: Qualifying input\n  - definition: Estimated qualifying\n  - definition: This ranking does not record actual qualifying input.\n  - term: Weather input\n  - definition: Static weather estimate\n  - definition: This ranking uses an estimated weather input.\n  - term: Forecast input cutoff\n  - definition: Not published\n  - paragraph: Export times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n  - paragraph: Preview snapshot \u00b7 Awaiting qualifying 2023, 2024, 2025 training data",
+      "keyboardFocusRetained": true,
+      "existingFactorAndStrategyJourney": true,
+      "roundReturnConfirmed": true,
+      "applicationErrors": [],
+      "consoleResourceErrors": 42
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "missing-metadata",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:36.750Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nIncomplete time metadata\n\nRANKING EXPORT\nNot published\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nNot published\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nQualifying input unverified\nAvailability and source not recorded.\nWEATHER INPUT\nWeather input unverified\nSource not recorded.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": [],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "missing-file",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:37.429Z",
+      "pageErrors": [],
+      "httpFailures": [
+        {
+          "path": "/motorsportverse/projects/f1/data/probabilities/round_16.json",
+          "status": 404
+        }
+      ],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability export unavailable\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nUnavailable\nThe separate file could not be loaded.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 4
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "invalid-time",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:38.005Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nTimestamp needs review\n\nRANKING EXPORT\nInvalid timestamp\nThe stored time is invalid or has no explicit timezone.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "older-probability",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:38.695Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n01 Jan 2026, 00:00:00 UTC\nTimestamp stored in the probability file.\n\nThe probability export is older. A later ranking export does not establish refreshed probabilities or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-01-01T00:00:00.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "identity-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:39.316Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability identity conflict\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nIdentity conflict\nThe file identifies a different round or season; its time is not used.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "source-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:39.936Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nConflicting qualifying metadata\nThe recorded availability and source disagree.\nWEATHER INPUT\nConflicting weather metadata\nRecorded sources: api and static.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "loading",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:40.663Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "loadingObserved": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "actual-journey",
+      "controlledMetadataFixture": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:42.689Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 43,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "accessibilitySnapshot": "- region \"Freshness & Sources\":\n  - paragraph: Prediction context\n  - heading \"Freshness & Sources\" [level=3]\n  - status: Different export times\n  - term: Ranking export\n  - definition:\n    - time: 27 Jun 2026, 17:06:41 UTC\n  - definition: Timestamp stored in the ranking file.\n  - term: Probability export\n  - definition:\n    - time: 27 Sept 2026, 01:06:55 UTC\n  - definition: Timestamp stored in the probability file.\n  - paragraph: The ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n  - term: Qualifying input\n  - definition: Estimated qualifying\n  - definition: This ranking does not record actual qualifying input.\n  - term: Weather input\n  - definition: Static weather estimate\n  - definition: This ranking uses an estimated weather input.\n  - term: Forecast input cutoff\n  - definition: Not published\n  - paragraph: Export times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n  - paragraph: Preview snapshot \u00b7 Awaiting qualifying 2023, 2024, 2025 training data",
+      "keyboardFocusRetained": true,
+      "existingFactorAndStrategyJourney": true,
+      "roundReturnConfirmed": true,
+      "applicationErrors": [],
+      "consoleResourceErrors": 43
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "missing-metadata",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:46.757Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nIncomplete time metadata\n\nRANKING EXPORT\nNot published\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nNot published\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nQualifying input unverified\nAvailability and source not recorded.\nWEATHER INPUT\nWeather input unverified\nSource not recorded.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": [],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "missing-file",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:47.352Z",
+      "pageErrors": [],
+      "httpFailures": [
+        {
+          "path": "/motorsportverse/projects/f1/data/probabilities/round_16.json",
+          "status": 404
+        }
+      ],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability export unavailable\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nUnavailable\nThe separate file could not be loaded.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 4
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "invalid-time",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:47.954Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nTimestamp needs review\n\nRANKING EXPORT\nInvalid timestamp\nThe stored time is invalid or has no explicit timezone.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "older-probability",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:48.551Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n01 Jan 2026, 00:00:00 UTC\nTimestamp stored in the probability file.\n\nThe probability export is older. A later ranking export does not establish refreshed probabilities or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-01-01T00:00:00.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "identity-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:49.135Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability identity conflict\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nIdentity conflict\nThe file identifies a different round or season; its time is not used.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "source-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:49.737Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nConflicting qualifying metadata\nThe recorded availability and source disagree.\nWEATHER INPUT\nConflicting weather metadata\nRecorded sources: api and static.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "desktop-reduce",
+      "scenario": "loading",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T19:59:50.352Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "loadingObserved": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "actual-journey",
+      "controlledMetadataFixture": false,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:52.353Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 39,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "accessibilitySnapshot": "- region \"Freshness & Sources\":\n  - paragraph: Prediction context\n  - heading \"Freshness & Sources\" [level=3]\n  - status: Different export times\n  - term: Ranking export\n  - definition:\n    - time: 27 Jun 2026, 17:06:41 UTC\n  - definition: Timestamp stored in the ranking file.\n  - term: Probability export\n  - definition:\n    - time: 27 Sept 2026, 01:06:55 UTC\n  - definition: Timestamp stored in the probability file.\n  - paragraph: The ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n  - term: Qualifying input\n  - definition: Estimated qualifying\n  - definition: This ranking does not record actual qualifying input.\n  - term: Weather input\n  - definition: Static weather estimate\n  - definition: This ranking uses an estimated weather input.\n  - term: Forecast input cutoff\n  - definition: Not published\n  - paragraph: Export times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n  - paragraph: Preview snapshot \u00b7 Awaiting qualifying 2023, 2024, 2025 training data",
+      "keyboardFocusRetained": true,
+      "existingFactorAndStrategyJourney": true,
+      "roundReturnConfirmed": true,
+      "applicationErrors": [],
+      "consoleResourceErrors": 39
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "missing-metadata",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:59:59.777Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nIncomplete time metadata\n\nRANKING EXPORT\nNot published\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nNot published\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nQualifying input unverified\nAvailability and source not recorded.\nWEATHER INPUT\nWeather input unverified\nSource not recorded.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": [],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "missing-file",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:00.371Z",
+      "pageErrors": [],
+      "httpFailures": [
+        {
+          "path": "/motorsportverse/projects/f1/data/probabilities/round_16.json",
+          "status": 404
+        }
+      ],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability export unavailable\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nUnavailable\nThe separate file could not be loaded.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 4
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "invalid-time",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:00.899Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nTimestamp needs review\n\nRANKING EXPORT\nInvalid timestamp\nThe stored time is invalid or has no explicit timezone.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "older-probability",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:01.518Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n01 Jan 2026, 00:00:00 UTC\nTimestamp stored in the probability file.\n\nThe probability export is older. A later ranking export does not establish refreshed probabilities or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-01-01T00:00:00.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "identity-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:02.047Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability identity conflict\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nIdentity conflict\nThe file identifies a different round or season; its time is not used.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "source-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:02.558Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nConflicting qualifying metadata\nThe recorded availability and source disagree.\nWEATHER INPUT\nConflicting weather metadata\nRecorded sources: api and static.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "mobile-no-preference",
+      "scenario": "loading",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T20:00:03.122Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "loadingObserved": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "actual-journey",
+      "controlledMetadataFixture": false,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:04.935Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 39,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "accessibilitySnapshot": "- region \"Freshness & Sources\":\n  - paragraph: Prediction context\n  - heading \"Freshness & Sources\" [level=3]\n  - status: Different export times\n  - term: Ranking export\n  - definition:\n    - time: 27 Jun 2026, 17:06:41 UTC\n  - definition: Timestamp stored in the ranking file.\n  - term: Probability export\n  - definition:\n    - time: 27 Sept 2026, 01:06:55 UTC\n  - definition: Timestamp stored in the probability file.\n  - paragraph: The ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n  - term: Qualifying input\n  - definition: Estimated qualifying\n  - definition: This ranking does not record actual qualifying input.\n  - term: Weather input\n  - definition: Static weather estimate\n  - definition: This ranking uses an estimated weather input.\n  - term: Forecast input cutoff\n  - definition: Not published\n  - paragraph: Export times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n  - paragraph: Preview snapshot \u00b7 Awaiting qualifying 2023, 2024, 2025 training data",
+      "keyboardFocusRetained": true,
+      "existingFactorAndStrategyJourney": true,
+      "roundReturnConfirmed": true,
+      "applicationErrors": [],
+      "consoleResourceErrors": 39
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "missing-metadata",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:08.766Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nIncomplete time metadata\n\nRANKING EXPORT\nNot published\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nNot published\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nQualifying input unverified\nAvailability and source not recorded.\nWEATHER INPUT\nWeather input unverified\nSource not recorded.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": [],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "missing-file",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:09.286Z",
+      "pageErrors": [],
+      "httpFailures": [
+        {
+          "path": "/motorsportverse/projects/f1/data/probabilities/round_16.json",
+          "status": 404
+        }
+      ],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability export unavailable\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nUnavailable\nThe separate file could not be loaded.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 4
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "invalid-time",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:09.806Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nTimestamp needs review\n\nRANKING EXPORT\nInvalid timestamp\nThe stored time is invalid or has no explicit timezone.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "older-probability",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:10.326Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n01 Jan 2026, 00:00:00 UTC\nTimestamp stored in the probability file.\n\nThe probability export is older. A later ranking export does not establish refreshed probabilities or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-01-01T00:00:00.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "identity-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:10.856Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nProbability identity conflict\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\nIdentity conflict\nThe file identifies a different round or season; its time is not used.\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "source-conflict",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:11.355Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 2,
+      "passed": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nConflicting qualifying metadata\nThe recorded availability and source disagree.\nWEATHER INPUT\nConflicting weather metadata\nRecorded sources: api and static.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 2
+    },
+    {
+      "variant": "mobile-reduce",
+      "scenario": "loading",
+      "controlledMetadataFixture": true,
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-08T20:00:12.028Z",
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "loadingObserved": true,
+      "headingUnobscured": true,
+      "pageOverflow": false,
+      "contents": "PREDICTION CONTEXT\n\nFRESHNESS & SOURCES\n\nDifferent export times\n\nRANKING EXPORT\n27 Jun 2026, 17:06:41 UTC\nTimestamp stored in the ranking file.\nPROBABILITY EXPORT\n27 Sept 2026, 01:06:55 UTC\nTimestamp stored in the probability file.\n\nThe ranking export is older. A later probability export does not establish refreshed rankings or inputs.\n\nQUALIFYING INPUT\nEstimated qualifying\nThis ranking does not record actual qualifying input.\nWEATHER INPUT\nStatic weather estimate\nThis ranking uses an estimated weather input.\nFORECAST INPUT CUTOFF\nNot published\n\nExport times do not establish when forecast inputs were frozen or whether both files used the same inputs.\n\nPreview snapshot \u00b7 Awaiting qualifying\n2023, 2024, 2025 training data",
+      "times": ["2026-06-27T17:06:41.000Z", "2026-09-27T01:06:55.000Z"],
+      "applicationErrors": [],
+      "consoleResourceErrors": 3
+    }
+  ]
+}

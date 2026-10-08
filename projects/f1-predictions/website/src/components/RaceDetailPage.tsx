@@ -26,6 +26,7 @@ import WeekendTimeline from "@/components/race-detail/WeekendTimeline";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import PodiumRationale from "@/components/race-detail/PodiumRationale";
 import KeyFactorsPanel from "@/components/race-detail/KeyFactorsPanel";
+import PredictionFreshnessPanel from "@/components/race-detail/PredictionFreshnessPanel";
 import FinishMarketsPanel from "@/components/race-detail/FinishMarketsPanel";
 import DriverComparison from "@/components/race-detail/DriverComparison";
 import ShareButton from "@/components/ShareButton";
@@ -57,7 +58,6 @@ import {
   fetchProbabilityData,
   getVisualizationPath,
   formatDate,
-  formatDateTime,
   getRoundLifecycle,
   getRoundStatusMeta,
 } from "@/lib/data";
@@ -130,7 +130,14 @@ export default function RaceDetailPage({ round }: Props) {
   const [standings, setStandings] = useState<DriverStanding[] | null>(null);
   // Probability-layer output (markets + head-to-head) for the comparison
   // module.  Not every round ships one — stays null and the UI degrades.
-  const [probabilities, setProbabilities] = useState<ProbabilityRoundData | null>(null);
+  const probabilityKey = `${basePath}:${round}`;
+  const [probabilityArtifact, setProbabilityArtifact] = useState<{
+    key: string;
+    data: ProbabilityRoundData | null;
+  } | null>(null);
+  const currentProbabilityArtifact =
+    probabilityArtifact?.key === probabilityKey ? probabilityArtifact : null;
+  const probabilities = currentProbabilityArtifact?.data ?? null;
   // Per-circuit history (recent winners, pole-to-win, safety-car) from the
   // optional circuit_history.json export.  Stays null when the file or the
   // circuit entry is absent — the panel hides itself rather than fabricate.
@@ -184,9 +191,11 @@ export default function RaceDetailPage({ round }: Props) {
     let active = true;
     fetchProbabilityData(round, basePath)
       .then((p) => {
-        if (active) setProbabilities(p);
+        if (active) setProbabilityArtifact({ key: `${basePath}:${round}`, data: p });
       })
-      .catch(() => {});
+      .catch(() => {
+        if (active) setProbabilityArtifact({ key: `${basePath}:${round}`, data: null });
+      });
     return () => {
       active = false;
     };
@@ -533,7 +542,12 @@ export default function RaceDetailPage({ round }: Props) {
               {/* Shares the page URL — the per-round OG card at
                   public/og/round_NN.png unfurls automatically on link preview. */}
               <ShareButton title={`${data.name} — race prediction`} />
-              <Link href="/circuits" className="button-label inline-flex min-h-11 items-center border border-[color:var(--hairline-strong)] px-4 py-2.5 text-[color:var(--ink)] hover:border-[color:var(--ink)]">Circuit workspace</Link>
+              <Link
+                href="/circuits"
+                className="button-label inline-flex min-h-11 items-center border border-[color:var(--hairline-strong)] px-4 py-2.5 text-[color:var(--ink)] hover:border-[color:var(--ink)]"
+              >
+                Circuit workspace
+              </Link>
               {/* Add-to-Calendar is only useful ahead of the race — hidden once
                   the round is completed. */}
               {!isCompletedRound && (
@@ -833,34 +847,23 @@ export default function RaceDetailPage({ round }: Props) {
                 </div>
               </div>
             )}
-            <div className="data-freshness-card mt-5">
-              <div>
-                <p
-                  className="text-xs font-semibold uppercase tracking-[0.24em]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Freshness & Sources
-                </p>
-                <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
-                  Generated {formatDateTime(data.generatedAt)} with qualifying from{" "}
-                  {data.dataFreshness?.qualifyingSource || "the model pipeline"} and weather from{" "}
-                  {data.dataFreshness?.weatherSource ||
-                    data.weatherData?.source ||
-                    "static estimates"}
-                  .
-                </p>
-              </div>
-              <div className="data-freshness-meta">
-                <span>
-                  {actualRows.length > 0
-                    ? "Official result loaded"
-                    : liveMeta?.shortLabel || "Prediction"}
-                </span>
-                <span>{data.metrics.trainingYears.join(", ")} training data</span>
-              </div>
-            </div>
           </motion.div>
         )}
+
+        <PredictionFreshnessPanel
+          data={data}
+          probabilities={probabilities}
+          probabilityLoading={!currentProbabilityArtifact}
+          season={seasonYear}
+          resultLabel={
+            actualRows.length > 0
+              ? "Official result loaded"
+              : isPredictionPublished
+                ? liveMeta?.shortLabel || "Prediction"
+                : "Preview snapshot · Awaiting qualifying"
+          }
+          trainingYears={data.metrics.trainingYears}
+        />
 
         {/* ━━━ Beat the Model — additive fan pick'em (client-only, localStorage).
             Pre-forecast: pick your podium. Graded: your podium vs the official

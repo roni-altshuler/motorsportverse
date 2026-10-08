@@ -7,8 +7,7 @@
  *
  * Graceful degradation: when no driver in the trio carries keyFactors (older
  * round JSONs), the panel renders a quiet HUD-styled empty state instead of
- * vanishing — the surface is part of the product, the data arrives with the
- * next model run.
+ * vanishing. Absence describes this export and makes no publication promise.
  */
 import HUDPanel from "@/components/ui/HUDPanel";
 import TeamColorBar from "@/components/ui/TeamColorBar";
@@ -69,7 +68,7 @@ export default function KeyFactorsPanel({ classification, graded }: KeyFactorsPa
                   <KeyFactorBars factors={entry.keyFactors} />
                 ) : (
                   <p className="body-sm text-[color:var(--muted)]">
-                    No factor breakdown for this driver yet.
+                    No factor breakdown in this export.
                   </p>
                 )}
               </div>
@@ -77,10 +76,9 @@ export default function KeyFactorsPanel({ classification, graded }: KeyFactorsPa
           </div>
         ) : (
           <div className="py-6 text-center">
-            <p className="eyebrow mb-3">Awaiting factor data</p>
+            <p className="eyebrow mb-3">Factor data unavailable</p>
             <p className="body-sm text-[color:var(--muted)] max-w-xl mx-auto">
-              Per-driver factor breakdowns — qualifying pace, recent form, race strategy, weather
-              exposure — publish with the next model run for this round.
+              Per-driver factor breakdowns are not included in this ranking export.
             </p>
           </div>
         )}

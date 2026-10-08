@@ -1,0 +1,376 @@
+{
+  "browser": "151.0.7922.173",
+  "base": "/motorsportverse/projects/f1",
+  "hashes": {
+    "projects/f1-predictions/website/src/components/RaceDetailPage.tsx": "d4aaf4c7c57884beb31caf9f44a64a6adaebeb9fa74a99bbb7e70e2a0daf239d",
+    "projects/f1-predictions/website/src/components/race-detail/PredictionFreshnessPanel.tsx": "881734ea2d7d46d7a9213f4e6009547e243af994ee06941319e774475cf3e72f",
+    "projects/f1-predictions/website/src/components/race-detail/KeyFactorsPanel.tsx": "ec49788ceb0c95cc6843dd7c72c984b76f34ad3210ace27e070cea75da94ff71",
+    "projects/f1-predictions/website/src/lib/predictionFreshness.ts": "5ae8f3ef15ae8739b1cde4bfea305204fae7b5808fae86462e9fe60a6c4131b4",
+    "projects/f1-predictions/website/public/data/rounds/round_15.json": "fbe423ae6a0cdc149f14d6c1de614b4fe58511e5d7994c71d48d012b2e093428",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+  },
+  "cases": [
+    {
+      "variant": "desktop-no-preference",
+      "scenario": "actual-journey",
+      "controlledMetadataFixture": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-08T19:52:38.431Z",
+      "pageErrors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Melbourne_Grand_Prix_Circuit%2C_March_22%2C_2018_SkySat_%28cropped%29.jpg/1280px-Melbourne_Grand_Prix_Circuit%2C_March_22%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Shanghai_International_Circuit%2C_April_7%2C_2018_SkySat_%28rotated%29.jpg/1280px-Shanghai_International_Circuit%2C_April_7%2C_2018_SkySat_%28rotated%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Suzuka_International_Racing_Course%2C_July_10%2C_2018_SkySat_%28cropped%29.jpg/1280px-Suzuka_International_Racing_Course%2C_July_10%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Miami_Grand_Prix_startfinish.jpg/1280px-Miami_Grand_Prix_startfinish.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Circuit_Gilles-Villeneuve%2C_May_29%2C_2018_SkySat_%28cropped%29.jpg/1280px-Circuit_Gilles-Villeneuve%2C_May_29%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Circuit_de_Monaco%2C_April_1%2C_2018_SkySat_%28cropped%29.jpg/500px-Circuit_de_Monaco%2C_April_1%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Circuit_de_Barcelona-Catalunya%2C_April_19%2C_2018_SkySat_%28cropped%29.jpg/1280px-Circuit_de_Barcelona-Catalunya%2C_April_19%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Luftaufnahme_%28c%29Red_Bull_Ring.jpg/1280px-Luftaufnahme_%28c%29Red_Bull_Ring.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Silverstone_Circuit%2C_July_2%2C_2018_SkySat_%28cropped%29.jpg/1280px-Silverstone_Circuit%2C_July_2%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Circuit_de_Spa-Francorchamps%2C_April_22%2C_2018_SkySat_%28cropped%29.jpg/1280px-Circuit_de_Spa-Francorchamps%2C_April_22%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Hungaroring%2C_April_28%2C_2018_SkySat_%28cropped%29.jpg/500px-Hungaroring%2C_April_28%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Circuit_Park_Zandvoort_from_air_2016-08-24.jpg/1280px-Circuit_Park_Zandvoort_from_air_2016-08-24.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Autodromo_Nazionale_Monza%2C_April_22%2C_2018_SkySat_%28cropped%29.jpg/1280px-Autodromo_Nazionale_Monza%2C_April_22%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Madrid_Cuatro_Torres_Business_Area-2.jpg/1280px-Madrid_Cuatro_Torres_Business_Area-2.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Baku_City_Circuit%2C_April_9%2C_2018_SkySat.jpg/1280px-Baku_City_Circuit%2C_April_9%2C_2018_SkySat.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/1_singapore_f1_night_race_2012_city_skyline.jpg/1280px-1_singapore_f1_night_race_2012_city_skyline.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Circuit_of_the_Americas%2C_April_22%2C_2018_SkySat_%28cropped2%29.jpg/1280px-Circuit_of_the_Americas%2C_April_22%2C_2018_SkySat_%28cropped2%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Aut%C3%B3dromo_Hermanos_Rodr%C3%ADguez%2C_June_4%2C_2018_SkySat_%28cropped%29.jpg/1280px-Aut%C3%B3dromo_Hermanos_Rodr%C3%ADguez%2C_June_4%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Grande_Pr%C3%AAmio_S%C3%A3o_Paulo_de_F%C3%B3rmula_1_%2852497080967%29.jpg/1280px-Grande_Pr%C3%AAmio_S%C3%A3o_Paulo_de_F%C3%B3rmula_1_%2852497080967%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/2024_Las_Vegas_Grand_Prix_at_the_Sphere_-_Saturday%2C_November_23%2C_Orbi.jpg/1280px-2024_Las_Vegas_Grand_Prix_at_the_Sphere_-_Saturday%2C_November_23%2C_Orbi.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/WTCC_2016%2C_Qatar.jpg/1280px-WTCC_2016%2C_Qatar.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Yas_Marina_Circuit%2C_October_12%2C_2018_SkySat_%28cropped%29.jpg/1280px-Yas_Marina_Circuit%2C_October_12%2C_2018_SkySat_%28cropped%29.jpg",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/au.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/cn.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/jp.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/us.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/ca.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/mc.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/es.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/at.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "ReferenceError: verified is not defined\n    at B (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/app/race/%5Bround%5D/page-9ed351434244af06.js:1:30837)\n    at q (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/app/race/%5Bround%5D/page-9ed351434244af06.js:1:31425)\n    at ak (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:53125)\n    at o0 (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:73577)\n    at is (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:85009)\n    at sp (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:128030)\n    at http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:127875\n    at sd (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:127883)\n    at sn (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:123808)\n    at sQ (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:149409)",
+          "location": {
+            "url": "http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/50-fa2bf10f30885116.js",
+            "line": 1,
+            "column": 34473,
+            "lineNumber": 1,
+            "columnNumber": 34473
+          }
+        },
+        {
+          "message": "[f1-predictions] route error ReferenceError: verified is not defined\n    at B (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/app/race/%5Bround%5D/page-9ed351434244af06.js:1:30837)\n    at q (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/app/race/%5Bround%5D/page-9ed351434244af06.js:1:31425)\n    at ak (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:53125)\n    at o0 (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:73577)\n    at is (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:85009)\n    at sp (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:128030)\n    at http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:127875\n    at sd (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:127883)\n    at sn (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:123808)\n    at sQ (http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/75fbe5ec-c3262ce9020c8ecf.js:1:149409)",
+          "location": {
+            "url": "http://127.0.0.1:33721/motorsportverse/projects/f1/_next/static/chunks/app/error-ae4147a0bf4c7f67.js",
+            "line": 0,
+            "column": 269,
+            "lineNumber": 0,
+            "columnNumber": 269
+          }
+        }
+      ],
+      "httpFailures": [],
+      "nonGet": [],
+      "externalBlocked": 32,
+      "passed": false,
+      "failureRoute": "/motorsportverse/projects/f1/race/16",
+      "failure": "Preview context region absent; route error boundary shown."
+    }
+  ],
+  "explanation": "Initial build overlapped a parser correction. The retained export contains unbound verified && estimated in the timestamp parser; the final source puts this check in the qualifying helper. A clean build from stable source and complete browser verification are required. This is independent of the historical mobile hydration event."
+}

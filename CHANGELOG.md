@@ -11,6 +11,16 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 prediction freshness and assumptions — 2026-10-08
+
+- Show ranking and probability export times separately on race pages, including
+  stored preview snapshots, while preserving the post-qualifying forecast gate.
+- Expose estimated, missing and conflicting input metadata, invalid timestamps,
+  unavailable probability files and older exports without inferring a shared
+  refresh or an unpublished forecast input cutoff.
+- Describe absent factor data in the current export without future publication
+  promises. Existing factor values and strategy comparison logic are preserved.
+
 ### Local FastF1 capture interoperability — 2026-10-08
 
 - Added an optional cache-only exporter for one F1 driver's short session window

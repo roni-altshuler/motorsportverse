@@ -47,6 +47,15 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 - **Each series is first-class.** Open-wheel, stock car, endurance, rally, and
   formula-electric all belong; none is an afterthought.
 
+## F1 prediction context
+
+The F1 race page reports the ranking and probability export timestamps separately,
+with recorded qualifying and weather assumptions. Missing, invalid or conflicting
+metadata stays explicit. Export times do not establish a forecast input cutoff;
+the current artifacts do not publish one. Factor availability describes the
+stored export without promising a future model run. See the
+[verification and screenshots](docs/qa/prediction-freshness/README.md).
+
 ## Circuit map availability
 
 The [local FastF1 exporter](docs/FASTF1_LOCAL_CAPTURE.md) bridges an existing trusted
