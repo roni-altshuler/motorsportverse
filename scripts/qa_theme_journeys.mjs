@@ -9,6 +9,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import assert from "node:assert/strict";
+import { waitForRouteReady } from "./lib/route_readiness.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url)),
   base = "/motorsportverse",
   output = resolve(process.argv[2] || "/tmp/motorsport-theme-journeys"),
@@ -163,9 +164,154 @@ function contrast(fg, bg) {
 function check(condition, label) {
   if (!condition) failures.push(label);
 }
-async function appearance(page, label) {
-  await page.locator("main").first().waitFor();
-  await page.waitForTimeout(100);
+const contracts = new Map();
+async function routeContract(page, path, state = "ready") {
+  const clean = path.replace(/\/$/, "");
+  const key = clean + ":" + state;
+  if (contracts.has(key)) return contracts.get(key);
+  const s = [...sites]
+    .reverse()
+    .find((s) => clean === s.prefix || clean.startsWith(s.prefix + "/"));
+  assert.ok(s, "Unknown expected destination: " + path);
+  const route = clean.slice(s.prefix.length) || "/";
+  const json = (file) =>
+    JSON.parse(readFileSync(resolve(s.dir, "public/data", file), "utf8"));
+  const mainDataFiles = {
+    f1: "season",
+    f2: "f2",
+    f3: "f3",
+    "formula-e": "fe",
+    nascar: "nascar",
+    indycar: "indycar",
+    motogp: "motogp",
+    wrc: "wrc",
+  };
+  const data = mainDataFiles[s.site]
+    ? json(mainDataFiles[s.site] + ".json")
+    : null;
+  let expected = {
+    path: clean,
+    headings: [],
+    text: [],
+    selectors: [],
+    basis: "actual destination static export",
+  };
+  if (route.startsWith("/race/")) {
+    const round = Number(route.split("/")[2]);
+    const snapshot = json(
+      "rounds/round_" + String(round).padStart(2, "0") + ".json",
+    );
+    const title =
+      s.site === "f1" ? snapshot.name : snapshot.raceName || snapshot.venueName;
+    expected.headings = [{ level: s.site === "f1" ? 1 : 3, text: title }];
+    expected.text = [
+      s.site === "f1"
+        ? snapshot.circuit
+        : "Round " + String(round).padStart(2, "0"),
+    ];
+    expected.basis = "stored round identity for " + round;
+  } else if (/^\/(driver|rider)\//.test(route)) {
+    const code = decodeURIComponent(route.split("/")[2]).toUpperCase();
+    const driver = (data.drivers ?? data.driverStandings).find(
+      (d) => d.code === code,
+    );
+    assert.ok(driver, "No stored profile identity for " + path);
+    expected.headings = [
+      { level: 1, text: driver.fullName ?? driver.name },
+      { level: 3, text: "Championship points" },
+      { level: 3, text: "Predicted vs actual finish" },
+    ];
+    expected.basis = "stored " + s.site + " profile identity " + code;
+  } else if (route === "/standings" && data) {
+    const year =
+      s.site === "formula-e"
+        ? `${data.season - 1}-${String(data.season).slice(2)}`
+        : String(data.season);
+    expected.headings = [{ level: 1, text: year + " Standings" }];
+    const standing =
+      s.site === "f1"
+        ? json("standings.json").drivers[0]
+        : data.driverStandings[0];
+    expected.text = [standing.driverFullName ?? standing.name];
+    expected.basis = "stored season and leading standings identity";
+  } else if (route === "/calendar" && s.site === "f1") {
+    expected.headings = [{ level: 1, text: "Season Calendar" }];
+    expected.selectors = [
+      `a[href="${s.prefix}/race/${data.calendar[0].round}"]`,
+    ];
+    expected.basis = "calendar destination and stored first round link";
+  } else if (route === "/accuracy" && s.site === "f1") {
+    expected.headings = [
+      { level: 1, text: "Prediction Accuracy" },
+      { level: 2, text: "Evidence" },
+      { level: 2, text: "How Accuracy Is Measured" },
+    ];
+    expected.basis = "loaded accuracy dashboard and evidence sections";
+  } else {
+    const missing = /\/(qa-missing-page|not-a-real-page)$/.test(route);
+    const relative = missing ? "/404" : route;
+    let html;
+    for (const f of [
+      relative === "/" ? "index.html" : relative.slice(1) + ".html",
+      relative.slice(1) + "/index.html",
+    ]) {
+      try {
+        html = await readFile(resolve(s.dir, "out", f), "utf8");
+        break;
+      } catch {}
+    }
+    assert.ok(html, "No production export for expected route " + path);
+    expected.headings = await page.evaluate((html) => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return [doc.querySelector("main h1"), doc.querySelector("main h2")]
+        .filter(Boolean)
+        .map((el) => {
+          const copy = el.cloneNode(true);
+          copy
+            .querySelectorAll('img, svg, [role="img"], [aria-hidden="true"]')
+            .forEach((image) => image.remove());
+          return {
+            level: Number(el.tagName[1]),
+            text: copy.textContent.replace(/\s+/g, " ").trim(),
+          };
+        });
+    }, html);
+    if (route === "/" && s.site === "f1")
+      expected.headings.push({ level: 2, text: "Where the season stands" });
+  }
+  if (route === "/compare/laps") {
+    const texts = {
+      loading: "Loading the 2025 Monaco timing snapshot…",
+      error: "load and verify this archive",
+      empty:
+        "This archive has fewer than two drivers with complete, consistent lap timings.",
+      ready: "Driver A",
+    };
+    expected.text.push(texts[state]);
+    expected.loadingFixture = state === "loading";
+  }
+  if (route === "/circuits") {
+    const texts = {
+      empty: "Circuit map unavailable",
+      demo: "Clear capture",
+      loading: "Opening capture…",
+      error: "Capture unavailable",
+    };
+    if (texts[state]) expected.text.push(texts[state]);
+    expected.loadingFixture = state === "loading";
+  }
+  assert.ok(
+    expected.headings.length,
+    "No destination heading contract for " + path,
+  );
+  contracts.set(key, expected);
+  return expected;
+}
+async function appearance(page, label, path, state = "ready") {
+  const readiness = await waitForRouteReady(
+    page,
+    await routeContract(page, path, state),
+  );
   const value = await page.evaluate(() => {
     const b = getComputedStyle(document.body),
       h = getComputedStyle(document.documentElement),
@@ -221,10 +367,48 @@ async function appearance(page, label) {
     value.firstStyledFrame?.background === value.background,
     label + ": first styled frame canvas drift",
   );
-  return { label, ...value };
+  return { label, readiness, ...value };
+}
+async function pointerLink(page, anchor) {
+  await anchor.evaluate((el) =>
+    el.scrollIntoView({
+      behavior: "instant",
+      block: "center",
+      inline: "nearest",
+    }),
+  );
+  const initial = await anchor.evaluate((el) => {
+    const rect = el.getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  });
+  await page.mouse.move(initial.x, initial.y);
+  const element = await anchor.elementHandle();
+  assert.ok(element, "Actual navigation link exists");
+  const hit = await page.waitForFunction(
+    (el) => {
+      const rect = el.getBoundingClientRect();
+      const x = rect.x + rect.width / 2,
+        y = rect.y + rect.height / 2;
+      return rect.width > 0 &&
+        rect.height > 0 &&
+        document.elementFromPoint(x, y)?.closest("a") === el
+        ? { x, y }
+        : false;
+    },
+    element,
+    { timeout: 15000, polling: "raf" },
+  );
+  const point = await hit.jsonValue();
+  await hit.dispose();
+  await element.dispose();
+  // Use real pointer input at the verified hit target. Navbar subpixel motion
+  // need not meet Playwright's exact rectangle-equality actionability check.
+  await page.mouse.click(point.x, point.y);
 }
 async function link(page, path) {
   await page.bringToFront();
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.waitForFunction(() => Math.abs(scrollY) <= 1);
   const normal = (p) => p.replace(/\/$/, "");
   let openedMenu = false;
   async function visibleLink() {
@@ -249,8 +433,8 @@ async function link(page, path) {
     exact: true,
   });
   if (page.viewportSize().width < 768 && (await mobileMenu.isVisible())) {
-    await page.mouse.wheel(0, -10000);
-    await page.waitForFunction(() => scrollY === 0);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await page.waitForFunction(() => Math.abs(scrollY) <= 1);
     await mobileMenu.click();
     openedMenu = true;
     await page
@@ -259,26 +443,28 @@ async function link(page, path) {
   }
   let found = await visibleLink();
   if (!found) {
-    await page.mouse.wheel(0, -10000);
-    await page.waitForFunction(() => scrollY === 0);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await page.waitForFunction(() => Math.abs(scrollY) <= 1);
     const mobile = page.getByRole("button", { name: "Open menu", exact: true });
     if (await mobile.isVisible()) {
       await mobile.click();
       openedMenu = true;
     } else
       await page.getByRole("button", { name: "Races", exact: true }).hover();
-    await page.waitForTimeout(350);
+    await page
+      .locator('a[href="' + path + '"]')
+      .first()
+      .waitFor({ state: "visible" });
     found = await visibleLink();
   }
   assert.ok(found, "No actual visible link to " + path);
-  await found.click();
+  await pointerLink(page, found);
   await page.waitForURL((url) => normal(url.pathname) === normal(path));
   if (openedMenu)
     await page
       .getByRole("dialog", { name: "Mobile navigation", exact: true })
       .waitFor({ state: "hidden", timeout: 3000 });
-  await page.locator("main").first().waitFor();
-  await page.waitForTimeout(100);
+  await waitForRouteReady(page, await routeContract(page, path));
 }
 async function firstMainLink(page, prefix, optional = false) {
   const anchors = page.locator("main a[href]");
@@ -291,11 +477,11 @@ async function firstMainLink(page, prefix, optional = false) {
       (await a.isVisible())
     ) {
       const path = new URL(href, page.url()).pathname;
-      await a.click();
+      await pointerLink(page, a);
       await page.waitForURL(
         (u) => u.pathname.replace(/\/$/, "") === path.replace(/\/$/, ""),
       );
-      await page.waitForTimeout(100);
+      await waitForRouteReady(page, await routeContract(page, path));
       return path;
     }
   }
@@ -355,14 +541,19 @@ async function colorMetrics(locator) {
     };
   });
 }
-async function shot(page, name) {
+async function shot(page, name, fullPage = true) {
   await page.mouse.move(page.viewportSize().width - 2, 200);
-  await page.mouse.wheel(0, -10000);
-  await page.waitForFunction(() => scrollY === 0);
-  await page.waitForTimeout(250);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.waitForFunction(() => Math.abs(scrollY) <= 1);
+  await page.evaluate(
+    () =>
+      new Promise((done) =>
+        requestAnimationFrame(() => requestAnimationFrame(done)),
+      ),
+  );
   await page.screenshot({
     path: resolve(output, name + ".png"),
-    fullPage: true,
+    fullPage,
   });
 }
 try {
@@ -409,6 +600,19 @@ try {
       } else await route.continue();
     });
     await context.addInitScript(() => {
+      const originalFetch = window.fetch;
+      window.__qaPendingFetch = 0;
+      window.fetch = function (...args) {
+        const url = new URL(
+          args[0] instanceof Request ? args[0].url : String(args[0]),
+          location.href,
+        );
+        const local = url.origin === location.origin;
+        if (local) window.__qaPendingFetch++;
+        return originalFetch.apply(this, args).finally(() => {
+          if (local) window.__qaPendingFetch--;
+        });
+      };
       const record = () => {
         if (document.body) {
           const c = getComputedStyle(document.body);
@@ -431,9 +635,8 @@ try {
       requestAnimationFrame(record);
     });
     const hub = await context.newPage();
-    await hub.clock.setFixedTime(new Date("2026-10-08T12:00:00Z"));
     await hub.goto(origin + base + "/", { waitUntil: "networkidle" });
-    const journey = [await appearance(hub, "hub home")];
+    const journey = [await appearance(hub, "hub home", base)];
     if (label === "desktop-light" || label === "mobile-light")
       await shot(hub, label + "-hub-home");
     const caption = await colorMetrics(hub.locator(".race-feed-note").first());
@@ -444,19 +647,19 @@ try {
     );
     await hub.getByRole("searchbox").fill("qa-only-no-matching-race");
     await hub.getByText("No races in this view.", { exact: true }).waitFor();
-    journey.push(await appearance(hub, "hub empty search"));
+    journey.push(await appearance(hub, "hub empty search", base));
     await hub.getByRole("searchbox").fill("");
     await hub.getByRole("button", { name: "off", exact: true }).first().click();
     await link(hub, base + "/projects");
-    journey.push(await appearance(hub, "hub directory"));
+    journey.push(await appearance(hub, "hub directory", base + "/projects"));
     await link(hub, base + "/docs");
-    journey.push(await appearance(hub, "hub docs"));
+    journey.push(await appearance(hub, "hub docs", base + "/docs"));
     await hub.goBack();
-    journey.push(await appearance(hub, "hub back"));
+    journey.push(await appearance(hub, "hub back", base + "/projects"));
     await hub.goForward();
-    journey.push(await appearance(hub, "hub forward"));
+    journey.push(await appearance(hub, "hub forward", base + "/docs"));
     await hub.reload({ waitUntil: "networkidle" });
-    journey.push(await appearance(hub, "hub reload"));
+    journey.push(await appearance(hub, "hub reload", base + "/docs"));
     check(
       journey.slice(2).every((x) => x.ambient === "off"),
       label + ": ambient navigation/reload",
@@ -468,7 +671,11 @@ try {
       const slug =
         site === "formula-e" ? "formula-e-predictions" : site + "-predictions";
       await link(hub, base + "/projects/" + slug);
-      const detail = await appearance(hub, "hub " + site + " detail"),
+      const detail = await appearance(
+          hub,
+          "hub " + site + " detail",
+          base + "/projects/" + slug,
+        ),
         demo = hub.getByRole("link", { name: "Live demo", exact: true });
       const metric = await colorMetrics(demo);
       metric.contrast = contrast(metric.color, metric.background);
@@ -496,32 +703,70 @@ try {
       await p.bringToFront();
       await p.waitForLoadState("networkidle");
       const sp = base + "/projects/" + site,
-        walk = [await appearance(p, site + " home")];
+        walk = [await appearance(p, site + " home", sp)];
       await link(p, sp + "/calendar");
-      walk.push(await appearance(p, site + " calendar"));
-      const race = await firstMainLink(p, sp + "/race/", true);
+      walk.push(await appearance(p, site + " calendar", sp + "/calendar"));
+      const multiClass = ["wec", "imsa"].includes(site);
+      const race = await firstMainLink(
+        p,
+        sp + (multiClass ? "/round/" : "/race/"),
+        true,
+      );
       walk.push(
         await appearance(
           p,
           site + (race ? " race" : " calendar without published race links"),
+          race || sp + "/calendar",
         ),
       );
       await link(p, sp + "/standings");
-      walk.push(await appearance(p, site + " standings"));
-      if (await p.locator('main a[href*="/driver/"]').count()) {
-        await firstMainLink(p, sp + "/driver/");
-        walk.push(await appearance(p, site + " profile"));
-      }
+      walk.push(await appearance(p, site + " standings", sp + "/standings"));
+      let profile = null;
+      if (site === "f1") {
+        const driversLink = p
+          .getByRole("link", {
+            name: "Drivers",
+            exact: true,
+            includeHidden: true,
+          })
+          .first();
+        const href = await driversLink.getAttribute("href");
+        assert.ok(href, "F1 exposes its Drivers profile navigation");
+        profile = new URL(href, p.url()).pathname;
+        await link(p, profile);
+      } else
+        profile = await firstMainLink(
+          p,
+          sp +
+            (multiClass
+              ? "/entry/"
+              : site === "motogp"
+                ? "/rider/"
+                : "/driver/"),
+          true,
+        );
+      if (profile) {
+        walk.push(await appearance(p, site + " profile", profile));
+        if (["f1", "motogp"].includes(site) && label.endsWith("light"))
+          await shot(p, label + "-" + site + "-profile", false);
+      } else
+        assert.ok(
+          false,
+          site +
+            " has exported profiles; a published profile link must be exercised",
+        );
       await link(p, sp + "/accuracy");
-      walk.push(await appearance(p, site + " evidence"));
+      walk.push(await appearance(p, site + " evidence", sp + "/accuracy"));
       await p.goBack();
-      walk.push(await appearance(p, site + " back"));
+      walk.push(
+        await appearance(p, site + " back", profile || sp + "/standings"),
+      );
       await p.goForward();
-      walk.push(await appearance(p, site + " forward"));
+      walk.push(await appearance(p, site + " forward", sp + "/accuracy"));
       await p.reload({ waitUntil: "networkidle" });
-      walk.push(await appearance(p, site + " reload"));
+      walk.push(await appearance(p, site + " reload", sp + "/accuracy"));
       await link(p, sp + "/about");
-      walk.push(await appearance(p, site + " about"));
+      walk.push(await appearance(p, site + " about", sp + "/about"));
       const footer = p
         .locator("footer p, footer span")
         .filter({ hasText: "©" })
@@ -577,7 +822,9 @@ try {
         await p
           .getByRole("combobox", { name: "Driver A", exact: true })
           .waitFor();
-        walk.push(await appearance(p, "f1 lap comparison"));
+        walk.push(
+          await appearance(p, "f1 lap comparison", sp + "/compare/laps"),
+        );
         await p
           .getByRole("combobox", { name: "Driver A", exact: true })
           .selectOption("VER");
@@ -596,7 +843,12 @@ try {
           })
           .waitFor();
         walk.push(
-          await appearance(p, "f1 lap loading (QA delayed local response)"),
+          await appearance(
+            p,
+            "f1 lap loading (QA delayed local response)",
+            sp + "/compare/laps",
+            "loading",
+          ),
         );
         if (label === "desktop-light") await shot(p, label + "-lap-loading");
         release();
@@ -612,7 +864,14 @@ try {
           .getByRole("alert")
           .filter({ hasText: "load and verify this archive" })
           .waitFor();
-        walk.push(await appearance(p, "f1 lap error (QA local 503)"));
+        walk.push(
+          await appearance(
+            p,
+            "f1 lap error (QA local 503)",
+            sp + "/compare/laps",
+            "error",
+          ),
+        );
         if (label === "mobile-light") await shot(p, label + "-lap-error");
         await p.unroute(archive, failed);
         await p.getByRole("button", { name: "Try again", exact: true }).click();
@@ -644,7 +903,12 @@ try {
           )
           .waitFor();
         walk.push(
-          await appearance(p, "f1 lap empty (QA-only zero-driver fixture)"),
+          await appearance(
+            p,
+            "f1 lap empty (QA-only zero-driver fixture)",
+            sp + "/compare/laps",
+            "empty",
+          ),
         );
         await p.unroute(archive, empty);
         await p.reload({ waitUntil: "networkidle" });
@@ -653,12 +917,16 @@ try {
           .waitFor();
         await link(p, sp + "/circuits");
         await p.getByText("Circuit map unavailable", { exact: true }).waitFor();
-        walk.push(await appearance(p, "f1 circuit empty"));
+        walk.push(
+          await appearance(p, "f1 circuit empty", sp + "/circuits", "empty"),
+        );
         await p
           .getByRole("button", { name: "Try fictional demo", exact: true })
           .click();
         await p.getByRole("img", { name: "Fictional circuit view" }).waitFor();
-        walk.push(await appearance(p, "f1 circuit demo"));
+        walk.push(
+          await appearance(p, "f1 circuit demo", sp + "/circuits", "demo"),
+        );
         if (label === "mobile-light") await shot(p, label + "-circuit");
         await p
           .getByRole("button", { name: "Clear capture", exact: true })
@@ -677,7 +945,12 @@ try {
         });
         await p.getByText("Opening capture…", { exact: true }).waitFor();
         walk.push(
-          await appearance(p, "f1 circuit loading (QA delayed File.text)"),
+          await appearance(
+            p,
+            "f1 circuit loading (QA delayed File.text)",
+            sp + "/circuits",
+            "loading",
+          ),
         );
         await p
           .getByRole("button", { name: "Cancel import", exact: true })
@@ -698,7 +971,9 @@ try {
           .getByRole("region", { name: "Circuit workspace", exact: true })
           .getByRole("alert")
           .waitFor();
-        walk.push(await appearance(p, "f1 circuit error"));
+        walk.push(
+          await appearance(p, "f1 circuit error", sp + "/circuits", "error"),
+        );
       }
       if (
         (site === "f2" && label === "desktop-light") ||
@@ -708,7 +983,9 @@ try {
       await p.goto(origin + sp + "/qa-missing-page", {
         waitUntil: "networkidle",
       });
-      walk.push(await appearance(p, site + " actual 404"));
+      walk.push(
+        await appearance(p, site + " actual 404", sp + "/qa-missing-page"),
+      );
       check(
         (await p.locator("main").count()) === 1,
         label + ": " + site + " duplicate 404 main",
@@ -717,6 +994,7 @@ try {
         .getByRole("link", { name: "Back to the season", exact: true })
         .click();
       await p.waitForURL((u) => u.pathname.replace(/\/$/, "") === sp);
+      walk.push(await appearance(p, site + " 404 return", sp));
       await p
         .locator("main")
         .first()
@@ -752,6 +1030,13 @@ try {
         rootFallback,
         routeError,
         raceDetailAvailable: Boolean(race),
+        profileDetailAvailable: Boolean(profile),
+        profilePath: profile,
+        profileKind: multiClass
+          ? "entry"
+          : site === "motogp"
+            ? "rider"
+            : "driver",
       });
       console.log(label + ": " + site + " complete");
       await p.close();
@@ -760,7 +1045,9 @@ try {
     await hub.goto(origin + base + "/not-a-real-page", {
       waitUntil: "networkidle",
     });
-    journey.push(await appearance(hub, "hub actual 404"));
+    journey.push(
+      await appearance(hub, "hub actual 404", base + "/not-a-real-page"),
+    );
     const missing = await colorMetrics(
       hub.getByRole("link", { name: /Back to/ }).first(),
     );
@@ -774,6 +1061,7 @@ try {
       .first()
       .click();
     await hub.waitForURL((u) => u.pathname === base + "/");
+    journey.push(await appearance(hub, "hub 404 return", base));
     // Explicit QA fixture: actual product fallback markup, rendered via React SSR,
     // inserted into the real hub shell. This does not prove boundary triggering.
     await hub
@@ -807,7 +1095,7 @@ try {
       label + ": global-error canvas differs",
     );
     await hub.reload({ waitUntil: "networkidle" });
-    const restored = await appearance(hub, "hub restored");
+    const restored = await appearance(hub, "hub restored", base);
     check(restored.ambient === "off", label + ": ambient restored");
     await hub.getByRole("button", { name: "off", exact: true }).first().focus();
     const focus = await colorMetrics(
@@ -913,8 +1201,15 @@ try {
         mode,
         browser: browser.version(),
         node: process.version,
+        clock:
+          "Native browser time and animation timeline; no Playwright clock override.",
         runnerSha256: createHash("sha256")
           .update(await readFile(fileURLToPath(import.meta.url)))
+          .digest("hex"),
+        readinessHelperSha256: createHash("sha256")
+          .update(
+            await readFile(resolve(root, "scripts/lib/route_readiness.mjs")),
+          )
           .digest("hex"),
         transport:
           "Local static exports at actual production base paths; no public deployment claim.",

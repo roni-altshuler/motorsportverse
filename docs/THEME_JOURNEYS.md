@@ -52,12 +52,44 @@ static exports at `/motorsportverse` and `/motorsportverse/projects/<series>`.
 It clicks the hub directory, project details and existing Live demo links,
 substituting only each launch link's origin with the local server. It follows
 actual site links through calendar, an available race detail, standings,
-available driver profile, accuracy/evidence, back, forward, reload and about.
-WEC and IMSA have no published race links in their calendars; the report records
-that limitation instead of fabricating detail data.
+available driver/rider/entry profile, accuracy/evidence, back, forward, reload and about.
+F1's profile is reached through its actual **Drivers** navigation link; MotoGP
+uses the actual **`/rider/`** links in its standings. The other six series with
+profiles use their existing `/driver/` links. WEC and IMSA use their actual
+`/round/` calendar details and `/entry/` standings profiles. Their earlier
+"unavailable" statement was a runner path-family error, not missing data.
+
+Each normal-route measurement requires the explicit intended path and that
+destination's own expected heading/content. Static identities come from the
+corresponding production export; race, standings and driver/rider identities
+come from the stored series JSON. A matching URL or an existing layout `main`
+alone cannot pass. Local browser fetches must finish, visible loading indicators
+must disappear, fonts must settle, and destination-heading geometry/page width
+must agree across three consecutive rendered frames (0.5px geometry tolerance
+for browser subpixel layout). The primary heading must be
+visible, with its opacity and rendered geometry settled after any entrance
+animation. The runner scrolls that real heading into view, including F1's
+accuracy title below its evidence section. There is no fixed route-measurement
+sleep. Native browser time and animation timelines are used: the previous
+Playwright clock override produced animation-settling failures on reload in the
+isolated probe, while the same fresh/reloaded route passed with native time.
+The report records expected and observed headings, pending fetch/loading counts
+and settled frames for every appearance sample. Deliberate loading fixtures are
+explicitly marked and are the only samples allowed to retain pending/loading UI.
+
+Independent review identified that the initial runner used a URL plus `main`
+and a 100ms delay, and missed F1/MotoGP profiles and WEC/IMSA round/entry paths. The final report was
+replaced by the stronger rerun. Five actual Chromium regressions separately
+prove that previous-route content, a pending local data fetch and a visible
+loading indicator, hidden primary heading or moving heading prevent measurement,
+then pass when the condition is resolved.
 
 Mobile journeys click within the actual menu and assert that it unmounts,
 rather than selecting a visible header/footer link behind an open menu.
+Navigation scrolls the actual browser viewport to the top. Link clicks use native
+pointer input only after a DOM hit test proves the actual link is unobstructed;
+no forced click bypasses an overlay. This tolerates harmless navbar subpixel
+movement while still requiring the requested destination and closed menu.
 
 The same journey includes the F1 archived comparison and browser-local circuit
 workspace. It covers a real stored comparison and driver selection, archive
@@ -90,10 +122,14 @@ and mobile 390×844, each with light and dark system color preferences. Light
 cases used reduced motion; dark cases used normal motion. This is four cases,
 not a full cross-product of every motion and color preference. The browser
 runner used Node 24.19.0; builds/checks used Node 20.20.2 and npm 10.9.9.
+The cases ran independently against identical runner, readiness-helper and
+product-source hashes; their complete records were combined into `after.json`.
+All ten series exercised actual detail and profile routes in each case:
+**40 race/round-detail visits and 40 driver/rider/entry-profile visits**.
 
-All 103 recorded product source hashes and the runner hash match the tested
-files. There were zero failed journey assertions, browser errors or unexpected local
-HTTP failures. Actual 404s and route recovery fixtures now have one main
+All 103 recorded product source hashes, the runner hash and the readiness-helper
+hash match the tested files. There were zero failed journey assertions, browser
+errors or unexpected local HTTP failures. Actual 404s and route recovery fixtures now have one main
 landmark. All mobile menus unmount after their real menu links are clicked.
 The saved ambient preference remains off through navigation, history and hard
 reload, and first styled canvases match the hydrated canvases. All series keep
@@ -122,7 +158,9 @@ explicit actual-markup style fixture described above:
 | [Mobile circuit overflow](qa/theme-journeys/mobile-circuit-before.png) | [Mobile circuit workspace](qa/theme-journeys/mobile-circuit-after.png) |
 
 Also see the [actual hub 404](qa/theme-journeys/hub-404-after.png) and
-[mobile NASCAR launch](qa/theme-journeys/mobile-launch-after.png).
+[mobile NASCAR launch](qa/theme-journeys/mobile-launch-after.png), plus the
+confirmed [F1 driver viewport](qa/theme-journeys/f1-profile-after.png) and
+[MotoGP rider viewport](qa/theme-journeys/motogp-profile-after.png).
 
 ## Scope and limits
 
@@ -147,6 +185,7 @@ come from unchanged lockfiles. From the repository root:
 
 ```sh
 node scripts/sync_shared_ui.mjs --check
+node --test scripts/lib/route_readiness.test.mjs
 node scripts/qa_theme_journeys.mjs /tmp/theme-journeys final
 ```
 

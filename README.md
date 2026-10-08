@@ -106,6 +106,8 @@ series accents remain distinct; recovery pages and project launch labels use
 readable, consistent controls. The shared motion preference now hydrates from
 the same initial state as the static export. This changes presentation, not
 published result coverage or model performance.
+Browser journeys check each destination's content and completed loading before
+measurement, including the available F1 driver and MotoGP rider profiles.
 
 The F1 [circuit workspace](docs/UPSTREAM_CIRCUIT_WORKSPACE.md) lets users explore
 browser-local captures in Tom Shaw's replay output format, or try a clearly
