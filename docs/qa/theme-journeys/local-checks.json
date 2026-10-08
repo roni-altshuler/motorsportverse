@@ -8,13 +8,13 @@
       "skipped": 8
     },
     {
-      "site": "f2",
-      "passed": 203,
+      "site": "f3",
+      "passed": 196,
       "skipped": 0
     },
     {
-      "site": "f3",
-      "passed": 196,
+      "site": "f2",
+      "passed": 203,
       "skipped": 0
     },
     {
@@ -23,13 +23,13 @@
       "skipped": 0
     },
     {
-      "site": "indycar",
-      "passed": 190,
+      "site": "nascar",
+      "passed": 178,
       "skipped": 0
     },
     {
-      "site": "nascar",
-      "passed": 178,
+      "site": "indycar",
+      "passed": 190,
       "skipped": 0
     },
     {
@@ -89,33 +89,6 @@
       "lockUnchanged": true
     },
     {
-      "site": "f2",
-      "basePath": "/motorsportverse/projects/f2",
-      "steps": [
-        {
-          "name": "lint",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-f2-lint.log"
-        },
-        {
-          "name": "tests",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-f2-tests.log"
-        },
-        {
-          "name": "types",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-f2-types.log"
-        },
-        {
-          "name": "build",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-f2-build.log"
-        }
-      ],
-      "lockUnchanged": true
-    },
-    {
       "site": "f3",
       "basePath": "/motorsportverse/projects/f3",
       "steps": [
@@ -138,6 +111,33 @@
           "name": "build",
           "code": 0,
           "log": "/tmp/motorsport-theme-final-f3-build.log"
+        }
+      ],
+      "lockUnchanged": true
+    },
+    {
+      "site": "f2",
+      "basePath": "/motorsportverse/projects/f2",
+      "steps": [
+        {
+          "name": "lint",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-f2-lint.log"
+        },
+        {
+          "name": "tests",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-f2-tests.log"
+        },
+        {
+          "name": "types",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-f2-types.log"
+        },
+        {
+          "name": "build",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-f2-build.log"
         }
       ],
       "lockUnchanged": true
@@ -170,33 +170,6 @@
       "lockUnchanged": true
     },
     {
-      "site": "indycar",
-      "basePath": "/motorsportverse/projects/indycar",
-      "steps": [
-        {
-          "name": "lint",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-indycar-lint.log"
-        },
-        {
-          "name": "tests",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-indycar-tests.log"
-        },
-        {
-          "name": "types",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-indycar-types.log"
-        },
-        {
-          "name": "build",
-          "code": 0,
-          "log": "/tmp/motorsport-theme-final-indycar-build.log"
-        }
-      ],
-      "lockUnchanged": true
-    },
-    {
       "site": "nascar",
       "basePath": "/motorsportverse/projects/nascar",
       "steps": [
@@ -219,6 +192,33 @@
           "name": "build",
           "code": 0,
           "log": "/tmp/motorsport-theme-final-nascar-build.log"
+        }
+      ],
+      "lockUnchanged": true
+    },
+    {
+      "site": "indycar",
+      "basePath": "/motorsportverse/projects/indycar",
+      "steps": [
+        {
+          "name": "lint",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-indycar-lint.log"
+        },
+        {
+          "name": "tests",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-indycar-tests.log"
+        },
+        {
+          "name": "types",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-indycar-types.log"
+        },
+        {
+          "name": "build",
+          "code": 0,
+          "log": "/tmp/motorsport-theme-final-indycar-build.log"
         }
       ],
       "lockUnchanged": true

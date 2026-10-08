@@ -28,6 +28,8 @@ const series = [
 ].filter(
   (site) => !process.argv[4] || process.argv[4].split(",").includes(site),
 );
+assert.ok(series.length > 0, "Choose at least one known series");
+assert.ok(["baseline", "final"].includes(mode), "Choose baseline or final QA");
 const sites = [
   { site: "hub", prefix: base, dir: resolve(root, "website") },
   ...series.map((site) => ({
@@ -222,9 +224,15 @@ async function appearance(page, label) {
   return { label, ...value };
 }
 async function link(page, path) {
+  await page.bringToFront();
   const normal = (p) => p.replace(/\/$/, "");
+  let openedMenu = false;
   async function visibleLink() {
-    const candidates = page.locator("a[href]");
+    const candidates = openedMenu
+      ? page
+          .getByRole("dialog", { name: "Mobile navigation", exact: true })
+          .locator("a[href]")
+      : page.locator("a[href]");
     for (let i = 0; i < (await candidates.count()); i++) {
       const a = candidates.nth(i),
         href = await a.getAttribute("href");
@@ -236,7 +244,6 @@ async function link(page, path) {
         return a;
     }
   }
-  let openedMenu = false;
   const mobileMenu = page.getByRole("button", {
     name: "Open menu",
     exact: true,
@@ -246,6 +253,9 @@ async function link(page, path) {
     await page.waitForFunction(() => scrollY === 0);
     await mobileMenu.click();
     openedMenu = true;
+    await page
+      .getByRole("dialog", { name: "Mobile navigation", exact: true })
+      .waitFor();
   }
   let found = await visibleLink();
   if (!found) {
@@ -366,6 +376,7 @@ try {
           ["mobile-dark", { width: 390, height: 844 }, "dark"],
         ]
   ).filter(([label]) => !process.argv[5] || process.argv[5] === label);
+  assert.ok(cases.length > 0, "Choose at least one known viewport case");
   for (const [label, viewport, colorScheme] of cases) {
     console.log(label + ": journey");
     const context = await browser.newContext({
@@ -482,6 +493,7 @@ try {
       const popupPromise = hub.waitForEvent("popup");
       await demo.click();
       const p = await popupPromise;
+      await p.bringToFront();
       await p.waitForLoadState("networkidle");
       const sp = base + "/projects/" + site,
         walk = [await appearance(p, site + " home")];
@@ -869,6 +881,8 @@ try {
       "src/app/not-found.tsx",
       "src/app/global-error.tsx",
       "src/lib/useReducedMotion.ts",
+      "src/components/Navbar.tsx",
+      "src/components/ui/HUDPanel.tsx",
     ])
       sourceHash[s.site + "/" + file] = createHash("sha256")
         .update(await readFile(resolve(s.dir, file)))
@@ -877,6 +891,21 @@ try {
     sourceHash["hub/" + file] = createHash("sha256")
       .update(await readFile(resolve(root, "website", file)))
       .digest("hex");
+  for (const site of ["f1", "motogp"])
+    sourceHash[site + "/src/components/StandingsPage.tsx"] = createHash(
+      "sha256",
+    )
+      .update(
+        await readFile(
+          resolve(
+            root,
+            "projects/" +
+              site +
+              "-predictions/website/src/components/StandingsPage.tsx",
+          ),
+        ),
+      )
+      .digest("hex");
   await writeFile(
     resolve(output, "journey-qa.json"),
     JSON.stringify(
@@ -884,6 +913,9 @@ try {
         mode,
         browser: browser.version(),
         node: process.version,
+        runnerSha256: createHash("sha256")
+          .update(await readFile(fileURLToPath(import.meta.url)))
+          .digest("hex"),
         transport:
           "Local static exports at actual production base paths; no public deployment claim.",
         sourceHash,

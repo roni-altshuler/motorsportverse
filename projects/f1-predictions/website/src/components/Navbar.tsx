@@ -528,25 +528,20 @@ export default function Navbar() {
       </div>
 
       {/* ── Mobile drawer ─────────────────────────────────────────── */}
-      <AnimatePresence>
+      {/* Closing navigation removes both overlay layers immediately. */}
         {mobileOpen && (
+          <>
             <motion.div
-              key="mobile-backdrop"
               className="fixed inset-0 z-40 bg-black/60"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
               aria-hidden
             />
-        )}
-        {mobileOpen && (
             <motion.aside
-              key="mobile-drawer"
               className="fixed top-0 right-0 bottom-0 z-50 w-[320px] max-w-[88vw] bg-[color:var(--canvas)] border-l border-[color:var(--hairline)] overflow-y-auto"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
-              exit={{ x: "100%" }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               role="dialog"
               aria-label="Mobile navigation"
@@ -649,8 +644,8 @@ export default function Navbar() {
                 )}
               </nav>
             </motion.aside>
+          </>
         )}
-      </AnimatePresence>
     </nav>
   );
 }

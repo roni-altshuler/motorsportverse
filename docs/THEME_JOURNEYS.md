@@ -29,7 +29,7 @@ The baseline exported browser journey proved these defects:
 | Root recovery | Hub changed to black/monospace; all eleven small diagnostic labels measured 3.66:1 | Keep the hub canvas and inline fallbacks; raise diagnostic ink to a readable neutral |
 | Native appearance | Hub and NASCAR lacked the dark color-scheme metadata used by the other series | Declare their existing dark identity explicitly |
 | Reduced-motion hydration | F2, F3, NASCAR, IndyCar and MotoGP emitted React #418 on initial navigation | Use one shared hydration-safe system-preference hook |
-| Mobile navigation/layout | F1 closing drawer reached 710px in a 390px viewport; F1/MotoGP tab rows reached 395px; MotoGP header badges reached 406px | Independently keyed drawer layers, wrapping tab rows, and a bounded shared header action slot |
+| Mobile navigation/layout | F1 closing drawer reached 710px in a 390px viewport; F1/MotoGP tab rows reached 395px; MotoGP header badges reached 406px | Remove closed mobile overlays immediately; wrap tab rows and bound the shared header action slot |
 
 The F2 development build identified the hydration mismatch precisely:
 `AnimatedNumber` rendered `0.0%` on the server and `16.7%` in the first
@@ -43,7 +43,7 @@ Footer text already measured 13.08:1. Its CSS body style overrides the dim color
 on the footer wrapper, so changing all series' dim tokens would have been an
 unnecessary edit. Palette, body font and accents remained consistent along each
 series' home/list/detail/profile/evidence journey. Those identities, header
-styles, chart tokens, data, models and accuracy claims remain unchanged.
+branding, chart tokens, data, models and accuracy claims remain unchanged.
 
 ## Browser verification
 
@@ -55,6 +55,9 @@ actual site links through calendar, an available race detail, standings,
 available driver profile, accuracy/evidence, back, forward, reload and about.
 WEC and IMSA have no published race links in their calendars; the report records
 that limitation instead of fabricating detail data.
+
+Mobile journeys click within the actual menu and assert that it unmounts,
+rather than selecting a visible header/footer link behind an open menu.
 
 The same journey includes the F1 archived comparison and browser-local circuit
 workspace. It covers a real stored comparison and driver selection, archive
@@ -76,12 +79,50 @@ revision. The separate baseline recovery probe used all ten real static 404
 exports. Reports:
 
 - [Baseline journey](qa/theme-journeys/before.json)
+- [Intermediate mobile overflow probe](qa/theme-journeys/mobile-layout-before.json)
 - [Series recovery baseline](qa/theme-journeys/series-recovery-before.json)
 - [Baseline production-path builds](qa/theme-journeys/baseline-builds.json)
 - [Final browser report](qa/theme-journeys/after.json)
 - [Final local check matrix](qa/theme-journeys/local-checks.json)
 
-Final validation and measured results are recorded after the completed run.
+The final Chromium 151.0.7922.173 run passed all four cases: desktop 1440×1000
+and mobile 390×844, each with light and dark system color preferences. Light
+cases used reduced motion; dark cases used normal motion. This is four cases,
+not a full cross-product of every motion and color preference. The browser
+runner used Node 24.19.0; builds/checks used Node 20.20.2 and npm 10.9.9.
+
+All 103 recorded product source hashes and the runner hash match the tested
+files. There were zero journey assertions, browser errors or unexpected local
+HTTP failures. Actual 404s and route recovery fixtures now have one main
+landmark. All mobile menus unmount after their real menu links are clicked.
+The saved ambient preference remains off through navigation, history and hard
+reload, and first styled canvases match the hydrated canvases. All series keep
+their original palette/body font along the tested routes.
+
+Solid launch labels now measure **4.85–14.24:1** across the ten actual accents.
+F2, F3, NASCAR and WEC measure **6.38, 8.86, 14.24 and 11.27:1**. The hub small
+caption measures **6.48:1**, its focus outline **5.16:1**, and its root diagnostic
+ink **6.48:1**. Series root diagnostic ink measures **5.32:1**. The final mobile
+circuit capture is **390px** wide; the intermediate overflowing capture was
+**710px** wide.
+
+All eleven frontend suites passed lint, tests, types and production-path static
+builds: **44 checks**, **2,060 passed tests**, **eight existing hub skips** and
+unchanged lockfiles. Shared UI drift and whitespace checks passed. Root/F1
+Ruff 0.8.6 checks passed; root CI separately pins 0.16.1. The offline coverage
+suite passed all 14 tests, and F1 schema/workflow regressions passed with one
+explicit skip. No new clean local install is claimed; CI performs locked installs.
+
+Screenshots are actual browser captures. The hub recovery images use the
+explicit actual-markup style fixture described above:
+
+| Before | After |
+| --- | --- |
+| [Hub recovery](qa/theme-journeys/hub-recovery-before.png) | [Hub recovery](qa/theme-journeys/hub-recovery-after.png) |
+| [Mobile circuit overflow](qa/theme-journeys/mobile-circuit-before.png) | [Mobile circuit workspace](qa/theme-journeys/mobile-circuit-after.png) |
+
+Also see the [actual hub 404](qa/theme-journeys/hub-404-after.png) and
+[mobile NASCAR launch](qa/theme-journeys/mobile-launch-after.png).
 
 ## Scope and limits
 
