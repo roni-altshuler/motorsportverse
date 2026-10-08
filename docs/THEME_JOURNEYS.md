@@ -92,7 +92,7 @@ not a full cross-product of every motion and color preference. The browser
 runner used Node 24.19.0; builds/checks used Node 20.20.2 and npm 10.9.9.
 
 All 103 recorded product source hashes and the runner hash match the tested
-files. There were zero journey assertions, browser errors or unexpected local
+files. There were zero failed journey assertions, browser errors or unexpected local
 HTTP failures. Actual 404s and route recovery fixtures now have one main
 landmark. All mobile menus unmount after their real menu links are clicked.
 The saved ambient preference remains off through navigation, history and hard
