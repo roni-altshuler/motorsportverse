@@ -45,6 +45,12 @@ version for an arbitrary imported file.
 
 ## Import contract
 
+The [local FastF1 exporter](FASTF1_LOCAL_CAPTURE.md) is a second, original producer
+for this contract. Its versioned metadata enables F1-only source/units labels and
+native car channels. It supplies no track outline, weather or reconstructed order.
+Unsupported series reject that input explicitly; unlabelled upstream captures
+retain the original contract below. No upstream desktop code is reused by it.
+
 Choose a lawfully obtained `.ndjson`, `.jsonl` or single-line `.json` file.
 Each nonempty line is one JSON message with `frame_index`, `frame.t` and
 `frame.drivers`. Driver entries provide finite X/Y coordinates or a pair of nulls.
@@ -90,7 +96,7 @@ retried through an alternate access path or replaced by an unverifiable map.
 Local-file previews do not register a source as approved or certify event identity.
 The demonstration does not complete that source-dependent feature.
 
-## Validation and evidence
+## Original workspace validation and evidence
 
 The feature's actual flow is menu/event link → static workspace → browser-local
 read or lazy original demo → strict adapter → native SVG and snapshot controls.
@@ -108,7 +114,7 @@ export, supplying the build's configured base path when present:
 node scripts/qa_circuit_workspace.mjs /tmp/circuit-workspace-qa /motorsportverse/projects/f1
 ```
 
-All 11 sites pass clean locked installs, lint, tests, types and static builds
+The original workspace's 11 sites passed clean locked installs, lint, tests, types and static builds
 (2,016 passing frontend tests; eight existing hub skips). F1 also passes Ruff and
 its full Python suite (1,087 passed; two skipped).
 
@@ -118,5 +124,7 @@ and retained network/console observations. No page exceptions or failed local
 HTTP resources occurred. External flag-image tunnel failures and cancelled
 framework HEAD probes remain in the report; this is not a whole-site or public
 deployment approval.
-The PR body records the exact final commit and completed CI links. PR #12 stays
-draft for independent review; no merge or production job dispatch.
+These records describe the original workspace baseline. Current local FastF1
+adapter validation and its separate source limits are documented in
+[Local FastF1 capture export](FASTF1_LOCAL_CAPTURE.md); its PR records the exact
+head and checks. The adapter does not dispatch a data-refresh or deployment job.

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import RouteMain from "@/components/RouteMain";
 import { SeasonProvider } from "@/lib/SeasonProvider";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 
@@ -147,7 +148,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             <LiveContextBand />
-            <main id="main-content" tabIndex={-1} className="flex-1 w-full">{children}</main>
+            <RouteMain>{children}</RouteMain>
             <Footer />
           </SmoothScrollProvider>
         </SeasonProvider>

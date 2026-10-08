@@ -49,6 +49,14 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 
 ## Circuit map availability
 
+The [local FastF1 exporter](docs/FASTF1_LOCAL_CAPTURE.md) bridges an existing trusted
+offline cache to the F1 circuit workspace. It preserves bounded native samples,
+labels units and accuracy, and rejects F1-only input under other series. Synthetic
+tests validate the adapter; no new real telemetry, map or data rights are supplied.
+The [hydration audit](docs/qa/local-fastf1/HYDRATION_INVESTIGATION.md) records a
+controlled root-layout replay repair and keeps the earlier browser failure's
+unresolved attribution explicit.
+
 The [shared explorer shell](docs/reviews/2026-10-06-zandvoort-explorer/README.md)
 has no registered event or production consumer. The independent
 [F1 local workspace](docs/UPSTREAM_CIRCUIT_WORKSPACE.md) previews user-supplied

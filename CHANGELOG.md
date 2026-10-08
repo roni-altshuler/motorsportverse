@@ -11,6 +11,21 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Local FastF1 capture interoperability — 2026-10-08
+
+- Added an optional cache-only exporter for one F1 driver's short session window
+  into the existing browser-local workspace, with bounded native samples and
+  session identity/output guards. Existing ingestion and replay exporters remain.
+- Show source, units, session time, missing channels and boolean brake honestly;
+  reject this F1-only input under every other series workspace selection.
+- Verified the Python-to-browser boundary with original synthetic fixtures.
+  No new real telemetry, circuit assets, hosted stream, provider coverage or data
+  rights are supplied; sparse/jittery samples remain explicitly unverified.
+- Repaired a controlled F1 root-layout hydration replay defect while preserving
+  the main container's markup. Added actual-source production/development
+  regressions and negative controls; the retained earlier browser event remains
+  unattributed.
+
 ### Prepared circuit explorer shell — 2026-10-06
 
 - Bound the unused shared explorer to downloaded PNG bytes, reviewed hashes,
