@@ -1,0 +1,32 @@
+{
+  "reviewedImplementationHead": "e01f36efabc1f5d443963acf1183fcd4f1559392",
+  "scope": "Evidence representation only; all application/lock/test/QA/workflow Git trees unchanged",
+  "verifiedOriginalFiles": 174,
+  "verifiedOriginalBytes": 11041262,
+  "archiveRegeneration": "All three compressed SHA-256s reproduced exactly in Python 3.12.14/zlib 1.3.2",
+  "independentExtractedDirectoryComparison": "All original paths and bytes identical to cloud recovery",
+  "formatting": [
+    "Ruff check passed",
+    "Ruff format --check passed",
+    "Readable JSON parses"
+  ],
+  "negativeControls": [
+    {
+      "case": "corrupt-archive",
+      "exit": 1,
+      "message": "Evidence verification failed: Archive hash differs: audit-details.tar.gz"
+    },
+    {
+      "case": "wrong-member-hash",
+      "exit": 1,
+      "message": "Evidence verification failed: Content differs: audits/before/f1-full.json"
+    },
+    {
+      "case": "wrong-readable-summary",
+      "exit": 1,
+      "message": "Evidence verification failed: freshness passed count differs"
+    }
+  ],
+  "verificationCommand": "python docs/qa/next-maintenance/verify_evidence.py --reference e01f36efabc1f5d443963acf1183fcd4f1559392",
+  "localBrowserAndBuildReuse": "Exact unchanged tested-source-trees.json and locked inputs; complete original browser/build records preserved in archives"
+}

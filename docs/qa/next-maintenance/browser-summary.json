@@ -1,0 +1,104 @@
+{
+  "reviewedCodeCommit": "e01f36efabc1f5d443963acf1183fcd4f1559392",
+  "browser": "Chromium 151.0.7922.173",
+  "transport": "Local production static exports; public/external providers intercepted; no new live-deployment claim",
+  "allSites": {
+    "runnerPassed": true,
+    "variants": 4,
+    "sitesPerVariant": 11,
+    "seriesJourneys": 40,
+    "unexpectedHttpFailures": 0,
+    "pageErrors": 0,
+    "consoleClassification": {
+      "request net::ERR_ABORTED": 1668,
+      "request net::ERR_FAILED": 1824,
+      "expected blocked external resource console errors": 1824,
+      "initial chart sizing warnings": 128,
+      "expected archive 503 fixture console errors": 4,
+      "recorded 404 resource console errors": 1300,
+      "preexisting SVG attribute errors": 24
+    },
+    "uniqueMissingPortraitURLs": 201,
+    "unclassifiedConsoleErrors": [],
+    "baselineAttributionPending": false,
+    "baselineComparison": {
+      "next": "16.1.6",
+      "sites": [
+        "hub",
+        "wec",
+        "imsa"
+      ],
+      "viewport": "desktop-light",
+      "svgAttributeErrors": 6,
+      "sameSVGSourceBytes": true,
+      "chartSizingWarnings": 0,
+      "warningFrequencyComparison": "Endurance control recorded zero chart warnings; separate chart-route control reproduced the category."
+    },
+    "chartBaselineComparison": {
+      "next": "16.1.6",
+      "sites": [
+        "hub",
+        "f2",
+        "f3",
+        "formula-e",
+        "nascar"
+      ],
+      "viewport": "desktop-light",
+      "chartSizingWarnings": 18,
+      "warningFrequencyComparison": "Category reproduced; counts across different route sets/viewports are not an equivalent frequency comparison."
+    }
+  },
+  "energy": {
+    "cases": 4,
+    "passed": 4,
+    "exportBuildId": "zKcpyG6esvtaaqXUCuK7P",
+    "exportedCircuitHtmlHash": "aa6731f1c09a3931ad54e980161f3e3efddef12d9138f61901a73d7ed810372d",
+    "sourceHashes": {
+      "scripts/qa/energy_sandbox.mjs": "6b91a5d2ab83e7dcdf0c74eb218143755c5e6ff1b2b3008e3320a7fcdcf4c809",
+      "projects/f1-predictions/website/src/app/circuits/page.tsx": "36089ff69cbe0dce8b34badf42595029e5c77107c5ddb9018d3221e234fd1d30",
+      "projects/f1-predictions/website/src/components/engineering/EnergySandbox.tsx": "156d933aa2b08e219bbe57107a260c61e534be6a101af31e4460f25f9054b017",
+      "projects/f1-predictions/website/src/lib/energySandbox.ts": "3e91df3e2e089c2121d704db0cbf5083bf1faa24ee00ef8b6dac885cbcc6dfbb",
+      "projects/f1-predictions/website/src/__tests__/energySandbox.test.tsx": "0a86f013b41a694f3ed8d8df0c64e498d633fcc4e9618633d72603c7166277f9",
+      "projects/f1-predictions/website/src/components/ui/CircuitReplayWorkspace.tsx": "af2b9bdcff3ada1fd2fba3e1fa7cf2c931b9383685f7ec9457ff20fe3ea8bd8d",
+      "projects/f1-predictions/website/public/data/season_tracker.json": "10234500d15a48d57a78560e55cc821b5a060607b856252dfd660dc64265240d",
+      "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+      "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+    },
+    "consoleNote": "22 exact deliberately blocked external-resource errors; no unexpected console/page/HTTP errors"
+  },
+  "freshness": {
+    "cases": 32,
+    "passed": 32,
+    "sourceHashes": {
+      "projects/f1-predictions/website/src/components/RaceDetailPage.tsx": "d4aaf4c7c57884beb31caf9f44a64a6adaebeb9fa74a99bbb7e70e2a0daf239d",
+      "projects/f1-predictions/website/src/components/race-detail/PredictionFreshnessPanel.tsx": "881734ea2d7d46d7a9213f4e6009547e243af994ee06941319e774475cf3e72f",
+      "projects/f1-predictions/website/src/components/race-detail/KeyFactorsPanel.tsx": "ec49788ceb0c95cc6843dd7c72c984b76f34ad3210ace27e070cea75da94ff71",
+      "projects/f1-predictions/website/src/lib/predictionFreshness.ts": "5ae8f3ef15ae8739b1cde4bfea305204fae7b5808fae86462e9fe60a6c4131b4",
+      "projects/f1-predictions/website/public/data/rounds/round_15.json": "fbe423ae6a0cdc149f14d6c1de614b4fe58511e5d7994c71d48d012b2e093428",
+      "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+      "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+    },
+    "chartSizingWarnings": 15,
+    "expectedMissingFile404s": 4,
+    "warningFrequencyComparedWithPriorF1Build": false
+  },
+  "hydration": {
+    "cases": 4,
+    "pageErrors": 0,
+    "htmlHashes": {
+      "circuits.html": "aa6731f1c09a3931ad54e980161f3e3efddef12d9138f61901a73d7ed810372d",
+      "race/12.html": "bc67aac051a6d3c6507823fb10dea98dcd2305c71af8563068f54d47708e4bd8"
+    },
+    "domMutationsInjected": false
+  },
+  "detailMembers": {
+    "allSites": "browser-sites/journey-qa.json",
+    "allSitesConsole": "browser-sites/console.json",
+    "energy": "browser-energy/browser-qa.json",
+    "freshness": "browser-freshness/browser-qa.json",
+    "hydration": "browser-hydration/summary.json",
+    "svgSourceHashes": "browser-sites/svg-source-comparison.json",
+    "priorRendererBundles": "browser-sites/export-renderers.json",
+    "missingPortraitInventory": "browser-sites/missing-portrait-inventory.json"
+  }
+}

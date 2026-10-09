@@ -1,0 +1,15 @@
+{
+  "reviewedCommit": "e01f36efabc1f5d443963acf1183fcd4f1559392",
+  "reviewedTree": "511fdb11ca56fdee42bd45e52c9c8d57f8d2dd83",
+  "gitTrees": {
+    "website": "a0ef177d979ce4ed57666381800c24db1eae8fea",
+    "projects": "c246c41b9e35cf94f1d998bb5319bea55d155e15",
+    "packages": "15f8d724cc057aa21d703c3256772e7f2321b237",
+    "scripts": "e533b4e277f8ab91f3c13add1e776036b056472b",
+    "registry": "244715d5cbfcf4230f96edde9bd8b535645731d2",
+    ".github": "92c8098a205a22f0fd07cc5326f600f6180e8065"
+  },
+  "method": "Each entire Git subtree must retain its exact reviewed object hash. This covers all app sources, assets, data, manifests/locks, diagnostic tests, QA runners and workflows. The compaction touches only docs/qa/next-maintenance. Browser raw records and screenshots are preserved by the evidence manifest.",
+  "lockedInputHashes": "check-inputs.json",
+  "qaRunnerHashes": "qa-runner-hashes.json"
+}
