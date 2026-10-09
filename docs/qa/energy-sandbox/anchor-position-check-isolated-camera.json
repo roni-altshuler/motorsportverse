@@ -1,0 +1,138 @@
+{
+  "browser": "151.0.7922.173",
+  "base": "/motorsportverse/projects/f1",
+  "sourceHashes": {
+    "projects/f1-predictions/website/src/app/circuits/page.tsx": "36089ff69cbe0dce8b34badf42595029e5c77107c5ddb9018d3221e234fd1d30",
+    "projects/f1-predictions/website/src/components/engineering/EnergySandbox.tsx": "156d933aa2b08e219bbe57107a260c61e534be6a101af31e4460f25f9054b017",
+    "projects/f1-predictions/website/src/lib/energySandbox.ts": "37f15d8f514c544bb3abb04e59bfe2ad34551f045e43e40827537042c4986901",
+    "projects/f1-predictions/website/src/__tests__/energySandbox.test.tsx": "6a3c978d7059a8a1646a58cac6b4c93a33718d02b933b6965e4efc399934e757",
+    "projects/f1-predictions/website/src/components/ui/CircuitReplayWorkspace.tsx": "af2b9bdcff3ada1fd2fba3e1fa7cf2c931b9383685f7ec9457ff20fe3ea8bd8d",
+    "projects/f1-predictions/website/public/data/season_tracker.json": "10234500d15a48d57a78560e55cc821b5a060607b856252dfd660dc64265240d",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+  },
+  "exportedCircuitHtmlHash": "70c14be31c6ba99bd0b7519926b4afeda8ab76a463aedb842997f890cff2c3e7",
+  "variants": [
+    {
+      "variant": "desktop-no-preference",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-09T08:42:22.139Z",
+      "checks": [
+        "Baseline export: local-capture workspace present, no energy sandbox",
+        "Actual race → circuit client navigation, anchor and hydration",
+        "Default analytical output, visible units and synthetic limitations",
+        "Responsive chart, one visible trace, no document overflow",
+        "Keyboard number adjustment, reset and non-navigating Enter",
+        "Zero flow preserves initial charge",
+        "Empty capacity curtails demand without negative charge",
+        "Full capacity rejects regeneration without exceeding 100%",
+        "Blank, out-of-range and decimal handling; no stale results; reset",
+        "Keyboard details, six cycle rows and contained mobile table scrolling",
+        "Exact official learning links, external-tab labels and account disclosure",
+        "All assumption calculations stay local with no first-party network requests"
+      ],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-before.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-overview.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-empty-limit.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-ledger.png"
+        }
+      ],
+      "expectedBlockedResourceErrors": [],
+      "unexpectedConsoleErrors": [],
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "calculationRequests": [],
+      "externalBlocked": 8,
+      "passed": false
+    }
+  ],
+  "failure": {
+    "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+    "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at /workspace/motorsportverse-energy-sandbox/scripts/qa/energy_sandbox.mjs:478:18"
+  }
+}

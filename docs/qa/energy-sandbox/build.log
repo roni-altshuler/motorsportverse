@@ -1,0 +1,50 @@
+▲ Next.js 16.1.6 (webpack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.5s
+  Running TypeScript ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/85) ...
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+  Generating static pages using 4 workers (21/85)
+  Generating static pages using 4 workers (42/85)
+  Generating static pages using 4 workers (63/85)
+✓ Generating static pages using 4 workers (85/85) in 1549.8ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /accuracy
+├ ○ /calendar
+├ ○ /circuits
+├ ○ /compare/laps
+├ ○ /design-system
+├ ● /driver/[code]
+│ ├ /driver/VER
+│ ├ /driver/HAD
+│ ├ /driver/NOR
+│ └ [+20 more paths]
+├ ○ /icon.png
+├ ● /race/[round]
+│ ├ /race/1
+│ ├ /race/2
+│ ├ /race/3
+│ └ [+21 more paths]
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ○ /standings
+└ ● /theatre/[round]
+  ├ /theatre/1
+  ├ /theatre/2
+  ├ /theatre/3
+  └ [+21 more paths]
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
