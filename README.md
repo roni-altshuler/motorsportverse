@@ -56,6 +56,16 @@ the current artifacts do not publish one. Factor availability describes the
 stored export without promising a future model run. See the
 [verification and screenshots](docs/qa/prediction-freshness/README.md).
 
+## F1 educational energy sandbox
+
+The proposed F1 [educational energy sandbox](docs/ENERGY_SANDBOX.md) lives within
+the circuit workspace. Five bounded assumptions drive an original fictional
+deploy/coast/regenerate cycle, with an energy-based charge trace and balanced
+ledger. It is synthetic, runs locally and supplies no measured telemetry,
+engineering-grade battery behavior or race prediction. Official free MathWorks
+Onramp courses are linked for further learning; they require a MathWorks account.
+The new surface is held for review and is not a claim about the live deployment.
+
 ## Circuit map availability
 
 The [local FastF1 exporter](docs/FASTF1_LOCAL_CAPTURE.md) bridges an existing trusted

@@ -11,6 +11,17 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 educational energy sandbox — 2026-10-09
+
+- Add an original synthetic energy exercise to the existing circuit workspace,
+  with five unit-labelled assumptions, an energy-based charge trace and a kWh
+  ledger for a fixed fictional deploy/coast/regenerate cycle.
+- Bound stored energy, explain curtailed deployment and rejected regeneration,
+  hide invalid results, and offer reset, responsive charts and accessible details.
+- Link official free MathWorks Onramps without copying course assets or adding
+  services. No measured telemetry, thermal/vehicle model, prediction data,
+  dependency changes or performance claims are introduced.
+
 ### F1 prediction freshness and assumptions — 2026-10-08
 
 - Show ranking and probability export times separately on race pages, including

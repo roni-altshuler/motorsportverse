@@ -1,0 +1,812 @@
+{
+  "browser": "151.0.7922.173",
+  "base": "/motorsportverse/projects/f1",
+  "sourceHashes": {
+    "scripts/qa/energy_sandbox.mjs": "6b91a5d2ab83e7dcdf0c74eb218143755c5e6ff1b2b3008e3320a7fcdcf4c809",
+    "projects/f1-predictions/website/src/app/circuits/page.tsx": "36089ff69cbe0dce8b34badf42595029e5c77107c5ddb9018d3221e234fd1d30",
+    "projects/f1-predictions/website/src/components/engineering/EnergySandbox.tsx": "156d933aa2b08e219bbe57107a260c61e534be6a101af31e4460f25f9054b017",
+    "projects/f1-predictions/website/src/lib/energySandbox.ts": "3e91df3e2e089c2121d704db0cbf5083bf1faa24ee00ef8b6dac885cbcc6dfbb",
+    "projects/f1-predictions/website/src/__tests__/energySandbox.test.tsx": "0a86f013b41a694f3ed8d8df0c64e498d633fcc4e9618633d72603c7166277f9",
+    "projects/f1-predictions/website/src/components/ui/CircuitReplayWorkspace.tsx": "af2b9bdcff3ada1fd2fba3e1fa7cf2c931b9383685f7ec9457ff20fe3ea8bd8d",
+    "projects/f1-predictions/website/public/data/season_tracker.json": "10234500d15a48d57a78560e55cc821b5a060607b856252dfd660dc64265240d",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "9faff214475412794f82de7617c724eb85e832720f2db9addfe7453968ef89b0",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "e33a188e9db6e9e79c9f9f4d99d570823459b9cd6c6e847999baf731726bbc32"
+  },
+  "exportedCircuitHtmlHash": "f68138872d04e383b4472430d1fae7abd47b5e521f7d9e63d3a2813c2da1fae2",
+  "baselineCircuitHtmlHash": "f5d863a31e996b42b2645685825c36f1e242282f5f57674db42679eb1d7aa029",
+  "exportBuildId": "i0v-8k2WlNOZy32NusPvh",
+  "variants": [
+    {
+      "variant": "desktop-no-preference",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-09T08:53:21.032Z",
+      "checks": [
+        "Baseline export: local-capture workspace present, no energy sandbox",
+        "Actual race → circuit client navigation, anchor and hydration",
+        "Default analytical output, visible units and synthetic limitations",
+        "Responsive chart, one visible trace, no document overflow",
+        "Keyboard number adjustment, reset and non-navigating Enter",
+        "Zero flow preserves initial charge",
+        "Empty capacity curtails demand without negative charge",
+        "Full capacity rejects regeneration without exceeding 100%",
+        "Fractional full capacity retains exactly full charge with zero recovery/loss",
+        "Blank, out-of-range and decimal handling; no stale results; reset",
+        "Keyboard details, six cycle rows and contained mobile table scrolling",
+        "Exact official learning links, external-tab labels and account disclosure",
+        "Local assumption calculations: no data/API requests; existing navigation/static prefetches recorded separately",
+        "Existing fictional capture remains usable; reload has deterministic defaults"
+      ],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-before.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-overview.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-empty-limit.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-ledger.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "expectedBlockedResourceErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-before.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-overview.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-empty-limit.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "desktop-ledger.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "requestsDuringCalculation": [],
+      "navigationAndStaticPrefetches": [],
+      "unexpectedCalculationRequests": [],
+      "externalBlocked": 8,
+      "passed": true,
+      "localCaptureAnchor": {
+        "top": 180.28125,
+        "scrollY": 0
+      },
+      "finishedAt": "2026-10-09T08:53:35.723Z"
+    },
+    {
+      "variant": "desktop-reduce",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-09T08:53:35.734Z",
+      "checks": [
+        "Actual race → circuit client navigation, anchor and hydration",
+        "Default analytical output, visible units and synthetic limitations",
+        "Responsive chart, one visible trace, no document overflow",
+        "Keyboard number adjustment, reset and non-navigating Enter",
+        "Zero flow preserves initial charge",
+        "Empty capacity curtails demand without negative charge",
+        "Full capacity rejects regeneration without exceeding 100%",
+        "Fractional full capacity retains exactly full charge with zero recovery/loss",
+        "Blank, out-of-range and decimal handling; no stale results; reset",
+        "Keyboard details, six cycle rows and contained mobile table scrolling",
+        "Exact official learning links, external-tab labels and account disclosure",
+        "Local assumption calculations: no data/API requests; existing navigation/static prefetches recorded separately",
+        "Existing fictional capture remains usable; reload has deterministic defaults",
+        "Reduced-motion preference: no running sandbox animations"
+      ],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "expectedBlockedResourceErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "requestsDuringCalculation": [],
+      "navigationAndStaticPrefetches": [],
+      "unexpectedCalculationRequests": [],
+      "externalBlocked": 3,
+      "passed": true,
+      "localCaptureAnchor": {
+        "top": 160.28125,
+        "scrollY": 20
+      },
+      "finishedAt": "2026-10-09T08:53:39.256Z"
+    },
+    {
+      "variant": "mobile-no-preference",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "no-preference",
+      "startedAt": "2026-10-09T08:53:39.267Z",
+      "checks": [
+        "Baseline export: local-capture workspace present, no energy sandbox",
+        "Actual race → circuit client navigation, anchor and hydration",
+        "Default analytical output, visible units and synthetic limitations",
+        "Responsive chart, one visible trace, no document overflow",
+        "Keyboard number adjustment, reset and non-navigating Enter",
+        "Zero flow preserves initial charge",
+        "Empty capacity curtails demand without negative charge",
+        "Full capacity rejects regeneration without exceeding 100%",
+        "Fractional full capacity retains exactly full charge with zero recovery/loss",
+        "Blank, out-of-range and decimal handling; no stale results; reset",
+        "Keyboard details, six cycle rows and contained mobile table scrolling",
+        "Exact official learning links, external-tab labels and account disclosure",
+        "Local assumption calculations: no data/API requests; existing navigation/static prefetches recorded separately",
+        "Existing fictional capture remains usable; reload has deterministic defaults"
+      ],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-before.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-controls.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-chart.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-full-limit.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-ledger.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "expectedBlockedResourceErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-before.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-controls.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-chart.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-full-limit.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "screenshotTab": "mobile-ledger.png"
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "requestsDuringCalculation": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next._head.txt?_rsc=194kx"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next.standings.txt?_rsc=1a8s4"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next.standings.__PAGE__.txt?_rsc=1wha3"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._tree.txt?_rsc=1ia33"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next._head.txt?_rsc=194kx"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next.calendar.txt?_rsc=yld7l"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/817-b15a0217e9920f53.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/standings/page-856714cf5b77bd4f.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next.calendar.__PAGE__.txt?_rsc=154hr"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._head.txt?_rsc=1b7fu"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.txt?_rsc=z1z4o"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.__PAGE__.txt?_rsc=1l1sl"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/calendar/page-85999f7cdd3a0fac.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/about/page-284dde6ab3bf40a5.js"
+        }
+      ],
+      "navigationAndStaticPrefetches": [
+        {
+          "method": "HEAD",
+          "url": "/motorsportverse/projects/f1/about"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next._head.txt?_rsc=194kx"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next.standings.txt?_rsc=1a8s4"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/standings/__next.standings.__PAGE__.txt?_rsc=1wha3"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._tree.txt?_rsc=1ia33"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next._head.txt?_rsc=194kx"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next.calendar.txt?_rsc=yld7l"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/817-b15a0217e9920f53.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/standings/page-856714cf5b77bd4f.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/calendar/__next.calendar.__PAGE__.txt?_rsc=154hr"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next._head.txt?_rsc=1b7fu"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.txt?_rsc=z1z4o"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/about/__next.about.__PAGE__.txt?_rsc=1l1sl"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/calendar/page-85999f7cdd3a0fac.js"
+        },
+        {
+          "method": "GET",
+          "url": "/motorsportverse/projects/f1/_next/static/chunks/app/about/page-284dde6ab3bf40a5.js"
+        }
+      ],
+      "unexpectedCalculationRequests": [],
+      "externalBlocked": 9,
+      "passed": true,
+      "localCaptureAnchor": {
+        "top": 180.28125,
+        "scrollY": 0
+      },
+      "finishedAt": "2026-10-09T08:53:55.203Z"
+    },
+    {
+      "variant": "mobile-reduce",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "motion": "reduce",
+      "startedAt": "2026-10-09T08:53:55.214Z",
+      "checks": [
+        "Actual race → circuit client navigation, anchor and hydration",
+        "Default analytical output, visible units and synthetic limitations",
+        "Responsive chart, one visible trace, no document overflow",
+        "Keyboard number adjustment, reset and non-navigating Enter",
+        "Zero flow preserves initial charge",
+        "Empty capacity curtails demand without negative charge",
+        "Full capacity rejects regeneration without exceeding 100%",
+        "Fractional full capacity retains exactly full charge with zero recovery/loss",
+        "Blank, out-of-range and decimal handling; no stale results; reset",
+        "Keyboard details, six cycle rows and contained mobile table scrolling",
+        "Exact official learning links, external-tab labels and account disclosure",
+        "Local assumption calculations: no data/API requests; existing navigation/static prefetches recorded separately",
+        "Existing fictional capture remains usable; reload has deterministic defaults",
+        "Reduced-motion preference: no running sandbox animations"
+      ],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "expectedBlockedResourceErrors": [
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+          "location": {
+            "url": "https://flagcdn.com/w80/sg.png",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "pageErrors": [],
+      "httpFailures": [],
+      "nonGet": [],
+      "requestsDuringCalculation": [],
+      "navigationAndStaticPrefetches": [],
+      "unexpectedCalculationRequests": [],
+      "externalBlocked": 4,
+      "passed": true,
+      "localCaptureAnchor": {
+        "top": 160.28125,
+        "scrollY": 20
+      },
+      "finishedAt": "2026-10-09T08:54:00.782Z"
+    }
+  ]
+}

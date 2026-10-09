@@ -47,6 +47,15 @@ interactive dashboard.
 
 ## Explore the live dashboard
 
+The proposed `/circuits#energy-sandbox` section is an original synthetic energy
+exercise: adjust capacity, starting charge, deployment, regeneration and
+conversion efficiency through a fixed fictional cycle. It shows capacity limits,
+an energy-based charge trace and a balanced kWh ledger, with accessible invalid
+input handling and reset. It uses no telemetry, thermal model or race predictor.
+Free official MathWorks courses are outbound learning links and require an
+account. [Assumptions and verification](../../docs/ENERGY_SANDBOX.md) document the
+limits. This new surface is held for review, not asserted to be deployed.
+
 The proposed `/compare/laps` page adds a **2025 Monaco race archive** comparison;
 it is held for review and is not a claim about the live deployment. Its 20 driver
 records come from the committed `2025_Monaco_R.parquet` snapshot (1,403 timing

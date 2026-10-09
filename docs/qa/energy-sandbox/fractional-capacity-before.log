@@ -1,0 +1,23 @@
+FAIL src/__tests__/energySandbox.test.tsx
+  ● fractional capacities at full charge never start above capacity or recover negative energy
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0.73389
+    Received: 0.7338900000000002
+
+      77 |   for (const capacityKWh of [0.73389, 0.7462, 1.731, 4.123]) {
+      78 |     const run = simulate({ capacityKWh, initialSocPercent: 100, deploymentKW: 0, regenerationKW: 150 });
+    > 79 |     expect(run.initialEnergyKWh).toBe(capacityKWh);
+         |                                  ^
+      80 |     expect(run.points.every((point) => point.energyKWh === capacityKWh && point.socPercent === 100)).toBe(true);
+      81 |     expect(run.recoveredKWh).toBe(0);
+      82 |     expect(run.conversionLossKWh).toBe(0);
+
+      at Object.toBe (src/__tests__/energySandbox.test.tsx:79:34)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 16 skipped, 17 total
+Snapshots:   0 total
+Time:        0.756 s, estimated 2 s
+Ran all test suites matching src/__tests__/energySandbox.test.tsx with tests matching "fractional capacities".
