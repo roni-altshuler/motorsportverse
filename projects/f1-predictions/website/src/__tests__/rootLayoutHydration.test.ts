@@ -33,16 +33,16 @@ describe.each(["production", "development"] as const)("root route hydration (%s)
     expect(matching.mainReused).toBe(true);
     expect(matching.contentReused).toBe(true);
 
-    // Remove only the private fiber in compiled source: emitted server markup
-    // stays identical, but the renderer replays main against its own contents.
+    // Next 16.3.8's bundled renderer also retains matching nodes without the
+    // private child boundary. Keep this controlled variant explicit instead
+    // of requiring the old renderer's replay failure to remain present.
     const replay = probe(mode, "--without-child-boundary");
     expect(replay.serverMarkupSha256).toBe(matching.serverMarkupSha256);
     expect(replay.matchingMarkup).toBe(true);
-    expect(replay.errors).toHaveLength(1);
-    expect(replay.errors[0].message).toContain(mode === "production" ? "#418" : "Hydration failed");
-    expect(replay.errors[0].stack).toContain("replaySuspendedUnitOfWork");
-    expect(replay.mainReused).toBe(false);
-    expect(replay.contentReused).toBe(false);
+    expect(replay.pendingLog).toEqual(["read:pending"]);
+    expect(replay.errors).toEqual([]);
+    expect(replay.mainReused).toBe(true);
+    expect(replay.contentReused).toBe(true);
 
     // Alter the server fixture before parsing; the repair must not hide a
     // genuine mismatch or introduce hydration-warning suppression.

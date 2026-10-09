@@ -1,0 +1,27 @@
+{
+  "react": "19.3.0-canary-cbb046ab-20260731",
+  "route": "/motorsportverse/projects/f1/circuits",
+  "reducedMotion": true,
+  "matchingMarkup": false,
+  "withoutChildBoundary": false,
+  "serverMarkupSha256": "660b17c330de144bc63a030308f32b70a5593e6036fd765af44b86da76a28935",
+  "sourceSha256": "cfd29a78a7b7b8cfc41dd53818648fb4e78d0828a1f6463b321854f31ec18607",
+  "routeMainSha256": "549c627b982c05a5f599fa764c5fb53278989bd7b378b852357dd6bf5827d3ec",
+  "compiledMainSha256": "549c627b982c05a5f599fa764c5fb53278989bd7b378b852357dd6bf5827d3ec",
+  "shellImportsStubbed": true,
+  "actualSmoothScrollProvider": true,
+  "pendingLog": [
+    "read:pending"
+  ],
+  "settledLog": [
+    "read:fulfilled"
+  ],
+  "errors": [
+    {
+      "message": "Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  <html lang=\"en\" data-theme=\"dark\" suppressHydrationWarning={true} className=\"diagnostic...\">\n    <body className=\"min-h-scre...\">\n      <a>\n      <SeasonProvider>\n        <SmoothScrollProvider>\n          <default>\n          <default>\n          <RouteMain>\n            <main id=\"main-content\" tabIndex={-1} className=\"flex-1 w-full\">\n              <RouteContent>\n                <Suspense fallback={null}>\n                  <section id=\"diagnostic-content\">\n+                   Original synthetic page\n-                   Different server fixture\n          ...\n",
+      "stack": "Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  <html lang=\"en\" data-theme=\"dark\" suppressHydrationWarning={true} className=\"diagnostic...\">\n    <body className=\"min-h-scre...\">\n      <a>\n      <SeasonProvider>\n        <SmoothScrollProvider>\n          <default>\n          <default>\n          <RouteMain>\n            <main id=\"main-content\" tabIndex={-1} className=\"flex-1 w-full\">\n              <RouteContent>\n                <Suspense fallback={null}>\n                  <section id=\"diagnostic-content\">\n+                   Original synthetic page\n-                   Different server fixture\n          ...\n\n    at throwOnHydrationMismatch (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5524:11)\n    at prepareToHydrateHostInstance (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5620:21)\n    at completeWork (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:12960:15)\n    at runWithFiberInDEV (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:1027:30)\n    at completeUnitOfWork (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19209:19)\n    at performUnitOfWork (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19082:11)\n    at workLoopConcurrentByScheduler (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19059:9)\n    at renderRootConcurrent (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19041:15)\n    at performWorkOnRoot (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:17896:11)\n    at performWorkOnRootViaSchedulerTask (/tmp/motorsportverse-next-maintenance/checks-repo/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:20554:7)"
+    }
+  ],
+  "mainReused": true,
+  "contentReused": false
+}

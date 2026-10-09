@@ -1,0 +1,27 @@
+{
+  "react": "19.3.0-canary-f93b9fd4-20251217",
+  "route": "/motorsportverse/projects/f1/circuits",
+  "reducedMotion": true,
+  "matchingMarkup": true,
+  "withoutChildBoundary": true,
+  "serverMarkupSha256": "137c02529e8578d52f129ae23a4dabbe274415fbe60f1f4e1f742f12c67be308",
+  "sourceSha256": "cfd29a78a7b7b8cfc41dd53818648fb4e78d0828a1f6463b321854f31ec18607",
+  "routeMainSha256": "549c627b982c05a5f599fa764c5fb53278989bd7b378b852357dd6bf5827d3ec",
+  "compiledMainSha256": "e6e8ed0c1f92ac3d572efc36eab7e34930bd4ae086676e06aa9b6274e871ce84",
+  "shellImportsStubbed": true,
+  "actualSmoothScrollProvider": true,
+  "pendingLog": [
+    "read:pending"
+  ],
+  "settledLog": [
+    "read:fulfilled"
+  ],
+  "errors": [
+    {
+      "message": "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  <html lang=\"en\" data-theme=\"dark\" suppressHydrationWarning={true} className=\"diagnostic...\">\n    <body className=\"min-h-scre...\">\n      <a>\n      <SeasonProvider>\n        <SmoothScrollProvider>\n          <default>\n          <default>\n          <RouteMain>\n+           <main id=\"main-content\" tabIndex={-1} className=\"flex-1 w-full\">\n-           <Suspense>\n          ...\n",
+      "stack": "Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  <html lang=\"en\" data-theme=\"dark\" suppressHydrationWarning={true} className=\"diagnostic...\">\n    <body className=\"min-h-scre...\">\n      <a>\n      <SeasonProvider>\n        <SmoothScrollProvider>\n          <default>\n          <default>\n          <RouteMain>\n+           <main id=\"main-content\" tabIndex={-1} className=\"flex-1 w-full\">\n-           <Suspense>\n          ...\n\n    at throwOnHydrationMismatch (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5530:11)\n    at beginWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:12385:17)\n    at replayBeginWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19054:24)\n    at runWithFiberInDEV (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:986:30)\n    at replaySuspendedUnitOfWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19018:18)\n    at renderRootConcurrent (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:18901:21)\n    at performWorkOnRoot (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:17834:11)\n    at performWorkOnRootViaSchedulerTask (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:20384:7)\n    at flushWork (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.development.js:113:42)\n    at Object.unstable_flushAllWithoutAsserting (/workspace/motorsportverse/projects/f1-predictions/website/node_modules/next/dist/compiled/scheduler/cjs/scheduler-unstable_mock.development.js:166:28)"
+    }
+  ],
+  "mainReused": false,
+  "contentReused": false
+}

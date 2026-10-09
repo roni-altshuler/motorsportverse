@@ -1,0 +1,9 @@
+
+> raceiq-wrc-website@0.1.0 lint
+> eslint
+
+
+/tmp/motorsportverse-next-maintenance/checks-repo/projects/wrc-predictions/website/src/components/Navbar.tsx
+  78:9  warning  The 'calendar' logical expression could make the dependencies of useMemo Hook (at line 141) change on every render. To fix this, wrap the initialization of 'calendar' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)

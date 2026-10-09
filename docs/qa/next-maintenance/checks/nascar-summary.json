@@ -1,0 +1,75 @@
+[
+  {
+    "site": "nascar",
+    "check": "install",
+    "exit": 0,
+    "seconds": 19.99,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-install.log"
+  },
+  {
+    "site": "nascar",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 11.88,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-lint.log"
+  },
+  {
+    "site": "nascar",
+    "check": "test",
+    "exit": 0,
+    "seconds": 5.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-test.log"
+  },
+  {
+    "site": "nascar",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 12.2,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-typecheck.log"
+  },
+  {
+    "site": "nascar",
+    "check": "build",
+    "exit": 0,
+    "seconds": 32.41,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-build.log"
+  }
+]

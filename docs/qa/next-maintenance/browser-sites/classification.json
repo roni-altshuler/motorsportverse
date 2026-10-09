@@ -1,0 +1,46 @@
+{
+  "runnerPassed": true,
+  "variants": 4,
+  "sitesPerVariant": 11,
+  "seriesJourneys": 40,
+  "unexpectedHttpFailures": 0,
+  "pageErrors": 0,
+  "consoleClassification": {
+    "request net::ERR_ABORTED": 1668,
+    "request net::ERR_FAILED": 1824,
+    "expected blocked external resource console errors": 1824,
+    "initial chart sizing warnings": 128,
+    "expected archive 503 fixture console errors": 4,
+    "recorded 404 resource console errors": 1300,
+    "preexisting SVG attribute errors": 24
+  },
+  "uniqueMissingPortraitURLs": 201,
+  "unclassifiedConsoleErrors": [],
+  "baselineAttributionPending": false,
+  "baselineComparison": {
+    "next": "16.1.6",
+    "sites": [
+      "hub",
+      "wec",
+      "imsa"
+    ],
+    "viewport": "desktop-light",
+    "svgAttributeErrors": 6,
+    "sameSVGSourceBytes": true,
+    "chartSizingWarnings": 0,
+    "warningFrequencyComparison": "Endurance control recorded zero chart warnings; separate chart-route control reproduced the category."
+  },
+  "chartBaselineComparison": {
+    "next": "16.1.6",
+    "sites": [
+      "hub",
+      "f2",
+      "f3",
+      "formula-e",
+      "nascar"
+    ],
+    "viewport": "desktop-light",
+    "chartSizingWarnings": 18,
+    "warningFrequencyComparison": "Category reproduced; counts across different route sets/viewports are not an equivalent frequency comparison."
+  }
+}

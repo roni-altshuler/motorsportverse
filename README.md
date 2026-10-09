@@ -47,6 +47,15 @@ schema — so a new sport is a thin layer on a proven core, not a rewrite.
 - **Each series is first-class.** Open-wheel, stock car, endurance, rally, and
   formula-electric all belong; none is an afterthought.
 
+## Frontend dependency maintenance
+
+The hub and ten series sites pin Next.js and its ESLint configuration to 16.3.8.
+The [dependency audit and regression evidence](docs/qa/next-maintenance/README.md)
+records the security advisory, compatible transitive updates, all-site checks,
+responsive browser journeys and remaining development dependency findings.
+All sites remain static exports with unoptimized images; this update does not
+establish that a deployed image-optimization endpoint was exposed.
+
 ## F1 prediction context
 
 The F1 race page reports the ranking and probability export timestamps separately,

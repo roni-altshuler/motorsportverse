@@ -1,0 +1,805 @@
+[
+  {
+    "site": "hub",
+    "check": "install",
+    "exit": 0,
+    "seconds": 23.85,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse",
+    "log": "hub-install.log"
+  },
+  {
+    "site": "hub",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 5.98,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse",
+    "log": "hub-lint.log"
+  },
+  {
+    "site": "hub",
+    "check": "test",
+    "exit": 0,
+    "seconds": 8.8,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse",
+    "log": "hub-test.log"
+  },
+  {
+    "site": "hub",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 8.62,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse",
+    "log": "hub-typecheck.log"
+  },
+  {
+    "site": "hub",
+    "check": "build",
+    "exit": 0,
+    "seconds": 6.35,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse",
+    "log": "hub-build.log"
+  },
+  {
+    "site": "f1",
+    "check": "install",
+    "exit": 0,
+    "seconds": 30.73,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-install.log"
+  },
+  {
+    "site": "f1",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 22.98,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-lint.log"
+  },
+  {
+    "site": "f1",
+    "check": "test",
+    "exit": 0,
+    "seconds": 13.51,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-test.log"
+  },
+  {
+    "site": "f1",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 12.71,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-typecheck.log"
+  },
+  {
+    "site": "f1",
+    "check": "build",
+    "exit": 0,
+    "seconds": 163.51,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-build.log"
+  },
+  {
+    "site": "f2",
+    "check": "install",
+    "exit": 0,
+    "seconds": 17.01,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/f2",
+    "log": "f2-install.log"
+  },
+  {
+    "site": "f2",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 12.32,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/f2",
+    "log": "f2-lint.log"
+  },
+  {
+    "site": "f2",
+    "check": "test",
+    "exit": 0,
+    "seconds": 8.93,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/f2",
+    "log": "f2-test.log"
+  },
+  {
+    "site": "f2",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 9.17,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/f2",
+    "log": "f2-typecheck.log"
+  },
+  {
+    "site": "f2",
+    "check": "build",
+    "exit": 0,
+    "seconds": 22.0,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/f2",
+    "log": "f2-build.log"
+  },
+  {
+    "site": "f3",
+    "check": "install",
+    "exit": 0,
+    "seconds": 16.18,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/f3",
+    "log": "f3-install.log"
+  },
+  {
+    "site": "f3",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 10.31,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/f3",
+    "log": "f3-lint.log"
+  },
+  {
+    "site": "f3",
+    "check": "test",
+    "exit": 0,
+    "seconds": 8.19,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/f3",
+    "log": "f3-test.log"
+  },
+  {
+    "site": "f3",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 9.06,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/f3",
+    "log": "f3-typecheck.log"
+  },
+  {
+    "site": "f3",
+    "check": "build",
+    "exit": 0,
+    "seconds": 25.62,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/f3",
+    "log": "f3-build.log"
+  },
+  {
+    "site": "formula-e",
+    "check": "install",
+    "exit": 0,
+    "seconds": 14.91,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/formula-e",
+    "log": "formula-e-install.log"
+  },
+  {
+    "site": "formula-e",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 11.27,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/formula-e",
+    "log": "formula-e-lint.log"
+  },
+  {
+    "site": "formula-e",
+    "check": "test",
+    "exit": 0,
+    "seconds": 5.64,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/formula-e",
+    "log": "formula-e-test.log"
+  },
+  {
+    "site": "formula-e",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 9.4,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/formula-e",
+    "log": "formula-e-typecheck.log"
+  },
+  {
+    "site": "formula-e",
+    "check": "build",
+    "exit": 0,
+    "seconds": 28.12,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/formula-e",
+    "log": "formula-e-build.log"
+  },
+  {
+    "site": "imsa",
+    "check": "install",
+    "exit": 0,
+    "seconds": 20.48,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-install.log"
+  },
+  {
+    "site": "imsa",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 6.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-lint.log"
+  },
+  {
+    "site": "imsa",
+    "check": "test",
+    "exit": 0,
+    "seconds": 6.22,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-test.log"
+  },
+  {
+    "site": "imsa",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 6.99,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-typecheck.log"
+  },
+  {
+    "site": "imsa",
+    "check": "build",
+    "exit": 0,
+    "seconds": 33.03,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-build.log"
+  },
+  {
+    "site": "indycar",
+    "check": "install",
+    "exit": 0,
+    "seconds": 18.77,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-install.log"
+  },
+  {
+    "site": "indycar",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 23.39,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-lint.log"
+  },
+  {
+    "site": "indycar",
+    "check": "test",
+    "exit": 0,
+    "seconds": 17.59,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-test.log"
+  },
+  {
+    "site": "indycar",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 19.23,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-typecheck.log"
+  },
+  {
+    "site": "indycar",
+    "check": "build",
+    "exit": 0,
+    "seconds": 53.04,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-build.log"
+  },
+  {
+    "site": "motogp",
+    "check": "install",
+    "exit": 0,
+    "seconds": 39.76,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-install.log"
+  },
+  {
+    "site": "motogp",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 24.08,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-lint.log"
+  },
+  {
+    "site": "motogp",
+    "check": "test",
+    "exit": 0,
+    "seconds": 9.08,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-test.log"
+  },
+  {
+    "site": "motogp",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 9.65,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-typecheck.log"
+  },
+  {
+    "site": "motogp",
+    "check": "build",
+    "exit": 0,
+    "seconds": 29.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-build.log"
+  },
+  {
+    "site": "nascar",
+    "check": "install",
+    "exit": 0,
+    "seconds": 19.99,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-install.log"
+  },
+  {
+    "site": "nascar",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 11.88,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-lint.log"
+  },
+  {
+    "site": "nascar",
+    "check": "test",
+    "exit": 0,
+    "seconds": 5.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-test.log"
+  },
+  {
+    "site": "nascar",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 12.2,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-typecheck.log"
+  },
+  {
+    "site": "nascar",
+    "check": "build",
+    "exit": 0,
+    "seconds": 32.41,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/nascar",
+    "log": "nascar-build.log"
+  },
+  {
+    "site": "wec",
+    "check": "install",
+    "exit": 0,
+    "seconds": 19.13,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/wec",
+    "log": "wec-install.log"
+  },
+  {
+    "site": "wec",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 11.54,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/wec",
+    "log": "wec-lint.log"
+  },
+  {
+    "site": "wec",
+    "check": "test",
+    "exit": 0,
+    "seconds": 6.46,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/wec",
+    "log": "wec-test.log"
+  },
+  {
+    "site": "wec",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 6.0,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/wec",
+    "log": "wec-typecheck.log"
+  },
+  {
+    "site": "wec",
+    "check": "build",
+    "exit": 0,
+    "seconds": 20.96,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/wec",
+    "log": "wec-build.log"
+  },
+  {
+    "site": "wrc",
+    "check": "install",
+    "exit": 0,
+    "seconds": 13.03,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/wrc",
+    "log": "wrc-install.log"
+  },
+  {
+    "site": "wrc",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 10.0,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/wrc",
+    "log": "wrc-lint.log"
+  },
+  {
+    "site": "wrc",
+    "check": "test",
+    "exit": 0,
+    "seconds": 5.13,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/wrc",
+    "log": "wrc-test.log"
+  },
+  {
+    "site": "wrc",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 8.54,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/wrc",
+    "log": "wrc-typecheck.log"
+  },
+  {
+    "site": "wrc",
+    "check": "build",
+    "exit": 0,
+    "seconds": 23.12,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/wrc",
+    "log": "wrc-build.log"
+  }
+]

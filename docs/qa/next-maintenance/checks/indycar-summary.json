@@ -1,0 +1,75 @@
+[
+  {
+    "site": "indycar",
+    "check": "install",
+    "exit": 0,
+    "seconds": 18.77,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-install.log"
+  },
+  {
+    "site": "indycar",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 23.39,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-lint.log"
+  },
+  {
+    "site": "indycar",
+    "check": "test",
+    "exit": 0,
+    "seconds": 17.59,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-test.log"
+  },
+  {
+    "site": "indycar",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 19.23,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-typecheck.log"
+  },
+  {
+    "site": "indycar",
+    "check": "build",
+    "exit": 0,
+    "seconds": 53.04,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/indycar",
+    "log": "indycar-build.log"
+  }
+]

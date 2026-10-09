@@ -1,0 +1,75 @@
+[
+  {
+    "site": "motogp",
+    "check": "install",
+    "exit": 0,
+    "seconds": 39.76,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-install.log"
+  },
+  {
+    "site": "motogp",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 24.08,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-lint.log"
+  },
+  {
+    "site": "motogp",
+    "check": "test",
+    "exit": 0,
+    "seconds": 9.08,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-test.log"
+  },
+  {
+    "site": "motogp",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 9.65,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-typecheck.log"
+  },
+  {
+    "site": "motogp",
+    "check": "build",
+    "exit": 0,
+    "seconds": 29.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/motogp",
+    "log": "motogp-build.log"
+  }
+]

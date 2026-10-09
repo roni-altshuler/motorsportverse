@@ -1,0 +1,49 @@
+
+> raceiq-nascar-website@0.1.0 build
+> next build
+
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.ts took 39ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 13.2s
+  Running TypeScript ...
+  Finished TypeScript in 12.1s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/104) ...
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+  Generating static pages using 4 workers (26/104)
+  Generating static pages using 4 workers (52/104)
+  Generating static pages using 4 workers (78/104)
+✓ Generating static pages using 4 workers (104/104) in 4.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /accuracy
+├ ○ /calendar
+├ ○ /design-system
+├   /driver/[code]
+│ ├ ● /driver/DEHAMLIN
+│ ├ ● /driver/RYBLANEY
+│ ├ ● /driver/TYREDDICK
+│ └ ● [+53 more paths]
+├ ○ /icon.svg
+├ ○ /predictions
+├   /race/[round]
+│ ├ ● /race/1
+│ ├ ● /race/2
+│ ├ ● /race/3
+│ └ ● [+33 more paths]
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ○ /standings
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)

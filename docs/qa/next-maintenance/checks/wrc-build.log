@@ -1,0 +1,45 @@
+
+> raceiq-wrc-website@0.1.0 build
+> next build
+
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.ts took 28ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.5s
+  Running TypeScript ...
+  Finished TypeScript in 9.7s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/62) ...
+  Generating static pages using 4 workers (15/62)
+  Generating static pages using 4 workers (30/62)
+  Generating static pages using 4 workers (46/62)
+✓ Generating static pages using 4 workers (62/62) in 2.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /accuracy
+├ ○ /calendar
+├ ○ /design-system
+├   /driver/[code]
+│ ├ ● /driver/EVA
+│ ├ ● /driver/SOL
+│ ├ ● /driver/PAJ
+│ └ ● [+33 more paths]
+├ ○ /icon.png
+├ ○ /predictions
+├   /race/[round]
+│ ├ ● /race/1
+│ ├ ● /race/2
+│ ├ ● /race/3
+│ └ ● [+10 more paths]
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+└ ○ /standings
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)

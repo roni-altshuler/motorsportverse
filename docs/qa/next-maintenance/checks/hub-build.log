@@ -1,0 +1,43 @@
+
+> motorsportverse-website@0.1.0 prebuild
+> node ../scripts/build_registry_node.mjs
+
+OK: 11 projects validated. maturity: {"production":6,"experimental":4,"in-development":1}
+
+> motorsportverse-website@0.1.0 build
+> next build
+
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.ts took 34ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 885ms
+  Running TypeScript ...
+  Finished TypeScript in 2.7s ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/21) ...
+  Generating static pages using 4 workers (5/21)
+  Generating static pages using 4 workers (10/21)
+  Generating static pages using 4 workers (15/21)
+✓ Generating static pages using 4 workers (21/21) in 691ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /contribute
+├ ○ /docs
+├ ○ /icon.png
+├ ○ /manifest.webmanifest
+├ ○ /projects
+├   /projects/[slug]
+│ ├ ● /projects/f1-predictions
+│ ├ ● /projects/formula-e-predictions
+│ ├ ● /projects/indycar-predictions
+│ └ ● [+8 more paths]
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)

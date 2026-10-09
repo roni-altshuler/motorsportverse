@@ -1,0 +1,75 @@
+[
+  {
+    "site": "imsa",
+    "check": "install",
+    "exit": 0,
+    "seconds": 20.48,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-install.log"
+  },
+  {
+    "site": "imsa",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 6.84,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-lint.log"
+  },
+  {
+    "site": "imsa",
+    "check": "test",
+    "exit": 0,
+    "seconds": 6.22,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-test.log"
+  },
+  {
+    "site": "imsa",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 6.99,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-typecheck.log"
+  },
+  {
+    "site": "imsa",
+    "check": "build",
+    "exit": 0,
+    "seconds": 33.03,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/imsa",
+    "log": "imsa-build.log"
+  }
+]

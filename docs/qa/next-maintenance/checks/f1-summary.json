@@ -1,0 +1,75 @@
+[
+  {
+    "site": "f1",
+    "check": "install",
+    "exit": 0,
+    "seconds": 30.73,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-install.log"
+  },
+  {
+    "site": "f1",
+    "check": "lint",
+    "exit": 0,
+    "seconds": 22.98,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "lint"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-lint.log"
+  },
+  {
+    "site": "f1",
+    "check": "test",
+    "exit": 0,
+    "seconds": 13.51,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--",
+      "--ci",
+      "--runInBand"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-test.log"
+  },
+  {
+    "site": "f1",
+    "check": "typecheck",
+    "exit": 0,
+    "seconds": 12.71,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "typecheck"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-typecheck.log"
+  },
+  {
+    "site": "f1",
+    "check": "build",
+    "exit": 0,
+    "seconds": 163.51,
+    "command": [
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/node/bin/node",
+      "/tmp/motorsport-task-tools/_npx/14d7f724d3174742/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build"
+    ],
+    "basePath": "/motorsportverse/projects/f1",
+    "log": "f1-build.log"
+  }
+]

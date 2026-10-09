@@ -11,6 +11,17 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Frontend Next.js maintenance — 2026-10-09
+
+- Pin Next.js and matching ESLint configuration to 16.3.8 across the hub and ten
+  series frontends, resolving the reported Next advisories and required native
+  image/build dependencies within their supported ranges.
+- Refresh Next's browser-baseline mapping dependency within its declared range
+  and retain detailed before/after audits, including unresolved tooling findings.
+- Update the controlled hydration diagnostic for the bundled renderer's matching
+  node behavior while retaining the genuine mismatch regression and existing UI.
+
+
 ### F1 educational energy sandbox — 2026-10-09
 
 - Add an original synthetic energy exercise to the existing circuit workspace,
