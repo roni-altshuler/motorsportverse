@@ -85,7 +85,9 @@ development: [raw probes](hydration-probes/).
 | Genuine server-text mismatch | Hydration error; content replaced | Hydration error; content replaced |
 
 The updated test explicitly requires the new matching-node behavior and retains
-the genuine mismatch check in both renderer modes. The application boundary,
+the genuine mismatch check in both renderer modes. It also asserts the diagnostic
+compiled-source hash differs from the real RouteMain hash, proving the controlled
+boundary removal occurred rather than silently becoming a no-op. The application boundary,
 markup, styles, branding, circuit workspace, local capture and energy exercise
 are unchanged. [Preservation evidence](preservation.json) records 2,807 tracked
 source/data/model/config files: 2,806 byte-identical and the single documented
@@ -110,7 +112,11 @@ Checks run on a disposable full source snapshot, with the exact
 OG and visualization outputs remain outside the saved source worktree; source
 assets and data are preserved. The initial F1 diagnostic failure is retained in
 [its original log](initial-f1-test-failure.log); the final corrected test suite
-has 256 passing tests. No final local check failed or production build was skipped.
+has 256 passing tests. The final diagnostic-mutation guard was followed by
+[three additional F1 checks](f1-guard-checks.json): lint, all 256 tests and types,
+all passing. Production application sources and all dependency locks remained
+identical to the eleven verified builds and browser exports. No final local check
+failed or production build was skipped.
 
 Chromium **151.0.7922.173** exercises actual production exports locally. The
 original repository QA scripts are retained, with an additional read-only

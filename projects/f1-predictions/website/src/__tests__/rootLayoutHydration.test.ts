@@ -4,6 +4,9 @@ import { resolve } from "node:path";
 interface Probe {
   matchingMarkup: boolean;
   serverMarkupSha256: string;
+  routeMainSha256: string;
+  compiledMainSha256: string;
+  withoutChildBoundary: boolean;
   pendingLog: string[];
   errors: { message: string; stack: string }[];
   mainReused: boolean;
@@ -37,6 +40,9 @@ describe.each(["production", "development"] as const)("root route hydration (%s)
     // private child boundary. Keep this controlled variant explicit instead
     // of requiring the old renderer's replay failure to remain present.
     const replay = probe(mode, "--without-child-boundary");
+    expect(replay.withoutChildBoundary).toBe(true);
+    expect(replay.routeMainSha256).toBe(matching.routeMainSha256);
+    expect(replay.compiledMainSha256).not.toBe(replay.routeMainSha256);
     expect(replay.serverMarkupSha256).toBe(matching.serverMarkupSha256);
     expect(replay.matchingMarkup).toBe(true);
     expect(replay.pendingLog).toEqual(["read:pending"]);
