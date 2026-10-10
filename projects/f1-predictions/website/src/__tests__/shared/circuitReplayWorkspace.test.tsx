@@ -30,12 +30,57 @@ test("user import renders processed positions, with provenance visibly unverifie
   render(<CircuitReplayWorkspace />);
   upload(file(Promise.resolve(payload)));
   expect(await screen.findByText("Local capture · Source and layout unverified")).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: /Driver AAA/ }));
-  expect(screen.getByRole("button", { name: /Driver AAA/ })).toHaveAttribute(
+  fireEvent.click(screen.getByRole("button", { name: /^Driver AAA/ }));
+  expect(screen.getByRole("button", { name: /^Driver AAA/ })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
   expect(screen.getByText("Full name not supplied")).toBeVisible();
+});
+test("map and list share selection, toggle off and offer a visible clear action", async () => {
+  render(<CircuitReplayWorkspace />);
+  upload(file(Promise.resolve(payload)));
+  const marker = await screen.findByRole("button", { name: "Select Driver AAA on circuit" });
+  const list = screen.getByRole("button", { name: /^Driver AAA/ });
+  fireEvent.click(marker);
+  expect(marker).toHaveAttribute("aria-pressed", "true");
+  expect(list).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByLabelText("Map selection")).toHaveTextContent("Driver AAA");
+  fireEvent.click(list);
+  expect(marker).toHaveAttribute("aria-pressed", "false");
+  fireEvent.click(list);
+  const clear = screen.getByRole("button", { name: "Clear driver selection" });
+  clear.focus();
+  fireEvent.click(clear);
+  expect(marker).toHaveFocus();
+  expect(list).toHaveAttribute("aria-pressed", "false");
+  expect(screen.getByLabelText("Map selection")).toHaveTextContent("Tap a marker");
+});
+test("missing, off-map and absent samples stay truthful while retaining list access", async () => {
+  const frames = [
+    JSON.parse(payload),
+    {
+      frame_index: 2,
+      frame: { t: 1, drivers: { AAA: { x: null, y: null }, BBB: { x: 1000, y: 1000 } } },
+    },
+    { frame_index: 3, frame: { t: 2, drivers: {} } },
+  ];
+  render(<CircuitReplayWorkspace />);
+  upload(file(Promise.resolve(frames.map((frame) => JSON.stringify(frame)).join("\n"))));
+  fireEvent.click(await screen.findByRole("button", { name: "Select Driver AAA on circuit" }));
+  fireEvent.click(screen.getByRole("button", { name: "Next snapshot" }));
+  expect(screen.queryByRole("button", { name: /on circuit$/ })).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Map selection")).toHaveTextContent("Position unavailable");
+  fireEvent.click(screen.getByRole("button", { name: /^Driver BBB/ }));
+  expect(screen.getByLabelText("Map selection")).toHaveTextContent("outside this map view");
+  fireEvent.click(screen.getByRole("button", { name: "Next snapshot" }));
+  expect(screen.getByLabelText("Map selection")).toHaveTextContent("absent");
+  const clear = screen.getByRole("button", { name: "Clear driver selection" });
+  clear.focus();
+  fireEvent.click(clear);
+  expect(screen.getByLabelText("Map selection")).toHaveFocus();
+  fireEvent.change(screen.getByRole("combobox"), { target: { value: "IndyCar" } });
+  expect(screen.queryByLabelText("Map selection")).not.toBeInTheDocument();
 });
 test("series change clears positions and cancels a pending read", async () => {
   let resolve!: (s: string) => void;

@@ -1,0 +1,200 @@
+{
+  "base": "ebfa752ad1f4c29f437358f099c354e0b74c9f6e",
+  "uncorrectedHead": "cb76e18ca75b04bbdd2a3e991836f6353a239b4b",
+  "node": "20.20.2",
+  "npm": "10.9.9",
+  "timezone": "UTC",
+  "cause": "Mutable exported test inputs; not a clock boundary",
+  "untouchedProductionInputs": {
+    "projects/f1-predictions/website/src/components/race-detail/PredictionFreshnessPanel.tsx": "881734ea2d7d46d7a9213f4e6009547e243af994ee06941319e774475cf3e72f",
+    "projects/f1-predictions/website/src/components/race-detail/KeyFactorsPanel.tsx": "ec49788ceb0c95cc6843dd7c72c984b76f34ad3210ace27e070cea75da94ff71",
+    "projects/f1-predictions/website/src/lib/predictionFreshness.ts": "5ae8f3ef15ae8739b1cde4bfea305204fae7b5808fae86462e9fe60a6c4131b4",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "f32d2a773ad8b51f05a28f0da6a1eaf4f4a3c9df928c3bc16e9c65d324beaf1b",
+    "projects/f1-predictions/website/public/data/rounds/round_15.json": "fbe423ae6a0cdc149f14d6c1de614b4fe58511e5d7994c71d48d012b2e093428",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "66644fe03a065e98e7fd0c2c5bc5b7681c6b0c69664b8c4fa6f67607965322ab"
+  },
+  "originalTestSha256": "db7c18d41cb84f57bcb8bf8d62d063826e2b99bca14bec9d0ca64f9b5419ac70",
+  "correctedTestSha256": "1cea93df1e523b24c2b44e49ea8e290fa135dc5d738f1c90abd10d680758f74a",
+  "observedBaseValues": {
+    "ranking": {
+      "timestamp": {
+        "state": "known",
+        "iso": "2026-10-10T10:22:59.000Z",
+        "epoch": 1791627779000,
+        "label": "10 Oct 2026, 10:22:59 UTC"
+      },
+      "qualifying": {
+        "label": "Verified grid recorded",
+        "detail": "Recorded source: FastF1.",
+        "warning": false
+      },
+      "weather": {
+        "label": "API weather recorded",
+        "detail": "Its input observation time is not published here.",
+        "warning": false
+      },
+      "trioWithFactors": 3,
+      "allDriversWithFactors": 22
+    },
+    "probabilityTimestamp": {
+      "state": "known",
+      "iso": "2026-10-10T10:25:41.000Z",
+      "epoch": 1791627941000,
+      "label": "10 Oct 2026, 10:25:41 UTC"
+    },
+    "rankingVersusProbability": {
+      "label": "Different export times",
+      "warning": true,
+      "note": "The ranking export is older. A later probability export does not establish refreshed rankings or inputs."
+    },
+    "reverseTestActual": {
+      "label": "Different export times",
+      "warning": true,
+      "note": "The ranking export is older. A later probability export does not establish refreshed rankings or inputs."
+    },
+    "contradictoryTestActual": {
+      "qualifying": {
+        "label": "Conflicting qualifying metadata",
+        "detail": "The recorded availability and source disagree.",
+        "warning": true
+      },
+      "weather": {
+        "label": "API weather recorded",
+        "detail": "Its input observation time is not published here.",
+        "warning": false
+      }
+    }
+  },
+  "fixedClockRuns": [
+    {
+      "checkout": "base",
+      "cwd": "/tmp/motorsportverse-circuit-explorer/freshness-base/projects/f1-predictions/website",
+      "clock": "2026-10-10T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 1,
+      "log": "freshness-base-fixed-clock.log",
+      "sha256": "acb62ee60123007d49c24e85d4c0c09d91e8532ee3ffe07a8bf11db119c52939"
+    },
+    {
+      "checkout": "head-before",
+      "cwd": "/workspace/motorsportverse-circuit-explorer/projects/f1-predictions/website",
+      "clock": "2026-10-10T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 1,
+      "log": "freshness-head-before-fixed-clock.log",
+      "sha256": "b69f31c2698e28ece44bbbd31f379936979a85e9b0123d9d1e159aadfede1b01"
+    },
+    {
+      "checkout": "base-june",
+      "clock": "2026-06-27T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 1,
+      "log": "freshness-base-june-fixed-clock.log",
+      "sha256": "e67c62497eb730332dbd68fe30c43f850c30c0d192502c719cb2f3a6dd5a2bcd"
+    },
+    {
+      "checkout": "base-september",
+      "clock": "2026-09-27T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 1,
+      "log": "freshness-base-september-fixed-clock.log",
+      "sha256": "b18a748a9a6e19d69eece0b3a9c40045b542c9e466350224072f2c2a47926f47"
+    },
+    {
+      "checkout": "head-after",
+      "clock": "2026-10-10T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 0,
+      "log": "freshness-head-after-fixed-clock.log",
+      "sha256": "4d93e9ab9472b9c27a23e7085f17a8ce588e6312bb4b76016658a02c39f0edb5"
+    },
+    {
+      "checkout": "head-after-june",
+      "clock": "2026-06-27T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 0,
+      "log": "freshness-head-after-june-fixed-clock.log",
+      "sha256": "bf849064a6ef01a220dfd4a7164949efbea62e47674519b7985fc2b2d73c41d7"
+    },
+    {
+      "checkout": "head-after-september",
+      "clock": "2026-09-27T00:00:00Z",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--ci",
+        "--runInBand",
+        "src/__tests__/predictionFreshness.test.tsx",
+        "--setupFilesAfterEnv",
+        "./jest.setup.js",
+        "/tmp/motorsportverse-circuit-explorer/frozen-freshness-clock.cjs"
+      ],
+      "exit": 0,
+      "log": "freshness-head-after-september-fixed-clock.log",
+      "sha256": "8586037966e6a9a428879ceeeea84c700ad9a083c33bdf4156eeb66f96300b59"
+    }
+  ],
+  "archiveSha256": "cf3825dfe6509e32c42cd42ae30fb37c4a4732974a103fe093aebae09edd5cd7",
+  "archiveBytes": 5345
+}

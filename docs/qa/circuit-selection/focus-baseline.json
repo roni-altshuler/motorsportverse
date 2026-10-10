@@ -1,0 +1,1390 @@
+{
+  "head": "cb76e18ca75b04bbdd2a3e991836f6353a239b4b",
+  "browser": "151.0.7922.173",
+  "mode": "audit; observations, not passing final focus assertions",
+  "hashes": {
+    "projects/f1-predictions/website/src/components/ui/CircuitReplayWorkspace.tsx": "46f4c9f2b38ea7a2ccb56d607e5ae54bb163ec6c55c8a0515c5058b6da17560f",
+    "projects/f1-predictions/website/src/lib/replayStream.ts": "1f41690bae88f3bd865cc6caf4c2261616488d155985c35124a9ce78d4420252",
+    "projects/f1-predictions/website/src/lib/replayStreamDemo.ts": "0beb4c205a80bbda44735800f229be001d5654d0dbfce331515957425c0f4e15",
+    "projects/f1-predictions/website/out/circuits.html": "39a7919dad857ee3d220ec0151bdbc3200f0d42ddfb4bc841bb337716b2be54c",
+    "scripts/qa/circuit_selection.mjs": "09183cdd49ee86ca88db75a1c514d5a33dc7cd605e855f7d43d6f7fa4ada95c4"
+  },
+  "rawSha256": "14b6492210b166e4d9782a1f2cdf47822f540815c34ff2640a4ef5751fa57958",
+  "archiveSha256": "2acb5fb4c771a014ed3590444106c1f67304e2e9b9e6796f398e0b13aba7abac",
+  "results": [
+    {
+      "label": "desktop-no-preference",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "Home"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Races"
+        },
+        {
+          "tag": "A",
+          "name": "Full Season Calendar"
+        },
+        {
+          "tag": "A",
+          "name": "Race TheatreNew"
+        },
+        {
+          "tag": "A",
+          "name": "Lap comparison \u00b7 2025 archive"
+        },
+        {
+          "tag": "A",
+          "name": "Circuit workspace"
+        },
+        {
+          "tag": "A",
+          "name": "Australian Grand PrixR1Official"
+        },
+        {
+          "tag": "A",
+          "name": "Chinese Grand PrixR2Official"
+        },
+        {
+          "tag": "A",
+          "name": "Japanese Grand PrixR3Official"
+        },
+        {
+          "tag": "A",
+          "name": "Miami Grand PrixR4Official"
+        },
+        {
+          "tag": "A",
+          "name": "Canadian Grand PrixR5Official"
+        },
+        {
+          "tag": "A",
+          "name": "Monaco Grand PrixR6Official"
+        },
+        {
+          "tag": "A",
+          "name": "Barcelona-Catalunya Grand PrixR7Official"
+        },
+        {
+          "tag": "A",
+          "name": "Austrian Grand PrixR8Official"
+        },
+        {
+          "tag": "A",
+          "name": "British Grand PrixR9Official"
+        },
+        {
+          "tag": "A",
+          "name": "Belgian Grand PrixR10Official"
+        },
+        {
+          "tag": "A",
+          "name": "Hungarian Grand PrixR11Official"
+        },
+        {
+          "tag": "A",
+          "name": "Dutch Grand PrixR12Official"
+        },
+        {
+          "tag": "A",
+          "name": "Italian Grand PrixR13Official"
+        },
+        {
+          "tag": "A",
+          "name": "Spanish Grand PrixR14Official"
+        },
+        {
+          "tag": "A",
+          "name": "Azerbaijan Grand PrixR15Official"
+        },
+        {
+          "tag": "A",
+          "name": "Singapore Grand PrixR16Official"
+        },
+        {
+          "tag": "A",
+          "name": "United States Grand PrixR17Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Mexico City Grand PrixR18Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "S\u00e3o Paulo Grand PrixR19Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Las Vegas Grand PrixR20Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Qatar Grand PrixR21Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Abu Dhabi Grand PrixR22Upcoming"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Standings"
+        },
+        {
+          "tag": "A",
+          "name": "DriversPer-driver totals"
+        },
+        {
+          "tag": "A",
+          "name": "ConstructorsTeam-by-team"
+        },
+        {
+          "tag": "A",
+          "name": "Who Can Still WinMathematical title race"
+        },
+        {
+          "tag": "A",
+          "name": "Drivers"
+        },
+        {
+          "tag": "A",
+          "name": "Accuracy"
+        },
+        {
+          "tag": "A",
+          "name": "About"
+        },
+        {
+          "tag": "A",
+          "name": "Next race: United States Grand Prix"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Next Race \u2192"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesFull Season CalendarRace TheatreNewLap comparison \u00b7 2025 a",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 1440,
+        "height": 4020.59375,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 718.84375,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 216.421875,
+            "y": 500.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 776.421875,
+            "y": 500.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 496.421875,
+            "y": 220.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 496.421875,
+            "y": 780.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "label": "desktop-reduce",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "Home"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Races"
+        },
+        {
+          "tag": "A",
+          "name": "Full Season Calendar"
+        },
+        {
+          "tag": "A",
+          "name": "Race TheatreNew"
+        },
+        {
+          "tag": "A",
+          "name": "Lap comparison \u00b7 2025 archive"
+        },
+        {
+          "tag": "A",
+          "name": "Circuit workspace"
+        },
+        {
+          "tag": "A",
+          "name": "Australian Grand PrixR1Official"
+        },
+        {
+          "tag": "A",
+          "name": "Chinese Grand PrixR2Official"
+        },
+        {
+          "tag": "A",
+          "name": "Japanese Grand PrixR3Official"
+        },
+        {
+          "tag": "A",
+          "name": "Miami Grand PrixR4Official"
+        },
+        {
+          "tag": "A",
+          "name": "Canadian Grand PrixR5Official"
+        },
+        {
+          "tag": "A",
+          "name": "Monaco Grand PrixR6Official"
+        },
+        {
+          "tag": "A",
+          "name": "Barcelona-Catalunya Grand PrixR7Official"
+        },
+        {
+          "tag": "A",
+          "name": "Austrian Grand PrixR8Official"
+        },
+        {
+          "tag": "A",
+          "name": "British Grand PrixR9Official"
+        },
+        {
+          "tag": "A",
+          "name": "Belgian Grand PrixR10Official"
+        },
+        {
+          "tag": "A",
+          "name": "Hungarian Grand PrixR11Official"
+        },
+        {
+          "tag": "A",
+          "name": "Dutch Grand PrixR12Official"
+        },
+        {
+          "tag": "A",
+          "name": "Italian Grand PrixR13Official"
+        },
+        {
+          "tag": "A",
+          "name": "Spanish Grand PrixR14Official"
+        },
+        {
+          "tag": "A",
+          "name": "Azerbaijan Grand PrixR15Official"
+        },
+        {
+          "tag": "A",
+          "name": "Singapore Grand PrixR16Official"
+        },
+        {
+          "tag": "A",
+          "name": "United States Grand PrixR17Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Mexico City Grand PrixR18Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "S\u00e3o Paulo Grand PrixR19Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Las Vegas Grand PrixR20Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Qatar Grand PrixR21Upcoming"
+        },
+        {
+          "tag": "A",
+          "name": "Abu Dhabi Grand PrixR22Upcoming"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Standings"
+        },
+        {
+          "tag": "A",
+          "name": "DriversPer-driver totals"
+        },
+        {
+          "tag": "A",
+          "name": "ConstructorsTeam-by-team"
+        },
+        {
+          "tag": "A",
+          "name": "Who Can Still WinMathematical title race"
+        },
+        {
+          "tag": "A",
+          "name": "Drivers"
+        },
+        {
+          "tag": "A",
+          "name": "Accuracy"
+        },
+        {
+          "tag": "A",
+          "name": "About"
+        },
+        {
+          "tag": "A",
+          "name": "Next race: United States Grand Prix"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Next Race \u2192"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesFull Season CalendarRace TheatreNewLap comparison \u00b7 2025 a",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 1440,
+        "height": 3990.09375,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 718.84375,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 216.421875,
+            "y": 500.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 776.421875,
+            "y": 500.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 496.421875,
+            "y": 220.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 496.421875,
+            "y": 780.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "label": "mobile-no-preference",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open menu"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesStandingsDriversAccuracyAboutNext Race \u2192R16 \u00b7 Singapore Gr",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 390,
+        "height": 6641.890625,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 316,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 21,
+            "y": 422.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 369,
+            "y": 422.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 195,
+            "y": 248.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 195,
+            "y": 596.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "label": "mobile-reduce",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open menu"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesStandingsDriversAccuracyAboutNext Race \u2192R16 \u00b7 Singapore Gr",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 390,
+        "height": 6615.25,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 316,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 21,
+            "y": 422.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 369,
+            "y": 422.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 195,
+            "y": 248.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 195,
+            "y": 596.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "label": "narrow-no-preference",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open menu"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesStandingsDriversAccuracyAboutNext Race \u2192R16 \u00b7 Singapore Gr",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 320,
+        "height": 6951.296875,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 246,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 21,
+            "y": 370.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 299,
+            "y": 370.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 160,
+            "y": 231.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 160,
+            "y": 509.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    },
+    {
+      "label": "narrow-reduce",
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Skip to main content"
+        },
+        {
+          "tag": "A",
+          "name": "Winners called 11/16"
+        },
+        {
+          "tag": "A",
+          "name": "GitHub repository"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open menu"
+        },
+        {
+          "tag": "A",
+          "name": "RaceIQ F1 home"
+        },
+        {
+          "tag": "A",
+          "name": "R16 \u00b7 Singapore Grand PrixR16"
+        },
+        {
+          "tag": "A",
+          "name": "Local captures"
+        },
+        {
+          "tag": "A",
+          "name": "Energy sandbox"
+        },
+        {
+          "tag": "SELECT",
+          "name": "Formula 1Formula 2Formula 3Formula EIndyCarNASCARMotoGPWRCWECIMSALe Mans"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Try fictional demo"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "INPUT",
+          "name": "Open local capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear capture"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Alex Rivera on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Jamie Brooks on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Select Morgan Lee on circuit"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Clear driver selection"
+        }
+      ],
+      "hiddenFileFocus": [
+        {
+          "tag": "INPUT",
+          "name": "Open local capture",
+          "type": "file",
+          "clip": "auto",
+          "clipPath": "inset(50%)",
+          "width": 1,
+          "height": 1,
+          "outline": {
+            "width": "1px",
+            "style": "solid"
+          }
+        }
+      ],
+      "afterClear": {
+        "tag": "BODY",
+        "name": "Skip to main contentF1 2026Winners called 11/16GitHubHomeRacesStandingsDriversAccuracyAboutNext Race \u2192R16 \u00b7 Singapore Gr",
+        "type": null,
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 320,
+        "height": 6948.046875,
+        "outline": {
+          "width": "3px",
+          "style": "none"
+        }
+      },
+      "nextTabAfterClear": {
+        "tag": "INPUT",
+        "name": "Capture snapshot",
+        "type": "range",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 246,
+        "height": 32,
+        "outline": {
+          "width": "1px",
+          "style": "solid"
+        }
+      },
+      "edges": [
+        {
+          "name": "QA Left",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 21,
+            "y": 370.234375
+          }
+        },
+        {
+          "name": "QA Right",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 299,
+            "y": 370.234375
+          }
+        },
+        {
+          "name": "QA Top",
+          "percentage": "0%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 160,
+            "y": 231.234375
+          }
+        },
+        {
+          "name": "QA Bottom",
+          "percentage": "100%",
+          "width": 44,
+          "height": 44,
+          "withinBrowser": true,
+          "centerError": 0,
+          "outerHit": true,
+          "point": {
+            "x": 160,
+            "y": 509.234375
+          }
+        }
+      ],
+      "naturalMarkerFocus": {
+        "tag": "BUTTON",
+        "name": "Select Jamie Brooks on circuit",
+        "type": "button",
+        "clip": "auto",
+        "clipPath": "none",
+        "width": 44,
+        "height": 44,
+        "outline": {
+          "width": "2px",
+          "style": "solid"
+        }
+      }
+    }
+  ]
+}

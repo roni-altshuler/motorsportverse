@@ -1,0 +1,23 @@
+{
+  "base": "ebfa752ad1f4c29f437358f099c354e0b74c9f6e",
+  "untouchedInputs": {
+    "projects/f1-predictions/website/src/__tests__/predictionFreshness.test.tsx": "db7c18d41cb84f57bcb8bf8d62d063826e2b99bca14bec9d0ca64f9b5419ac70",
+    "projects/f1-predictions/website/src/components/race-detail/PredictionFreshnessPanel.tsx": "881734ea2d7d46d7a9213f4e6009547e243af994ee06941319e774475cf3e72f",
+    "projects/f1-predictions/website/src/components/race-detail/KeyFactorsPanel.tsx": "ec49788ceb0c95cc6843dd7c72c984b76f34ad3210ace27e070cea75da94ff71",
+    "projects/f1-predictions/website/src/lib/predictionFreshness.ts": "5ae8f3ef15ae8739b1cde4bfea305204fae7b5808fae86462e9fe60a6c4131b4",
+    "projects/f1-predictions/website/public/data/rounds/round_16.json": "f32d2a773ad8b51f05a28f0da6a1eaf4f4a3c9df928c3bc16e9c65d324beaf1b",
+    "projects/f1-predictions/website/public/data/rounds/round_15.json": "fbe423ae6a0cdc149f14d6c1de614b4fe58511e5d7994c71d48d012b2e093428",
+    "projects/f1-predictions/website/public/data/probabilities/round_16.json": "66644fe03a065e98e7fd0c2c5bc5b7681c6b0c69664b8c4fa6f67607965322ab"
+  },
+  "failures": [
+    "actual artifacts retain independent dates, estimated inputs and an unknown cutoff",
+    "an older probability artifact receives the reverse warning",
+    "contradictory input metadata is surfaced rather than silently selected",
+    "absent factor data describes this export without promising a future run; graded hiding remains"
+  ],
+  "isolatedTests": "4 failed, 19 passed, 23 total",
+  "fullF1Tests": "4 failed, 254 passed, 258 total",
+  "workspaceTestsPassed": 10,
+  "baselineLogSha256": "a3796bac7cb71de746036b2e70863415b77c0d05e164d81bb25ed97da05c274c",
+  "baselineLogCloudPath": "/tmp/motorsportverse-circuit-explorer/base-freshness-failures.log"
+}

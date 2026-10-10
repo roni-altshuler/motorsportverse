@@ -11,6 +11,19 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Circuit workspace driver selection — 2026-10-10
+
+- Make recorded map positions selectable with 44px native buttons and visible
+  keyboard focus, synchronized with the existing driver list.
+- Keep the selected name and clear action beside the map on small screens;
+  label its fictional or unverified source at the map itself.
+- Preserve supplied coordinates, manual snapshots, missing-data states and
+  unavailable real-map coverage. Sync the existing shared copies across all 11 sites.
+- Restore focus when the driver clear control unmounts; remove the clipped file
+  input's duplicate keyboard stop while retaining the visible file chooser action.
+- Give F1 freshness scenarios explicit test fixtures so recurring exports cannot
+  reverse timestamp order, remove source conflicts or supply supposedly absent factors.
+
 ### Frontend Next.js maintenance — 2026-10-09
 
 - Pin Next.js and matching ESLint configuration to 16.3.8 across the hub and ten

@@ -150,6 +150,11 @@ browser-local captures in Tom Shaw's replay output format, or try a clearly
 fictional demo. Upstream code vendoring and real Zandvoort artwork remain blocked
 by their respective license/source dependencies; no new historical telemetry is
 published. The shared adapter is available to all series without map approval.
+Recorded positions can be selected directly with touch or keyboard, with the
+selected name and a clear action beside the map. The driver list remains available
+for overlapping, missing or off-map samples. Clear restores keyboard focus, and
+the visible import button opens the file chooser. [Responsive selection evidence](docs/qa/circuit-selection/README.md)
+documents the bounded change and deterministic freshness-test correction.
 
 The F1 [archived lap comparison](docs/ARCHIVED_LAP_COMPARISON.md) is a bounded
 2025 Monaco timing pilot merged through PR #13. It uses existing committed

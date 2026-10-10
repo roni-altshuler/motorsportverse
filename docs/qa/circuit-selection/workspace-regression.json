@@ -1,0 +1,243 @@
+{
+  "browser": "151.0.7922.173",
+  "basePath": "/motorsportverse/projects/f1",
+  "upstreamContractRevision": "efdb8a31900d64e3f269d66601ab9726b7dc5923",
+  "sourceSha256": {
+    "src/lib/replayStream.ts": "1f41690bae88f3bd865cc6caf4c2261616488d155985c35124a9ce78d4420252",
+    "src/lib/replayStreamDemo.ts": "0beb4c205a80bbda44735800f229be001d5654d0dbfce331515957425c0f4e15",
+    "src/components/ui/CircuitReplayWorkspace.tsx": "1756aee041c66511969dc6469fdcd0f4c40240c374707a5068a1c19195f852d9",
+    "src/app/circuits/page.tsx": "36089ff69cbe0dce8b34badf42595029e5c77107c5ddb9018d3221e234fd1d30",
+    "src/app/layout.tsx": "cfd29a78a7b7b8cfc41dd53818648fb4e78d0828a1f6463b321854f31ec18607",
+    "src/components/RouteMain.tsx": "549c627b982c05a5f599fa764c5fb53278989bd7b378b852357dd6bf5827d3ec",
+    "pythonExporter": "6c63444f49e28b993e8b6a59a95053a8d0acbb4148738b70469dc09476ae1d72",
+    "browserRunner": "397e566d980aff305ce7e8736638f4e2d320204cb83167a45975c1d90d1b0309"
+  },
+  "results": [
+    {
+      "label": "desktop-reduce",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "reduce",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "fastf1SyntheticConverterChecks": null,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 1440,
+        "viewport": 1440
+      },
+      "pageErrors": [],
+      "resources": [],
+      "consoleErrorCounts": {
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED": 30
+      },
+      "failedRequestCounts": [
+        {
+          "method": "HEAD",
+          "host": "",
+          "error": "net::ERR_ABORTED",
+          "count": 64
+        },
+        {
+          "method": "GET",
+          "host": "flagcdn.com",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED",
+          "count": 30
+        }
+      ]
+    },
+    {
+      "label": "desktop-no-preference",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "motion": "no-preference",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "fastf1SyntheticConverterChecks": null,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 1440,
+        "viewport": 1440
+      },
+      "pageErrors": [],
+      "resources": [],
+      "consoleErrorCounts": {
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED": 30
+      },
+      "failedRequestCounts": [
+        {
+          "method": "HEAD",
+          "host": "",
+          "error": "net::ERR_ABORTED",
+          "count": 64
+        },
+        {
+          "method": "GET",
+          "host": "flagcdn.com",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED",
+          "count": 30
+        }
+      ]
+    },
+    {
+      "label": "mobile-reduce",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "motion": "reduce",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "fastf1SyntheticConverterChecks": null,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 390,
+        "viewport": 390
+      },
+      "pageErrors": [],
+      "resources": [],
+      "consoleErrorCounts": {
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED": 20
+      },
+      "failedRequestCounts": [
+        {
+          "method": "HEAD",
+          "host": "",
+          "error": "net::ERR_ABORTED",
+          "count": 27
+        },
+        {
+          "method": "GET",
+          "host": "flagcdn.com",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED",
+          "count": 20
+        }
+      ]
+    },
+    {
+      "label": "mobile-no-preference",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "motion": "no-preference",
+      "fictionalDataOnly": true,
+      "realUpstreamSoftwareExecuted": false,
+      "fixtureInjections": [
+        "delayed browser-local File.text",
+        "synthetic NDJSON upload"
+      ],
+      "seriesAvailabilityChecks": 11,
+      "fastf1SyntheticConverterChecks": null,
+      "driverSelectionClicks": 18,
+      "menuKeyboardNavigationCycles": 1,
+      "eventSoftNavigationCycles": 2,
+      "staticBeforeInput": true,
+      "keyboardFocus": {
+        "width": "2px",
+        "style": "solid",
+        "color": "rgb(255, 255, 255)"
+      },
+      "rotationMatrix": {
+        "a": 0.8660254037844387,
+        "b": -0.49999999999999994,
+        "c": -0.49999999999999994,
+        "d": -0.8660254037844387
+      },
+      "postImportRequests": [],
+      "metrics": {
+        "width": 390,
+        "viewport": 390
+      },
+      "pageErrors": [],
+      "resources": [],
+      "consoleErrorCounts": {
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED": 24
+      },
+      "failedRequestCounts": [
+        {
+          "method": "HEAD",
+          "host": "",
+          "error": "net::ERR_ABORTED",
+          "count": 28
+        },
+        {
+          "method": "GET",
+          "host": "flagcdn.com",
+          "error": "net::ERR_TUNNEL_CONNECTION_FAILED",
+          "count": 24
+        }
+      ]
+    }
+  ],
+  "rawSha256": "cafafb1eeb2ca3184709848b415bd0b9a2e2973e9c9fdd123a6e8ed049f67e6c",
+  "rawBytes": 54986,
+  "rawCloudPath": "/tmp/motorsportverse-circuit-explorer/followup-workspace/browser-qa.json",
+  "rawGitPath": "docs/qa/circuit-selection/workspace-regression.json.gz",
+  "archiveSha256": "4977853d8a7fac3049b2cc4402b8243ff8ac906a07e5800f3f431ecbe6293edd",
+  "archiveBytes": 2035
+}
