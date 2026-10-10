@@ -6,9 +6,9 @@
   ],
   "circuitKey": "Singapore",
   "ensemble_weights": {
-    "gb": 0.726937622221892,
-    "lstm": 0.0,
-    "xgb": 0.2730623777781081
+    "gb": 0.5184155058145022,
+    "lstm": 0.18,
+    "xgb": 0.3015844941854979
   },
   "feature_cols": [
     "TeamAdjustedPace",
@@ -33,7 +33,9 @@
     "QualifyingRank",
     "GridAdvantage",
     "CurrentForm",
-    "PreviousPosition",
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
     "SeasonMomentum",
     "PositionTrend",
     "DriverPredictionBias",
@@ -53,35 +55,46 @@
     "wet_weather_elo",
     "qualifying_elo",
     "racecraft_elo",
-    "teammate_delta_elo"
+    "teammate_delta_elo",
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits"
   ],
-  "gitSha": "5634a6c40ff9441c4b02cd5c3d807e1f67108a31",
+  "gitSha": "f2d8e89d8f41b9987815990410011555155b4e70",
   "gpName": "Singapore Grand Prix",
   "kind": "qualifying-time",
-  "lstm_used": false,
+  "lstm_used": true,
   "max_spread_s": 3.5,
   "metrics": [
     {
-      "MAE (s)": 0.07089740431173083,
+      "MAE (s)": 0.45336153480858454,
       "Model": "Gradient Boosting",
-      "RMSE (s)": 0.0914526588560403,
-      "R\u00b2": 0.9844095530447244
+      "RMSE (s)": 0.4980210772500126,
+      "R\u00b2": 0.8842758217534535
     },
     {
-      "MAE (s)": 0.18874072265624875,
+      "MAE (s)": 0.7793160918945319,
       "Model": "XGBoost",
-      "RMSE (s)": 0.19894161865092058,
-      "R\u00b2": 0.9262236462422856
+      "RMSE (s)": 0.8324372638083475,
+      "R\u00b2": 0.6766806590176758
     },
     {
-      "MAE (s)": 0.07216132667778936,
-      "Model": "Ensemble (GBR + XGB)",
-      "RMSE (s)": 0.09926057929888177,
-      "R\u00b2": 0.9816337917690368
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.4134969043417982,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.47005438858380155,
+      "R\u00b2": 0.8969080196406384
     }
   ],
-  "pythonVersion": "3.11.14",
+  "pythonVersion": "3.11.17",
   "round": 16,
-  "savedAt": "2026-06-27T17:06:39+00:00",
+  "savedAt": "2026-10-10T10:22:59+00:00",
   "season": 2026
 }

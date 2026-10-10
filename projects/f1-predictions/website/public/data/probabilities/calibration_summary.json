@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T01:06:56Z",
+  "generatedAt": "2026-10-10T10:25:41Z",
   "trainingSeasons": [],
   "dataLimitation": "Each round is calibrated strictly out-of-sample: the calibrator is fit only on rounds that completed BEFORE it (expanding window), never on its own result. A round with fewer than --min-completed-rounds prior races publishes raw Monte Carlo probabilities (calibration.applied=false) \u2014 publishing raw is strictly better than over-fitting a handful of events. Published probabilities carry a small floor (no driver is ever 0.0) and are renormalized per market (win sums to 1, podium to 3, top6 to 6, top10 to 10). The metrics below score the FINAL PUBLISHED probabilities against actual results, not the raw inputs.",
   "scores": "published",
@@ -16,7 +16,7 @@
           "count": 267
         },
         {
-          "meanPred": 0.14745232450670026,
+          "meanPred": 0.14745232450670023,
           "empirical": 0.1702127659574468,
           "count": 47
         },
@@ -31,7 +31,7 @@
           "count": 2
         },
         {
-          "meanPred": 0.5498303748770508,
+          "meanPred": 0.5498303748770507,
           "empirical": 1.0,
           "count": 1
         }
@@ -55,7 +55,7 @@
           "count": 26
         },
         {
-          "meanPred": 0.2517674084978576,
+          "meanPred": 0.25176740849785767,
           "empirical": 0.25,
           "count": 24
         },
@@ -70,7 +70,7 @@
           "count": 22
         },
         {
-          "meanPred": 0.5355445297916159,
+          "meanPred": 0.535544529791616,
           "empirical": 0.75,
           "count": 12
         },
@@ -114,7 +114,7 @@
           "count": 13
         },
         {
-          "meanPred": 0.443847416318891,
+          "meanPred": 0.44384741631889096,
           "empirical": 0.6875,
           "count": 16
         },
