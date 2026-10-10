@@ -26,8 +26,17 @@ legacy outlines, quarantines and published data remain unchanged.
 static-export cases: 1440px desktop, 390px touch and 320px touch, each under normal
 and reduced motion. The source inputs are the unchanged original fictional demo
 and original QA-only messages embedded in the runner.
+The [compressed original record](final.json.gz) retains every measured Tab state;
+the readable summary keeps the navigation order and relevant focus measurements.
 
 - Native touch and keyboard actions select, toggle and clear the same driver.
+- Natural Tab and Shift+Tab reach the map controls without programmatic focus.
+  Enter on the visible import button produces a file-chooser event. Clear restores
+  focus to the previously selected marker; when that sample is unavailable, focus
+  stays on the named map-selection group and the next Tab reaches the snapshot input.
+- Supplied positions exactly at all four **map viewport** edges retain their
+  44px targets. Twenty-four probes reach the outer portion beyond the SVG bounds
+  with the map centered in the browser viewport; no coordinate is clamped or moved.
 - Every measured hit target is 44×44px; keyboard outlines are 2px solid.
 - Independent SVG screen matrices confirm rotated-source alignment within 0.016px.
 - Missing, off-map, absent and overlapping samples retain truthful list access.
@@ -37,6 +46,14 @@ and original QA-only messages embedded in the runner.
 - One external flag-image request per case is deliberately blocked to keep the
   runner local. Its console error and broken header image remain visible in the
   records/screenshots; consoles are not claimed clean.
+
+[Before-focus observations](focus-baseline.json) reproduce six cases on the
+original PR head: Clear left focus on `BODY`, and Tab reached a fully clipped
+1px file input. The [compressed original record](focus-baseline.json.gz) retains
+the observations and source/export hashes. The fixes restore focus and leave the
+visible import button as the file chooser's keyboard stop. Its event subscription
+gets a browser round-trip before raw Enter, avoiding the recorder's initial
+interception race; app behavior was not changed for that recorder issue.
 
 The [broader workspace regression summary](workspace-regression.json) records
 four additional desktop/mobile motion cases using the existing runner. Its map
@@ -53,8 +70,8 @@ request and error, with its SHA-256 in the summary. No real user capture was tes
 ## Checks and remaining blocker
 
 The [local check matrix](local-checks.json) records all 55 commands and log hashes:
-11 installs, lints, type checks and production builds pass; ten full Jest suites
-pass. Overall, 2,274 tests pass, four fail and eight are skipped. ESLint reports
+11 installs, lints, type checks and production builds pass; all eleven Jest suites
+pass. Overall, 2,280 tests pass and eight are skipped. ESLint reports
 29 warnings and no errors. The [original logs](local-check-logs.tar.gz) include the
 isolated baseline failure run. Exact-head CI links are in the PR description.
 Shared component/tests follow the F1-canonical sync contract; the production
@@ -63,14 +80,17 @@ install, ESLint, its full Jest suite, types and production build at its actual
 Pages base path, using Node 20.20.2 / npm 10.9.9. Generated assets are restored in
 the isolated worktree rather than committed. No provider refresh is run.
 
-**F1's full suite has four pre-existing failures** in `predictionFreshness.test.tsx`:
-hard-coded June/September dates and factor assumptions no longer match the
-October 10 committed round-16 artifacts. The same four fail when that untouched
-test runs alone. Its imported components, library and data match base exactly;
-the ten workspace tests pass. Assertions and prediction data are unchanged.
-This PR stays draft for independent review; it is not merge-ready while this
-check is red. [Baseline failure evidence](freshness-baseline.json) records the
-untouched input hashes and failing test names.
+The original PR head reproduced four base failures in `predictionFreshness.test.tsx`.
+Its scenarios accidentally imported changing round exports. A narrowly scoped
+[deterministic test correction](freshness-correction.md) supplies explicit fixtures
+while retaining all assertions; two added checks cover current-export timestamp
+wiring and recorded factors. Base fails identically at June, September and October
+clocks; the corrected suite passes 25/25 at each. F1's full suite now passes 260
+tests. Production freshness logic, source data and model outputs remain unchanged.
+[Historical baseline evidence](freshness-baseline.json) records the earlier test
+and input hashes; [new diagnosis](freshness-diagnosis.json) identifies the exact
+expected/actual values and unchanged production inputs. This PR stays draft for
+independent parent review; no merge is performed.
 
 ## Reproduce
 

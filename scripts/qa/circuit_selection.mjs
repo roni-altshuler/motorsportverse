@@ -11,7 +11,7 @@ import { waitForRouteReady } from "../lib/route_readiness.mjs";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const output = resolve(process.argv[2] || "/tmp/circuit-selection-qa");
 const mode = process.argv[3] || "final";
-assert.ok(["baseline", "final"].includes(mode));
+assert.ok(["baseline", "audit", "final"].includes(mode));
 const base = "/motorsportverse/projects/f1";
 const exported = resolve(root, "projects/f1-predictions/website/out");
 await mkdir(output, { recursive: true });
@@ -109,15 +109,233 @@ const capture = [
 ]
   .map((frame) => JSON.stringify(frame))
   .join("\n");
+async function checkNaturalFocusAndEdges(page, workspace, touch) {
+  await page.reload({ waitUntil: "networkidle" });
+  await workspace
+    .getByText("Circuit map unavailable", { exact: true })
+    .waitFor();
+  const tabOrder = [];
+  const focused = () =>
+    page.evaluate(() => {
+      const element = document.activeElement;
+      const style = getComputedStyle(element);
+      return {
+        tag: element.tagName,
+        name:
+          element.getAttribute("aria-label") ||
+          element.textContent.trim().slice(0, 120),
+        type: element.getAttribute("type"),
+        clip: style.clip,
+        clipPath: style.clipPath,
+        width: element.getBoundingClientRect().width,
+        height: element.getBoundingClientRect().height,
+        outline: { width: style.outlineWidth, style: style.outlineStyle },
+      };
+    });
+  async function tabTo(name, key = "Tab") {
+    for (let i = 0; i < 80; i++) {
+      await page.keyboard.press(key);
+      const entry = await focused();
+      tabOrder.push(entry);
+      if (entry.name === name) return entry;
+    }
+    throw new Error(`Natural Tab navigation did not reach ${name}`);
+  }
+  await tabTo("Try fictional demo");
+  await page.keyboard.press("Enter");
+  await workspace
+    .getByRole("img", { name: "Fictional circuit view", exact: true })
+    .waitFor();
+  await tabTo("Open local capture");
+  const fileChooser = page.waitForEvent("filechooser");
+  // Complete a browser round-trip so chooser interception precedes raw keyboard events.
+  await page.evaluate(() => document.readyState);
+  await page.keyboard.press("Enter");
+  await (await fileChooser).setFiles([]);
+  await tabTo("Select Alex Rivera on circuit");
+  const jamie = await tabTo("Select Jamie Brooks on circuit");
+  assert.deepEqual(jamie.outline, { width: "2px", style: "solid" });
+  await page.keyboard.press("Space");
+  assert.equal(
+    await workspace
+      .getByRole("button", { name: "Jamie Brooks", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  await tabTo("Select Morgan Lee on circuit");
+  await tabTo("Clear driver selection");
+  await page.keyboard.press("Enter");
+  const afterClear = await focused();
+  await page.keyboard.press("Tab");
+  const nextTabAfterClear = await focused();
+  const hiddenFileFocus = tabOrder.filter((entry) => entry.type === "file");
+  if (mode === "audit")
+    console.log(
+      JSON.stringify({ afterClear, nextTabAfterClear, hiddenFileFocus }),
+    );
+  if (mode === "final") {
+    assert.equal(
+      afterClear.name,
+      "Select Jamie Brooks on circuit",
+      "Clear restores focus to the selected marker",
+    );
+    assert.equal(nextTabAfterClear.name, "Select Morgan Lee on circuit");
+    assert.equal(
+      hiddenFileFocus.length,
+      0,
+      "The visible import button owns the keyboard stop",
+    );
+  }
+  const edgeCapture = [
+    JSON.stringify({
+      frame_index: 0,
+      track_geometry: {
+        x: [-3, 3, 3, -3, -3],
+        y: [-4, -4, 4, 4, -4],
+        rotation_deg: 0,
+      },
+      frame: {
+        t: 0,
+        drivers: {
+          LFT: { name: "QA Left", x: -5.8, y: 0 },
+          RGT: { name: "QA Right", x: 5.8, y: 0 },
+          TOP: { name: "QA Top", x: 0, y: 5.8 },
+          BTM: { name: "QA Bottom", x: 0, y: -5.8 },
+        },
+      },
+    }),
+    JSON.stringify({
+      frame_index: 1,
+      frame: {
+        t: 1,
+        drivers: { BTM: { name: "QA Bottom", x: null, y: null } },
+      },
+    }),
+  ].join("\n");
+  await workspace.locator('input[type="file"]').setInputFiles({
+    name: "original-qa-viewport-edges.ndjson",
+    mimeType: "application/json",
+    buffer: Buffer.from(edgeCapture),
+  });
+  const map = workspace.getByRole("img", {
+    name: "Unverified local circuit view",
+    exact: true,
+  });
+  await map.waitFor();
+  await map.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "center" }),
+  );
+  const edges = [];
+  for (const [name, axis, percentage, side] of [
+    ["QA Left", "left", "0%", "left"],
+    ["QA Right", "left", "100%", "right"],
+    ["QA Top", "top", "0%", "top"],
+    ["QA Bottom", "top", "100%", "bottom"],
+  ]) {
+    await map.evaluate((element) =>
+      element.scrollIntoView({ behavior: "instant", block: "center" }),
+    );
+    await page.waitForTimeout(150);
+    const marker = workspace.getByRole("button", {
+      name: `Select ${name} on circuit`,
+      exact: true,
+    });
+    const measured = await marker.evaluate(
+      (button, { axis, side }) => {
+        const rect = button.getBoundingClientRect();
+        const svg = button.parentElement
+          .querySelector("svg")
+          .getBoundingClientRect();
+        const point = {
+          x:
+            side === "left"
+              ? rect.left + 2
+              : side === "right"
+                ? rect.right - 2
+                : rect.left + rect.width / 2,
+          y:
+            side === "top"
+              ? rect.top + 2
+              : side === "bottom"
+                ? rect.bottom - 2
+                : rect.top + rect.height / 2,
+        };
+        return {
+          percentage: button.style[axis],
+          width: rect.width,
+          height: rect.height,
+          withinBrowser:
+            rect.left >= 0 &&
+            rect.right <= innerWidth &&
+            rect.top >= 0 &&
+            rect.bottom <= innerHeight,
+          centerError:
+            side === "left"
+              ? Math.abs(rect.left + rect.width / 2 - svg.left)
+              : side === "right"
+                ? Math.abs(rect.left + rect.width / 2 - svg.right)
+                : side === "top"
+                  ? Math.abs(rect.top + rect.height / 2 - svg.top)
+                  : Math.abs(rect.top + rect.height / 2 - svg.bottom),
+          outerHit:
+            document.elementFromPoint(point.x, point.y)?.closest("button") ===
+            button,
+          point,
+        };
+      },
+      { axis, side },
+    );
+    assert.equal(measured.percentage, percentage);
+    assert.equal(measured.width, 44);
+    assert.equal(measured.height, 44);
+    assert.ok(
+      measured.withinBrowser && measured.outerHit && measured.centerError < 0.1,
+      JSON.stringify({ name, ...measured }),
+    );
+    if (touch) await page.touchscreen.tap(measured.point.x, measured.point.y);
+    else await page.mouse.click(measured.point.x, measured.point.y);
+    assert.equal(await marker.getAttribute("aria-pressed"), "true");
+    edges.push({ name, ...measured });
+  }
+  let afterUnavailableClear, nextTabAfterUnavailableClear;
+  if (mode === "final") {
+    await tabTo("Next snapshot");
+    await page.keyboard.press("Enter");
+    assert.match(
+      await workspace.getByLabel("Map selection", { exact: true }).innerText(),
+      /Position unavailable/,
+    );
+    await tabTo("Clear driver selection", "Shift+Tab");
+    await page.keyboard.press("Enter");
+    afterUnavailableClear = await focused();
+    assert.equal(afterUnavailableClear.name, "Map selection");
+    assert.deepEqual(afterUnavailableClear.outline, {
+      width: "2px",
+      style: "solid",
+    });
+    await page.keyboard.press("Tab");
+    nextTabAfterUnavailableClear = await focused();
+    assert.equal(nextTabAfterUnavailableClear.name, "Capture snapshot");
+  }
+  return {
+    tabOrder,
+    hiddenFileFocus,
+    afterClear,
+    nextTabAfterClear,
+    edges,
+    afterUnavailableClear,
+    nextTabAfterUnavailableClear,
+  };
+}
 try {
   for (const [size, viewport] of [
     ["desktop", { width: 1440, height: 1000 }],
     ["mobile", { width: 390, height: 844 }],
-    ...(mode === "final" ? [["narrow", { width: 320, height: 740 }]] : []),
+    ...(mode !== "baseline" ? [["narrow", { width: 320, height: 740 }]] : []),
   ]) {
     for (const motion of ["no-preference", "reduce"]) {
       const label = `${size}-${motion}`;
-      const touch = mode === "final" && size !== "desktop";
+      const touch = mode !== "baseline" && size !== "desktop";
       const context = await browser.newContext({
         viewport,
         reducedMotion: motion,
@@ -268,7 +486,7 @@ try {
           input: touch ? "touchscreen" : "mouse",
           markerFocus,
         };
-        if (mode === "final") {
+        if (mode !== "baseline") {
           const selection = workspace.getByLabel("Map selection", {
             exact: true,
           });
@@ -365,6 +583,11 @@ try {
             alignment,
             staticMotion: motion,
             sourceFailuresTruthful: true,
+            keyboardAndEdges: await checkNaturalFocusAndEdges(
+              page,
+              workspace,
+              touch,
+            ),
           });
         }
         assert.equal(
@@ -377,7 +600,8 @@ try {
         assert.deepEqual(failedResources, []);
         results.push({
           label,
-          passed: true,
+          passed: mode === "audit" ? undefined : true,
+          observed: mode === "audit" ? true : undefined,
           seriesOptions,
           measurements,
           errors,
@@ -385,7 +609,9 @@ try {
           failedResources,
           blockedExternal,
         });
-        console.log(`${mode} ${label}: passed`);
+        console.log(
+          `${mode} ${label}: ${mode === "audit" ? "observed" : "passed"}`,
+        );
       } finally {
         await context.close();
       }

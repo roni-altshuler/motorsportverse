@@ -19,6 +19,10 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   label its fictional or unverified source at the map itself.
 - Preserve supplied coordinates, manual snapshots, missing-data states and
   unavailable real-map coverage. Sync the existing shared copies across all 11 sites.
+- Restore focus when the driver clear control unmounts; remove the clipped file
+  input's duplicate keyboard stop while retaining the visible file chooser action.
+- Give F1 freshness scenarios explicit test fixtures so recurring exports cannot
+  reverse timestamp order, remove source conflicts or supply supposedly absent factors.
 
 ### Frontend Next.js maintenance — 2026-10-09
 

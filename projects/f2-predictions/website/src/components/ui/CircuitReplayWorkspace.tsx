@@ -43,6 +43,8 @@ export default function CircuitReplayWorkspace() {
   const [error, setError] = useState<string | null>(null);
   const generation = useRef(0);
   const fileInput = useRef<HTMLInputElement>(null);
+  const mapControls = useRef<HTMLDivElement>(null);
+  const mapSelection = useRef<HTMLDivElement>(null);
   useEffect(
     () => () => {
       generation.current++;
@@ -106,6 +108,12 @@ export default function CircuitReplayWorkspace() {
   function selectDriver(code: string) {
     setSelected((current) => (current === code ? null : code));
   }
+  function clearDriver() {
+    // Move focus before the clear button unmounts. Missing samples keep map context.
+    const marker = mapControls.current?.querySelector<HTMLButtonElement>('[aria-pressed="true"]');
+    (marker ?? mapSelection.current)?.focus();
+    setSelected(null);
+  }
   // Match the SVG's supplied rotation and world-Y flip; never move an out-of-view sample.
   const mapDrivers =
     shape && viewport
@@ -165,6 +173,7 @@ export default function CircuitReplayWorkspace() {
             id={`${id}-capture`}
             aria-label="Open local capture"
             type="file"
+            tabIndex={-1}
             accept=".json,.jsonl,.ndjson"
             className="sr-only"
             onChange={(e) => {
@@ -268,7 +277,10 @@ export default function CircuitReplayWorkspace() {
               >
                 {shape && viewport ? (
                   <div className="w-full px-6 py-5">
-                    <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+                    <div
+                      ref={mapControls}
+                      className="relative mx-auto aspect-square w-full max-w-[520px]"
+                    >
                       <svg
                         viewBox={viewport.viewBox}
                         className="aspect-square w-full max-h-[520px]"
@@ -325,8 +337,10 @@ export default function CircuitReplayWorkspace() {
               {shape && viewport && (
                 <div
                   role="group"
+                  ref={mapSelection}
                   aria-label="Map selection"
-                  className="flex flex-wrap items-center justify-between gap-3 border-t border-[color:var(--hairline)] px-5 py-4 sm:px-6"
+                  tabIndex={-1}
+                  className="flex flex-wrap items-center justify-between gap-3 border-t border-[color:var(--hairline)] px-5 py-4 sm:px-6 focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
                 >
                   <div className="min-w-0">
                     <p className="eyebrow text-[color:var(--muted)]">
@@ -350,7 +364,7 @@ export default function CircuitReplayWorkspace() {
                       )}
                   </div>
                   {selected && (
-                    <button type="button" className={button} onClick={() => setSelected(null)}>
+                    <button type="button" className={button} onClick={clearDriver}>
                       Clear driver selection
                     </button>
                   )}

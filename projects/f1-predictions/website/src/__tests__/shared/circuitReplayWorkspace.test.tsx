@@ -49,7 +49,10 @@ test("map and list share selection, toggle off and offer a visible clear action"
   fireEvent.click(list);
   expect(marker).toHaveAttribute("aria-pressed", "false");
   fireEvent.click(list);
-  fireEvent.click(screen.getByRole("button", { name: "Clear driver selection" }));
+  const clear = screen.getByRole("button", { name: "Clear driver selection" });
+  clear.focus();
+  fireEvent.click(clear);
+  expect(marker).toHaveFocus();
   expect(list).toHaveAttribute("aria-pressed", "false");
   expect(screen.getByLabelText("Map selection")).toHaveTextContent("Tap a marker");
 });
@@ -72,6 +75,10 @@ test("missing, off-map and absent samples stay truthful while retaining list acc
   expect(screen.getByLabelText("Map selection")).toHaveTextContent("outside this map view");
   fireEvent.click(screen.getByRole("button", { name: "Next snapshot" }));
   expect(screen.getByLabelText("Map selection")).toHaveTextContent("absent");
+  const clear = screen.getByRole("button", { name: "Clear driver selection" });
+  clear.focus();
+  fireEvent.click(clear);
+  expect(screen.getByLabelText("Map selection")).toHaveFocus();
   fireEvent.change(screen.getByRole("combobox"), { target: { value: "IndyCar" } });
   expect(screen.queryByLabelText("Map selection")).not.toBeInTheDocument();
 });
