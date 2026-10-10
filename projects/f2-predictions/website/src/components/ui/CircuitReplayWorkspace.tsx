@@ -103,6 +103,25 @@ export default function CircuitReplayWorkspace() {
   function step(value: number) {
     setSnapshot(value);
   }
+  function selectDriver(code: string) {
+    setSelected((current) => (current === code ? null : code));
+  }
+  // Match the SVG's supplied rotation and world-Y flip; never move an out-of-view sample.
+  const mapDrivers =
+    shape && viewport
+      ? (frame?.drivers.flatMap((d) => {
+          if (d.x === null || d.y === null) return [];
+          const angle = (shape.rotation * Math.PI) / 180;
+          const dx = d.x - viewport.cx,
+            dy = d.y - viewport.cy;
+          const x =
+            (Math.cos(angle) * dx - Math.sin(angle) * dy + viewport.radius) / (2 * viewport.radius);
+          const y =
+            (-Math.sin(angle) * dx - Math.cos(angle) * dy + viewport.radius) /
+            (2 * viewport.radius);
+          return x >= 0 && x <= 1 && y >= 0 && y <= 1 ? [{ driver: d, x, y }] : [];
+        }) ?? [])
+      : [];
 
   return (
     <section
@@ -237,58 +256,106 @@ export default function CircuitReplayWorkspace() {
             </aside>
           )}
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.8fr)_minmax(240px,1fr)]">
-            <HUDPanel title="Circuit view" kicker={series} bodyClassName="p-0!">
+            <HUDPanel
+              title="Circuit view"
+              kicker={capture.source === "fictional" ? "Fictional demo" : "Unverified capture"}
+              bodyClassName="p-0!"
+            >
               <div
                 className="relative flex min-h-72 items-center justify-center"
                 data-capture-snapshot={snapshot}
                 data-motion={reduced ? "reduced-static" : "manual-static"}
               >
                 {shape && viewport ? (
-                  <svg
-                    viewBox={viewport.viewBox}
-                    className="aspect-square w-full max-h-[520px]"
-                    aria-label={`${capture.source === "fictional" ? "Fictional" : "Unverified local"} circuit view`}
-                    role="img"
-                  >
-                    <g
-                      transform={`translate(0 ${viewport.cy * 2}) scale(1 -1) rotate(${shape.rotation} ${viewport.cx} ${viewport.cy})`}
-                    >
-                      <polyline
-                        points={shape.x.map((x, i) => `${x},${shape.y[i]}`).join(" ")}
-                        fill="none"
-                        stroke="var(--hairline-strong)"
-                        strokeWidth={viewport.radius * 0.025}
-                        strokeLinejoin="round"
-                      />
-                      <polyline
-                        points={shape.x.map((x, i) => `${x},${shape.y[i]}`).join(" ")}
-                        fill="none"
-                        stroke="var(--ink)"
-                        strokeWidth={viewport.radius * 0.006}
-                        strokeLinejoin="round"
-                      />
-                      {frame.drivers
-                        .filter((d) => d.x !== null && d.y !== null)
-                        .map((d) => (
-                          <circle
-                            key={d.code}
-                            cx={d.x!}
-                            cy={d.y!}
-                            r={viewport.radius * (d.code === selected ? 0.036 : 0.022)}
-                            fill={d.color}
+                  <div className="w-full px-6 py-5">
+                    <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+                      <svg
+                        viewBox={viewport.viewBox}
+                        className="aspect-square w-full max-h-[520px]"
+                        aria-label={`${capture.source === "fictional" ? "Fictional" : "Unverified local"} circuit view`}
+                        role="img"
+                      >
+                        <g
+                          transform={`translate(0 ${viewport.cy * 2}) scale(1 -1) rotate(${shape.rotation} ${viewport.cx} ${viewport.cy})`}
+                        >
+                          <polyline
+                            points={shape.x.map((x, i) => `${x},${shape.y[i]}`).join(" ")}
+                            fill="none"
+                            stroke="var(--hairline-strong)"
+                            strokeWidth={viewport.radius * 0.025}
+                            strokeLinejoin="round"
+                          />
+                          <polyline
+                            points={shape.x.map((x, i) => `${x},${shape.y[i]}`).join(" ")}
+                            fill="none"
                             stroke="var(--ink)"
-                            strokeWidth={viewport.radius * 0.01}
-                            opacity={selected && selected !== d.code ? 0.35 : 1}
-                          >
-                            <title>{d.name}</title>
-                          </circle>
-                        ))}
-                    </g>
-                  </svg>
+                            strokeWidth={viewport.radius * 0.006}
+                            strokeLinejoin="round"
+                          />
+                        </g>
+                      </svg>
+                      {mapDrivers.map(({ driver: d, x, y }) => (
+                        <button
+                          key={d.code}
+                          type="button"
+                          aria-label={`Select ${d.name} on circuit`}
+                          aria-pressed={selected === d.code}
+                          aria-controls={`${id}-driver-details`}
+                          title={d.name}
+                          onClick={() => selectDriver(d.code)}
+                          className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full focus-visible:outline-2! focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)]"
+                          style={{ left: `${x * 100}%`, top: `${y * 100}%` }}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`${selected === d.code ? "h-6 w-6" : "h-4 w-4"} rounded-full border-2 border-[color:var(--ink)]`}
+                            style={{
+                              background: d.color,
+                              opacity: selected && selected !== d.code ? 0.35 : 1,
+                            }}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
                   <CircuitMapUnavailable />
                 )}
               </div>
+              {shape && viewport && (
+                <div
+                  role="group"
+                  aria-label="Map selection"
+                  className="flex flex-wrap items-center justify-between gap-3 border-t border-[color:var(--hairline)] px-5 py-4 sm:px-6"
+                >
+                  <div className="min-w-0">
+                    <p className="eyebrow text-[color:var(--muted)]">
+                      {selected ? "Selected driver" : "Choose a driver"}
+                    </p>
+                    <p className="body-sm mt-2 break-words text-[color:var(--ink)]">
+                      {driver
+                        ? driver.name
+                        : selected
+                          ? "Selected driver absent from this snapshot."
+                          : "Tap a marker or use the driver list."}
+                    </p>
+                    {driver &&
+                      (driver.x === null ||
+                        !mapDrivers.some((entry) => entry.driver.code === driver.code)) && (
+                        <p className="body-sm mt-2 text-[color:var(--muted)]">
+                          {driver.x === null
+                            ? "Position unavailable in this snapshot."
+                            : "Recorded position is outside this map view."}
+                        </p>
+                      )}
+                  </div>
+                  {selected && (
+                    <button type="button" className={button} onClick={() => setSelected(null)}>
+                      Clear driver selection
+                    </button>
+                  )}
+                </div>
+              )}
               {!shape && (
                 <p className="body-sm px-6 pb-6 text-[color:var(--muted)]">
                   This snapshot has no preceding track outline. Driver details remain available.
@@ -357,7 +424,8 @@ export default function CircuitReplayWorkspace() {
                     type="button"
                     className={`${button} flex w-full items-center gap-3 text-left`}
                     aria-pressed={selected === d.code}
-                    onClick={() => setSelected(selected === d.code ? null : d.code)}
+                    aria-controls={`${id}-driver-details`}
+                    onClick={() => selectDriver(d.code)}
                     style={{ borderColor: selected === d.code ? "var(--ink)" : undefined }}
                   >
                     <span
@@ -376,7 +444,11 @@ export default function CircuitReplayWorkspace() {
                   </button>
                 ))}
               </div>
-              <div className="mt-6 border-t border-[color:var(--hairline)] pt-5" aria-live="polite">
+              <div
+                id={`${id}-driver-details`}
+                className="mt-6 border-t border-[color:var(--hairline)] pt-5"
+                aria-live="polite"
+              >
                 <p className="eyebrow">
                   {driver ? driver.name : selected ? "Selected driver absent" : "All drivers"}
                 </p>

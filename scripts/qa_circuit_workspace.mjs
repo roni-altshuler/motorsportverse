@@ -279,7 +279,12 @@ try {
       const options = await series.locator("option").allTextContents();
       for (const option of options) {
         await series.selectOption(option);
-        assert.equal(await page.locator("main svg").count(), 0);
+        assert.equal(
+          await page
+            .locator('section[aria-label="Circuit workspace"] svg')
+            .count(),
+          0,
+        );
         await page
           .getByText("Circuit map unavailable", { exact: true })
           .waitFor();
@@ -297,12 +302,13 @@ try {
       const figure = page.getByRole("img", { name: "Fictional circuit view" });
       await figure.waitFor();
       const positions = async () =>
-        figure
-          .locator("circle")
+        page
+          .getByRole("button", { name: /^Select .+ on circuit$/ })
           .evaluateAll((nodes) =>
-            nodes.map((n) => [n.getAttribute("cx"), n.getAttribute("cy")]),
+            nodes.map((n) => [n.style.left, n.style.top]),
           );
       const before = await positions();
+      assert.equal(before.length, 3);
       await page.waitForTimeout(350);
       assert.deepEqual(await positions(), before);
       const alex = page.getByRole("button", {
@@ -346,7 +352,12 @@ try {
       await page
         .getByRole("button", { name: "Clear capture", exact: true })
         .click();
-      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page
+          .locator('section[aria-label="Circuit workspace"] svg')
+          .count(),
+        0,
+      );
       const fileInput = page.locator("input[type=file]");
       // Explicitly labelled test injection: delay browser-local File.text only.
       await page.evaluate(() => {
@@ -371,7 +382,12 @@ try {
         File.prototype.text = window.__originalText;
       });
       await page.waitForTimeout(50);
-      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page
+          .locator('section[aria-label="Circuit workspace"] svg')
+          .count(),
+        0,
+      );
       assert.equal(
         await page.getByText("qa-delayed.ndjson", { exact: true }).count(),
         0,
@@ -405,7 +421,12 @@ try {
           exact: true,
         })
         .waitFor();
-      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page
+          .locator('section[aria-label="Circuit workspace"] svg')
+          .count(),
+        0,
+      );
       await page
         .getByText("No driver positions supplied in this snapshot.", {
           exact: true,
@@ -421,10 +442,12 @@ try {
         .getByRole("button", { name: "QA Local Driver", exact: true })
         .click();
       // Check the native SVG matrix against the upstream world-rotation convention.
-      const matrix = await page.locator("main svg g").evaluate((el) => {
-        const m = el.transform.baseVal.consolidate().matrix;
-        return { a: m.a, b: m.b, c: m.c, d: m.d };
-      });
+      const matrix = await page
+        .locator('section[aria-label="Circuit workspace"] svg g')
+        .evaluate((el) => {
+          const m = el.transform.baseVal.consolidate().matrix;
+          return { a: m.a, b: m.b, c: m.c, d: m.d };
+        });
       assert.ok(Math.abs(matrix.a - Math.cos(Math.PI / 6)) < 1e-6);
       assert.ok(Math.abs(matrix.b + Math.sin(Math.PI / 6)) < 1e-6);
       assert.ok(Math.abs(matrix.c + Math.sin(Math.PI / 6)) < 1e-6);
@@ -487,7 +510,12 @@ try {
             .innerText(),
           /^No$/,
         );
-        assert.equal(await page.locator("main svg").count(), 0);
+        assert.equal(
+          await page
+            .locator('section[aria-label="Circuit workspace"] svg')
+            .count(),
+          0,
+        );
         await shot(page, label + "-fastf1-car");
         await page
           .getByRole("button", { name: "Next snapshot", exact: true })
@@ -543,17 +571,32 @@ try {
             await page.getByText("123 km/h", { exact: true }).count(),
             0,
           );
-          assert.equal(await page.locator("main svg").count(), 0);
+          assert.equal(
+            await page
+              .locator('section[aria-label="Circuit workspace"] svg')
+              .count(),
+            0,
+          );
         }
         await shot(page, label + "-fastf1-unsupported");
       }
       await series.selectOption("WRC");
-      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page
+          .locator('section[aria-label="Circuit workspace"] svg')
+          .count(),
+        0,
+      );
       await page.reload({ waitUntil: "networkidle" });
       await page
         .getByText("Circuit map unavailable", { exact: true })
         .waitFor();
-      assert.equal(await page.locator("main svg").count(), 0);
+      assert.equal(
+        await page
+          .locator('section[aria-label="Circuit workspace"] svg')
+          .count(),
+        0,
+      );
       for (let i = 0; i < 2; i++) {
         await page.goto(origin + basePath + "/race/12", {
           waitUntil: "networkidle",
