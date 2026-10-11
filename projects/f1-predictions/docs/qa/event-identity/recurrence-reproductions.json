@@ -27,6 +27,21 @@
         "automatic export drops withdrawal"
       ],
       "logSha256": "d37d5719c4a71c2455be5df1ce92e71ec989c1f830d674246008c061c3644ddd"
+    },
+    {
+      "path": "deferred explicit publication API",
+      "reviewedCommit": "c2eb5f8db3dc108ac16bb79d76706abaea63eee6",
+      "before": "1 failed: explicit review entered generation before late validation",
+      "resolution": "Remove release API entirely; reject automatic held exports and the removed keyword before any forecast-state write.",
+      "stateBoundaries": [
+        "rounds",
+        "predicted feature results",
+        "trackers",
+        "model registry",
+        "probabilities",
+        "visualizations"
+      ],
+      "logSha256": "e76fb860f3f9f2ce0ae1a0802c3fb41f2a6baa0c326ec8c572a5358c7737867b"
     }
   ],
   "fixturePolicy": "Original synthetic negative cases and factual committed session values. No model training, production job, outcome invention or forecast release."

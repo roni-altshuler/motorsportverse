@@ -286,16 +286,48 @@ def test_replay_verified_identity_still_loads_requested_telemetry(monkeypatch):
     assert calls == [{"laps": True, "telemetry": True, "weather": False, "messages": False}]
 
 
+def _forecast_state_fixture(tmp_path):
+    paths = ["rounds/round_17.json", "predicted_results_2026.json", "season_tracker.json",
+             "models/registry/2026_round_17/metadata.json", "models/registry/2026_round_17/model.pkl",
+             "probabilities/round_17.json", "visualizations/round_17/forecast.png"]
+    for name in paths:
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"original forecast state")
+    (tmp_path / paths[0]).write_bytes((DATA / "rounds/round_17.json").read_bytes())
+    return {name: (tmp_path / name).read_bytes() for name in paths}
+
+
+def _assert_forecast_state_unchanged(tmp_path, original):
+    assert {name: (tmp_path / name).read_bytes() for name in original} == original
+    assert sorted(str(p.relative_to(tmp_path)) for p in tmp_path.rglob("*") if p.is_file()) == sorted(original)
+
+
 @pytest.mark.parametrize("phase", ["preview", "post-quali"])
 def test_automatic_export_honors_durable_publication_hold(tmp_path, monkeypatch, phase):
-    path = tmp_path / "round_17.json"
-    original = (DATA / "rounds/round_17.json").read_text()
-    path.write_text(original)
-    monkeypatch.setattr(ew, "ROUNDS_DIR", str(tmp_path))
+    original = _forecast_state_fixture(tmp_path)
+    monkeypatch.setattr(ew, "ROUNDS_DIR", str(tmp_path / "rounds"))
     monkeypatch.setattr(ew, "_ensure_dirs", lambda: pytest.fail("held forecast reached the pipeline"))
     with pytest.raises(ValueError, match="publication hold"):
         ew.export_round_data(17, prediction_phase=phase)
-    assert path.read_text() == original
+    _assert_forecast_state_unchanged(tmp_path, original)
+
+
+def test_deferred_release_api_cannot_mutate_any_forecast_state(tmp_path, monkeypatch):
+    import inspect
+    original = _forecast_state_fixture(tmp_path)
+    monkeypatch.setattr(ew, "ROUNDS_DIR", str(tmp_path / "rounds"))
+    def no_generation():
+        pytest.fail("deferred release reached generation and its write paths")
+    monkeypatch.setattr(ew, "_ensure_dirs", no_generation)
+    # Reproduce the old API accepting an explicit review before the late
+    # deadline/outcome gate. The identity repair must expose no release escape.
+    if "publication_release" in inspect.signature(ew.export_round_data).parameters:
+        import publication_review
+        monkeypatch.setattr(publication_review, "prepare_reviewed_release", lambda *_a, **_k: None)
+    with pytest.raises(TypeError, match="publication_release"):
+        ew.export_round_data(17, prediction_phase="post-quali", publication_release={"reviewNote": "synthetic review"})
+    _assert_forecast_state_unchanged(tmp_path, original)
 
 
 @pytest.mark.parametrize("wrong_venue", [False, True])

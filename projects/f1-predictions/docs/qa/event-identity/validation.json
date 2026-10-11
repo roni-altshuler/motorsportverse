@@ -3,7 +3,7 @@
   "branch": "fix/f1-event-identity-quarantine",
   "python": {
     "version": "3.12.14",
-    "passed": 1153,
+    "passed": 1135,
     "skipped": 15
   },
   "frontend": {
@@ -19,19 +19,19 @@
   "integrityChecks": 50,
   "sharedUISync": "passed",
   "logSha256": {
-    "python": "b3a8a87b03767eceff0c774c522cff5f7bc8926dec70f92fa98fd4b3d01bc027",
-    "frontend": "e07a2cf7a8ea65652f55958685508b814f4f34f3d2ce10b26afe6cd652d0ac9a",
+    "python": "19865cf837595405074d7e0ed795a2d5c05bc118c212f9cf7e560e1c377ca3b5",
+    "frontend": "a734c9c50a41708975f88534bbc700ab804077f4988cd275d1dbdab9293435a0",
     "lint": "07446b0a3d0d9d756cd32dc565da6bf2c922e33a2adedc927a85c74512ac1125",
     "typecheck": "f8cf56836f77fa6b267ad28be3d56f26f73cef9855792961e97522c86e2f1237",
-    "build": "298f80ae210347002b3231682a567526cfbd48f2dc65ba597bccd562689cbcd9",
-    "reviewRegressions": "acf71e412a0179d37fd51b034fa80a5c20af671bd307c33c5a615a7b7d2ce1e1"
+    "build": "c867543fc215c74e89ed0e8d6453c318b331a196cc76680941ba5d225637b5cf",
+    "reviewRegressions": "1109d14a06fdf14a25a72bbe9d24f300386c55f23aba2f036798e6d4491b7897"
   },
-  "reviewRegressionTestsPassed": 125,
+  "reviewRegressionTestsPassed": 107,
   "browser": {
     "cases": 21,
     "runtimeErrors": 0,
     "localRequestFailures": 0,
-    "externalProxyFailures": 109,
+    "externalProxyFailures": 108,
     "referenceClock": "2026-10-11T06:00:00Z"
   }
 }

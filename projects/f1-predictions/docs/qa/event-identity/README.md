@@ -70,16 +70,16 @@ provider schedule identity.
 Singapore's withdrawal also blocks automatic preview/post-qualifying exports
 before any pipeline work. It remains outstanding in freshness detection, rather
 than becoming an apparently final verified freeze. No scheduled caller can
-release it. The separate `publication_release` API requires an explicit audit
-note, review time, exact official session snapshot digest and current Python model
-source digest. Generation must use the reviewed qualifying times and complete
-post-penalty grid, including Russell at 21st; a model that still uses his
-qualifying rank of sixth is rejected. A successful future release must finish
-before 12:00 UTC, records its new generation time and model configuration digest,
-and retains the original withdrawn forecast provenance separately. The digest
-pins implementation source, not fitted model weights or an accuracy claim.
-The release tests use synthetic generation fixtures; no replacement forecast or
-model training was run. Official session tables remain available during the hold.
+release it. Rereview found that the proposed explicit release path could save
+models and predicted-results state before its late outcome/deadline validation.
+That API has been removed entirely from this identity repair. A removed-keyword
+boundary test rejects the call before entering the function and verifies that
+rounds, feature forecasts, trackers, models, probabilities and visualizations
+remain byte-identical with no extra files. Preview/post-qualifying hold tests
+reject automatic calls before generation. Replacement generation and publication
+require separate audited work with staged output and complete validation before
+any serving/feature-state write. No replacement forecast or model training was
+run. Official session tables remain available during the hold.
 
 The original round-16 Singapore forecast is archived with its unchanged
 `2026-10-10T10:22:59Z` timestamp and byte digest. It is not relabelled as a
@@ -121,8 +121,8 @@ withdrawal of grades/probabilities and preservation of original forecasts.
 [The reproduction record](recurrence-reproductions.json) identifies the failing
 baseline cases and their saved log digests.
 Additional regressions cover the post-qualifying preservation defect, trusted
-qualifying override, replay/layout guards, durable automatic holds, changed
-reviewed inputs, ignored grid penalties and the pre-race release deadline.
+qualifying override, replay/layout guards, durable automatic holds and rejection
+of the deferred release API without any forecast-state write.
 Frontend tests verify the withheld state, Russell's distinct session positions
 and the relocated venue's imagery gap. The published-data integrity gate and
 shared UI synchronization are checked without allowances.
@@ -134,7 +134,7 @@ widths, overflow, runtime errors, failed requests, source links and keyboard
 navigation. Screenshots show the home notice and both repaired race pages.
 This is local exported-site QA, not a hosted deployment claim.
 
-Local validation: **1,153 Python tests passed, 15 skipped**; **268 frontend
+Local validation: **1,135 Python tests passed, 15 skipped**; **268 frontend
 tests passed**. Ruff, TypeScript, the Pages-prefix static build, all 50 published
 data integrity checks and shared UI synchronization passed. ESLint has no errors
 and retains one existing warning in `AccuracyDashboardPage.tsx`.
@@ -143,7 +143,7 @@ The browser audit covers 18 route/width combinations and three keyboard
 navigation checks at 1440, 390 and 320 pixels, with reduced motion. No page
 overflow, runtime error or local request failure was observed. The saved cloud
 proxy blocks external FlagCDN and Wikimedia requests with
-`ERR_TUNNEL_CONNECTION_FAILED` (109 observed requests), so existing remote flags
+`ERR_TUNNEL_CONNECTION_FAILED` (108 observed requests), so existing remote flags
 and photography were unavailable. Local driver portraits and the new notice,
 tables, source links and navigation were checked. This limitation is recorded
 in the browser report and visible in the screenshots.

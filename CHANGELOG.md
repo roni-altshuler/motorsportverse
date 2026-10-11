@@ -27,9 +27,9 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   links, original forecast provenance and the verified Singapore race time.
 - Reject wrong-event results, grades and geometry before regeneration; verify
   committed qualifying overrides and replay/layout identities before use.
-  Keep the withdrawal durable through automatic refreshes. An explicit audited
-  release pins official inputs and model code, validates the actual post-penalty
-  grid, and records a new pre-race timestamp separately from the withdrawn claim.
+  Keep the withdrawal durable through automatic refreshes. Defer replacement
+  publication to separate audited work; no release API can bypass the hold or
+  write forecast state before final validation in this identity repair.
 - Clarify that regenerated probability diagnostics with shared temperature
   tuning do not establish fully out-of-sample or immutable pre-race performance.
 
