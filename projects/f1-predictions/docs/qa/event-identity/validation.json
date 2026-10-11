@@ -1,0 +1,30 @@
+{
+  "baseCommit": "14d86df32ad7c3345873e780dfe6fac0f38e18d1",
+  "branch": "fix/f1-event-identity-quarantine",
+  "python": {
+    "version": "3.12.14",
+    "passed": 1114,
+    "skipped": 15
+  },
+  "frontend": {
+    "node": "20.20.2",
+    "testsPassed": 265,
+    "testSuitesPassed": 17,
+    "typescript": "passed",
+    "eslintErrors": 0,
+    "existingEslintWarnings": 1,
+    "build": "passed",
+    "pagesBasePath": "/motorsportverse/projects/f1"
+  },
+  "integrityChecks": 50,
+  "sharedUISync": "passed",
+  "registryRepairTestsPassed": 50,
+  "logSha256": {
+    "python": "be3c46e27de498a32605a6c747fdf7835465accffd2620dc6d83f8a254030eea",
+    "frontend": "9e95e18dbae219b6fffd6905930f0874da36bf54ca9439b231bf9a56891d1edb",
+    "lint": "266572fe9ea777524e7fc99d27b842988fca8f6d3c663e37e1956281ad9e8804",
+    "typecheck": "669fc00da4ca4ba14325287ede95465cf1adb80f435c9ccbeed71690abf18f80",
+    "build": "4e8cf4a5bfd2b9a9ccbd2928269d1a002ffc383d42911ada897da7a01d418c6a",
+    "registry": "d1a9b59962ab818e0408f18dbc96d0eaa08f94294f17b5829cfb02def257e451"
+  }
+}

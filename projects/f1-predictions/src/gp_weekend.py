@@ -139,10 +139,8 @@ def _event_matches_round(session, round_num):
     result). A loaded session is therefore NOT proof the requested race exists
     or has run: the resolved round must be verified before trusting any data.
     """
-    try:
-        return int(session.event["RoundNumber"]) == int(round_num)
-    except (KeyError, TypeError, ValueError):
-        return False
+    from event_identity import fastf1_matches
+    return fastf1_matches(session.event, round_num, _load_calendar())
 
 
 def _session_available(year, gp_key, session_type, expected_round=None):
@@ -194,10 +192,8 @@ def _jolpica_session_available(year, round_num, kind):
         races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
         if not (races and races[0].get(field)):
             return False
-        # A round-scoped query must echo the round back; anything else means a
-        # cache/proxy served a different race — never treat that as available.
-        returned = races[0].get("round")
-        return returned is None or str(returned) == str(int(round_num))
+        from event_identity import jolpica_matches
+        return len(races) == 1 and jolpica_matches(races[0], year, round_num, _load_calendar())
     except Exception:
         return False
 
@@ -387,6 +383,11 @@ def run_post_race(round_num, skip_build=False):
     enable_cache()
     info = CALENDAR[round_num]
     gp_key = info["gp_key"]
+
+    from event_identity import published_matches
+    committed = _committed_round_state(round_num)
+    if committed and not published_matches(committed, round_num, CALENDAR):
+        raise ValueError("Stored forecast belongs to a different event; quarantine it before grading.")
 
     # Fetch actual race results. Jolpica/Ergast publishes classified results
     # within minutes of the chequered flag, hours (sometimes days, and for the
@@ -693,6 +694,11 @@ def _committed_round_state(round_num):
         return {}
 
 
+def _published_identity_matches(round_num):
+    from event_identity import published_matches
+    return published_matches(_committed_round_state(round_num), round_num, _load_calendar())
+
+
 def _has_committed_actuals(state):
     return isinstance(state.get("actualResults"), dict) and bool(state["actualResults"])
 
@@ -706,6 +712,8 @@ def _is_verified_post_quali(state):
     ``qualifyingDataAvailable`` flag is accepted as the legacy equivalent so the
     gate does not needlessly re-freeze historical real-grid rounds.
     """
+    if state.get("publicationHold"):
+        return False
     if state.get("predictionPhase") not in ("post-quali", "post-race"):
         return False
     provenance = state.get("gridProvenance")
@@ -741,8 +749,11 @@ def needs_update(round_num):
     cal = _load_calendar()
     if cal[round_num].get("postponed", False):
         return False
-    phase = _detect_phase(round_num)
     state = _committed_round_state(round_num)
+    from event_identity import published_matches
+    if state and not published_matches(state, round_num, cal):
+        return True  # An existing wrong-event snapshot must never make a poll a no-op.
+    phase = _detect_phase(round_num)
 
     if phase == "post-race":
         return not _has_committed_actuals(state)
@@ -772,7 +783,7 @@ def _stranded_rounds(today=None, probe_jolpica=True):
             continue
         if date.fromisoformat(info["date"]) > today:
             continue  # race hasn't happened yet
-        if _has_committed_actuals(_committed_round_state(rnd)):
+        if _has_committed_actuals(_committed_round_state(rnd)) and _published_identity_matches(rnd):
             continue  # already published
         if probe_jolpica and not _jolpica_session_available(season_year, rnd, "results"):
             continue  # results genuinely not out yet

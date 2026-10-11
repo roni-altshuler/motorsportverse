@@ -26,6 +26,7 @@ import WeekendTimeline from "@/components/race-detail/WeekendTimeline";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import PodiumRationale from "@/components/race-detail/PodiumRationale";
 import KeyFactorsPanel from "@/components/race-detail/KeyFactorsPanel";
+import PublicationHoldPage from "@/components/race-detail/PublicationHoldPage";
 import PredictionFreshnessPanel from "@/components/race-detail/PredictionFreshnessPanel";
 import FinishMarketsPanel from "@/components/race-detail/FinishMarketsPanel";
 import DriverComparison from "@/components/race-detail/DriverComparison";
@@ -240,6 +241,10 @@ export default function RaceDetailPage({ round }: Props) {
   const liveMeta = seasonRace
     ? getRoundStatusMeta(getRoundLifecycle(seasonRace, !!data, !!data?.actualResults))
     : null;
+
+  if (data?.publicationHold && seasonRace) {
+    return <PublicationHoldPage data={data} race={seasonRace} />;
+  }
 
   if (!data && seasonRace) {
     const raceName = seasonRace.name;
@@ -1684,16 +1689,16 @@ export default function RaceDetailPage({ round }: Props) {
                       { label: "DRS Zones", value: data.circuitInfo.drsZones || 2 },
                       {
                         label: "Tyre Deg",
-                        value: `${Math.round(data.circuitInfo.tyreDeg * 100)}%`,
+                        value: `${Math.round((data.circuitInfo.tyreDeg ?? 0) * 100)}%`,
                         bar: data.circuitInfo.tyreDeg,
                         barColor:
-                          data.circuitInfo.tyreDeg > 0.5
+                          (data.circuitInfo.tyreDeg ?? 0) > 0.5
                             ? "var(--accent-live)"
                             : "var(--accent-positive)",
                       },
                       {
                         label: "Overtaking",
-                        value: `${Math.round(data.circuitInfo.overtaking * 100)}%`,
+                        value: `${Math.round((data.circuitInfo.overtaking ?? 0) * 100)}%`,
                         bar: data.circuitInfo.overtaking,
                         barColor: "var(--accent-info)",
                       },
@@ -2476,10 +2481,12 @@ export default function RaceDetailPage({ round }: Props) {
                         className="text-2xl font-black"
                         style={{
                           color:
-                            data.metrics.r2Score > 0.9 ? "var(--accent-positive)" : "var(--text)",
+                            (data.metrics.r2Score ?? 0) > 0.9
+                              ? "var(--accent-positive)"
+                              : "var(--text)",
                         }}
                       >
-                        {data.metrics.r2Score.toFixed(3)}
+                        {data.metrics.r2Score?.toFixed(3) ?? "—"}
                       </p>
                     </div>
                     <div className="metric-card">
@@ -2490,7 +2497,7 @@ export default function RaceDetailPage({ round }: Props) {
                         Mean Abs. Error
                       </p>
                       <p className="text-2xl font-black" style={{ color: "var(--text)" }}>
-                        {data.metrics.mae.toFixed(3)}s
+                        {data.metrics.mae?.toFixed(3) ?? "—"}s
                       </p>
                     </div>
                     <div className="metric-card">
@@ -2501,7 +2508,7 @@ export default function RaceDetailPage({ round }: Props) {
                         Max Spread
                       </p>
                       <p className="text-2xl font-black" style={{ color: "var(--text)" }}>
-                        {data.metrics.maxSpread.toFixed(2)}s
+                        {data.metrics.maxSpread?.toFixed(2) ?? "—"}s
                       </p>
                     </div>
                     <div className="metric-card">

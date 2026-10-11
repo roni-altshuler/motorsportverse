@@ -48,7 +48,7 @@ export default function CalendarPage() {
     );
   }
 
-  const completedCount = season.completedRounds.length;
+  const completedCount = (season.forecastRounds ?? season.completedRounds).length;
   const actualSet = new Set((tracker?.rounds || []).filter((round) => round.hasActual).map((round) => round.round));
   const officialCount = actualSet.size;
   const liveCount = season.calendar.filter(
@@ -63,11 +63,11 @@ export default function CalendarPage() {
         <p className="eyebrow mb-4">{season.season} Championship</p>
         <h1 className="display-xl [font-weight:700] mb-4">Season Calendar</h1>
         <p className="body-md text-[color:var(--body)] mb-2">
-          Every round of the {season.season} season — a forecast before each
-          weekend, the official result after.
+          Every round of the {season.season} season, with official results,
+          stored forecasts and explicit gaps in coverage.
         </p>
         <p className="body-sm text-[color:var(--muted)]">
-          {season.totalRounds} Grand Prix · {completedCount} forecasts published · {officialCount} official result{officialCount !== 1 ? "s" : ""}
+          {season.totalRounds} Grand Prix · {completedCount} stored forecast snapshots · {officialCount} official result{officialCount !== 1 ? "s" : ""}
         </p>
         <div className="mt-6">
           <AddToCalendar
@@ -85,7 +85,7 @@ export default function CalendarPage() {
         <div className="flex items-baseline justify-between mb-6">
           <div>
             <p className="eyebrow mb-1">Season Window</p>
-            <h2 id="season-window-heading" className="display-md">All 22 Grand Prix in photography</h2>
+            <h2 id="season-window-heading" className="display-md">All {season.totalRounds} Grand Prix</h2>
           </div>
         </div>
         <RaceCardCarousel
@@ -111,7 +111,7 @@ export default function CalendarPage() {
             <span className="body-md text-[color:var(--muted)]">/ {season.totalRounds}</span>
           </div>
           <p className="body-sm text-[color:var(--muted)] mt-3">
-            Rounds with model predictions published.
+            Usable stored rankings, including previews. A stored export does not establish a pre-race publication.
           </p>
         </div>
         <div className="row-spec sm:border-b-0 sm:px-8 sm:border-r border-[color:var(--hairline)]">
@@ -120,7 +120,7 @@ export default function CalendarPage() {
             <NumberTicker value={officialCount} />
           </span>
           <p className="body-sm text-[color:var(--muted)] mt-3">
-            Predictions now compared against real outcomes.
+            Rounds with a verified classification; a result may have no usable forecast.
           </p>
         </div>
         <div className="row-spec sm:border-b-0 sm:pl-8">
@@ -186,7 +186,9 @@ export default function CalendarPage() {
                     {race.sprint && <Badge variant="info">Sprint</Badge>}
                   </div>
                   <p className="eyebrow truncate">
-                    {race.circuit} · {race.expectedStops === 1 ? "1 stop" : `${race.expectedStops} stops`} · {race.drsZones} DRS
+                    {race.circuit}
+                    {typeof race.expectedStops === "number" && ` · ${race.expectedStops} stop${race.expectedStops === 1 ? "" : "s"}`}
+                    {typeof race.drsZones === "number" && ` · ${race.drsZones} DRS`}
                   </p>
                 </div>
               </div>

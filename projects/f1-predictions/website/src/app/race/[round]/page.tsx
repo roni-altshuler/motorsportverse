@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import RaceDetailPage from "@/components/RaceDetailPage";
-import type {
-  ClassificationEntry,
-  RaceCalendarEntry,
-  SeasonData,
-} from "@/types";
+import type { ClassificationEntry, RaceCalendarEntry, SeasonData } from "@/types";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -22,9 +18,7 @@ function pad2(n: number): string {
 
 function loadSeason(): SeasonData | null {
   try {
-    return JSON.parse(
-      fs.readFileSync(path.join(DATA_DIR, "season.json"), "utf-8")
-    ) as SeasonData;
+    return JSON.parse(fs.readFileSync(path.join(DATA_DIR, "season.json"), "utf-8")) as SeasonData;
   } catch {
     return null;
   }
@@ -36,6 +30,7 @@ interface RoundFile {
   circuit: string;
   date: string;
   classification: ClassificationEntry[];
+  publicationHold?: { message: string };
 }
 
 function loadRound(round: number): RoundFile | null {
@@ -63,7 +58,7 @@ export async function generateMetadata({
   const round = parseInt(roundStr, 10);
   const season = loadSeason();
   const calendarEntry: RaceCalendarEntry | undefined = season?.calendar?.find(
-    (e) => e.round === round
+    (e) => e.round === round,
   );
   const roundData = loadRound(round);
 
@@ -73,7 +68,7 @@ export async function generateMetadata({
   const seasonYear = season?.season ?? new Date().getFullYear();
 
   const title = `${raceName} — F1 ${seasonYear} Predictions`;
-  const topThree = (roundData?.classification ?? [])
+  const topThree = (roundData?.publicationHold ? [] : (roundData?.classification ?? []))
     .slice(0, 3)
     .map((c) => c.driverFullName)
     .filter(Boolean);
@@ -165,11 +160,7 @@ function buildSportsEventJsonLd(round: number): string | null {
   return JSON.stringify(jsonLd);
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ round: string }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ round: string }> }) {
   const { round } = await params;
   const roundNum = parseInt(round, 10);
   const jsonLd = buildSportsEventJsonLd(roundNum);

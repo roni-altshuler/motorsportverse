@@ -144,30 +144,31 @@ TEAM_COLOURS: dict[str, str] = {
 # ---- F1 points system (top 10) ------------------------------------------
 F1_POINTS = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
 
-# ---- Official 2026 Calendar (22 rounds) ----------------------------------
+# ---- Official 2026 Calendar (23 rounds; verified 2026-10-11) ----------------------------------
 CALENDAR_2026 = {
-    1:  {"name": "Australian Grand Prix",     "gp_key": "Australia",      "circuit": "Albert Park",            "date": "2026-03-08", "laps": 58, "circuit_km": 5.278, "sprint": False},
-    2:  {"name": "Chinese Grand Prix",        "gp_key": "China",          "circuit": "Shanghai International", "date": "2026-03-15", "laps": 56, "circuit_km": 5.451, "sprint": True,  "sprint_laps": 21},
-    3:  {"name": "Japanese Grand Prix",       "gp_key": "Japan",          "circuit": "Suzuka",                 "date": "2026-03-29", "laps": 53, "circuit_km": 5.807, "sprint": False},
-    4:  {"name": "Miami Grand Prix",          "gp_key": "Miami",          "circuit": "Miami International",    "date": "2026-05-03", "laps": 57, "circuit_km": 5.412, "sprint": True,  "sprint_laps": 21},
-    5:  {"name": "Canadian Grand Prix",       "gp_key": "Canada",         "circuit": "Circuit Gilles Villeneuve", "date": "2026-05-24", "laps": 70, "circuit_km": 4.361, "sprint": True,  "sprint_laps": 23},
-    6:  {"name": "Monaco Grand Prix",         "gp_key": "Monaco",         "circuit": "Monaco",                 "date": "2026-06-07", "laps": 78, "circuit_km": 3.337, "sprint": False},
-    7:  {"name": "Barcelona-Catalunya Grand Prix", "gp_key": "Spain",     "circuit": "Barcelona-Catalunya",    "date": "2026-06-14", "laps": 66, "circuit_km": 4.657, "sprint": False},
-    8:  {"name": "Austrian Grand Prix",       "gp_key": "Austria",        "circuit": "Red Bull Ring",          "date": "2026-06-28", "laps": 71, "circuit_km": 4.318, "sprint": False},
-    9:  {"name": "British Grand Prix",        "gp_key": "Great Britain",  "circuit": "Silverstone",            "date": "2026-07-05", "laps": 52, "circuit_km": 5.891, "sprint": True,  "sprint_laps": 17},
-    10: {"name": "Belgian Grand Prix",        "gp_key": "Belgium",        "circuit": "Spa-Francorchamps",      "date": "2026-07-19", "laps": 44, "circuit_km": 7.004, "sprint": False},
-    11: {"name": "Hungarian Grand Prix",      "gp_key": "Hungary",        "circuit": "Hungaroring",            "date": "2026-07-26", "laps": 70, "circuit_km": 4.381, "sprint": False},
-    12: {"name": "Dutch Grand Prix",          "gp_key": "Netherlands",    "circuit": "Zandvoort",              "date": "2026-08-23", "laps": 72, "circuit_km": 4.259, "sprint": True,  "sprint_laps": 24},
-    13: {"name": "Italian Grand Prix",        "gp_key": "Italy",          "circuit": "Monza",                  "date": "2026-09-06", "laps": 53, "circuit_km": 5.793, "sprint": False},
-    14: {"name": "Spanish Grand Prix",        "gp_key": "Madrid",         "circuit": "Madring",                "date": "2026-09-13", "laps": 57, "circuit_km": 5.474, "sprint": False},
-    15: {"name": "Azerbaijan Grand Prix",     "gp_key": "Azerbaijan",     "circuit": "Baku City Circuit",      "date": "2026-09-27", "laps": 51, "circuit_km": 6.003, "sprint": False},
-    16: {"name": "Singapore Grand Prix",      "gp_key": "Singapore",      "circuit": "Marina Bay",             "date": "2026-10-11", "laps": 62, "circuit_km": 4.940, "sprint": True,  "sprint_laps": 21},
-    17: {"name": "United States Grand Prix",  "gp_key": "United States",  "circuit": "COTA",                   "date": "2026-10-25", "laps": 56, "circuit_km": 5.513, "sprint": False},
-    18: {"name": "Mexico City Grand Prix",    "gp_key": "Mexico",         "circuit": "Autódromo Hermanos Rodríguez", "date": "2026-11-01", "laps": 71, "circuit_km": 4.304, "sprint": False},
-    19: {"name": "São Paulo Grand Prix",      "gp_key": "Brazil",         "circuit": "Interlagos",             "date": "2026-11-08", "laps": 71, "circuit_km": 4.309, "sprint": True,  "sprint_laps": 24},
-    20: {"name": "Las Vegas Grand Prix",      "gp_key": "Las Vegas",      "circuit": "Las Vegas Strip",        "date": "2026-11-21", "laps": 50, "circuit_km": 6.201, "sprint": False},
-    21: {"name": "Qatar Grand Prix",          "gp_key": "Qatar",          "circuit": "Lusail",                 "date": "2026-11-29", "laps": 57, "circuit_km": 5.419, "sprint": False},
-    22: {"name": "Abu Dhabi Grand Prix",      "gp_key": "Abu Dhabi",      "circuit": "Yas Marina",             "date": "2026-12-06", "laps": 58, "circuit_km": 5.281, "sprint": False},
+    1: {'name': 'Australian Grand Prix', 'gp_key': 'Australia', 'circuit': 'Albert Park', 'date': '2026-03-08', 'laps': 58, 'circuit_km': 5.278, 'sprint': False, 'circuit_id': 'albert_park', 'locations': ['Melbourne']},
+    2: {'name': 'Chinese Grand Prix', 'gp_key': 'China', 'circuit': 'Shanghai International', 'date': '2026-03-15', 'laps': 56, 'circuit_km': 5.451, 'sprint': True, 'sprint_laps': 21, 'circuit_id': 'shanghai', 'locations': ['Shanghai']},
+    3: {'name': 'Japanese Grand Prix', 'gp_key': 'Japan', 'circuit': 'Suzuka', 'date': '2026-03-29', 'laps': 53, 'circuit_km': 5.807, 'sprint': False, 'circuit_id': 'suzuka', 'locations': ['Suzuka']},
+    4: {'name': 'Miami Grand Prix', 'gp_key': 'Miami', 'circuit': 'Miami International', 'date': '2026-05-03', 'laps': 57, 'circuit_km': 5.412, 'sprint': True, 'sprint_laps': 21, 'circuit_id': 'miami', 'locations': ['Miami', 'Miami Gardens']},
+    5: {'name': 'Canadian Grand Prix', 'gp_key': 'Canada', 'circuit': 'Circuit Gilles Villeneuve', 'date': '2026-05-24', 'laps': 70, 'circuit_km': 4.361, 'sprint': True, 'sprint_laps': 23, 'circuit_id': 'villeneuve', 'locations': ['Montreal', 'Montréal']},
+    6: {'name': 'Monaco Grand Prix', 'gp_key': 'Monaco', 'circuit': 'Monaco', 'date': '2026-06-07', 'laps': 78, 'circuit_km': 3.337, 'sprint': False, 'circuit_id': 'monaco', 'locations': ['Monte Carlo']},
+    7: {'name': 'Barcelona-Catalunya Grand Prix', 'gp_key': 'Spain', 'circuit': 'Barcelona-Catalunya', 'date': '2026-06-14', 'laps': 66, 'circuit_km': 4.657, 'sprint': False, 'circuit_id': 'catalunya', 'locations': ['Barcelona'], 'event_aliases': ['Barcelona Grand Prix']},
+    8: {'name': 'Austrian Grand Prix', 'gp_key': 'Austria', 'circuit': 'Red Bull Ring', 'date': '2026-06-28', 'laps': 71, 'circuit_km': 4.318, 'sprint': False, 'circuit_id': 'red_bull_ring', 'locations': ['Spielberg']},
+    9: {'name': 'British Grand Prix', 'gp_key': 'Great Britain', 'circuit': 'Silverstone', 'date': '2026-07-05', 'laps': 52, 'circuit_km': 5.891, 'sprint': True, 'sprint_laps': 17, 'circuit_id': 'silverstone', 'locations': ['Silverstone']},
+    10: {'name': 'Belgian Grand Prix', 'gp_key': 'Belgium', 'circuit': 'Spa-Francorchamps', 'date': '2026-07-19', 'laps': 44, 'circuit_km': 7.004, 'sprint': False, 'circuit_id': 'spa', 'locations': ['Spa', 'Spa-Francorchamps']},
+    11: {'name': 'Hungarian Grand Prix', 'gp_key': 'Hungary', 'circuit': 'Hungaroring', 'date': '2026-07-26', 'laps': 70, 'circuit_km': 4.381, 'sprint': False, 'circuit_id': 'hungaroring', 'locations': ['Budapest']},
+    12: {'name': 'Dutch Grand Prix', 'gp_key': 'Netherlands', 'circuit': 'Zandvoort', 'date': '2026-08-23', 'laps': 72, 'circuit_km': 4.259, 'sprint': True, 'sprint_laps': 24, 'circuit_id': 'zandvoort', 'locations': ['Zandvoort']},
+    13: {'name': 'Italian Grand Prix', 'gp_key': 'Italy', 'circuit': 'Monza', 'date': '2026-09-06', 'laps': 53, 'circuit_km': 5.793, 'sprint': False, 'circuit_id': 'monza', 'locations': ['Monza']},
+    14: {'name': 'Spanish Grand Prix', 'gp_key': 'Madrid', 'circuit': 'Madring', 'date': '2026-09-13', 'laps': 57, 'circuit_km': 5.474, 'sprint': False, 'circuit_id': 'madring', 'locations': ['Madrid']},
+    15: {'name': 'Azerbaijan Grand Prix', 'gp_key': 'Azerbaijan', 'circuit': 'Baku City Circuit', 'date': '2026-09-26', 'laps': 51, 'circuit_km': 6.003, 'sprint': False, 'circuit_id': 'baku', 'locations': ['Baku']},
+    16: {'name': 'Bahrain Grand Prix in Malaysia', 'gp_key': 'Bahrain', 'circuit': 'Sepang International Circuit', 'date': '2026-10-04', 'laps': 56, 'circuit_km': 5.543, 'sprint': False, 'prediction_disabled': True, 'status_note': 'Official result available; no genuine pre-race forecast was published.', 'circuit_id': 'sepang', 'locations': ['Kuala Lumpur'], 'event_aliases': ['Bahrain Grand Prix']},
+    17: {'name': 'Singapore Grand Prix', 'gp_key': 'Singapore', 'circuit': 'Marina Bay', 'date': '2026-10-11', 'laps': 62, 'circuit_km': 4.927, 'sprint': True, 'sprint_laps': 21, 'race_start_utc': '2026-10-11T12:00:00Z', 'circuit_id': 'marina_bay', 'locations': ['Marina Bay', 'Singapore']},
+    18: {'name': 'United States Grand Prix', 'gp_key': 'United States', 'circuit': 'COTA', 'date': '2026-10-25', 'laps': 56, 'circuit_km': 5.513, 'sprint': False, 'circuit_id': 'americas', 'locations': ['Austin']},
+    19: {'name': 'Mexico City Grand Prix', 'gp_key': 'Mexico', 'circuit': 'Autódromo Hermanos Rodríguez', 'date': '2026-11-01', 'laps': 71, 'circuit_km': 4.304, 'sprint': False, 'circuit_id': 'rodriguez', 'locations': ['Mexico City']},
+    20: {'name': 'São Paulo Grand Prix', 'gp_key': 'Brazil', 'circuit': 'Interlagos', 'date': '2026-11-08', 'laps': 71, 'circuit_km': 4.309, 'sprint': False, 'circuit_id': 'interlagos', 'locations': ['São Paulo'], 'event_aliases': ['Brazilian Grand Prix']},
+    21: {'name': 'Las Vegas Grand Prix', 'gp_key': 'Las Vegas', 'circuit': 'Las Vegas Strip', 'date': '2026-11-21', 'laps': 50, 'circuit_km': 6.201, 'sprint': False, 'circuit_id': 'vegas', 'locations': ['Las Vegas'], 'provider_date': '2026-11-22'},
+    22: {'name': 'Qatar Grand Prix', 'gp_key': 'Qatar', 'circuit': 'Lusail', 'date': '2026-11-29', 'laps': 57, 'circuit_km': 5.419, 'sprint': False, 'circuit_id': 'losail', 'locations': ['Lusail']},
+    23: {'name': 'Abu Dhabi Grand Prix', 'gp_key': 'Abu Dhabi', 'circuit': 'Yas Marina', 'date': '2026-12-06', 'laps': 58, 'circuit_km': 5.281, 'sprint': False, 'circuit_id': 'yas_marina', 'locations': ['Abu Dhabi', 'Yas Marina']},
 }
 
 # ---- Circuit characteristics (for pit / tyre / weather modelling) --------
@@ -1522,15 +1523,13 @@ def _parse_laptime_to_seconds(value):
 
 
 def _fastf1_session_matches_round(session, expected_round):
-    """True when a FastF1 session's resolved event round matches ``expected_round``.
+    """Require the resolved round, name, local date and location to match.
 
     Mirrors ``gp_weekend._event_matches_round`` so the low-level qualifying fetch
     enforces the same wrong-event guard the phase detector already applies.
     """
-    try:
-        return int(session.event["RoundNumber"]) == int(expected_round)
-    except (KeyError, TypeError, ValueError):
-        return False
+    from event_identity import fastf1_matches
+    return fastf1_matches(session.event, expected_round, CALENDAR)
 
 
 def _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=None):
@@ -1560,15 +1559,10 @@ def _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=None):
         races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
         if not races:
             return None
-        if expected_round is not None:
-            try:
-                echoed = int(races[0].get("round"))
-            except (TypeError, ValueError):
-                echoed = None
-            if echoed != int(expected_round):
-                print(f"🛑 Jolpica qualifying echoed round {echoed}, expected "
-                      f"{expected_round} — rejecting.")
-                return None
+        from event_identity import jolpica_matches
+        if len(races) != 1 or not jolpica_matches(races[0], year, rnd, get_calendar(year)):
+            print("🛑 Jolpica qualifying event identity does not match the calendar — rejecting.")
+            return None
         results = races[0].get("QualifyingResults", [])
         if not results:
             return None
@@ -1643,10 +1637,9 @@ def fetch_qualifying_data(year, grand_prix, expected_round=None):
     British-GP incident, commit ``09d607f``): FastF1's fuzzy event matcher can
     silently resolve one GP's name to a *different, already-run* event and hand
     back that event's qualifying. When ``expected_round`` is supplied, the
-    resolved FastF1 session's ``RoundNumber`` must match it or the FastF1 result
-    is rejected outright (falling through to the round-scoped Jolpica endpoint,
-    which is inherently round-safe). This guarantees a wrong-event grid can never
-    be promoted to ``real-quali-verified`` provenance.
+    resolved round, event name, date and venue must match the calendar. The
+    Jolpica fallback independently checks season, round, name, date and circuit;
+    a round-scoped URL alone is insufficient when the calendar changes.
     """
     override = _QUALI_TIMES_OVERRIDE.get(f"{int(year)}:{grand_prix}")
     if override:

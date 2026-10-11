@@ -30,6 +30,7 @@ import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import PublicationNotice from "@/components/race-detail/PublicationNotice";
 import TrustBand from "@/components/marketing/TrustBand";
 import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import FeatureOutcomes from "@/components/marketing/FeatureOutcomes";
@@ -134,9 +135,10 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   // The model only produces a genuine forecast once qualifying is in. Don't tease a
   // "predicted podium" for an upcoming GP before its qualifying session is official.
   const qualifyingOfficial =
-    featuredRound?.weekendResults?.sessions?.some(
+    !featuredRound?.publicationHold &&
+    (featuredRound?.weekendResults?.sessions?.some(
       (s) => s.kind === "qualifying" && s.status === "official",
-    ) ?? false;
+    ) ?? false);
   // The featured race is worth adding to a calendar until it has actually run —
   // i.e. still upcoming, forecast-ready, or a live weekend. We reuse the round's
   // lifecycle (already derived above) rather than reading the clock in render.
@@ -172,11 +174,11 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
               variants={fadeUp}
               className="body-md mt-6 max-w-2xl text-[color:var(--body-strong)]"
             >
-              Open-source machine-learning forecasts for every Grand Prix —{" "}
+              Open-source race forecasts and official results —{" "}
               {trustStats.backtest?.rounds
                 ? `backtested across ${trustStats.backtest.rounds} races`
                 : "backtested over past seasons"}{" "}
-              and graded against every official result.
+              with grades only when a forecast matches the correct event.
             </motion.p>
           </motion.div>
 
@@ -193,7 +195,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                 <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
                 <span className="eyebrow">
                   R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
-                  <LiveCountdown targetIso={featuredRace.date} className="font-tabular" />
+                  <LiveCountdown targetIso={featuredRace.raceStartUtc || featuredRace.date} className="font-tabular" />
                 </span>
               </div>
 
@@ -203,7 +205,9 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                   <p className="eyebrow mb-2">Next up · Featured Grand Prix</p>
                   <h2 className="display-md text-balance">{featuredRace.name}</h2>
                   <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
-                    {featuredRace.circuit} · {featuredMeta.description}
+                    {featuredRace.circuit} · {featuredRound?.publicationHold
+                      ? "Official session data is available. The forecast is withheld for review."
+                      : featuredMeta.description}
                   </p>
                 </div>
               </div>
@@ -274,6 +278,12 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        {featuredRound?.publicationHold && featuredRace && (
+          <section className="section-bugatti" aria-label="Forecast publication status">
+            <PublicationNotice data={featuredRound} race={featuredRace} />
+          </section>
+        )}
+
         {isPredictionView && qualifyingOfficial && featuredRound && featuredRound.classification && (
           <motion.section
             aria-labelledby="forecast-heading"
@@ -346,18 +356,22 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
             const predictedByDriver = new Map(
               (latestRound.classification ?? []).map((c) => [c.driver, c]),
             );
+            const officialByDriver = new Map(
+              (latestRound.weekendResults?.sessions.find((s) => s.kind === "race")?.rows ?? [])
+                .map((row) => [row.driver, row]),
+            );
             const officialRows = Object.entries(latestRound.actualResults)
               .sort(([, a], [, b]) => a - b)
               .slice(0, 10)
               .map(([driver, position]) => {
-                const pred = predictedByDriver.get(driver);
+                const pred = predictedByDriver.get(driver) ?? officialByDriver.get(driver);
                 return {
                   driver,
                   driverFullName: pred?.driverFullName,
                   position,
                   team: pred?.team ?? "—",
                   teamColor: pred?.teamColor ?? "var(--muted)",
-                  headshotUrl: resolveDriverHeadshot(driver, pred?.headshotUrl),
+                  headshotUrl: resolveDriverHeadshot(driver, predictedByDriver.get(driver)?.headshotUrl),
                 };
               });
             return (
@@ -382,7 +396,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                     href={`/race/${latestRound.round}`}
                     className="link-bugatti button-label"
                   >
-                    Compare to prediction
+                    {latestRound.publicationHold ? "Open official result" : "Compare to prediction"}
                   </Link>
                 </div>
                 <div className="border border-[color:var(--hairline)] overflow-hidden">

@@ -209,11 +209,15 @@ export function getRaceArt(
   gpKey: string,
   round: number,
   basePath: string = "",
-): { src: string; credit: string | null } {
+  circuitId?: string | null,
+): { src: string | null; credit: string | null } {
   // gpKeys arrive as the calendar's country/race name ("Great Britain",
   // "Las Vegas", "Abu Dhabi", "United States"). Normalise to the underscored
   // lower-case form used as map keys so multi-word names resolve.
   const normalised = gpKey?.toLowerCase().replace(/\s+/g, "_");
+  if (normalised === "bahrain" && circuitId === "sepang") {
+    return { src: null, credit: "Sepang venue imagery not verified" };
+  }
   const art = RACE_ART[normalised] ?? RACE_ART[gpKey?.toLowerCase()];
   if (art) {
     return { src: art.src, credit: art.credit };

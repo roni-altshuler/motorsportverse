@@ -11,6 +11,23 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 event identity and publication review — 2026-10-11
+
+- Correct the verified 2026 calendar to 23 events: Sepang-hosted Bahrain is
+  round 16; Singapore is round 17. Preserve future forecast values and original
+  publication times when adjusting their calendar identities.
+- Reject provider responses that disagree on event name, date or venue even
+  when their round number matches. Detect conflicting stored identities before
+  treating a polling run as no work, and require actual results for completion.
+- Archive the misassigned forecast, probabilities, model assets and derived
+  diagnostics. Remove its grade; publish verified Sepang results without a
+  retrospective forecast, and Singapore's official sessions separately from the
+  withheld forecast. Withdraw championship and drift diagnostics pending review.
+- Add an accessible publication notice and session tables with official source
+  links, original forecast provenance and the verified Singapore race time.
+- Clarify that regenerated probability diagnostics with shared temperature
+  tuning do not establish fully out-of-sample or immutable pre-race performance.
+
 ### Circuit workspace driver selection — 2026-10-10
 
 - Make recorded map positions selectable with 44px native buttons and visible

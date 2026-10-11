@@ -37,7 +37,9 @@ export interface RaceCalendarEntry {
   circuit: string;
   /** Explicit configuration identifier; absent legacy geometry is not reviewed. */
   layoutId?: string;
+  circuitId?: string | null;
   date: string;
+  raceStartUtc?: string | null;
   postponed?: boolean;
   originalDate?: string | null;
   rescheduledDate?: string | null;
@@ -45,15 +47,15 @@ export interface RaceCalendarEntry {
   laps: number;
   circuitKm: number;
   circuitType: string;
-  expectedStops: number;
-  tyreDeg: number;
-  overtaking: number;
+  expectedStops?: number;
+  tyreDeg?: number;
+  overtaking?: number;
   country: string;
   sprint: boolean;
   sprintLaps: number;
-  drsZones: number;
-  safetyCarLikelihood: number;
-  altitudeM: number;
+  drsZones?: number;
+  safetyCarLikelihood?: number;
+  altitudeM?: number;
 }
 
 export interface DriverInfo {
@@ -88,6 +90,8 @@ export interface TeamInfo {
 }
 
 export interface SeasonData {
+  /** Stored usable rankings, including previews; does not establish a pre-race cutoff. */
+  forecastRounds?: number[];
   season: number;
   totalRounds: number;
   calendar: RaceCalendarEntry[];
@@ -166,9 +170,9 @@ export interface ClassificationEntry {
 }
 
 export interface ModelMetrics {
-  r2Score: number;
-  mae: number;
-  maxSpread: number;
+  r2Score: number | null;
+  mae: number | null;
+  maxSpread: number | null;
   trainingYears: number[];
   avgUncertainty?: number;
 }
@@ -317,6 +321,14 @@ export interface RoundData {
    *   "post-race"   — race classified; predicted-vs-actual comparison live
    * Optional for backwards compatibility with older round JSONs.
    */
+  publicationHold?: {
+    reason: "event-mismatch" | "no-pre-race-forecast";
+    message: string;
+    reviewedAt: string;
+    sourceUrl: string;
+    originalForecast?: { round: number; generatedAt: string; sha256: string };
+  };
+  forecastProvenance?: { originalRound: number; generatedAt: string; sha256: string };
   predictionPhase?: "preview" | "post-quali" | "post-race";
   /** True when qualifying lap times are real (not synthetic estimates). */
   qualifyingDataAvailable?: boolean;
@@ -327,19 +339,19 @@ export interface RoundData {
   metrics: ModelMetrics;
   featureImportance: FeatureImportance[];
   fastestLap: string;
-  podium: [string, string, string];
+  podium: [string, string, string] | [];
   visualizations: string[];
   visualizationDetails?: VisualizationDetail[];
   circuitInfo: {
     type: string;
     laps: number;
     circuitKm: number;
-    expectedStops: number;
-    tyreDeg: number;
-    overtaking: number;
-    drsZones: number;
-    safetyCarLikelihood: number;
-    altitudeM: number;
+    expectedStops?: number;
+    tyreDeg?: number;
+    overtaking?: number;
+    drsZones?: number;
+    safetyCarLikelihood?: number;
+    altitudeM?: number;
     /** SVG vector geometry derived from FastF1 telemetry at build time.
      * Optional — circuits without telemetry yet (cold-start) fall back
      * to the matplotlib PNG. */
@@ -705,7 +717,7 @@ export interface DriverStanding {
   points: number;
   wins: number;
   podiums: number;
-  pointsHistory: number[];  // cumulative per round
+  pointsHistory: number[]; // cumulative per round
   /** See {@link DriverInfo.headshotUrl}. */
   headshotUrl?: string | null;
 }
@@ -784,14 +796,30 @@ export interface WccForecastEntry {
 
 // Country flag emoji lookup
 export const COUNTRY_FLAGS: Record<string, string> = {
-  "Australia": "🇦🇺", "China": "🇨🇳", "Japan": "🇯🇵",
-  "Bahrain": "🇧🇭", "Saudi Arabia": "🇸🇦", "Miami": "🇺🇸",
-  "Emilia Romagna": "🇮🇹", "Monaco": "🇲🇨", "Spain": "🇪🇸",
-  "Canada": "🇨🇦", "Austria": "🇦🇹", "Great Britain": "🇬🇧",
-  "Belgium": "🇧🇪", "Hungary": "🇭🇺", "Netherlands": "🇳🇱",
-  "Italy": "🇮🇹", "Azerbaijan": "🇦🇿", "Singapore": "🇸🇬",
-  "United States": "🇺🇸", "Mexico": "🇲🇽", "Brazil": "🇧🇷",
-  "Las Vegas": "🇺🇸", "Qatar": "🇶🇦", "Abu Dhabi": "🇦🇪",
+  Australia: "🇦🇺",
+  China: "🇨🇳",
+  Japan: "🇯🇵",
+  Bahrain: "🇧🇭",
+  "Saudi Arabia": "🇸🇦",
+  Miami: "🇺🇸",
+  "Emilia Romagna": "🇮🇹",
+  Monaco: "🇲🇨",
+  Spain: "🇪🇸",
+  Canada: "🇨🇦",
+  Austria: "🇦🇹",
+  "Great Britain": "🇬🇧",
+  Belgium: "🇧🇪",
+  Hungary: "🇭🇺",
+  Netherlands: "🇳🇱",
+  Italy: "🇮🇹",
+  Azerbaijan: "🇦🇿",
+  Singapore: "🇸🇬",
+  "United States": "🇺🇸",
+  Mexico: "🇲🇽",
+  Brazil: "🇧🇷",
+  "Las Vegas": "🇺🇸",
+  Qatar: "🇶🇦",
+  "Abu Dhabi": "🇦🇪",
 };
 
 // =========================================================================
@@ -805,6 +833,7 @@ export interface ProbabilityMarketEntry {
 }
 
 export interface ProbabilityRoundData {
+  status?: "withheld";
   round: number;
   season: number;
   generatedAt: string;
@@ -1096,14 +1125,14 @@ export interface ReplayData {
 // Team colors for CSS usage
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",
-  "McLaren": "#FF8000",
-  "Ferrari": "#E8002D",
-  "Mercedes": "#27F4D2",
+  McLaren: "#FF8000",
+  Ferrari: "#E8002D",
+  Mercedes: "#27F4D2",
   "Aston Martin": "#229971",
-  "Alpine": "#FF87BC",
-  "Williams": "#64C4FF",
+  Alpine: "#FF87BC",
+  Williams: "#64C4FF",
   "Racing Bulls": "#6692FF",
-  "Haas": "#B6BABD",
-  "Audi": "#1E1E1E",
-  "Cadillac": "#C0C0C0",
+  Haas: "#B6BABD",
+  Audi: "#1E1E1E",
+  Cadillac: "#C0C0C0",
 };
