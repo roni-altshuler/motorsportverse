@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T10:25:41Z",
+  "generatedAt": "2026-10-11T16:27:26Z",
   "season": 2026,
   "scores": "published",
   "roundsScored": [
@@ -19,7 +19,7 @@
     14,
     15
   ],
-  "note": "Historical probability scores are retrospective diagnostics, not a fully out-of-sample evaluation. Per-round calibrators use earlier rounds, but the shared temperature was tuned across all scored rounds. Exports do not establish immutable pre-race forecasts.",
+  "note": "Historical probability scores are retrospective diagnostics, not a fully out-of-sample evaluation. The per-round calibrator uses earlier rounds, but a shared temperature is tuned across all requested scored rounds. Probability exports are regenerated and do not establish an immutable pre-race publication record. Withdrawn forecasts are excluded.",
   "perMarket": {
     "win": {
       "brierScore": 0.031856,

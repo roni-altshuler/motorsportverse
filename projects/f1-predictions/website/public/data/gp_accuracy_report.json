@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T05:17:22.512902Z",
+  "generatedAt": "2026-10-11T16:23:48.202884Z",
   "overallAccuracy": {
     "seasonMeanError": 3.51,
     "seasonAccuracyPct": 62.9,
@@ -1760,13 +1760,13 @@
       "label": "Qualifying grid order",
       "description": "Predict the finishing order to equal the qualifying grid.",
       "season": {
-        "roundsScored": 15,
-        "winnerHits": 10,
-        "winnerHitRate": 66.7,
-        "podiumSetPct": 60.0,
-        "pointsSetPct": 76.0,
-        "blendPct": 66.4,
-        "meanError": 3.38
+        "roundsScored": 16,
+        "winnerHits": 11,
+        "winnerHitRate": 68.8,
+        "podiumSetPct": 60.4,
+        "pointsSetPct": 76.2,
+        "blendPct": 66.8,
+        "meanError": 3.32
       },
       "perRound": {
         "1": {
@@ -1918,6 +1918,16 @@
           "podiumAccuracyPct": 33.3,
           "pointsAccuracyPct": 60.0,
           "blendPct": 44.0
+        },
+        "17": {
+          "winnerHit": true,
+          "podiumHits": 2,
+          "podiumTotal": 3,
+          "top10Overlap": 8,
+          "meanError": 2.45,
+          "podiumAccuracyPct": 66.7,
+          "pointsAccuracyPct": 80.0,
+          "blendPct": 72.0
         }
       }
     },
@@ -1925,9 +1935,9 @@
       "label": "Pole-sitter wins",
       "description": "Predict the pole-sitter to win the race.",
       "season": {
-        "roundsScored": 15,
-        "winnerHits": 10,
-        "winnerHitRate": 66.7
+        "roundsScored": 16,
+        "winnerHits": 11,
+        "winnerHitRate": 68.8
       },
       "perRound": {
         "1": {
@@ -1989,6 +1999,10 @@
         "15": {
           "winnerHit": true,
           "predictedWinner": "RUS"
+        },
+        "17": {
+          "winnerHit": true,
+          "predictedWinner": "VER"
         }
       }
     },
@@ -1996,9 +2010,9 @@
       "label": "Championship points leader wins",
       "description": "Predict the driver leading the championship (before the round) to win.",
       "season": {
-        "roundsScored": 15,
+        "roundsScored": 16,
         "winnerHits": 7,
-        "winnerHitRate": 46.7
+        "winnerHitRate": 43.8
       },
       "perRound": {
         "2": {
@@ -2058,6 +2072,10 @@
           "predictedWinner": "ANT"
         },
         "16": {
+          "winnerHit": false,
+          "predictedWinner": "ANT"
+        },
+        "17": {
           "winnerHit": false,
           "predictedWinner": "ANT"
         }
