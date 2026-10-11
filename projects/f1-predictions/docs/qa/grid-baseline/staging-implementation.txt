@@ -1,0 +1,114 @@
+"""Stage the previously sealed grid baseline for review without changing forecasts.
+
+No network, fitting, grading or publication-hold release. Existing baseline
+files cannot be replaced; seal time is pinned by the original artifact hash.
+"""
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import tempfile
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SEALED_SHA256 = "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58"
+ARTIFACT_FILE = f"2026_round_17_{SEALED_SHA256[:12]}.json"
+RECEIPT_FILE = "2026_round_17.json"
+
+
+def _instant(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        raise ValueError("baseline timestamps require a timezone")
+    return parsed
+
+
+def stage_grid_baseline(sealed: Path, verification: Path, root: Path = PROJECT_ROOT) -> dict:
+    """Create a new immutable display record from the exact earlier seal."""
+    raw, verification_raw = sealed.read_bytes(), verification.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != SEALED_SHA256:
+        raise ValueError("sealed baseline bytes changed; refuse replacement or backdating")
+    artifact, reviewed = json.loads(raw), json.loads(verification_raw)
+    data = root / "website/public/data"
+    sources = {data / "rounds/round_17.json": artifact["sourceHashes"]["round_17.json"],
+               data / "season.json": artifact["sourceHashes"]["season.json"]}
+    start, sealed_at = _instant(artifact["raceStartUtc"]), _instant(artifact["generatedAt"])
+    checked = _instant(reviewed["checkedAt"])
+    if artifact["forecastKind"] != "official_grid_baseline" or artifact["probabilities"] is not None:
+        raise ValueError("only the probability-free official-grid baseline is permitted")
+    state = json.loads((data / "rounds/round_17.json").read_bytes())
+    sessions = {s["key"]: s for s in state["weekendResults"]["sessions"]}
+    grid = sessions["startingGrid"]
+    qualifying = sessions["qualifying"]
+    positions = lambda rows: {r["driver"]: r["position"] for r in rows}
+    if (reviewed["sourceUrls"]["startingGrid"] != grid["sourceUrl"]
+            or reviewed["sourceUrls"]["qualifying"] != qualifying["sourceUrl"]
+            or reviewed["grid"] != positions(grid["rows"])
+            or reviewed["qualifying"] != positions(qualifying["rows"])
+            or reviewed["grid"] != {r["driver"]: r["officialGridPosition"] for r in artifact["classification"]}
+            or state.get("actualResults") or not state.get("publicationHold")):
+        raise ValueError("reviewed source/grid/outcome disagrees with the sealed baseline")
+
+    def validate() -> None:
+        now = datetime.now(timezone.utc)
+        if not sealed_at <= checked <= now < start or (now - checked).total_seconds() > 3600:
+            raise ValueError("baseline staging requires a recent pre-race source check")
+        for path, expected in sources.items():
+            if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+                raise ValueError("baseline input source bytes changed")
+
+    validate()
+    receipt = {
+        "schemaVersion": 1, "baselineId": f"2026:17:official_grid:{SEALED_SHA256}",
+        "forecastKind": "official_grid_baseline", "evaluationStream": "baselines/official_grid",
+        "season": 2026, "round": 17, "artifactFile": ARTIFACT_FILE,
+        "artifactSha256": SEALED_SHA256, "sealedAt": artifact["generatedAt"],
+        "stagedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "sourceRecheckedAt": reviewed["checkedAt"], "sourceUrls": reviewed["sourceUrls"],
+        "sourceVerificationSha256": hashlib.sha256(verification_raw).hexdigest(),
+        "sourceCommit": artifact["sourceCommit"], "policySha256": artifact["policySha256"],
+        "generatorSha256": artifact["generatorSha256"], "stagingCodeSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "modelForecastChanged": False, "publicationHoldReleased": False, "graded": False,
+    }
+    destination = data / "baselines"
+    targets = {destination / ARTIFACT_FILE: raw,
+               destination / RECEIPT_FILE: (json.dumps(receipt, indent=2) + "\n").encode()}
+    if any(path.exists() for path in targets):
+        raise FileExistsError("baseline records are immutable; no overwrite is permitted")
+    destination.mkdir(parents=True, exist_ok=True)
+    temporary, created = [], []
+    try:
+        for path, encoded in targets.items():
+            with tempfile.NamedTemporaryFile(dir=destination, delete=False) as f:
+                temporary.append((Path(f.name), path))
+                f.write(encoded)
+                f.flush()
+                os.fsync(f.fileno())
+        for staged, path in temporary:
+            validate()
+            os.link(staged, path)
+            created.append(path)
+        validate()
+    except Exception:
+        for path in created:
+            path.unlink(missing_ok=True)
+        raise
+    finally:
+        for staged, _path in temporary:
+            staged.unlink(missing_ok=True)
+    return receipt
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--sealed", type=Path, required=True)
+    parser.add_argument("--verification", type=Path, required=True)
+    args = parser.parse_args()
+    print(json.dumps(stage_grid_baseline(args.sealed, args.verification), indent=2))
+
+
+if __name__ == "__main__":
+    main()

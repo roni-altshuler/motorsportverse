@@ -31,6 +31,7 @@ import { resolveDriverHeadshot } from "@/lib/headshots";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import PublicationNotice from "@/components/race-detail/PublicationNotice";
+import GridBaselinePanel from "@/components/race-detail/GridBaselinePanel";
 import TrustBand from "@/components/marketing/TrustBand";
 import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import FeatureOutcomes from "@/components/marketing/FeatureOutcomes";
@@ -280,7 +281,8 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
         {featuredRound?.publicationHold && featuredRace && (
           <section className="section-bugatti" aria-label="Forecast publication status">
-            <PublicationNotice data={featuredRound} race={featuredRace} />
+            <GridBaselinePanel data={featuredRound} race={featuredRace} compact />
+            <div className="mt-8"><PublicationNotice data={featuredRound} race={featuredRace} /></div>
           </section>
         )}
 

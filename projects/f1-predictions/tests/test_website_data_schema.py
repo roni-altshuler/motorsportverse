@@ -25,6 +25,70 @@ class _Loose(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
+class GridBaselineEntry(_Loose):
+    driver: str
+    driverFullName: str
+    team: str
+    predictedPosition: int = Field(gt=0)
+    officialGridPosition: int = Field(gt=0)
+
+
+class GridBaselineArtifact(_Loose):
+    status: Literal["sealed_review_only"]
+    forecastKind: Literal["official_grid_baseline"]
+    season: int
+    round: int
+    name: str
+    circuit: str
+    raceStartUtc: str
+    generatedAt: str
+    inputCutoff: str
+    sourceCheckedAt: str
+    sourceCommit: str
+    policySha256: str
+    generatorSha256: str
+    winnerPick: dict[str, str]
+    classification: list[GridBaselineEntry]
+    probabilities: None
+    modelPromotion: Literal[False]
+    publicationHoldReleased: Literal[False]
+
+
+class GridBaselineReceipt(_Loose):
+    schemaVersion: Literal[1]
+    baselineId: str
+    forecastKind: Literal["official_grid_baseline"]
+    evaluationStream: Literal["baselines/official_grid"]
+    season: int
+    round: int
+    artifactFile: str
+    artifactSha256: str
+    sealedAt: str
+    stagedAt: str
+    sourceRecheckedAt: str
+    sourceUrls: dict[str, str]
+    graded: Literal[False]
+    modelForecastChanged: Literal[False]
+    publicationHoldReleased: Literal[False]
+
+
+def test_independent_grid_baseline_schema_and_byte_provenance():
+    import hashlib
+    directory = WEBSITE_DATA / "baselines"
+    receipt = GridBaselineReceipt.model_validate_json((directory / "2026_round_17.json").read_text())
+    raw = (directory / receipt.artifactFile).read_bytes()
+    artifact = GridBaselineArtifact.model_validate_json(raw)
+    assert hashlib.sha256(raw).hexdigest() == receipt.artifactSha256
+    assert artifact.generatedAt == receipt.sealedAt
+    assert len(artifact.classification) == 22
+    assert all(r.predictedPosition == r.officialGridPosition == i for i, r in enumerate(artifact.classification, 1))
+    qa = WEBSITE_DATA.parents[2] / "docs/qa/grid-baseline"
+    assert hashlib.sha256((qa / "sealing-implementation.txt").read_bytes()).hexdigest() == artifact.generatorSha256
+    staging = json.loads((directory / "2026_round_17.json").read_bytes())
+    assert hashlib.sha256((qa / "staging-implementation.txt").read_bytes()).hexdigest() == staging["stagingCodeSha256"]
+    assert hashlib.sha256((qa / "source-verification.json").read_bytes()).hexdigest() == staging["sourceVerificationSha256"]
+
+
 class SessionComparisonDriver(_Loose):
     code: str
     fullName: str

@@ -1,0 +1,401 @@
+{
+  "checkedAt": "2026-10-11T07:35:23.838Z",
+  "clock": "2026-10-11T07:30:00Z",
+  "browser": "Chromium",
+  "basePath": "/motorsportverse/projects/f1",
+  "reducedMotion": "reduce",
+  "fullEvidence": {
+    "path": "/tmp/motorsportverse-grid-baseline/browser-qa-full.json",
+    "sha256": "d3e277dc735e16736c355d29c66c04d338a0fe368c6fba5dd91b7c18c9914b59"
+  },
+  "pageErrors": [],
+  "localFailures": [],
+  "externalFailures": {
+    "count": 144,
+    "byDomain": {
+      "upload.wikimedia.org": 96,
+      "flagcdn.com": 48
+    },
+    "reasons": [
+      "net::ERR_TUNNEL_CONNECTION_FAILED"
+    ]
+  },
+  "cancelledRequests": {
+    "count": 133,
+    "resourceTypes": [
+      "fetch"
+    ],
+    "navigationRequests": 0,
+    "context": "Unused prefetch requests cancelled during scripted route changes; recorded separately."
+  },
+  "sourceLinks": [
+    {
+      "href": "http://127.0.0.1:8090/motorsportverse/projects/f1/race/17#startingGrid",
+      "target": "",
+      "rel": ""
+    },
+    {
+      "href": "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid",
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "href": "https://www.formula1.com/en/results/2026/races/1296/singapore/qualifying",
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "href": "http://127.0.0.1:8090/motorsportverse/projects/f1/data/baselines/2026_round_17_f994d9796f18.json",
+      "target": "",
+      "rel": ""
+    }
+  ],
+  "checks": [
+    {
+      "width": 1440,
+      "route": "/",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "documentWidth": 1440,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 184,
+        "right": 1256
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 4,
+      "cancelledPrefetches": 10,
+      "incompleteImages": 4
+    },
+    {
+      "width": 1440,
+      "route": "/race/17",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "keyboardGridAnchor": true,
+      "qualifyingRussell": 6,
+      "startingGridRussell": 21,
+      "sessionTables": 4,
+      "documentWidth": 1440,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 176,
+        "right": 1264
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 8,
+      "incompleteImages": 1
+    },
+    {
+      "width": 1440,
+      "route": "/race/16",
+      "status": 200,
+      "documentWidth": 1440,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 8,
+      "incompleteImages": 1
+    },
+    {
+      "width": 1440,
+      "route": "/accuracy",
+      "status": 200,
+      "documentWidth": 1440,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 1,
+      "accuracyObservations": [
+        "WINNERS CALLED 10/15",
+        "Over 15 paired rounds, the model no difference demonstrated (grid order)."
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/calendar",
+      "status": 200,
+      "documentWidth": 1440,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 31,
+      "cancelledPrefetches": 10,
+      "incompleteImages": 12
+    },
+    {
+      "width": 1440,
+      "homeKeyboardGridNavigation": true
+    },
+    {
+      "width": 768,
+      "route": "/",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "documentWidth": 912,
+      "pageOverflow": true,
+      "baselineBounds": {
+        "left": 24,
+        "right": 744
+      },
+      "beforeChangeDocumentWidth": 912,
+      "preexistingOverflow": "The same Next Race navigation button extends to 912px in the reviewed pre-change export at 768px.",
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 4,
+      "cancelledPrefetches": 10,
+      "incompleteImages": 4
+    },
+    {
+      "width": 768,
+      "route": "/race/17",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "keyboardGridAnchor": true,
+      "qualifyingRussell": 6,
+      "startingGridRussell": 21,
+      "sessionTables": 4,
+      "documentWidth": 912,
+      "pageOverflow": true,
+      "baselineBounds": {
+        "left": 24,
+        "right": 744
+      },
+      "beforeChangeDocumentWidth": 912,
+      "preexistingOverflow": "The same Next Race navigation button extends to 912px in the reviewed pre-change export at 768px.",
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 2,
+      "cancelledPrefetches": 8,
+      "incompleteImages": 1
+    },
+    {
+      "width": 768,
+      "route": "/race/16",
+      "status": 200,
+      "documentWidth": 912,
+      "pageOverflow": true,
+      "beforeChangeDocumentWidth": 912,
+      "preexistingOverflow": "The same Next Race navigation button extends to 912px in the reviewed pre-change export at 768px.",
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 8,
+      "incompleteImages": 1
+    },
+    {
+      "width": 768,
+      "route": "/accuracy",
+      "status": 200,
+      "documentWidth": 912,
+      "pageOverflow": true,
+      "beforeChangeDocumentWidth": 912,
+      "preexistingOverflow": "The same Next Race navigation button extends to 912px in the reviewed pre-change export at 768px.",
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 1,
+      "accuracyObservations": [
+        "WINNERS CALLED 10/15",
+        "Over 15 paired rounds, the model no difference demonstrated (grid order)."
+      ]
+    },
+    {
+      "width": 768,
+      "route": "/calendar",
+      "status": 200,
+      "documentWidth": 912,
+      "pageOverflow": true,
+      "beforeChangeDocumentWidth": 912,
+      "preexistingOverflow": "The same Next Race navigation button extends to 912px in the reviewed pre-change export at 768px.",
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 31,
+      "cancelledPrefetches": 9,
+      "incompleteImages": 12
+    },
+    {
+      "width": 768,
+      "homeKeyboardGridNavigation": true
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "documentWidth": 390,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 24,
+        "right": 366
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 4,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 4
+    },
+    {
+      "width": 390,
+      "route": "/race/17",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "keyboardGridAnchor": true,
+      "qualifyingRussell": 6,
+      "startingGridRussell": 21,
+      "sessionTables": 4,
+      "documentWidth": 390,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 16,
+        "right": 374
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 5,
+      "incompleteImages": 1
+    },
+    {
+      "width": 390,
+      "route": "/race/16",
+      "status": 200,
+      "documentWidth": 390,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 5,
+      "incompleteImages": 1
+    },
+    {
+      "width": 390,
+      "route": "/accuracy",
+      "status": 200,
+      "documentWidth": 390,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 3,
+      "incompleteImages": 1,
+      "accuracyObservations": [
+        "WINNERS CALLED 10/15",
+        "Over 15 paired rounds, the model no difference demonstrated (grid order)."
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/calendar",
+      "status": 200,
+      "documentWidth": 390,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 27,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 8
+    },
+    {
+      "width": 390,
+      "homeKeyboardGridNavigation": true
+    },
+    {
+      "width": 320,
+      "route": "/",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "documentWidth": 320,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 24,
+        "right": 296
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 4,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 4
+    },
+    {
+      "width": 320,
+      "route": "/race/17",
+      "status": 200,
+      "sealedDownloadSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+      "keyboardDisclosure": true,
+      "keyboardGridAnchor": true,
+      "qualifyingRussell": 6,
+      "startingGridRussell": 21,
+      "sessionTables": 4,
+      "documentWidth": 320,
+      "pageOverflow": false,
+      "baselineBounds": {
+        "left": 16,
+        "right": 304
+      },
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 5,
+      "incompleteImages": 1
+    },
+    {
+      "width": 320,
+      "route": "/race/16",
+      "status": 200,
+      "documentWidth": 320,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 5,
+      "incompleteImages": 1
+    },
+    {
+      "width": 320,
+      "route": "/accuracy",
+      "status": 200,
+      "documentWidth": 320,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 1,
+      "cancelledPrefetches": 3,
+      "incompleteImages": 1,
+      "accuracyObservations": [
+        "WINNERS CALLED 10/15",
+        "Over 15 paired rounds, the model no difference demonstrated (grid order)."
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/calendar",
+      "status": 200,
+      "documentWidth": 320,
+      "pageOverflow": false,
+      "pageErrors": 0,
+      "localFailures": 0,
+      "externalFailures": 26,
+      "cancelledPrefetches": 6,
+      "incompleteImages": 7
+    },
+    {
+      "width": 320,
+      "homeKeyboardGridNavigation": true
+    }
+  ]
+}

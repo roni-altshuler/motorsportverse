@@ -1,0 +1,83 @@
+"""Seal a review-only official-grid baseline; never touch serving state."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+
+MERGE = "5e2aa4763d79bcba782e19bc84c18ad4975092ad"
+REPO = Path("/workspace/motorsportverse-ridge-shadow")
+OUT = Path("/tmp/motorsportverse-event-identity")
+POLICY = "Predict the race finishing order equal to the verified official post-penalty starting grid. Winner pick is grid position one. No trained model or probabilities."
+EXPECTED = "VER LEC HAM ANT NOR PIA GAS LAW LIN HUL BEA OCO SAI BOR COL ALO ALB STR PER BOT RUS HAD".split()
+
+def read(path):
+    return subprocess.check_output(["git", "-C", str(REPO), "show", MERGE + ":projects/f1-predictions/" + path])
+
+now = datetime.now(timezone.utc)
+raw = read("website/public/data/rounds/round_17.json")
+season_raw = read("website/public/data/season.json")
+state, season = json.loads(raw), json.loads(season_raw)
+event = next(e for e in season["calendar"] if e["round"] == 17)
+assert (state["round"], state["name"], state["date"], state["circuit"]) == (17, event["name"], event["date"], event["circuit"])
+assert event["gpKey"] == "Singapore" and event["date"] == "2026-10-11"
+start = datetime.fromisoformat(event["raceStartUtc"].replace("Z", "+00:00"))
+assert now < start
+assert not state.get("actualResults") and state.get("publicationHold") and not state["classification"]
+sessions = {s["key"]: s for s in state["weekendResults"]["sessions"]}
+assert "grandPrix" not in sessions
+q, g = sessions["qualifying"], sessions["startingGrid"]
+assert q["status"] == g["status"] == "official"
+assert g["sourceUrl"] == "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid"
+rows = sorted(g["rows"], key=lambda r: r["position"])
+assert [r["position"] for r in rows] == list(range(1, 23))
+assert [r["driver"] for r in rows] == EXPECTED
+assert len({r["driver"] for r in rows}) == 22
+assert next(r["position"] for r in q["rows"] if r["driver"] == "RUS") == 6
+assert rows[20]["driver"] == "RUS"
+evidence = (OUT / "official-grid-baseline-sources.txt").read_bytes()
+assert b"Russell penalised 40 places" in evidence and b"11 Oct Race 12:00" in evidence
+observed = datetime.fromisoformat("2026-10-11T06:52:08+00:00")
+assert observed <= now
+sha = lambda b: hashlib.sha256(b).hexdigest()
+evaluation_raw = (REPO / "projects/f1-predictions/docs/qa/ridge-shadow/evaluation.json").read_bytes()
+evaluation = json.loads(evaluation_raw)
+contract_raw = (OUT / "champion-input-contract.json").read_bytes()
+contract = json.loads(contract_raw)
+assert contract["featureFramesByteEquivalent"]
+payload = {
+    "status": "sealed_review_only", "forecastKind": "official_grid_baseline",
+    "season": 2026, "round": 17, "name": state["name"], "circuit": state["circuit"],
+    "raceStartUtc": event["raceStartUtc"], "generatedAt": now.isoformat().replace("+00:00", "Z"),
+    "inputCutoff": now.isoformat().replace("+00:00", "Z"),
+    "sourceCheckedAt": observed.isoformat().replace("+00:00", "Z"),
+    "sourceCommit": MERGE, "sourceTree": subprocess.check_output(["git", "-C", str(REPO), "rev-parse", MERGE + "^{tree}"], text=True).strip(),
+    "policy": POLICY, "policySha256": sha(POLICY.encode()),
+    "generatorSha256": sha(Path(__file__).read_bytes()),
+    "sourceUrls": {"startingGrid": g["sourceUrl"], "schedule": "https://www.formula1.com/en/racing/2026/singapore"},
+    "sourceHashes": {"round_17.json": sha(raw), "season.json": sha(season_raw), "officialPageExtraction": sha(evidence), "championInputContractProbe": sha(contract_raw), "retrospectiveEvaluation": sha(evaluation_raw)},
+    "winnerPick": {"driver": rows[0]["driver"], "driverFullName": rows[0]["driverFullName"]},
+    "classification": [{"driver": r["driver"], "driverFullName": r["driverFullName"], "team": r["team"], "predictedPosition": r["position"], "officialGridPosition": r["position"]} for r in rows],
+    "probabilities": None, "modelPromotion": False, "publicationHoldReleased": False, "servingWrites": False,
+    "historicalDiagnostic": {"label": "retrospective reconstructed-input audit; not a forward record or calibrated probability", "events": 6, "drivers": 132, **evaluation["summary"]["final_grid"]},
+    "championBlocked": "Current timed-driver qualifying inputs ignore final-grid penalties; the Russell 6-to-21 grid change leaves all derived input columns identical. No verified unchanged champion with this post-penalty input contract is available for publication.",
+    "limitations": ["simple official-grid baseline, not an advanced-model forecast", "no calibrated win probability", "no weather, strategy, reliability or retirement adjustment", "post-penalty grid may change before race start; reverify before any approved publication", "independent review and separate publication approval required"],
+    "proposedCopy": "Baseline pick: Max Verstappen. This simple forecast follows the official starting grid. It has no calibrated win probability and does not model weather, strategy or retirements. The advanced forecast remains under review.",
+}
+encoded = (json.dumps(payload, indent=2, allow_nan=False) + "\n").encode()
+assert datetime.now(timezone.utc) < start
+path = OUT / ("official-grid-baseline_" + now.strftime("%Y%m%dT%H%M%SZ") + ".json")
+temporary = None
+try:
+    with tempfile.NamedTemporaryFile(dir=OUT, delete=False) as f:
+        temporary = Path(f.name)
+        f.write(encoded)
+        f.flush()
+        os.fsync(f.fileno())
+    os.link(temporary, path)
+finally:
+    if temporary is not None:
+        temporary.unlink(missing_ok=True)
+print(json.dumps({"path": str(path), "sha256": sha(encoded), "generatedAt": payload["generatedAt"], "winnerPick": payload["winnerPick"], "drivers": len(rows), "published": False}, indent=2))
