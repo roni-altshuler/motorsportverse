@@ -1,0 +1,37 @@
+{
+  "baseCommit": "14d86df32ad7c3345873e780dfe6fac0f38e18d1",
+  "branch": "fix/f1-event-identity-quarantine",
+  "python": {
+    "version": "3.12.14",
+    "passed": 1153,
+    "skipped": 15
+  },
+  "frontend": {
+    "node": "20.20.2",
+    "testsPassed": 268,
+    "testSuitesPassed": 18,
+    "typescript": "passed",
+    "eslintErrors": 0,
+    "existingEslintWarnings": 1,
+    "build": "passed",
+    "pagesBasePath": "/motorsportverse/projects/f1"
+  },
+  "integrityChecks": 50,
+  "sharedUISync": "passed",
+  "logSha256": {
+    "python": "b3a8a87b03767eceff0c774c522cff5f7bc8926dec70f92fa98fd4b3d01bc027",
+    "frontend": "e07a2cf7a8ea65652f55958685508b814f4f34f3d2ce10b26afe6cd652d0ac9a",
+    "lint": "07446b0a3d0d9d756cd32dc565da6bf2c922e33a2adedc927a85c74512ac1125",
+    "typecheck": "f8cf56836f77fa6b267ad28be3d56f26f73cef9855792961e97522c86e2f1237",
+    "build": "298f80ae210347002b3231682a567526cfbd48f2dc65ba597bccd562689cbcd9",
+    "reviewRegressions": "acf71e412a0179d37fd51b034fa80a5c20af671bd307c33c5a615a7b7d2ce1e1"
+  },
+  "reviewRegressionTestsPassed": 125,
+  "browser": {
+    "cases": 21,
+    "runtimeErrors": 0,
+    "localRequestFailures": 0,
+    "externalProxyFailures": 109,
+    "referenceClock": "2026-10-11T06:00:00Z"
+  }
+}

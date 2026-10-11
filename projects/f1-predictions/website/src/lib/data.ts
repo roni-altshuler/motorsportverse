@@ -44,21 +44,24 @@ export async function fetchRoundData(
   const data: RoundData = await res.json();
   if (data.round !== round) throw new Error(`Round ${round} data has a different round identity`);
   const expected = context?.calendar.find((entry) => entry.round === round);
-  const matches = expected && expected.gpKey === data.gpKey && expected.circuit === data.circuit;
+  const matches =
+    expected &&
+    expected.gpKey === data.gpKey &&
+    expected.circuit === data.circuit &&
+    expected.name === data.name &&
+    expected.date === data.date;
+  if (context && !matches) throw new Error("Published event identity disagrees with the calendar");
   // Legacy presentation is preserved unless identity conflicts are known. New
   // explorer eligibility is assessed separately; missing reviews are not removal evidence.
-  const geometry =
-    context && !matches
-      ? null
-      : assessCircuitOutline(
-          {
-            series: "f1",
-            season: context?.season,
-            venueKey: data.gpKey,
-            layoutId: expected?.layoutId,
-          },
-          data.circuitInfo?.geometry,
-        ).geometry;
+  const geometry = assessCircuitOutline(
+    {
+      series: "f1",
+      season: context?.season,
+      venueKey: data.gpKey,
+      layoutId: expected?.layoutId,
+    },
+    data.circuitInfo?.geometry,
+  ).geometry;
   return { ...data, circuitInfo: { ...data.circuitInfo, geometry } };
 }
 
@@ -75,7 +78,8 @@ export async function fetchProbabilityData(
     const pad = round.toString().padStart(2, "0");
     const res = await fetch(`${base}/probabilities/round_${pad}.json`);
     if (!res.ok) return null;
-    return res.json();
+    const data: ProbabilityRoundData = await res.json();
+    return data.round === round && data.status !== "withheld" ? data : null;
   } catch {
     return null;
   }
@@ -164,12 +168,12 @@ export function formatDateTime(dateStr?: string): string {
   });
 }
 
-function getRaceDate(dateStr: string): Date {
-  return new Date(`${dateStr}T12:00:00`);
+function getRaceDate(dateStr: string, raceStartUtc?: string | null): Date {
+  return new Date(raceStartUtc || `${dateStr}T12:00:00Z`);
 }
 
 export function getRoundLifecycle(
-  race: Pick<RaceCalendarEntry, "date" | "sprint" | "postponed">,
+  race: Pick<RaceCalendarEntry, "date" | "sprint" | "postponed" | "raceStartUtc">,
   hasPrediction: boolean,
   hasActual: boolean,
   now: Date = new Date(),
@@ -177,7 +181,7 @@ export function getRoundLifecycle(
   if (hasActual) return "official";
   if (race.postponed) return "postponed";
 
-  const raceDate = getRaceDate(race.date);
+  const raceDate = getRaceDate(race.date, race.raceStartUtc);
   const weekendStart = new Date(raceDate);
   weekendStart.setDate(raceDate.getDate() - 2);
 
@@ -256,7 +260,7 @@ export function getRoundStatusMeta(status: RoundLifecycle): {
 }
 
 export function getStatusForRound(
-  race: Pick<RaceCalendarEntry, "date" | "sprint" | "postponed">,
+  race: Pick<RaceCalendarEntry, "date" | "sprint" | "postponed" | "raceStartUtc">,
   hasPrediction: boolean,
   hasActual: boolean,
 ): RoundLifecycle {
@@ -298,7 +302,11 @@ export function getCurrentRaceContext(
     if (!liveRound && (lifecycle === "live-weekend" || lifecycle === "awaiting-results")) {
       liveRound = race;
     }
-    if (!nextRound && getRaceDate(race.date) >= now && lifecycle !== "postponed") {
+    if (
+      !nextRound &&
+      getRaceDate(race.date, race.raceStartUtc) >= now &&
+      lifecycle !== "postponed"
+    ) {
       nextRound = race;
     }
     if (predictionSet.has(race.round)) {
@@ -491,9 +499,7 @@ export interface ModelHealthData {
  * instead of throwing so the health strip hides gracefully when the file is
  * missing (archived seasons never publish it).
  */
-export async function fetchModelHealth(
-  base: string = BASE_PATH,
-): Promise<ModelHealthData | null> {
+export async function fetchModelHealth(base: string = BASE_PATH): Promise<ModelHealthData | null> {
   try {
     const res = await fetch(`${base}/model_health.json`);
     if (!res.ok) return null;

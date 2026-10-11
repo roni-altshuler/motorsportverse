@@ -20,11 +20,15 @@ import pandas as pd
 
 import gp_weekend
 import export_website_data as ew
+from f1_prediction_utils import CALENDAR
 
 
 class _FakeSession:
     def __init__(self, round_number, event_name, laps=(), results=None):
-        self.event = {"RoundNumber": round_number, "EventName": event_name}
+        info = CALENDAR.get(round_number, {})
+        self.event = {"RoundNumber": round_number, "EventName": event_name,
+                      "EventDate": info.get("provider_date", info.get("date")),
+                      "Location": (info.get("locations") or [None])[0]}
         self.laps = list(laps)
         self.results = results
         self.loaded = False
@@ -107,7 +111,10 @@ def _jolpica_payload(round_str, results_rows):
     return {
         "MRData": {
             "RaceTable": {
-                "Races": [{"round": round_str, "Results": results_rows}],
+                "Races": [{"season": "2026", "round": round_str, "Results": results_rows,
+                           "raceName": CALENDAR[int(round_str)]["name"],
+                           "date": CALENDAR[int(round_str)]["date"],
+                           "Circuit": {"circuitId": CALENDAR[int(round_str)]["circuit_id"]}}],
             },
         },
     }

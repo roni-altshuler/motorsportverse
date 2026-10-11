@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 import pytest
 from pydantic import BaseModel, ConfigDict, Field
@@ -76,6 +76,7 @@ class CalendarEntry(_Loose):
     name: str
     gpKey: str
     date: str
+    raceStartUtc: Optional[str] = None
     laps: int
     circuitType: str
     country: str
@@ -98,6 +99,7 @@ class SeasonData(_Loose):
     totalRounds: int
     calendar: list[CalendarEntry]
     completedRounds: list[int]
+    forecastRounds: Optional[list[int]] = None
     # `drivers` is optional here — older snapshots may pre-date the field.
     drivers: list[DriverInfo] = Field(default_factory=list)
 
@@ -138,6 +140,26 @@ class ClassificationEntry(_Loose):
     headshotUrl: Optional[str] = None
 
 
+class PublicationHold(_Loose):
+    reason: str
+    message: str
+    reviewedAt: str
+    sourceUrl: str
+    originalForecast: Optional[dict] = None
+
+
+class PublicationRelease(_Loose):
+    sourceSnapshotSha256: str
+    modelCodeSha256: str
+    modelConfigSha256: str
+    reviewNote: str
+    reviewedAt: str
+    releasedAt: str
+    generatedAt: str
+    withdrawalReason: str
+    withdrawnForecast: Optional[dict] = None
+
+
 class RoundData(_Loose):
     round: int
     name: str
@@ -148,6 +170,9 @@ class RoundData(_Loose):
     # How the prediction's grid was obtained (2026-07 freeze-correctness
     # overhaul). Optional: rounds published before the field exist without it.
     gridProvenance: Optional[str] = None
+    publicationHold: Optional[PublicationHold] = None
+    forecastProvenance: Optional[dict] = None
+    publicationRelease: Optional[PublicationRelease] = None
 
 
 class SeasonTrackerRound(_Loose):
@@ -196,11 +221,12 @@ class ProbabilityRoundData(_Loose):
     """
 
     round: int
+    status: Optional[Literal["withheld"]] = None
     season: int
     generatedAt: str
     method: str
-    monteCarloSamples: int
-    temperature: float
+    monteCarloSamples: Optional[int] = None
+    temperature: Optional[float] = None
     calibration: ProbabilityCalibrationBlock
     markets: dict[str, list[ProbabilityMarketEntry]]
     h2h: dict[str, dict[str, float]] = Field(default_factory=dict)

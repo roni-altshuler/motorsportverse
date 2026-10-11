@@ -27,12 +27,34 @@ interactive dashboard.
 
 ## What it does
 
-- **Predicts every weekend** of the 2026 season — qualifying pace, finishing
+The proposed [event identity repair](docs/qa/event-identity/README.md) is held for
+independent review. The verified 2026 calendar has 23 events: round 16 is Bahrain
+at Sepang on 4 October; Singapore is round 17 on 11 October. Singapore's
+misassigned forecast and grade are withheld. Its official Sprint Qualifying,
+Sprint, qualifying and penalty-adjusted grid are shown separately, with a
+12:00 UTC / 20:00 Singapore race start. Sepang has a verified result and no
+genuine pre-race forecast. Original forecasts and artifacts are archived with
+SHA-256 provenance; no retrospective forecast was generated.
+
+The publication hold survives automatic qualifying refreshes. A deliberate
+replacement requires an audited official input snapshot and model source digest,
+a new pre-race generation time, and validation that the model actually uses the
+post-penalty grid. This repair generates no replacement forecast. Regeneration
+and replay exports also reject wrong-event inputs before preserving or loading data.
+
+Probability scores currently describe regenerated retrospective diagnostics.
+Although each round's logistic calibrator uses earlier races, its shared
+temperature is tuned across the requested scored rounds. They are not evidence
+of a fully out-of-sample probability record or an immutable pre-race publication.
+The existing driver-by-circuit model wiring and post-qualifying weather/grid
+refresh behavior require a separate audit before any improvement claim.
+
+- **Forecasts eligible weekends** of the 2026 season — qualifying pace, finishing
   order, and win/podium probabilities, each with a confidence band.
-- **Honest, calibrated probabilities** — predictions are gated: raw numbers ship
+- **Calibration status is explicit** — predictions are gated: raw numbers ship
   until enough multi-season history exists to calibrate, at which point the
   dashboard flips to calibrated output and shows a "Calibrated" badge. RaceIQ
-  never claims more confidence than the data supports.
+  exposes calibration status alongside the diagnostics and their limitations.
 - **Grades its own homework** — every prediction is scored after the race
   against a "last-race-winner" baseline. Round-by-round accuracy lives on the
   [accuracy dashboard](https://roni-altshuler.github.io/f1_predictions/accuracy/)
@@ -76,8 +98,8 @@ No provider session loading, live timing subscription, circuit geometry or new
 model training is needed. [The comparison review](../../docs/ARCHIVED_LAP_COMPARISON.md)
 records source provenance, verification and remaining checks.
 
-The deployed site is the best way to see RaceIQ in action — every page is live
-and updates automatically within minutes of each session:
+The deployed dashboard publishes static exports from automated updates. A green
+poll does not establish that fresh results or a verified forecast were exported:
 
 | Page | What you'll see |
 |---|---|

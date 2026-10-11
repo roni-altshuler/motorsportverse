@@ -22,7 +22,8 @@ interface LapTimeDistributionChartProps {
 function buildTeams(classification: ClassificationEntry[]) {
   const map = new Map<string, { team: string; teamColor: string; samples: number[] }>();
   for (const c of classification) {
-    if (!map.has(c.team)) map.set(c.team, { team: c.team, teamColor: c.teamColor || "#888", samples: [] });
+    if (!map.has(c.team))
+      map.set(c.team, { team: c.team, teamColor: c.teamColor || "#888", samples: [] });
     map.get(c.team)!.samples.push(c.predictedTime);
   }
   return Array.from(map.values())
@@ -140,15 +141,20 @@ function DistInner({
   );
 }
 
-export default function LapTimeDistributionChart({ classification, metrics }: LapTimeDistributionChartProps) {
+export default function LapTimeDistributionChart({
+  classification,
+  metrics,
+}: LapTimeDistributionChartProps) {
   const teams = useMemo(() => buildTeams(classification), [classification]);
-  const uncertainty = metrics.avgUncertainty ?? Math.max(0.1, metrics.maxSpread / 6);
+  const uncertainty = metrics.avgUncertainty ?? Math.max(0.1, (metrics.maxSpread ?? 0) / 6);
   if (teams.length === 0) return null;
   return (
     <div>
       <div className="w-full" style={{ height: Math.max(280, 40 * teams.length + 60) }}>
         <ParentSize>
-          {({ width, height }) => <DistInner width={width} height={height} teams={teams} uncertainty={uncertainty} />}
+          {({ width, height }) => (
+            <DistInner width={width} height={height} teams={teams} uncertainty={uncertainty} />
+          )}
         </ParentSize>
       </div>
       <p className="text-[11px] mt-2 text-[color:var(--text-muted)] font-mono">
