@@ -29,7 +29,10 @@ import f1_prediction_utils as fpu
 
 class _FakeSession:
     def __init__(self, round_number, event_name, laps=None):
-        self.event = {"RoundNumber": round_number, "EventName": event_name}
+        info = fpu.CALENDAR.get(round_number, {})
+        self.event = {"RoundNumber": round_number, "EventName": event_name,
+                      "EventDate": info.get("provider_date", info.get("date")),
+                      "Location": (info.get("locations") or [None])[0]}
         self.laps = laps if laps is not None else []
         self.loaded = False
 
@@ -46,7 +49,7 @@ def _install_fake_fastf1(monkeypatch, session):
 
 
 def test_session_matches_round_accepts_exact():
-    assert fpu._fastf1_session_matches_round(_FakeSession(9, "British GP"), 9)
+    assert fpu._fastf1_session_matches_round(_FakeSession(9, "British Grand Prix"), 9)
 
 
 def test_session_matches_round_rejects_other_event():
@@ -103,6 +106,10 @@ def test_provenance_string_is_estimated_when_no_real_quali():
 # ── needs_update: self-correcting post-quali freeze ─────────────────────────
 
 def _patch_gate(monkeypatch, phase, state):
+    if state:
+        info = fpu.CALENDAR[9]
+        state = {"round": 9, "name": info["name"], "gpKey": info["gp_key"],
+                 "circuit": info["circuit"], "date": info["date"], **state}
     monkeypatch.setattr(gp_weekend, "_detect_phase", lambda _r: phase)
     monkeypatch.setattr(gp_weekend, "_committed_round_state", lambda _r: state)
 

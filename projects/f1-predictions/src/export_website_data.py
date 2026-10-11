@@ -38,6 +38,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from f1_prediction_utils import *
 
 from models.registry import ModelRegistry, registry_enabled
+from event_identity import jolpica_matches, provider_identity, published_matches, fastf1_matches
 
 # ── Paths ────────────────────────────────────────────────────────────────
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -799,9 +800,12 @@ def _normalize_actual_results(actual):
 def _get_round_preserved_fields(round_num, existing_round):
     """Preserve already-known post-race/enriched fields from existing files.
 
-    If actual results or accuracy are missing, rehydrate from season tracker.
+    If actual results or accuracy are missing, rehydrate from season tracker
+    only when a matching publication anchors the tracker's round identity.
     """
     preserved = {}
+    if not isinstance(existing_round, dict) or not published_matches(existing_round, round_num, CALENDAR):
+        return preserved
 
     # Keep previously generated fields unless the current run repopulates them.
     if isinstance(existing_round, dict):
@@ -923,7 +927,9 @@ def export_season_metadata():
             "name":         info["name"],
             "gpKey":        info["gp_key"],
             "circuit":      info["circuit"],
+            "circuitId":    info.get("circuit_id"),
             "date":         info["date"],
+            "raceStartUtc": info.get("race_start_utc"),
             "postponed":    info.get("postponed", False),
             "originalDate": info["date"] if info.get("postponed", False) else None,
             "rescheduledDate": info.get("rescheduled_date"),
@@ -941,6 +947,12 @@ def export_season_metadata():
             "safetyCarLikelihood": char.get("safety_car_likelihood", 0.4),
             "altitudeM":    char.get("altitude_m", 0),
         })
+
+        if info.get("prediction_disabled"):
+            # No Sakhir model parameters may be presented as Sepang facts.
+            for key in ("expectedStops", "tyreDeg", "overtaking", "drsZones", "safetyCarLikelihood", "altitudeM"):
+                calendar[-1].pop(key, None)
+            calendar[-1]["country"] = "Malaysia"
 
     # ── Drivers (DriverInfo[]) ──
     nationality_map = _load_driver_nationality()
@@ -972,11 +984,11 @@ def export_season_metadata():
 
     # ── Completed rounds (detect from existing round files) ──
     completed = []
+    forecast_rounds = []
     for rnd in range(1, len(CALENDAR) + 1):
         path = os.path.join(ROUNDS_DIR, f"round_{rnd:02d}.json")
         if os.path.exists(path):
             data = _safe_load_json(path)
-            expected = CALENDAR.get(rnd, {})
             # A round counts as "completed" ONLY when its actuals
             # have landed. The mere existence of a round_NN.json on
             # disk (e.g. a pre-quali preview) is not enough — every
@@ -986,14 +998,14 @@ def export_season_metadata():
             has_actuals = bool(
                 isinstance(data, dict) and data.get("actualResults")
             )
-            phase = (
-                data.get("predictionPhase") if isinstance(data, dict) else None
-            )
-            is_classified = has_actuals or phase == "post-race"
+            is_classified = has_actuals
+            if (isinstance(data, dict) and published_matches(data, rnd, CALENDAR)
+                    and data.get("classification") and not data.get("publicationHold")):
+                forecast_rounds.append(rnd)
             if (
                 isinstance(data, dict)
                 and data.get("round") == rnd
-                and data.get("gpKey") == expected.get("gp_key")
+                and published_matches(data, rnd, CALENDAR)
                 and is_classified
             ):
                 completed.append(rnd)
@@ -1005,6 +1017,7 @@ def export_season_metadata():
         "drivers":         drivers,
         "teams":           teams,
         "completedRounds": completed,
+        "forecastRounds": forecast_rounds,
         "lastUpdated":     _utc_now_iso(),
         "source":          "Formula1.com official calendar + local model metadata",
         "sourceUrl":       F1_CALENDAR_SOURCE_URL,
@@ -1090,6 +1103,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     and splices its market probabilities into the classification.  Requires
     that train_race_pace.py has been run at least once to populate the
     registry — otherwise the simulator is silently skipped."""
+    if CALENDAR[round_num].get("prediction_disabled"):
+        raise ValueError("No genuine pre-race forecast exists for this event; do not backfill one.")
+    path = os.path.join(ROUNDS_DIR, f"round_{round_num:02d}.json")
+    existing_round = _safe_load_json(path)
+    if existing_round and not published_matches(existing_round, round_num, CALENDAR):
+        raise ValueError("Existing snapshot belongs to a different event; quarantine it before regeneration.")
+    if existing_round and existing_round.get("publicationHold"):
+        raise ValueError("publication hold: regeneration is blocked; replacement publication requires separate audited work")
     _ensure_dirs()
     info    = CALENDAR[round_num]
     gp_key  = info["gp_key"]
@@ -1525,9 +1546,6 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
 
     char = CIRCUIT_CHARACTERISTICS.get(gp_key, {})
 
-    path = os.path.join(ROUNDS_DIR, f"round_{round_num:02d}.json")
-    existing_round = _safe_load_json(path)
-
     round_data = {
         "round":              round_num,
         "name":               gp_name,
@@ -1625,7 +1643,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     # re-derive it and would leave circuitInfo.geometry null, blanking the track
     # map on the race page.  Carrying the previously-derived geometry forward
     # here keeps the map intact (generate_circuit_svg then no-ops on it).
-    if isinstance(existing_round, dict):
+    if isinstance(existing_round, dict) and published_matches(existing_round, round_num, CALENDAR):
         prev_geometry = (existing_round.get("circuitInfo") or {}).get("geometry")
         if isinstance(prev_geometry, dict) and prev_geometry.get("path"):
             round_data["circuitInfo"]["geometry"] = prev_geometry
@@ -2359,14 +2377,8 @@ def _fetch_live_round_actual_results(round_num, season_year=SEASON_YEAR):
     if not races:
         return None
 
-    # A round-scoped query must echo the requested round back; a mismatch
-    # means a cache/proxy served a different race's classification.
-    returned_round = races[0].get("round")
-    if returned_round is not None and str(returned_round) != str(int(round_num)):
-        print(
-            f"  ⚠️  Jolpica returned round {returned_round} for a round-{round_num} "
-            f"results query — ignoring."
-        )
+    if len(races) != 1 or not jolpica_matches(races[0], season_year, round_num, get_calendar(season_year)):
+        print(f"  ⚠️  Jolpica round {round_num} event identity disagrees with the calendar — rejecting.")
         return None
 
     results_rows = races[0].get("Results", [])
@@ -2517,7 +2529,10 @@ def _fetch_jolpica_weekend_session(round_num, season_year, endpoint, session_key
         }
 
     races = payload.get("MRData", {}).get("RaceTable", {}).get("Races", [])
-    rows = races[0].get(result_key, []) if races else []
+    verified = len(races) == 1 and jolpica_matches(
+        races[0], season_year, round_num, get_calendar(season_year)
+    )
+    rows = races[0].get(result_key, []) if verified else []
     normalized_rows = []
     for idx, row in enumerate(rows, start=1):
         normalized = _build_weekend_result_row(row, idx, by_full, by_last, by_id, kind)
@@ -2533,7 +2548,8 @@ def _fetch_jolpica_weekend_session(round_num, season_year, endpoint, session_key
         "source": "Jolpica Ergast-compatible API",
         "sourceUrl": JOLPICA_BASE_URL,
         "rows": normalized_rows,
-        "note": None if normalized_rows else "Official session data is not published yet.",
+        "note": None if normalized_rows else "Official session data is unavailable or its event identity could not be verified.",
+        "eventIdentity": provider_identity(races[0]) if verified else None,
     }
 
 
@@ -2546,7 +2562,7 @@ def _fetch_fastf1_sprint_qualifying(round_num, gp_key, season_year):
         # FastF1 fuzzy-matches event names and silently resolves to a DIFFERENT
         # event when its schedule backend fails — never publish another
         # weekend's session under this round.
-        if int(session.event["RoundNumber"]) != int(round_num):
+        if not fastf1_matches(session.event, round_num, get_calendar(season_year)):
             raise ValueError(
                 f"FastF1 resolved '{gp_key}' to round {session.event['RoundNumber']}, "
                 f"not round {round_num}"

@@ -1597,7 +1597,16 @@ class SeasonTracker:
                 except (TypeError, ValueError):
                     continue
 
+        from event_identity import published_matches
+        from f1_prediction_utils import CALENDAR
+        if not published_matches(round_data, round_num, CALENDAR):
+            self.data["rounds"][rnd] = {"predicted": {}, "actual": {}}
+            self.data["accuracy"].pop(rnd, None)
+            return
+        if round_data.get("publicationHold"):
+            self.data["rounds"][rnd]["predicted"] = {}
         actual = self._normalize_actual_results(round_data.get("actualResults", {})) if isinstance(round_data, dict) else {}
+        self.data["rounds"][rnd]["actual"] = {}
         if actual:
             self.data["rounds"][rnd]["actual"] = {
                 drv: {"position": int(pos)} for drv, pos in actual.items()
@@ -1608,6 +1617,8 @@ class SeasonTracker:
         status = round_data.get("actualStatus") if isinstance(round_data, dict) else None
         if isinstance(status, dict) and status:
             self.data["rounds"][rnd]["actualStatus"] = dict(status)
+        else:
+            self.data["rounds"][rnd].pop("actualStatus", None)
 
         self._compute_accuracy(round_num)
 

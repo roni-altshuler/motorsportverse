@@ -32,6 +32,11 @@ def _round_files() -> list[Path]:
 def test_round_has_full_grid(round_file: Path):
     data = json.loads(round_file.read_text())
     classification = data.get("classification", [])
+    if data.get("publicationHold"):
+        assert classification == [], "a withheld forecast must not expose a ranking"
+        assert not data.get("podium")
+        assert all(data["metrics"][key] is None for key in ("r2Score", "mae", "maxSpread"))
+        return
     assert len(classification) == EXPECTED_DRIVER_COUNT, (
         f"{round_file.name}: expected {EXPECTED_DRIVER_COUNT} drivers, "
         f"got {len(classification)}"

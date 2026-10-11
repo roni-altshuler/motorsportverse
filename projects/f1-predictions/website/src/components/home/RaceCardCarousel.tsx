@@ -89,7 +89,7 @@ export default function RaceCardCarousel({
       TONE_TO_BADGE_VARIANT[meta.tone as StatusTone] ?? "default";
     const isLive = lifecycle === "live-weekend" || lifecycle === "awaiting-results";
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-    const { src: trackImg, credit: photoCredit } = getRaceArt(race.gpKey, race.round, basePath);
+    const { src: trackImg, credit: photoCredit } = getRaceArt(race.gpKey, race.round, basePath, race.circuitId);
 
     const inner = (
       <Spotlight
@@ -104,7 +104,7 @@ export default function RaceCardCarousel({
           <div
             className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.04]"
             style={{
-              backgroundImage: `url("${trackImg}")`,
+              backgroundImage: trackImg ? `url("${trackImg}")` : undefined,
               backgroundSize: "cover",
               backgroundPosition: "center",
               filter: "brightness(0.55) saturate(1.05)",

@@ -82,6 +82,7 @@ interface RoundData {
   date: string;
   circuit: string;
   classification: ClassificationEntry[];
+  publicationHold?: { reason: string };
 }
 
 interface StandingsDriver {
@@ -288,6 +289,7 @@ function buildRaceCard(opts: {
   country: string;
   flagDataUrl: string | null;
   top3: { code: string; fullName: string; team: string; teamColor: string }[];
+  publicationStatus?: string;
 }): Node {
   const { round, season, name, circuit, date, country, flagDataUrl, top3 } = opts;
 
@@ -478,7 +480,7 @@ function buildRaceCard(opts: {
             marginBottom: "16px",
           },
         },
-        top3.length > 0 ? "Predicted Podium" : "Predictions Coming Soon"
+        opts.publicationStatus ?? (top3.length > 0 ? "Predicted Podium" : "Predictions Coming Soon")
       ),
       h(
         "div",
@@ -1567,6 +1569,11 @@ async function main(): Promise<void> {
         country: entry.country,
         flagDataUrl: flag,
         top3,
+        publicationStatus: round?.publicationHold
+          ? round.publicationHold.reason === "event-mismatch"
+            ? "Forecast withheld · event review"
+            : "Verified result · no forecast grade"
+          : undefined,
       }),
       path.join(OUT_DIR, `round_${pad2(entry.round)}.png`)
     );

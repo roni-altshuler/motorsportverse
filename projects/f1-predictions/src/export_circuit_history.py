@@ -208,6 +208,9 @@ def _current_season_winners(season_data):
         if not os.path.exists(path):
             continue
         data = _load_json(path)
+        expected = next((e for e in season_data.get("calendar", []) if e.get("round") == rnd), None)
+        if not expected or any(data.get(k) != expected.get(k) for k in ("round", "name", "gpKey", "circuit", "date")):
+            continue
         actual = data.get("actualResults")
         gp_key = data.get("gpKey")
         if not isinstance(actual, dict) or not gp_key:
@@ -229,8 +232,9 @@ def build_circuit_history():
     season_data = _load_json(SEASON_PATH)
     priors = _load_json(PRIORS_PATH).get("circuits", {})
 
+    current = _current_season_winners(season_data)
     by_gpkey: dict[str, list[tuple[int, str, str]]] = defaultdict(list)
-    for source in (_prior_season_winners(), _current_season_winners(season_data)):
+    for source in (_prior_season_winners(), current):
         for gp_key, rows in source.items():
             by_gpkey[gp_key].extend(rows)
 
@@ -240,12 +244,15 @@ def build_circuit_history():
         if not gp_key or gp_key in history:
             continue
         # Most recent first, deduped on season (one winner per circuit per year).
-        rows = sorted(set(by_gpkey.get(gp_key, [])), key=lambda r: r[0], reverse=True)
+        native_circuit = GPKEY_TO_PRIOR.get(gp_key, "")
+        changed_venue = entry.get("circuitId") and entry["circuitId"] != native_circuit
+        winner_rows = current.get(gp_key, []) if changed_venue else by_gpkey.get(gp_key, [])
+        rows = sorted(set(winner_rows), key=lambda r: r[0], reverse=True)
         past_winners = [
             {"season": s, "driver": d, "constructor": c}
             for s, d, c in rows[:MAX_WINNERS]
         ]
-        prior = priors.get(GPKEY_TO_PRIOR.get(gp_key, ""), {})
+        prior = {} if changed_venue else priors.get(native_circuit, {})
         history[gp_key] = {
             "circuit": entry.get("circuit"),
             "pastWinners": past_winners,

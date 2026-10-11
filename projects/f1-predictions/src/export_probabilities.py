@@ -71,14 +71,11 @@ ROUND_FILE_RE = re.compile(r"round_(\d+)\.json$")
 TRAINING_SEASONS: list[int] = []
 
 DATA_LIMITATION_NOTE = (
-    "Each round is calibrated strictly out-of-sample: the calibrator is fit only "
-    "on rounds that completed BEFORE it (expanding window), never on its own "
-    "result. A round with fewer than --min-completed-rounds prior races publishes "
-    "raw Monte Carlo probabilities (calibration.applied=false) — publishing raw is "
-    "strictly better than over-fitting a handful of events. Published probabilities "
-    "carry a small floor (no driver is ever 0.0) and are renormalized per market "
-    "(win sums to 1, podium to 3, top6 to 6, top10 to 10). The metrics below score "
-    "the FINAL PUBLISHED probabilities against actual results, not the raw inputs."
+    "Historical probability scores are retrospective diagnostics, not a fully "
+    "out-of-sample evaluation. The per-round calibrator uses earlier rounds, "
+    "but a shared temperature is tuned across all requested scored rounds. "
+    "Probability exports are regenerated and do not establish an immutable "
+    "pre-race publication record. Withdrawn forecasts are excluded."
 )
 
 
@@ -439,9 +436,9 @@ def run(
 ) -> dict:
     """Compute probabilities for every round, write JSON outputs.
 
-    Each round is calibrated **strictly out-of-sample**: its calibrator is fit
+    The per-round calibrator is fit
     only on rounds that completed before it (expanding window / leave-this-round-
-    out), so a round is never scored by a model that saw its own result.  Rounds
+    out), while shared temperature tuning includes requested completed rounds. Rounds
     with fewer than ``min_completed_rounds`` prior races publish raw Monte Carlo
     probabilities (``applied=false``).  Everything is floored + renormalized so
     no driver is published at a hard 0.0.
@@ -462,6 +459,20 @@ def run(
     for f in files:
         rnd = _round_number(f)
         round_data, lap_times = _load_lap_times(f)
+        if round_data.get("publicationHold"):
+            if not dry_run:
+                PROBS_DIR.mkdir(parents=True, exist_ok=True)
+                hold = round_data["publicationHold"]
+                withdrawal = {
+                    "round": rnd, "season": int(round_data.get("season", 2026)), "status": "withheld",
+                    "generatedAt": hold["reviewedAt"], "method": "withheld",
+                    "reason": hold["reason"], "dataLimitation": DATA_LIMITATION_NOTE,
+                    "calibration": {"method": "none", "trainingSeasons": [], "applied": False},
+                    "markets": {key: [] for key in ("win", "podium", "top6", "top10")},
+                    "h2h": {},
+                }
+                (PROBS_DIR / f"round_{rnd:02d}.json").write_text(json.dumps(withdrawal, indent=2) + "\n")
+            continue
         if not lap_times:
             if not quiet:
                 print(f"  Round {rnd}: skipped (no predictedTime values)")

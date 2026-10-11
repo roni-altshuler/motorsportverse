@@ -5,13 +5,22 @@ import type { SeasonData } from "@/types";
 
 const context = {
   season: 2026,
-  calendar: [{ round: 9, gpKey: "Great Britain", circuit: "Silverstone" }],
+  calendar: [
+    {
+      round: 9,
+      gpKey: "Great Britain",
+      circuit: "Silverstone",
+      name: "British Grand Prix",
+      date: "2026-07-05",
+    },
+  ],
 } as Pick<SeasonData, "season" | "calendar">;
 const candidate = {
   round: 9,
   gpKey: "Great Britain",
   circuit: "Silverstone",
   name: "British Grand Prix",
+  date: "2026-07-05",
   circuitInfo: {
     laps: 52,
     geometry: { viewBox: "0 0 100 100", path: "M 0 0 L 80 80 Z", corners: [] },
@@ -45,7 +54,11 @@ describe("F1 legacy outline loader", () => {
   });
   it("does not borrow an outline from another venue", async () => {
     respond({ ...candidate, gpKey: "Austria", circuit: "Red Bull Ring" });
-    expect((await fetchRoundData(9, "/data", context)).circuitInfo.geometry).toBeNull();
+    await expect(fetchRoundData(9, "/data", context)).rejects.toThrow("event identity");
+  });
+  it.each(["name", "date"])("rejects a same-round response with a different %s", async (field) => {
+    respond({ ...candidate, [field]: "wrong event" });
+    await expect(fetchRoundData(9, "/data", context)).rejects.toThrow("event identity");
   });
   it("preserves the actual Monaco outline and provider metadata with no new fetch", async () => {
     const raw = JSON.parse(readFileSync(resolve("public/data/rounds/round_06.json"), "utf8"));

@@ -47,7 +47,7 @@ except ImportError:  # pragma: no cover
     sys.stderr.write("fastf1 is required (pip install fastf1)\n")
     raise SystemExit(1)
 
-from generate_circuit_svg import _load_telemetry, geometry_from_telemetry
+from generate_circuit_svg import _load_telemetry, _verified_session_calendar, geometry_from_telemetry
 from replay_geometry import apply_high_fidelity_geometry
 from slim_replays import slim_payload  # shared numeric-precision policy (born-slim bakes)
 
@@ -273,18 +273,16 @@ def build_replay(round_num: int, season: int, gp_key: str, dt: float) -> dict[st
     # Load by ROUND NUMBER, never by name: FastF1's name matching silently
     # fuzzy-matches (it has returned Austria for "Great Britain"), which would
     # bake one race's telemetry under another round. The round-number path is
-    # unambiguous; we still verify the returned event's identity below.
+    # scoped; a calendar insertion can still make its event identity wrong.
+    from event_identity import fastf1_matches
+    calendar = _verified_session_calendar(season, gp_key)
     session = fastf1.get_session(season, round_num, "R")
-    session.load(laps=True, telemetry=True, weather=False, messages=False)
-    try:
-        actual_round = int(session.event["RoundNumber"])
-    except Exception:  # noqa: BLE001
-        actual_round = None
-    if actual_round is not None and actual_round != round_num:
+    if not fastf1_matches(session.event, round_num, calendar):
         raise SystemExit(
-            f"wrong-event guard: FastF1 returned round {actual_round}, expected {round_num} "
-            f"({gp_key}) — refusing to bake mismatched telemetry"
+            f"wrong-event guard: FastF1 event does not match {season} round {round_num} "
+            f"({gp_key}) — refusing to load or bake mismatched telemetry"
         )
+    session.load(laps=True, telemetry=True, weather=False, messages=False)
 
     laps = session.laps
     if laps is None or len(laps) == 0:

@@ -12,16 +12,14 @@ from models.track_archetype import (
 )
 
 
-CIRCUIT_NAMES_FROM_2026 = [
-    info["gp_key"] for info in CALENDAR.values()
-]
-CIRCUIT_NAMES_FROM_2026 += [info["circuit"] for info in CALENDAR.values()]
-CIRCUIT_NAMES_FROM_2026 += [info["name"] for info in CALENDAR.values()]
+FORECAST_CIRCUITS = [info for info in CALENDAR.values() if not info.get("prediction_disabled")]
+CIRCUIT_NAMES_FROM_2026 = [info[key] for info in FORECAST_CIRCUITS
+                           for key in ("gp_key", "circuit", "name")]
 
 
 @pytest.mark.parametrize("circuit_name", CIRCUIT_NAMES_FROM_2026)
 def test_every_2026_circuit_resolves(circuit_name):
-    """Every 2026 calendar circuit must resolve to an archetype."""
+    """Every forecast-eligible 2026 circuit must resolve to an archetype."""
     a = get_archetype(circuit_name)
     assert a is not None, f"no archetype for 2026 calendar entry: {circuit_name!r}"
     assert isinstance(a, TrackArchetype)

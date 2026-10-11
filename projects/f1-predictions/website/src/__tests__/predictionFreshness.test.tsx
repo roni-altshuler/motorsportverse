@@ -9,8 +9,8 @@ import {
   type FreshnessInput,
   type ProbabilityMetadata,
 } from "@/lib/predictionFreshness";
-import publishedRanking from "../../public/data/rounds/round_16.json";
-import publishedProbability from "../../public/data/probabilities/round_16.json";
+import publishedRanking from "../../public/data/rounds/round_15.json";
+import publishedProbability from "../../public/data/probabilities/round_15.json";
 import type { ClassificationEntry } from "@/types";
 
 const missing: FreshnessInput = { round: 16 };

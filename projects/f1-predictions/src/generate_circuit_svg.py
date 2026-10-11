@@ -204,6 +204,36 @@ def _drs_zone_indices(distance_axis: np.ndarray, marshal_lights, kept_indices: n
 
 
 # ── FastF1 → geometry ─────────────────────────────────────────────────────
+def _verified_session_calendar(year: int, gp_key: str) -> dict:
+    """Use the configured identity, or a bounded historical provider schedule.
+
+    Historical layouts must match the explicitly known event name and venue;
+    the provider schedule supplies that season's round and date. In particular,
+    a Bahrain/Sakhir layout cannot stand in for the relocated Sepang event.
+    """
+    from f1_prediction_utils import CALENDAR, get_calendar
+    from event_identity import _name
+
+    try:
+        return {r: info for r, info in get_calendar(year).items() if info["gp_key"] == gp_key}
+    except ValueError:
+        expected = next((info for info in CALENDAR.values() if info["gp_key"] == gp_key), None)
+        if not expected:
+            return {}
+        names = {_name(expected["name"]), *map(_name, expected.get("event_aliases", []))}
+        venues = set(map(_name, expected.get("locations", [])))
+        schedule = fastf1.get_event_schedule(year, include_testing=False)
+        matching = [event for _, event in schedule.iterrows()
+                    if _name(event.get("EventName")) in names and _name(event.get("Location")) in venues]
+        if len(matching) != 1:
+            return {}
+        event = matching[0]
+        event_date = str(event.get("EventDate", ""))[:10]
+        if not event_date.startswith(f"{year}-"):
+            return {}
+        return {int(event["RoundNumber"]): {**expected, "date": event_date, "fastf1_date": event_date}}
+
+
 def _load_telemetry(year: int, gp_key: str):
     """Attempt to load FastF1 session telemetry. Returns (tel, info) or None.
 
@@ -213,7 +243,15 @@ def _load_telemetry(year: int, gp_key: str):
     """
     for candidate_year in (year, year - 1, year - 2, year - 3):
         try:
+            from event_identity import fastf1_matches
+            calendar = _verified_session_calendar(candidate_year, gp_key)
+            if len(calendar) != 1:
+                continue
+            expected_round = next(iter(calendar))
             session = fastf1.get_session(candidate_year, gp_key, "R")
+            if not fastf1_matches(session.event, expected_round, calendar):
+                print(f"    skip {candidate_year}: wrong-event guard rejected layout for {gp_key}")
+                continue
             session.load(laps=True, telemetry=True, weather=False, messages=False)
             lap = session.laps.pick_fastest()
             tel = lap.get_telemetry()
