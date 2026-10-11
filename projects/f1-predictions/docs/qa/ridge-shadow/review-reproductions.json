@@ -1,0 +1,21 @@
+{
+  "originalHead": "36ceb5934c5545e84789420fc3b3f63d8675c41f",
+  "originalCodeSha256": "3bccf362aaede1ea5dcbe497d4d54034f680f947c920a560965122902c29ff06",
+  "beforeFixFailedCases": [
+    "tests/test_ridge_shadow.py::test_sources_changed_after_load_are_rejected_before_candidate_fit[json]",
+    "tests/test_ridge_shadow.py::test_sources_changed_after_load_are_rejected_before_candidate_fit[database]",
+    "tests/test_ridge_shadow.py::test_sources_changed_after_load_are_rejected_before_candidate_fit[outcome]",
+    "tests/test_ridge_shadow.py::test_outcome_added_during_provenance_rejects_candidate",
+    "tests/test_ridge_shadow.py::test_deadline_reached_during_provenance_rejects_candidate",
+    "tests/test_ridge_shadow.py::test_sealing_rechecks_deadline_and_sources_leaving_no_artifact[before-write]",
+    "tests/test_ridge_shadow.py::test_sealing_rechecks_deadline_and_sources_leaving_no_artifact[during-stage]",
+    "tests/test_ridge_shadow.py::test_sealing_rechecks_deadline_and_sources_leaving_no_artifact[during-link]",
+    "tests/test_ridge_shadow.py::test_sealing_rechecks_deadline_and_sources_leaving_no_artifact[source-during-stage]"
+  ],
+  "beforeFixLogSha256": "34fe06e972a32f98cc8e718bf44596f91ff9c1575e65f493f2520993495bdc5d",
+  "probeIsolation": "temporary copies of committed season, target round and historical database; no serving writes",
+  "repairedFocusedTestsPassed": 29,
+  "dependencyMutationCases": 4,
+  "bothTimestampsValidated": true,
+  "originalModelAndMetricsUnchanged": true
+}

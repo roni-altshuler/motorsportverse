@@ -21,6 +21,9 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 - Write immutable shadow artifacts only to a separate audit directory, with
   source/model/code hashes, timestamps, cutoff checks and input-range warnings.
   Preserve serving forecasts, the publication hold and historical grades.
+- Revalidate source bytes, both source timestamps, all four implementation
+  modules and the race deadline at sealing. Record dependency versions and
+  target-only median-imputation limitations without changing the model.
 
 ### F1 event identity and publication review — 2026-10-11
 
