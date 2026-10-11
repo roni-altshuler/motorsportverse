@@ -3,13 +3,13 @@
   "venueName": "Le Mans",
   "sprint": {
     "n": 16,
-    "mean_position_error": 4.5,
+    "mean_position_error": 4.438,
     "winner_hit": false,
     "podium_hits": 2,
-    "within_3": 8,
+    "within_3": 7,
     "within_5": 10,
-    "exact_matches": 0,
-    "spearman_correlation": 0.638235294117647,
+    "exact_matches": 1,
+    "spearman_correlation": 0.6411764705882353,
     "ndcg_at_5": 0.825120773939386
   },
   "feature": {
@@ -26,22 +26,22 @@
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.065124,
-        "logLoss": 0.241875
+        "brier": 0.0641,
+        "logLoss": 0.233972
       },
       "podium": {
-        "brier": 0.075413,
-        "logLoss": 0.233775
+        "brier": 0.073985,
+        "logLoss": 0.229046
       }
     },
     "feature": {
       "win": {
-        "brier": 0.064619,
-        "logLoss": 0.244024
+        "brier": 0.064168,
+        "logLoss": 0.240398
       },
       "podium": {
-        "brier": 0.122568,
-        "logLoss": 0.388864
+        "brier": 0.122272,
+        "logLoss": 0.393722
       }
     }
   },
