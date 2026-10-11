@@ -31,6 +31,7 @@ This module does not modify any existing file.  Callers opt in via the
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any
 
 import pandas as pd
@@ -45,6 +46,7 @@ from models.race_simulator import (
     simulate_race,
 )
 from models.registry import ModelRegistry, registry_enabled
+from models.starting_grid import StartingGridSnapshot, StartingGridUnavailable
 
 # Same sentinel ``train_race_pace.py`` uses.  Kept in sync via a module
 # constant rather than importing the trainer (avoid pulling in argparse +
@@ -104,6 +106,8 @@ def _dnf_prior_from_grid(grid_position: int, n_drivers: int, field_rate: float) 
 def _build_grid_and_initials(
     merged: pd.DataFrame,
     field_dnf_rate: float = DEFAULT_FIELD_DNF_RATE,
+    *,
+    shadow_starting_grid: StartingGridSnapshot | None = None,
 ) -> tuple[list[GridEntry], dict[str, DriverInitial]]:
     """Convert the export pipeline's ``merged`` DataFrame to a simulator
     grid + per-driver initial-condition map.
@@ -125,8 +129,12 @@ def _build_grid_and_initials(
     if merged is None or len(merged) == 0:
         return [], {}
 
-    # Resolve grid position with sensible fallbacks.
-    if "GridPosition" in merged.columns:
+    # The explicit shadow route has a complete validated final grid and never
+    # falls back to qualifying, an unverified column, or driver row order.
+    if shadow_starting_grid is not None:
+        merged = shadow_starting_grid.attach(merged)
+        grid_pos = merged["StartingGridPosition"]
+    elif "GridPosition" in merged.columns:
         grid_pos = merged["GridPosition"]
     elif "QualifyingRank" in merged.columns:
         grid_pos = merged["QualifyingRank"]
@@ -183,6 +191,9 @@ def run_simulator_for_round(
     circuit_characteristics: dict,
     n_samples: int = DEFAULT_N_SAMPLES,
     seed: int = DEFAULT_SEED,
+    *,
+    shadow_starting_grid: StartingGridSnapshot | None = None,
+    shadow_input_cutoff: str | datetime | None = None,
 ) -> dict[str, Any] | None:
     """Run the race simulator for the upcoming race.
 
@@ -204,6 +215,13 @@ def run_simulator_for_round(
     registry disabled, missing columns, etc.).  Caller treats ``None``
     as "fall through to the legacy projection formula".
     """
+    if shadow_starting_grid is not None or shadow_input_cutoff is not None:
+        if not isinstance(shadow_starting_grid, StartingGridSnapshot):
+            raise StartingGridUnavailable("missing-validated-shadow-grid-context")
+        shadow_starting_grid.require_round(season, round_num, gp_key)
+        shadow_starting_grid.require_cutoff(shadow_input_cutoff)
+        merged = shadow_starting_grid.attach(merged)
+
     if not registry_enabled():
         LOGGER.info("simulator runner: registry disabled, skipping")
         return None
@@ -249,7 +267,12 @@ def run_simulator_for_round(
         weather=weather,
     )
 
-    grid, initials = _build_grid_and_initials(merged, field_dnf_rate=context.field_dnf_rate)
+    if shadow_starting_grid is None:
+        grid, initials = _build_grid_and_initials(merged, field_dnf_rate=context.field_dnf_rate)
+    else:
+        grid, initials = _build_grid_and_initials(
+            merged, field_dnf_rate=context.field_dnf_rate, shadow_starting_grid=shadow_starting_grid,
+        )
     if not grid:
         LOGGER.info("simulator runner: empty grid from merged DataFrame; skip")
         return None
@@ -268,7 +291,7 @@ def run_simulator_for_round(
         LOGGER.warning("simulator runner: simulate_race failed: %s", exc)
         return None
 
-    return {
+    result = {
         "applied": True,
         "n_samples": out.n_samples,
         "n_laps": out.n_laps,
@@ -281,3 +304,7 @@ def run_simulator_for_round(
         "p_top10": out.p_top10,
         "mean_finish": out.mean_finish_position,
     }
+    if shadow_starting_grid is not None:
+        result["mode"] = "starting-grid-shadow"
+        result["starting_grid_provenance"] = shadow_starting_grid.provenance()
+    return result

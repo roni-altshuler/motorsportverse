@@ -11,6 +11,17 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 final-grid shadow contract — 2026-10-11
+
+- Validate final starting positions independently of qualifying features, with
+  full event/field identity, source verification, cutoff and freshness checks.
+- Apply penalties to explicit shadow grid-prior and simulator inputs; keep
+  production/training schemas, publication hold and sealed baseline unchanged.
+- Reject pit-lane markers with ordinal slots, malformed present timestamps and
+  contradictory supplied provider identity fields; document Python caller trust.
+- Audit the missing completed-round final-grid coverage without inventing
+  historical grids or claiming an accuracy improvement or model promotion.
+
 ### F1 Singapore official-grid baseline — 2026-10-11
 
 - Show an explicitly labelled final-grid baseline alongside the intact model
