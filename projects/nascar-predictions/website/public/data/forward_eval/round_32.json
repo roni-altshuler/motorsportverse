@@ -1,0 +1,63 @@
+{
+  "round": 32,
+  "venueName": "Charlotte Motor Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 39,
+    "mean_position_error": 8.667,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 13,
+    "within_5": 19,
+    "exact_matches": 2,
+    "spearman_correlation": 0.44251012145748986,
+    "ndcg_at_5": 0.8784514988282255
+  },
+  "racePostQuali": {
+    "n": 39,
+    "mean_position_error": 8.821,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 12,
+    "within_5": 18,
+    "exact_matches": 2,
+    "spearman_correlation": 0.4380566801619433,
+    "ndcg_at_5": 0.8827689686933542
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.022926,
+        "logLoss": 0.086998
+      },
+      "podium": {
+        "brier": 0.062149,
+        "logLoss": 0.199177
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 36,
+      "mean_position_error": 9.111,
+      "winner_hit": true,
+      "podium_hits": 1,
+      "within_3": 13,
+      "within_5": 18,
+      "exact_matches": 3,
+      "spearman_correlation": 0.33462033462033464,
+      "ndcg_at_5": 0.9002406789315659
+    },
+    "gridOrder": {
+      "n": 39,
+      "mean_position_error": 8.769,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 15,
+      "within_5": 18,
+      "exact_matches": 1,
+      "spearman_correlation": 0.4244939271255061,
+      "ndcg_at_5": 0.8969925020595692
+    }
+  }
+}
