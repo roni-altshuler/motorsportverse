@@ -1,0 +1,311 @@
+{
+  "status": "shadow_only",
+  "season": 2026,
+  "round": 17,
+  "name": "Singapore Grand Prix",
+  "generatedAt": "2026-10-11T06:38:53.000555Z",
+  "inputCutoff": "2026-10-11T06:38:52.168248Z",
+  "sourceCommit": "2029bc1a866d076f7e6375116d0e33c8a0e9de18",
+  "sourceObservedAt": {
+    "round": 17,
+    "qualifyingRows": 22,
+    "knownGridRows": 22,
+    "actualRows": 0,
+    "eligible": true,
+    "gridOrigin": "official starting-grid table",
+    "immutableHistoricalCutoffEstablished": false,
+    "storedForecastGeneratedAt": "2026-10-10T10:22:59Z",
+    "qualifyingSourceCheckedAt": "2026-10-11T05:15:33Z",
+    "gridSourceCheckedAt": "2026-10-11T05:15:33Z",
+    "qualifyingSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/qualifying",
+    "gridSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid"
+  },
+  "sourceSnapshotSha256": "90d3bafc9668fb7eb3f607d1887b5bfc70761dc316b87e875f11e9df39e4e7f4",
+  "codeSha256": "3bccf362aaede1ea5dcbe497d4d54034f680f947c920a560965122902c29ff06",
+  "modelSha256": "70312c902a22ee0b2cf1b2eb97c003c0de1acb9fe5adba5c162ea84ccc4935c9",
+  "modelState": {
+    "alpha": 10.0,
+    "features": [
+      "grid_fraction",
+      "quali_fraction",
+      "quali_gap",
+      "penalty_delta",
+      "driver_recent_mean",
+      "driver_recent_n",
+      "driver_track_mean",
+      "driver_track_n",
+      "team_recent_mean",
+      "team_recent_n"
+    ],
+    "imputerStatistics": [
+      0.5227272727272727,
+      0.5227272727272727,
+      0.01793510984056723,
+      0.0,
+      0.5281818181818182,
+      5.0,
+      0.5,
+      3.0,
+      0.537878787878788,
+      3.0
+    ],
+    "missingIndicators": [
+      6
+    ],
+    "scalerMean": [
+      0.5227272727272727,
+      0.5227272727272727,
+      0.020521257224176904,
+      -5.734623061080354e-19,
+      0.5252278988229401,
+      4.958677685950414,
+      0.5029433086849355,
+      2.2479338842975207,
+      0.5227272727272727,
+      2.727272727272727,
+      0.05785123966942149
+    ],
+    "scalerScale": [
+      0.2883767622829436,
+      0.2883767622829436,
+      0.015723421943471965,
+      0.05785123966942148,
+      0.2006164974287539,
+      0.34965612894720965,
+      0.22825052286347355,
+      1.0227251857395852,
+      0.20786009361042793,
+      0.6165754530113879,
+      0.23346193209628976
+    ],
+    "coefficients": [
+      0.0692873043561491,
+      0.07302555089791526,
+      0.007610736423794312,
+      -0.018634405079130768,
+      -0.002062563460343853,
+      -0.013971333967026208,
+      0.01639040113546252,
+      0.0364688807216864,
+      0.03983897523693309,
+      -0.005738717172367341,
+      0.008834933714317122
+    ],
+    "intercept": 0.5227272727272727,
+    "trainedEvents": [
+      [
+        2026,
+        2
+      ],
+      [
+        2026,
+        3
+      ],
+      [
+        2026,
+        4
+      ],
+      [
+        2026,
+        5
+      ],
+      [
+        2026,
+        6
+      ],
+      [
+        2026,
+        7
+      ],
+      [
+        2026,
+        8
+      ],
+      [
+        2026,
+        9
+      ],
+      [
+        2026,
+        10
+      ],
+      [
+        2026,
+        11
+      ],
+      [
+        2026,
+        15
+      ]
+    ]
+  },
+  "classification": [
+    {
+      "driver": "ALB",
+      "position": 19,
+      "score": 0.7615434541354917,
+      "officialGridPosition": 17,
+      "qualifyingPosition": 18
+    },
+    {
+      "driver": "ALO",
+      "position": 18,
+      "score": 0.7209184521065037,
+      "officialGridPosition": 16,
+      "qualifyingPosition": 17
+    },
+    {
+      "driver": "ANT",
+      "position": 2,
+      "score": 0.2300684358202586,
+      "officialGridPosition": 4,
+      "qualifyingPosition": 4
+    },
+    {
+      "driver": "BEA",
+      "position": 10,
+      "score": 0.4853795768780155,
+      "officialGridPosition": 11,
+      "qualifyingPosition": 12
+    },
+    {
+      "driver": "BOR",
+      "position": 13,
+      "score": 0.5930983566904379,
+      "officialGridPosition": 14,
+      "qualifyingPosition": 15
+    },
+    {
+      "driver": "BOT",
+      "position": 22,
+      "score": 0.8468821220043026,
+      "officialGridPosition": 20,
+      "qualifyingPosition": 21
+    },
+    {
+      "driver": "COL",
+      "position": 17,
+      "score": 0.6474999473530492,
+      "officialGridPosition": 15,
+      "qualifyingPosition": 16
+    },
+    {
+      "driver": "GAS",
+      "position": 11,
+      "score": 0.4973235421627102,
+      "officialGridPosition": 7,
+      "qualifyingPosition": 8
+    },
+    {
+      "driver": "HAD",
+      "position": 16,
+      "score": 0.6399724947352009,
+      "officialGridPosition": 22,
+      "qualifyingPosition": 22
+    },
+    {
+      "driver": "HAM",
+      "position": 4,
+      "score": 0.2914507766772938,
+      "officialGridPosition": 3,
+      "qualifyingPosition": 3
+    },
+    {
+      "driver": "HUL",
+      "position": 12,
+      "score": 0.5617888295617504,
+      "officialGridPosition": 10,
+      "qualifyingPosition": 11
+    },
+    {
+      "driver": "LAW",
+      "position": 9,
+      "score": 0.4448922074348072,
+      "officialGridPosition": 8,
+      "qualifyingPosition": 9
+    },
+    {
+      "driver": "LEC",
+      "position": 3,
+      "score": 0.266509900878497,
+      "officialGridPosition": 2,
+      "qualifyingPosition": 2
+    },
+    {
+      "driver": "LIN",
+      "position": 8,
+      "score": 0.4280012066592236,
+      "officialGridPosition": 9,
+      "qualifyingPosition": 10
+    },
+    {
+      "driver": "NOR",
+      "position": 6,
+      "score": 0.3464775163450605,
+      "officialGridPosition": 5,
+      "qualifyingPosition": 5
+    },
+    {
+      "driver": "OCO",
+      "position": 14,
+      "score": 0.6093512224188621,
+      "officialGridPosition": 12,
+      "qualifyingPosition": 13
+    },
+    {
+      "driver": "PER",
+      "position": 21,
+      "score": 0.7900564223506352,
+      "officialGridPosition": 19,
+      "qualifyingPosition": 20
+    },
+    {
+      "driver": "PIA",
+      "position": 7,
+      "score": 0.4055474666897765,
+      "officialGridPosition": 6,
+      "qualifyingPosition": 7
+    },
+    {
+      "driver": "RUS",
+      "position": 5,
+      "score": 0.2977466094651191,
+      "officialGridPosition": 21,
+      "qualifyingPosition": 6
+    },
+    {
+      "driver": "SAI",
+      "position": 15,
+      "score": 0.6362330537945297,
+      "officialGridPosition": 13,
+      "qualifyingPosition": 14
+    },
+    {
+      "driver": "STR",
+      "position": 20,
+      "score": 0.7704815173561973,
+      "officialGridPosition": 18,
+      "qualifyingPosition": 19
+    },
+    {
+      "driver": "VER",
+      "position": 1,
+      "score": 0.2026677659978821,
+      "officialGridPosition": 1,
+      "qualifyingPosition": 1
+    }
+  ],
+  "inputRangeWarnings": [
+    {
+      "driver": "RUS",
+      "feature": "penalty_delta",
+      "value": 0.6818181818181818,
+      "trainMin": -0.13636363636363635,
+      "trainMax": 0.5
+    }
+  ],
+  "scoreKind": "unbounded regressed finishing fraction; ranking score, not probability",
+  "probabilities": null,
+  "publicationHoldReleased": false,
+  "limitation": "experimental shadow; historical weather/sprint availability absent; no accuracy or live publication claim"
+}

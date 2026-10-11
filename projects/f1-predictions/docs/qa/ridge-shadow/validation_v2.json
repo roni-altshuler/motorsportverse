@@ -1,0 +1,63 @@
+{
+  "implementationSourceCommit": "78058dd3529cbb52bc51b3dcdd0d1137c259d27f",
+  "baseMainCommit": "5e2aa4763d79bcba782e19bc84c18ad4975092ad",
+  "pythonPassed": 1164,
+  "pythonSkipped": 15,
+  "focusedRidgeTestsPassed": 29,
+  "beforeFixFailedCases": 9,
+  "dependencyMutationTests": 4,
+  "ruff": "passed",
+  "runtimeSeconds": 1.0842384890001995,
+  "modelAndMetricsUnchanged": true,
+  "oldArtifactsPreserved": true,
+  "artifactSha256": "5e3745cfd0564851ccf0b1e4b190b619ca6995697f422b44e29c08f0375bad7e",
+  "implementation": {
+    "manifestSha256": "67b9f1b3a4a2e0eb09f8c0c5f2733c93760d9e3992d73a359565812e15edc29c",
+    "files": [
+      {
+        "path": "src/event_identity.py",
+        "sha256": "e499115ba4dc63ac3a622974c444eab1d44a766ff0c63a39fb08a52a840e2cb9",
+        "commitSha256": "e499115ba4dc63ac3a622974c444eab1d44a766ff0c63a39fb08a52a840e2cb9",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/export_circuit_history.py",
+        "sha256": "fbded2937298aba103b84d23993352684dd9ea9c1fea35bad706484e38e5c548",
+        "commitSha256": "fbded2937298aba103b84d23993352684dd9ea9c1fea35bad706484e38e5c548",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/leakage.py",
+        "sha256": "4c27b15c9996a10371bde3904f38785e0e0a3460ab7c3f61a7cc7609cba7d970",
+        "commitSha256": "4c27b15c9996a10371bde3904f38785e0e0a3460ab7c3f61a7cc7609cba7d970",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/ridge_shadow.py",
+        "sha256": "928a5d577a718850a58f28d21911cd3a9c6c3a7fd0e2085c6472fd308cf9e8d3",
+        "commitSha256": "928a5d577a718850a58f28d21911cd3a9c6c3a7fd0e2085c6472fd308cf9e8d3",
+        "matchesSourceCommit": true
+      }
+    ],
+    "allFilesMatchSourceCommit": true,
+    "runtimeVersions": {
+      "python": "3.12.14",
+      "duckdb": "1.5.6",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1"
+    }
+  },
+  "modelSha256": "70312c902a22ee0b2cf1b2eb97c003c0de1acb9fe5adba5c162ea84ccc4935c9",
+  "sourceHashesRevalidated": true,
+  "publicationHoldReleased": false,
+  "servingWrites": false,
+  "promotion": false,
+  "logSha256": {
+    "python": "89a1f24fb00464f743c9d6e8259f7f8e4702d165f022ffcb5bef5a979449dbb6",
+    "focused": "741ce67bb544409529d2e1979a71969be3befdf10587387e639e0996670d1eeb",
+    "before": "34fe06e972a32f98cc8e718bf44596f91ff9c1575e65f493f2520993495bdc5d",
+    "evaluation": "553a759db9e5dc67eca6d2398dd06ee3c24d1fc588dba33cdc1178bc3265d986"
+  }
+}

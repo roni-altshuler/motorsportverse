@@ -11,6 +11,20 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 independent Ridge shadow audit — 2026-10-11
+
+- Add an offline chronological event-grouped challenger with fold-local scaling,
+  separate qualifying/final-grid inputs and real prior driver/team/venue history.
+- Audit source coverage, omit unavailable historical weather/sprint features,
+  compare identical event cohorts against grid, qualifying and stored snapshots,
+  and record the measured regression without promoting the model.
+- Write immutable shadow artifacts only to a separate audit directory, with
+  source/model/code hashes, timestamps, cutoff checks and input-range warnings.
+  Preserve serving forecasts, the publication hold and historical grades.
+- Revalidate source bytes, both source timestamps, all four implementation
+  modules and the race deadline at sealing. Record dependency versions and
+  target-only median-imputation limitations without changing the model.
+
 ### F1 event identity and publication review — 2026-10-11
 
 - Correct the verified 2026 calendar to 23 events: Sepang-hosted Bahrain is

@@ -1,0 +1,469 @@
+{
+  "status": "shadow_only",
+  "season": 2026,
+  "round": 17,
+  "name": "Singapore Grand Prix",
+  "raceStartUtc": "2026-10-11T12:00:00Z",
+  "generatedAt": "2026-10-11T07:02:07.392594Z",
+  "inputCutoff": "2026-10-11T07:02:06.572097Z",
+  "sourceCommit": "78058dd3529cbb52bc51b3dcdd0d1137c259d27f",
+  "sourceObservedAt": {
+    "round": 17,
+    "qualifyingRows": 22,
+    "knownGridRows": 22,
+    "actualRows": 0,
+    "eligible": true,
+    "gridOrigin": "official starting-grid table",
+    "immutableHistoricalCutoffEstablished": false,
+    "storedForecastGeneratedAt": "2026-10-10T10:22:59Z",
+    "qualifyingSourceCheckedAt": "2026-10-11T05:15:33Z",
+    "gridSourceCheckedAt": "2026-10-11T05:15:33Z",
+    "qualifyingSourceTimestamps": {
+      "verifiedAt": "2026-10-11T05:15:33Z"
+    },
+    "gridSourceTimestamps": {
+      "verifiedAt": "2026-10-11T05:15:33Z"
+    },
+    "qualifyingSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/qualifying",
+    "gridSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid"
+  },
+  "sourceSnapshotSha256": "90d3bafc9668fb7eb3f607d1887b5bfc70761dc316b87e875f11e9df39e4e7f4",
+  "inputSources": [
+    {
+      "path": "website/public/data/season.json",
+      "sha256": "1b0fccec6c44df09692ac38a306ee8a156e4ccfd40c4b164321690fabdd16110"
+    },
+    {
+      "path": "data/history.duckdb",
+      "sha256": "fb81227fc56a50420ebbb4faee347115115173f2e7b6c1d1c9b349a0855e3821"
+    },
+    {
+      "path": "website/public/data/rounds/round_01.json",
+      "sha256": "34f509dcd56838d7b3a14314d25dac5f4060e8584b9676d50d876d5e420f1df1"
+    },
+    {
+      "path": "website/public/data/rounds/round_02.json",
+      "sha256": "7d374802155910799cd877a77bf96c1351fb754946e4393ced67f90dff36e964"
+    },
+    {
+      "path": "website/public/data/rounds/round_03.json",
+      "sha256": "ed22d38e28f6a217850d7738094774128874f76060310b810869a8be1a872492"
+    },
+    {
+      "path": "website/public/data/rounds/round_04.json",
+      "sha256": "f94b2ebdfed60cff7ac28e91c2a704237eee9ebf7c824b5d0286bea37a8715f0"
+    },
+    {
+      "path": "website/public/data/rounds/round_05.json",
+      "sha256": "0ea1aba59bbebf1e29126eabe05573611a541f62913f523f8ec34e9ac73b98b6"
+    },
+    {
+      "path": "website/public/data/rounds/round_06.json",
+      "sha256": "42aa0e1774c7ba03331f174c1bf3465b1d05c3eccd1e643fb0acaf88ba9ce90b"
+    },
+    {
+      "path": "website/public/data/rounds/round_07.json",
+      "sha256": "e7f7c8b28563abf9a567963b362d3042c2fb1e3b50ef38ee727b2eaf96ca50a7"
+    },
+    {
+      "path": "website/public/data/rounds/round_08.json",
+      "sha256": "3a07b6a6d2951e5e417d8d757ed0e80a43adf0079a091f5e54028db0a7aa27de"
+    },
+    {
+      "path": "website/public/data/rounds/round_09.json",
+      "sha256": "78fe638ff756535a560b851b7d3be08034334c51d1f95e794ca9d8297e89457d"
+    },
+    {
+      "path": "website/public/data/rounds/round_10.json",
+      "sha256": "c376454af425a707258fad7fb55e747b2acbaccbb8c092e8f4481007823671c1"
+    },
+    {
+      "path": "website/public/data/rounds/round_11.json",
+      "sha256": "e6a0fb8058c52b7120bf57811c62fe313ca9b76f7e742242d28c428d1d48cfdb"
+    },
+    {
+      "path": "website/public/data/rounds/round_12.json",
+      "sha256": "a9a7726cd90927b329ad5a59ab782c8470fc1ca12b19c326a35f522c46caf5f3"
+    },
+    {
+      "path": "website/public/data/rounds/round_13.json",
+      "sha256": "f0abfb290cf633de131ddee6a4be91419ce4e08c366ac3101ea57c74e1708c97"
+    },
+    {
+      "path": "website/public/data/rounds/round_14.json",
+      "sha256": "b8f836bd99c18055cfe5003f4a8e764e066b75141e5d6af69047402e8b03870d"
+    },
+    {
+      "path": "website/public/data/rounds/round_15.json",
+      "sha256": "835258d640b5988367a46076bc2ff31c175fbae8af540edbbe5066e92405de9b"
+    },
+    {
+      "path": "website/public/data/rounds/round_16.json",
+      "sha256": "dc1ff0624e8dbdc75730076575a5391cdf915a7223462d02394fab32c60e4fd5"
+    },
+    {
+      "path": "website/public/data/rounds/round_17.json",
+      "sha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c"
+    },
+    {
+      "path": "website/public/data/rounds/round_18.json",
+      "sha256": "f49837030d540485dcabd1557792e27de7759dde8b98173ac1156f45b80000b8"
+    },
+    {
+      "path": "website/public/data/rounds/round_19.json",
+      "sha256": "c97aa97a07caabaf10d8b04e4534c3802beb15303e6121bf14477fa48e8b2cc0"
+    },
+    {
+      "path": "website/public/data/rounds/round_20.json",
+      "sha256": "45a07b18e0feb75fdc275644c03b13541fd1dad8d27c129faba6300967461047"
+    },
+    {
+      "path": "website/public/data/rounds/round_21.json",
+      "sha256": "95c1d0c865109d1f93f195b32b655de6e59604da1e920b653d128c0777e52973"
+    },
+    {
+      "path": "website/public/data/rounds/round_22.json",
+      "sha256": "37f97e43a84bc8bebae3ca84391882c742ecd3a7e789192e5e8ac7f0c30b1a73"
+    },
+    {
+      "path": "website/public/data/rounds/round_23.json",
+      "sha256": "1bd15edb5f966a4c8d24824fe9095d580a3b46a54d760b64c7a5d0a2c3303b08"
+    }
+  ],
+  "codeSha256": "928a5d577a718850a58f28d21911cd3a9c6c3a7fd0e2085c6472fd308cf9e8d3",
+  "codeSha256Scope": "ridge_shadow.py only; implementation manifest pins all four modules",
+  "implementation": {
+    "manifestSha256": "67b9f1b3a4a2e0eb09f8c0c5f2733c93760d9e3992d73a359565812e15edc29c",
+    "files": [
+      {
+        "path": "src/event_identity.py",
+        "sha256": "e499115ba4dc63ac3a622974c444eab1d44a766ff0c63a39fb08a52a840e2cb9",
+        "commitSha256": "e499115ba4dc63ac3a622974c444eab1d44a766ff0c63a39fb08a52a840e2cb9",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/export_circuit_history.py",
+        "sha256": "fbded2937298aba103b84d23993352684dd9ea9c1fea35bad706484e38e5c548",
+        "commitSha256": "fbded2937298aba103b84d23993352684dd9ea9c1fea35bad706484e38e5c548",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/leakage.py",
+        "sha256": "4c27b15c9996a10371bde3904f38785e0e0a3460ab7c3f61a7cc7609cba7d970",
+        "commitSha256": "4c27b15c9996a10371bde3904f38785e0e0a3460ab7c3f61a7cc7609cba7d970",
+        "matchesSourceCommit": true
+      },
+      {
+        "path": "src/ridge_shadow.py",
+        "sha256": "928a5d577a718850a58f28d21911cd3a9c6c3a7fd0e2085c6472fd308cf9e8d3",
+        "commitSha256": "928a5d577a718850a58f28d21911cd3a9c6c3a7fd0e2085c6472fd308cf9e8d3",
+        "matchesSourceCommit": true
+      }
+    ],
+    "allFilesMatchSourceCommit": true,
+    "runtimeVersions": {
+      "python": "3.12.14",
+      "duckdb": "1.5.6",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1"
+    }
+  },
+  "modelSha256": "70312c902a22ee0b2cf1b2eb97c003c0de1acb9fe5adba5c162ea84ccc4935c9",
+  "modelState": {
+    "alpha": 10.0,
+    "features": [
+      "grid_fraction",
+      "quali_fraction",
+      "quali_gap",
+      "penalty_delta",
+      "driver_recent_mean",
+      "driver_recent_n",
+      "driver_track_mean",
+      "driver_track_n",
+      "team_recent_mean",
+      "team_recent_n"
+    ],
+    "imputerStatistics": [
+      0.5227272727272727,
+      0.5227272727272727,
+      0.01793510984056723,
+      0.0,
+      0.5281818181818182,
+      5.0,
+      0.5,
+      3.0,
+      0.537878787878788,
+      3.0
+    ],
+    "missingIndicators": [
+      6
+    ],
+    "scalerMean": [
+      0.5227272727272727,
+      0.5227272727272727,
+      0.020521257224176904,
+      -5.734623061080354e-19,
+      0.5252278988229401,
+      4.958677685950414,
+      0.5029433086849355,
+      2.2479338842975207,
+      0.5227272727272727,
+      2.727272727272727,
+      0.05785123966942149
+    ],
+    "scalerScale": [
+      0.2883767622829436,
+      0.2883767622829436,
+      0.015723421943471965,
+      0.05785123966942148,
+      0.2006164974287539,
+      0.34965612894720965,
+      0.22825052286347355,
+      1.0227251857395852,
+      0.20786009361042793,
+      0.6165754530113879,
+      0.23346193209628976
+    ],
+    "coefficients": [
+      0.0692873043561491,
+      0.07302555089791526,
+      0.007610736423794312,
+      -0.018634405079130768,
+      -0.002062563460343853,
+      -0.013971333967026208,
+      0.01639040113546252,
+      0.0364688807216864,
+      0.03983897523693309,
+      -0.005738717172367341,
+      0.008834933714317122
+    ],
+    "intercept": 0.5227272727272727,
+    "trainedEvents": [
+      [
+        2026,
+        2
+      ],
+      [
+        2026,
+        3
+      ],
+      [
+        2026,
+        4
+      ],
+      [
+        2026,
+        5
+      ],
+      [
+        2026,
+        6
+      ],
+      [
+        2026,
+        7
+      ],
+      [
+        2026,
+        8
+      ],
+      [
+        2026,
+        9
+      ],
+      [
+        2026,
+        10
+      ],
+      [
+        2026,
+        11
+      ],
+      [
+        2026,
+        15
+      ]
+    ]
+  },
+  "classification": [
+    {
+      "driver": "ALB",
+      "position": 19,
+      "score": 0.7615434541354917,
+      "officialGridPosition": 17,
+      "qualifyingPosition": 18
+    },
+    {
+      "driver": "ALO",
+      "position": 18,
+      "score": 0.7209184521065037,
+      "officialGridPosition": 16,
+      "qualifyingPosition": 17
+    },
+    {
+      "driver": "ANT",
+      "position": 2,
+      "score": 0.2300684358202586,
+      "officialGridPosition": 4,
+      "qualifyingPosition": 4
+    },
+    {
+      "driver": "BEA",
+      "position": 10,
+      "score": 0.4853795768780155,
+      "officialGridPosition": 11,
+      "qualifyingPosition": 12
+    },
+    {
+      "driver": "BOR",
+      "position": 13,
+      "score": 0.5930983566904379,
+      "officialGridPosition": 14,
+      "qualifyingPosition": 15
+    },
+    {
+      "driver": "BOT",
+      "position": 22,
+      "score": 0.8468821220043026,
+      "officialGridPosition": 20,
+      "qualifyingPosition": 21
+    },
+    {
+      "driver": "COL",
+      "position": 17,
+      "score": 0.6474999473530492,
+      "officialGridPosition": 15,
+      "qualifyingPosition": 16
+    },
+    {
+      "driver": "GAS",
+      "position": 11,
+      "score": 0.4973235421627102,
+      "officialGridPosition": 7,
+      "qualifyingPosition": 8
+    },
+    {
+      "driver": "HAD",
+      "position": 16,
+      "score": 0.6399724947352009,
+      "officialGridPosition": 22,
+      "qualifyingPosition": 22
+    },
+    {
+      "driver": "HAM",
+      "position": 4,
+      "score": 0.2914507766772938,
+      "officialGridPosition": 3,
+      "qualifyingPosition": 3
+    },
+    {
+      "driver": "HUL",
+      "position": 12,
+      "score": 0.5617888295617504,
+      "officialGridPosition": 10,
+      "qualifyingPosition": 11
+    },
+    {
+      "driver": "LAW",
+      "position": 9,
+      "score": 0.4448922074348072,
+      "officialGridPosition": 8,
+      "qualifyingPosition": 9
+    },
+    {
+      "driver": "LEC",
+      "position": 3,
+      "score": 0.266509900878497,
+      "officialGridPosition": 2,
+      "qualifyingPosition": 2
+    },
+    {
+      "driver": "LIN",
+      "position": 8,
+      "score": 0.4280012066592236,
+      "officialGridPosition": 9,
+      "qualifyingPosition": 10
+    },
+    {
+      "driver": "NOR",
+      "position": 6,
+      "score": 0.3464775163450605,
+      "officialGridPosition": 5,
+      "qualifyingPosition": 5
+    },
+    {
+      "driver": "OCO",
+      "position": 14,
+      "score": 0.6093512224188621,
+      "officialGridPosition": 12,
+      "qualifyingPosition": 13
+    },
+    {
+      "driver": "PER",
+      "position": 21,
+      "score": 0.7900564223506352,
+      "officialGridPosition": 19,
+      "qualifyingPosition": 20
+    },
+    {
+      "driver": "PIA",
+      "position": 7,
+      "score": 0.4055474666897765,
+      "officialGridPosition": 6,
+      "qualifyingPosition": 7
+    },
+    {
+      "driver": "RUS",
+      "position": 5,
+      "score": 0.2977466094651191,
+      "officialGridPosition": 21,
+      "qualifyingPosition": 6
+    },
+    {
+      "driver": "SAI",
+      "position": 15,
+      "score": 0.6362330537945297,
+      "officialGridPosition": 13,
+      "qualifyingPosition": 14
+    },
+    {
+      "driver": "STR",
+      "position": 20,
+      "score": 0.7704815173561973,
+      "officialGridPosition": 18,
+      "qualifyingPosition": 19
+    },
+    {
+      "driver": "VER",
+      "position": 1,
+      "score": 0.2026677659978821,
+      "officialGridPosition": 1,
+      "qualifyingPosition": 1
+    }
+  ],
+  "inputRangeWarnings": [
+    {
+      "driver": "RUS",
+      "feature": "penalty_delta",
+      "value": 0.6818181818181818,
+      "trainMin": -0.13636363636363635,
+      "trainMax": 0.5
+    }
+  ],
+  "scoreKind": "unbounded regressed finishing fraction; ranking score, not probability",
+  "missingValueHandling": {
+    "method": "training-fold median; indicators only for columns missing during training",
+    "targetOnlyMissingness": [
+      {
+        "driver": "HAD",
+        "feature": "quali_gap"
+      }
+    ],
+    "limitation": "target-only missing values are median-imputed without a missingness indicator; model unchanged"
+  },
+  "probabilities": null,
+  "publicationHoldReleased": false,
+  "limitation": "experimental shadow; historical weather/sprint availability absent; no accuracy or live publication claim"
+}
