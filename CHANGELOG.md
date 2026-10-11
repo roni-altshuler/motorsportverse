@@ -25,6 +25,11 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   withheld forecast. Withdraw championship and drift diagnostics pending review.
 - Add an accessible publication notice and session tables with official source
   links, original forecast provenance and the verified Singapore race time.
+- Reject wrong-event results, grades and geometry before regeneration; verify
+  committed qualifying overrides and replay/layout identities before use.
+  Keep the withdrawal durable through automatic refreshes. An explicit audited
+  release pins official inputs and model code, validates the actual post-penalty
+  grid, and records a new pre-race timestamp separately from the withdrawn claim.
 - Clarify that regenerated probability diagnostics with shared temperature
   tuning do not establish fully out-of-sample or immutable pre-race performance.
 

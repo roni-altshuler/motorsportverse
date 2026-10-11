@@ -329,6 +329,18 @@ export interface RoundData {
     originalForecast?: { round: number; generatedAt: string; sha256: string };
   };
   forecastProvenance?: { originalRound: number; generatedAt: string; sha256: string };
+  /** Explicit audited replacement; the withdrawn claim retains its original timestamp. */
+  publicationRelease?: {
+    sourceSnapshotSha256: string;
+    modelCodeSha256: string;
+    modelConfigSha256: string;
+    reviewNote: string;
+    reviewedAt: string;
+    releasedAt: string;
+    generatedAt: string;
+    withdrawalReason: string;
+    withdrawnForecast?: { round: number; generatedAt: string; sha256: string };
+  };
   predictionPhase?: "preview" | "post-quali" | "post-race";
   /** True when qualifying lap times are real (not synthetic estimates). */
   qualifyingDataAvailable?: boolean;

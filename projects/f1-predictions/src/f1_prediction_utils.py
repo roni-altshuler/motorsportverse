@@ -162,7 +162,7 @@ CALENDAR_2026 = {
     14: {'name': 'Spanish Grand Prix', 'gp_key': 'Madrid', 'circuit': 'Madring', 'date': '2026-09-13', 'laps': 57, 'circuit_km': 5.474, 'sprint': False, 'circuit_id': 'madring', 'locations': ['Madrid']},
     15: {'name': 'Azerbaijan Grand Prix', 'gp_key': 'Azerbaijan', 'circuit': 'Baku City Circuit', 'date': '2026-09-26', 'laps': 51, 'circuit_km': 6.003, 'sprint': False, 'circuit_id': 'baku', 'locations': ['Baku']},
     16: {'name': 'Bahrain Grand Prix in Malaysia', 'gp_key': 'Bahrain', 'circuit': 'Sepang International Circuit', 'date': '2026-10-04', 'laps': 56, 'circuit_km': 5.543, 'sprint': False, 'prediction_disabled': True, 'status_note': 'Official result available; no genuine pre-race forecast was published.', 'circuit_id': 'sepang', 'locations': ['Kuala Lumpur'], 'event_aliases': ['Bahrain Grand Prix']},
-    17: {'name': 'Singapore Grand Prix', 'gp_key': 'Singapore', 'circuit': 'Marina Bay', 'date': '2026-10-11', 'laps': 62, 'circuit_km': 4.927, 'sprint': True, 'sprint_laps': 21, 'race_start_utc': '2026-10-11T12:00:00Z', 'circuit_id': 'marina_bay', 'locations': ['Marina Bay', 'Singapore']},
+    17: {'name': 'Singapore Grand Prix', 'gp_key': 'Singapore', 'circuit': 'Marina Bay', 'date': '2026-10-11', 'laps': 62, 'circuit_km': 4.927, 'sprint': True, 'sprint_laps': 21, 'race_start_utc': '2026-10-11T12:00:00Z', 'official_results_event': '1296/singapore', 'circuit_id': 'marina_bay', 'locations': ['Marina Bay', 'Singapore']},
     18: {'name': 'United States Grand Prix', 'gp_key': 'United States', 'circuit': 'COTA', 'date': '2026-10-25', 'laps': 56, 'circuit_km': 5.513, 'sprint': False, 'circuit_id': 'americas', 'locations': ['Austin']},
     19: {'name': 'Mexico City Grand Prix', 'gp_key': 'Mexico', 'circuit': 'Autódromo Hermanos Rodríguez', 'date': '2026-11-01', 'laps': 71, 'circuit_km': 4.304, 'sprint': False, 'circuit_id': 'rodriguez', 'locations': ['Mexico City']},
     20: {'name': 'São Paulo Grand Prix', 'gp_key': 'Brazil', 'circuit': 'Interlagos', 'date': '2026-11-08', 'laps': 71, 'circuit_km': 4.309, 'sprint': False, 'circuit_id': 'interlagos', 'locations': ['São Paulo'], 'event_aliases': ['Brazilian Grand Prix']},
@@ -1599,8 +1599,8 @@ def _fetch_qualifying_from_jolpica(year, grand_prix, expected_round=None):
 
 # ── Verified-qualifying override (walk-forward regeneration seam) ──────────
 # regenerate_post_quali.py injects each round's OFFICIAL qualifying data here,
-# sourced from the committed round JSON's weekendResults (round-scoped by
-# construction, originally ingested from Jolpica/FastF1 with round guards).
+# sourced from the committed round JSON's weekendResults after checking the
+# complete event identity and official session status against the calendar.
 # This keeps the leakage-safe replay deterministic and offline-safe without
 # hammering FastF1's rate limit. Keyed "<year>:<gp_key>".
 _QUALI_TIMES_OVERRIDE: dict = {}
@@ -1610,7 +1610,7 @@ def set_qualifying_override(year, grand_prix, times, grid=None):
     """Inject verified official qualifying data for ``(year, grand_prix)``.
 
     ``times``: {driver_code: best_lap_seconds}; ``grid``: {driver_code: position}.
-    Only call this with round-verified official data — the override is treated
+    Only call this with event-verified official data — the override is treated
     as real qualifying (``real-quali-verified`` provenance) downstream.
     """
     key = f"{int(year)}:{grand_prix}"

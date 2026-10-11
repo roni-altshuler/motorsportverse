@@ -67,7 +67,8 @@ export async function generateMetadata({
   const circuit = calendarEntry?.circuit ?? roundData?.circuit ?? "";
   const seasonYear = season?.season ?? new Date().getFullYear();
 
-  const title = `${raceName} — F1 ${seasonYear} Predictions`;
+  const held = !!roundData?.publicationHold;
+  const title = `${raceName} — F1 ${seasonYear} ${held ? "Publication review" : "Predictions"}`;
   const topThree = (roundData?.publicationHold ? [] : (roundData?.classification ?? []))
     .slice(0, 3)
     .map((c) => c.driverFullName)
@@ -76,8 +77,9 @@ export async function generateMetadata({
     topThree.length === 3
       ? `Predicted podium: ${topThree.join(", ")}.`
       : `Predictions for the ${raceName}.`;
-  const description =
-    `${podiumText} AI-powered Formula 1 race forecast` +
+  const description = held
+    ? roundData!.publicationHold!.message
+    : `${podiumText} AI-powered Formula 1 race forecast` +
     (circuit ? ` for ${circuit}` : "") +
     (date ? ` on ${date}` : "") +
     ".";
@@ -99,7 +101,7 @@ export async function generateMetadata({
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: `${raceName} — predicted podium`,
+          alt: `${raceName} — ${held ? "publication review" : "predicted podium"}`,
         },
       ],
     },
@@ -134,7 +136,7 @@ function buildSportsEventJsonLd(round: number): string | null {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
     name: calendarEntry.name,
-    startDate: calendarEntry.date,
+    startDate: calendarEntry.raceStartUtc ?? calendarEntry.date,
     sport: "Formula 1",
     eventStatus: calendarEntry.postponed
       ? "https://schema.org/EventPostponed"

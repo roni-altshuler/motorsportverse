@@ -57,6 +57,30 @@ calendar identity makes `needs_update` return true even if it already contains
 actual results. Post-race grading refuses that incompatible snapshot. A
 `post-race` phase label alone cannot count as a completed race.
 
+The review reproduced an additional preservation defect: post-qualifying export
+stamped the new identity before copying the old event's actuals, grade, tracker,
+enrichment and geometry. Export now refuses that state before entering the
+pipeline or overwriting its file. Preservation and tracker rehydration require
+an existing snapshot with a matching identity. Committed qualifying overrides
+check both the stored event and any explicit session identity before using the
+trusted override. Replay sessions are verified before loading telemetry; bounded
+historical layout fallbacks require the same venue and their season's verified
+provider schedule identity.
+
+Singapore's withdrawal also blocks automatic preview/post-qualifying exports
+before any pipeline work. It remains outstanding in freshness detection, rather
+than becoming an apparently final verified freeze. No scheduled caller can
+release it. The separate `publication_release` API requires an explicit audit
+note, review time, exact official session snapshot digest and current Python model
+source digest. Generation must use the reviewed qualifying times and complete
+post-penalty grid, including Russell at 21st; a model that still uses his
+qualifying rank of sixth is rejected. A successful future release must finish
+before 12:00 UTC, records its new generation time and model configuration digest,
+and retains the original withdrawn forecast provenance separately. The digest
+pins implementation source, not fitted model weights or an accuracy claim.
+The release tests use synthetic generation fixtures; no replacement forecast or
+model training was run. Official session tables remain available during the hold.
+
 The original round-16 Singapore forecast is archived with its unchanged
 `2026-10-10T10:22:59Z` timestamp and byte digest. It is not relabelled as a
 pre-Sepang forecast. Future previews move by matching event identity; their
@@ -94,6 +118,11 @@ hairline and typography system; no Formula1.com assets or layout were copied.
 The regression tests reproduce the same-round, wrong-event fallback, missing
 identity fields, provider aliases, no-work false negative, false completion,
 withdrawal of grades/probabilities and preservation of original forecasts.
+[The reproduction record](recurrence-reproductions.json) identifies the failing
+baseline cases and their saved log digests.
+Additional regressions cover the post-qualifying preservation defect, trusted
+qualifying override, replay/layout guards, durable automatic holds, changed
+reviewed inputs, ignored grid penalties and the pre-race release deadline.
 Frontend tests verify the withheld state, Russell's distinct session positions
 and the relocated venue's imagery gap. The published-data integrity gate and
 shared UI synchronization are checked without allowances.
@@ -105,7 +134,7 @@ widths, overflow, runtime errors, failed requests, source links and keyboard
 navigation. Screenshots show the home notice and both repaired race pages.
 This is local exported-site QA, not a hosted deployment claim.
 
-Local validation: **1,114 Python tests passed, 15 skipped**; **265 frontend
+Local validation: **1,153 Python tests passed, 15 skipped**; **268 frontend
 tests passed**. Ruff, TypeScript, the Pages-prefix static build, all 50 published
 data integrity checks and shared UI synchronization passed. ESLint has no errors
 and retains one existing warning in `AccuracyDashboardPage.tsx`.

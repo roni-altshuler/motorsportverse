@@ -3,13 +3,13 @@
   "branch": "fix/f1-event-identity-quarantine",
   "python": {
     "version": "3.12.14",
-    "passed": 1114,
+    "passed": 1153,
     "skipped": 15
   },
   "frontend": {
     "node": "20.20.2",
-    "testsPassed": 265,
-    "testSuitesPassed": 17,
+    "testsPassed": 268,
+    "testSuitesPassed": 18,
     "typescript": "passed",
     "eslintErrors": 0,
     "existingEslintWarnings": 1,
@@ -18,13 +18,20 @@
   },
   "integrityChecks": 50,
   "sharedUISync": "passed",
-  "registryRepairTestsPassed": 50,
   "logSha256": {
-    "python": "be3c46e27de498a32605a6c747fdf7835465accffd2620dc6d83f8a254030eea",
-    "frontend": "9e95e18dbae219b6fffd6905930f0874da36bf54ca9439b231bf9a56891d1edb",
-    "lint": "266572fe9ea777524e7fc99d27b842988fca8f6d3c663e37e1956281ad9e8804",
-    "typecheck": "669fc00da4ca4ba14325287ede95465cf1adb80f435c9ccbeed71690abf18f80",
-    "build": "4e8cf4a5bfd2b9a9ccbd2928269d1a002ffc383d42911ada897da7a01d418c6a",
-    "registry": "d1a9b59962ab818e0408f18dbc96d0eaa08f94294f17b5829cfb02def257e451"
+    "python": "b3a8a87b03767eceff0c774c522cff5f7bc8926dec70f92fa98fd4b3d01bc027",
+    "frontend": "e07a2cf7a8ea65652f55958685508b814f4f34f3d2ce10b26afe6cd652d0ac9a",
+    "lint": "07446b0a3d0d9d756cd32dc565da6bf2c922e33a2adedc927a85c74512ac1125",
+    "typecheck": "f8cf56836f77fa6b267ad28be3d56f26f73cef9855792961e97522c86e2f1237",
+    "build": "298f80ae210347002b3231682a567526cfbd48f2dc65ba597bccd562689cbcd9",
+    "reviewRegressions": "acf71e412a0179d37fd51b034fa80a5c20af671bd307c33c5a615a7b7d2ce1e1"
+  },
+  "reviewRegressionTestsPassed": 125,
+  "browser": {
+    "cases": 21,
+    "runtimeErrors": 0,
+    "localRequestFailures": 0,
+    "externalProxyFailures": 109,
+    "referenceClock": "2026-10-11T06:00:00Z"
   }
 }

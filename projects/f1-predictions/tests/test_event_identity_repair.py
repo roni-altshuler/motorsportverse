@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -158,6 +159,165 @@ def test_completion_requires_actuals_and_matching_event(tmp_path, monkeypatch, w
     season = ew.export_season_metadata()
     assert 16 not in season["completedRounds"]
     assert 16 not in season["forecastRounds"]
+
+
+def _old_event_state():
+    state = json.loads((DATA / "rounds/round_17.json").read_text())
+    state.update(name="United States Grand Prix", gpKey="United States",
+                 circuit="Circuit of the Americas", date="2026-10-25")
+    state.update(actualResults={"VER": 1}, accuracy={"accuracy_pct": 100},
+                 gpReport={"round": 17}, trackerData={"rounds": [{"round": 17, "hasActual": True}]},
+                 telemetryData={"from": "other event"}, strategyData={"from": "other event"})
+    state["circuitInfo"]["geometry"] = {"path": "wrong-venue-outline"}
+    return state
+
+
+def test_post_quali_export_blocks_wrong_event_before_pipeline_or_overwrite(tmp_path, monkeypatch):
+    path = tmp_path / "round_17.json"
+    original = json.dumps(_old_event_state())
+    path.write_text(original)
+    monkeypatch.setattr(ew, "ROUNDS_DIR", str(tmp_path))
+    def pipeline_must_not_start():
+        pytest.fail("wrong-event state reached regeneration before quarantine")
+    monkeypatch.setattr(ew, "_ensure_dirs", pipeline_must_not_start)
+    with pytest.raises(ValueError, match="quarantine"):
+        ew.export_round_data(17, prediction_phase="post-quali")
+    assert path.read_text() == original
+
+
+def test_wrong_event_cannot_preserve_or_rehydrate_its_grade_from_tracker(monkeypatch):
+    contaminated_tracker = {"rounds": {"17": {"actual": {"VER": {"position": 1}}}},
+                            "accuracy": {"17": {"accuracy_pct": 100}}}
+    monkeypatch.setattr(ew, "_safe_load_json", lambda _p: contaminated_tracker)
+    assert ew._get_round_preserved_fields(17, _old_event_state()) == {}
+    assert ew._get_round_preserved_fields(17, None) == {}
+
+
+def test_same_event_preserves_actuals_and_enrichment_and_can_rehydrate_tracker(monkeypatch):
+    state = json.loads((DATA / "rounds/round_17.json").read_text())
+    state.update(actualResults={"VER": 1}, accuracy={"accuracy_pct": 50},
+                 telemetryData={"same": "event"}, gpReport={"round": 17})
+    monkeypatch.setattr(ew, "_safe_load_json", lambda _p: {})
+    kept = ew._get_round_preserved_fields(17, state)
+    for key in ("actualResults", "accuracy", "telemetryData", "gpReport"):
+        assert kept[key] == state[key]
+    state.pop("actualResults")
+    state.pop("accuracy")
+    tracker = {"rounds": {"17": {"actual": {"VER": {"position": 1}}}},
+               "accuracy": {"17": {"accuracy_pct": 50}}}
+    monkeypatch.setattr(ew, "_safe_load_json", lambda _p: tracker)
+    kept = ew._get_round_preserved_fields(17, state)
+    assert kept["actualResults"] == {"VER": 1}
+    assert kept["accuracy"] == {"accuracy_pct": 50}
+
+
+@pytest.mark.parametrize("field,value", [
+    ("gpKey", "United States"), ("name", "United States Grand Prix"),
+    ("date", "2026-10-25"), ("circuit", "Circuit of the Americas"),
+    ("round", None),
+])
+def test_committed_qualifying_override_rejects_other_or_missing_event(tmp_path, monkeypatch, field, value):
+    monkeypatch.setenv("F1_REGISTRY_ENABLED", os.getenv("F1_REGISTRY_ENABLED", "1"))
+    import regenerate_post_quali as regen
+    state = json.loads((DATA / "rounds/round_17.json").read_text())
+    for session in state["weekendResults"]["sessions"]:
+        if session["key"] == "qualifying":
+            for row in session["rows"]:
+                row["q3"] = row["time"]
+    state[field] = value
+    (tmp_path / "round_17.json").write_text(json.dumps(state))
+    monkeypatch.setattr(fpu, "set_qualifying_override", lambda *_a, **_k: pytest.fail("wrong event injected"))
+    assert not regen.inject_committed_qualifying(17, 2026, str(tmp_path))
+
+
+def test_committed_qualifying_override_accepts_verified_same_event(tmp_path, monkeypatch):
+    monkeypatch.setenv("F1_REGISTRY_ENABLED", os.getenv("F1_REGISTRY_ENABLED", "1"))
+    import regenerate_post_quali as regen
+    (tmp_path / "round_17.json").write_text((DATA / "rounds/round_17.json").read_text())
+    injected = []
+    monkeypatch.setattr(fpu, "set_qualifying_override", lambda *a, **k: injected.append((a, k)))
+    assert regen.inject_committed_qualifying(17, 2026, str(tmp_path))
+    assert injected[0][0][0:2] == (2026, "Singapore")
+    assert injected[0][0][2]["RUS"] > 0
+
+
+@pytest.mark.parametrize("wrong_identity", [False, True])
+def test_committed_qualifying_override_rejects_pending_or_contradictory_session(tmp_path, monkeypatch, wrong_identity):
+    monkeypatch.setenv("F1_REGISTRY_ENABLED", os.getenv("F1_REGISTRY_ENABLED", "1"))
+    import regenerate_post_quali as regen
+    state = json.loads((DATA / "rounds/round_17.json").read_text())
+    session = next(s for s in state["weekendResults"]["sessions"] if s["key"] == "qualifying")
+    if wrong_identity:
+        session["eventIdentity"] = {"season": 2026, "round": 17, "name": "Singapore Grand Prix",
+                                    "date": "2026-10-11", "circuitId": "americas"}
+    else:
+        session["status"] = "pending"
+    (tmp_path / "round_17.json").write_text(json.dumps(state))
+    monkeypatch.setattr(fpu, "set_qualifying_override", lambda *_a, **_k: pytest.fail("unverified session injected"))
+    assert not regen.inject_committed_qualifying(17, 2026, str(tmp_path))
+
+
+@pytest.mark.parametrize("field,value", [
+    ("RoundNumber", None), ("EventName", "United States Grand Prix"),
+    ("EventDate", "2026-10-25"), ("Location", "Austin"),
+])
+def test_replay_rejects_same_round_other_or_missing_event_before_telemetry(monkeypatch, field, value):
+    from types import SimpleNamespace
+    import export_race_replay as replay
+    event = {"RoundNumber": 17, "EventName": "Singapore Grand Prix",
+             "EventDate": "2026-10-11", "Location": "Marina Bay"}
+    event[field] = value
+    session = SimpleNamespace(event=event, load=lambda **_k: pytest.fail("wrong event telemetry loaded"))
+    monkeypatch.setattr(replay.fastf1, "get_session", lambda *_a: session)
+    with pytest.raises(SystemExit, match="wrong-event guard"):
+        replay.build_replay(17, 2026, "Singapore", 1.0)
+
+
+def test_replay_verified_identity_still_loads_requested_telemetry(monkeypatch):
+    from types import SimpleNamespace
+    import export_race_replay as replay
+    calls = []
+    session = SimpleNamespace(event={"RoundNumber": 17, "EventName": "Singapore Grand Prix",
+                                    "EventDate": "2026-10-11", "Location": "Marina Bay"},
+                              load=lambda **k: calls.append(k), laps=None)
+    monkeypatch.setattr(replay.fastf1, "get_session", lambda *_a: session)
+    with pytest.raises(SystemExit, match="no laps"):
+        replay.build_replay(17, 2026, "Singapore", 1.0)
+    assert calls == [{"laps": True, "telemetry": True, "weather": False, "messages": False}]
+
+
+@pytest.mark.parametrize("phase", ["preview", "post-quali"])
+def test_automatic_export_honors_durable_publication_hold(tmp_path, monkeypatch, phase):
+    path = tmp_path / "round_17.json"
+    original = (DATA / "rounds/round_17.json").read_text()
+    path.write_text(original)
+    monkeypatch.setattr(ew, "ROUNDS_DIR", str(tmp_path))
+    monkeypatch.setattr(ew, "_ensure_dirs", lambda: pytest.fail("held forecast reached the pipeline"))
+    with pytest.raises(ValueError, match="publication hold"):
+        ew.export_round_data(17, prediction_phase=phase)
+    assert path.read_text() == original
+
+
+@pytest.mark.parametrize("wrong_venue", [False, True])
+def test_historical_layout_fallback_requires_verified_provider_identity(monkeypatch, wrong_venue):
+    from types import SimpleNamespace
+    import generate_circuit_svg as geometry
+    import pandas as pd
+    expected = {8: {**CALENDAR[17], "date": "2025-10-05", "fastf1_date": "2025-10-05"}}
+    monkeypatch.setattr(geometry, "_verified_session_calendar", lambda year, _gp: expected if year == 2025 else {})
+    event = {"RoundNumber": 8, "EventName": "Singapore Grand Prix", "EventDate": "2025-10-05",
+             "Location": "Austin" if wrong_venue else "Marina Bay"}
+    loads = []
+    tel = pd.DataFrame({"X": range(100), "Y": range(100)})
+    session = SimpleNamespace(event=event, load=lambda **k: loads.append(k),
+                              laps=SimpleNamespace(pick_fastest=lambda: SimpleNamespace(get_telemetry=lambda: tel)),
+                              get_circuit_info=lambda: "verified-layout")
+    monkeypatch.setattr(geometry.fastf1, "get_session", lambda *_a: session)
+    result = geometry._load_telemetry(2026, "Singapore")
+    if wrong_venue:
+        assert result is None and not loads
+    else:
+        assert result[0] is tel and result[1] == "verified-layout" and len(loads) == 1
 
 
 def test_preserved_forecasts_never_become_pre_sepang_predictions():

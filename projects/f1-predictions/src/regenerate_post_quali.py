@@ -19,11 +19,11 @@ Leakage contract (walk-forward): for round N the pipeline sees
     prediction is built, as display fields (``actualResults``/``accuracy``).
 
 Qualifying data source: the committed ``round_NN.json::weekendResults``
-qualifying session (official, round-scoped by construction — originally
-ingested from Jolpica with round-echo guards). It is injected via
+qualifying session (official, with its full event identity checked against
+the configured calendar). It is injected via
 ``f1_prediction_utils.set_qualifying_override`` so the replay is deterministic
 and offline-safe; when a round has no committed qualifying session the network
-fetch (with the wrong-event round guard) is the fallback.
+fetch (with the full provider event guard) is the fallback.
 
 Environment forced by this script:
   * ``F1_REGISTRY_ENABLED=0`` — the online game-theory coefficients (registry
@@ -131,24 +131,32 @@ def archive_previous_state(season_year, force=False):
 def inject_committed_qualifying(round_num, season_year, rounds_source_dir=None):
     """Seed the qualifying override from the committed official session.
 
-    Returns True when an override was injected. The committed weekendResults
-    qualifying session is round-scoped by construction, so this can never
-    inject a wrong-event grid.
+    Returns True only for an official session whose stored event identity
+    matches the season calendar. A round-number echo alone is insufficient.
     """
     from f1_prediction_utils import (
-        CALENDAR, set_qualifying_override, _parse_laptime_to_seconds,
+        get_calendar, set_qualifying_override, _parse_laptime_to_seconds,
     )
+    from event_identity import published_matches, jolpica_matches
 
     source_dir = rounds_source_dir or ROUNDS_DIR
     payload = _load_json(os.path.join(source_dir, f"round_{round_num:02d}.json")) or {}
-    if int(payload.get("round", -1) or -1) != int(round_num):
+    calendar = get_calendar(season_year)
+    if not published_matches(payload, round_num, calendar):
         return False
     session = next(
         (s for s in (payload.get("weekendResults") or {}).get("sessions", [])
-         if s.get("key") == "qualifying" and s.get("rows")),
+         if s.get("key") == "qualifying" and s.get("status") == "official" and s.get("rows")),
         None,
     )
     if session is None:
+        return False
+    identity = session.get("eventIdentity")
+    if identity is not None and not jolpica_matches(
+        {"season": identity.get("season"), "round": identity.get("round"),
+         "raceName": identity.get("name"), "date": identity.get("date"),
+         "Circuit": {"circuitId": identity.get("circuitId")}}, season_year, round_num, calendar,
+    ):
         return False
 
     times, grid = {}, {}
@@ -165,12 +173,16 @@ def inject_committed_qualifying(round_num, season_year, rounds_source_dir=None):
             for key in ("q3", "q2", "q1")
         ]
         best = [t for t in best if t is not None]
+        if not best:
+            official_best = _parse_laptime_to_seconds(row.get("time"))
+            if official_best is not None:
+                best = [official_best]
         if best:
             times[drv] = min(best)
 
     if not times:
         return False
-    gp_key = CALENDAR[round_num]["gp_key"]
+    gp_key = calendar[round_num]["gp_key"]
     set_qualifying_override(season_year, gp_key, times, grid=grid)
     print(f"  🏁 Injected committed official qualifying for round {round_num} "
           f"({len(times)} timed drivers, grid of {len(grid)}).")
@@ -189,7 +201,7 @@ def regenerate_round(round_num, season_year, *, persist=True,
                                            rounds_source_dir=rounds_source_dir)
     if not injected:
         print(f"  ⚠️  Round {round_num}: no committed qualifying session — "
-              "falling back to the round-verified network fetch.")
+              "falling back to the event-verified network fetch.")
 
     round_data = export_round_data(
         round_num,

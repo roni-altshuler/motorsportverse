@@ -1,0 +1,33 @@
+{
+  "baselineCommit": "21eb3a0c79d1a849aeb457acbe25c71344f54043",
+  "cases": [
+    {
+      "path": "post-qualifying publication preservation",
+      "before": "2 failed, 1 passed",
+      "provenDefects": [
+        "wrong event reaches regeneration before quarantine",
+        "old actuals and grade survive into new identity"
+      ],
+      "logSha256": "06dc05bf7db520ea217540bcf8f54a739c2df5a22eaaed27d58f358d2c32bf6f"
+    },
+    {
+      "path": "committed qualifying override",
+      "before": "4 failed, 1 passed",
+      "provenDefects": [
+        "same-round wrong GP key, name, date or venue is accepted by trusted override"
+      ],
+      "logSha256": "7f4798104a591a6665bc606124d1bcaab5bc856314cc645fd356e8a8659c6306"
+    },
+    {
+      "path": "replay and automatic publication hold",
+      "before": "wrong or missing event metadata reached telemetry loading; held preview and post-quali reached generation",
+      "provenDefects": [
+        "missing RoundNumber accepts telemetry",
+        "same-round wrong name, date or venue accepts telemetry",
+        "automatic export drops withdrawal"
+      ],
+      "logSha256": "d37d5719c4a71c2455be5df1ce92e71ec989c1f830d674246008c061c3644ddd"
+    }
+  ],
+  "fixturePolicy": "Original synthetic negative cases and factual committed session values. No model training, production job, outcome invention or forecast release."
+}

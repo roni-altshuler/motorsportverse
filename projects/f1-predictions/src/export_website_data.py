@@ -800,9 +800,12 @@ def _normalize_actual_results(actual):
 def _get_round_preserved_fields(round_num, existing_round):
     """Preserve already-known post-race/enriched fields from existing files.
 
-    If actual results or accuracy are missing, rehydrate from season tracker.
+    If actual results or accuracy are missing, rehydrate from season tracker
+    only when a matching publication anchors the tracker's round identity.
     """
     preserved = {}
+    if not isinstance(existing_round, dict) or not published_matches(existing_round, round_num, CALENDAR):
+        return preserved
 
     # Keep previously generated fields unless the current run repopulates them.
     if isinstance(existing_round, dict):
@@ -1089,7 +1092,8 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                       use_per_circuit=False,
                       use_hybrid_blend=False,
                       use_position_model=False,
-                      prediction_phase="preview"):
+                      prediction_phase="preview",
+                      publication_release=None):
     """Run prediction pipeline for one round; export JSON + visualisations.
     If return_merged=True, returns (round_data, merged_df) for advanced models.
     If use_lstm=True, computes LSTM grid predictions and feeds them into
@@ -1102,6 +1106,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     registry — otherwise the simulator is silently skipped."""
     if CALENDAR[round_num].get("prediction_disabled"):
         raise ValueError("No genuine pre-race forecast exists for this event; do not backfill one.")
+    path = os.path.join(ROUNDS_DIR, f"round_{round_num:02d}.json")
+    existing_round = _safe_load_json(path)
+    if existing_round and not published_matches(existing_round, round_num, CALENDAR):
+        raise ValueError("Existing snapshot belongs to a different event; quarantine it before regeneration.")
+    from publication_review import prepare_reviewed_release, validate_generated_inputs, release_provenance
+    release = prepare_reviewed_release(existing_round, round_num, CALENDAR, publication_release)
+    if release and prediction_phase != "post-quali":
+        raise ValueError("publication hold: a reviewed release must generate a new post-qualifying forecast")
     _ensure_dirs()
     info    = CALENDAR[round_num]
     gp_key  = info["gp_key"]
@@ -1157,6 +1169,7 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                                             temperature_c=weather["temp"],
                                             fallback_times=quali_estimates,
                                             grid_positions=quali_grid)
+    validate_generated_inputs(release, quali, quali_grid, merged)
 
     game_theory_diag = {"enabled": False, "reason": "disabled"}
     game_theory_flag = str(os.getenv("ENABLE_GAME_THEORY_ENHANCEMENTS", "1")).strip().lower()
@@ -1537,9 +1550,6 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
 
     char = CIRCUIT_CHARACTERISTICS.get(gp_key, {})
 
-    path = os.path.join(ROUNDS_DIR, f"round_{round_num:02d}.json")
-    existing_round = _safe_load_json(path)
-
     round_data = {
         "round":              round_num,
         "name":               gp_name,
@@ -1637,12 +1647,14 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
     # re-derive it and would leave circuitInfo.geometry null, blanking the track
     # map on the race page.  Carrying the previously-derived geometry forward
     # here keeps the map intact (generate_circuit_svg then no-ops on it).
-    if isinstance(existing_round, dict):
+    if isinstance(existing_round, dict) and published_matches(existing_round, round_num, CALENDAR):
         prev_geometry = (existing_round.get("circuitInfo") or {}).get("geometry")
         if isinstance(prev_geometry, dict) and prev_geometry.get("path"):
             round_data["circuitInfo"]["geometry"] = prev_geometry
 
     round_data["weekendResults"] = _fetch_weekend_results(round_num, info, SEASON_YEAR)
+    if release:
+        round_data["weekendResults"] = _merge_weekend_sessions(existing_round["weekendResults"], round_data["weekendResults"])
     gp_session = next(
         (
             session for session in round_data["weekendResults"].get("sessions", [])
@@ -1681,6 +1693,11 @@ def export_round_data(round_num, return_merged=False, use_lstm=False,
                 round_data["telemetryData"] = _sanitize_telemetry_payload(telemetry)
         except Exception as e:
             print(f"  ⚠️  Telemetry extraction failed: {e}")
+
+    if release:
+        if round_data.get("actualResults"):
+            raise ValueError("publication hold: a new pre-race forecast cannot include the race outcome")
+        round_data["publicationRelease"] = release_provenance(release, round_data["generatedAt"], round_data.get("modelConfig", {}))
 
     if persist_output:
         _sync_tracker_data(round_num, round_data)

@@ -36,6 +36,12 @@ Sprint, qualifying and penalty-adjusted grid are shown separately, with a
 genuine pre-race forecast. Original forecasts and artifacts are archived with
 SHA-256 provenance; no retrospective forecast was generated.
 
+The publication hold survives automatic qualifying refreshes. A deliberate
+replacement requires an audited official input snapshot and model source digest,
+a new pre-race generation time, and validation that the model actually uses the
+post-penalty grid. This repair generates no replacement forecast. Regeneration
+and replay exports also reject wrong-event inputs before preserving or loading data.
+
 Probability scores currently describe regenerated retrospective diagnostics.
 Although each round's logistic calibrator uses earlier races, its shared
 temperature is tuned across the requested scored rounds. They are not evidence

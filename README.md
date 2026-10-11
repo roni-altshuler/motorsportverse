@@ -64,6 +64,8 @@ from Singapore's withdrawn forecast. Event name, date and venue now supplement
 round-number checks, including no-work detection. Original forecast timestamps,
 data and model assets remain archived; Singapore has official session tables and
 an explicit unavailable grade. This draft is held for independent review.
+Automatic refreshes preserve that withdrawal; a replacement must pass a separate
+audited release with verified session inputs and a new pre-race timestamp.
 
 The F1 race page reports the ranking and probability export timestamps separately,
 with recorded qualifying and weather assumptions. Missing, invalid or conflicting

@@ -148,6 +148,18 @@ class PublicationHold(_Loose):
     originalForecast: Optional[dict] = None
 
 
+class PublicationRelease(_Loose):
+    sourceSnapshotSha256: str
+    modelCodeSha256: str
+    modelConfigSha256: str
+    reviewNote: str
+    reviewedAt: str
+    releasedAt: str
+    generatedAt: str
+    withdrawalReason: str
+    withdrawnForecast: Optional[dict] = None
+
+
 class RoundData(_Loose):
     round: int
     name: str
@@ -160,6 +172,7 @@ class RoundData(_Loose):
     gridProvenance: Optional[str] = None
     publicationHold: Optional[PublicationHold] = None
     forecastProvenance: Optional[dict] = None
+    publicationRelease: Optional[PublicationRelease] = None
 
 
 class SeasonTrackerRound(_Loose):
