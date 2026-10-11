@@ -1123,6 +1123,52 @@ export interface ReplayData {
 }
 
 // Team colors for CSS usage
+/** Independent, immutable baseline stream. Never used as RoundData.classification. */
+export interface GridBaselineArtifact {
+  status: "sealed_review_only";
+  forecastKind: "official_grid_baseline";
+  season: number;
+  round: number;
+  name: string;
+  circuit: string;
+  raceStartUtc: string;
+  generatedAt: string;
+  inputCutoff: string;
+  sourceCheckedAt: string;
+  sourceCommit: string;
+  policySha256: string;
+  generatorSha256: string;
+  winnerPick: { driver: string; driverFullName: string };
+  classification: Array<{
+    driver: string;
+    driverFullName: string;
+    team: string;
+    predictedPosition: number;
+    officialGridPosition: number;
+  }>;
+  probabilities: null;
+  modelPromotion: false;
+  publicationHoldReleased: false;
+}
+
+export interface GridBaselineReceipt {
+  schemaVersion: 1;
+  baselineId: string;
+  forecastKind: "official_grid_baseline";
+  evaluationStream: "baselines/official_grid";
+  season: number;
+  round: number;
+  artifactFile: string;
+  artifactSha256: string;
+  sealedAt: string;
+  stagedAt: string;
+  sourceRecheckedAt: string;
+  sourceUrls: { startingGrid: string; qualifying: string; schedule: string };
+  graded: false;
+  modelForecastChanged: false;
+  publicationHoldReleased: false;
+}
+
 export const TEAM_COLORS: Record<string, string> = {
   "Red Bull Racing": "#3671C6",
   McLaren: "#FF8000",

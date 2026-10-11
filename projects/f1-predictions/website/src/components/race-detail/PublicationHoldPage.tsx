@@ -3,6 +3,7 @@ import type { RaceCalendarEntry, RoundData } from "@/types";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import PublicationNotice from "./PublicationNotice";
+import GridBaselinePanel from "./GridBaselinePanel";
 
 export default function PublicationHoldPage({
   data,
@@ -23,12 +24,13 @@ export default function PublicationHoldPage({
         <h1 className="display-md break-words">{race.name}</h1>
         <p className="body-md mt-3 text-[var(--muted)]">{race.circuit}</p>
       </header>
-      <PublicationNotice data={data} race={race} />
+      <GridBaselinePanel data={data} race={race} />
+      <div className="mt-8"><PublicationNotice data={data} race={race} /></div>
       <div className="mt-10 space-y-10">
         {data.weekendResults?.sessions
           .filter((session) => session.rows.length > 0)
           .map((session) => (
-            <section key={session.key} aria-label={session.label}>
+            <section key={session.key} id={session.key} aria-label={session.label}>
               <div className="flex flex-wrap justify-between items-baseline gap-3 mb-4">
                 <h2 className="section-heading">{session.label}</h2>
                 <a

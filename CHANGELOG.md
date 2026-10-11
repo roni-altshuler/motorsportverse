@@ -11,6 +11,17 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### F1 Singapore official-grid baseline — 2026-10-11
+
+- Show an explicitly labelled final-grid baseline alongside the intact model
+  publication hold, with separate qualifying and post-penalty grid facts.
+- Preserve the original seal, rechecked source time and immutable independent
+  scoring identity. Reject changed bytes, late staging and overwrite attempts.
+- Keep baseline estimates out of model accuracy, probabilities and feature
+  state; document the separate penalty-input contract repair without changing it.
+- Distinguish loading and unavailable round data from publication status; remove
+  the automatic-publication promise and hide responses for an older event/source.
+
 ### F1 independent Ridge shadow audit — 2026-10-11
 
 - Add an offline chronological event-grouped challenger with fold-local scaling,

@@ -31,6 +31,9 @@ import { resolveDriverHeadshot } from "@/lib/headshots";
 import { DEFAULT_SEASON_YEAR } from "@/lib/season";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import PublicationNotice from "@/components/race-detail/PublicationNotice";
+import GridBaselinePanel from "@/components/race-detail/GridBaselinePanel";
+import RoundDataStatus from "@/components/race-detail/RoundDataStatus";
+import { useRoundArtifact } from "@/lib/useRoundArtifact";
 import TrustBand from "@/components/marketing/TrustBand";
 import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import FeatureOutcomes from "@/components/marketing/FeatureOutcomes";
@@ -61,7 +64,6 @@ type StatusTone = keyof typeof TONE_TO_BADGE_VARIANT;
 export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
   const [season, setSeason] = useState<SeasonData | null>(null);
   const [standings, setStandings] = useState<StandingsData | null>(null);
-  const [featuredRound, setFeaturedRound] = useState<RoundData | null>(null);
   const [latestRound, setLatestRound] = useState<RoundData | null>(null);
   const [tracker, setTracker] = useState<SeasonTrackerData | null>(null);
   const [forecast, setForecast] = useState<ChampionshipForecast | null>(null);
@@ -87,21 +89,6 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       .catch(() => {});
   }, [basePath]);
 
-  useEffect(() => {
-    if (!season) return;
-    const actuals = (tracker?.rounds || [])
-      .filter((r) => r.hasActual)
-      .map((r) => r.round);
-    const ctx = getCurrentRaceContext(season, actuals);
-    const target =
-      ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0];
-    if (target) {
-      fetchRoundData(target.round, basePath, season)
-        .then(setFeaturedRound)
-        .catch(() => {});
-    }
-  }, [season, tracker, basePath]);
-
   // Season-derived view data — computed only once the season JSON has loaded.
   // The data modules render first and appear as soon as the fetch resolves;
   // the static scaffold (trust, how-it-works, features, the folded "How the
@@ -115,6 +102,8 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
     season && ctx
       ? ctx.liveRound ?? ctx.nextRound ?? ctx.latestPredictionRound ?? season.calendar[0]
       : null;
+  const featuredArtifact = useRoundArtifact(featuredRace?.round ?? null, basePath, season);
+  const featuredRound = featuredArtifact.data;
   const featuredLifecycle =
     season && featuredRace
       ? getRoundLifecycle(
@@ -192,7 +181,9 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
               className="mt-12 border-t border-[color:var(--hairline)] pt-8"
             >
               <div className="flex flex-wrap items-center gap-4 mb-6">
-                <Badge variant={featuredVariant}>{featuredMeta.label}</Badge>
+                <Badge variant={featuredRound ? featuredVariant : "muted"}>
+                  {featuredRound ? featuredMeta.label : featuredArtifact.status === "loading" ? "Checking data" : "Data unavailable"}
+                </Badge>
                 <span className="eyebrow">
                   R{featuredRace.round} · {formatDate(featuredRace.date)} ·{" "}
                   <LiveCountdown targetIso={featuredRace.raceStartUtc || featuredRace.date} className="font-tabular" />
@@ -207,7 +198,7 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
                   <p className="body-md mt-3 max-w-2xl text-[color:var(--muted)]">
                     {featuredRace.circuit} · {featuredRound?.publicationHold
                       ? "Official session data is available. The forecast is withheld for review."
-                      : featuredMeta.description}
+                      : !featuredRound ? "Forecast status cannot currently be verified." : featuredMeta.description}
                   </p>
                 </div>
               </div>
@@ -278,9 +269,15 @@ export default function HomePage({ trustStats }: { trustStats: TrustStats }) {
       </section>
 
       <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        {featuredRace && featuredArtifact.status !== "ready" && (
+          <section className="section-bugatti" aria-label="Forecast publication status">
+            <RoundDataStatus status={featuredArtifact.status} />
+          </section>
+        )}
         {featuredRound?.publicationHold && featuredRace && (
           <section className="section-bugatti" aria-label="Forecast publication status">
-            <PublicationNotice data={featuredRound} race={featuredRace} />
+            <GridBaselinePanel data={featuredRound} race={featuredRace} compact />
+            <div className="mt-8"><PublicationNotice data={featuredRound} race={featuredRace} /></div>
           </section>
         )}
 

@@ -54,6 +54,14 @@ independent challenger with chronological event folds and prior-only history.
 Its measured regression blocks promotion. Its Singapore artifact stays outside
 serving data and does not release the publication hold or regrade any forecast.
 
+The separate [Singapore official-grid baseline](docs/qa/grid-baseline/README.md)
+is a transparent, probability-free forecast with an immutable pre-race seal.
+Its display preserves the withdrawn model forecast and uses its own scoring
+stream; it does not contribute to model accuracy or promote the shadow model.
+Loading or unavailable round data explicitly leaves forecast status unverified;
+it does not imply an unpublished model or promise automatic publication. Old
+responses cannot populate a newly selected event or source.
+
 - **Forecasts eligible weekends** of the 2026 season — qualifying pace, finishing
   order, and win/podium probabilities, each with a confidence band.
 - **Calibration status is explicit** — predictions are gated: raw numbers ship

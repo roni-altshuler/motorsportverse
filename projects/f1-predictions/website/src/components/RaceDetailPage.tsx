@@ -15,7 +15,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { RoundData, SeasonData, DriverStanding, ProbabilityRoundData } from "@/types";
+import { SeasonData, DriverStanding, ProbabilityRoundData } from "@/types";
 import CountryFlag from "@/components/CountryFlag";
 import { Badge } from "@/components/ui/Badge";
 import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
@@ -27,6 +27,8 @@ import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio"
 import PodiumRationale from "@/components/race-detail/PodiumRationale";
 import KeyFactorsPanel from "@/components/race-detail/KeyFactorsPanel";
 import PublicationHoldPage from "@/components/race-detail/PublicationHoldPage";
+import RoundDataStatus from "@/components/race-detail/RoundDataStatus";
+import { useRoundArtifact } from "@/lib/useRoundArtifact";
 import PredictionFreshnessPanel from "@/components/race-detail/PredictionFreshnessPanel";
 import FinishMarketsPanel from "@/components/race-detail/FinishMarketsPanel";
 import DriverComparison from "@/components/race-detail/DriverComparison";
@@ -45,7 +47,6 @@ import GridProvenanceBadge from "@/components/race-detail/GridProvenanceBadge";
 import DriverPortrait from "@/components/standings/DriverPortrait";
 import { resolveDriverHeadshot } from "@/lib/headshots";
 import HUDPanel from "@/components/ui/HUDPanel";
-import LoadingTire from "@/components/ui/LoadingTire";
 import ChartContainer from "@/components/charts/ChartContainer";
 import PredictedPaceChart from "@/components/charts/PredictedPaceChart";
 import PodiumProbabilityChart from "@/components/charts/PodiumProbabilityChart";
@@ -53,7 +54,6 @@ import FinishProbabilityHeatmap from "@/components/charts/FinishProbabilityHeatm
 import HeadToHeadMatrix from "@/components/charts/HeadToHeadMatrix";
 import LapTimeDistributionChart from "@/components/charts/LapTimeDistributionChart";
 import {
-  fetchRoundData,
   fetchSeasonData,
   fetchStandingsData,
   fetchProbabilityData,
@@ -121,8 +121,13 @@ function bestQualifyingTime(row: {
 
 export default function RaceDetailPage({ round }: Props) {
   const { basePath } = useSeason();
-  const [data, setData] = useState<RoundData | null>(null);
-  const [season, setSeason] = useState<SeasonData | null>(null);
+  const [seasonArtifact, setSeasonArtifact] = useState<{
+    basePath: string; data: SeasonData | null; unavailable: boolean;
+  } | null>(null);
+  const currentSeasonArtifact = seasonArtifact?.basePath === basePath ? seasonArtifact : null;
+  const season = currentSeasonArtifact?.data ?? null;
+  const roundArtifact = useRoundArtifact(round, basePath, season);
+  const data = roundArtifact.data;
   const [activeTab, setActiveTab] = useState<Tab>("weekend");
   const [activeWeekendSession, setActiveWeekendSession] = useState<string | null>(null);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
@@ -163,29 +168,16 @@ export default function RaceDetailPage({ round }: Props) {
     fetchSeasonData(basePath)
       .then((seasonData) => {
         if (!active) return;
-        setSeason(seasonData);
-        const expectedRace = seasonData.calendar.find((race) => race.round === round);
-        fetchRoundData(round, basePath, seasonData)
-          .then((roundData) => {
-            if (!active) return;
-            const matchesCalendar =
-              !expectedRace ||
-              (roundData.round === expectedRace.round && roundData.gpKey === expectedRace.gpKey);
-            setData(matchesCalendar ? roundData : null);
-          })
-          .catch(() => active && setData(null));
+        setSeasonArtifact({ basePath, data: seasonData, unavailable: false });
       })
       .catch(() => {
         if (!active) return;
-        setSeason(null);
-        fetchRoundData(round, basePath)
-          .then(setData)
-          .catch(() => setData(null));
+        setSeasonArtifact({ basePath, data: null, unavailable: true });
       });
     return () => {
       active = false;
     };
-  }, [round, basePath]);
+  }, [basePath]);
 
   // Probability-layer file for the driver-comparison module (optional).
   useEffect(() => {
@@ -227,11 +219,11 @@ export default function RaceDetailPage({ round }: Props) {
     };
   }, [basePath, data]);
 
-  if (!season && !data) {
+  if (!season) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <LoadingTire label="Loading race data" />
-      </div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <RoundDataStatus status={currentSeasonArtifact?.unavailable ? "unavailable" : "loading"} />
+      </main>
     );
   }
 
@@ -272,14 +264,13 @@ export default function RaceDetailPage({ round }: Props) {
             {isPostponed ? " (original slot)" : ""}
           </p>
 
-          <div className="card p-6 mb-8">
-            <h3 className="section-heading">{isPostponed ? "Race Postponed" : "Race Preview"}</h3>
-            <p style={{ color: "var(--text-muted)" }}>
-              {isPostponed
-                ? seasonRace.statusNote ||
-                  "This Grand Prix has been postponed. Predictions and race-comparison reporting will resume once a revised race date is confirmed."
-                : "This Grand Prix page is available now, but the model has not published predictions yet. Once the workflow runs for this round, predicted classification, real outcome comparison, accuracy metrics, and strategy visualizations will automatically appear here."}
-            </p>
+          <div className="mb-8">
+            {isPostponed && (
+              <p className="body-sm text-[var(--muted)] mb-4">
+                {seasonRace.statusNote || "This Grand Prix has been postponed."}
+              </p>
+            )}
+            <RoundDataStatus status={roundArtifact.status === "loading" ? "loading" : "unavailable"} />
           </div>
 
           <div className="card p-6 mb-8">

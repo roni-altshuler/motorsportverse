@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-11T08:17:58.504891+00:00",
+  "baseCommit": "72d808e9eee50646b42cec7f60d36ee8bf69d7e9",
+  "executionEnvironment": "saved cloud /workspace; Python 3.12 and Node 20; existing dependencies only",
+  "checks": [
+    {
+      "name": "Focused Python regression + website schema",
+      "result": "84 passed, 1 skipped",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-python-focused.log",
+      "logSha256": "973c22e89da744d016f699ab8a1b808eb6767dc6726e2fd79d14accd94f8fb8b"
+    },
+    {
+      "name": "Full F1 Python suite",
+      "result": "1175 passed, 15 skipped",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-python-full.log",
+      "logSha256": "e420d498a72589beab13155006e3337f31063fa1c7224b14941fc7cd1249f0a8"
+    },
+    {
+      "name": "Full frontend Jest suite",
+      "result": "288 passed in 20 suites",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-fallback-frontend.log",
+      "logSha256": "9106e2a639071035edbd63b532ff5918b45fa3055f5683e7f1521393bde8532f"
+    },
+    {
+      "name": "ESLint",
+      "result": "Pass; one unchanged warning at AccuracyDashboardPage.tsx:496",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-fallback-lint.log",
+      "logSha256": "690a928d5d69020d417f024e62e2f785b42ba5661cd4b4cfe08c6d3e0b8c71f0"
+    },
+    {
+      "name": "TypeScript",
+      "result": "Pass",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-fallback-types.log",
+      "logSha256": "f8cf56836f77fa6b267ad28be3d56f26f73cef9855792961e97522c86e2f1237"
+    },
+    {
+      "name": "Pages-base-path production static export",
+      "result": "Pass; 85 pages",
+      "logPath": "/tmp/motorsportverse-event-identity/grid-baseline-fallback-build.log",
+      "logSha256": "c10e72d02642966a9fbf967a87f69e78e46e0f7de0c96443c9ff0269d8b29143"
+    }
+  ],
+  "additionalChecks": [
+    {
+      "name": "Ruff, F1 project",
+      "result": "Pass"
+    },
+    {
+      "name": "Published-data integrity",
+      "result": "50 checks passed"
+    },
+    {
+      "name": "Shared UI sync --check",
+      "result": "Pass"
+    },
+    {
+      "name": "git diff --check",
+      "result": "Pass"
+    }
+  ],
+  "preservation": {
+    "preexistingDataAndModelFilesByteIdentical": 235,
+    "existingWorktreesUnchanged": 10,
+    "quarantinedForecastAndPublicationHold": "Unchanged",
+    "modelAccuracyGradedRounds": 15,
+    "existingDataAndModelFilesIncludingSealAndReceiptByteIdentical": 237
+  },
+  "sourceRecheck": "2026-10-11T07:09:02Z",
+  "originalSeal": "2026-10-11T06:53:07.672909Z",
+  "sealedSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+  "publicDeployment": "Review branch only; not merged or deployed. Production workflow not dispatched.",
+  "buildLifecycle": "Full npm run build passed for the original baseline display; final next build --webpack reused those generated OG/WebP assets and exported all 85 pages after the availability correction. F1 website CI skips the production build; local export is separate evidence.",
+  "finalSourceRecheck": "2026-10-11T07:33:11Z",
+  "fallbackRegressions": 10,
+  "faultInjectionBrowserCases": 16,
+  "normalBrowserCases": 24,
+  "immutableReceiptSha256": "820d047210b86da6dd0a95bdf774cfca7fccfbb37daefbed64f6a76eeeacac51",
+  "availabilityCorrectionSourceRecheck": "2026-10-11T08:22:58Z"
+}

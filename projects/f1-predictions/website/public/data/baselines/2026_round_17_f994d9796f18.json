@@ -1,0 +1,211 @@
+{
+  "status": "sealed_review_only",
+  "forecastKind": "official_grid_baseline",
+  "season": 2026,
+  "round": 17,
+  "name": "Singapore Grand Prix",
+  "circuit": "Marina Bay",
+  "raceStartUtc": "2026-10-11T12:00:00Z",
+  "generatedAt": "2026-10-11T06:53:07.672909Z",
+  "inputCutoff": "2026-10-11T06:53:07.672909Z",
+  "sourceCheckedAt": "2026-10-11T06:52:08Z",
+  "sourceCommit": "5e2aa4763d79bcba782e19bc84c18ad4975092ad",
+  "sourceTree": "f5413f8222ee490d27fb84990198040c5394fe25",
+  "policy": "Predict the race finishing order equal to the verified official post-penalty starting grid. Winner pick is grid position one. No trained model or probabilities.",
+  "policySha256": "3a2606838004ae6c91e98c6fdd372496bffdf41205ea29f2360279e8bbf227d5",
+  "generatorSha256": "c5492546c6557f34f701a45ddce17b65b6818cf72cc2c56647991c92e867baaf",
+  "sourceUrls": {
+    "startingGrid": "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid",
+    "schedule": "https://www.formula1.com/en/racing/2026/singapore"
+  },
+  "sourceHashes": {
+    "round_17.json": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c",
+    "season.json": "1b0fccec6c44df09692ac38a306ee8a156e4ccfd40c4b164321690fabdd16110",
+    "officialPageExtraction": "97907a069fd45a966432b669bd950fcfccc93feda2e7d4a38286d43371bfbada",
+    "championInputContractProbe": "74936d85a930e3cc8c00f924500a2d3bb08a1af6db32aa0ad8a4d11e4e6dae59",
+    "retrospectiveEvaluation": "2e85f7de17f3a376be9f14133b81c152d7479204a37b622b4f215948cd8d7924"
+  },
+  "winnerPick": {
+    "driver": "VER",
+    "driverFullName": "Max Verstappen"
+  },
+  "classification": [
+    {
+      "driver": "VER",
+      "driverFullName": "Max Verstappen",
+      "team": "Red Bull Racing",
+      "predictedPosition": 1,
+      "officialGridPosition": 1
+    },
+    {
+      "driver": "LEC",
+      "driverFullName": "Charles Leclerc",
+      "team": "Ferrari",
+      "predictedPosition": 2,
+      "officialGridPosition": 2
+    },
+    {
+      "driver": "HAM",
+      "driverFullName": "Lewis Hamilton",
+      "team": "Ferrari",
+      "predictedPosition": 3,
+      "officialGridPosition": 3
+    },
+    {
+      "driver": "ANT",
+      "driverFullName": "Kimi Antonelli",
+      "team": "Mercedes",
+      "predictedPosition": 4,
+      "officialGridPosition": 4
+    },
+    {
+      "driver": "NOR",
+      "driverFullName": "Lando Norris",
+      "team": "McLaren",
+      "predictedPosition": 5,
+      "officialGridPosition": 5
+    },
+    {
+      "driver": "PIA",
+      "driverFullName": "Oscar Piastri",
+      "team": "McLaren",
+      "predictedPosition": 6,
+      "officialGridPosition": 6
+    },
+    {
+      "driver": "GAS",
+      "driverFullName": "Pierre Gasly",
+      "team": "Alpine",
+      "predictedPosition": 7,
+      "officialGridPosition": 7
+    },
+    {
+      "driver": "LAW",
+      "driverFullName": "Liam Lawson",
+      "team": "Racing Bulls",
+      "predictedPosition": 8,
+      "officialGridPosition": 8
+    },
+    {
+      "driver": "LIN",
+      "driverFullName": "Arvid Lindblad",
+      "team": "Racing Bulls",
+      "predictedPosition": 9,
+      "officialGridPosition": 9
+    },
+    {
+      "driver": "HUL",
+      "driverFullName": "Nico H\u00fclkenberg",
+      "team": "Audi",
+      "predictedPosition": 10,
+      "officialGridPosition": 10
+    },
+    {
+      "driver": "BEA",
+      "driverFullName": "Oliver Bearman",
+      "team": "Haas",
+      "predictedPosition": 11,
+      "officialGridPosition": 11
+    },
+    {
+      "driver": "OCO",
+      "driverFullName": "Esteban Ocon",
+      "team": "Haas",
+      "predictedPosition": 12,
+      "officialGridPosition": 12
+    },
+    {
+      "driver": "SAI",
+      "driverFullName": "Carlos Sainz Jr.",
+      "team": "Williams",
+      "predictedPosition": 13,
+      "officialGridPosition": 13
+    },
+    {
+      "driver": "BOR",
+      "driverFullName": "Gabriel Bortoleto",
+      "team": "Audi",
+      "predictedPosition": 14,
+      "officialGridPosition": 14
+    },
+    {
+      "driver": "COL",
+      "driverFullName": "Franco Colapinto",
+      "team": "Alpine",
+      "predictedPosition": 15,
+      "officialGridPosition": 15
+    },
+    {
+      "driver": "ALO",
+      "driverFullName": "Fernando Alonso",
+      "team": "Aston Martin",
+      "predictedPosition": 16,
+      "officialGridPosition": 16
+    },
+    {
+      "driver": "ALB",
+      "driverFullName": "Alexander Albon",
+      "team": "Williams",
+      "predictedPosition": 17,
+      "officialGridPosition": 17
+    },
+    {
+      "driver": "STR",
+      "driverFullName": "Lance Stroll",
+      "team": "Aston Martin",
+      "predictedPosition": 18,
+      "officialGridPosition": 18
+    },
+    {
+      "driver": "PER",
+      "driverFullName": "Sergio P\u00e9rez",
+      "team": "Cadillac",
+      "predictedPosition": 19,
+      "officialGridPosition": 19
+    },
+    {
+      "driver": "BOT",
+      "driverFullName": "Valtteri Bottas",
+      "team": "Cadillac",
+      "predictedPosition": 20,
+      "officialGridPosition": 20
+    },
+    {
+      "driver": "RUS",
+      "driverFullName": "George Russell",
+      "team": "Mercedes",
+      "predictedPosition": 21,
+      "officialGridPosition": 21
+    },
+    {
+      "driver": "HAD",
+      "driverFullName": "Isack Hadjar",
+      "team": "Red Bull Racing",
+      "predictedPosition": 22,
+      "officialGridPosition": 22
+    }
+  ],
+  "probabilities": null,
+  "modelPromotion": false,
+  "publicationHoldReleased": false,
+  "servingWrites": false,
+  "historicalDiagnostic": {
+    "label": "retrospective reconstructed-input audit; not a forward record or calibrated probability",
+    "events": 6,
+    "drivers": 132,
+    "mae": 3.257575757575758,
+    "rmse": 4.818593088077638,
+    "spearman": 0.6886881234707323,
+    "podiumHits": 1.5,
+    "winnerHits": 4
+  },
+  "championBlocked": "Current timed-driver qualifying inputs ignore final-grid penalties; the Russell 6-to-21 grid change leaves all derived input columns identical. No verified unchanged champion with this post-penalty input contract is available for publication.",
+  "limitations": [
+    "simple official-grid baseline, not an advanced-model forecast",
+    "no calibrated win probability",
+    "no weather, strategy, reliability or retirement adjustment",
+    "post-penalty grid may change before race start; reverify before any approved publication",
+    "independent review and separate publication approval required"
+  ],
+  "proposedCopy": "Baseline pick: Max Verstappen. This simple forecast follows the official starting grid. It has no calibrated win probability and does not model weather, strategy or retirements. The advanced forecast remains under review."
+}
