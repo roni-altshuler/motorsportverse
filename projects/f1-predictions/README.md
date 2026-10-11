@@ -49,6 +49,11 @@ of a fully out-of-sample probability record or an immutable pre-race publication
 The existing driver-by-circuit model wiring and post-qualifying weather/grid
 refresh behavior require a separate audit before any improvement claim.
 
+The separate [Ridge shadow audit](docs/qa/ridge-shadow/README.md) evaluates a small
+independent challenger with chronological event folds and prior-only history.
+Its measured regression blocks promotion. Its Singapore artifact stays outside
+serving data and does not release the publication hold or regrade any forecast.
+
 - **Forecasts eligible weekends** of the 2026 season — qualifying pace, finishing
   order, and win/podium probabilities, each with a confidence band.
 - **Calibration status is explicit** — predictions are gated: raw numbers ship

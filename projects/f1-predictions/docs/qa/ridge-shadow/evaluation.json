@@ -1,0 +1,1137 @@
+{
+  "label": "retrospective chronological shadow backtest",
+  "alpha": 10.0,
+  "minTrainEvents": 5,
+  "foldPolicy": "expanding earlier events only; all drivers of an event held out together",
+  "featureMissingness": "training-fold median encoding with explicit missingness indicators; no factual field is filled",
+  "variants": {
+    "ridge_grid": [
+      "grid_fraction"
+    ],
+    "ridge_quali_grid": [
+      "grid_fraction",
+      "quali_fraction",
+      "quali_gap",
+      "penalty_delta"
+    ],
+    "ridge_history": [
+      "grid_fraction",
+      "quali_fraction",
+      "quali_gap",
+      "penalty_delta",
+      "driver_recent_mean",
+      "driver_recent_n",
+      "driver_track_mean",
+      "driver_track_n",
+      "team_recent_mean",
+      "team_recent_n"
+    ]
+  },
+  "rounds": [
+    {
+      "season": 2026,
+      "round": 7,
+      "name": "Barcelona-Catalunya Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ]
+      ],
+      "trainRows": 110,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.090909090909091,
+          "rmse": 4.562694578665311,
+          "spearman": 0.7413890457368719,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.090909090909091,
+          "rmse": 4.562694578665311,
+          "spearman": 0.7413890457368719,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.4545454545454546,
+          "rmse": 4.96350316171589,
+          "spearman": 0.6939582156973463,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.090909090909091,
+          "rmse": 4.562694578665311,
+          "spearman": 0.7413890457368719,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.090909090909091,
+          "rmse": 4.562694578665311,
+          "spearman": 0.7413890457368719,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.0,
+          "rmse": 4.400413203738527,
+          "spearman": 0.7594579333709771,
+          "winnerHit": 1,
+          "podiumHits": 2
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "round": 8,
+      "name": "Austrian Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ],
+        [
+          2026,
+          7
+        ]
+      ],
+      "trainRows": 132,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.256304299271065,
+          "spearman": 0.9367588932806326,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.256304299271065,
+          "spearman": 0.9367588932806326,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.393172105652397,
+          "spearman": 0.9288537549407117,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.256304299271065,
+          "spearman": 0.9367588932806326,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.256304299271065,
+          "spearman": 0.9367588932806326,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 1.8181818181818181,
+          "rmse": 2.2763607319179844,
+          "spearman": 0.935629587803501,
+          "winnerHit": 1,
+          "podiumHits": 1
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "round": 9,
+      "name": "British Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ],
+        [
+          2026,
+          7
+        ],
+        [
+          2026,
+          8
+        ]
+      ],
+      "trainRows": 154,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.363636363636363,
+          "rmse": 5.823151286811197,
+          "spearman": 0.5787690570299266,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.545454545454546,
+          "rmse": 6.082762530298219,
+          "spearman": 0.5403726708074535,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.545454545454546,
+          "rmse": 6.007570980929738,
+          "spearman": 0.5516657255787691,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.363636363636363,
+          "rmse": 5.823151286811197,
+          "spearman": 0.5787690570299266,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.181818181818182,
+          "rmse": 5.664883855023781,
+          "spearman": 0.6013551665725579,
+          "winnerHit": 0,
+          "podiumHits": 2
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.363636363636363,
+          "rmse": 5.799686511904211,
+          "spearman": 0.5821569734613213,
+          "winnerHit": 0,
+          "podiumHits": 2
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "round": 10,
+      "name": "Belgian Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ],
+        [
+          2026,
+          7
+        ],
+        [
+          2026,
+          8
+        ],
+        [
+          2026,
+          9
+        ]
+      ],
+      "trainRows": 176,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.909090909090909,
+          "rmse": 5.535012523595917,
+          "spearman": 0.6194240542066629,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.4545454545454546,
+          "rmse": 4.917501213199462,
+          "spearman": 0.699604743083004,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.6363636363636362,
+          "rmse": 4.842989309769892,
+          "spearman": 0.7086391869000566,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.909090909090909,
+          "rmse": 5.535012523595917,
+          "spearman": 0.6194240542066629,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.4545454545454546,
+          "rmse": 4.30644337539164,
+          "spearman": 0.769621682665161,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 3.090909090909091,
+          "rmse": 4.954336943068623,
+          "spearman": 0.6950875211744778,
+          "winnerHit": 0,
+          "podiumHits": 1
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "round": 11,
+      "name": "Hungarian Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ],
+        [
+          2026,
+          7
+        ],
+        [
+          2026,
+          8
+        ],
+        [
+          2026,
+          9
+        ],
+        [
+          2026,
+          10
+        ]
+      ],
+      "trainRows": 198,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.4545454545454546,
+          "rmse": 4.295875400258422,
+          "spearman": 0.7707509881422926,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.3636363636363638,
+          "rmse": 3.9542842128966447,
+          "spearman": 0.805759457933371,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.4545454545454546,
+          "rmse": 4.0787698680317375,
+          "spearman": 0.7933370976849238,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.4545454545454546,
+          "rmse": 4.295875400258422,
+          "spearman": 0.7707509881422926,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.3636363636363638,
+          "rmse": 3.9542842128966447,
+          "spearman": 0.805759457933371,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 2.272727272727273,
+          "rmse": 3.7779263191236634,
+          "spearman": 0.8226990400903446,
+          "winnerHit": 0,
+          "podiumHits": 1
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "round": 15,
+      "name": "Azerbaijan Grand Prix",
+      "trainEvents": [
+        [
+          2026,
+          2
+        ],
+        [
+          2026,
+          3
+        ],
+        [
+          2026,
+          4
+        ],
+        [
+          2026,
+          5
+        ],
+        [
+          2026,
+          6
+        ],
+        [
+          2026,
+          7
+        ],
+        [
+          2026,
+          8
+        ],
+        [
+          2026,
+          9
+        ],
+        [
+          2026,
+          10
+        ],
+        [
+          2026,
+          11
+        ]
+      ],
+      "trainRows": 220,
+      "metrics": {
+        "ridge_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.909090909090909,
+          "rmse": 6.438520439863917,
+          "spearman": 0.4850367024280069,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_quali_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 5.0,
+          "rmse": 6.438520439863917,
+          "spearman": 0.4850367024280069,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "ridge_history": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.909090909090909,
+          "rmse": 6.360388781713383,
+          "spearman": 0.497459062676454,
+          "winnerHit": 1,
+          "podiumHits": 2
+        },
+        "final_grid": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.909090909090909,
+          "rmse": 6.438520439863917,
+          "spearman": 0.4850367024280069,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "qualifying_order": {
+          "available": true,
+          "drivers": 22,
+          "mae": 5.0,
+          "rmse": 6.438520439863917,
+          "spearman": 0.4850367024280069,
+          "winnerHit": 1,
+          "podiumHits": 1
+        },
+        "stored_model": {
+          "available": true,
+          "drivers": 22,
+          "mae": 4.636363636363637,
+          "rmse": 5.838742081211422,
+          "spearman": 0.5765104460756635,
+          "winnerHit": 1,
+          "podiumHits": 1
+        }
+      }
+    }
+  ],
+  "summary": {
+    "ridge_grid": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.257575757575758,
+      "rmse": 4.818593088077638,
+      "spearman": 0.6886881234707323,
+      "podiumHits": 1.5,
+      "winnerHits": 4
+    },
+    "ridge_quali_grid": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.2121212121212124,
+      "rmse": 4.70201121236577,
+      "spearman": 0.7014869188782233,
+      "podiumHits": 1.5,
+      "winnerHits": 4
+    },
+    "ridge_history": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.303030303030303,
+      "rmse": 4.774399034635506,
+      "spearman": 0.6956521739130436,
+      "podiumHits": 1.8333333333333333,
+      "winnerHits": 4
+    },
+    "final_grid": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.257575757575758,
+      "rmse": 4.818593088077638,
+      "spearman": 0.6886881234707323,
+      "podiumHits": 1.5,
+      "winnerHits": 4
+    },
+    "qualifying_order": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.151515151515151,
+      "rmse": 4.530521793518727,
+      "spearman": 0.723320158102767,
+      "podiumHits": 1.5,
+      "winnerHits": 4
+    },
+    "stored_model": {
+      "events": 6,
+      "drivers": 132,
+      "mae": 3.1969696969696972,
+      "rmse": 4.507910965160739,
+      "spearman": 0.7285902503293809,
+      "podiumHits": 1.3333333333333333,
+      "winnerHits": 3
+    }
+  },
+  "storedModelLimitation": "stored forecasts include retrospective regenerations; immutable pre-race input cutoffs are not established",
+  "promotion": {
+    "promote": false,
+    "historyDeltaMAEVsGrid": 0.045454545454545414,
+    "historyDeltaMAEVsStored": 0.10606060606060597,
+    "reasons": [
+      "shadow only",
+      "small reconstructed-input event cohort",
+      "no immutable historical input-availability record",
+      "history challenger must not be promoted when its shared-cohort MAE regresses"
+    ]
+  },
+  "runtimeSeconds": 1.0162150980004299,
+  "coverage": {
+    "season": 2026,
+    "historicalActualRows": 1836,
+    "sourceCommit": "2029bc1a866d076f7e6375116d0e33c8a0e9de18",
+    "historicalEvents": 92,
+    "historicalDbColumns": [
+      "season",
+      "round",
+      "driver",
+      "actual_position",
+      "source"
+    ],
+    "historyPolicy": "actual rows only; known-classification normalization; historical team unknown and unused",
+    "rounds": [
+      {
+        "round": 1,
+        "qualifyingRows": 19,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:20:32Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 2,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:21:29Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 3,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:22:28Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 4,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:23:06Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 5,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:24:06Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 6,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:25:10Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 7,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:26:12Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 8,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:26:51Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 9,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-08T07:27:43Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 10,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-19T11:32:33Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 11,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-07-25T18:46:51Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 12,
+        "qualifyingRows": 22,
+        "knownGridRows": 0,
+        "actualRows": 22,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-08-23T16:14:48Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 13,
+        "qualifyingRows": 22,
+        "knownGridRows": 0,
+        "actualRows": 22,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-09-05T18:45:45Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 14,
+        "qualifyingRows": 20,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-09-12T20:02:32Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 15,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 22,
+        "eligible": true,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-09-26T09:00:59Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null
+      },
+      {
+        "round": 16,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 22,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-10-11T05:15:33Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": null,
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 17,
+        "qualifyingRows": 22,
+        "knownGridRows": 22,
+        "actualRows": 0,
+        "eligible": true,
+        "gridOrigin": "official starting-grid table",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-10-10T10:22:59Z",
+        "qualifyingSourceCheckedAt": "2026-10-11T05:15:33Z",
+        "gridSourceCheckedAt": "2026-10-11T05:15:33Z",
+        "qualifyingSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/qualifying",
+        "gridSourceUrl": "https://www.formula1.com/en/results/2026/races/1296/singapore/starting-grid"
+      },
+      {
+        "round": 18,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-06-27T17:07:56Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 19,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-05-24T11:59:28Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 20,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-05-24T12:00:36Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 21,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-05-24T12:01:21Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 22,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-05-24T12:02:04Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      },
+      {
+        "round": 23,
+        "qualifyingRows": 0,
+        "knownGridRows": 0,
+        "actualRows": 0,
+        "eligible": false,
+        "gridOrigin": "reconstructed from race-result grid field",
+        "immutableHistoricalCutoffEstablished": false,
+        "storedForecastGeneratedAt": "2026-05-24T12:02:53Z",
+        "qualifyingSourceCheckedAt": null,
+        "gridSourceCheckedAt": null,
+        "qualifyingSourceUrl": "https://api.jolpi.ca/ergast/f1",
+        "gridSourceUrl": null,
+        "reason": "incomplete qualifying field or final grid; no grid inferred from qualifying"
+      }
+    ],
+    "trainingEligibleRounds": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      15
+    ],
+    "omitted": {
+      "weather": "no historical forecast issue/availability timestamps; no observed race weather used",
+      "sprintResults": "no historical source availability timestamps; today's sprint is not a trained feature",
+      "dnf": "historical DB has no status; finishing last is not inferred to be a DNF",
+      "historicalTeam": "DB has no team; no current team is assigned backwards",
+      "historicalQualifyingOrGrid": "DB predicted positions/lap times are neither qualifying nor final grid"
+    },
+    "sources": [
+      {
+        "path": "website/public/data/season.json",
+        "sha256": "1b0fccec6c44df09692ac38a306ee8a156e4ccfd40c4b164321690fabdd16110"
+      },
+      {
+        "path": "data/history.duckdb",
+        "sha256": "fb81227fc56a50420ebbb4faee347115115173f2e7b6c1d1c9b349a0855e3821"
+      },
+      {
+        "path": "website/public/data/rounds/round_01.json",
+        "sha256": "34f509dcd56838d7b3a14314d25dac5f4060e8584b9676d50d876d5e420f1df1"
+      },
+      {
+        "path": "website/public/data/rounds/round_02.json",
+        "sha256": "7d374802155910799cd877a77bf96c1351fb754946e4393ced67f90dff36e964"
+      },
+      {
+        "path": "website/public/data/rounds/round_03.json",
+        "sha256": "ed22d38e28f6a217850d7738094774128874f76060310b810869a8be1a872492"
+      },
+      {
+        "path": "website/public/data/rounds/round_04.json",
+        "sha256": "f94b2ebdfed60cff7ac28e91c2a704237eee9ebf7c824b5d0286bea37a8715f0"
+      },
+      {
+        "path": "website/public/data/rounds/round_05.json",
+        "sha256": "0ea1aba59bbebf1e29126eabe05573611a541f62913f523f8ec34e9ac73b98b6"
+      },
+      {
+        "path": "website/public/data/rounds/round_06.json",
+        "sha256": "42aa0e1774c7ba03331f174c1bf3465b1d05c3eccd1e643fb0acaf88ba9ce90b"
+      },
+      {
+        "path": "website/public/data/rounds/round_07.json",
+        "sha256": "e7f7c8b28563abf9a567963b362d3042c2fb1e3b50ef38ee727b2eaf96ca50a7"
+      },
+      {
+        "path": "website/public/data/rounds/round_08.json",
+        "sha256": "3a07b6a6d2951e5e417d8d757ed0e80a43adf0079a091f5e54028db0a7aa27de"
+      },
+      {
+        "path": "website/public/data/rounds/round_09.json",
+        "sha256": "78fe638ff756535a560b851b7d3be08034334c51d1f95e794ca9d8297e89457d"
+      },
+      {
+        "path": "website/public/data/rounds/round_10.json",
+        "sha256": "c376454af425a707258fad7fb55e747b2acbaccbb8c092e8f4481007823671c1"
+      },
+      {
+        "path": "website/public/data/rounds/round_11.json",
+        "sha256": "e6a0fb8058c52b7120bf57811c62fe313ca9b76f7e742242d28c428d1d48cfdb"
+      },
+      {
+        "path": "website/public/data/rounds/round_12.json",
+        "sha256": "a9a7726cd90927b329ad5a59ab782c8470fc1ca12b19c326a35f522c46caf5f3"
+      },
+      {
+        "path": "website/public/data/rounds/round_13.json",
+        "sha256": "f0abfb290cf633de131ddee6a4be91419ce4e08c366ac3101ea57c74e1708c97"
+      },
+      {
+        "path": "website/public/data/rounds/round_14.json",
+        "sha256": "b8f836bd99c18055cfe5003f4a8e764e066b75141e5d6af69047402e8b03870d"
+      },
+      {
+        "path": "website/public/data/rounds/round_15.json",
+        "sha256": "835258d640b5988367a46076bc2ff31c175fbae8af540edbbe5066e92405de9b"
+      },
+      {
+        "path": "website/public/data/rounds/round_16.json",
+        "sha256": "dc1ff0624e8dbdc75730076575a5391cdf915a7223462d02394fab32c60e4fd5"
+      },
+      {
+        "path": "website/public/data/rounds/round_17.json",
+        "sha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c"
+      },
+      {
+        "path": "website/public/data/rounds/round_18.json",
+        "sha256": "f49837030d540485dcabd1557792e27de7759dde8b98173ac1156f45b80000b8"
+      },
+      {
+        "path": "website/public/data/rounds/round_19.json",
+        "sha256": "c97aa97a07caabaf10d8b04e4534c3802beb15303e6121bf14477fa48e8b2cc0"
+      },
+      {
+        "path": "website/public/data/rounds/round_20.json",
+        "sha256": "45a07b18e0feb75fdc275644c03b13541fd1dad8d27c129faba6300967461047"
+      },
+      {
+        "path": "website/public/data/rounds/round_21.json",
+        "sha256": "95c1d0c865109d1f93f195b32b655de6e59604da1e920b653d128c0777e52973"
+      },
+      {
+        "path": "website/public/data/rounds/round_22.json",
+        "sha256": "37f97e43a84bc8bebae3ca84391882c742ecd3a7e789192e5e8ac7f0c30b1a73"
+      },
+      {
+        "path": "website/public/data/rounds/round_23.json",
+        "sha256": "1bd15edb5f966a4c8d24824fe9095d580a3b46a54d760b64c7a5d0a2c3303b08"
+      }
+    ]
+  },
+  "codeSha256": "3bccf362aaede1ea5dcbe497d4d54034f680f947c920a560965122902c29ff06"
+}
