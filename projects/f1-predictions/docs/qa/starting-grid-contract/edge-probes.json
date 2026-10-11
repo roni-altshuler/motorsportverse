@@ -1,0 +1,188 @@
+{
+  "checkedAt": "2026-10-11T09:43:42.205955+00:00",
+  "head": "9db06b0473a768c596637b1779b49ce96995aa35",
+  "scope": "Read-only exact-head probes; no provider requests, serving/registry writes or model inference.",
+  "providerInputProbes": [
+    {
+      "probe": "pit-lane-position-text",
+      "field": "positionText",
+      "value": "PL",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "pit-lane-row-status",
+      "field": "status",
+      "value": "PIT LANE",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "empty-fetch",
+      "field": "fetchedAt",
+      "value": "",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "zero-fetch",
+      "field": "fetchedAt",
+      "value": 0,
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "empty-generation",
+      "field": "generatedAt",
+      "value": "",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "zero-generation",
+      "field": "generatedAt",
+      "value": 0,
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "contradictory-provider-gp-key",
+      "field": "gpKey",
+      "value": "Bahrain",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    },
+    {
+      "probe": "contradictory-provider-circuit",
+      "field": "circuit",
+      "value": "Sepang International Circuit",
+      "accepted": true,
+      "reason": null,
+      "gridPriorAccepted": true,
+      "simulatorInitialGridAccepted": true
+    }
+  ],
+  "callerMutationProbes": [
+    {
+      "probe": "reverse-entry-order",
+      "scope": "Trusted caller can construct/replace the Python value; not provider-input parsing.",
+      "accepted": true,
+      "reason": null,
+      "sourceDigestUnchanged": true,
+      "driverSlotsChanged": false,
+      "gridPriorAccepted": true,
+      "russellSimulatorSlot": 21
+    },
+    {
+      "probe": "reverse-driver-slots",
+      "scope": "Trusted caller can construct/replace the Python value; not provider-input parsing.",
+      "accepted": true,
+      "reason": null,
+      "sourceDigestUnchanged": true,
+      "driverSlotsChanged": true,
+      "gridPriorAccepted": true,
+      "russellSimulatorSlot": 2
+    }
+  ],
+  "after": {
+    "checkedAt": "2026-10-11T09:46:05.334344+00:00",
+    "reviewedBaseHead": "9db06b0473a768c596637b1779b49ce96995aa35",
+    "testedSourceHashes": {
+      "models/starting_grid.py": "d3e00aa54ffc29f357962704ea0c0caccb7166d0ef4c11a58cb5d1a4705f2965",
+      "tests/test_starting_grid_shadow.py": "d001739da691fd27819dd7d15b5805a685ff293dbacb784eae88ce7154006077"
+    },
+    "providerInputProbes": [
+      {
+        "probe": "pit-lane-position-text",
+        "field": "positionText",
+        "value": "PL",
+        "accepted": false,
+        "reason": "unsupported-pit-lane-start"
+      },
+      {
+        "probe": "pit-lane-row-status",
+        "field": "status",
+        "value": "PIT LANE",
+        "accepted": false,
+        "reason": "unsupported-pit-lane-start"
+      },
+      {
+        "probe": "empty-fetch",
+        "field": "fetchedAt",
+        "value": "",
+        "accepted": false,
+        "reason": "invalid-source-fetch"
+      },
+      {
+        "probe": "zero-fetch",
+        "field": "fetchedAt",
+        "value": 0,
+        "accepted": false,
+        "reason": "invalid-source-fetch"
+      },
+      {
+        "probe": "empty-generation",
+        "field": "generatedAt",
+        "value": "",
+        "accepted": false,
+        "reason": "invalid-published-source-generation"
+      },
+      {
+        "probe": "zero-generation",
+        "field": "generatedAt",
+        "value": 0,
+        "accepted": false,
+        "reason": "invalid-published-source-generation"
+      },
+      {
+        "probe": "contradictory-provider-gp-key",
+        "field": "gpKey",
+        "value": "Bahrain",
+        "accepted": false,
+        "reason": "provider-event-mismatch"
+      },
+      {
+        "probe": "contradictory-provider-circuit",
+        "field": "circuit",
+        "value": "Sepang International Circuit",
+        "accepted": false,
+        "reason": "provider-event-mismatch"
+      }
+    ],
+    "callerMutationProbes": [
+      {
+        "probe": "reverse-entry-order",
+        "accepted": true,
+        "reason": null,
+        "sourceDigestUnchanged": true,
+        "driverSlotsChanged": false,
+        "gridPriorAccepted": true,
+        "russellSimulatorSlot": 21
+      },
+      {
+        "probe": "reverse-driver-slots",
+        "accepted": true,
+        "reason": null,
+        "sourceDigestUnchanged": true,
+        "driverSlotsChanged": true,
+        "gridPriorAccepted": true,
+        "russellSimulatorSlot": 2
+      }
+    ]
+  },
+  "interpretation": "Eight malformed provider-input variants were accepted at the reviewed head and now reject at from_published. Direct construction/dataclasses.replace remains a trusted Python caller boundary; the digest is a source reference, not authenticated binding of a reconstructed value. No production behavior or activation change."
+}

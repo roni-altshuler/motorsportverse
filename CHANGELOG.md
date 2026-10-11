@@ -17,6 +17,8 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   full event/field identity, source verification, cutoff and freshness checks.
 - Apply penalties to explicit shadow grid-prior and simulator inputs; keep
   production/training schemas, publication hold and sealed baseline unchanged.
+- Reject pit-lane markers with ordinal slots, malformed present timestamps and
+  contradictory supplied provider identity fields; document Python caller trust.
 - Audit the missing completed-round final-grid coverage without inventing
   historical grids or claiming an accuracy improvement or model promotion.
 

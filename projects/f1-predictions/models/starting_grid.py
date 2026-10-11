@@ -102,6 +102,13 @@ class StartingGridEvent:
 
 @dataclass(frozen=True)
 class StartingGridSnapshot:
+    """A value for trusted Python callers, not a signed source attestation.
+
+    Use ``from_published`` at the provider boundary. Direct construction or
+    ``dataclasses.replace`` validates structure/time but cannot authenticate
+    the claimed source digest or bind caller-supplied positions to that source.
+    """
+
     event: StartingGridEvent
     positions: tuple[tuple[str, int], ...]
     verified_at: datetime
@@ -174,9 +181,9 @@ class StartingGridSnapshot:
         if session.get("status") != "official" or session.get("sourceUrl") != event.source_url:
             raise StartingGridUnavailable("unverified-final-grid-source")
         provider = session.get("eventIdentity")
-        if provider is not None and (not isinstance(provider, Mapping) or any(provider.get(k) != identity[k] for k in (
-            "season", "round", "name", "date", "circuitId",
-        ))):
+        if provider is not None and (not isinstance(provider, Mapping)
+                or any(provider.get(k) != identity[k] for k in ("season", "round", "name", "date", "circuitId"))
+                or any(provider[k] != identity[k] for k in ("gpKey", "circuit") if k in provider)):
             raise StartingGridUnavailable("provider-event-mismatch")
         roster = tuple(expected_drivers)
         if any(not isinstance(d, str) or not re.fullmatch(r"[A-Z]{3}", d) for d in roster):
@@ -184,6 +191,9 @@ class StartingGridSnapshot:
         rows = session.get("rows") or []
         if not isinstance(rows, list) or any(not isinstance(row, Mapping) for row in rows):
             raise StartingGridUnavailable("invalid-grid-rows")
+        if any(isinstance(value, str) and re.sub(r"[^A-Z]", "", value.upper()) in {"PL", "PITLANE"}
+               for row in rows for value in (row.get("positionText"), row.get("status"))):
+            raise StartingGridUnavailable("unsupported-pit-lane-start")
         positions = tuple((r.get("driver"), r.get("position")) for r in rows)
         if any(not isinstance(d, str) or not re.fullmatch(r"[A-Z]{3}", d) for d, _ in positions):
             raise StartingGridUnavailable("invalid-grid-drivers")
@@ -197,10 +207,10 @@ class StartingGridSnapshot:
                    verified_at=_utc(session.get("verifiedAt"), "source-verification"),
                    input_cutoff=_utc(input_cutoff, "input-cutoff"),
                    source_session_sha256=hashlib.sha256(raw).hexdigest(),
-                   fetched_at=_utc(session["fetchedAt"], "source-fetch") if session.get("fetchedAt") else None,
+                   fetched_at=_utc(session["fetchedAt"], "source-fetch") if "fetchedAt" in session else None,
                    max_source_age=max_source_age,
                    published_generated_at=_utc(weekend["generatedAt"], "published-source-generation")
-                   if weekend.get("generatedAt") else None)
+                   if "generatedAt" in weekend else None)
 
     def require_event(self, event: StartingGridEvent):
         if event != self.event:

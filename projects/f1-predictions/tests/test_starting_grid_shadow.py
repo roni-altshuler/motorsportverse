@@ -196,6 +196,51 @@ def test_missing_invalid_or_stale_grid_is_explicit(mutation, reason):
     assert exc.value.reason == reason
 
 
+@pytest.mark.parametrize("field,value", [
+    ("positionText", "PL"), ("status", "PIT LANE"),
+    ("positionText", " pit-lane "), ("status", "pl"),
+])
+def test_pit_lane_markers_reject_even_with_an_ordinal_position(field, value):
+    data = deepcopy(PAYLOAD)
+    row = grid_session(data)["rows"][0]
+    row[field] = value
+    assert row["position"] == 1
+    with pytest.raises(StartingGridUnavailable, match="^unsupported-pit-lane-start$"):
+        snapshot(data)
+
+
+@pytest.mark.parametrize("field,reason", [
+    ("fetchedAt", "invalid-source-fetch"), ("generatedAt", "invalid-published-source-generation"),
+])
+@pytest.mark.parametrize("value", ["", 0, False, None, [], {}])
+def test_present_optional_timestamp_must_be_valid(field, reason, value):
+    data = deepcopy(PAYLOAD)
+    target = grid_session(data) if field == "fetchedAt" else data["weekendResults"]
+    target[field] = value
+    with pytest.raises(StartingGridUnavailable) as exc:
+        snapshot(data)
+    assert exc.value.reason == reason
+
+
+@pytest.mark.parametrize("field,value", [("gpKey", "Bahrain"), ("circuit", "Sepang International Circuit")])
+def test_supplied_provider_identity_cannot_contradict_optional_fields(field, value):
+    data = deepcopy(PAYLOAD)
+    grid_session(data)["eventIdentity"] = {**EVENT.identity(), field: value}
+    with pytest.raises(StartingGridUnavailable, match="^provider-event-mismatch$"):
+        snapshot(data)
+
+
+def test_absent_optional_timestamps_and_legacy_provider_identity_remain_supported():
+    data = deepcopy(PAYLOAD); session = grid_session(data)
+    session.pop("fetchedAt", None)
+    data["weekendResults"].pop("generatedAt")
+    session["eventIdentity"] = {k: v for k, v in EVENT.identity().items() if k not in ("gpKey", "circuit")}
+    grid = snapshot(data)
+    assert grid.fetched_at is grid.published_generated_at is None
+    session["eventIdentity"] = EVENT.identity()
+    assert snapshot(data).positions == grid.positions
+
+
 @pytest.mark.parametrize("cutoff", ["2026-10-11T12:00:00Z", "2026-10-11T12:00:01Z"])
 def test_race_start_is_a_hard_boundary(cutoff):
     with pytest.raises(StartingGridUnavailable, match="cutoff-not-before-race"):

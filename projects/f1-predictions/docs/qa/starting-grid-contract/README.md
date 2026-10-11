@@ -24,13 +24,16 @@ echoed round number is insufficient identity.
 The final-grid session must be official, unique and complete for the caller's
 expected field. Driver codes and integer positions must be unique; positions
 must form 1 through N. Partial fields, conflicting columns, fractional/boolean
-positions and pit-lane zero positions are unavailable. Pit-lane starts need a
-separate explicit representation before support; no slot is invented here.
+positions, pit-lane zero positions and pit-lane markers in `positionText` or
+row `status` are unavailable even when accompanied by an ordinal. Pit-lane starts
+need a separate explicit representation before support; no slot is invented here.
 
 An aware `verifiedAt` timestamp is required, at or before the input cutoff and
 within a one-hour freshness ceiling; callers may only tighten that policy.
 Any fetched timestamp must precede
 verification, and any published-source generation timestamp must precede cutoff.
+Optional timestamps may be absent; a present empty, null or non-timestamp value
+is rejected instead of silently treated as absent.
 The cutoff must be strictly before race start. Consumers require that same
 requested cutoff; reusing an earlier snapshot for a later request fails.
 
@@ -40,6 +43,16 @@ canonical session JSON. That digest is separate from raw provider responses or
 the published baseline seal. The recorded identity basis is the published event
 plus independently pinned official URL. Rejections raise `StartingGridUnavailable`
 with explicit reasons.
+
+`from_published` is the provider-input boundary. A directly constructed or
+`dataclasses.replace` snapshot is trusted caller code: structural/time checks
+still run, but its claimed source digest is not an authenticated attestation.
+A caller can replace driver slots while retaining the digest and both shadow
+consumers accept that value. Freezing prevents attribute assignment, not Python
+object reconstruction. No consumer accepts an unparsed provider dictionary;
+do not deserialize untrusted snapshots through the direct constructor.
+The [independent edge probes](edge-probes.json) distinguish that caller-trust
+limit from the provider validation defects corrected after review.
 
 ## Consumers and training compatibility
 
