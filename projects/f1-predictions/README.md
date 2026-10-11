@@ -62,6 +62,13 @@ Loading or unavailable round data explicitly leaves forecast status unverified;
 it does not imply an unpublished model or promise automatic publication. Old
 responses cannot populate a newly selected event or source.
 
+The [verified final-grid shadow contract](docs/qa/starting-grid-contract/README.md)
+keeps `StartingGridPosition` separate from qualifying pace/rank and carries
+event/source/cutoff provenance into explicit grid-prior and simulator calls.
+Production behavior remains unchanged. The completed-round snapshots lack
+separate final grids, so temporal accuracy/regression evidence is unavailable
+and this adapter is not promoted.
+
 - **Forecasts eligible weekends** of the 2026 season — qualifying pace, finishing
   order, and win/podium probabilities, each with a confidence band.
 - **Calibration status is explicit** — predictions are gated: raw numbers ship

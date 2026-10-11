@@ -1950,8 +1950,26 @@ def circuit_grid_dynamics(overtaking, safety_car, rain_probability=0.0, circuit_
     return pole_lock, win_decay_k
 
 
-def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=0.0):
-    """Transform baseline lap-time predictions into more realistic race outcomes."""
+def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=0.0, *,
+                            shadow_starting_grid=None, shadow_event=None,
+                            shadow_input_cutoff=None):
+    """Transform lap-time predictions; final-grid correction is explicit shadow only.
+
+    Production calls keep their existing qualifying-based semantics. The
+    optional shadow snapshot changes only the grid-position prior, never
+    qualifying pace/rank, learned feature columns or published forecasts.
+    """
+    if any(v is not None for v in (shadow_starting_grid, shadow_event, shadow_input_cutoff)):
+        from models.starting_grid import StartingGridEvent, StartingGridSnapshot, StartingGridUnavailable
+        if not isinstance(shadow_starting_grid, StartingGridSnapshot) or not isinstance(shadow_event, StartingGridEvent):
+            raise StartingGridUnavailable("missing-validated-shadow-grid-context")
+        shadow_starting_grid.require_event(shadow_event)
+        shadow_starting_grid.require_cutoff(shadow_input_cutoff)
+        if circuit_key != shadow_event.gp_key:
+            raise StartingGridUnavailable("shadow-event-mismatch")
+        if os.getenv("F1_USE_LEARNED_HEAD") == "1":
+            raise StartingGridUnavailable("learned-head-grid-contract-not-evaluated")
+        merged = shadow_starting_grid.attach(merged)
     char = CIRCUIT_CHARACTERISTICS.get(circuit_key, {})
     overtaking = char.get("overtaking", 0.5)
     safety_car = char.get("safety_car_likelihood", 0.4)
@@ -2082,7 +2100,8 @@ def apply_race_postprocessing(merged, circuit_key="Australia", rain_probability=
     pole_lock, win_decay_k = circuit_grid_dynamics(
         overtaking, safety_car, rain_probability, circuit_key=circuit_key
     )
-    grid_rank = merged["QualifyingRank"].fillna(merged["QualifyingRank"].max())
+    grid_rank = (merged["StartingGridPosition"] if shadow_starting_grid is not None
+                 else merged["QualifyingRank"].fillna(merged["QualifyingRank"].max()))
     merged["RaceProjectionScore"] = (
         merged["RaceProjectionScore"] + _zscore(grid_rank) * pole_lock
     )

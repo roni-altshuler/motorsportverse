@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-10-11T09:38:16.911515+00:00",
+  "baseCommit": "7410b464dd2576d7518fbc153eef0c075f69675a",
+  "scope": "Final uncommitted executable source identified by testedSourceHashes; evidence/doc additions do not change executable behavior.",
+  "testedSourceHashes": {
+    "models/starting_grid.py": "46dbc86570b415b4b7ce9e2773ace37df8eb60b80a3b2f2a7d9eeab2feb8e90b",
+    "models/race_simulator_runner.py": "426bf909bcda318d55cb84e637eeefb1e5f1ac51019cc5903c02cbe8b8aff2e2",
+    "src/f1_prediction_utils.py": "69443f692b8f9ea4980118eff0f342d6b2e275db5d50c1d29bd8a396f9631d4c",
+    "src/audit_starting_grid_contract.py": "0a4908f5264fcd04e97ba91ab1d3f871c24ddd41da9294c73d74802cffa09888",
+    "tests/test_starting_grid_shadow.py": "f6f2fffb49861f05f897f6ef0c2d17c438152b160adf8a1b713f05257e7a24a8"
+  },
+  "checks": [
+    {
+      "name": "Full F1 Python suite",
+      "status": "passed",
+      "summary": "1213 passed, 15 skipped, 623 warnings in 225.11s (0:03:45)",
+      "logSha256": "5caf9abd60d3323a440b90512d6c03ceada26d26ed4ce97c24f67990816cbb30"
+    },
+    {
+      "name": "Focused grid/qualifying/identity/simulator regressions",
+      "status": "passed",
+      "summary": "130 passed, 600 warnings in 7.20s",
+      "logSha256": "af669a66c4170608e8fa12149d8a7d6cb7b9023b6b3b33739790c1974b74456d"
+    },
+    {
+      "name": "Ruff, whole F1 project",
+      "command": "ruff check .",
+      "status": "passed"
+    },
+    {
+      "name": "Scoped Python types",
+      "command": "mypy --follow-imports=skip --check-untyped-defs models/starting_grid.py models/race_simulator_runner.py src/audit_starting_grid_contract.py",
+      "status": "passed",
+      "summary": "Success: no issues found in 3 source files",
+      "limit": "Not a whole-project type check."
+    },
+    {
+      "name": "Python byte compilation",
+      "command": "python -m py_compile models/starting_grid.py models/race_simulator_runner.py src/f1_prediction_utils.py src/audit_starting_grid_contract.py",
+      "status": "passed"
+    },
+    {
+      "name": "Published-data integrity",
+      "command": "python scripts/validate_published_data.py",
+      "workingDirectory": "repository root",
+      "status": "passed",
+      "summary": "405 checks over 11 projects; 0 failures, including all 50 F1 checks; Le Mans has no published corpus."
+    },
+    {
+      "name": "Shared UI synchronization",
+      "command": "node scripts/sync_shared_ui.mjs --check",
+      "workingDirectory": "repository root",
+      "status": "passed"
+    },
+    {
+      "name": "Whitespace patch check",
+      "command": "git diff --check",
+      "status": "passed"
+    },
+    {
+      "name": "Website source preservation",
+      "status": "passed",
+      "summary": "No website changes relative to base."
+    },
+    {
+      "name": "Preservation recheck",
+      "status": "passed",
+      "summary": "236 existing data/model/public files match base, 11 other worktree heads remain clean and unchanged, all frozen fixtures match source commit."
+    }
+  ],
+  "reproduceTestsFromF1Directory": [
+    "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest -q",
+    "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest -q tests/test_starting_grid_shadow.py tests/test_grid_prior.py tests/test_race_simulator_runner.py tests/test_qualifying_reliability.py tests/test_grid_provenance.py tests/test_event_identity_repair.py"
+  ],
+  "newTests": 38,
+  "warningLimits": "Existing sklearn feature-name and missing-feature warnings remain visible in suite logs; passing tests do not establish prediction accuracy.",
+  "environment": "Existing saved cloud Python 3.12 virtualenv; already-declared development mypy dependency installed only into a private temporary target. No lockfile, credential or security-setting changes.",
+  "newBrowserQa": false,
+  "newWebsiteBuild": false,
+  "visualValidationReason": "No visible UI or website source change in this PR; prior UI/browser/deployment evidence belongs to the merged baseline PR.",
+  "temporalAccuracyEvaluated": false,
+  "temporalEvaluationLimit": "16 completed rounds, 0 distinct final-grid sessions, 0 eligible pre-race contexts; no invented grids or accuracy claim.",
+  "productionActivated": false,
+  "championTrainingOrPromotion": false,
+  "forecastRegeneration": false,
+  "baselineOrReceiptEdited": false,
+  "publicationHoldReleased": false
+}
