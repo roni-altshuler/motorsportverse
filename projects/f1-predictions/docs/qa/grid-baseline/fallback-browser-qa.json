@@ -1,0 +1,389 @@
+{
+  "checkedAt": "2026-10-11T08:17:23.856Z",
+  "reviewedBaseHead": "efcff5294c8e08079a827da4d6747b0fa83822a0",
+  "testedSourceHashes": {
+    "src/components/HomePage.tsx": "cf80e605a403449542f07a6b440700d9af6a83df338805f0e9b53cb975297bae",
+    "src/components/RaceDetailPage.tsx": "58e65605faf7cfd75069d9bcdd4f3e4396f4d1f64070cf6c75762f8f8b6c08f8",
+    "src/components/race-detail/RoundDataStatus.tsx": "1b9c9e5e1f252e2a1616ca9652e5d9c5ebe04ebc327798523043b6dcb1fa711c",
+    "src/lib/useRoundArtifact.ts": "6761c07b6566b9d3d103ee4d3a03b57c3d8fbceeeda8fdaa1627b50f9f65ae2b"
+  },
+  "browser": "Chromium",
+  "frozenClock": "2026-10-11T07:50:00Z",
+  "artifactSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+  "receiptSha256": "820d047210b86da6dd0a95bdf774cfca7fccfbb37daefbed64f6a76eeeacac51",
+  "roundSourceSha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c",
+  "faultInjectionOnly": true,
+  "sourceDataChanges": false,
+  "independentSeasonLevelHoldAvailable": false,
+  "sourcePublicationHoldUnchanged": true,
+  "checks": [
+    {
+      "width": 1440,
+      "path": "/",
+      "fault": "slow-round",
+      "pending": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": true,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "resolved": {
+        "baselineVisible": true,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 1440,
+      "path": "/",
+      "fault": "missing-round",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": true,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 1
+    },
+    {
+      "width": 1440,
+      "path": "/",
+      "fault": "changed-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 1440,
+      "path": "/",
+      "fault": "missing-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 1440,
+      "path": "/race/17",
+      "fault": "slow-round",
+      "pending": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": true,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "resolved": {
+        "baselineVisible": true,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 1440,
+      "path": "/race/17",
+      "fault": "missing-round",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": true,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 1
+    },
+    {
+      "width": 1440,
+      "path": "/race/17",
+      "fault": "changed-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 1440,
+      "path": "/race/17",
+      "fault": "missing-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "fault": "slow-round",
+      "pending": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": true,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "resolved": {
+        "baselineVisible": true,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "fault": "missing-round",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": true,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 1
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "fault": "changed-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/",
+      "fault": "missing-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "RaceIQ | F1 2026 Race Predictions & Forecasts"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/race/17",
+      "fault": "slow-round",
+      "pending": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": true,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "resolved": {
+        "baselineVisible": true,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/race/17",
+      "fault": "missing-round",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": false,
+        "modelWithheldCopyVisible": false,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": true,
+        "forecastStatusUnverifiable": true,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": true,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 1
+    },
+    {
+      "width": 390,
+      "path": "/race/17",
+      "fault": "changed-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    },
+    {
+      "width": 390,
+      "path": "/race/17",
+      "fault": "missing-grid",
+      "fallback": {
+        "baselineVisible": false,
+        "publicationNoticeVisible": true,
+        "modelWithheldCopyVisible": true,
+        "modelForecastHeadingVisible": false,
+        "availabilityNoticeVisible": false,
+        "forecastStatusUnverifiable": false,
+        "loadingCopyVisible": false,
+        "unavailableCopyVisible": false,
+        "automaticPublicationClaim": false,
+        "title": "Singapore Grand Prix \u2014 F1 2026 Publication review"
+      },
+      "interceptedRequests": 1,
+      "pageErrors": 0,
+      "expected404Responses": 0
+    }
+  ]
+}

@@ -66,7 +66,7 @@ freeze; the model publication notice remains available.
 ## Validation and browser review
 
 [Validation](validation.json) records 1,175 passing Python tests (15 skipped),
-278 passing frontend tests in 19 suites, Ruff, TypeScript, ESLint, the production
+288 passing frontend tests in 20 suites, Ruff, TypeScript, ESLint, the production
 static export with the actual Pages base path, 50 published-data integrity
 checks and shared-UI sync. ESLint retains its existing AccuracyDashboardPage
 navigation warning. [Preservation](worktree-preservation.json) confirms all
@@ -99,6 +99,54 @@ deployment. This review branch has not been merged or deployed.
 [The final 07:33 UTC official-source check](final-source-recheck.json) still
 matches all positions. It does not alter the 06:53 seal or 07:09 staging source
 receipt. The race outcome was not fetched.
+
+## Pending and unavailable round data
+
+The earlier race-page fallback claimed that predictions were unpublished and
+would automatically appear after a workflow. A delayed or failed request cannot
+establish either fact. Home and the race page now distinguish loading from
+unavailable data and explicitly say **Forecast status cannot currently be
+verified**. They keep the baseline and current model forecast hidden until the
+current event's source can be checked. No publication or future-release promise
+is made. Existing calendar facts remain available.
+
+The current season/calendar and season tracker have no independent Grand Prix
+publication-hold record. The championship projection's withdrawal is a separate
+fact. The fallback therefore states the verification gap instead of inventing
+an unheld model or reconstructing a hold from missing data. Once verified round
+data arrives, its existing publication notice is displayed unchanged. Changed
+or missing final-grid data still hides the baseline while retaining that notice.
+
+The shared request hook keys responses to the selected source, season and event
+identity, marks a renewed request as loading, and ignores responses after the
+request changes. Ten regressions cover pending/rejected requests, late event
+responses, source/identity changes, same-event renewed requests, missing trusted
+context and the forbidden publication claims.
+
+[Repeated fault-injection browser evidence](fallback-browser-qa.json) records
+16 desktop/mobile cases on home and `/race/17`: delayed/missing round data and
+changed/missing grids. It pins the tested source files and original artifact,
+receipt and round-source hashes. The faults exist only in intercepted browser
+responses; official source data and timestamps remain unchanged.
+
+- [Mobile loading state](fallback-race17-slow-390.png)
+- [Mobile unavailable state](fallback-race17-missing-round-390.png)
+- [Home unavailable state](fallback-home-missing-round-390.png)
+- [Hold retained when the final grid is missing](fallback-race17-missing-grid-390.png)
+- [Before: misleading unavailable copy](fallback-before-race17-missing-round-390.png)
+
+The [probe](fallback-browser-probe.cjs) uses the already installed Playwright and
+system Chromium. Run it against a local export with the Pages base path:
+
+```sh
+QA_ORIGIN=http://127.0.0.1:8090 node projects/f1-predictions/docs/qa/grid-baseline/fallback-browser-probe.cjs
+```
+
+`QA_OUTPUT_DIR` selects the evidence directory; its default is a temporary
+directory. The probe never modifies repository source or data. Production
+build/export was verified locally; F1 website CI separately runs lint, tests
+and types and skips its production build. [The later official-source recheck](fallback-source-recheck.json)
+is separate from the immutable staging receipt.
 
 ## Separate penalty-contract repair
 

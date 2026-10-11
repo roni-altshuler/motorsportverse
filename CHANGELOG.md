@@ -19,6 +19,8 @@ Entries are grouped by the part of the monorepo they touch, because a change to
   scoring identity. Reject changed bytes, late staging and overwrite attempts.
 - Keep baseline estimates out of model accuracy, probabilities and feature
   state; document the separate penalty-input contract repair without changing it.
+- Distinguish loading and unavailable round data from publication status; remove
+  the automatic-publication promise and hide responses for an older event/source.
 
 ### F1 independent Ridge shadow audit — 2026-10-11
 

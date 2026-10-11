@@ -1,32 +1,32 @@
 {
-  "checkedAt": "2026-10-11T07:35:23.838Z",
+  "checkedAt": "2026-10-11T08:15:03.943Z",
   "clock": "2026-10-11T07:30:00Z",
   "browser": "Chromium",
   "basePath": "/motorsportverse/projects/f1",
   "reducedMotion": "reduce",
   "fullEvidence": {
-    "path": "/tmp/motorsportverse-grid-baseline/browser-qa-full.json",
-    "sha256": "d3e277dc735e16736c355d29c66c04d338a0fe368c6fba5dd91b7c18c9914b59"
+    "path": "/tmp/motorsportverse-grid-baseline/browser-qa-corrected-full.json",
+    "sha256": "4815488e680c737a5f65d1ca1d32e401ce1d7db1bbab4c3a4625a6f95bb6a7ab"
   },
   "pageErrors": [],
   "localFailures": [],
   "externalFailures": {
-    "count": 144,
+    "count": 146,
     "byDomain": {
-      "upload.wikimedia.org": 96,
-      "flagcdn.com": 48
+      "flagcdn.com": 50,
+      "upload.wikimedia.org": 96
     },
     "reasons": [
       "net::ERR_TUNNEL_CONNECTION_FAILED"
     ]
   },
   "cancelledRequests": {
-    "count": 133,
+    "count": 136,
     "resourceTypes": [
-      "fetch"
+      "fetch",
+      "image"
     ],
-    "navigationRequests": 0,
-    "context": "Unused prefetch requests cancelled during scripted route changes; recorded separately."
+    "navigationRequests": 0
   },
   "sourceLinks": [
     {
@@ -65,7 +65,7 @@
       },
       "pageErrors": 0,
       "localFailures": 0,
-      "externalFailures": 4,
+      "externalFailures": 5,
       "cancelledPrefetches": 10,
       "incompleteImages": 4
     },
@@ -128,7 +128,7 @@
       "pageErrors": 0,
       "localFailures": 0,
       "externalFailures": 31,
-      "cancelledPrefetches": 10,
+      "cancelledPrefetches": 8,
       "incompleteImages": 12
     },
     {
@@ -222,7 +222,7 @@
       "pageErrors": 0,
       "localFailures": 0,
       "externalFailures": 31,
-      "cancelledPrefetches": 9,
+      "cancelledPrefetches": 8,
       "incompleteImages": 12
     },
     {
@@ -265,8 +265,8 @@
       },
       "pageErrors": 0,
       "localFailures": 0,
-      "externalFailures": 1,
-      "cancelledPrefetches": 5,
+      "externalFailures": 2,
+      "cancelledPrefetches": 8,
       "incompleteImages": 1
     },
     {
@@ -278,7 +278,7 @@
       "pageErrors": 0,
       "localFailures": 0,
       "externalFailures": 1,
-      "cancelledPrefetches": 5,
+      "cancelledPrefetches": 6,
       "incompleteImages": 1
     },
     {
@@ -350,7 +350,7 @@
       "pageErrors": 0,
       "localFailures": 0,
       "externalFailures": 1,
-      "cancelledPrefetches": 5,
+      "cancelledPrefetches": 6,
       "incompleteImages": 1
     },
     {
@@ -362,7 +362,7 @@
       "pageErrors": 0,
       "localFailures": 0,
       "externalFailures": 1,
-      "cancelledPrefetches": 5,
+      "cancelledPrefetches": 6,
       "incompleteImages": 1
     },
     {
