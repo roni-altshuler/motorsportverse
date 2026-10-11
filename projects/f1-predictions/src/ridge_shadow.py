@@ -9,10 +9,12 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+from importlib import metadata
 import json
 import math
 import os
 from pathlib import Path
+import platform
 import subprocess
 import tempfile
 import time
@@ -31,7 +33,14 @@ from export_circuit_history import SEASON_CALENDARS
 from leakage import assert_seasons_prior_only
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+IMPLEMENTATION_ROOT = PROJECT_ROOT
 CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+IMPLEMENTATION_FILES = tuple(sorted(("src/ridge_shadow.py", "src/event_identity.py",
+                                   "src/export_circuit_history.py", "src/leakage.py")))
+IMPLEMENTATION_MANIFEST = [{"path": p, "sha256": hashlib.sha256((IMPLEMENTATION_ROOT / p).read_bytes()).hexdigest()}
+                           for p in IMPLEMENTATION_FILES]
+RUNTIME_VERSIONS = {"python": platform.python_version(),
+                    **{p: metadata.version(p) for p in ("duckdb", "numpy", "pandas", "scipy", "scikit-learn")}}
 ALPHA = 10.0  # fixed before evaluation; no tuning on the scored events
 GRID_FEATURES = ["grid_fraction"]
 WEEKEND_FEATURES = ["grid_fraction", "quali_fraction", "quali_gap", "penalty_delta"]
@@ -45,6 +54,60 @@ VARIANTS = {"ridge_grid": GRID_FEATURES, "ridge_quali_grid": WEEKEND_FEATURES,
 
 def digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+
+
+def _verify_implementation() -> None:
+    for source in IMPLEMENTATION_MANIFEST:
+        path = IMPLEMENTATION_ROOT / source["path"]
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != source["sha256"]:
+            raise ValueError(f"implementation snapshot changed: {source['path']}")
+
+
+def _implementation_provenance(commit: str) -> dict:
+    """Pin captured module bytes and show whether each matches the named commit."""
+    _verify_implementation()
+    files = []
+    for source in IMPLEMENTATION_MANIFEST:
+        try:
+            committed = subprocess.check_output(["git", "-C", str(IMPLEMENTATION_ROOT), "show",
+                                                f"{commit}:projects/f1-predictions/{source['path']}"], stderr=subprocess.DEVNULL)
+            committed_sha = hashlib.sha256(committed.encode() if isinstance(committed, str) else committed).hexdigest()
+        except subprocess.CalledProcessError:
+            committed_sha = None
+        files.append({**source, "commitSha256": committed_sha, "matchesSourceCommit": committed_sha == source["sha256"]})
+    return {"manifestSha256": digest(IMPLEMENTATION_MANIFEST), "files": files,
+            "allFilesMatchSourceCommit": all(f["matchesSourceCommit"] for f in files),
+            "runtimeVersions": dict(RUNTIME_VERSIONS)}
+
+
+def _verify_sources(sources: list[dict], root: Path) -> None:
+    if not sources:
+        raise ValueError("source snapshot manifest is required")
+    for source in sources:
+        path = (root / source["path"]).resolve()
+        if (not path.is_relative_to(root.resolve()) or not path.is_file()
+                or hashlib.sha256(path.read_bytes()).hexdigest() != source["sha256"]):
+            raise ValueError(f"source snapshot changed: {source['path']}")
+
+
+def _validate_candidate(value: dict, root: Path) -> None:
+    _verify_implementation()
+    implementation = value.get("implementation") or {}
+    captured = [{"path": f["path"], "sha256": f["sha256"]} for f in implementation.get("files", [])]
+    if (captured != IMPLEMENTATION_MANIFEST or implementation.get("manifestSha256") != digest(IMPLEMENTATION_MANIFEST)
+            or implementation.get("runtimeVersions") != RUNTIME_VERSIONS):
+        raise ValueError("implementation snapshot does not match the captured run")
+    sources = value.get("inputSources") or []
+    if value.get("sourceSnapshotSha256") != digest(sources):
+        raise ValueError("source snapshot manifest does not match the candidate")
+    _verify_sources(sources, root)
+    start = datetime.fromisoformat(str(value.get("raceStartUtc")).replace("Z", "+00:00"))
+    generated = datetime.fromisoformat(str(value.get("generatedAt")).replace("Z", "+00:00"))
+    cutoff = datetime.fromisoformat(str(value.get("inputCutoff")).replace("Z", "+00:00"))
+    now = datetime.now(timezone.utc)
+    if (any(t.tzinfo is None for t in (start, generated, cutoff))
+            or not cutoff <= generated <= now < start):
+        raise ValueError("candidate sealing is outside the pre-race input window")
 
 
 def lap_seconds(value: object) -> float | None:
@@ -136,6 +199,8 @@ def load_inputs(root: Path = PROJECT_ROOT) -> tuple[list[dict], pd.DataFrame, di
                   "storedForecastGeneratedAt": state.get("generatedAt"),
                   "qualifyingSourceCheckedAt": q_session.get("verifiedAt") or q_session.get("fetchedAt"),
                   "gridSourceCheckedAt": grid_session.get("verifiedAt") or grid_session.get("fetchedAt"),
+                  "qualifyingSourceTimestamps": {k: q_session[k] for k in ("verifiedAt", "fetchedAt") if q_session.get(k)},
+                  "gridSourceTimestamps": {k: grid_session[k] for k in ("verifiedAt", "fetchedAt") if grid_session.get(k)},
                   "qualifyingSourceUrl": q_session.get("sourceUrl"), "gridSourceUrl": grid_session.get("sourceUrl")}
         coverage.append(record)
         if not eligible:
@@ -162,9 +227,11 @@ def load_inputs(root: Path = PROJECT_ROOT) -> tuple[list[dict], pd.DataFrame, di
         labelled = bool(set(actuals) == set(q) and sorted(actuals.values()) == list(range(1, n + 1)))
         events.append({"season": year, "round": rnd, "name": info["name"], "date": info["date"],
                        "raceStartUtc": info["raceStartUtc"], "rows": rows, "labelled": labelled, "coverage": record})
+    source_commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
     audit = {
         "season": year, "historicalActualRows": len(historical),
-        "sourceCommit": subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
+        "sourceCommit": source_commit,
+        "implementation": _implementation_provenance(source_commit),
         "historicalEvents": int(historical.groupby(["season", "round"]).ngroups),
         "historicalDbColumns": ["season", "round", "driver", "actual_position", "source"],
         "historyPolicy": "actual rows only; known-classification normalization; historical team unknown and unused",
@@ -253,7 +320,7 @@ def evaluate(events: list[dict], history: pd.DataFrame, min_train_events: int = 
                          "winnerHits": sum(m["winnerHit"] for m in available)}
     return {"label": "retrospective chronological shadow backtest", "alpha": ALPHA,
             "minTrainEvents": min_train_events, "foldPolicy": "expanding earlier events only; all drivers of an event held out together",
-            "featureMissingness": "training-fold median encoding with explicit missingness indicators; no factual field is filled",
+            "featureMissingness": "training-fold median encoding; indicators only for columns missing in training; target-only missingness has no indicator; no factual field is filled",
             "variants": VARIANTS, "rounds": results, "summary": summary,
             "storedModelLimitation": "stored forecasts include retrospective regenerations; immutable pre-race input cutoffs are not established",
             "promotion": {"promote": False,
@@ -272,15 +339,22 @@ def candidate(event: dict, events: list[dict], history: pd.DataFrame, audit: dic
     if now.tzinfo is None or now >= start:
         raise ValueError("candidate must be generated before verified race start")
     for field in ("qualifyingSourceCheckedAt", "gridSourceCheckedAt"):
-        checked = datetime.fromisoformat(str(event["coverage"][field]).replace("Z", "+00:00"))
-        if checked.tzinfo is None or checked > now:
+        stamps = event["coverage"].get(field.replace("CheckedAt", "Timestamps"))
+        stamps = stamps if stamps is not None else {"checkedAt": event["coverage"].get(field)}
+        if not stamps:
             raise ValueError("candidate requires verified source timestamps before its cutoff")
+        for stamp in stamps.values():
+            checked = datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))
+            if checked.tzinfo is None or checked > now:
+                raise ValueError("candidate requires every source timestamp before its cutoff")
     q_url, g_url = event["coverage"]["qualifyingSourceUrl"], event["coverage"]["gridSourceUrl"]
     prefix = f"https://www.formula1.com/en/results/{key[0]}/races/"
     if (not q_url.startswith(prefix) or not q_url.endswith("/qualifying")
             or not g_url.endswith("/starting-grid")
             or q_url.removesuffix("/qualifying") != g_url.removesuffix("/starting-grid")):
         raise ValueError("candidate requires matching verified official qualifying and post-penalty grid sources")
+    _verify_implementation()
+    _verify_sources(audit.get("sources") or [], PROJECT_ROOT)
     earlier = [e for e in events if e["labelled"] and (e["season"], e["round"]) < key]
     train = pd.concat([features_for_event(e, history) for e in earlier], ignore_index=True)
     assert_seasons_prior_only(train.to_dict("records"), *key, label="candidate training")
@@ -304,36 +378,63 @@ def candidate(event: dict, events: list[dict], history: pd.DataFrame, audit: dic
             if pd.notna(value) and pd.notna(low) and (value < low or value > high):
                 range_warnings.append({"driver": driver, "feature": column, "value": float(value),
                                        "trainMin": float(low), "trainMax": float(high)})
-    return {"status": "shadow_only", "season": key[0], "round": key[1], "name": event["name"],
+    value = {"status": "shadow_only", "season": key[0], "round": key[1], "name": event["name"],
+            "raceStartUtc": event["raceStartUtc"],
             "generatedAt": finished.isoformat().replace("+00:00", "Z"), "inputCutoff": now.isoformat().replace("+00:00", "Z"),
             "sourceCommit": audit["sourceCommit"],
             "sourceObservedAt": event["coverage"], "sourceSnapshotSha256": digest(audit["sources"]),
+            "inputSources": [dict(s) for s in audit["sources"]],
             "codeSha256": CODE_SHA256,
+            "codeSha256Scope": "ridge_shadow.py only; implementation manifest pins all four modules",
+            "implementation": audit["implementation"],
             "modelSha256": digest(model_state), "modelState": model_state,
             "classification": [{"driver": d, "position": ranks[d], "score": float(s),
                                 "officialGridPosition": int(round(g * len(target))),
                                 "qualifyingPosition": int(round(q * len(target)))}
                                for d, s, g, q in zip(target.driver, scores, target.grid_fraction, target.quali_fraction)],
             "inputRangeWarnings": range_warnings, "scoreKind": "unbounded regressed finishing fraction; ranking score, not probability",
+            "missingValueHandling": {
+                "method": "training-fold median; indicators only for columns missing during training",
+                "targetOnlyMissingness": [{"driver": row["driver"], "feature": column}
+                                         for i, column in enumerate(HISTORY_FEATURES) if i not in imputer.indicator_.features_
+                                         for row in target.to_dict("records") if pd.isna(row[column])],
+                "limitation": "target-only missing values are median-imputed without a missingness indicator; model unchanged",
+            },
             "probabilities": None, "publicationHoldReleased": False,
             "limitation": "experimental shadow; historical weather/sprint availability absent; no accuracy or live publication claim"}
+    _validate_candidate(value, PROJECT_ROOT)
+    return value
 
 
 def write_artifact(path: Path, value: dict, root: Path = PROJECT_ROOT) -> None:
     if not path.resolve().is_relative_to((root / "reports/ridge-shadow").resolve()):
         raise ValueError("shadow artifacts must stay in reports/ridge-shadow; serving/feature state is forbidden")
-    if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != CODE_SHA256:
-        raise ValueError("model implementation changed during generation")
+    _verify_implementation()
+    if value.get("status") == "shadow_only":
+        _validate_candidate(value, root)
+    elif (value.get("coverage") or {}).get("sources"):
+        _verify_sources(value["coverage"]["sources"], root)
     encoded = json.dumps(value, indent=2, allow_nan=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
+    created = False
     try:
         with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, delete=False) as file:
             temporary = Path(file.name)
             file.write(encoded)
             file.flush()
             os.fsync(file.fileno())
+        _verify_implementation()
+        if value.get("status") == "shadow_only":
+            _validate_candidate(value, root)
         os.link(temporary, path)  # complete content, atomic create, never overwrite
+        created = True
+        if value.get("status") == "shadow_only":
+            _validate_candidate(value, root)
+    except Exception:
+        if created:
+            path.unlink(missing_ok=True)  # reject a seal that crossed the deadline/link boundary
+        raise
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
