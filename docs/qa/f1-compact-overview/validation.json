@@ -1,0 +1,161 @@
+{
+  "checkedAt": "2026-10-12T13:08:20.785614+00:00",
+  "base": "fd1f6104939665dc1e807e6ce1ea484f82b11afc",
+  "scope": "F1 publication-held race overview only; presentation, existing panel disclosure and result-session ordering.",
+  "tests": {
+    "summary": "300 passed, 23 suites",
+    "exitCode": 0,
+    "logSha256": "382cefd0851f62993b4f48878d573f61ebbbd4dfd3a9077cf5c0f3d16dd590ff"
+  },
+  "types": {
+    "exitCode": 0,
+    "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "lint": {
+    "exitCode": 0,
+    "errors": 0,
+    "existingWarning": "AccuracyDashboardPage.tsx:496 no-location-assign-relative-destination; file unchanged",
+    "logSha256": "abfb13f7122571e306517279d90cae2939f025f04de398df5929b7c5e8314e22"
+  },
+  "build": {
+    "exitCode": 0,
+    "command": "next build --webpack",
+    "runtime": "Next.js 16.3.8",
+    "prebuildAssetOrDataGeneratorsRun": false,
+    "processLocalDiskCacheDisabled": true,
+    "logSha256": "16aea5edadb78a2052d9635111323ca70fe88b481506c094658d3b8a35affdb8"
+  },
+  "runtimeLimit": "Private published Next 16.3.8 package omits source-map files to fit disk; published executable JavaScript and native SWC are unchanged. Dependencies reused from saved environment without lockfile/config edits.",
+  "browser": {
+    "developmentCases": 10,
+    "productionCases": 10,
+    "normalMotion": true,
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 320,
+        "height": 780
+      }
+    ],
+    "browserVersion": "151.0.7922.173",
+    "keyboardCyclesPerViewport": 3,
+    "repeatedDesktopNavigationCycles": 2,
+    "interruptedNavigationDelayMs": 2000,
+    "newDataOrModelQualityClaim": false,
+    "limits": [
+      "Chromium/local exports only; no hosted deployment claim.",
+      "Existing external flag-image failures remain; palette is dark-only.",
+      "Historical no-result and transport-failure responses are explicitly simulated, never edits to public inputs."
+    ]
+  },
+  "layout": [
+    {
+      "device": "desktop",
+      "beforeFullRaceResultTableTop": 7795.984375,
+      "afterFullRaceResultTableTop": 841.453125,
+      "afterObservedLeadersTop": 376.453125,
+      "afterOverviewBottom": 611.453125,
+      "horizontalOverflow": false
+    },
+    {
+      "device": "mobile",
+      "beforeFullRaceResultTableTop": 8367.328125,
+      "afterFullRaceResultTableTop": 1009.640625,
+      "afterObservedLeadersTop": 362.859375,
+      "afterOverviewBottom": 779.640625,
+      "horizontalOverflow": false
+    },
+    {
+      "device": "narrow",
+      "beforeFullRaceResultTableTop": 9084.671875,
+      "afterFullRaceResultTableTop": 1037.640625,
+      "afterObservedLeadersTop": 362.859375,
+      "afterOverviewBottom": 779.640625,
+      "horizontalOverflow": false
+    }
+  ],
+  "preservation": {
+    "previousCleanWorktrees": [
+      {
+        "path": "/workspace/motorsportverse",
+        "head": "3264ad43627ac7b94d6e3621e4c629a524e56a42",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-artifact-freshness",
+        "head": "87dd5b1744db9fd1b2c96a2cc4a7ee8848eb2811",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-circuit-explorer",
+        "head": "5041fd2f7b2cd2fe27fae4ba789ebce43431da8c",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-energy-sandbox",
+        "head": "89c73e0808d48311f9254b6f66047cb97909a38d",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-event-identity",
+        "head": "2029bc1a866d076f7e6375116d0e33c8a0e9de18",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-fastf1-workspace",
+        "head": "f30cf96df922e3e57904da4f14cf47d5689baf3e",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-grid-baseline",
+        "head": "3149da725315b90d76588ca68b688603f1eeacbf",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-hydration-baseline",
+        "head": "2a9152e9abe519cfbe51fbdd0d0eca2fa6e9e9a7",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-lap-comparison",
+        "head": "73d44ddc01ec4454d745e15e31fcc8b0946f9325",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-next-maintenance",
+        "head": "acf33db61bc176c55086bc58502da8fc2bb87e1e",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-ridge-shadow",
+        "head": "b282974766ecbd8661ae0119617bddb192200f16",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-starting-grid-shadow",
+        "head": "b40bb93e0e59c4d886d75aeaad8fad1f251b6370",
+        "status": ""
+      },
+      {
+        "path": "/workspace/motorsportverse-static-backgrounds",
+        "head": "16d53b06e50c9dd78f7335bd519b77b148f7bf63",
+        "status": ""
+      }
+    ],
+    "publicModelDataProviderAndPaletteEdits": false,
+    "existingGuardAndSharedBackgroundEdits": false,
+    "laptopWorkTransferred": false
+  },
+  "testedSourceHashes": {
+    "projects/f1-predictions/website/src/components/race-detail/PublicationHoldPage.tsx": "41681c496618f794360db9e9b1d58368ffc6c33a4a34f7e80d5af2b12fe2072d",
+    "projects/f1-predictions/website/src/components/race-detail/HeldRaceOverview.tsx": "9b406b0ef7fd3144cd55d6f6c6001e84897b294e07fa3e7f5eb237fb628988f1",
+    "projects/f1-predictions/website/src/__tests__/heldRaceOverview.test.tsx": "4155ddb1e53529c73eb02fb9a175b343edd7d7ad309f97cc2c43c89074b6c93e"
+  }
+}

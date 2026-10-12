@@ -1,0 +1,150 @@
+{
+  "mode": "production",
+  "base": "http://127.0.0.1:3362",
+  "browser": "Chromium",
+  "sourceBase": "fd1f6104939665dc1e807e6ce1ea484f82b11afc",
+  "cases": [
+    {
+      "name": "overview-desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 1440,
+      "observedLeadersTop": 376.453125,
+      "keyboardToggleCycles": 3,
+      "focus": {
+        "width": "1px",
+        "style": "solid"
+      },
+      "fullResultAnchorHeadingTop": 209.453125
+    },
+    {
+      "name": "overview-mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "observedLeadersTop": 362.859375,
+      "keyboardToggleCycles": 3,
+      "focus": {
+        "width": "1px",
+        "style": "solid"
+      },
+      "fullResultAnchorHeadingTop": 299.640625
+    },
+    {
+      "name": "overview-narrow",
+      "viewport": {
+        "width": 320,
+        "height": 780
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 320,
+      "observedLeadersTop": 362.859375,
+      "keyboardToggleCycles": 3,
+      "focus": {
+        "width": "1px",
+        "style": "solid"
+      },
+      "fullResultAnchorHeadingTop": 320.640625
+    },
+    {
+      "name": "intentional-profile-and-circuit-navigation",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 1440,
+      "driverProfile": "/driver/VER",
+      "circuitWorkspace": "/circuits",
+      "backNavigation": true
+    },
+    {
+      "name": "interrupted-and-repeated-race-navigation",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 1440,
+      "delayedRound16": true,
+      "lateResponseDidNotReplaceRound17": true,
+      "repeatedCycles": 2
+    },
+    {
+      "name": "loading-round-data",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "simulatedDelayMs": 1500,
+      "resultsHiddenUntilChecked": true,
+      "recovered": true
+    },
+    {
+      "name": "http-error",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "simulatedResponseStatus": 404,
+      "verifiedStatusNotInferred": true,
+      "refreshRecovered": true
+    },
+    {
+      "name": "invalid-json",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "simulatedResponseStatus": 200,
+      "verifiedStatusNotInferred": true,
+      "refreshRecovered": true
+    },
+    {
+      "name": "historical-no-result-snapshot",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "source": "Existing immutable pre-result fixture; not current availability",
+      "baselineNotPresentedAsResult": true
+    },
+    {
+      "name": "off-calendar-round",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "passed": true,
+      "errors": [],
+      "scrollWidth": 390,
+      "offCalendarRound": 24,
+      "inventedEventOrForecast": false
+    }
+  ],
+  "browserVersion": "151.0.7922.173",
+  "checkedAt": "2026-10-12T13:01:59.258Z"
+}

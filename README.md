@@ -22,6 +22,12 @@ and chart views, with no ambient canvas, looping hero sweep or animated card/but
 backdrop. [Scope and browser evidence](docs/qa/static-backgrounds/README.md) record
 what changed and the existing dark-only palette limitation.
 
+F1 rounds with a publication hold use a compact, results-first overview: recorded
+leaders and driver profiles, a separate sealed grid baseline, and the model's
+withheld/unavailable status. Sources and the full review record are available on
+demand. [Scope and browser evidence](docs/qa/f1-compact-overview/README.md) cover
+the overview, keyboard controls and loading/error states.
+
 ## Vision
 
 The [October quality roadmap](docs/QUALITY_ROADMAP_2026-10.md) records the next
