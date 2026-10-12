@@ -14,7 +14,8 @@
     "fix": "Static userSpaceOnUse gradient uses actual endpoints in all eleven canonical copies",
     "tests": "Horizontal and vertical zero-area path regression cases in all eleven apps",
     "beforeBrowser": "before-about-browser.json",
-    "afterBrowser": "after-about-browser.json"
+    "afterBrowser": "after-about-browser.json",
+    "screenshotCaptureMode": "Development server: before at previous 41b6f3f head, after using the corrected source committed at 5616d4a. About also passes final optimized-export route checks."
   },
   "browserProbe": {
     "horizontalOverflowFails": true,

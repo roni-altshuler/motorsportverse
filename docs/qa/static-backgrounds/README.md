@@ -46,9 +46,12 @@ after. Both requested attributes were checked; this is not a claim of functional
 light-theme support. Color tokens were preserved. Existing external flag-image
 failures are visible before and after, and remain outside this removal scope.
 
-Before captures use the exact-base Next development server; after captures use
-optimized static exports. Development chrome and live countdown times differ.
-The captures are real pixels with running animations, not frozen/retouched images.
+The original home-page before captures use the exact-base Next development
+server; their after captures use optimized static exports. The supplementary
+About comparisons use development servers at the prior `41b6f3f` head and the
+corrected connector source; the final 84-case export run also checks About.
+Development chrome and live countdown times differ. These are real browser
+pixels, not frozen or retouched images.
 
 | Page | Before | After |
 | --- | --- | --- |
