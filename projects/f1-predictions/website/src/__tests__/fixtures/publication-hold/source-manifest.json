@@ -1,0 +1,29 @@
+{
+  "purpose": "Immutable publication UI test inputs copied from committed snapshots; no production/data/provider change or new historical result.",
+  "files": {
+    "singapore-no-result.json": {
+      "sourceCommit": "7410b464dd2576d7518fbc153eef0c075f69675a",
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_17.json",
+      "sha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c"
+    },
+    "singapore-result-available.json": {
+      "sourceCommit": "db06965c3631ecac1c7e7a7a6061e26f511b6bd0",
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_17.json",
+      "sha256": "83ac1c74c7d76b884f1b65d8825a2049a6133f5833917bb126b523a5992e058c"
+    },
+    "sepang-result-without-forecast.json": {
+      "sourceCommit": "db06965c3631ecac1c7e7a7a6061e26f511b6bd0",
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_16.json",
+      "sha256": "dc1ff0624e8dbdc75730076575a5391cdf915a7223462d02394fab32c60e4fd5"
+    }
+  },
+  "calendar": {
+    "sourceCommit": "db06965c3631ecac1c7e7a7a6061e26f511b6bd0",
+    "sourcePath": "projects/f1-predictions/website/public/data/season.json",
+    "sourceSha256": "2fba509a5f3351a39b5a50bd8d2f834a6ad1e33424a313c310fcebfe176ae285",
+    "extractedRounds": [
+      16,
+      17
+    ]
+  }
+}

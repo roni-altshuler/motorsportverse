@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-12T09:17:06.771378+00:00",
+  "previousHead": "41b6f3f194333f398c984f7dfb24a38ab5fc58f5",
+  "publicationTest": {
+    "change": "Immutable committed snapshots cover held forecast before and after results; hold/exclusion/grid/time assertions retained. Production inputs unchanged.",
+    "fixtureManifest": "../../../projects/f1-predictions/website/src/__tests__/fixtures/publication-hold/source-manifest.json",
+    "previousExpected": "No verified race result",
+    "previousActual": "Verified classification available",
+    "exactBaseReproduction": "baseline-health.json",
+    "currentF1FullSuite": "294 passed"
+  },
+  "connector": {
+    "defect": "objectBoundingBox gradients do not paint on zero-height or zero-width paths",
+    "fix": "Static userSpaceOnUse gradient uses actual endpoints in all eleven canonical copies",
+    "tests": "Horizontal and vertical zero-area path regression cases in all eleven apps",
+    "beforeBrowser": "before-about-browser.json",
+    "afterBrowser": "after-about-browser.json"
+  },
+  "browserProbe": {
+    "horizontalOverflowFails": true,
+    "cases": 84,
+    "interactions": 13,
+    "addedRoute": "F1 /about/ on desktop/mobile and both forced theme attributes"
+  },
+  "unchangedBackendBlocker": {
+    "oldHeadFailedTests": 20,
+    "job": "https://github.com/roni-altshuler/motorsportverse/actions/runs/38223869064/job/114726471250",
+    "scope": "Backend test/model/data repair not included; exact new-head CI will be evaluated independently."
+  }
+}

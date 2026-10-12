@@ -20,7 +20,7 @@ const server=http.createServer((request,response)=>{
  const representative=['hub','f1-predictions','f2-predictions'].includes(site);
  const routes=['/'];
  if(site==='hub')routes.push('/projects/','/docs/');
- if(site==='f1-predictions')routes.push('/calendar/','/standings/','/race/17/','/circuits/','/compare/laps/');
+ if(site==='f1-predictions')routes.push('/calendar/','/standings/','/race/17/','/circuits/','/compare/laps/','/about/');
  if(site==='f2-predictions')routes.push('/calendar/','/about/');
  for(const route of routes){
   for(const [device,width,height] of [['desktop',1440,900],['mobile',390,844]]){
@@ -47,7 +47,7 @@ const server=http.createServer((request,response)=>{
      const short=site.replace('-predictions','');const shot=`after-${short}-${device}-${theme}.png`;
      await page.screenshot({path:path.join(output,'screenshots',shot)});result.screenshot='screenshots/'+shot;
     }
-    if(response.status()!==200||sample.decorativeCanvases||sample.heroRibbons||banned.length||paintsAfter||errors.length)result.failed=true;
+    if(response.status()!==200||sample.decorativeCanvases||sample.heroRibbons||banned.length||paintsAfter||errors.length||sample.scrollWidth>sample.width+1)result.failed=true;
     report.cases.push(result);
     if(route==='/'&&theme==='dark'){
      if(site==='hub'&&device==='desktop'){

@@ -52,8 +52,15 @@ export const AnimatedBeam = forwardRef<SVGSVGElement, AnimatedBeamProps>(functio
   ref,
 ) {
   const id = useId();
-  const [pathD, setPathD] = useState("");
-  const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
+  const [geometry, setGeometry] = useState({
+    path: "",
+    width: 0,
+    height: 0,
+    startX: 0,
+    startY: 0,
+    endX: 0,
+    endY: 0,
+  });
 
   useEffect(() => {
     const updatePath = () => {
@@ -63,7 +70,6 @@ export const AnimatedBeam = forwardRef<SVGSVGElement, AnimatedBeamProps>(functio
       const rectB = toRef.current.getBoundingClientRect();
       const svgWidth = containerRect.width;
       const svgHeight = containerRect.height;
-      setSvgDimensions({ width: svgWidth, height: svgHeight });
 
       const startX = rectA.left - containerRect.left + rectA.width / 2 + startXOffset;
       const startY = rectA.top - containerRect.top + rectA.height / 2 + startYOffset;
@@ -72,7 +78,7 @@ export const AnimatedBeam = forwardRef<SVGSVGElement, AnimatedBeamProps>(functio
 
       const controlY = startY - curvature;
       const d = `M ${startX},${startY} Q ${(startX + endX) / 2},${controlY} ${endX},${endY}`;
-      setPathD(d);
+      setGeometry({ path: d, width: svgWidth, height: svgHeight, startX, startY, endX, endY });
     };
 
     const ro = new ResizeObserver(updatePath);
@@ -84,22 +90,22 @@ export const AnimatedBeam = forwardRef<SVGSVGElement, AnimatedBeamProps>(functio
   return (
     <svg
       ref={ref}
-      width={svgDimensions.width}
-      height={svgDimensions.height}
+      width={geometry.width}
+      height={geometry.height}
       xmlns="http://www.w3.org/2000/svg"
       className={cn("pointer-events-none absolute left-0 top-0 transform-gpu stroke-2", className)}
-      viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
+      viewBox={`0 0 ${geometry.width} ${geometry.height}`}
       aria-hidden
     >
       <path
-        d={pathD}
+        d={geometry.path}
         stroke={pathColor}
         strokeWidth={pathWidth}
         strokeOpacity={pathOpacity}
         strokeLinecap="round"
       />
       <path
-        d={pathD}
+        d={geometry.path}
         strokeWidth={pathWidth}
         stroke={`url(#${id})`}
         strokeOpacity="1"
@@ -108,11 +114,11 @@ export const AnimatedBeam = forwardRef<SVGSVGElement, AnimatedBeamProps>(functio
       <defs>
         <linearGradient
           id={id}
-          gradientUnits="objectBoundingBox"
-          x1={reverse ? "100%" : "0%"}
-          x2={reverse ? "0%" : "100%"}
-          y1="0%"
-          y2="0%"
+          gradientUnits="userSpaceOnUse"
+          x1={reverse ? geometry.endX : geometry.startX}
+          y1={reverse ? geometry.endY : geometry.startY}
+          x2={reverse ? geometry.startX : geometry.endX}
+          y2={reverse ? geometry.startY : geometry.endY}
         >
           <stop stopColor={gradientStartColor} />
           <stop offset="100%" stopColor={gradientStopColor} />
