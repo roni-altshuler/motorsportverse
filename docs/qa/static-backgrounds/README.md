@@ -36,9 +36,19 @@ records source commits and hashes; public inputs are unchanged. Static connector
 use actual endpoint coordinates so straight paths retain their colored stroke;
 horizontal and vertical regression tests pass on all 11 apps. The browser probe
 fails on document overflow. [Review corrections](review-corrections.json) include
-real desktop/mobile About-page comparisons. The prior head's backend CI had 20
-failures in unchanged model/data tests; this UI correction does not repair those
-failures. New-head CI remains a separate required check.
+real desktop/mobile About-page comparisons. The prior head's backend CI had 20 failures in temporal tests that copied current
+post-result inputs while fixing the clock before the race. The exact base
+reproduced all 20 (18 grid/ridge cases and two event-identity cases). The authorized
+[backend test-input correction](backend-fixture-isolation.json) uses twelve exact
+historical files from the immutable seal's source commit, preserving all guards
+and assertions. The separately saved post-result state retains legitimate actuals
+while clearing held predictions and grades. All 88 affected tests pass; the full
+local backend suite has **1,243 passed and 7 skipped**, with lint green. Its
+missing-PyYAML collection skip was subsequently resolved; all **six workflow
+tests pass independently**, leaving the six ordinary data-dependent skips. That saved
+Python 3.12 runtime differs from CI's Python 3.11 dependency pins; exact-head CI
+must be assessed independently. No production module, history or public input
+was changed.
 
 **Theme limit:** current main hard-codes a dark palette and has no working light
 palette/switch. Forcing `data-theme="light"` produces the same palette before and

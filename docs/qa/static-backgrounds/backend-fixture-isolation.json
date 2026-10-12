@@ -1,0 +1,107 @@
+{
+  "reviewedPreviousHead": "b1691fbd3eb44b2e9e18ddf71d5030c413c872df",
+  "historicalSourceCommit": "5e2aa4763d79bcba782e19bc84c18ad4975092ad",
+  "sealSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+  "round17Sha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c",
+  "seasonSha256": "1b0fccec6c44df09692ac38a306ee8a156e4ccfd40c4b164321690fabdd16110",
+  "inputFiles": 12,
+  "uiNoResultSnapshotExactMatch": true,
+  "baseReproduction": {
+    "base": "db06965c3631ecac1c7e7a7a6061e26f511b6bd0",
+    "gridAndRidge": "18 failed, 21 passed",
+    "eventIdentity": "2 selected tests failed",
+    "logs": {
+      "motorsportverse-pr24-backend-base.log": "d5b4acb5831b5fec22ccd3f373b0ad1c7058b30cb5ed9c91150856aec348fa3e",
+      "motorsportverse-pr24-event-base.log": "a76348dae46fb0b7f13d48418db89474f0a7eb0ea2d672149c992af59c85fbb8"
+    }
+  },
+  "rootCause": {
+    "eventIdentity": "Repair-era assertions read current round17 actuals, circuit winners and season completion rather than their original snapshot. Tracker correctly retains legitimate actuals while withholding predictions and grades.",
+    "grid": "The clock is fixed before the race but current round17 has an outcome and no longer matches the immutable seal input hash; staging correctly rejects it before reaching the intended late-link assertion.",
+    "ridge": "The copied target already has an outcome, so the earliest no-hindsight guard correctly rejects before later source/deadline/mutation checks."
+  },
+  "correction": "Only test readers and provenance-pinned historical fixtures changed. No ad-hoc removal of actuals, altered guard/error messages, assertion suppression, production/module/history/public-input change.",
+  "postResultCoverage": "Held forecasts retain legitimate actuals, clear old predictions and remove the accuracy grade.",
+  "previousExactHeadCI": {
+    "checks": 25,
+    "success": 24,
+    "failure": 1,
+    "job": "https://github.com/roni-altshuler/motorsportverse/actions/runs/38229525713/job/114745277616",
+    "summary": "20 failed, 1228 passed, 6 skipped"
+  },
+  "localAffectedSuite": {
+    "testsPassed": 88,
+    "exitCode": 0,
+    "logSha256": "31d4f6ed061187bd4bcaecd24059371e79ed220f567109eaef744423f52fcf35"
+  },
+  "localFullSuite": {
+    "exitCode": 0,
+    "summary": "1243 passed, 7 skipped, 623 warnings in 230.24s",
+    "logSha256": "88d535a1e9399e2e7fdc3e744957761796e5f367f0a809512278443c88e4bd6d",
+    "junitSha256": "f3c98bdf47f03193892840a8f3fbef5306e4489d2d7bac5745a72c7d02d7fd5d",
+    "runtimeVersions": {
+      "python": "3.12.14",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "duckdb": "1.5.6",
+      "pytest": "9.1.1",
+      "xgboost": "3.4.1",
+      "fastf1": "3.8.3",
+      "pyarrow": "18.1.0",
+      "lightgbm": "4.5.0",
+      "ruff": "0.16.1"
+    },
+    "skips": [
+      {
+        "class": "",
+        "test": "tests.test_workflows",
+        "reason": "collection skipped"
+      },
+      {
+        "class": "tests.test_predictions_sanity",
+        "test": "test_predicted_times_not_all_identical[round_16.json]",
+        "reason": "no classification"
+      },
+      {
+        "class": "tests.test_predictions_sanity",
+        "test": "test_predicted_times_not_all_identical[round_17.json]",
+        "reason": "no classification"
+      },
+      {
+        "class": "tests.test_predictions_sanity",
+        "test": "test_win_probabilities_sum_to_about_100[round_16.json]",
+        "reason": "winProbability not reported"
+      },
+      {
+        "class": "tests.test_predictions_sanity",
+        "test": "test_win_probabilities_sum_to_about_100[round_17.json]",
+        "reason": "winProbability not reported"
+      },
+      {
+        "class": "tests.test_smoke_e2e",
+        "test": "test_csv_to_value_round_trip",
+        "reason": "round_06 probabilities not generated yet"
+      },
+      {
+        "class": "tests.test_website_data_schema",
+        "test": "test_ranker_candidate_json_has_expected_shape[NOTSET]",
+        "reason": "got empty parameter set for (candidate_file)"
+      }
+    ],
+    "limit": "Saved Python 3.12 environment differs from declared CI Python 3.11 dependency pins. Exact-head CI is required independently.",
+    "resolvedCollectionSkip": {
+      "cause": "PyYAML was absent in the saved runtime during the initial full run.",
+      "followup": "Installed only in private validation runtime; all six workflow tests passed independently against exact-base YAML/scripts.",
+      "summary": "6 passed",
+      "exitCode": 0,
+      "logSha256": "fac8aaadc73a18f429accef33900b10cfd78bd95c7687ad6e7c91bc437aa1b8d"
+    }
+  },
+  "checkedAt": "2026-10-12T09:47:20.371830+00:00",
+  "localLint": {
+    "exitCode": 0,
+    "logSha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  }
+}

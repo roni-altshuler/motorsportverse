@@ -23,9 +23,10 @@
     "interactions": 13,
     "addedRoute": "F1 /about/ on desktop/mobile and both forced theme attributes"
   },
-  "unchangedBackendBlocker": {
+  "historicalBackendFailure": {
     "oldHeadFailedTests": 20,
     "job": "https://github.com/roni-altshuler/motorsportverse/actions/runs/38223869064/job/114726471250",
-    "scope": "Backend test/model/data repair not included; exact new-head CI will be evaluated independently."
-  }
+    "scope": "Original failure observation; the subsequent authorized test-only isolation is documented in backend-fixture-isolation.json."
+  },
+  "backendTestInputFollowup": "backend-fixture-isolation.json"
 }
