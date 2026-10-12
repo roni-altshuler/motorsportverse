@@ -14,6 +14,7 @@ import gp_weekend
 import export_website_data as ew
 from advanced_models import SeasonTracker
 from event_identity import fastf1_matches, jolpica_matches
+from tests.publication_inputs import REPAIR_SNAPSHOT, repair_input, result_available_input
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "website/public/data"
@@ -115,8 +116,24 @@ def test_withdrawn_snapshot_clears_a_previously_graded_tracker_row(tmp_path, mon
     tracker.data = {"rounds": {"17": {"predicted": {"VER": {"position": 1}},
                                       "actual": {"VER": {"position": 1}}}},
                     "accuracy": {"17": {"accuracy_pct": 100}}}
-    tracker.sync_from_round_file(17, json.loads((DATA / "rounds/round_17.json").read_text()))
+    tracker.sync_from_round_file(17, json.loads(repair_input("website/public/data/rounds/round_17.json").read_text()))
     assert tracker.data["rounds"]["17"] == {"predicted": {}, "actual": {}}
+    assert "17" not in tracker.data["accuracy"]
+
+
+def test_held_forecast_after_results_keeps_actuals_without_regrading(tmp_path, monkeypatch):
+    monkeypatch.setattr(SeasonTracker, "TRACKER_FILE", str(tmp_path / "tracker.json"))
+    tracker = SeasonTracker()
+    tracker.data = {"rounds": {"17": {"predicted": {"VER": {"position": 1}},
+                                      "actual": {"VER": {"position": 1}}}},
+                    "accuracy": {"17": {"accuracy_pct": 100}}}
+    state = json.loads(result_available_input().read_text())
+    assert state["publicationHold"] and state["actualResults"]
+    tracker.sync_from_round_file(17, state)
+    assert tracker.data["rounds"]["17"]["predicted"] == {}
+    assert tracker.data["rounds"]["17"]["actual"] == {
+        driver: {"position": position} for driver, position in state["actualResults"].items()
+    }
     assert "17" not in tracker.data["accuracy"]
 
 
@@ -362,28 +379,28 @@ def test_preserved_forecasts_never_become_pre_sepang_predictions():
     for path, stored in originals.items():
         assert hashlib.sha256(stored["content"].encode()).hexdigest() == stored["sha256"], path
     for rnd in range(16, 23):
-        assert not (ROOT / f"models/registry/2026_round_{rnd:02d}").exists()
+        assert not (REPAIR_SNAPSHOT / f"models/registry/2026_round_{rnd:02d}").exists()
     for rnd in range(17, 23):
         assert f"models/registry/2026_round_{rnd:02d}/metadata.json" in originals
     for rnd in range(18, 24):
-        current = json.loads((DATA / f"rounds/round_{rnd:02}.json").read_text())
+        current = json.loads(repair_input(f"website/public/data/rounds/round_{rnd:02}.json").read_text())
         old = json.loads(originals[f"website/public/data/rounds/round_{rnd-1:02}.json"]["content"])
         assert current["classification"] == old["classification"]
         assert current["generatedAt"] == old["generatedAt"]
         assert current["gpKey"] == old["gpKey"]
-    singapore = json.loads((DATA / "rounds/round_17.json").read_text())
-    sepang = json.loads((DATA / "rounds/round_16.json").read_text())
+    singapore = json.loads(repair_input("website/public/data/rounds/round_17.json").read_text())
+    sepang = json.loads(repair_input("website/public/data/rounds/round_16.json").read_text())
     assert not singapore.get("actualResults") and not singapore["classification"]
     assert not sepang["classification"] and "accuracy" not in sepang
     assert singapore["publicationHold"]["originalForecast"]["generatedAt"] == "2026-10-10T10:22:59Z"
-    assert "16" not in json.loads((ROOT / "predicted_results_2026.json").read_text())
-    report = json.loads((DATA / "gp_accuracy_report.json").read_text())
+    assert "16" not in json.loads(repair_input("predicted_results_2026.json").read_text())
+    report = json.loads(repair_input("website/public/data/gp_accuracy_report.json").read_text())
     assert report["overallAccuracy"]["roundsWithActual"] == 15
     assert all(r["round"] < 16 for r in report["gpReports"])
-    history = json.loads((DATA / "circuit_history.json").read_text())
+    history = json.loads(repair_input("website/public/data/circuit_history.json").read_text())
     assert all(w["season"] < 2026 for w in history["Singapore"]["pastWinners"])
     assert history["Bahrain"]["poleToWinPct"] is None
-    season = json.loads((DATA / "season.json").read_text())
+    season = json.loads(repair_input("website/public/data/season.json").read_text())
     assert season["totalRounds"] == 23
     assert len(season["completedRounds"]) == 16
     assert 16 not in season["forecastRounds"] and 17 not in season["forecastRounds"]

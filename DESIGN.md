@@ -289,31 +289,23 @@ scroll-jacking anywhere.
 The reason is the product: a page of probabilities that animates on arrival looks
 like it is performing rather than reporting.
 
-The hub is allowed reveals, marquees and card tilt, subject to two hard rules:
+Decorative animated backgrounds are prohibited on the hub and every series site.
+Use solid theme-token surfaces, stationary accent borders, static photography and
+static diagrams. Remove their renderers, subscriptions and looping keyframes;
+pausing them for reduced motion or hiding a running canvas is insufficient.
+The former SpeedField canvas, ambient preference/dial, breathing hero layers,
+circuit-ribbon sweeps and shared shimmer/orbit/marquee effects have been removed.
+Legacy component names/props remain compatible, with static rendering.
 
-1. **`prefers-reduced-motion: reduce` collapses every duration globally.** There
-   is a block in each `globals.css` doing this; do not opt a component out.
-2. **Scroll-reveal must never leave content permanently invisible.** Use the
-   failsafe `useReveal` pattern — if the observer never fires, the content is
-   visible anyway. A reveal that fails closed is a blank page in the wild.
+User-operated circuit exploration, replay, charts, keyboard navigation and
+ordinary focus/hover/press feedback remain supported. Useful loading/freshness
+indicators and finite entrances respect `prefers-reduced-motion`. Scroll-reveal
+must use the failsafe `useReveal` pattern so content stays visible if its observer
+never fires.
 
-**2026-09-12 — the backdrop dial.** The hub's SpeedField canvas was "too sharp
-to focus on the information", so it is quieter by construction and the reader
-holds the dial. Budget inside the canvas (was → is): trails 46 → ≤ 28, trail
-alpha 0.18–0.68 → 0.09–0.34, head dots full → 0.4×, speed 0.05–0.21 → 0.03–0.13
-px/ms, glows 0.05–0.10 → 0.035–0.07; body mesh alphas −30% (`--mesh-1..3`). On
-top of that sits a three-state preference `ambient` = soft (default) | vivid |
-off: persisted in localStorage `motorsportverse-ambient`, stamped as
-`data-ambient` on `<html>` by a ~200-byte inline script in the root layout
-before first paint, switched by `AmbientToggle` ("Backdrop · soft / vivid /
-off") in the navbar and footer, and broadcast as a window `ambientchange`
-event. `soft` fades the canvas to 0.55 with a 1px blur and holds the hero bloom
-(static, 0.6) and the headline sheen still; `vivid` is the full, already
-reduced look with the pan and the breathing; `off` hides the canvas and stops
-its rAF loop. `prefers-reduced-motion` behaviour is unchanged. Series sites
-have no ambient canvas; their only ambient motion, the hero photo band and the
-circuit ribbon, was dimmed (photo 0.55 → 0.45, ribbon 0.9 → 0.6, sweep 9 s →
-14 s) on every site that carries that CSS.
+The current shipped palette is dark-only, including when a light theme attribute
+is forced. This removal preserves those color tokens; a cream/light palette and
+its user-facing switch require a separate reviewed design change.
 
 ---
 

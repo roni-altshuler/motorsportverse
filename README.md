@@ -16,6 +16,12 @@ One repository. One catalog. Many sport-specific prediction projects on shared M
 
 ---
 
+Decorative backgrounds are static across the hub and all ten series websites.
+The shared surface components keep focus/hover feedback and user-operated circuit
+and chart views, with no ambient canvas, looping hero sweep or animated card/button
+backdrop. [Scope and browser evidence](docs/qa/static-backgrounds/README.md) record
+what changed and the existing dark-only palette limitation.
+
 ## Vision
 
 The [October quality roadmap](docs/QUALITY_ROADMAP_2026-10.md) records the next

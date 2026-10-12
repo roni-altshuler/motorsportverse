@@ -1,21 +1,11 @@
 "use client";
 
-/**
- * VerseHero — the flagship hero.
- *
- * Sits over the site-wide SpeedField light-trail canvas. Fluid, staggered
- * entrance (framer-motion), a glow + gentle float behind the logo, a gradient
- * headline, and a scroll cue — Apple/Google-grade restraint over a moving
- * background. Honors reduced motion, and the reader's ambient dial: the bloom
- * breathes and the headline sheen pans only in 'vivid'; 'soft' (default) and
- * 'off' hold both still.
- */
+/** Static hero surfaces with a finite entrance; no ambient layers or loops. */
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useAmbient } from "@/lib/ambient";
 import { asset } from "@/lib/asset";
 
 interface VerseHeroProps {
@@ -26,10 +16,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function VerseHero({ stats }: VerseHeroProps) {
   const reduce = useReducedMotion();
-  const ambient = useAmbient();
-  // Static bloom unless the reader asked for the vivid backdrop.
-  const calm = ambient !== "vivid";
-
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 22 },
     animate: { opacity: 1, y: 0 },
@@ -38,39 +24,6 @@ export function VerseHero({ stats }: VerseHeroProps) {
 
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Legibility vignette — soft canvas wash behind the headline so copy
-          stays sharp while the light-trails show through everywhere else. */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(58% 52% at 50% 38%, color-mix(in srgb, var(--canvas) 72%, transparent) 0%, transparent 76%)",
-        }}
-        aria-hidden
-      />
-      {/* Breathing accent bloom behind the logo. */}
-      <motion.div
-        className="pointer-events-none absolute left-1/2 top-[24%] -z-10 h-[420px] w-[620px] -translate-x-1/2 rounded-full"
-        style={{
-          background:
-            "radial-gradient(50% 50% at 50% 50%, rgba(231,16,47,0.22) 0%, transparent 70%)",
-          filter: "blur(20px)",
-        }}
-        animate={
-          reduce
-            ? undefined
-            : calm
-              ? { opacity: 0.6, scale: 1 }
-              : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.06, 1] }
-        }
-        transition={
-          calm
-            ? { duration: 0.6, ease: "easeInOut" }
-            : { duration: 6.5, ease: "easeInOut", repeat: Infinity }
-        }
-        aria-hidden
-      />
-
       <div className="shell relative flex flex-col items-center pt-28 pb-24 text-center sm:pt-36">
         {/* live ecosystem pill */}
         <motion.div
@@ -79,28 +32,14 @@ export function VerseHero({ stats }: VerseHeroProps) {
         >
           <span className="live-dot" />
           <span className="font-mono tracking-wide whitespace-nowrap">
-            {stats[0]?.value ?? "—"} series · {stats[1]?.value ?? "—"} live products
+            {stats[0]?.value ?? "—"} series · {stats[1]?.value ?? "—"} live
+            products
           </span>
           <span className="hidden text-[var(--ink-dim)] sm:inline">·</span>
           <span className="hidden sm:inline">one shared core</span>
         </motion.div>
 
-        <motion.div
-          {...rise(0.08)}
-          animate={
-            reduce
-              ? { opacity: 1, y: 0 }
-              : { opacity: 1, y: [0, -8, 0] }
-          }
-          transition={
-            reduce
-              ? { duration: 0.8, ease: EASE, delay: 0.08 }
-              : {
-                  opacity: { duration: 0.8, ease: EASE, delay: 0.08 },
-                  y: { duration: 7, ease: "easeInOut", repeat: Infinity, delay: 0.9 },
-                }
-          }
-        >
+        <motion.div {...rise(0.08)}>
           <Image
             src={asset("/brand/motorsportverse-logo.png")}
             alt="MotorsportVerse"
@@ -111,7 +50,10 @@ export function VerseHero({ stats }: VerseHeroProps) {
           />
         </motion.div>
 
-        <motion.h1 {...rise(0.16)} className="display mt-9 max-w-4xl text-[length:var(--text-hero)]">
+        <motion.h1
+          {...rise(0.16)}
+          className="display mt-9 max-w-4xl text-[length:var(--text-hero)]"
+        >
           <span className="text-gradient">Prediction infrastructure</span>
           <br />
           <span className="hero-sheen">for every racing series.</span>
@@ -121,11 +63,20 @@ export function VerseHero({ stats }: VerseHeroProps) {
           One open-source core powering live forecasts for every racing series.
         </motion.p>
 
-        <motion.div {...rise(0.32)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Link href="/projects" className="btn-accent px-6 py-3 text-sm font-semibold">
+        <motion.div
+          {...rise(0.32)}
+          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+        >
+          <Link
+            href="/projects"
+            className="btn-accent px-6 py-3 text-sm font-semibold"
+          >
             Explore projects
           </Link>
-          <Link href="/docs" className="btn-ghost px-6 py-3 text-sm font-semibold">
+          <Link
+            href="/docs"
+            className="btn-ghost px-6 py-3 text-sm font-semibold"
+          >
             Read the docs
           </Link>
         </motion.div>
@@ -139,10 +90,14 @@ export function VerseHero({ stats }: VerseHeroProps) {
             <div
               key={s.label}
               className={`px-6 py-7 text-center ${
-                i > 0 ? "border-t border-[var(--line)] sm:border-l sm:border-t-0" : ""
+                i > 0
+                  ? "border-t border-[var(--line)] sm:border-l sm:border-t-0"
+                  : ""
               }`}
             >
-              <dd className="font-display text-4xl font-bold text-[var(--ink)]">{s.value}</dd>
+              <dd className="font-display text-4xl font-bold text-[var(--ink)]">
+                {s.value}
+              </dd>
               <dt className="mono-label mt-1.5">{s.label}</dt>
             </div>
           ))}
@@ -155,11 +110,11 @@ export function VerseHero({ stats }: VerseHeroProps) {
           aria-hidden
         >
           <span className="mono-label !text-[10px]">Scroll</span>
-          <motion.span
+          <span
             className="block h-7 w-[1.5px] rounded-full"
-            style={{ background: "linear-gradient(180deg, var(--accent), transparent)" }}
-            animate={reduce ? undefined : { scaleY: [0.5, 1, 0.5], opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity }}
+            style={{
+              background: "linear-gradient(180deg, var(--accent), transparent)",
+            }}
           />
         </motion.div>
       </div>

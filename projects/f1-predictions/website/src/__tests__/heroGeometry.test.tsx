@@ -7,7 +7,7 @@ import { assessCircuitOutline, assessCircuitGeometry } from "@/lib/circuitGeomet
 
 jest.mock("@/components/magicui/dot-pattern", () => ({ DotPattern: () => null }));
 
-it("preserves the decorative sweep for the actual Monaco path while explorer review is pending", () => {
+it("keeps hero content without a decorative circuit while explorer review is pending", () => {
   const raw = JSON.parse(readFileSync(resolve("public/data/rounds/round_06.json"), "utf8"));
   const identity = { series: "f1", season: 2026, venueKey: "Monaco" };
   const geometry = assessCircuitOutline(identity, raw.circuitInfo.geometry).geometry;
@@ -16,10 +16,8 @@ it("preserves the decorative sweep for the actual Monaco path while explorer rev
       <h1>RaceIQ</h1>
     </HeroParallax>,
   );
-  expect(container.querySelector(".hero-track-ribbon")).toHaveAttribute("aria-hidden", "true");
-  expect(container.querySelector(".ribbon-sweep")).toHaveAttribute(
-    "d",
-    raw.circuitInfo.geometry.path,
-  );
+  expect(container.querySelector(".hero-track-ribbon")).toBeNull();
+  expect(container.querySelector(".ribbon-sweep")).toBeNull();
+  expect(container.querySelector("h1")).toHaveTextContent("RaceIQ");
   expect(assessCircuitGeometry(identity, raw.circuitInfo.geometry).geometry).toBeNull();
 });

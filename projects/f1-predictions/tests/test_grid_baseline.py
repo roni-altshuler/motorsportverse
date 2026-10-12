@@ -8,6 +8,7 @@ import shutil
 import pytest
 
 import stage_grid_baseline as staging
+from tests.publication_inputs import repair_input
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -17,7 +18,7 @@ def isolated(tmp_path, monkeypatch):
     for relative in ("website/public/data/rounds/round_17.json", "website/public/data/season.json"):
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / relative, path)
+        shutil.copy2(repair_input(relative), path)
     sealed = ROOT / "website/public/data/baselines" / staging.ARTIFACT_FILE
     review = ROOT / "docs/qa/grid-baseline/source-verification.json"
     clock = {"now": datetime(2026, 10, 11, 7, 20, tzinfo=timezone.utc)}

@@ -37,21 +37,6 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.55;
-  /* Ambient cinematic wash — restrained mesh anchored to the top. */
-  background-image: var(--mesh-1), var(--mesh-2), var(--mesh-3);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-/* Reader-controlled ambient dial — DESIGN.md §6. `data-ambient` is stamped on
-   <html> before first paint by the inline script in app/layout.tsx; the
-   AmbientToggle rewrites it. A missing attribute (no JS) reads as 'soft'. */
-html:not([data-ambient="vivid"]) .speed-field {
-  opacity: 0.55;
-  filter: blur(1px);
-}
-html[data-ambient="off"] .speed-field {
-  display: none;
 }
 
 ::selection {
@@ -133,34 +118,7 @@ h1, h2, h3, h4 {
   color: transparent;
 }
 
-/* Animated crimson sheen sweeping across a headline phrase. */
-.hero-sheen {
-  background: linear-gradient(
-    92deg,
-    var(--accent) 0%,
-    #ff7a8c 28%,
-    #ffffff 50%,
-    #ff7a8c 72%,
-    var(--accent) 100%
-  );
-  background-size: 220% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: mv-sheen-pan 7s linear infinite;
-}
-@keyframes mv-sheen-pan {
-  to {
-    background-position: 220% center;
-  }
-}
-/* 'soft' and 'off' hold the sheen still: a static crimson→white→crimson
-   gradient. Only 'vivid' pans. */
-html:not([data-ambient="vivid"]) .hero-sheen {
-  animation: none;
-  background-size: 100% auto;
-  background-position: 0 center;
-}
+.hero-sheen { color: var(--accent-text); }
 
 /* ---- Layout helpers ---- */
 /* In the components layer so Tailwind spacing utilities (pt-0, pb-0, …) can

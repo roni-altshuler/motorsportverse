@@ -9,6 +9,7 @@ import pandas as pd
 import pytest
 
 import ridge_shadow as shadow
+from tests.publication_inputs import repair_input
 
 
 def _event(season=2026, rnd=3, venue="Singapore"):
@@ -130,13 +131,14 @@ def test_generation_that_finishes_after_race_returns_no_candidate(tmp_path, monk
 
 
 def _isolated_snapshot(tmp_path, monkeypatch, *, future_fetched=False):
-    """Load real saved facts from a disposable copy; never touch served data."""
+    """Load the exact saved pre-race inputs; never touch served data."""
     original = shadow.PROJECT_ROOT
     for relative in ("data/history.duckdb", "website/public/data/season.json",
                      "website/public/data/rounds/round_17.json"):
         destination = tmp_path / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(original / relative, destination)
+        source = original / relative if relative == "data/history.duckdb" else repair_input(relative)
+        shutil.copy2(source, destination)
     if future_fetched:
         path = tmp_path / "website/public/data/rounds/round_17.json"
         state = json.loads(path.read_bytes())

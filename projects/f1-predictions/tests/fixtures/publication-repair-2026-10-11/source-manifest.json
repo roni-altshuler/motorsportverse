@@ -1,0 +1,64 @@
+{
+  "purpose": "Exact historical repair snapshot for deterministic tests; public inputs and safety guards remain untouched.",
+  "sourceCommit": "5e2aa4763d79bcba782e19bc84c18ad4975092ad",
+  "sealSha256": "f994d9796f18458398c2733e48ab27a984cff51aa57874323d1aa61f6cde0c58",
+  "files": {
+    "website/public/data/season.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/season.json",
+      "sha256": "1b0fccec6c44df09692ac38a306ee8a156e4ccfd40c4b164321690fabdd16110"
+    },
+    "website/public/data/gp_accuracy_report.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/gp_accuracy_report.json",
+      "sha256": "db3cf9a2a0daa2aa19de15e8cd645a2f49d7b1e480c4fa5d96ff46ae3f643063"
+    },
+    "website/public/data/circuit_history.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/circuit_history.json",
+      "sha256": "c52ba171383c2d977f05d99289e4b6059d25b48aadc5753ee844e5b7de1838df"
+    },
+    "predicted_results_2026.json": {
+      "sourcePath": "projects/f1-predictions/predicted_results_2026.json",
+      "sha256": "4d09b8c097d085b275d4d50f4a672b1b31958dd7213f3f7f2835ee74d63fa9b1"
+    },
+    "website/public/data/rounds/round_16.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_16.json",
+      "sha256": "dc1ff0624e8dbdc75730076575a5391cdf915a7223462d02394fab32c60e4fd5"
+    },
+    "website/public/data/rounds/round_17.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_17.json",
+      "sha256": "79f96e5bd8f148dadc4839fe5e8f17e7e0e6147922e9a9397b8e7a50c4dc881c"
+    },
+    "website/public/data/rounds/round_18.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_18.json",
+      "sha256": "f49837030d540485dcabd1557792e27de7759dde8b98173ac1156f45b80000b8"
+    },
+    "website/public/data/rounds/round_19.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_19.json",
+      "sha256": "c97aa97a07caabaf10d8b04e4534c3802beb15303e6121bf14477fa48e8b2cc0"
+    },
+    "website/public/data/rounds/round_20.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_20.json",
+      "sha256": "45a07b18e0feb75fdc275644c03b13541fd1dad8d27c129faba6300967461047"
+    },
+    "website/public/data/rounds/round_21.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_21.json",
+      "sha256": "95c1d0c865109d1f93f195b32b655de6e59604da1e920b653d128c0777e52973"
+    },
+    "website/public/data/rounds/round_22.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_22.json",
+      "sha256": "37f97e43a84bc8bebae3ca84391882c742ecd3a7e789192e5e8ac7f0c30b1a73"
+    },
+    "website/public/data/rounds/round_23.json": {
+      "sourcePath": "projects/f1-predictions/website/public/data/rounds/round_23.json",
+      "sha256": "1bd15edb5f966a4c8d24824fe9095d580a3b46a54d760b64c7a5d0a2c3303b08"
+    }
+  },
+  "absentPaths": [
+    "models/registry/2026_round_16",
+    "models/registry/2026_round_17",
+    "models/registry/2026_round_18",
+    "models/registry/2026_round_19",
+    "models/registry/2026_round_20",
+    "models/registry/2026_round_21",
+    "models/registry/2026_round_22"
+  ]
+}
