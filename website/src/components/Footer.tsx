@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { AmbientToggle } from "@/components/AmbientToggle";
 import { asset } from "@/lib/asset";
 
 export function Footer() {
@@ -18,8 +17,8 @@ export function Footer() {
             className="h-auto w-44"
           />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-[var(--ink-dim)]">
-            An open-source motorsport AI ecosystem — shared ML &amp; data infrastructure powering a
-            family of RaceIQ prediction projects.
+            An open-source motorsport AI ecosystem — shared ML &amp; data
+            infrastructure powering a family of RaceIQ prediction projects.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 text-xs text-[var(--ink-dim)]">
             <span className="live-dot" />
@@ -40,14 +39,17 @@ export function Footer() {
             { href: "/projects/f1-predictions", label: "RaceIQ F1" },
             { href: "/projects/f2-predictions", label: "RaceIQ F2" },
             { href: "/projects/f3-predictions", label: "RaceIQ F3" },
-            { href: "https://github.com/roni-altshuler/motorsportverse", label: "GitHub", external: true },
+            {
+              href: "https://github.com/roni-altshuler/motorsportverse",
+              label: "GitHub",
+              external: true,
+            },
           ]}
         />
       </div>
       <div className="relative border-t border-[var(--line)]">
         <div className="shell flex flex-col gap-2 py-6 text-xs text-[var(--ink-dim)] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} MotorsportVerse · MIT licensed</p>
-          <AmbientToggle />
           <p>Forecasts are model estimates, not betting advice.</p>
         </div>
       </div>
@@ -80,7 +82,10 @@ function FooterCol({
             </li>
           ) : (
             <li key={l.href}>
-              <Link href={l.href} className="transition-colors hover:text-[var(--ink)]">
+              <Link
+                href={l.href}
+                className="transition-colors hover:text-[var(--ink)]"
+              >
                 {l.label}
               </Link>
             </li>

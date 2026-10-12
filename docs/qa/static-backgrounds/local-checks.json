@@ -1,0 +1,480 @@
+{
+  "generatedAt": "2026-10-12T08:21:56.334303+00:00",
+  "runtime": "Next/eslint-config-next 16.3.8; declared dependencies reused without source/lockfile changes",
+  "sites": [
+    {
+      "site": "website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-hub-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-hub-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-hub-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "46997ec8c7449831e942db0176edf085e25eae3858126fc68c2fd02aa58f28f3",
+          "summary": [
+            "Test Suites: 16 passed, 16 total",
+            "Tests:       8 skipped, 222 passed, 230 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f1-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f1-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "f535ce10c88f8b80d5bb38d1ba015ca630e19a92b5efbc9e2cc5c4161b82eb20"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f1-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 1,
+          "log": "/tmp/motorsportverse-background-f1-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "937b1c0693f4b1f638900a0ca42eaf4a38e74da07542180525b6ecb667de5a7b",
+          "summary": [
+            "Test Suites: 1 failed, 20 passed, 21 total",
+            "Tests:       1 failed, 290 passed, 291 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f2-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f2-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "66702872cc87a86730e2d6a547e0d250e9bcc8747d980d4452a3802ab8ced20f"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f2-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f2-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "613567042d900dabaec63b45840cf5a992c14f712315536476c2e97bc8d2bc87",
+          "summary": [
+            "Test Suites: 18 passed, 18 total",
+            "Tests:       222 passed, 222 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/f3-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f3-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "b162c8657306ff8607194cef1e9883030c99560b18528943d70214000f1a260b"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f3-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-f3-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "119b3371f3da23cd6e049513b74951166b2b18b15204e530633bdf0d82523292",
+          "summary": [
+            "Test Suites: 16 passed, 16 total",
+            "Tests:       215 passed, 215 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/formula-e-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-formula-e-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "d2d7822beb2f2649ec28ee2d0bc93db68695acd7036282c42a72592aca84f0fa"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-formula-e-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-formula-e-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "bd84b2fe54dca6644d8adda23fa3ecafb67b9e0308213fe61b58ca7c5cd6e7c1",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/imsa-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-imsa-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "de7d309f6c1bf8c687f654cf01401aef0623a6522e96f5a6cde29109dd3147c9"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-imsa-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-imsa-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "83334ae9d84626819b0fce0812d9584f284f8c17e730f17bfbabc1fe70e5948d",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/indycar-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-indycar-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "7cd9e798c7588d8333b1f999f57ada273b775e4d03835cd758738768c23c3516"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-indycar-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-indycar-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "5b5220b9db222e3c4cad1e340e30b2eff87b5204fe6236e9fae925928ddd66a5",
+          "summary": [
+            "Test Suites: 14 passed, 14 total",
+            "Tests:       209 passed, 209 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/motogp-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-motogp-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "6c45bc0bfecdf46931acbfd85d74e9336bb5956542695f42c6287b0711927306"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-motogp-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-motogp-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "50e48f7d652421ce2ad2c842a0ca97534418ca17efd86a282c80530cc85d1263",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/nascar-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-nascar-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "dc45337f19fbfbcf68308896605792a41a981f5f135fa93dab7df815ebdec522"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-nascar-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-nascar-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "a68044e4af37ddc897af03f9262d4ee0034b79d3e4b238bfd5f807e05fc1297b",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wec-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wec-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "4b98fbb239d6cfb2b3186307c8bca281da0bab4143d80fe97b73342350bdf508"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wec-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wec-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "d763f412ab542e89e820a7f5dc848e1c4a2ab230ae6405bf1cc1a8009fb97312",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    },
+    {
+      "site": "projects/wrc-predictions/website",
+      "checks": [
+        {
+          "name": "lint",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wrc-predictions-lint.log",
+          "command": [
+            "node",
+            "node_modules/.bin/eslint",
+            "src"
+          ],
+          "logSha256": "03b1a0f0d314c6f9308085e0dfa118c5a308590f027dff45a1525815877359b6"
+        },
+        {
+          "name": "types",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wrc-predictions-types.log",
+          "command": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--noEmit"
+          ],
+          "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests",
+          "exitCode": 0,
+          "log": "/tmp/motorsportverse-background-wrc-predictions-tests.log",
+          "command": [
+            "node",
+            "node_modules/.bin/jest",
+            "--runInBand"
+          ],
+          "logSha256": "d11cb126f70f10bbd7960b00677a2c0985982a46a6ca318fa046d66b828e59bd",
+          "summary": [
+            "Test Suites: 11 passed, 11 total",
+            "Tests:       197 passed, 197 total",
+            "Snapshots:   0 total"
+          ]
+        }
+      ]
+    }
+  ],
+  "environmentCorrection": "Per-app Next module paths isolate each app React runtime; no repository dependency/lockfile changes."
+}

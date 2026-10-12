@@ -36,19 +36,29 @@ export default function MagicUIGallery() {
         <h2 className="display-md mb-2">Magic-UI Components</h2>
         <p className="body-sm text-[color:var(--muted)] max-w-2xl">
           Animated primitives shared with the RaceIQ F1 flagship, themed in F2
-          electric-blue. Every component below also has a static fallback under
-          <code className="ml-1 text-[color:var(--ink)]">prefers-reduced-motion: reduce</code>.
+          electric-blue. Entrances and useful state indicators still respect
+          <code className="ml-1 text-[color:var(--ink)]">
+            prefers-reduced-motion: reduce
+          </code>
+          .
         </p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* BorderBeam */}
         <div className="relative rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6 overflow-hidden">
-          <BorderBeam size={1} duration={8} colorFrom={F2_BLUE} colorTo="#7BD2F6" />
+          <BorderBeam
+            size={1}
+            duration={8}
+            colorFrom={F2_BLUE}
+            colorTo="#7BD2F6"
+          />
           <p className={SECTION_LABEL}>BorderBeam</p>
-          <p className="title-md text-[color:var(--ink)]">Electric-blue gradient stroke</p>
+          <p className="title-md text-[color:var(--ink)]">
+            Electric-blue gradient stroke
+          </p>
           <p className="body-sm text-[color:var(--muted)] mt-2">
-            1px animated gradient stroke that traces the card perimeter.
+            Stationary accent outline around the card.
           </p>
         </div>
 
@@ -56,8 +66,12 @@ export default function MagicUIGallery() {
         <MagicCard className="border border-[color:var(--hairline)]">
           <div className="p-6">
             <p className={SECTION_LABEL}>MagicCard</p>
-            <p className="title-md text-[color:var(--ink)]">Cursor-tracking gradient</p>
-            <p className="body-sm text-[color:var(--muted)] mt-2">Hover anywhere over this card.</p>
+            <p className="title-md text-[color:var(--ink)]">
+              Static card surface
+            </p>
+            <p className="body-sm text-[color:var(--muted)] mt-2">
+              Hover anywhere over this card.
+            </p>
           </div>
         </MagicCard>
 
@@ -94,7 +108,11 @@ export default function MagicUIGallery() {
         <div className="rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6">
           <p className={SECTION_LABEL}>AnimatedGradientText</p>
           <p className="display-md [font-weight:700]">
-            <AnimatedGradientText speed={8} colorFrom={F2_BLUE} colorTo="#9FE2FF">
+            <AnimatedGradientText
+              speed={8}
+              colorFrom={F2_BLUE}
+              colorTo="#9FE2FF"
+            >
               Predictions Board
             </AnimatedGradientText>
           </p>
@@ -111,9 +129,11 @@ export default function MagicUIGallery() {
           <Spotlight color="rgba(30,155,215,0.12)" size={300}>
             <div className="p-6">
               <p className={SECTION_LABEL}>Spotlight</p>
-              <p className="title-md text-[color:var(--ink)]">Cursor-following highlight</p>
+              <p className="title-md text-[color:var(--ink)]">
+                Solid hover highlight
+              </p>
               <p className="body-sm text-[color:var(--muted)] mt-2">
-                Hover to reveal the spotlight gradient.
+                Hover or focus a control to highlight this surface.
               </p>
             </div>
           </Spotlight>
@@ -124,7 +144,9 @@ export default function MagicUIGallery() {
           <DotPattern className="opacity-30" width={16} height={16} cr={1} />
           <div className="relative z-10">
             <p className={SECTION_LABEL}>DotPattern</p>
-            <p className="title-md text-[color:var(--ink)]">Background substrate</p>
+            <p className="title-md text-[color:var(--ink)]">
+              Background substrate
+            </p>
           </div>
         </div>
         <div className="relative rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6 overflow-hidden h-40">
@@ -140,20 +162,24 @@ export default function MagicUIGallery() {
       <div className="rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6">
         <p className={SECTION_LABEL}>Marquee</p>
         <Marquee className="[--duration:30s]" pauseOnHover>
-          {["P1 +0.0s", "P2 +1.4s", "P3 +3.8s", "P4 +5.2s", "P5 +7.5s"].map((line) => (
-            <span
-              key={line}
-              className="caption-uppercase px-4 py-2 border border-[color:var(--hairline)] text-[color:var(--ink)] whitespace-nowrap"
-            >
-              {line}
-            </span>
-          ))}
+          {["P1 +0.0s", "P2 +1.4s", "P3 +3.8s", "P4 +5.2s", "P5 +7.5s"].map(
+            (line) => (
+              <span
+                key={line}
+                className="caption-uppercase px-4 py-2 border border-[color:var(--hairline)] text-[color:var(--ink)] whitespace-nowrap"
+              >
+                {line}
+              </span>
+            ),
+          )}
         </Marquee>
       </div>
 
       {/* OrbitingCircles */}
       <div className="relative rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] h-[340px] overflow-hidden">
-        <p className={`${SECTION_LABEL} absolute top-5 left-5 z-10`}>OrbitingCircles</p>
+        <p className={`${SECTION_LABEL} absolute top-5 left-5 z-10`}>
+          OrbitingCircles
+        </p>
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="display-md text-[color:var(--ink)]">F2</span>
         </div>
@@ -193,7 +219,9 @@ export default function MagicUIGallery() {
             <NeonGradientCard>
               <div className="p-5">
                 <p className="title-sm text-[color:var(--ink)]">Neon</p>
-                <p className="body-sm text-[color:var(--muted)]">Live race only</p>
+                <p className="body-sm text-[color:var(--muted)]">
+                  Live race only
+                </p>
               </div>
             </NeonGradientCard>
           </BentoCard>

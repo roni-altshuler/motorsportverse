@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
-import SpeedFieldLoader from "@/components/background/SpeedFieldLoader";
 import { CommandPaletteProvider } from "@/components/CommandPaletteProvider";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
@@ -28,9 +27,21 @@ export const viewport: Viewport = {
 // google import.
 const saira = localFont({
   src: [
-    { path: "./fonts/SairaCondensed-500.woff2", weight: "500", style: "normal" },
-    { path: "./fonts/SairaCondensed-600.woff2", weight: "600", style: "normal" },
-    { path: "./fonts/SairaCondensed-700.woff2", weight: "700", style: "normal" },
+    {
+      path: "./fonts/SairaCondensed-500.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/SairaCondensed-600.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/SairaCondensed-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
   ],
   variable: "--font-saira",
   display: "swap",
@@ -65,32 +76,24 @@ export const metadata: Metadata = {
     images: ["brand/motorsportverse-logo.png"],
     type: "website",
   },
-  twitter: { card: "summary_large_image", images: ["brand/motorsportverse-logo.png"] },
+  twitter: {
+    card: "summary_large_image",
+    images: ["brand/motorsportverse-logo.png"],
+  },
 };
 
-// Pre-paint ambient preference (DESIGN.md §6). Reads the reader's stored dial
-// and stamps `data-ambient` on <html> before anything renders, so there is no
-// flash from 'soft' to 'vivid'/'off'. Must stay tiny and must never throw.
-const AMBIENT_BOOT =
-  'try{var v=localStorage.getItem("motorsportverse-ambient");' +
-  'document.documentElement.dataset.ambient=v==="vivid"||v==="off"?v:"soft"}' +
-  'catch(e){document.documentElement.dataset.ambient="soft"}';
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
       data-theme="dark"
       className={`${saira.variable} ${inter.variable} ${jetbrains.variable}`}
-      // `data-ambient` is set by the boot script below before React hydrates.
-      suppressHydrationWarning
     >
       <body>
-        <script dangerouslySetInnerHTML={{ __html: AMBIENT_BOOT }} />
-        {/* Site-wide cinematic light-trail background (fixed, z-0). Content
-            below is lifted above it so the streaks show through behind it.
-            Softened + reader-dimmable via the ambient dial. */}
-        <SpeedFieldLoader />
         <Navbar />
         <main className="relative z-[1] min-h-[70vh]">{children}</main>
         <Footer />

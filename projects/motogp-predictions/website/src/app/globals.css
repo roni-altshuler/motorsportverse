@@ -250,65 +250,6 @@ h1, h2, h3, h4, h5, h6 {
  * comet along it; a blurred trail behind creates the glow. Sits behind the
  * scrim (z:1) and content (z:2). The global prefers-reduced-motion guard zeroes
  * the animation duration, freezing the sweep. */
-.hero-track-ribbon {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.6;
-  -webkit-mask-image: radial-gradient(
-    ellipse 85% 90% at 50% 50%,
-    #000 0%,
-    #000 65%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse 85% 90% at 50% 50%,
-    #000 0%,
-    #000 65%,
-    transparent 100%
-  );
-}
-.hero-track-ribbon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.hero-track-ribbon .ribbon-base {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.22);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-.hero-track-ribbon .ribbon-sweep {
-  fill: none;
-  stroke: url(#hero-track-gradient);
-  stroke-width: 6;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  stroke-dasharray: 900 3200;
-  filter: drop-shadow(0 0 10px rgba(204, 0, 0, 0.75));
-  animation: hero-track-sweep 14s linear infinite;
-}
-.hero-track-ribbon .ribbon-sweep-trail {
-  fill: none;
-  stroke: rgba(204, 0, 0, 0.55);
-  stroke-width: 14;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  stroke-dasharray: 500 3600;
-  filter: blur(8px);
-  animation: hero-track-sweep 14s linear infinite;
-}
-@keyframes hero-track-sweep {
-  from {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -4100;
-  }
-}
 
 /* Race-podium leader card — thin champagne accent line + corner pill. */
 .podium-leader-card {
@@ -329,7 +270,7 @@ h1, h2, h3, h4, h5, h6 {
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: podium-leader-shimmer 6s ease-in-out infinite;
+
   pointer-events: none;
   z-index: 1;
 }
@@ -350,10 +291,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 9999px;
   white-space: nowrap;
 }
-@keyframes podium-leader-shimmer {
-  0%, 100% { background-position: 0% 0%; }
-  50% { background-position: 100% 0%; }
-}
+
 
 /* Bugatti section rhythm — 120px between major bands. */
 .section-bugatti {
@@ -798,53 +736,6 @@ h1, h2, h3, h4, h5, h6 {
 /* ─────────────────────────────────────────────────────────────────────
  * Magic-UI keyframes.
  * ───────────────────────────────────────────────────────────────────── */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% - var(--gap, 1rem))); }
-}
-@keyframes marquee-vertical {
-  from { transform: translateY(0); }
-  to   { transform: translateY(calc(-100% - var(--gap, 1rem))); }
-}
-.animate-marquee          { animation: marquee var(--duration, 40s) linear infinite; }
-.animate-marquee-vertical { animation: marquee-vertical var(--duration, 40s) linear infinite; }
-
-@keyframes shimmer-slide {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(100%); }
-}
-.animate-shimmer-slide { animation: shimmer-slide var(--speed, 3s) ease-in-out infinite alternate; }
-
-@keyframes spin-around {
-  0%   { transform: translateZ(0) rotate(0); }
-  15%, 35% { transform: translateZ(0) rotate(90deg); }
-  65%, 85% { transform: translateZ(0) rotate(270deg); }
-  100% { transform: translateZ(0) rotate(360deg); }
-}
-.animate-spin-around { animation: spin-around calc(var(--speed, 3s) * 2) infinite linear; }
-
-@keyframes orbit {
-  0%   { transform: rotate(0deg) translateY(calc(var(--radius, 160) * 0px)) rotate(0deg); }
-  100% { transform: rotate(360deg) translateY(calc(var(--radius, 160) * 0px)) rotate(-360deg); }
-}
-.animate-orbit { animation: orbit calc(var(--duration, 20) * 1s) linear infinite; }
-
-@keyframes pulse-ring {
-  0%   { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
-  70%  { transform: translate(-50%, -50%) scale(1.85); opacity: 0; }
-  100% { transform: translate(-50%, -50%) scale(1.85); opacity: 0; }
-}
-.animate-pulse-ring { animation: pulse-ring var(--duration, 1.5s) cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-
-@keyframes gradient {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.animate-gradient { animation: gradient var(--duration, 8s) linear infinite; }
-
-@keyframes neon-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-.animate-neon-spin { animation: neon-spin var(--neon-spin-duration, 6s) linear infinite; will-change: transform; }
 
 /* ─────────────────────────────────────────────────────────────────────
  * prefers-reduced-motion — global parity guard.

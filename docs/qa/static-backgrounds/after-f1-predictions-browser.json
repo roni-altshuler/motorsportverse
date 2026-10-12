@@ -1,0 +1,632 @@
+{
+  "site": "projects/f1-predictions/website",
+  "generatedAt": "2026-10-12T07:44:11.488Z",
+  "runtime": "Next.js 16.3.8 optimized static export; process-local webpack disk cache disabled",
+  "browser": "151.0.7922.173",
+  "cases": [
+    {
+      "route": "/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 270,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": [],
+      "screenshot": "screenshots/after-f1-desktop-dark.png"
+    },
+    {
+      "route": "/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 268,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": [],
+      "screenshot": "screenshots/after-f1-desktop-light.png"
+    },
+    {
+      "route": "/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 287,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": [],
+      "screenshot": "screenshots/after-f1-mobile-dark.png"
+    },
+    {
+      "route": "/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 285,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": [],
+      "screenshot": "screenshots/after-f1-mobile-light.png"
+    },
+    {
+      "route": "/calendar/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 236,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "Animation",
+          "target": "SPAN",
+          "className": "absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[color:var(--accent-live)]"
+        }
+      ],
+      "scrollWidth": 1440,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/calendar/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 231,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "Animation",
+          "target": "SPAN",
+          "className": "absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[color:var(--accent-live)]"
+        }
+      ],
+      "scrollWidth": 1440,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/calendar/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 242,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "Animation",
+          "target": "SPAN",
+          "className": "absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[color:var(--accent-live)]"
+        }
+      ],
+      "scrollWidth": 390,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/calendar/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 239,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "Animation",
+          "target": "SPAN",
+          "className": "absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[color:var(--accent-live)]"
+        }
+      ],
+      "scrollWidth": 390,
+      "title": "RaceIQ | F1 2026 Race Predictions & Forecasts",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/standings/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 264,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "data-freshness-pulse",
+          "target": "SPAN",
+          "className": "data-freshness-dot"
+        }
+      ],
+      "scrollWidth": 1440,
+      "title": "F1 2026 Championship Standings",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/standings/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 264,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "data-freshness-pulse",
+          "target": "SPAN",
+          "className": "data-freshness-dot"
+        }
+      ],
+      "scrollWidth": 1440,
+      "title": "F1 2026 Championship Standings",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/standings/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 275,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "data-freshness-pulse",
+          "target": "SPAN",
+          "className": "data-freshness-dot"
+        }
+      ],
+      "scrollWidth": 390,
+      "title": "F1 2026 Championship Standings",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/standings/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 270,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [
+        {
+          "name": "data-freshness-pulse",
+          "target": "SPAN",
+          "className": "data-freshness-dot"
+        }
+      ],
+      "scrollWidth": 390,
+      "title": "F1 2026 Championship Standings",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/race/17/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 195,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Singapore Grand Prix — F1 2026 Publication review",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/race/17/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 199,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Singapore Grand Prix — F1 2026 Publication review",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/race/17/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 198,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Singapore Grand Prix — F1 2026 Publication review",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/race/17/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 204,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Singapore Grand Prix — F1 2026 Publication review",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/circuits/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 145,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Circuit workspace — Local captures & energy sandbox",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/circuits/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 142,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Circuit workspace — Local captures & energy sandbox",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/circuits/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 157,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Circuit workspace — Local captures & energy sandbox",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/circuits/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 153,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Circuit workspace — Local captures & energy sandbox",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/compare/laps/",
+      "device": "desktop",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 140,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Monaco 2025 — Archived Lap Comparison",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/compare/laps/",
+      "device": "desktop",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 141,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 1440,
+      "title": "Monaco 2025 — Archived Lap Comparison",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/compare/laps/",
+      "device": "mobile",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 144,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Monaco 2025 — Archived Lap Comparison",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    },
+    {
+      "route": "/compare/laps/",
+      "device": "mobile",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "httpStatus": 200,
+      "canvas": "rgb(0, 0, 0)",
+      "bodyBackgroundImage": "none",
+      "decorativeCanvases": 0,
+      "heroRibbons": 0,
+      "ambientControls": 0,
+      "probe": {
+        "frames": 145,
+        "speedFieldPaints": 0
+      },
+      "infiniteAnimations": [],
+      "scrollWidth": 390,
+      "title": "Monaco 2025 — Archived Lap Comparison",
+      "decorativePaintsDuring350ms": 0,
+      "decorativeInfiniteAnimations": [],
+      "errors": []
+    }
+  ],
+  "interactions": [
+    {
+      "name": "Mobile navigation opens/closes",
+      "passed": true
+    },
+    {
+      "name": "User-operated circuit workspace (desktop); existing clearly-labelled fictional demonstration",
+      "before": "0",
+      "after": "1",
+      "driverSelection": true,
+      "passed": true
+    },
+    {
+      "name": "User-operated circuit workspace (mobile); existing clearly-labelled fictional demonstration",
+      "before": "0",
+      "after": "1",
+      "driverSelection": true,
+      "passed": true
+    }
+  ]
+}

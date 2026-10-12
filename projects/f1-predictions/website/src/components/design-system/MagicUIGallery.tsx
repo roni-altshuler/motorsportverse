@@ -32,11 +32,9 @@ export default function MagicUIGallery() {
       <header>
         <h2 className="display-md mb-2">Magic-UI Components</h2>
         <p className="body-sm text-[color:var(--muted)] max-w-2xl">
-          Animated primitives wired up for the {new Date().getFullYear()}{" "}
-          overhaul. Every component below also has a static fallback under
-          <code className="ml-1 text-[color:var(--ink)]">
-            prefers-reduced-motion: reduce
-          </code>.
+          Static surfaces and interactive controls for the {new Date().getFullYear()} overhaul.
+          Entrances and useful state indicators still respect
+          <code className="ml-1 text-[color:var(--ink)]">prefers-reduced-motion: reduce</code>.
         </p>
       </header>
 
@@ -47,7 +45,7 @@ export default function MagicUIGallery() {
           <p className={SECTION_LABEL}>BorderBeam</p>
           <p className="title-md text-[color:var(--ink)]">F1-red → broadcast-blue</p>
           <p className="body-sm text-[color:var(--muted)] mt-2">
-            1px animated gradient stroke that traces the card perimeter.
+            Stationary accent outline around the card.
           </p>
         </div>
 
@@ -55,10 +53,8 @@ export default function MagicUIGallery() {
         <MagicCard className="border border-[color:var(--hairline)]">
           <div className="p-6">
             <p className={SECTION_LABEL}>MagicCard</p>
-            <p className="title-md text-[color:var(--ink)]">Cursor-tracking gradient</p>
-            <p className="body-sm text-[color:var(--muted)] mt-2">
-              Hover anywhere over this card.
-            </p>
+            <p className="title-md text-[color:var(--ink)]">Static card surface</p>
+            <p className="body-sm text-[color:var(--muted)] mt-2">Hover anywhere over this card.</p>
           </div>
         </MagicCard>
 
@@ -112,9 +108,9 @@ export default function MagicUIGallery() {
           <Spotlight color="rgba(225,6,0,0.10)" size={300}>
             <div className="p-6">
               <p className={SECTION_LABEL}>Spotlight</p>
-              <p className="title-md text-[color:var(--ink)]">Cursor-following highlight</p>
+              <p className="title-md text-[color:var(--ink)]">Solid hover highlight</p>
               <p className="body-sm text-[color:var(--muted)] mt-2">
-                Hover to reveal the spotlight gradient.
+                Hover or focus a control to highlight this surface.
               </p>
             </div>
           </Spotlight>
@@ -141,14 +137,16 @@ export default function MagicUIGallery() {
       <div className="rounded-[var(--radius-card)] border border-[color:var(--hairline)] bg-[color:var(--surface-card)] p-6">
         <p className={SECTION_LABEL}>Marquee</p>
         <Marquee className="[--duration:30s]" pauseOnHover>
-          {["P1 PIA +0.0s", "P2 NOR +1.4s", "P3 RUS +3.8s", "P4 VER +5.2s", "P5 LEC +7.5s"].map((line) => (
-            <span
-              key={line}
-              className="caption-uppercase px-4 py-2 border border-[color:var(--hairline)] text-[color:var(--ink)] whitespace-nowrap"
-            >
-              {line}
-            </span>
-          ))}
+          {["P1 PIA +0.0s", "P2 NOR +1.4s", "P3 RUS +3.8s", "P4 VER +5.2s", "P5 LEC +7.5s"].map(
+            (line) => (
+              <span
+                key={line}
+                className="caption-uppercase px-4 py-2 border border-[color:var(--hairline)] text-[color:var(--ink)] whitespace-nowrap"
+              >
+                {line}
+              </span>
+            ),
+          )}
         </Marquee>
       </div>
 

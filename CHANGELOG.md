@@ -11,6 +11,13 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### Static motorsport backgrounds — 2026-10-12
+
+- Remove the hub canvas/ambient dial and decorative hero, card, button and diagram
+  loops across every motorsport website; retain readable static surfaces.
+- Keep circuit exploration, replay, charts, focus/hover feedback and useful state
+  indicators. Record source, interaction and responsive browser evidence.
+
 ### F1 final-grid shadow contract — 2026-10-11
 
 - Validate final starting positions independently of qualifying features, with
