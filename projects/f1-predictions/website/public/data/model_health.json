@@ -1,110 +1,52 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": 23,
-  "featureDrift": [
-    {
-      "feature": "predictedTime",
-      "psi": 8.0033,
-      "severity": "alarm",
-      "baseline_n": 440,
-      "current_n": 22
-    },
-    {
-      "feature": "winProbability",
-      "psi": 0.5435,
-      "severity": "alarm",
-      "baseline_n": 440,
-      "current_n": 22
-    },
-    {
-      "feature": "finishRangeLow",
-      "psi": 0.9104,
-      "severity": "alarm",
-      "baseline_n": 440,
-      "current_n": 22
-    },
-    {
-      "feature": "finishRangeHigh",
-      "psi": 0.948,
-      "severity": "alarm",
-      "baseline_n": 440,
-      "current_n": 22
-    }
-  ],
-  "outputDrift": {
-    "rolling_brier_recent": 4.665,
-    "rolling_brier_baseline": 4.9309,
-    "relative_change": -0.0539,
-    "severity": "ok",
-    "rounds_compared": 15
-  },
+  "lastEvaluatedRound": null,
+  "featureDrift": [],
+  "outputDrift": null,
   "warnings": [],
-  "alarms": [
-    "predictedTime: PSI 8.003 (significant drift vs baseline)",
-    "winProbability: PSI 0.543 (significant drift vs baseline)",
-    "finishRangeLow: PSI 0.910 (significant drift vs baseline)",
-    "finishRangeHigh: PSI 0.948 (significant drift vs baseline)"
-  ],
-  "brierByRound": [
-    {
-      "round": 1,
-      "brier": 6.605782590758164
-    },
-    {
-      "round": 2,
-      "brier": 5.869799439039246
-    },
-    {
-      "round": 3,
-      "brier": 2.412090756622109
-    },
-    {
-      "round": 4,
-      "brier": 5.688904671695279
-    },
-    {
-      "round": 5,
-      "brier": 6.775624761532393
-    },
+  "alarms": [],
+  "outputMetric": "rmse_position_error",
+  "outputUnit": "positions",
+  "rmseByRound": [],
+  "diagnosticStatus": "publication_hold",
+  "unavailableReason": "The latest elapsed round's model forecast is withheld; current forecast diagnostics are unavailable.",
+  "lastObservedRound": 17,
+  "excludedRounds": [
     {
       "round": 6,
-      "brier": 7.223698372843248
+      "reason": "no_valid_grade"
     },
     {
-      "round": 7,
-      "brier": 4.400413203738527
+      "round": 16,
+      "reason": "publication_hold"
     },
     {
-      "round": 8,
-      "brier": 2.2763607319179844
+      "round": 17,
+      "reason": "publication_hold"
     },
     {
-      "round": 9,
-      "brier": 5.799686511904211
+      "round": 18,
+      "reason": "future_round"
     },
     {
-      "round": 10,
-      "brier": 4.954336943068623
+      "round": 19,
+      "reason": "future_round"
     },
     {
-      "round": 11,
-      "brier": 3.7779263191236634
+      "round": 20,
+      "reason": "future_round"
     },
     {
-      "round": 12,
-      "brier": 4.680252333449758
+      "round": 21,
+      "reason": "future_round"
     },
     {
-      "round": 13,
-      "brier": 4.58257569495584
+      "round": 22,
+      "reason": "future_round"
     },
     {
-      "round": 14,
-      "brier": 4.445436397239844
-    },
-    {
-      "round": 15,
-      "brier": 5.838742081211422
+      "round": 23,
+      "reason": "future_round"
     }
   ]
 }

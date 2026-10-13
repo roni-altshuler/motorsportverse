@@ -1,4 +1,4 @@
-"""Drift detection — feature-distribution PSI + output-side rolling Brier.
+"""Drift detection — feature-distribution PSI + output-side rolling position RMSE.
 
 Why this exists
 ---------------
@@ -11,8 +11,8 @@ Two complementary signals:
      lap times / confidence / finish-range widened or shifted vs the
      trailing baseline?  Detected via the Population Stability Index
      (PSI), the industry-standard summary for that question.
-  2. **Output drift** (target-side) — is the rolling Brier (lower is
-     better) trending up?  That's the direct accuracy signal —
+  2. **Output drift** (target-side) — is the rolling position RMSE (lower is
+     better, in finishing positions) trending up?  That's the direct accuracy signal —
      deteriorating regardless of whether features changed.
 
 Output
@@ -30,7 +30,7 @@ modelling:
   * **0.10 ≤ x < 0.25** — moderate change (warn)
   * **≥ 0.25** — significant change (alarm)
 
-For Brier degradation, we compute the rolling-5 average vs the prior
+For position RMSE degradation, we compute the rolling-5 average vs the prior
 rolling-5 average:
   * **< 5% regression** — stable
   * **5%–15%** — moderate (warn)
@@ -55,9 +55,9 @@ PSI_SIGNIFICANT_THRESHOLD: float = 0.25
 # Lo PSI formulation.
 PSI_EPSILON: float = 1e-4
 
-# Output-drift bands on the *relative* Brier change (newer / older - 1):
-BRIER_MODERATE_REGRESSION: float = 0.05
-BRIER_SIGNIFICANT_REGRESSION: float = 0.15
+# Output-drift bands on the *relative* position RMSE change (newer / older - 1):
+RMSE_MODERATE_REGRESSION: float = 0.05
+RMSE_SIGNIFICANT_REGRESSION: float = 0.15
 
 
 # --------------------------------------------------------------------------- #
@@ -76,8 +76,8 @@ class FeatureDriftSummary:
 
 @dataclass
 class OutputDriftSummary:
-    rolling_brier_recent: float | None
-    rolling_brier_baseline: float | None
+    rolling_rmse_recent: float | None
+    rolling_rmse_baseline: float | None
     relative_change: float | None    # (recent - baseline) / baseline
     severity: str                    # "ok" | "warn" | "alarm"
     rounds_compared: int
@@ -91,8 +91,12 @@ class ModelHealthReport:
     output_drift: OutputDriftSummary | None = None
     warnings: list[str] = field(default_factory=list)
     alarms: list[str] = field(default_factory=list)
-    # Per-round Brier sequence for the website to chart over time.
-    brier_by_round: list[dict] = field(default_factory=list)
+    diagnostic_status: str = "available"
+    unavailable_reason: str | None = None
+    last_observed_round: int | None = None
+    excluded_rounds: list[dict] = field(default_factory=list)
+    # Per-round position RMSE sequence for the website to chart over time.
+    rmse_by_round: list[dict] = field(default_factory=list)
 
 
 # --------------------------------------------------------------------------- #
@@ -205,34 +209,36 @@ def _extract_numeric(records: Sequence[dict], key: str) -> list[float]:
 
 
 # --------------------------------------------------------------------------- #
-# Output drift — rolling-Brier trend
+# Output drift — rolling-position RMSE trend
 # --------------------------------------------------------------------------- #
 
 
-def rolling_brier_trend(
-    brier_by_round: Sequence[tuple[int, float]],
+def rolling_rmse_trend(
+    rmse_by_round: Sequence[tuple[int, float]],
     window: int = 5,
 ) -> OutputDriftSummary:
-    """Compare the trailing ``window`` Brier scores against the previous
-    ``window`` scores.  Brier is "lower is better", so a *positive*
+    """Compare the trailing ``window`` position RMSE scores against the previous
+    ``window`` scores.  position RMSE is "lower is better", so a *positive*
     relative change is a regression.
 
-    Returns severity ``ok`` when we lack enough rounds to make a comparison
+    Returns severity ``insufficient_history`` when we lack enough rounds to make a comparison
     (need at least ``2 × window``).
     """
+    if window < 1:
+        raise ValueError("window must be >= 1")
     valid = [
-        (int(rnd), float(brier))
-        for rnd, brier in brier_by_round
-        if brier is not None and not _isnan(brier)
+        (int(rnd), float(rmse))
+        for rnd, rmse in rmse_by_round
+        if rmse is not None and math.isfinite(float(rmse)) and float(rmse) >= 0
     ]
     valid.sort(key=lambda kv: kv[0])
     n = len(valid)
     if n < 2 * window:
         return OutputDriftSummary(
-            rolling_brier_recent=valid[-1][1] if valid else None,
-            rolling_brier_baseline=None,
+            rolling_rmse_recent=round(sum(v for _, v in valid[-window:]) / min(n, window), 4) if valid else None,
+            rolling_rmse_baseline=None,
             relative_change=None,
-            severity="ok",
+            severity="insufficient_history",
             rounds_compared=n,
         )
     recent = [b for _, b in valid[-window:]]
@@ -240,19 +246,21 @@ def rolling_brier_trend(
     mean_recent = sum(recent) / len(recent)
     mean_baseline = sum(baseline) / len(baseline)
     if mean_baseline <= 0:
-        relative = 0.0
+        relative = 0.0 if mean_recent == 0 else None
     else:
         relative = (mean_recent - mean_baseline) / mean_baseline
-    if relative >= BRIER_SIGNIFICANT_REGRESSION:
+    if relative is None:
+        severity = "insufficient_baseline"
+    elif relative >= RMSE_SIGNIFICANT_REGRESSION:
         severity = "alarm"
-    elif relative >= BRIER_MODERATE_REGRESSION:
+    elif relative >= RMSE_MODERATE_REGRESSION:
         severity = "warn"
     else:
         severity = "ok"
     return OutputDriftSummary(
-        rolling_brier_recent=round(mean_recent, 4),
-        rolling_brier_baseline=round(mean_baseline, 4),
-        relative_change=round(relative, 4),
+        rolling_rmse_recent=round(mean_recent, 4),
+        rolling_rmse_baseline=round(mean_baseline, 4),
+        relative_change=round(relative, 4) if relative is not None else None,
         severity=severity,
         rounds_compared=n,
     )
@@ -270,14 +278,14 @@ def build_health_report(
     baseline_records: Sequence[dict],
     current_records: Sequence[dict],
     feature_columns: Iterable[str],
-    brier_by_round: Sequence[tuple[int, float]] = (),
+    rmse_by_round: Sequence[tuple[int, float]] = (),
     rolling_window: int = 5,
 ) -> ModelHealthReport:
     """One-shot: feature drift + output drift + warnings/alarms aggregator."""
     feature_summaries = feature_drift_report(
         baseline_records, current_records, feature_columns
     )
-    output_summary = rolling_brier_trend(brier_by_round, window=rolling_window)
+    output_summary = rolling_rmse_trend(rmse_by_round, window=rolling_window)
 
     warnings: list[str] = []
     alarms: list[str] = []
@@ -292,11 +300,11 @@ def build_health_report(
             )
     if output_summary.severity == "warn":
         warnings.append(
-            f"rolling Brier regression {output_summary.relative_change:+.1%}"
+            f"rolling position RMSE regression {output_summary.relative_change:+.1%}"
         )
     elif output_summary.severity == "alarm":
         alarms.append(
-            f"rolling Brier regression {output_summary.relative_change:+.1%} "
+            f"rolling position RMSE regression {output_summary.relative_change:+.1%} "
             f"(significant)"
         )
 
@@ -307,5 +315,5 @@ def build_health_report(
         output_drift=output_summary,
         warnings=warnings,
         alarms=alarms,
-        brier_by_round=[{"round": int(r), "brier": float(b)} for r, b in brier_by_round],
+        rmse_by_round=[{"round": int(r), "rmse": float(b)} for r, b in rmse_by_round],
     )

@@ -473,29 +473,35 @@ export interface ModelHealthFeatureDrift {
 
 /**
  * Schema for `model_health.json` — input-distribution drift plus the model's
- * rolling round-by-round average probability error. Every block is optional so
+ * rolling round-by-round position RMSE, measured in positions. Every block is optional so
  * an empty / older export degrades gracefully; there is no matching type in
  * `@/types`, so it is defined (and exported) here.
  */
 export interface ModelHealthData {
   season: number;
-  lastEvaluatedRound?: number;
+  lastEvaluatedRound?: number | null;
+  lastObservedRound?: number | null;
+  diagnosticStatus?: "available" | "publication_hold" | "no_eligible_rounds";
+  unavailableReason?: string | null;
+  outputMetric?: "rmse_position_error";
+  outputUnit?: "positions";
+  excludedRounds?: { round: number; reason: string }[];
   featureDrift?: ModelHealthFeatureDrift[];
   outputDrift?: {
-    rolling_brier_recent?: number;
-    rolling_brier_baseline?: number;
-    relative_change?: number;
+    rolling_rmse_recent?: number | null;
+    rolling_rmse_baseline?: number | null;
+    relative_change?: number | null;
     severity?: string;
     rounds_compared?: number;
-  };
+  } | null;
   warnings?: string[];
   alarms?: string[];
-  brierByRound?: { round: number; brier: number }[];
+  rmseByRound?: { round: number; rmse: number }[];
 }
 
 /**
  * Model-health snapshot (`model_health.json`): feature-drift severities and the
- * rolling average-probability-error trend from the drift report. Returns null
+ * rolling position-RMSE trend from the drift report. Returns null
  * instead of throwing so the health strip hides gracefully when the file is
  * missing (archived seasons never publish it).
  */
