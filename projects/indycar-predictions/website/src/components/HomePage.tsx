@@ -22,6 +22,7 @@ import { teamColor } from "@/lib/teams";
 import { trackTypeLabel } from "@/lib/track";
 import type { RaceBlock } from "@/types/indycar";
 import { buttonVariants } from "@/components/ui/Button";
+import { cn } from "@/components/ui/cn";
 import AddToCalendar from "@/components/AddToCalendar";
 import HeroParallax from "@/components/home/HeroParallax";
 import SnapshotForecastStatus from "@/components/SnapshotForecastStatus";
@@ -149,7 +150,10 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href={`/race/${next.round}`}
-                  className={buttonVariants({ variant: "primary" })}
+                  className={cn(
+                    buttonVariants({ variant: "primary" }),
+                    "h-auto min-h-11 max-w-full whitespace-normal py-2 text-center",
+                  )}
                 >
                   View snapshot forecast →
                 </Link>
@@ -212,7 +216,7 @@ export default function HomePage() {
         {/* ── Predicted podium — next round ── */}
         {next && podiumEntries.length > 0 && (
           <section aria-labelledby="forecast-heading" className="section-bugatti">
-            <div className="flex items-baseline justify-between mb-12">
+            <div className="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-y-3 mb-12">
               <div>
                 <p className="eyebrow mb-2">Race Forecast · Next Round</p>
                 <h2 id="forecast-heading" className="display-md">

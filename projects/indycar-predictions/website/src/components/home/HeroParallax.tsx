@@ -32,7 +32,7 @@ export default function HeroParallax({
         cr={1}
       />
       <div aria-hidden className="hero-photo-band__scrim" />
-      <div className="hero-photo-band__content">{children}</div>
+      <div className="hero-photo-band__content min-w-0">{children}</div>
     </section>
   );
 }

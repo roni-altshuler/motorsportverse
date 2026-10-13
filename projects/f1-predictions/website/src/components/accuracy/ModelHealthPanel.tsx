@@ -18,8 +18,8 @@ import type { ModelHealthData } from "@/lib/data";
  *
  * Reads `model_health.json`. It separates the two things that are easy to
  * conflate: whether the FORECASTS are still landing well (output quality, the
- * rolling average-probability-error trend) versus whether the model's INPUTS
- * have drifted from what it was tuned on. Input drift is watched but does not,
+ * rolling position-RMSE trend) versus whether the model's INPUTS
+ * have drifted from what it was tuned on. Forecast drift is watched but does not,
  * on its own, mean the predictions have degraded — so the headline status
  * follows output quality and input shifts are shown as a separate signal.
  *
@@ -36,9 +36,7 @@ const FEATURE_LABELS: Record<string, string> = {
 
 function prettifyFeature(feature: string): string {
   if (FEATURE_LABELS[feature]) return FEATURE_LABELS[feature];
-  return feature
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/^./, (c) => c.toUpperCase());
+  return feature.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
 }
 
 type Tone = "good" | "warn" | "bad" | "neutral";
@@ -86,23 +84,47 @@ const SEVERITY_LABEL: Record<Tone, string> = {
 export default function ModelHealthPanel({ health }: { health: ModelHealthData | null }) {
   if (!health) return null;
 
+  if (health.diagnosticStatus !== "available" || health.outputMetric !== "rmse_position_error") {
+    return (
+      <section aria-label="Model health">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <h2 className="section-heading mb-0">Model Health</h2>
+          <span
+            className="text-xs font-bold uppercase tracking-wider"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Unavailable
+          </span>
+        </div>
+        <p className="text-sm max-w-2xl" style={{ color: "var(--text-muted)" }}>
+          {health.unavailableReason ?? "Eligible settled forecast diagnostics are unavailable."}
+          {health.lastObservedRound != null
+            ? ` Latest elapsed round: R${health.lastObservedRound}.`
+            : ""}
+        </p>
+      </section>
+    );
+  }
+
   const output = health.outputDrift;
   const drift = (health.featureDrift ?? []).slice();
-  const trend = (health.brierByRound ?? []).filter((d) => typeof d.brier === "number");
+  const trend = (health.rmseByRound ?? []).filter((d) => Number.isFinite(d.rmse) && d.rmse >= 0);
 
   // Nothing meaningful to show — bail rather than render an empty shell.
   if (!output && drift.length === 0 && trend.length === 0) return null;
 
   // Headline status follows OUTPUT quality (are the forecasts still good?).
-  const outTone = output ? severityTone(output.severity) : "neutral";
+  const outTone = output?.relative_change != null ? severityTone(output.severity) : "neutral";
   const statusLabel =
     outTone === "good"
-      ? "Healthy"
+      ? "Stable error trend"
       : outTone === "warn"
-        ? "Watch"
+        ? "Error increasing"
         : outTone === "bad"
-          ? "Degraded"
-          : "Monitoring";
+          ? "Error increased"
+          : output?.severity === "insufficient_baseline"
+            ? "Comparison unavailable"
+            : "Insufficient history";
 
   // relative_change is (recent − baseline) / baseline on the error metric, so a
   // negative value means the recent error is LOWER than the baseline — better.
@@ -111,10 +133,10 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
   const relBetter = rel != null ? rel < 0 : null;
 
   const shiftedCount = drift.filter((d) => severityTone(d.severity) !== "good").length;
-  const chartData = trend.map((d) => ({ round: `R${d.round}`, err: d.brier }));
+  const chartData = trend.map((d) => ({ round: `R${d.round}`, err: d.rmse }));
 
   return (
-    <div>
+    <section aria-label="Model health">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
         <h2 className="section-heading mb-0">Model Health</h2>
         <span
@@ -130,34 +152,44 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
         </span>
       </div>
       <p className="text-sm mb-5 max-w-2xl" style={{ color: "var(--text-muted)" }}>
-        A self-check on the live model: whether recent forecasts are still landing as well as they
-        should, and whether the numbers feeding the model have drifted from what it was tuned on.
+        Position error and forecast-distribution shifts across eligible settled rounds.
+        {health.lastEvaluatedRound != null
+          ? ` Evaluated through R${health.lastEvaluatedRound}.`
+          : ""}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
         <div className="metric-card">
-          <p className="eyebrow mb-2">Forecast quality</p>
+          <p className="eyebrow mb-2">Error trend</p>
           {relPct != null ? (
             <>
               <p
                 className="text-2xl font-mono font-bold tracking-tight"
-                style={{ color: relBetter ? "var(--success)" : "#E10600" }}
+                style={{
+                  color: rel === 0 ? "var(--text)" : relBetter ? "var(--success)" : "#E10600",
+                }}
               >
-                {relBetter ? "▼" : "▲"} {relPct.toFixed(0)}%
+                {rel === 0 ? "–" : relBetter ? "▼" : "▲"} {relPct.toFixed(0)}%
               </p>
               <p className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
-                {relBetter ? "lower error than" : "higher error than"} the season benchmark
+                {rel === 0 ? "same error as" : relBetter ? "lower error than" : "higher error than"}{" "}
+                the previous rolling window
               </p>
             </>
           ) : (
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-              Not enough graded rounds yet.
+              {output?.severity === "insufficient_baseline"
+                ? "Relative change is unavailable because the prior window has zero error."
+                : "Not enough graded rounds yet."}
             </p>
           )}
         </div>
         <div className="metric-card">
           <p className="eyebrow mb-2">Rounds monitored</p>
-          <p className="text-2xl font-mono font-bold tracking-tight" style={{ color: "var(--text)" }}>
+          <p
+            className="text-2xl font-mono font-bold tracking-tight"
+            style={{ color: "var(--text)" }}
+          >
             {output?.rounds_compared ?? trend.length ?? "–"}
           </p>
           <p className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
@@ -165,7 +197,7 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
           </p>
         </div>
         <div className="metric-card">
-          <p className="eyebrow mb-2">Input drift</p>
+          <p className="eyebrow mb-2">Forecast drift</p>
           <p
             className="text-2xl font-mono font-bold tracking-tight"
             style={{ color: shiftedCount > 0 ? "var(--warning)" : "var(--success)" }}
@@ -173,14 +205,14 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
             {drift.length > 0 ? `${shiftedCount}/${drift.length}` : "–"}
           </p>
           <p className="text-[11px] mt-1" style={{ color: "var(--text-muted)" }}>
-            model inputs that moved vs baseline
+            forecast features that moved vs earlier rounds
           </p>
         </div>
       </div>
 
       {drift.length > 0 && (
         <div className="mb-6">
-          <p className="eyebrow mb-2">Input drift by feature</p>
+          <p className="eyebrow mb-2">Forecast drift by feature</p>
           <div className="flex flex-wrap gap-2">
             {drift.map((d) => {
               const tone = severityTone(d.severity);
@@ -211,11 +243,10 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
               className="font-bold text-sm uppercase tracking-wider"
               style={{ color: "var(--text)" }}
             >
-              Average Probability Error, Round by Round
+              Position RMSE, Round by Round
             </h3>
             <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
-              How far the model&apos;s probabilities sat from what actually happened — lower is a
-              better-calibrated forecast.
+              Root mean squared finishing-position error, in positions. Lower is better.
             </p>
           </div>
           <div className="w-full h-56">
@@ -252,17 +283,17 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
                   }}
                   formatter={(value) => {
                     if (value == null) return [null, null];
-                    return [Number(value).toFixed(2), "Avg error"];
+                    return [Number(value).toFixed(2), "Position RMSE"];
                   }}
                 />
-                {output?.rolling_brier_baseline != null && (
+                {output?.rolling_rmse_baseline != null && (
                   <ReferenceLine
-                    y={output.rolling_brier_baseline}
+                    y={output.rolling_rmse_baseline}
                     stroke="var(--text-muted)"
                     strokeDasharray="5 5"
                     strokeOpacity={0.7}
                     label={{
-                      value: "benchmark",
+                      value: "prior window",
                       position: "right",
                       fill: "var(--text-muted)",
                       fontSize: 9,
@@ -289,12 +320,10 @@ export default function ModelHealthPanel({ health }: { health: ModelHealthData |
 
       {shiftedCount > 0 && (
         <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
-          Some model inputs have drifted from their reference range — normal early in a season and
-          with a small sample of races so far. It is flagged here for transparency, but the rolling
-          forecast-quality check above shows the predictions themselves are{" "}
-          {outTone === "good" ? "still holding up" : "being watched closely"}.
+          These forecast distributions differ from earlier eligible rounds. Circuit changes can
+          affect this comparison; a distribution shift alone does not establish degraded accuracy.
         </p>
       )}
-    </div>
+    </section>
   );
 }
