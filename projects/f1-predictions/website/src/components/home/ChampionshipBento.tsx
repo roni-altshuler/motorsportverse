@@ -169,7 +169,7 @@ export default function ChampionshipBento({
         <div className="flex h-full flex-col justify-between p-5">
           <Gauge className="w-5 h-5 text-[color:var(--success)]" />
           <div>
-            <p className="eyebrow mb-1">Forecast Accuracy</p>
+            <p className="eyebrow mb-1">Historical ranking score</p>
             <p className="display-sm text-[color:var(--ink)] !text-[28px] !tracking-tight">
               {typeof accuracyPct === "number" ? (
                 <>
@@ -181,7 +181,7 @@ export default function ChampionshipBento({
               )}
             </p>
             <p className="caption-uppercase text-[10px] mt-1 tracking-[0.16em] text-[color:var(--muted)]">
-              {roundsCompleted} rounds graded
+              60% podium / 40% points overlap · {roundsCompleted} rounds
             </p>
           </div>
         </div>

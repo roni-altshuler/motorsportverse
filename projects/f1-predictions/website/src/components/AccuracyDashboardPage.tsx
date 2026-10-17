@@ -118,7 +118,7 @@ export default function AccuracyDashboardPage() {
   // seasons without the new fields still show the stat.
   const reportOverall = gpAccuracyReport?.overallAccuracy;
   const winnerHitRounds =
-    reportOverall?.roundsWithActual ?? tracker.overallAccuracy?.roundsWithActual ?? 0;
+    reportOverall?.seasonWinnerRoundsScored ?? gpReports.filter(r => typeof r.winnerHit === "boolean").length;
   const winnerHits =
     reportOverall?.seasonWinnerHits ??
     (gpReports.length > 0 ? gpReports.filter((r) => r.winnerHit).length : null);
@@ -209,7 +209,7 @@ export default function AccuracyDashboardPage() {
               return (
                 <>
                   <div className="metric-card text-center">
-                    <p className="eyebrow mb-2">Season Accuracy</p>
+                    <p className="eyebrow mb-2">Historical ranking score</p>
                     <p
                       className="text-5xl font-mono font-tabular [font-weight:700] tracking-tight"
                       style={{
@@ -372,13 +372,13 @@ export default function AccuracyDashboardPage() {
                       <span
                         className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full"
                         style={{
-                          background: report.winnerHit
+                          background: report.winnerHit == null ? "rgba(136,136,136,0.12)" : report.winnerHit
                             ? "rgba(0,210,190,0.12)"
                             : "rgba(225,6,0,0.12)",
-                          color: report.winnerHit ? "#00D2BE" : "#E10600",
+                          color: report.winnerHit == null ? "var(--text-muted)" : report.winnerHit ? "#00D2BE" : "#E10600",
                         }}
                       >
-                        {report.winnerHit ? "Winner Called" : "Winner Miss"}
+                        {report.winnerHit == null ? "Winner not scored" : report.winnerHit ? "Winner Called" : "Winner Miss"}
                       </span>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">

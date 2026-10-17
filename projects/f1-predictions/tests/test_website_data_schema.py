@@ -231,8 +231,21 @@ class SeasonTrackerRound(_Loose):
     hasActual: bool
 
 
+class GrandPrixWinnerReport(_Loose):
+    round: int
+    winnerHit: Optional[bool] = None
+
+
+class WinnerAccuracy(_Loose):
+    seasonWinnerHits: Optional[int] = Field(default=None, ge=0)
+    seasonWinnerRoundsScored: Optional[int] = Field(default=None, ge=0)
+    seasonWinnerHitPct: Optional[float] = Field(default=None, ge=0, le=100)
+
+
 class SeasonTrackerData(_Loose):
     rounds: list[SeasonTrackerRound]
+    gpReports: list[GrandPrixWinnerReport] = Field(default_factory=list)
+    overallAccuracy: Optional[WinnerAccuracy] = None
 
 
 class DriverStanding(_Loose):

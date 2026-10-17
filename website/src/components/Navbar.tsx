@@ -7,6 +7,7 @@ import { asset } from "@/lib/asset";
 import { getProjects } from "@/lib/registry";
 
 const LINKS = [
+  { href: "/track-record", label: "Track records" },
   { href: "/#race-centre", label: "Race centre" },
   { href: "/docs", label: "Docs" },
   { href: "/contribute", label: "Contribute" },
@@ -60,6 +61,7 @@ export function Navbar() {
               </Link>
             ))}
           </div>
+          <Link href="/track-record" className="sm:hidden rounded-full px-3 py-2 text-sm">Track records</Link>
           <PaletteButton />
           <a
             href="https://github.com/roni-altshuler/motorsportverse"

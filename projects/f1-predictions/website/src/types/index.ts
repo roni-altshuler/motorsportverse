@@ -234,7 +234,7 @@ export interface GrandPrixPerformanceReport {
   exactMatches: number;
   within3: number;
   within5: number;
-  winnerHit: boolean;
+  winnerHit: boolean | null;
   podiumHits: number;
   pointsHits?: number | null;
   pointsTotal?: number | null;
@@ -598,8 +598,10 @@ export interface SeasonOverallAccuracy {
   totalDnfsExcluded?: number;
   /** Rounds where the model's predicted P1 actually won the race. */
   seasonWinnerHits?: number;
-  /** seasonWinnerHits / roundsWithActual, as a percentage. */
-  seasonWinnerHitPct?: number;
+  /** Denominator with both unique original P1s present. */
+  seasonWinnerRoundsScored?: number;
+  /** seasonWinnerHits / seasonWinnerRoundsScored; null when no winners scored. */
+  seasonWinnerHitPct?: number | null;
 }
 
 export interface SeasonTrackerData {

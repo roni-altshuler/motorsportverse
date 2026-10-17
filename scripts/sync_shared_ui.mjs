@@ -69,6 +69,7 @@ const SHARED_FILES = [];
 // number with nothing next to it, which is the failure mode the whole
 // evidence discipline exists to prevent. So they are pushed, not intersected.
 const REQUIRED_FILES = [
+  "ui/WinnerTrackRecord.tsx",
   "ui/CircuitReplayWorkspace.tsx",
   "ui/CircuitExplorer.tsx",
   "ui/format.ts",
@@ -86,6 +87,8 @@ const REQUIRED_TEST_DIR = "src/__tests__/shared";
 // Shared loaders that live under src/lib rather than src/components. Managed
 // against the site root, like the tests.
 const REQUIRED_SRC_FILES = [
+  "src/lib/trackRecord.ts",
+  "src/lib/trackRecordData.ts",
   "src/lib/useReducedMotion.ts",
   "src/lib/replayStream.ts",
   "src/lib/replayStreamDemo.ts",
@@ -165,6 +168,11 @@ if (existsSync(testBase)) {
 for (const rel of REQUIRED_SRC_FILES) {
   manage(rel, { required: true, canonicalRoot: CANONICAL_SRC, targetRoots: TARGET_SRCS });
 }
+// Series season context is intentionally absent from the catalog-only hub.
+manage("src/components/SeasonWinnerTrackRecord.tsx", {
+  required: true, canonicalRoot: CANONICAL_SRC,
+  targetRoots: TARGET_SRCS.filter(t => t !== join(ROOT, "website")),
+});
 
 if (check) {
   if (drifted) {

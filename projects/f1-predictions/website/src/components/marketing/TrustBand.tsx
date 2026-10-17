@@ -151,10 +151,10 @@ export default function TrustBand({ trustStats }: { trustStats: TrustStats }) {
       {currentSeason?.accuracyPct != null && (
         <p className="mt-6 body-sm text-[color:var(--muted)]">
           <span className="font-mono uppercase tracking-[0.14em] text-[color:var(--body-strong)]">
-            This season, live:
+            Saved historical comparisons:
           </span>{" "}
-          {currentSeason.accuracyPct.toFixed(1)}% podium &amp; points accuracy — how
-          often the model puts the right drivers on the podium and in the points —
+          {currentSeason.accuracyPct.toFixed(1)}% podium &amp; points ranking score —
+          a 60/40 overlap blend, separate from correct winner picks —
           across {currentSeason.roundsGraded}{" "}
           {currentSeason.roundsGraded === 1 ? "round" : "rounds"} graded so far.
         </p>
