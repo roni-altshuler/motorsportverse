@@ -1,0 +1,159 @@
+{
+  "round": 7,
+  "season": 2026,
+  "place": "Barcelona",
+  "country": "Spain",
+  "event": "Barcelona-Catalunya",
+  "classes": [
+    {
+      "class": "HYPERCAR",
+      "label": "Hypercar",
+      "color": "#3DDC97",
+      "field": 17,
+      "score": {
+        "n": 17,
+        "mean_position_error": 5.176,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 6,
+        "within_5": 11,
+        "exact_matches": 0,
+        "spearman_correlation": 0.22549019607843138,
+        "ndcg_at_5": 0.5807112031344311
+      },
+      "markets": {
+        "win": {
+          "brier": 0.048665,
+          "logLoss": 0.172149
+        },
+        "podium": {
+          "brier": 0.135812,
+          "logLoss": 0.41285
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 17,
+            "mean_position_error": 5.412,
+            "winner_hit": true,
+            "podium_hits": 1,
+            "within_3": 8,
+            "within_5": 9,
+            "exact_matches": 1,
+            "spearman_correlation": 0.11519607843137254,
+            "ndcg_at_5": 0.6816312033398161
+          },
+          "markets": {
+            "win": {
+              "brier": 0.04289,
+              "logLoss": 0.148506
+            },
+            "podium": {
+              "brier": 0.148556,
+              "logLoss": 0.513948
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 17,
+            "mean_position_error": 5.059,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 7,
+            "within_5": 9,
+            "exact_matches": 0,
+            "spearman_correlation": 0.27205882352941174,
+            "ndcg_at_5": 0.6711558273663673
+          },
+          "markets": {
+            "win": {
+              "brier": 0.055057,
+              "logLoss": 0.208807
+            },
+            "podium": {
+              "brier": 0.119537,
+              "logLoss": 0.368232
+            }
+          }
+        }
+      }
+    },
+    {
+      "class": "LMGT3",
+      "label": "LMGT3",
+      "color": "#F4A259",
+      "field": 18,
+      "score": {
+        "n": 18,
+        "mean_position_error": 6.556,
+        "winner_hit": false,
+        "podium_hits": 1,
+        "within_3": 4,
+        "within_5": 8,
+        "exact_matches": 0,
+        "spearman_correlation": 0.015479876160990712,
+        "ndcg_at_5": 0.737476327788064
+      },
+      "markets": {
+        "win": {
+          "brier": 0.059968,
+          "logLoss": 0.28674
+        },
+        "podium": {
+          "brier": 0.140765,
+          "logLoss": 0.446988
+        }
+      },
+      "baselines": {
+        "lastRace": {
+          "score": {
+            "n": 18,
+            "mean_position_error": 5.556,
+            "winner_hit": false,
+            "podium_hits": 1,
+            "within_3": 6,
+            "within_5": 9,
+            "exact_matches": 2,
+            "spearman_correlation": 0.17234262125902994,
+            "ndcg_at_5": 0.587002700435878
+          },
+          "markets": {
+            "win": {
+              "brier": 0.059248,
+              "logLoss": 0.277882
+            },
+            "podium": {
+              "brier": 0.138786,
+              "logLoss": 0.437747
+            }
+          }
+        },
+        "seasonForm": {
+          "score": {
+            "n": 18,
+            "mean_position_error": 5.222,
+            "winner_hit": false,
+            "podium_hits": 0,
+            "within_3": 8,
+            "within_5": 10,
+            "exact_matches": 1,
+            "spearman_correlation": 0.23632610939112486,
+            "ndcg_at_5": 0.5781875202995048
+          },
+          "markets": {
+            "win": {
+              "brier": 0.056585,
+              "logLoss": 0.232645
+            },
+            "podium": {
+              "brier": 0.140581,
+              "logLoss": 0.418887
+            }
+          }
+        }
+      }
+    }
+  ]
+}
