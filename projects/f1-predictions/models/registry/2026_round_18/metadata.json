@@ -1,0 +1,100 @@
+{
+  "artifacts": [
+    "gbr",
+    "scaler",
+    "xgb"
+  ],
+  "circuitKey": "United States",
+  "ensemble_weights": {
+    "gb": 0.377453907319098,
+    "lstm": 0.18,
+    "xgb": 0.44254609268090206
+  },
+  "feature_cols": [
+    "TeamAdjustedPace",
+    "TeamPerformanceScore",
+    "TeamFormDelta",
+    "CleanAirPace",
+    "BestLapTime",
+    "LapTimeStd",
+    "ConsistencyScore",
+    "SectorBalance",
+    "PitTimeLoss",
+    "TyreDegFactor",
+    "ExperienceFactor",
+    "RainProbability",
+    "Temperature",
+    "WeatherRiskScore",
+    "CircuitOvertaking",
+    "CircuitSafetyCar",
+    "CircuitGripPenalty",
+    "ExpectedStopsFeature",
+    "SprintWeekend",
+    "QualifyingRank",
+    "GridAdvantage",
+    "CurrentForm",
+    "SkillPrior",
+    "DriverPrior",
+    "TeamPrior",
+    "SeasonMomentum",
+    "PositionTrend",
+    "DriverPredictionBias",
+    "TeamPredictionBias",
+    "DriverDegComposite",
+    "DriverDegDeltaField",
+    "UndercutEdgeAhead",
+    "OvercutEdgeBehind",
+    "TeamOrderPressure",
+    "TeammateConflictRisk",
+    "FieldPositionVolatility",
+    "LocalBattleIntensity",
+    "DRSOvertakeProbAhead",
+    "driver_elo",
+    "team_elo",
+    "driver_form_elo",
+    "wet_weather_elo",
+    "qualifying_elo",
+    "racecraft_elo",
+    "teammate_delta_elo",
+    "CircuitFinishMeanK",
+    "CircuitPodiumRate",
+    "CircuitDNFRate",
+    "CircuitGridDelta",
+    "CircuitVisits"
+  ],
+  "gitSha": "40c61a6d615a0aae90c1e9213054ddf493d18b19",
+  "gpName": "United States Grand Prix",
+  "kind": "qualifying-time",
+  "lstm_used": true,
+  "max_spread_s": 3.5,
+  "metrics": [
+    {
+      "MAE (s)": 0.23951128040742162,
+      "Model": "Gradient Boosting",
+      "RMSE (s)": 0.2750864056452948,
+      "R\u00b2": 0.9209111341245796
+    },
+    {
+      "MAE (s)": 0.20428260498046596,
+      "Model": "XGBoost",
+      "RMSE (s)": 0.29294413020515747,
+      "R\u00b2": 0.9103094491952962
+    },
+    {
+      "MAE (s)": 0.0,
+      "Model": "LSTM Neural Network",
+      "RMSE (s)": 0.0,
+      "R\u00b2": 0.0
+    },
+    {
+      "MAE (s)": 0.18144852990644722,
+      "Model": "Ensemble (GBR + XGB + LSTM)",
+      "RMSE (s)": 0.23377482197641034,
+      "R\u00b2": 0.9428820567964046
+    }
+  ],
+  "pythonVersion": "3.11.17",
+  "round": 18,
+  "savedAt": "2026-10-25T19:36:17+00:00",
+  "season": 2026
+}
