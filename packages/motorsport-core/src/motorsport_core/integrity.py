@@ -17,7 +17,12 @@ The checks, and what each is really asking:
 ``round_files_contiguous``
     Are rounds 1..N all present, with each file's ``round`` field matching its
     own name? A silently-skipped round leaves a hole nothing surfaces — the
-    accuracy page just averages over fewer rounds and looks fine.
+    accuracy page just averages over fewer rounds and looks fine. Forward
+    evaluation alone may omit verified, explicitly held F1 forecasts.
+``forecast_exclusions``
+    Do F1's explicit publication holds agree with the calendar, empty rankings
+    and ranking-availability manifest? Availability (including previews) does
+    not establish pre-race provenance or require a round to be scored.
 ``chronological``
     Do calendar dates increase with round number? Elo and every rolling feature
     read the future the moment a stream is out of order, and the output looks
@@ -65,8 +70,10 @@ import json
 import re
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
+from ipaddress import IPv6Address
 from pathlib import Path
 from typing import Iterable, Mapping, Sequence
+from urllib.parse import urlsplit
 
 from .evidence import BASELINE_LABELS
 
@@ -189,14 +196,17 @@ def _numbered_round_files(directory: Path) -> list[tuple[int, Path]]:
 # ---------------------------------------------------------------------------
 
 
-def check_round_files_contiguous(directory: Path, root: Path, label: str) -> list[Finding]:
+def check_round_files_contiguous(
+    directory: Path, root: Path, label: str, *, excluded_rounds: Iterable[int] = (),
+) -> list[Finding]:
     pairs = _numbered_round_files(directory)
     if not pairs:
         return []
     numbers = [n for n, _ in pairs]
     findings: list[Finding] = []
 
-    expected = list(range(1, max(numbers) + 1))
+    excluded = set(excluded_rounds)
+    expected = set(range(1, max(numbers) + 1)) - excluded
     missing = sorted(set(expected) - set(numbers))
     if missing:
         findings.append(
@@ -213,12 +223,21 @@ def check_round_files_contiguous(directory: Path, root: Path, label: str) -> lis
             Finding(
                 "round_files_contiguous",
                 True,
-                f"{label}: rounds 1-{max(numbers)} all present",
+                f"{label}: rounds 1-{max(numbers)} all present"
+                + (f" except explicit forecast holds {sorted(excluded)}" if excluded else ""),
                 _rel(directory, root),
             )
         )
 
     for number, path in pairs:
+        if number in excluded:
+            findings.append(
+                Finding(
+                    "round_files_contiguous", False,
+                    f"{label}: round {number} has a grade despite an explicit forecast hold",
+                    _rel(path, root),
+                )
+            )
         payload = _read_json(path)
         if not isinstance(payload, dict):
             findings.append(
@@ -237,6 +256,104 @@ def check_round_files_contiguous(directory: Path, root: Path, label: str) -> lis
                 )
             )
     return findings
+
+
+def _is_http_url(value: object) -> bool:
+    """Check absolute HTTP(S) URL structure without resolving or fetching it."""
+    if not isinstance(value, str) or not value.isprintable() or any(c.isspace() for c in value):
+        return False
+    try:
+        parsed = urlsplit(value)
+        host = parsed.hostname
+        # Accessing port validates its syntax and range, even when unused.
+        _ = parsed.port
+        if parsed.scheme not in {"http", "https"} or not host:
+            return False
+        if ":" in host:
+            IPv6Address(host)
+            return True
+        host = host.encode("idna").decode("ascii").removesuffix(".")
+        return len(host) <= 253 and all(
+            re.fullmatch(r"[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?", label)
+            for label in host.split(".")
+        )
+    except (ValueError, UnicodeError):
+        return False
+
+
+def _f1_forecast_exclusions(data_dir: Path, root: Path) -> tuple[set[int], list[Finding]]:
+    """Verify F1's explicit holds; never infer provenance from forecastRounds.
+
+    Missing or inconsistent metadata grants no exceptions. Other series and
+    older manifests retain strict continuity. Omitting a ranking from the
+    availability manifest, by itself, cannot excuse a missing evaluation.
+    """
+    path = data_dir / "season.json"
+    summary = _read_json(path)
+    if not isinstance(summary, dict) or "forecastRounds" not in summary:
+        return set(), []
+
+    def invalid(message: str) -> tuple[set[int], list[Finding]]:
+        return set(), [Finding("forecast_exclusions", False, message, _rel(path, root))]
+
+    forecasts = summary["forecastRounds"]
+    if (
+        not isinstance(forecasts, list)
+        or any(type(n) is not int or n < 1 for n in forecasts)
+        or len(set(forecasts)) != len(forecasts)
+    ):
+        return invalid("forecastRounds must be unique positive round numbers; no exclusions granted")
+    calendar = summary.get("calendar")
+    if not isinstance(calendar, list) or not calendar:
+        return invalid("forecast exclusions require a calendar; no exclusions granted")
+    identities = {}
+    for entry in calendar:
+        if not isinstance(entry, dict):
+            return invalid("invalid calendar entry; no exclusions granted")
+        number = entry.get("round")
+        if type(number) is not int or number < 1 or number in identities:
+            return invalid("invalid or duplicate calendar round; no exclusions granted")
+        identities[number] = entry
+    if not set(forecasts) <= identities.keys():
+        return invalid("forecastRounds includes a round outside the calendar; no exclusions granted")
+
+    available: set[int] = set()
+    excluded: set[int] = set()
+    for number, entry in identities.items():
+        state = _read_json(data_dir / "rounds" / f"round_{number:02d}.json")
+        if not isinstance(state, dict) or type(state.get("round")) is not int:
+            return invalid(f"round {number}: missing or malformed ranking metadata; no exclusions granted")
+        if state["round"] != number or any(
+            not isinstance(entry.get(key), str) or not entry[key]
+            or state.get(key) != entry[key]
+            for key in ("name", "gpKey", "circuit", "date")
+        ):
+            return invalid(f"round {number}: ranking identity disagrees with calendar; no exclusions granted")
+        classification = state.get("classification")
+        if not isinstance(classification, list):
+            return invalid(f"round {number}: malformed ranking; no exclusions granted")
+        if "publicationHold" in state:
+            hold = state["publicationHold"]
+            if (
+                not isinstance(hold, dict)
+                or not isinstance(hold.get("reason"), str)
+                or hold["reason"] not in {"no-pre-race-forecast", "event-mismatch"}
+                or not isinstance(hold.get("message"), str) or not hold["message"].strip()
+                or _parse_date(hold.get("reviewedAt")) is None
+                or not _is_http_url(hold.get("sourceUrl"))
+                or classification
+            ):
+                return invalid(f"round {number}: malformed or contradictory forecast hold; no exclusions granted")
+            excluded.add(number)
+        elif classification:
+            available.add(number)
+    if set(forecasts) != available:
+        return invalid("forecastRounds disagrees with stored usable rankings; no exclusions granted")
+    return excluded, [Finding(
+        "forecast_exclusions", True,
+        f"explicit forecast holds {sorted(excluded)} verified; ranking availability does not prove pre-race provenance",
+        _rel(path, root),
+    )]
 
 
 def check_calendar(payload: Mapping, path: str) -> list[Finding]:
@@ -772,8 +889,12 @@ def check_published_data(
         report.skipped.append("probabilities/")
 
     forward_eval_dir = data_dir / "forward_eval"
+    excluded, findings = _f1_forecast_exclusions(data_dir, root)
+    report.findings.extend(findings)
     report.findings.extend(
-        check_round_files_contiguous(forward_eval_dir, root, "forward_eval")
+        check_round_files_contiguous(
+            forward_eval_dir, root, "forward_eval", excluded_rounds=excluded,
+        )
     )
     if forward_eval_dir.is_dir():
         report.findings.extend(check_baselines(forward_eval_dir, root))

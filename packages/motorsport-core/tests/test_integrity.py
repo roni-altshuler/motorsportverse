@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from motorsport_core import integrity
 
 
@@ -45,6 +47,192 @@ def test_contiguous_rounds_pass(tmp_path):
         (tmp_path / f"round_{rnd:02d}.json").write_text(json.dumps({"round": rnd}))
     findings = integrity.check_round_files_contiguous(tmp_path, tmp_path, "rounds")
     assert not _failed(findings, "round_files_contiguous")
+
+
+def _write_json(path, payload):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload))
+
+
+def _held_f1_season(data_dir):
+    """R18 settles after two explicit holds; R19–23 remain unscored previews."""
+    calendar = []
+    for number in range(1, 24):
+        entry = {
+            "round": number, "name": f"Race {number}", "gpKey": f"GP{number}",
+            "circuit": f"Circuit {number}", "date": f"2026-01-{number:02d}",
+        }
+        calendar.append(entry)
+        state = dict(entry, classification=[{"code": "AAA", "position": 1}])
+        if number in (16, 17):
+            state["classification"] = []
+            state["publicationHold"] = {
+                "reason": "no-pre-race-forecast" if number == 16 else "event-mismatch",
+                "message": "No usable pre-race forecast; no prediction grade.",
+                "reviewedAt": "2026-10-11T05:15:33Z",
+                "sourceUrl": "https://www.formula1.com/en/racing/2026",
+            }
+        _write_json(data_dir / "rounds" / f"round_{number:02d}.json", state)
+        _write_json(data_dir / "probabilities" / f"round_{number:02d}.json", {"round": number})
+        if number <= 18 and number not in (16, 17):
+            _write_json(data_dir / "forward_eval" / f"round_{number:02d}.json", {
+                "round": number, "baselines": {"last_race": {"mean_position_error": 1}},
+            })
+    _write_json(data_dir / "season.json", {
+        "calendar": calendar, "completedRounds": list(range(1, 19)),
+        "forecastRounds": [n for n in range(1, 24) if n not in (16, 17)],
+    })
+
+
+def test_only_explicit_holds_exempt_forward_eval_and_previews_need_no_grade(tmp_path):
+    _held_f1_season(tmp_path)
+    report = integrity.check_published_data(tmp_path)
+    assert report.ok, report.failures
+    assert _findings(report.findings, "forecast_exclusions")
+    assert not any((tmp_path / "forward_eval" / f"round_{n:02d}.json").exists()
+                   for n in range(19, 24))
+
+
+def test_a_genuinely_missing_r14_still_fails_between_verified_holds(tmp_path):
+    _held_f1_season(tmp_path)
+    (tmp_path / "forward_eval/round_14.json").unlink()
+    report = integrity.check_published_data(tmp_path)
+    assert any("rounds [14]" in f.message for f in report.failures)
+
+
+def test_omitting_r14_from_availability_cannot_excuse_its_missing_grade(tmp_path):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "season.json"
+    summary = json.loads(path.read_text())
+    summary["forecastRounds"].remove(14)
+    _write_json(path, summary)
+    path = tmp_path / "rounds/round_14.json"
+    state = json.loads(path.read_text())
+    state["classification"] = []
+    _write_json(path, state)
+    (tmp_path / "forward_eval/round_14.json").unlink()
+    report = integrity.check_published_data(tmp_path)
+    assert any("rounds [14]" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("number", [16, 17])
+def test_a_withheld_round_cannot_retain_a_grade(tmp_path, number):
+    _held_f1_season(tmp_path)
+    _write_json(tmp_path / "forward_eval" / f"round_{number:02d}.json", {
+        "round": number, "baselines": {"last_race": {"mean_position_error": 1}},
+    })
+    report = integrity.check_published_data(tmp_path)
+    assert any("grade despite an explicit forecast hold" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("manifest", [None, [1, True], [1, "18"], [1, 1], [24], [1]])
+def test_invalid_availability_manifest_grants_no_exceptions(tmp_path, manifest):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "season.json"
+    summary = json.loads(path.read_text())
+    summary["forecastRounds"] = manifest
+    _write_json(path, summary)
+    report = integrity.check_published_data(tmp_path)
+    assert _failed(report.findings, "forecast_exclusions")
+    assert any("rounds [16, 17]" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("mutation", ["absent", "unreadable", "no_manifest"])
+def test_missing_coverage_metadata_retains_strict_continuity(tmp_path, mutation):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "season.json"
+    if mutation == "absent":
+        path.unlink()
+    elif mutation == "unreadable":
+        path.write_text("not json")
+    else:
+        summary = json.loads(path.read_text())
+        del summary["forecastRounds"]
+        _write_json(path, summary)
+    report = integrity.check_published_data(tmp_path)
+    assert any("rounds [16, 17]" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("mutation", ["hold", "reason", "reason_type", "identity", "ranking", "listed"])
+def test_inconsistent_hold_metadata_fails_closed(tmp_path, mutation):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "rounds/round_16.json"
+    state = json.loads(path.read_text())
+    if mutation == "hold":
+        state["publicationHold"] = {}
+    elif mutation == "reason":
+        state["publicationHold"]["reason"] = "unknown"
+    elif mutation == "reason_type":
+        state["publicationHold"]["reason"] = []
+    elif mutation == "identity":
+        state["gpKey"] = "Wrong event"
+    elif mutation == "ranking":
+        state["classification"] = [{"code": "AAA", "position": 1}]
+    else:
+        summary_path = tmp_path / "season.json"
+        summary = json.loads(summary_path.read_text())
+        summary["forecastRounds"].append(16)
+        _write_json(summary_path, summary)
+    _write_json(path, state)
+    report = integrity.check_published_data(tmp_path)
+    assert _failed(report.findings, "forecast_exclusions")
+    assert any("rounds [16, 17]" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("url", [
+    "https://", "http://", "https:// bad host", "https:///results", "https://bad_host/results",
+    "https://example..com/results", "https://-bad.example/results", "https://example.com:bad/results",
+    "https://example.com:65536/results", "https://[invalid]/results", "https://example.com/\nresults",
+])
+def test_malformed_hold_source_urls_grant_no_exclusions(tmp_path, url):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "rounds/round_16.json"
+    state = json.loads(path.read_text())
+    state["publicationHold"]["sourceUrl"] = url
+    _write_json(path, state)
+    report = integrity.check_published_data(tmp_path)
+    assert _failed(report.findings, "forecast_exclusions")
+    assert any("rounds [16, 17]" in f.message for f in report.failures)
+
+
+@pytest.mark.parametrize("url", [
+    "https://www.formula1.com/en/racing/2026/bahrain",
+    "https://www.formula1.com/en/racing/2026/singapore",
+])
+def test_existing_hold_source_urls_remain_valid_without_network_access(tmp_path, url):
+    _held_f1_season(tmp_path)
+    path = tmp_path / "rounds/round_16.json"
+    state = json.loads(path.read_text())
+    state["publicationHold"]["sourceUrl"] = url
+    _write_json(path, state)
+    report = integrity.check_published_data(tmp_path)
+    assert report.ok, report.failures
+
+
+@pytest.mark.parametrize("stream", ["forward_eval", "rounds", "probabilities"])
+@pytest.mark.parametrize("content", ['{"round": 99}', 'not json'])
+def test_verified_holds_do_not_hide_wrong_round_or_unreadable_files(tmp_path, stream, content):
+    _held_f1_season(tmp_path)
+    (tmp_path / stream / "round_14.json").write_text(content)
+    report = integrity.check_published_data(tmp_path)
+    failures = _failed(report.findings, "round_files_contiguous")
+    assert any(f.path == f"{stream}/round_14.json" for f in failures)
+
+
+@pytest.mark.parametrize("stream", ["rounds", "probabilities"])
+def test_forward_eval_exceptions_never_relax_ordinary_streams(tmp_path, stream):
+    _held_f1_season(tmp_path)
+    (tmp_path / stream / "round_16.json").unlink()
+    report = integrity.check_published_data(tmp_path)
+    assert any(f.path == stream and "rounds [16]" in f.message for f in report.failures)
+
+
+def test_r18_requires_a_baseline_despite_earlier_forecast_holds(tmp_path):
+    _held_f1_season(tmp_path)
+    _write_json(tmp_path / "forward_eval/round_18.json", {"round": 18})
+    report = integrity.check_published_data(tmp_path)
+    failures = _failed(report.findings, "baselines_published")
+    assert any("[18]" in f.message for f in failures)
 
 
 # --------------------------------------------------------------------------- #
