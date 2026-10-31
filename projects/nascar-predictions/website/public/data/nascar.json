@@ -2,7 +2,7 @@
   "sport": "NASCAR",
   "season": 2026,
   "seasonLabel": "2026",
-  "generatedAt": "2026-10-25T22:42:36+00:00",
+  "generatedAt": "2026-10-31T21:04:13+00:00",
   "completedRounds": 34,
   "lastUpdatedRound": 34,
   "totalRounds": 36,
@@ -3727,7 +3727,7 @@
       "name": "Kyle Larson",
       "team": "Hendrick Motorsports",
       "make": "Chevrolet",
-      "pTitle": 0.988,
+      "pTitle": 0.9955,
       "pMakePlayoffs": 1.0,
       "currentPoints": 1112.0,
       "projMean": 1112.0,
@@ -3742,7 +3742,7 @@
       "name": "Denny Hamlin",
       "team": "Joe Gibbs Racing",
       "make": "Toyota",
-      "pTitle": 0.007000000000000001,
+      "pTitle": 0.0025,
       "pMakePlayoffs": 1.0,
       "currentPoints": 1294.0,
       "projMean": 1294.0,
@@ -3757,7 +3757,7 @@
       "name": "Christopher Bell",
       "team": "Joe Gibbs Racing",
       "make": "Toyota",
-      "pTitle": 0.004,
+      "pTitle": 0.0015,
       "pMakePlayoffs": 1.0,
       "currentPoints": 1069.0,
       "projMean": 1069.0,
@@ -3772,7 +3772,7 @@
       "name": "Chase Briscoe",
       "team": "Joe Gibbs Racing",
       "make": "Toyota",
-      "pTitle": 0.001,
+      "pTitle": 0.0005,
       "pMakePlayoffs": 1.0,
       "currentPoints": 1068.0,
       "projMean": 1068.0,
@@ -4353,6 +4353,21 @@
       "canStillWin": false
     },
     {
+      "code": "JOBILICKI",
+      "name": "Josh Bilicki",
+      "team": "Garage 66",
+      "make": "Ford",
+      "pTitle": 0.0,
+      "pMakePlayoffs": 0.0,
+      "currentPoints": 0.0,
+      "projMean": 0.0,
+      "projP10": 0.0,
+      "projP90": 0.0,
+      "projectionHorizon": "regular-season",
+      "maxAttainable": 0.0,
+      "canStillWin": false
+    },
+    {
       "code": "COHEIM",
       "name": "Corey Heim",
       "team": "23XI Racing",
@@ -4518,21 +4533,6 @@
       "canStillWin": false
     },
     {
-      "code": "JOBILICKI",
-      "name": "Josh Bilicki",
-      "team": "Garage 66",
-      "make": "Ford",
-      "pTitle": 0.0,
-      "pMakePlayoffs": 0.0,
-      "currentPoints": 0.0,
-      "projMean": 0.0,
-      "projP10": 0.0,
-      "projP90": 0.0,
-      "projectionHorizon": "regular-season",
-      "maxAttainable": 0.0,
-      "canStillWin": false
-    },
-    {
       "code": "HABURTON",
       "name": "HABURTON",
       "team": "",
@@ -4576,8 +4576,8 @@
     "venueName": "Martinsville Speedway",
     "raceName": "Xfinity 500",
     "trackType": "short",
-    "phase": "pre",
-    "qualifyingActual": false,
+    "phase": "post-quali",
+    "qualifyingActual": true,
     "qualifying": [
       {
         "position": 1,
@@ -4587,81 +4587,81 @@
       },
       {
         "position": 2,
-        "code": "COHEIM",
-        "name": "Corey Heim",
-        "team": "23XI Racing"
-      },
-      {
-        "position": 3,
         "code": "TYGIBBS",
         "name": "Ty Gibbs",
         "team": "Joe Gibbs Racing"
       },
       {
-        "position": 4,
-        "code": "CHBELL",
-        "name": "Christopher Bell",
-        "team": "Joe Gibbs Racing"
-      },
-      {
-        "position": 5,
-        "code": "TYREDDICK",
-        "name": "Tyler Reddick",
-        "team": "23XI Racing"
-      },
-      {
-        "position": 6,
-        "code": "RYBLANEY",
-        "name": "Ryan Blaney",
-        "team": "Team Penske"
-      },
-      {
-        "position": 7,
-        "code": "CAHOCEVAR",
-        "name": "Carson Hocevar",
-        "team": "Spire Motorsports"
-      },
-      {
-        "position": 8,
+        "position": 3,
         "code": "KYLARSON",
         "name": "Kyle Larson",
         "team": "Hendrick Motorsports"
       },
       {
-        "position": 9,
-        "code": "DASUAREZ",
-        "name": "Daniel Su\u00e1rez",
-        "team": "Spire Motorsports"
+        "position": 4,
+        "code": "AUCINDRIC",
+        "name": "Austin Cindric",
+        "team": "Team Penske"
       },
       {
-        "position": 10,
-        "code": "CHBRISCOE",
-        "name": "Chase Briscoe",
-        "team": "Joe Gibbs Racing"
-      },
-      {
-        "position": 11,
+        "position": 5,
         "code": "JOLOGANO",
         "name": "Joey Logano",
         "team": "Team Penske"
       },
       {
-        "position": 12,
-        "code": "WIBYRON",
-        "name": "William Byron",
-        "team": "Hendrick Motorsports"
-      },
-      {
-        "position": 13,
+        "position": 6,
         "code": "RYPREECE",
         "name": "Ryan Preece",
         "team": "RFK Racing"
       },
       {
+        "position": 7,
+        "code": "ALBOWMAN",
+        "name": "Alex Bowman",
+        "team": "Hendrick Motorsports"
+      },
+      {
+        "position": 8,
+        "code": "WIBYRON",
+        "name": "William Byron",
+        "team": "Hendrick Motorsports"
+      },
+      {
+        "position": 9,
+        "code": "CHELLIOTT",
+        "name": "Chase Elliott",
+        "team": "Hendrick Motorsports"
+      },
+      {
+        "position": 10,
+        "code": "JOBERRY",
+        "name": "Josh Berry",
+        "team": "Wood Brothers Racing"
+      },
+      {
+        "position": 11,
+        "code": "CHBRISCOE",
+        "name": "Chase Briscoe",
+        "team": "Joe Gibbs Racing"
+      },
+      {
+        "position": 12,
+        "code": "TYREDDICK",
+        "name": "Tyler Reddick",
+        "team": "23XI Racing"
+      },
+      {
+        "position": 13,
+        "code": "RYBLANEY",
+        "name": "Ryan Blaney",
+        "team": "Team Penske"
+      },
+      {
         "position": 14,
-        "code": "ROCHASTAIN",
-        "name": "Ross Chastain",
-        "team": "Trackhouse Racing"
+        "code": "CHBELL",
+        "name": "Christopher Bell",
+        "team": "Joe Gibbs Racing"
       },
       {
         "position": 15,
@@ -4671,87 +4671,87 @@
       },
       {
         "position": 16,
-        "code": "CHELLIOTT",
-        "name": "Chase Elliott",
-        "team": "Hendrick Motorsports"
+        "code": "ROCHASTAIN",
+        "name": "Ross Chastain",
+        "team": "Trackhouse Racing"
       },
       {
         "position": 17,
-        "code": "AUCINDRIC",
-        "name": "Austin Cindric",
-        "team": "Team Penske"
+        "code": "AUHILL",
+        "name": "Austin Hill",
+        "team": "Richard Childress Racing"
       },
       {
         "position": 18,
-        "code": "JOBERRY",
-        "name": "Josh Berry",
-        "team": "Wood Brothers Racing"
-      },
-      {
-        "position": 19,
         "code": "CHBUESCHER",
         "name": "Chris Buescher",
         "team": "RFK Racing"
       },
       {
-        "position": 20,
-        "code": "TOGILLILAND",
-        "name": "Todd Gilliland",
-        "team": "Front Row Motorsports"
-      },
-      {
-        "position": 21,
-        "code": "BRKESELOWSKI",
-        "name": "Brad Keselowski",
-        "team": "RFK Racing"
-      },
-      {
-        "position": 22,
-        "code": "KYBUSCH",
-        "name": "Kyle Busch",
-        "team": "Richard Childress Racing"
-      },
-      {
-        "position": 23,
-        "code": "MIMCDOWELL",
-        "name": "Michael McDowell",
-        "team": "Spire Motorsports"
-      },
-      {
-        "position": 24,
-        "code": "ALBOWMAN",
-        "name": "Alex Bowman",
-        "team": "Hendrick Motorsports"
-      },
-      {
-        "position": 25,
-        "code": "SHGISBERGEN",
-        "name": "Shane Van Gisbergen",
+        "position": 19,
+        "code": "COZILISCH",
+        "name": "Connor Zilisch",
         "team": "Trackhouse Racing"
       },
       {
-        "position": 26,
-        "code": "ZASMITH",
-        "name": "Zane Smith",
-        "team": "Front Row Motorsports"
-      },
-      {
-        "position": 27,
-        "code": "NOGRAGSON",
-        "name": "Noah Gragson",
-        "team": "Front Row Motorsports"
-      },
-      {
-        "position": 28,
+        "position": 20,
         "code": "AUDILLON",
         "name": "Austin Dillon",
         "team": "Richard Childress Racing"
       },
       {
+        "position": 21,
+        "code": "COCUSTER",
+        "name": "Cole Custer",
+        "team": "Haas Factory Team"
+      },
+      {
+        "position": 22,
+        "code": "TOGILLILAND",
+        "name": "Todd Gilliland",
+        "team": "Front Row Motorsports"
+      },
+      {
+        "position": 23,
+        "code": "BRKESELOWSKI",
+        "name": "Brad Keselowski",
+        "team": "RFK Racing"
+      },
+      {
+        "position": 24,
+        "code": "DASUAREZ",
+        "name": "Daniel Su\u00e1rez",
+        "team": "Spire Motorsports"
+      },
+      {
+        "position": 25,
+        "code": "CAHOCEVAR",
+        "name": "Carson Hocevar",
+        "team": "Spire Motorsports"
+      },
+      {
+        "position": 26,
+        "code": "MIMCDOWELL",
+        "name": "Michael McDowell",
+        "team": "Spire Motorsports"
+      },
+      {
+        "position": 27,
+        "code": "RIHERBST",
+        "name": "Riley Herbst",
+        "team": "23XI Racing"
+      },
+      {
+        "position": 28,
+        "code": "TYDILLON",
+        "name": "Ty Dillon",
+        "team": "Kaulig Racing"
+      },
+      {
         "position": 29,
-        "code": "RISTENHOUSE",
-        "name": "Ricky Stenhouse Jr",
-        "team": "HYAK Motorsports"
+        "code": "SHGISBERGEN",
+        "name": "Shane Van Gisbergen",
+        "team": "Trackhouse Racing"
       },
       {
         "position": 30,
@@ -4761,9 +4761,9 @@
       },
       {
         "position": 31,
-        "code": "COCUSTER",
-        "name": "Cole Custer",
-        "team": "Haas Factory Team"
+        "code": "NOGRAGSON",
+        "name": "Noah Gragson",
+        "team": "Front Row Motorsports"
       },
       {
         "position": 32,
@@ -4773,36 +4773,30 @@
       },
       {
         "position": 33,
-        "code": "RIHERBST",
-        "name": "Riley Herbst",
-        "team": "23XI Racing"
+        "code": "ZASMITH",
+        "name": "Zane Smith",
+        "team": "Front Row Motorsports"
       },
       {
         "position": 34,
-        "code": "AUHILL",
-        "name": "Austin Hill",
-        "team": "Richard Childress Racing"
+        "code": "RISTENHOUSE",
+        "name": "Ricky Stenhouse Jr",
+        "team": "HYAK Motorsports"
       },
       {
         "position": 35,
-        "code": "COZILISCH",
-        "name": "Connor Zilisch",
-        "team": "Trackhouse Racing"
-      },
-      {
-        "position": 36,
         "code": "JONEMECHEK",
         "name": "John H. Nemechek",
         "team": "Legacy Motor Club"
       },
       {
-        "position": 37,
-        "code": "TYDILLON",
-        "name": "Ty Dillon",
-        "team": "Kaulig Racing"
+        "position": 36,
+        "code": "JOBILICKI",
+        "name": "Josh Bilicki",
+        "team": "Garage 66"
       },
       {
-        "position": 38,
+        "position": 37,
         "code": "COWARE",
         "name": "Cody Ware",
         "team": "Rick Ware Racing"
@@ -4814,341 +4808,332 @@
         "code": "DEHAMLIN",
         "name": "Denny Hamlin",
         "team": "Joe Gibbs Racing",
-        "pWin": 0.1767,
-        "pPodium": 0.4527,
+        "pWin": 0.5118,
+        "pPodium": 0.8648,
         "pDnf": 0.0966
       },
       {
         "position": 2,
-        "code": "COHEIM",
-        "name": "Corey Heim",
-        "team": "23XI Racing",
-        "pWin": 0.1182,
-        "pPodium": 0.3245,
-        "pDnf": 0.1349
-      },
-      {
-        "position": 3,
         "code": "TYGIBBS",
         "name": "Ty Gibbs",
         "team": "Joe Gibbs Racing",
-        "pWin": 0.0793,
-        "pPodium": 0.2395,
+        "pWin": 0.224,
+        "pPodium": 0.7037,
         "pDnf": 0.124
       },
       {
+        "position": 3,
+        "code": "KYLARSON",
+        "name": "Kyle Larson",
+        "team": "Hendrick Motorsports",
+        "pWin": 0.0975,
+        "pPodium": 0.4675,
+        "pDnf": 0.1073
+      },
+      {
         "position": 4,
-        "code": "CHBELL",
-        "name": "Christopher Bell",
-        "team": "Joe Gibbs Racing",
-        "pWin": 0.0625,
-        "pPodium": 0.2015,
+        "code": "JOLOGANO",
+        "name": "Joey Logano",
+        "team": "Team Penske",
+        "pWin": 0.044,
+        "pPodium": 0.239,
         "pDnf": 0.1184
       },
       {
         "position": 5,
-        "code": "TYREDDICK",
-        "name": "Tyler Reddick",
-        "team": "23XI Racing",
-        "pWin": 0.063,
-        "pPodium": 0.1772,
-        "pDnf": 0.0907
+        "code": "AUCINDRIC",
+        "name": "Austin Cindric",
+        "team": "Team Penske",
+        "pWin": 0.0333,
+        "pPodium": 0.2052,
+        "pDnf": 0.1129
       },
       {
         "position": 6,
-        "code": "KYLARSON",
-        "name": "Kyle Larson",
-        "team": "Hendrick Motorsports",
-        "pWin": 0.05,
-        "pPodium": 0.1417,
+        "code": "RYPREECE",
+        "name": "Ryan Preece",
+        "team": "RFK Racing",
+        "pWin": 0.029,
+        "pPodium": 0.1562,
         "pDnf": 0.1073
       },
       {
         "position": 7,
-        "code": "RYBLANEY",
-        "name": "Ryan Blaney",
-        "team": "Team Penske",
-        "pWin": 0.049,
-        "pPodium": 0.1603,
-        "pDnf": 0.1518
+        "code": "WIBYRON",
+        "name": "William Byron",
+        "team": "Hendrick Motorsports",
+        "pWin": 0.014,
+        "pPodium": 0.08,
+        "pDnf": 0.124
       },
       {
         "position": 8,
-        "code": "CAHOCEVAR",
-        "name": "Carson Hocevar",
-        "team": "Spire Motorsports",
-        "pWin": 0.039,
-        "pPodium": 0.1278,
-        "pDnf": 0.1295
+        "code": "TYREDDICK",
+        "name": "Tyler Reddick",
+        "team": "23XI Racing",
+        "pWin": 0.0065,
+        "pPodium": 0.0473,
+        "pDnf": 0.0907
       },
       {
         "position": 9,
-        "code": "DASUAREZ",
-        "name": "Daniel Su\u00e1rez",
-        "team": "Spire Motorsports",
-        "pWin": 0.034,
-        "pPodium": 0.1253,
-        "pDnf": 0.1351
+        "code": "CHELLIOTT",
+        "name": "Chase Elliott",
+        "team": "Hendrick Motorsports",
+        "pWin": 0.0103,
+        "pPodium": 0.053,
+        "pDnf": 0.1018
       },
       {
         "position": 10,
         "code": "CHBRISCOE",
         "name": "Chase Briscoe",
         "team": "Joe Gibbs Racing",
-        "pWin": 0.04,
-        "pPodium": 0.1345,
+        "pWin": 0.008,
+        "pPodium": 0.0467,
         "pDnf": 0.1351
       },
       {
         "position": 11,
-        "code": "JOLOGANO",
-        "name": "Joey Logano",
-        "team": "Team Penske",
-        "pWin": 0.0323,
-        "pPodium": 0.1072,
+        "code": "CHBELL",
+        "name": "Christopher Bell",
+        "team": "Joe Gibbs Racing",
+        "pWin": 0.0073,
+        "pPodium": 0.0328,
         "pDnf": 0.1184
       },
       {
         "position": 12,
-        "code": "WIBYRON",
-        "name": "William Byron",
-        "team": "Hendrick Motorsports",
-        "pWin": 0.0335,
-        "pPodium": 0.0988,
-        "pDnf": 0.124
-      },
-      {
-        "position": 13,
-        "code": "RYPREECE",
-        "name": "Ryan Preece",
-        "team": "RFK Racing",
-        "pWin": 0.0302,
-        "pPodium": 0.0955,
-        "pDnf": 0.1073
-      },
-      {
-        "position": 14,
-        "code": "ROCHASTAIN",
-        "name": "Ross Chastain",
-        "team": "Trackhouse Racing",
-        "pWin": 0.02,
-        "pPodium": 0.0675,
-        "pDnf": 0.1129
-      },
-      {
-        "position": 15,
-        "code": "CHELLIOTT",
-        "name": "Chase Elliott",
-        "team": "Hendrick Motorsports",
-        "pWin": 0.0208,
-        "pPodium": 0.069,
-        "pDnf": 0.1018
-      },
-      {
-        "position": 16,
-        "code": "AUCINDRIC",
-        "name": "Austin Cindric",
-        "team": "Team Penske",
-        "pWin": 0.028,
-        "pPodium": 0.0788,
-        "pDnf": 0.1129
-      },
-      {
-        "position": 17,
-        "code": "BUWALLACE",
-        "name": "Bubba Wallace",
-        "team": "23XI Racing",
-        "pWin": 0.021,
-        "pPodium": 0.0668,
-        "pDnf": 0.1462
-      },
-      {
-        "position": 18,
         "code": "JOBERRY",
         "name": "Josh Berry",
         "team": "Wood Brothers Racing",
-        "pWin": 0.0158,
-        "pPodium": 0.0505,
+        "pWin": 0.0053,
+        "pPodium": 0.0323,
         "pDnf": 0.1462
       },
       {
-        "position": 19,
+        "position": 13,
+        "code": "ALBOWMAN",
+        "name": "Alex Bowman",
+        "team": "Hendrick Motorsports",
+        "pWin": 0.0032,
+        "pPodium": 0.0267,
+        "pDnf": 0.1328
+      },
+      {
+        "position": 14,
+        "code": "RYBLANEY",
+        "name": "Ryan Blaney",
+        "team": "Team Penske",
+        "pWin": 0.004,
+        "pPodium": 0.025,
+        "pDnf": 0.1518
+      },
+      {
+        "position": 15,
+        "code": "ROCHASTAIN",
+        "name": "Ross Chastain",
+        "team": "Trackhouse Racing",
+        "pWin": 0.0003,
+        "pPodium": 0.0067,
+        "pDnf": 0.1129
+      },
+      {
+        "position": 16,
+        "code": "BUWALLACE",
+        "name": "Bubba Wallace",
+        "team": "23XI Racing",
+        "pWin": 0.0013,
+        "pPodium": 0.0085,
+        "pDnf": 0.1462
+      },
+      {
+        "position": 17,
         "code": "CHBUESCHER",
         "name": "Chris Buescher",
         "team": "RFK Racing",
-        "pWin": 0.0125,
-        "pPodium": 0.0437,
+        "pWin": 0.0003,
+        "pPodium": 0.0008,
         "pDnf": 0.0962
+      },
+      {
+        "position": 18,
+        "code": "DASUAREZ",
+        "name": "Daniel Su\u00e1rez",
+        "team": "Spire Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0008,
+        "pDnf": 0.1351
+      },
+      {
+        "position": 19,
+        "code": "CAHOCEVAR",
+        "name": "Carson Hocevar",
+        "team": "Spire Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0008,
+        "pDnf": 0.1295
       },
       {
         "position": 20,
         "code": "TOGILLILAND",
         "name": "Todd Gilliland",
         "team": "Front Row Motorsports",
-        "pWin": 0.012,
-        "pPodium": 0.0375,
+        "pWin": 0.0,
+        "pPodium": 0.001,
         "pDnf": 0.0962
       },
       {
         "position": 21,
-        "code": "BRKESELOWSKI",
-        "name": "Brad Keselowski",
-        "team": "RFK Racing",
-        "pWin": 0.012,
-        "pPodium": 0.0367,
-        "pDnf": 0.1351
-      },
-      {
-        "position": 22,
-        "code": "KYBUSCH",
-        "name": "Kyle Busch",
-        "team": "Richard Childress Racing",
-        "pWin": 0.0057,
-        "pPodium": 0.0182,
-        "pDnf": 0.0999
-      },
-      {
-        "position": 23,
-        "code": "MIMCDOWELL",
-        "name": "Michael McDowell",
-        "team": "Spire Motorsports",
-        "pWin": 0.0067,
-        "pPodium": 0.02,
-        "pDnf": 0.0907
-      },
-      {
-        "position": 24,
-        "code": "ALBOWMAN",
-        "name": "Alex Bowman",
-        "team": "Hendrick Motorsports",
-        "pWin": 0.0043,
-        "pPodium": 0.0158,
-        "pDnf": 0.1328
-      },
-      {
-        "position": 25,
-        "code": "SHGISBERGEN",
-        "name": "Shane Van Gisbergen",
-        "team": "Trackhouse Racing",
-        "pWin": 0.006,
-        "pPodium": 0.0155,
-        "pDnf": 0.1129
-      },
-      {
-        "position": 26,
-        "code": "ZASMITH",
-        "name": "Zane Smith",
-        "team": "Front Row Motorsports",
-        "pWin": 0.0045,
-        "pPodium": 0.0123,
-        "pDnf": 0.1295
-      },
-      {
-        "position": 27,
-        "code": "NOGRAGSON",
-        "name": "Noah Gragson",
-        "team": "Front Row Motorsports",
-        "pWin": 0.004,
-        "pPodium": 0.0147,
-        "pDnf": 0.1462
-      },
-      {
-        "position": 28,
-        "code": "AUDILLON",
-        "name": "Austin Dillon",
-        "team": "Richard Childress Racing",
-        "pWin": 0.0053,
-        "pPodium": 0.0145,
-        "pDnf": 0.1184
-      },
-      {
-        "position": 29,
-        "code": "RISTENHOUSE",
-        "name": "Ricky Stenhouse Jr",
-        "team": "HYAK Motorsports",
-        "pWin": 0.0027,
-        "pPodium": 0.0118,
-        "pDnf": 0.1073
-      },
-      {
-        "position": 30,
-        "code": "ERJONES",
-        "name": "Erik Jones",
-        "team": "Legacy Motor Club",
-        "pWin": 0.0015,
-        "pPodium": 0.007,
-        "pDnf": 0.1184
-      },
-      {
-        "position": 31,
-        "code": "COCUSTER",
-        "name": "Cole Custer",
-        "team": "Haas Factory Team",
-        "pWin": 0.0022,
-        "pPodium": 0.0075,
-        "pDnf": 0.1073
-      },
-      {
-        "position": 32,
-        "code": "AJALLMENDINGER",
-        "name": "AJ Allmendinger",
-        "team": "Kaulig Racing",
-        "pWin": 0.0018,
-        "pPodium": 0.0067,
-        "pDnf": 0.1351
-      },
-      {
-        "position": 33,
         "code": "AUHILL",
         "name": "Austin Hill",
         "team": "Richard Childress Racing",
-        "pWin": 0.001,
-        "pPodium": 0.0032,
+        "pWin": 0.0,
+        "pPodium": 0.0008,
         "pDnf": 0.1159
       },
       {
-        "position": 34,
-        "code": "RIHERBST",
-        "name": "Riley Herbst",
-        "team": "23XI Racing",
-        "pWin": 0.0018,
-        "pPodium": 0.0055,
-        "pDnf": 0.1416
+        "position": 22,
+        "code": "AUDILLON",
+        "name": "Austin Dillon",
+        "team": "Richard Childress Racing",
+        "pWin": 0.0003,
+        "pPodium": 0.0003,
+        "pDnf": 0.1184
       },
       {
-        "position": 35,
+        "position": 23,
+        "code": "BRKESELOWSKI",
+        "name": "Brad Keselowski",
+        "team": "RFK Racing",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1351
+      },
+      {
+        "position": 24,
+        "code": "COCUSTER",
+        "name": "Cole Custer",
+        "team": "Haas Factory Team",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1073
+      },
+      {
+        "position": 25,
         "code": "COZILISCH",
         "name": "Connor Zilisch",
         "team": "Trackhouse Racing",
-        "pWin": 0.0013,
-        "pPodium": 0.0045,
+        "pWin": 0.0,
+        "pPodium": 0.0003,
         "pDnf": 0.1869
       },
       {
-        "position": 36,
-        "code": "JONEMECHEK",
-        "name": "John H. Nemechek",
-        "team": "Legacy Motor Club",
-        "pWin": 0.0008,
-        "pPodium": 0.0032,
-        "pDnf": 0.1018
+        "position": 26,
+        "code": "MIMCDOWELL",
+        "name": "Michael McDowell",
+        "team": "Spire Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.0907
       },
       {
-        "position": 37,
+        "position": 27,
+        "code": "SHGISBERGEN",
+        "name": "Shane Van Gisbergen",
+        "team": "Trackhouse Racing",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1129
+      },
+      {
+        "position": 28,
+        "code": "RIHERBST",
+        "name": "Riley Herbst",
+        "team": "23XI Racing",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1416
+      },
+      {
+        "position": 29,
+        "code": "ERJONES",
+        "name": "Erik Jones",
+        "team": "Legacy Motor Club",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1184
+      },
+      {
+        "position": 30,
+        "code": "NOGRAGSON",
+        "name": "Noah Gragson",
+        "team": "Front Row Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1462
+      },
+      {
+        "position": 31,
         "code": "TYDILLON",
         "name": "Ty Dillon",
         "team": "Kaulig Racing",
-        "pWin": 0.0003,
-        "pPodium": 0.0018,
+        "pWin": 0.0,
+        "pPodium": 0.0,
         "pDnf": 0.1018
       },
       {
-        "position": 38,
+        "position": 32,
+        "code": "ZASMITH",
+        "name": "Zane Smith",
+        "team": "Front Row Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1295
+      },
+      {
+        "position": 33,
+        "code": "AJALLMENDINGER",
+        "name": "AJ Allmendinger",
+        "team": "Kaulig Racing",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1351
+      },
+      {
+        "position": 34,
+        "code": "RISTENHOUSE",
+        "name": "Ricky Stenhouse Jr",
+        "team": "HYAK Motorsports",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1073
+      },
+      {
+        "position": 35,
+        "code": "JONEMECHEK",
+        "name": "John H. Nemechek",
+        "team": "Legacy Motor Club",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1018
+      },
+      {
+        "position": 36,
+        "code": "JOBILICKI",
+        "name": "Josh Bilicki",
+        "team": "Garage 66",
+        "pWin": 0.0,
+        "pPodium": 0.0,
+        "pDnf": 0.1826
+      },
+      {
+        "position": 37,
         "code": "COWARE",
         "name": "Cody Ware",
         "team": "Rick Ware Racing",
-        "pWin": 0.0005,
-        "pPodium": 0.0008,
+        "pWin": 0.0,
+        "pPodium": 0.0,
         "pDnf": 0.1518
       }
     ]
