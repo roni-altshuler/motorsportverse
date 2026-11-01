@@ -20,7 +20,8 @@
   14,
   15,
   16,
-  17
+  17,
+  18
  ],
  "calendar": [
   {
@@ -190,6 +191,16 @@
    "venue": "Pertamina Mandalika Circuit",
    "country": "ID",
    "date": "2026-10-11",
+   "completed": true,
+   "hasSprint": true
+  },
+  {
+   "round": 18,
+   "name": "PETRONAS GRAND PRIX OF MALAYSIA ",
+   "shortName": "MAL",
+   "venue": "Petronas Sepang International Circuit",
+   "country": "MY",
+   "date": "2026-11-01",
    "completed": true,
    "hasSprint": true
   }
@@ -607,7 +618,7 @@
    "number": 47,
    "nationality": "ES",
    "manufacturer": "Yamaha",
-   "team": "Yamaha Factory Racing"
+   "team": "Prima Pramac Yamaha MotoGP"
   },
   {
    "code": "SAV",
@@ -675,13 +686,22 @@
   }
  ],
  "manufacturers": [
-  "Aprilia",
   "Ducati",
+  "Aprilia",
   "KTM",
   "Honda",
   "Yamaha"
  ],
  "driverStandings": [
+  {
+   "code": "MAM",
+   "name": "Marc Marquez",
+   "number": 93,
+   "nationality": "ES",
+   "manufacturer": "Ducati",
+   "team": "Ducati Lenovo Team",
+   "points": 387
+  },
   {
    "code": "MAR",
    "name": "Jorge Martin",
@@ -692,31 +712,13 @@
    "points": 355
   },
   {
-   "code": "MAM",
-   "name": "Marc Marquez",
-   "number": 93,
-   "nationality": "ES",
-   "manufacturer": "Ducati",
-   "team": "Ducati Lenovo Team",
-   "points": 353
-  },
-  {
    "code": "BEZ",
    "name": "Marco Bezzecchi",
    "number": 72,
    "nationality": "IT",
    "manufacturer": "Aprilia",
    "team": "Aprilia Racing",
-   "points": 309
-  },
-  {
-   "code": "OGU",
-   "name": "Ai Ogura",
-   "number": 79,
-   "nationality": "JP",
-   "manufacturer": "Aprilia",
-   "team": "SuperFile Trackhouse MotoGP Team",
-   "points": 259
+   "points": 326
   },
   {
    "code": "ACO",
@@ -725,7 +727,16 @@
    "nationality": "ES",
    "manufacturer": "KTM",
    "team": "Red Bull KTM Factory Racing",
-   "points": 258
+   "points": 290
+  },
+  {
+   "code": "OGU",
+   "name": "Ai Ogura",
+   "number": 79,
+   "nationality": "JP",
+   "manufacturer": "Aprilia",
+   "team": "SuperFile Trackhouse MotoGP Team",
+   "points": 278
   },
   {
    "code": "GIA",
@@ -734,7 +745,7 @@
    "nationality": "IT",
    "manufacturer": "Ducati",
    "team": "Pertamina Enduro VR46 Racing Team",
-   "points": 245
+   "points": 258
   },
   {
    "code": "FE2",
@@ -752,7 +763,7 @@
    "nationality": "ES",
    "manufacturer": "Ducati",
    "team": "BK8 Gresini Racing MotoGP",
-   "points": 172
+   "points": 188
   },
   {
    "code": "BAG",
@@ -761,7 +772,16 @@
    "nationality": "IT",
    "manufacturer": "Ducati",
    "team": "Ducati Lenovo Team",
-   "points": 166
+   "points": 173
+  },
+  {
+   "code": "BAS",
+   "name": "Enea Bastianini",
+   "number": 23,
+   "nationality": "IT",
+   "manufacturer": "KTM",
+   "team": "Red Bull KTM Tech3",
+   "points": 134
   },
   {
    "code": "ALD",
@@ -773,22 +793,13 @@
    "points": 125
   },
   {
-   "code": "BAS",
-   "name": "Enea Bastianini",
-   "number": 23,
-   "nationality": "IT",
-   "manufacturer": "KTM",
-   "team": "Red Bull KTM Tech3",
-   "points": 122
-  },
-  {
    "code": "MAL",
    "name": "Luca Marini",
    "number": 10,
    "nationality": "IT",
    "manufacturer": "Honda",
    "team": "Honda HRC Castrol",
-   "points": 108
+   "points": 117
   },
   {
    "code": "BIN",
@@ -797,16 +808,7 @@
    "nationality": "ZA",
    "manufacturer": "KTM",
    "team": "Red Bull KTM Factory Racing",
-   "points": 104
-  },
-  {
-   "code": "MOR",
-   "name": "Diogo Moreira",
-   "number": 11,
-   "nationality": "BR",
-   "manufacturer": "Honda",
-   "team": "Pro Honda LCR",
-   "points": 74
+   "points": 114
   },
   {
    "code": "QUA",
@@ -815,7 +817,16 @@
    "nationality": "FR",
    "manufacturer": "Yamaha",
    "team": "Monster Energy Yamaha MotoGP Team",
-   "points": 74
+   "points": 79
+  },
+  {
+   "code": "MOR",
+   "name": "Diogo Moreira",
+   "number": 11,
+   "nationality": "BR",
+   "manufacturer": "Honda",
+   "team": "Pro Honda LCR",
+   "points": 76
   },
   {
    "code": "MOF",
@@ -824,7 +835,7 @@
    "nationality": "IT",
    "manufacturer": "Ducati",
    "team": "Pertamina Enduro VR46 Racing Team",
-   "points": 59
+   "points": 65
   },
   {
    "code": "ZAR",
@@ -845,6 +856,15 @@
    "points": 33
   },
   {
+   "code": "RIN",
+   "name": "Alex Rins",
+   "number": 42,
+   "nationality": "ES",
+   "manufacturer": "Yamaha",
+   "team": "Monster Energy Yamaha MotoGP Team",
+   "points": 29
+  },
+  {
    "code": "MIL",
    "name": "Jack Miller",
    "number": 43,
@@ -852,15 +872,6 @@
    "manufacturer": "Yamaha",
    "team": "Prima Pramac Yamaha MotoGP",
    "points": 28
-  },
-  {
-   "code": "RIN",
-   "name": "Alex Rins",
-   "number": 42,
-   "nationality": "ES",
-   "manufacturer": "Yamaha",
-   "team": "Monster Energy Yamaha MotoGP Team",
-   "points": 25
   },
   {
    "code": "RAZ",
@@ -878,7 +889,7 @@
    "nationality": "ES",
    "manufacturer": "KTM",
    "team": "Red Bull KTM Tech3",
-   "points": 12
+   "points": 14
   },
   {
    "code": "LEC",
@@ -887,7 +898,7 @@
    "nationality": "ES",
    "manufacturer": "Ducati",
    "team": "BK8 Gresini Racing MotoGP",
-   "points": 9
+   "points": 10
   },
   {
    "code": "FER",
@@ -895,7 +906,7 @@
    "number": 47,
    "nationality": "ES",
    "manufacturer": "Yamaha",
-   "team": "Yamaha Factory Racing",
+   "team": "Prima Pramac Yamaha MotoGP",
    "points": 6
   },
   {
@@ -973,24 +984,24 @@
  ],
  "teamStandings": [
   {
-   "name": "Aprilia",
-   "points": 1159
+   "name": "Ducati",
+   "points": 1206
   },
   {
-   "name": "Ducati",
-   "points": 1129
+   "name": "Aprilia",
+   "points": 1195
   },
   {
    "name": "KTM",
-   "points": 501
+   "points": 557
   },
   {
    "name": "Honda",
-   "points": 272
+   "points": 283
   },
   {
    "name": "Yamaha",
-   "points": 151
+   "points": 160
   }
  ],
  "results": {
@@ -7007,6 +7018,332 @@
      "team": "BK8 Gresini Racing MotoGP"
     }
    ]
+  },
+  "18": {
+   "sprint": [
+    {
+     "code": "ACO",
+     "position": 1,
+     "status": "INSTND",
+     "points": 12,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Factory Racing"
+    },
+    {
+     "code": "MAM",
+     "position": 2,
+     "status": "INSTND",
+     "points": 9,
+     "manufacturer": "Ducati",
+     "team": "Ducati Lenovo Team"
+    },
+    {
+     "code": "BEZ",
+     "position": 3,
+     "status": "INSTND",
+     "points": 7,
+     "manufacturer": "Aprilia",
+     "team": "Aprilia Racing"
+    },
+    {
+     "code": "OGU",
+     "position": 4,
+     "status": "INSTND",
+     "points": 6,
+     "manufacturer": "Aprilia",
+     "team": "SuperFile Trackhouse MotoGP Team"
+    },
+    {
+     "code": "GIA",
+     "position": 5,
+     "status": "INSTND",
+     "points": 5,
+     "manufacturer": "Ducati",
+     "team": "Pertamina Enduro VR46 Racing Team"
+    },
+    {
+     "code": "BAG",
+     "position": 6,
+     "status": "INSTND",
+     "points": 4,
+     "manufacturer": "Ducati",
+     "team": "Ducati Lenovo Team"
+    },
+    {
+     "code": "BIN",
+     "position": 7,
+     "status": "INSTND",
+     "points": 3,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Factory Racing"
+    },
+    {
+     "code": "MOR",
+     "position": 8,
+     "status": "INSTND",
+     "points": 2,
+     "manufacturer": "Honda",
+     "team": "Pro Honda LCR"
+    },
+    {
+     "code": "BAS",
+     "position": 9,
+     "status": "INSTND",
+     "points": 1,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Tech3"
+    },
+    {
+     "code": "ZAR",
+     "position": 10,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Castrol Honda LCR"
+    },
+    {
+     "code": "QUA",
+     "position": 11,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Monster Energy Yamaha MotoGP Team"
+    },
+    {
+     "code": "RIN",
+     "position": 12,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Monster Energy Yamaha MotoGP Team"
+    },
+    {
+     "code": "MAL",
+     "position": 13,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Honda HRC Castrol"
+    },
+    {
+     "code": "FER",
+     "position": 14,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Prima Pramac Yamaha MotoGP"
+    },
+    {
+     "code": "VIN",
+     "position": 15,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Tech3"
+    },
+    {
+     "code": "MIR",
+     "position": 16,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Honda HRC Castrol"
+    },
+    {
+     "code": "MOF",
+     "position": 17,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Ducati",
+     "team": "Pertamina Enduro VR46 Racing Team"
+    },
+    {
+     "code": "LEC",
+     "position": 18,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Ducati",
+     "team": "BK8 Gresini Racing MotoGP"
+    },
+    {
+     "code": "MIL",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Prima Pramac Yamaha MotoGP"
+    },
+    {
+     "code": "MAA",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Ducati",
+     "team": "BK8 Gresini Racing MotoGP"
+    }
+   ],
+   "feature": [
+    {
+     "code": "MAM",
+     "position": 1,
+     "status": "INSTND",
+     "points": 25,
+     "manufacturer": "Ducati",
+     "team": "Ducati Lenovo Team"
+    },
+    {
+     "code": "ACO",
+     "position": 2,
+     "status": "INSTND",
+     "points": 20,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Factory Racing"
+    },
+    {
+     "code": "MAA",
+     "position": 3,
+     "status": "INSTND",
+     "points": 16,
+     "manufacturer": "Ducati",
+     "team": "BK8 Gresini Racing MotoGP"
+    },
+    {
+     "code": "OGU",
+     "position": 4,
+     "status": "INSTND",
+     "points": 13,
+     "manufacturer": "Aprilia",
+     "team": "SuperFile Trackhouse MotoGP Team"
+    },
+    {
+     "code": "BAS",
+     "position": 5,
+     "status": "INSTND",
+     "points": 11,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Tech3"
+    },
+    {
+     "code": "BEZ",
+     "position": 6,
+     "status": "INSTND",
+     "points": 10,
+     "manufacturer": "Aprilia",
+     "team": "Aprilia Racing"
+    },
+    {
+     "code": "MAL",
+     "position": 7,
+     "status": "INSTND",
+     "points": 9,
+     "manufacturer": "Honda",
+     "team": "Honda HRC Castrol"
+    },
+    {
+     "code": "GIA",
+     "position": 8,
+     "status": "INSTND",
+     "points": 8,
+     "manufacturer": "Ducati",
+     "team": "Pertamina Enduro VR46 Racing Team"
+    },
+    {
+     "code": "BIN",
+     "position": 9,
+     "status": "INSTND",
+     "points": 7,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Factory Racing"
+    },
+    {
+     "code": "MOF",
+     "position": 10,
+     "status": "INSTND",
+     "points": 6,
+     "manufacturer": "Ducati",
+     "team": "Pertamina Enduro VR46 Racing Team"
+    },
+    {
+     "code": "QUA",
+     "position": 11,
+     "status": "INSTND",
+     "points": 5,
+     "manufacturer": "Yamaha",
+     "team": "Monster Energy Yamaha MotoGP Team"
+    },
+    {
+     "code": "RIN",
+     "position": 12,
+     "status": "INSTND",
+     "points": 4,
+     "manufacturer": "Yamaha",
+     "team": "Monster Energy Yamaha MotoGP Team"
+    },
+    {
+     "code": "BAG",
+     "position": 13,
+     "status": "INSTND",
+     "points": 3,
+     "manufacturer": "Ducati",
+     "team": "Ducati Lenovo Team"
+    },
+    {
+     "code": "VIN",
+     "position": 14,
+     "status": "INSTND",
+     "points": 2,
+     "manufacturer": "KTM",
+     "team": "Red Bull KTM Tech3"
+    },
+    {
+     "code": "LEC",
+     "position": 15,
+     "status": "INSTND",
+     "points": 1,
+     "manufacturer": "Ducati",
+     "team": "BK8 Gresini Racing MotoGP"
+    },
+    {
+     "code": "MIL",
+     "position": 16,
+     "status": "INSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Prima Pramac Yamaha MotoGP"
+    },
+    {
+     "code": "ZAR",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Castrol Honda LCR"
+    },
+    {
+     "code": "MOR",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Pro Honda LCR"
+    },
+    {
+     "code": "MIR",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Honda",
+     "team": "Honda HRC Castrol"
+    },
+    {
+     "code": "FER",
+     "position": null,
+     "status": "OUTSTND",
+     "points": 0,
+     "manufacturer": "Yamaha",
+     "team": "Prima Pramac Yamaha MotoGP"
+    }
+   ]
   }
  },
  "qualifying": {
@@ -7416,6 +7753,29 @@
    "ZAR",
    "MOR",
    "ESA"
+  ],
+  "18": [
+   "MAA",
+   "MAM",
+   "ACO",
+   "OGU",
+   "BEZ",
+   "GIA",
+   "BAS",
+   "ZAR",
+   "MOF",
+   "BAG",
+   "MIR",
+   "VIN",
+   "MAL",
+   "MOR",
+   "BIN",
+   "MIL",
+   "RIN",
+   "QUA",
+   "LEC",
+   "FER",
+   "MAR"
   ]
  }
 }
