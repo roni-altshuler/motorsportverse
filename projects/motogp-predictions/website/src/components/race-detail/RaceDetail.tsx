@@ -17,8 +17,8 @@ import ShareButton from "@/components/ShareButton";
 import HUDHeader from "@/components/race-detail/HUDHeader";
 import PodiumPredictionTrio from "@/components/race-detail/PodiumPredictionTrio";
 import RaceVolatilityBadge from "@/components/race-detail/RaceVolatilityBadge";
+import RiderForecastTable from "@/components/race-detail/RiderForecastTable";
 import RaceNarrativeCard from "@/components/race-weekend/RaceNarrativeCard";
-import { DriverHeadshot } from "@/components/ui/DriverHeadshot";
 import HUDPanel from "@/components/ui/HUDPanel";
 import { fetchMotogpData, fetchRoundDetail, fetchRoundProbabilities } from "@/lib/motogpClient";
 import { useSeason } from "@/lib/SeasonProvider";
@@ -28,7 +28,6 @@ import type {
   ClassificationEntry,
   DriverStanding,
   ProbabilitiesRound,
-  RaceBlock,
   RoundDetail,
   TitleOdds,
 } from "@/types/motogp";
@@ -195,7 +194,8 @@ export function RaceDetail({
       </div>
 
       {/* Classification table — every row opens the driver detail sheet. */}
-      <Classification
+      <RiderForecastTable
+        key={`${round.season}:${round.round}`}
         block={block}
         completed={round.completed}
         onSelect={(code) => setOpenDriver(code)}
@@ -247,7 +247,7 @@ export function RaceDetail({
                 })()}
               </div>
               <p className="body-sm text-[color:var(--muted)]">
-                Tap any row in the classification above to open a rider&rsquo;s per-race
+                Select a rider in the forecasts above to open their per-race
                 forecast and season form.
               </p>
             </motion.div>
@@ -328,104 +328,6 @@ export function RaceDetail({
         raceLabel={raceLabel}
         onClose={() => setOpenDriver(null)}
       />
-    </div>
-  );
-}
-
-function Classification({
-  block,
-  completed,
-  onSelect,
-}: {
-  block: RaceBlock;
-  completed: boolean;
-  onSelect: (code: string) => void;
-}) {
-  const maxWin = Math.max(0.0001, ...block.classification.map((e) => e.pWin));
-  return (
-    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)]">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-[var(--surface-2)] text-left text-xs uppercase tracking-wider text-[var(--ink-dim)]">
-            <th className="px-3 py-3 font-medium">P</th>
-            <th className="px-3 py-3 font-medium">Rider</th>
-            <th className="hidden px-3 py-3 font-medium sm:table-cell">Win</th>
-            <th className="hidden px-3 py-3 font-medium md:table-cell">Podium</th>
-            <th className="hidden px-3 py-3 font-medium md:table-cell">Range</th>
-            <th className="hidden px-3 py-3 font-medium lg:table-cell">Confidence</th>
-            {completed && <th className="px-3 py-3 text-right font-medium">Actual</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {block.classification.map((e) => (
-            <tr
-              key={e.code}
-              role="button"
-              tabIndex={0}
-              aria-label={`Open ${e.name} forecast detail`}
-              onClick={() => onSelect(e.code)}
-              onKeyDown={(ev) => {
-                if (ev.key === "Enter" || ev.key === " ") {
-                  ev.preventDefault();
-                  onSelect(e.code);
-                }
-              }}
-              className="cursor-pointer border-t border-[var(--hairline)] bg-[var(--surface)] hover:bg-[var(--surface-2)] focus:bg-[var(--surface-2)] focus:outline-none"
-            >
-              <td
-                className="px-3 py-2.5 font-bold text-[var(--ink)]"
-                style={{ borderLeft: `3px solid ${e.teamColor}` }}
-              >
-                {e.position}
-              </td>
-              <td className="px-3 py-2.5">
-                <div className="flex items-center gap-2.5">
-                  <DriverHeadshot code={e.code} teamColor={e.teamColor} size={30} />
-                  <div className="min-w-0">
-                    <p className="truncate font-medium text-[var(--ink)]">{e.name}</p>
-                    <p className="truncate text-xs text-[var(--ink-dim)]">{e.team}</p>
-                  </div>
-                </div>
-              </td>
-              <td className="hidden px-3 py-2.5 sm:table-cell">
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--surface-3)]">
-                    <span
-                      className="block h-1.5 rounded-full"
-                      style={{ width: `${(e.pWin / maxWin) * 100}%`, backgroundColor: "var(--accent)" }}
-                    />
-                  </span>
-                  <span className="tabular-nums text-[var(--ink-muted)]">
-                    {(e.pWin * 100).toFixed(0)}%
-                  </span>
-                </div>
-              </td>
-              <td className="hidden px-3 py-2.5 tabular-nums text-[var(--ink-muted)] md:table-cell">
-                {(e.pPodium * 100).toFixed(0)}%
-              </td>
-              <td className="hidden px-3 py-2.5 tabular-nums text-[var(--ink-muted)] md:table-cell">
-                P{e.finishRangeLow}–P{e.finishRangeHigh}
-              </td>
-              <td className="hidden px-3 py-2.5 lg:table-cell">
-                <span
-                  className="rounded-full px-2 py-0.5 text-xs"
-                  style={{
-                    color: "var(--ink-muted)",
-                    border: "1px solid var(--hairline-strong)",
-                  }}
-                >
-                  {e.confidence}
-                </span>
-              </td>
-              {completed && (
-                <td className="px-3 py-2.5 text-right font-semibold text-[var(--ink)]">
-                  {e.actualPosition ? `P${e.actualPosition}` : "—"}
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }

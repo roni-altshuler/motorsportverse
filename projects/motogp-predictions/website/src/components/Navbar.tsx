@@ -344,7 +344,7 @@ export default function Navbar() {
           {nextRound && (
             <Link
               href={withSeason(`/race/${nextRound.round}`)}
-              className="hidden sm:block"
+              className="hidden lg:block"
               aria-label={`Next race: ${nextRound.name}`}
             >
               <ShimmerButton
