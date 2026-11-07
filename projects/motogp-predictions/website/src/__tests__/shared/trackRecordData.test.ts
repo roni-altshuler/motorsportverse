@@ -25,10 +25,13 @@ afterEach(() => rmSync(root, { recursive: true, force: true }));
 it("does not turn saved snapshot timestamps or replay grades into prospective accuracy", () => {
   put("forward_eval/season.json", { winnerHitRate: 1, basis: "walk_forward_replay" });
   expect(load()).toMatchObject({ status: "unverified", correct: null, predictedWinner: "B", actualWinner: "A" });
+  expect(load().savedComparison).toMatchObject({ status: "compared", correct: false, predictedWinner: "B", actualWinner: "A" });
 });
 it("uses the unique original immutable pick, not an overwritten snapshot or intersection", () => {
   put("forecast_receipts.json", { schemaVersion: 1, forecasts: [receipt()] });
   expect(load()).toMatchObject({ status: "scored", correct: true, predictedWinner: "A", actualWinner: "A", forecastSource: "forecasts/original.json", publication: "2026-01-09T12:00:00Z" });
+  expect(load().savedComparison).toMatchObject({ status: "compared", correct: false, predictedWinner: "B", actualWinner: "A" });
+  expect(load().savedComparison?.positions.find(p => p.id === "B")?.predicted).toBe(1);
 });
 it.each(["hash", "baseline", "duplicate", "late", "nozone", "path", "noaudit", "contradiction", "held_original", "replay"])("rejects invalid publication evidence: %s", kind => {
   const original = { ...forecast, ...(kind === "contradiction" ? { generatedAt: "2026-01-11T00:00:00Z" } : {}), ...(kind === "held_original" ? { publicationHold: {} } : {}), ...(kind === "replay" ? { basis: "walk_forward_replay" } : {}) };
@@ -48,6 +51,8 @@ it.each(["held", "unofficial", "synthetic", "missing_p1", "duplicate_p1", "wrong
   put("rounds/round_01.json", r);
   expect(load().status).not.toBe("scored");
   expect(load().correct).toBeNull();
+  expect(load().savedComparison?.status).not.toBe("compared");
+  expect(load().savedComparison?.correct).toBeNull();
 });
 it("keeps missing calendar events and unknown dates inspectable without invented timing", () => {
   put("season.json", { season: 2026, calendar: [{ ...event, date: undefined }, { ...event, round: 2 }] });
@@ -71,11 +76,17 @@ it("limits an event-only class to recorded participation and retains missing sea
   expect(rows.find(r => r.scope === "HYPERCAR" && r.round === 2)?.status).toBe("missing");
 });
 
-it.each(["settled", "incomplete", "incomplete_stage", "synthetic", "held_original"])("checks scoped completion, holds and identity: %s", kind => {
+it.each(["settled", "incomplete", "incomplete_stage", "synthetic", "held_original", "scoped_baseline", "scoped_replay", "scoped_synthetic", "scoped_is_synthetic", "scoped_actual_status"])("checks scoped completion, holds and identity: %s", kind => {
   const stage = { classification: [{ code: "A", position: 1 }], actualResults: [{ code: "A", position: 1 }], ...(kind === "incomplete_stage" ? { completed: false } : {}) };
   put("f2.json", { season: 2026, calendar: [{ round: 1, key: "test", name: "Test", featureDate: "2026-01-10", sprintDate: "2026-01-09", completed: true }] });
   put("rounds/round_01.json", { round: 1, season: 2026, venueKey: "test", completed: kind !== "incomplete", dataSource: kind === "synthetic" ? "synthetic" : "snapshot", feature: stage });
-  const original = { round: 1, season: 2026, venueKey: "test", completed: false, feature: { classification: stage.classification, ...(kind === "held_original" ? { publicationHold: {} } : {}) } };
+  const original = { round: 1, season: 2026, venueKey: "test", completed: false, feature: { classification: stage.classification, ...(kind === "held_original" ? { publicationHold: {} } : {}),
+    ...(kind === "scoped_baseline" ? { forecastKind: "official_grid_baseline" } : {}),
+    ...(kind === "scoped_replay" ? { evaluationStream: "walk_forward_replay" } : {}),
+    ...(kind === "scoped_synthetic" ? { synthetic: true } : {}),
+    ...(kind === "scoped_is_synthetic" ? { isSynthetic: true } : {}),
+    ...(kind === "scoped_actual_status" ? { actualStatus: "provisional" } : {}),
+  } };
   put("forecasts/original.json", original);
   const r = receipt();
   put("forecasts/original.json", original);
@@ -95,5 +106,51 @@ it("does not pick the first of duplicate class records", () => {
 it("does not grade a known future start on the same calendar day", () => {
   put("forecast_receipts.json", { schemaVersion: 1, forecasts: [receipt()] });
   expect(loadTrackRecord("f1", root, "2026-01-10T12:00:00Z").records[0].status).toBe("pending");
+  expect(loadTrackRecord("f1", root, "2026-01-10T12:00:00Z").records[0].savedComparison?.status).toBe("pending");
   expect(loadTrackRecord("f1", root, "2026-01-11T12:00:00Z").records[0].status).toBe("scored");
 });
+
+it.each(["synthetic_flag", "is_synthetic", "provisional", "wrong_pick"])("excludes unsafe saved comparisons: %s", kind => {
+  put("rounds/round_01.json", { ...result,
+    ...(kind === "synthetic_flag" ? { synthetic: true } : {}),
+    ...(kind === "is_synthetic" ? { isSynthetic: true } : {}),
+    ...(kind === "provisional" ? { actualStatus: "provisional" } : {}),
+    ...(kind === "wrong_pick" ? { classification: [{ driver: "B", position: 2 }] } : {}),
+  });
+  expect(load().savedComparison?.status).not.toBe("compared");
+  expect(load().savedComparison?.correct).toBeNull();
+});
+
+it.each(["wec", "imsa"])("compares settled undated %s classes without inventing dates or pre-race evidence", series => {
+  put(`${series}.json`, { season: 2026, classes: [{ key: "GTP" }], calendar: [{ round: 1, name: "Test", completed: true }] });
+  put("rounds/round_01.json", { round: 1, season: 2026, event: "Test", completed: true, dataSource: "snapshot", classes: [{ key: "GTP",
+    classification: [{ code: "A", position: 1 }], actualResults: [{ code: "A", position: 1 }],
+  }] });
+  const record = loadTrackRecord(series, root, "2026-02-01").records[0];
+  expect(record).toMatchObject({ date: null, status: "incomplete", correct: null, publication: null });
+  expect(record.savedComparison).toMatchObject({ status: "compared", correct: true });
+  expect(record.savedComparison?.reason).toContain("not plotted");
+});
+
+
+it.each([{ synthetic: true }, { isSynthetic: true }, { dataSource: "synthetic" },
+  { status: "provisional" }, { actualStatus: "provisional" }, { provisional: true }])(
+  "rejects flagged results in both bases despite an audited original: %j", flags => {
+    put("forecast_receipts.json", { schemaVersion: 1, forecasts: [receipt()] });
+    put("rounds/round_01.json", { ...result, ...flags });
+    const record = load();
+    expect(record.status).not.toBe("scored");
+    expect(record.correct).toBeNull();
+    expect(record.savedComparison?.status).not.toBe("compared");
+    expect(record.savedComparison?.correct).toBeNull();
+  });
+
+it.each([{ synthetic: true }, { isSynthetic: true }, { dataSource: "synthetic" },
+  { status: "provisional" }, { actualStatus: "provisional" }, { provisional: true }])(
+  "rejects a flagged original without contaminating the independent saved comparison: %j", flags => {
+    put("forecast_receipts.json", { schemaVersion: 1, forecasts: [receipt({ ...forecast, ...flags })] });
+    const record = load();
+    expect(record.status).not.toBe("scored");
+    expect(record.correct).toBeNull();
+    expect(record.savedComparison).toMatchObject({ status: "compared", correct: false });
+  });

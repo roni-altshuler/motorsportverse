@@ -70,6 +70,7 @@ const SHARED_FILES = [];
 // evidence discipline exists to prevent. So they are pushed, not intersected.
 const REQUIRED_FILES = [
   "ui/WinnerTrackRecord.tsx",
+  "ui/WinnerTimeline.tsx",
   "ui/CircuitReplayWorkspace.tsx",
   "ui/CircuitExplorer.tsx",
   "ui/format.ts",

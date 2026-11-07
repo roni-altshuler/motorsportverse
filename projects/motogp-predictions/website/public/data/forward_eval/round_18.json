@@ -1,0 +1,146 @@
+{
+  "round": 18,
+  "venueName": "Phillip Island",
+  "sprint": {
+    "n": 18,
+    "mean_position_error": 3.667,
+    "winner_hit": false,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 12,
+    "exact_matches": 4,
+    "spearman_correlation": 0.7213622291021672,
+    "ndcg_at_5": 0.9816246008425433
+  },
+  "feature": {
+    "n": 16,
+    "mean_position_error": 3.312,
+    "winner_hit": true,
+    "podium_hits": 2,
+    "within_3": 10,
+    "within_5": 14,
+    "exact_matches": 2,
+    "spearman_correlation": 0.8588235294117647,
+    "ndcg_at_5": 0.9790795439578008
+  },
+  "markets": {
+    "sprint": {
+      "win": {
+        "brier": 0.05154,
+        "logLoss": 0.167108
+      },
+      "podium": {
+        "brier": 0.057135,
+        "logLoss": 0.174179
+      }
+    },
+    "feature": {
+      "win": {
+        "brier": 0.035035,
+        "logLoss": 0.114049
+      },
+      "podium": {
+        "brier": 0.057622,
+        "logLoss": 0.181606
+      }
+    }
+  },
+  "baselines": {
+    "gridOrder": {
+      "sprint": {
+        "score": {
+          "n": 18,
+          "mean_position_error": 3.444,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "within_3": 10,
+          "within_5": 13,
+          "exact_matches": 3,
+          "spearman_correlation": 0.7007223942208463,
+          "ndcg_at_5": 0.990397355763913
+        },
+        "markets": {
+          "win": {
+            "brier": 0.053346,
+            "logLoss": 0.197839
+          },
+          "podium": {
+            "brier": 0.055723,
+            "logLoss": 0.208885
+          }
+        }
+      },
+      "feature": {
+        "score": {
+          "n": 16,
+          "mean_position_error": 2.688,
+          "winner_hit": false,
+          "podium_hits": 3,
+          "within_3": 11,
+          "within_5": 13,
+          "exact_matches": 2,
+          "spearman_correlation": 0.8441176470588235,
+          "ndcg_at_5": 0.9684096300171742
+        },
+        "markets": {
+          "win": {
+            "brier": 0.095751,
+            "logLoss": 0.261295
+          },
+          "podium": {
+            "brier": 0.002237,
+            "logLoss": 0.019291
+          }
+        }
+      }
+    },
+    "lastStandings": {
+      "sprint": {
+        "score": {
+          "n": 18,
+          "mean_position_error": 3.722,
+          "winner_hit": false,
+          "podium_hits": 2,
+          "within_3": 9,
+          "within_5": 12,
+          "exact_matches": 3,
+          "spearman_correlation": 0.8823529411764706,
+          "ndcg_at_5": 0.9816246008425433
+        },
+        "markets": {
+          "win": {
+            "brier": 0.057391,
+            "logLoss": 0.385076
+          },
+          "podium": {
+            "brier": 0.055317,
+            "logLoss": 0.207427
+          }
+        }
+      },
+      "feature": {
+        "score": {
+          "n": 16,
+          "mean_position_error": 4.375,
+          "winner_hit": false,
+          "podium_hits": 1,
+          "within_3": 6,
+          "within_5": 11,
+          "exact_matches": 1,
+          "spearman_correlation": 0.8411764705882353,
+          "ndcg_at_5": 0.9164181210125953
+        },
+        "markets": {
+          "win": {
+            "brier": 0.047624,
+            "logLoss": 0.130109
+          },
+          "podium": {
+            "brier": 0.17242,
+            "logLoss": 2.137998
+          }
+        }
+      }
+    }
+  }
+}

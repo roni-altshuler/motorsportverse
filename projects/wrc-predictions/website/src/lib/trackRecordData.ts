@@ -2,13 +2,15 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { calendarDate, uniqueWinner, type RecordedPosition, type TrackRecordData, type WinnerRecord } from "./trackRecord";
+import { calendarDate, uniqueWinner, type RecordedPosition, type SavedComparison, type TrackRecordData, type WinnerRecord } from "./trackRecord";
 
 type Json = Record<string, unknown>;
 const obj = (value: unknown): Json => value !== null && typeof value === "object" && !Array.isArray(value) ? value as Json : {};
 const text = (value: unknown): string | null => typeof value === "string" && value.trim() ? value : null;
 const list = (value: unknown): unknown[] => Array.isArray(value) ? value : [];
 const position = (value: unknown): number | null => typeof value === "number" && Number.isInteger(value) && value > 0 ? value : null;
+const synthetic = (...values: Json[]): boolean => values.some(v => v.dataSource === "synthetic" || v.synthetic === true || v.isSynthetic === true);
+const provisional = (...values: Json[]): boolean => values.some(v => v.status === "provisional" || v.actualStatus === "provisional" || v.provisional === true);
 function read(file: string): Json { try { return obj(JSON.parse(readFileSync(file, "utf8"))); } catch { return {}; } }
 function timestamp(value: unknown): number | null {
   const s = text(value);
@@ -94,9 +96,9 @@ function originalForecast(dir: string, receipts: unknown[], season: number, roun
     if (!identity(raw, event, season, series) || raw.publicationHold != null || body.publicationHold != null || raw.completed === true ||
         (raw.generatedAt != null && (generated === null || generated > sealed)) ||
         body.completed === true || (body.generatedAt != null && (timestamp(body.generatedAt) === null || (timestamp(body.generatedAt) as number) > sealed)) ||
-        (raw.forecastKind != null && raw.forecastKind !== "model_forecast") ||
-        raw.dataSource === "synthetic" || body.dataSource === "synthetic" ||
-        [raw.evaluationBasis, raw.basis, raw.evaluationStream, body.evaluationBasis, body.basis].some(v => typeof v === "string" && /replay|retrospective/i.test(v)) ||
+        ([raw, body].some(v => v.forecastKind != null && v.forecastKind !== "model_forecast")) ||
+        synthetic(raw, body) || provisional(raw, body) ||
+        [raw.evaluationBasis, raw.basis, raw.evaluationStream, body.evaluationBasis, body.basis, body.evaluationStream].some(v => typeof v === "string" && /replay|retrospective/i.test(v)) ||
         list(body.actualResults).length || Object.keys(obj(body.actualResults)).length) return null;
     return { raw, publication: String(verification.publishedAt), file, hash: receipt.artifactSha256, eventUrl, commit };
   } catch { return null; }
@@ -161,13 +163,29 @@ export function loadTrackRecord(series: string, dataRoot = join(process.cwd(), "
         if (raw.publicationHold != null || resultBody.publicationHold != null) { status = "held"; reason = "Forecast withheld from publication and scoring."; }
         else if (main.season !== season || season <= 0 || events.length !== 1 || files.length > 1 || !identity(raw, event, season, series)) { status = files.length ? "incomplete" : "missing"; reason = files.length ? "Season/event identity is missing or does not match the calendar." : series === "wec" || series === "imsa" ? "Class participation and forecast are not recorded for this event." : "No saved forecast for this calendar event."; }
         else if (predScopes.length > 1 || resultScopes.length > 1) { status = "incomplete"; reason = "Duplicate race or class records are ambiguous; no winner selected."; }
-        else if (raw.dataSource === "synthetic" || resultBody.dataSource === "synthetic") { status = "unverified"; reason = "Synthetic results are excluded from the real-race track record."; }
+        else if (synthetic(raw, resultBody)) { status = "unverified"; reason = "Synthetic results are excluded from the real-race track record."; }
         else if (!hasPrediction) { status = "missing"; reason = "No saved forecast for this race or class."; }
         else if (!date) { status = "incomplete"; reason = "Event date is not recorded; excluded from the dated track record."; }
         else if (!parsed.valid || !predictedId || (hasActual && !actualId)) { status = "incomplete"; reason = "An original P1 or complete position identity is missing or ambiguous; no winner inferred."; }
-        else if (date > asOfDate || start !== null && start > asOfTime || !hasActual || !settled || [raw.status, event.status, resultBody.status].includes("provisional") || raw.provisional === true || resultBody.provisional === true) { status = "pending"; reason = original ? "Result settlement is not yet confirmed for this pre-race pick." : "Result settlement is not yet confirmed; original pre-race publication is also unverified."; }
+        else if (date > asOfDate || start !== null && start > asOfTime || !hasActual || !settled || provisional(raw, event, resultBody)) { status = "pending"; reason = original ? "Result settlement is not yet confirmed for this pre-race pick." : "Result settlement is not yet confirmed; original pre-race publication is also unverified."; }
         else if (original) { status = "scored"; reason = "Original pre-race model pick compared with the recorded race winner."; }
         else if (series === "f2" || timestamp(raw.generatedAt) !== null && start !== null && (timestamp(raw.generatedAt) as number) >= start) reason = "Historical comparison; this snapshot does not verify an original pre-race publication.";
+
+        // A descriptive snapshot comparison has its own inputs and eligibility.
+        // In particular, never substitute an audited original for a mutable
+        // snapshot, or promote an unverified/synthetic record into a forecast.
+        const saved = positions(resultBody.classification, resultBody.actualResults);
+        const savedPick = uniqueWinner(saved.rows, "predicted"), savedActual = uniqueWinner(saved.rows, "actual");
+        let comparisonStatus: SavedComparison["status"] = "compared";
+        let comparisonReason = "Saved classification compared with the recorded result; this is a historical comparison.";
+        if (raw.publicationHold != null || resultBody.publicationHold != null) { comparisonStatus = "held"; comparisonReason = "Withheld records are excluded from both winner records."; }
+        else if (main.season !== season || season <= 0 || events.length !== 1 || files.length > 1 || !identity(raw, event, season, series)) { comparisonStatus = files.length ? "incomplete" : "missing"; comparisonReason = "A unique matching season/event snapshot is not recorded."; }
+        else if (resultScopes.length > 1) { comparisonStatus = "incomplete"; comparisonReason = "Duplicate race or class records are ambiguous."; }
+        else if (synthetic(raw, resultBody)) { comparisonStatus = "unverified"; comparisonReason = "Synthetic records are excluded from real-result comparisons."; }
+        else if (!saved.rows.some(r => r.predicted !== null)) { comparisonStatus = "missing"; comparisonReason = "No saved classification is recorded for this race or class."; }
+        else if (!saved.valid || !savedPick || (saved.rows.some(r => r.actual !== null) && !savedActual)) { comparisonStatus = "incomplete"; comparisonReason = "A unique P1 or complete position identity is missing; no winner inferred."; }
+        else if (date !== null && date > asOfDate || start !== null && start > asOfTime || !savedActual || !settled || provisional(raw, event, resultBody)) { comparisonStatus = "pending"; comparisonReason = "A settled result is not confirmed for this saved classification."; }
+        else if (!date) comparisonReason += " The event date is not recorded, so this comparison is not plotted on the timeline.";
         const model = obj(prediction.modelConfig);
         records.push({ id: `${series}:${season}:${round}:${scope}`, season, round, scope, scopeLabel,
           event: text(event.name) ?? text(raw.name) ?? text(raw.venueName) ?? `Round ${round}`, date,
@@ -177,7 +195,11 @@ export function loadTrackRecord(series: string, dataRoot = join(process.cwd(), "
           publication: original?.publication ?? null,
           forecastSource: original?.file ?? null, forecastSha256: original?.hash ?? null,
           publicationEvent: original?.eventUrl ?? null, sourceCommit: original?.commit ?? null,
-          positions: parsed.rows });
+          positions: parsed.rows,
+          savedComparison: { predictedWinner: savedPick, actualWinner: savedActual,
+            correct: comparisonStatus === "compared" ? savedPick === savedActual : null,
+            status: comparisonStatus, reason: comparisonReason,
+            modelVersion: text(raw.modelVersion) ?? text(obj(raw.modelConfig).modelVersion), positions: saved.rows } });
       }
     }
   }

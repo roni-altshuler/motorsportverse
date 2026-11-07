@@ -1,0 +1,63 @@
+{
+  "round": 33,
+  "venueName": "Phoenix Raceway",
+  "trackType": "short",
+  "race": {
+    "n": 37,
+    "mean_position_error": 7.892,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 11,
+    "within_5": 20,
+    "exact_matches": 1,
+    "spearman_correlation": 0.5158843053579896,
+    "ndcg_at_5": 0.5784899167879335
+  },
+  "racePostQuali": {
+    "n": 37,
+    "mean_position_error": 7.297,
+    "winner_hit": false,
+    "podium_hits": 0,
+    "within_3": 15,
+    "within_5": 23,
+    "exact_matches": 2,
+    "spearman_correlation": 0.5376955903271693,
+    "ndcg_at_5": 0.7283975071461669
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.026215,
+        "logLoss": 0.100127
+      },
+      "podium": {
+        "brier": 0.073711,
+        "logLoss": 0.234106
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 37,
+      "mean_position_error": 8.757,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 11,
+      "within_5": 14,
+      "exact_matches": 1,
+      "spearman_correlation": 0.46396396396396394,
+      "ndcg_at_5": 0.8064974380902623
+    },
+    "gridOrder": {
+      "n": 37,
+      "mean_position_error": 7.459,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 14,
+      "within_5": 22,
+      "exact_matches": 1,
+      "spearman_correlation": 0.5040303461356093,
+      "ndcg_at_5": 0.8428990810029523
+    }
+  }
+}

@@ -56,3 +56,33 @@ describe("winner record counts", () => {
     expect(points.some((p, i) => i > 0 && p.accuracy < points[i - 1].accuracy)).toBe(true);
   });
 });
+
+describe("separate saved-comparison counts", () => {
+  function saved(id: number, date: string | null, correct: boolean): WinnerRecord {
+    return record(id, date, true, { status: date ? "unverified" : "incomplete", correct: null,
+      savedComparison: { predictedWinner: "A", actualWinner: correct ? "A" : "B", correct,
+        status: "compared", reason: "Historical test comparison", modelVersion: null, positions: [] } });
+  }
+  it("does not pool historical matches with verified forecast scores or infer comparison eligibility", () => {
+    const verified = record(1, "2026-01-01", true, { savedComparison: saved(1, "2026-01-01", false).savedComparison });
+    const rows = [verified, saved(2, "2026-01-02", true), record(3, "2026-01-03")];
+    expect(summarize(rows, 2026, "race")).toEqual({ correct: 2, settled: 2, accuracy: 100 });
+    expect(summarize(rows, 2026, "race", "comparison")).toEqual({ correct: 1, settled: 2, accuracy: 50 });
+    expect(winnerTimeline(rows, 2026, "race", "comparison").map(p => p.settled)).toEqual([1, 2]);
+  });
+  it("counts undated settled comparisons but excludes them from dated and rolling statistics", () => {
+    const rows = [saved(1, null, true), saved(2, "2026-01-02", false)];
+    expect(summarize(rows, 2026, "race", "comparison")).toEqual({ correct: 1, settled: 2, accuracy: 50 });
+    expect(winnerTimeline(rows, 2026, "race", "comparison")).toMatchObject([{ correct: 0, settled: 1, accuracy: 0, recentSettled: 1 }]);
+    expect(winnerWeeks(rows, 2026, "race", "comparison")).toEqual([{ week: "2025-12-29", correct: 0, settled: 1 }]);
+    expect(summarize(rows, 2026, "race").settled).toBe(0);
+    expect(winnerTimeline([rows[0]], 2026, "race", "comparison")).toEqual([]);
+  });
+  it("retains held, synthetic, pending and duplicate exclusions in the comparison basis", () => {
+    const row = saved(1, "2026-01-01", true);
+    const held = { ...row, id: "held", status: "held" as const };
+    const synthetic = { ...row, id: "synthetic", savedComparison: { ...row.savedComparison!, status: "unverified" as const, correct: null } };
+    const pending = { ...row, id: "pending", savedComparison: { ...row.savedComparison!, status: "pending" as const, correct: null } };
+    expect(summarize([row, row, held, synthetic, pending], 2026, "race", "comparison").settled).toBe(0);
+  });
+});

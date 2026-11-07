@@ -1,16 +1,113 @@
 {
   "season": 2026,
-  "lastEvaluatedRound": null,
-  "featureDrift": [],
-  "outputDrift": null,
+  "lastEvaluatedRound": 15,
+  "featureDrift": [
+    {
+      "feature": "predictedTime",
+      "psi": 11.7363,
+      "severity": "alarm",
+      "baseline_n": 286,
+      "current_n": 22
+    },
+    {
+      "feature": "winProbability",
+      "psi": 1.0503,
+      "severity": "alarm",
+      "baseline_n": 286,
+      "current_n": 22
+    },
+    {
+      "feature": "finishRangeLow",
+      "psi": 1.0167,
+      "severity": "alarm",
+      "baseline_n": 286,
+      "current_n": 22
+    },
+    {
+      "feature": "finishRangeHigh",
+      "psi": 0.5786,
+      "severity": "alarm",
+      "baseline_n": 286,
+      "current_n": 22
+    }
+  ],
+  "outputDrift": {
+    "rolling_rmse_recent": 4.665,
+    "rolling_rmse_baseline": 4.8413,
+    "relative_change": -0.0364,
+    "severity": "ok",
+    "rounds_compared": 14
+  },
   "warnings": [],
-  "alarms": [],
+  "alarms": [
+    "predictedTime: PSI 11.736 (significant drift vs baseline)",
+    "winProbability: PSI 1.050 (significant drift vs baseline)",
+    "finishRangeLow: PSI 1.017 (significant drift vs baseline)",
+    "finishRangeHigh: PSI 0.579 (significant drift vs baseline)"
+  ],
   "outputMetric": "rmse_position_error",
   "outputUnit": "positions",
-  "rmseByRound": [],
-  "diagnosticStatus": "publication_hold",
-  "unavailableReason": "The latest elapsed round's model forecast is withheld; current forecast diagnostics are unavailable.",
-  "lastObservedRound": 17,
+  "rmseByRound": [
+    {
+      "round": 1,
+      "rmse": 6.605782590758164
+    },
+    {
+      "round": 2,
+      "rmse": 5.869799439039246
+    },
+    {
+      "round": 3,
+      "rmse": 2.412090756622109
+    },
+    {
+      "round": 4,
+      "rmse": 5.688904671695279
+    },
+    {
+      "round": 5,
+      "rmse": 6.775624761532393
+    },
+    {
+      "round": 7,
+      "rmse": 4.400413203738527
+    },
+    {
+      "round": 8,
+      "rmse": 2.2763607319179844
+    },
+    {
+      "round": 9,
+      "rmse": 5.799686511904211
+    },
+    {
+      "round": 10,
+      "rmse": 4.954336943068623
+    },
+    {
+      "round": 11,
+      "rmse": 3.7779263191236634
+    },
+    {
+      "round": 12,
+      "rmse": 4.680252333449758
+    },
+    {
+      "round": 13,
+      "rmse": 4.58257569495584
+    },
+    {
+      "round": 14,
+      "rmse": 4.445436397239844
+    },
+    {
+      "round": 15,
+      "rmse": 5.838742081211422
+    }
+  ],
+  "diagnosticStatus": "available",
+  "unavailableReason": null,
+  "lastObservedRound": 18,
   "excludedRounds": [
     {
       "round": 6,
@@ -26,7 +123,7 @@
     },
     {
       "round": 18,
-      "reason": "future_round"
+      "reason": "unsettled_round"
     },
     {
       "round": 19,
