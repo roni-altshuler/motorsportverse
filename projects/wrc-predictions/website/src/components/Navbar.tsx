@@ -186,13 +186,13 @@ export default function Navbar() {
                   podiumPct >= 60 ? "var(--accent-f1-red-soft)" : "var(--hairline)",
                 color: "var(--muted)",
               }}
-              title={`Season podium accuracy ${podiumPct}% across ${acc.roundsScored} scored round(s)`}
+              title={`Historical podium overlap; publication timing unverified. Season podium accuracy ${podiumPct}% across ${acc.roundsScored} scored round(s)`}
             >
               <span
                 className="inline-block w-1.5 h-1.5 rounded-full"
                 style={{ background: podiumPct >= 60 ? "var(--accent-f1-red)" : "var(--muted)" }}
               />
-              {podiumPct}% · {acc.roundsScored}R
+              Historical podium {podiumPct}%
             </Link>
           )}
           <a
@@ -353,7 +353,7 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {navLink("/accuracy", "Accuracy")}
+            {navLink("/track-record", "Track record")}
             {navLink("/about", "About")}
           </div>
 
@@ -413,7 +413,7 @@ export default function Navbar() {
                   { href: "/", label: "Home" },
                   { href: "/calendar", label: "Season Calendar" },
                   { href: "/standings", label: "Standings" },
-                  { href: "/accuracy", label: "Accuracy" },
+                  { href: "/track-record", label: "Track record" },
                   { href: "/about", label: "About" },
                 ].map((item) => (
                   <Link

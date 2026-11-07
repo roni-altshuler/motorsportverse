@@ -26,10 +26,6 @@ const GITHUB_URL = "https://github.com/roni-altshuler/f1_predictions";
 interface AccuracySummary {
   accuracyPct: number;
   roundsWithActual: number;
-  /** Rounds where the model's predicted winner actually won. Absent on
-   * archived seasons that predate the winner-hit tally. */
-  winnerHits: number | null;
-  winnerHitPct: number | null;
 }
 
 function useAccuracySummary(base: string): AccuracySummary | null {
@@ -38,29 +34,17 @@ function useAccuracySummary(base: string): AccuracySummary | null {
     fetch(`${base}/gp_accuracy_report.json`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d: GpAccuracyReportData | null) => {
-        if (!d?.overallAccuracy) {
+        if (!d?.overallAccuracy || !Number.isFinite(d.overallAccuracy.seasonAccuracyPct)) {
           setSummary(null);
           return;
         }
         const overall = d.overallAccuracy;
-        // Prefer the explicit winner-hit tally; fall back to counting the
-        // per-GP winnerHit flags so older season archives still resolve.
-        const winnerHits =
-          overall.seasonWinnerHits ??
-          (d.gpReports && d.gpReports.length > 0
-            ? d.gpReports.filter((r) => r.winnerHit).length
-            : null);
         const rounds = overall.roundsWithActual ?? 0;
         setSummary({
           // Blend = podium-weighted (60/40) set-membership accuracy.
-          accuracyPct: overall.seasonAccuracyPct ?? 0,
+          accuracyPct: overall.seasonAccuracyPct,
           roundsWithActual: rounds,
-          winnerHits,
-          winnerHitPct:
-            overall.seasonWinnerHitPct ??
-            (winnerHits != null && rounds > 0
-              ? Number(((winnerHits / rounds) * 100).toFixed(1))
-              : null),
+
         });
       })
       .catch(() => {});
@@ -256,31 +240,25 @@ export default function Navbar() {
               className="eyebrow inline-flex items-center gap-1.5 px-2 py-0.5 border transition-colors hover:text-[color:var(--ink)]"
               style={{
                 borderColor:
-                  (accuracy.winnerHitPct ?? accuracy.accuracyPct) >= 70
+                  accuracy.accuracyPct >= 70
                     ? "var(--accent-f1-red-soft)"
-                    : (accuracy.winnerHitPct ?? accuracy.accuracyPct) < 50
+                    : accuracy.accuracyPct < 50
                       ? "rgba(212,160,23,0.4)"
                       : "var(--hairline)",
                 color: "var(--muted)",
               }}
-              title={
-                accuracy.winnerHits != null && accuracy.winnerHitPct != null
-                  ? `Race winner correctly predicted in ${accuracy.winnerHits} of ${accuracy.roundsWithActual} graded rounds (${accuracy.winnerHitPct.toFixed(1)}%). Podium & points accuracy blend: ${accuracy.accuracyPct.toFixed(1)}%. Full scoreboard on the Accuracy page.`
-                  : `Season podium & points accuracy ${accuracy.accuracyPct.toFixed(1)}% across ${accuracy.roundsWithActual} graded round(s). Full scoreboard on the Accuracy page.`
-              }
+              title={`Historical ranking score: ${accuracy.accuracyPct.toFixed(1)}% podium/points overlap. This is not winner accuracy or verified pre-race performance.`}
             >
               <span
                 className="inline-block w-1.5 h-1.5 rounded-full"
                 style={{
                   background:
-                    (accuracy.winnerHitPct ?? accuracy.accuracyPct) >= 70
+                    accuracy.accuracyPct >= 70
                       ? "var(--accent-f1-red)"
                       : "var(--muted)",
                 }}
               />
-              {accuracy.winnerHits != null
-                ? `Winners called ${accuracy.winnerHits}/${accuracy.roundsWithActual}`
-                : `${accuracy.accuracyPct.toFixed(0)}% podium+points · ${accuracy.roundsWithActual}R`}
+              {`${accuracy.accuracyPct.toFixed(0)}% ranking score`}
             </Link>
           )}
           {process.env.NODE_ENV === "development" && (
@@ -501,7 +479,7 @@ export default function Navbar() {
               Drivers
             </Link>
 
-            {navLink("/accuracy", "Accuracy")}
+            {navLink("/track-record", "Track record")}
             {navLink("/about", "About")}
           </div>
 
@@ -565,7 +543,7 @@ export default function Navbar() {
                   { href: "/circuits", label: "Circuit workspace" },
                   { href: withSeason("/standings"), label: "Standings" },
                   { href: withSeason(`/driver/${defaultDriverCode}`), label: "Drivers" },
-                  { href: "/accuracy", label: "Accuracy" },
+                  { href: withSeason("/track-record"), label: "Track record" },
                   { href: "/about", label: "About" },
                 ].map((item) => (
                   <Link

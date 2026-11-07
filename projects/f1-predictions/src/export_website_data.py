@@ -699,13 +699,13 @@ def _write_gp_accuracy_report(tracker_export):
     overall = tracker_export.get("overallAccuracy") if isinstance(tracker_export, dict) else None
     # Additive headline: season winner-hit rate (predicted P1 == actual P1),
     # derived from the per-GP reports so the site can show it next to the blend.
-    if isinstance(overall, dict) and gp_reports:
-        scored = [r for r in gp_reports if r.get("winnerHit") is not None]
-        if scored:
-            hits = sum(1 for r in scored if r.get("winnerHit"))
-            overall = dict(overall)
-            overall["seasonWinnerHits"] = hits
-            overall["seasonWinnerHitPct"] = round(hits / len(scored) * 100, 1)
+    if isinstance(overall, dict):
+        scored = [r for r in gp_reports if type(r.get("winnerHit")) is bool]
+        hits = sum(1 for r in scored if r["winnerHit"])
+        overall = dict(overall)
+        overall["seasonWinnerHits"] = hits
+        overall["seasonWinnerRoundsScored"] = len(scored)
+        overall["seasonWinnerHitPct"] = round(hits / len(scored) * 100, 1) if scored else None
 
     json_payload = {
         "generatedAt": tracker_export.get("generatedAt") if isinstance(tracker_export, dict) else None,
@@ -759,7 +759,7 @@ def _write_gp_accuracy_report(tracker_export):
             lines.append(
                 f"| {report.get('round')} | {report.get('name')} | {report.get('meanError')} | "
                 f"{report.get('exactMatches')} | {report.get('within3')} | {report.get('podiumHits')} | "
-                f"{'Yes' if report.get('winnerHit') else 'No'} | {miss_label} |"
+                f"{'Not scored' if report.get('winnerHit') is None else 'Yes' if report['winnerHit'] else 'No'} | {miss_label} |"
             )
         lines.append("")
     else:

@@ -61,21 +61,22 @@ export default function BaselineComparisonPanel({
   // Winner-hit tally for the model: prefer the explicit season fields, fall
   // back to counting per-round reports so slightly older data still renders.
   const gpReports = report?.gpReports ?? [];
+  const winnerRounds = overall.seasonWinnerRoundsScored ?? gpReports.filter(r => typeof r.winnerHit === "boolean").length;
   const modelWinnerHits =
     overall.seasonWinnerHits ?? (gpReports.length > 0 ? gpReports.filter((r) => r.winnerHit).length : null);
   const modelWinnerHitPct =
     overall.seasonWinnerHitPct ??
-    (modelWinnerHits != null && overall.roundsWithActual > 0
-      ? Number(((modelWinnerHits / overall.roundsWithActual) * 100).toFixed(1))
+    (modelWinnerHits != null && winnerRounds > 0
+      ? Number(((modelWinnerHits / winnerRounds) * 100).toFixed(1))
       : null);
 
   const modelRow: ScoreRow = {
     key: "model",
     name: "RaceIQ model",
-    description: "Our published pre-race forecast, frozen after qualifying.",
+    description: "Saved forecast comparison; original pre-race publication timing is not verified here.",
     isModel: true,
     winnerHits: modelWinnerHits,
-    roundsScored: overall.roundsWithActual ?? null,
+    roundsScored: winnerRounds,
     winnerHitRate: modelWinnerHitPct,
     podiumSetPct: overall.seasonPodiumAccuracyPct ?? null,
     pointsSetPct: overall.seasonPointsAccuracyPct ?? null,

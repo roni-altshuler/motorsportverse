@@ -27,41 +27,11 @@ function readAccuracyJson<T>(file: string): T | null {
   }
 }
 
-interface AccuracyOverallMeta {
-  seasonWinnerHits?: number;
-  roundsWithActual?: number;
-}
-interface AccuracyReportMeta {
-  overallAccuracy?: AccuracyOverallMeta;
-}
-
 function buildAccuracyMeta(): { title: string; description: string } {
-  const report = readAccuracyJson<AccuracyReportMeta>(
-    "gp_accuracy_report.json",
-  );
   const season = readAccuracyJson<{ season?: number }>("season.json");
-  const year = season?.season ?? new Date().getFullYear();
-  const title = `F1 ${year} Prediction Accuracy`;
-  const o = report?.overallAccuracy;
-
-  if (
-    o &&
-    typeof o.seasonWinnerHits === "number" &&
-    typeof o.roundsWithActual === "number" &&
-    o.roundsWithActual > 0
-  ) {
-    return {
-      title,
-      description:
-        `RaceIQ called ${o.seasonWinnerHits} of ${o.roundsWithActual} Formula 1 race winners so far this ${year} season. ` +
-        "See how every forecast scored against the real results — winners, podiums and points finishers — versus honest baselines.",
-    };
-  }
   return {
-    title,
-    description:
-      `See how RaceIQ's ${year} Formula 1 forecasts scored against the real race results — ` +
-      "winners, podiums and points finishers, measured against honest baselines.",
+    title: `F1 ${season?.season ?? new Date().getFullYear()} Historical Evaluation`,
+    description: "Saved historical winner comparisons, position errors and podium/points ranking scores. Original pre-race publication timing is not verified here; see the Model track record for eligible winner picks.",
   };
 }
 

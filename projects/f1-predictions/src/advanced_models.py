@@ -1791,8 +1791,20 @@ class SeasonTracker:
 
         predicted_podium = {r["driver"] for r in sorted(rows, key=lambda x: x["predicted"])[:3]}
         actual_podium = {r["driver"] for r in sorted(rows, key=lambda x: x["actual"])[:3]}
-        predicted_winner = min(rows, key=lambda x: x["predicted"])["driver"]
-        actual_winner = min(rows, key=lambda x: x["actual"])["driver"]
+        # Winner correctness belongs to the original full classifications.
+        # Intersecting driver sets can remove P1 and turn shared P2 into a
+        # fictitious winner. Missing/ambiguous original P1 is unscored.
+        original = self.data["rounds"].get(str(round_num), {})
+
+        def original_winner(field):
+            winners = [driver for driver, result in original.get(field, {}).items()
+                       if isinstance(result, dict)
+                       and type(result.get("position")) in (int, float)
+                       and result["position"] == 1]
+            return winners[0] if len(winners) == 1 else None
+
+        predicted_winner = original_winner("predicted")
+        actual_winner = original_winner("actual")
 
         pp = podium_points_accuracy(
             {r["driver"]: r["predicted"] for r in rows},
@@ -1827,7 +1839,8 @@ class SeasonTracker:
             "exactMatches": int(exact),
             "within3": int(within3),
             "within5": int(within5),
-            "winnerHit": predicted_winner == actual_winner,
+            "winnerHit": (predicted_winner == actual_winner
+                          if predicted_winner is not None and actual_winner is not None else None),
             "podiumHits": len(predicted_podium & actual_podium),
             "pointsHits": pp.get("points_hits"),
             "pointsTotal": pp.get("points_total"),

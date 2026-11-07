@@ -1568,12 +1568,12 @@ export default function RaceDetailPage({ round }: Props) {
                             <p
                               className="text-xl font-black"
                               style={{
-                                color: gpReport.winnerHit
+                                color: gpReport.winnerHit == null ? "var(--text-muted)" : gpReport.winnerHit
                                   ? "var(--accent-positive)"
                                   : "var(--accent-live)",
                               }}
                             >
-                              {gpReport.winnerHit ? "Yes" : "No"}
+                              {gpReport.winnerHit == null ? "Not scored" : gpReport.winnerHit ? "Yes" : "No"}
                             </p>
                           </div>
                           <div className="metric-card">
