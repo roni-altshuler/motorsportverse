@@ -3,45 +3,45 @@
   "venueName": "Goiania",
   "sprint": {
     "n": 19,
-    "mean_position_error": 2.737,
-    "winner_hit": true,
+    "mean_position_error": 2.842,
+    "winner_hit": false,
     "podium_hits": 2,
     "within_3": 14,
     "within_5": 15,
-    "exact_matches": 3,
-    "spearman_correlation": 0.8543859649122807,
-    "ndcg_at_5": 0.9931858015123486
+    "exact_matches": 2,
+    "spearman_correlation": 0.8491228070175438,
+    "ndcg_at_5": 0.9704045751045616
   },
   "feature": {
     "n": 18,
-    "mean_position_error": 2.778,
-    "winner_hit": false,
+    "mean_position_error": 2.667,
+    "winner_hit": true,
     "podium_hits": 2,
     "within_3": 13,
     "within_5": 15,
-    "exact_matches": 2,
-    "spearman_correlation": 0.8864809081527347,
-    "ndcg_at_5": 0.9669747270653658
+    "exact_matches": 3,
+    "spearman_correlation": 0.8926728586171311,
+    "ndcg_at_5": 0.9912272450786304
   },
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.034754,
-        "logLoss": 0.111424
+        "brier": 0.034465,
+        "logLoss": 0.11033
       },
       "podium": {
-        "brier": 0.07275,
-        "logLoss": 0.221053
+        "brier": 0.074077,
+        "logLoss": 0.223841
       }
     },
     "feature": {
       "win": {
-        "brier": 0.03664,
-        "logLoss": 0.113111
+        "brier": 0.035703,
+        "logLoss": 0.110605
       },
       "podium": {
-        "brier": 0.079518,
-        "logLoss": 0.234389
+        "brier": 0.078395,
+        "logLoss": 0.230393
       }
     }
   },

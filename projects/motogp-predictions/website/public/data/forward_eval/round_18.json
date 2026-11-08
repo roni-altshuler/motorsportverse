@@ -3,14 +3,14 @@
   "venueName": "Phillip Island",
   "sprint": {
     "n": 18,
-    "mean_position_error": 3.667,
+    "mean_position_error": 3.889,
     "winner_hit": false,
-    "podium_hits": 2,
+    "podium_hits": 1,
     "within_3": 10,
     "within_5": 12,
-    "exact_matches": 4,
-    "spearman_correlation": 0.7213622291021672,
-    "ndcg_at_5": 0.9816246008425433
+    "exact_matches": 1,
+    "spearman_correlation": 0.7027863777089783,
+    "ndcg_at_5": 0.9787566949468575
   },
   "feature": {
     "n": 16,
@@ -26,22 +26,22 @@
   "markets": {
     "sprint": {
       "win": {
-        "brier": 0.05154,
-        "logLoss": 0.167108
+        "brier": 0.050203,
+        "logLoss": 0.160787
       },
       "podium": {
-        "brier": 0.057135,
-        "logLoss": 0.174179
+        "brier": 0.055811,
+        "logLoss": 0.171124
       }
     },
     "feature": {
       "win": {
-        "brier": 0.035035,
-        "logLoss": 0.114049
+        "brier": 0.035941,
+        "logLoss": 0.116347
       },
       "podium": {
-        "brier": 0.057622,
-        "logLoss": 0.181606
+        "brier": 0.057226,
+        "logLoss": 0.181109
       }
     }
   },
