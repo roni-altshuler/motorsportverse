@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-07T22:06:44+00:00",
+  "generatedAt": "2026-11-09T02:13:16+00:00",
   "format": {
     "name": "chase-2026",
     "regularSeasonRaces": 26,
@@ -13,33 +13,108 @@
       "p_title"
     ]
   },
-  "completedRounds": 35,
+  "completedRounds": 36,
   "regularSeasonRacesRemaining": 0,
   "method": "monte-carlo playoff simulation over the real 2026 Chase format",
   "drivers": [
     {
-      "code": "KYLARSON",
-      "name": "Kyle Larson",
-      "team": "Hendrick Motorsports",
-      "make": "Chevrolet",
-      "points": 1140.0,
-      "wins": 3,
+      "code": "DEHAMLIN",
+      "name": "Denny Hamlin",
+      "team": "Joe Gibbs Racing",
+      "make": "Toyota",
+      "points": 1371.0,
+      "wins": 4,
+      "stageWins": 6,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.8835
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.8835
+    },
+    {
+      "code": "TYREDDICK",
+      "name": "Tyler Reddick",
+      "team": "23XI Racing",
+      "make": "Toyota",
+      "points": 1226.0,
+      "wins": 6,
+      "stageWins": 3,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.05
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.05
+    },
+    {
+      "code": "RYBLANEY",
+      "name": "Ryan Blaney",
+      "team": "Team Penske",
+      "make": "Ford",
+      "points": 1261.0,
+      "wins": 4,
       "stageWins": 9,
       "ladder": {
         "p_make_playoffs": 1.0,
-        "p_title": 0.9995
+        "p_title": 0.0325
       },
       "pMakePlayoffs": 1.0,
-      "pTitle": 0.9995
+      "pTitle": 0.0325
     },
     {
       "code": "CHBELL",
       "name": "Christopher Bell",
       "team": "Joe Gibbs Racing",
       "make": "Toyota",
-      "points": 1104.0,
+      "points": 1154.0,
       "wins": 1,
       "stageWins": 6,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0175
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0175
+    },
+    {
+      "code": "TYGIBBS",
+      "name": "Ty Gibbs",
+      "team": "Joe Gibbs Racing",
+      "make": "Toyota",
+      "points": 1165.0,
+      "wins": 2,
+      "stageWins": 5,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.013
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.013
+    },
+    {
+      "code": "KYLARSON",
+      "name": "Kyle Larson",
+      "team": "Hendrick Motorsports",
+      "make": "Chevrolet",
+      "points": 1172.0,
+      "wins": 3,
+      "stageWins": 9,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.003
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.003
+    },
+    {
+      "code": "WIBYRON",
+      "name": "William Byron",
+      "team": "Hendrick Motorsports",
+      "make": "Chevrolet",
+      "points": 995.0,
+      "wins": 1,
+      "stageWins": 5,
       "ladder": {
         "p_make_playoffs": 1.0,
         "p_title": 0.0005
@@ -48,206 +123,11 @@
       "pTitle": 0.0005
     },
     {
-      "code": "JOLOGANO",
-      "name": "Joey Logano",
-      "team": "Team Penske",
-      "make": "Ford",
-      "points": 1030.0,
-      "wins": 3,
-      "stageWins": 7,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "WIBYRON",
-      "name": "William Byron",
-      "team": "Hendrick Motorsports",
-      "make": "Chevrolet",
-      "points": 954.0,
-      "wins": 1,
-      "stageWins": 5,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "DEHAMLIN",
-      "name": "Denny Hamlin",
-      "team": "Joe Gibbs Racing",
-      "make": "Toyota",
-      "points": 1325.0,
-      "wins": 4,
-      "stageWins": 5,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "JOBERRY",
-      "name": "Josh Berry",
-      "team": "Wood Brothers Racing",
-      "make": "Ford",
-      "points": 647.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "RYBLANEY",
-      "name": "Ryan Blaney",
-      "team": "Team Penske",
-      "make": "Ford",
-      "points": 1190.0,
-      "wins": 3,
-      "stageWins": 9,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "ROCHASTAIN",
-      "name": "Ross Chastain",
-      "team": "Trackhouse Racing",
-      "make": "Chevrolet",
-      "points": 742.0,
-      "wins": 0,
-      "stageWins": 4,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "JONEMECHEK",
-      "name": "John H. Nemechek",
-      "team": "Legacy Motor Club",
-      "make": "Toyota",
-      "points": 504.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "BUWALLACE",
-      "name": "Bubba Wallace",
-      "team": "23XI Racing",
-      "make": "Toyota",
-      "points": 898.0,
-      "wins": 0,
-      "stageWins": 2,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "ZASMITH",
-      "name": "Zane Smith",
-      "team": "Front Row Motorsports",
-      "make": "Ford",
-      "points": 559.0,
-      "wins": 0,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "TYDILLON",
-      "name": "Ty Dillon",
-      "team": "Kaulig Racing",
-      "make": "Chevrolet",
-      "points": 389.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "AJALLMENDINGER",
-      "name": "AJ Allmendinger",
-      "team": "Kaulig Racing",
-      "make": "Chevrolet",
-      "points": 592.0,
-      "wins": 0,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "NOGRAGSON",
-      "name": "Noah Gragson",
-      "team": "Front Row Motorsports",
-      "make": "Ford",
-      "points": 458.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "BRKESELOWSKI",
-      "name": "Brad Keselowski",
-      "team": "RFK Racing",
-      "make": "Ford",
-      "points": 707.0,
-      "wins": 0,
-      "stageWins": 2,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
       "code": "CHELLIOTT",
       "name": "Chase Elliott",
       "team": "Hendrick Motorsports",
       "make": "Chevrolet",
-      "points": 941.0,
+      "points": 960.0,
       "wins": 2,
       "stageWins": 2,
       "ladder": {
@@ -262,7 +142,7 @@
       "name": "Chase Briscoe",
       "team": "Joe Gibbs Racing",
       "make": "Toyota",
-      "points": 1091.0,
+      "points": 1092.0,
       "wins": 3,
       "stageWins": 2,
       "ladder": {
@@ -273,13 +153,13 @@
       "pTitle": 0.0
     },
     {
-      "code": "TYGIBBS",
-      "name": "Ty Gibbs",
-      "team": "Joe Gibbs Racing",
-      "make": "Toyota",
-      "points": 1139.0,
-      "wins": 2,
-      "stageWins": 5,
+      "code": "JOLOGANO",
+      "name": "Joey Logano",
+      "team": "Team Penske",
+      "make": "Ford",
+      "points": 1050.0,
+      "wins": 3,
+      "stageWins": 7,
       "ladder": {
         "p_make_playoffs": 1.0,
         "p_title": 0.0
@@ -288,28 +168,13 @@
       "pTitle": 0.0
     },
     {
-      "code": "ERJONES",
-      "name": "Erik Jones",
-      "team": "Legacy Motor Club",
-      "make": "Toyota",
-      "points": 626.0,
-      "wins": 0,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "ALBOWMAN",
-      "name": "Alex Bowman",
-      "team": "Hendrick Motorsports",
+      "code": "ROCHASTAIN",
+      "name": "Ross Chastain",
+      "team": "Trackhouse Racing",
       "make": "Chevrolet",
-      "points": 568.0,
+      "points": 752.0,
       "wins": 0,
-      "stageWins": 0,
+      "stageWins": 4,
       "ladder": {
         "p_make_playoffs": 0.0,
         "p_title": 0.0
@@ -322,7 +187,7 @@
       "name": "Austin Cindric",
       "team": "Team Penske",
       "make": "Ford",
-      "points": 889.0,
+      "points": 932.0,
       "wins": 0,
       "stageWins": 1,
       "ladder": {
@@ -333,11 +198,341 @@
       "pTitle": 0.0
     },
     {
+      "code": "BUWALLACE",
+      "name": "Bubba Wallace",
+      "team": "23XI Racing",
+      "make": "Toyota",
+      "points": 934.0,
+      "wins": 0,
+      "stageWins": 2,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "CHBUESCHER",
+      "name": "Chris Buescher",
+      "team": "RFK Racing",
+      "make": "Ford",
+      "points": 859.0,
+      "wins": 0,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "ALBOWMAN",
+      "name": "Alex Bowman",
+      "team": "Hendrick Motorsports",
+      "make": "Chevrolet",
+      "points": 593.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "BRKESELOWSKI",
+      "name": "Brad Keselowski",
+      "team": "RFK Racing",
+      "make": "Ford",
+      "points": 716.0,
+      "wins": 0,
+      "stageWins": 2,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "KYBUSCH",
+      "name": "Kyle Busch",
+      "team": "Richard Childress Racing",
+      "make": "Chevrolet",
+      "points": 217.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "SHGISBERGEN",
+      "name": "Shane Van Gisbergen",
+      "team": "Trackhouse Racing",
+      "make": "Chevrolet",
+      "points": 769.0,
+      "wins": 2,
+      "stageWins": 2,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "CAHOCEVAR",
+      "name": "Carson Hocevar",
+      "team": "Spire Motorsports",
+      "make": "Chevrolet",
+      "points": 903.0,
+      "wins": 1,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "JOBERRY",
+      "name": "Josh Berry",
+      "team": "Wood Brothers Racing",
+      "make": "Ford",
+      "points": 671.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "RYPREECE",
+      "name": "Ryan Preece",
+      "team": "RFK Racing",
+      "make": "Ford",
+      "points": 871.0,
+      "wins": 1,
+      "stageWins": 2,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "AJALLMENDINGER",
+      "name": "AJ Allmendinger",
+      "team": "Kaulig Racing",
+      "make": "Chevrolet",
+      "points": 606.0,
+      "wins": 0,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "ERJONES",
+      "name": "Erik Jones",
+      "team": "Legacy Motor Club",
+      "make": "Toyota",
+      "points": 643.0,
+      "wins": 0,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "MIMCDOWELL",
+      "name": "Michael McDowell",
+      "team": "Spire Motorsports",
+      "make": "Chevrolet",
+      "points": 684.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "DASUAREZ",
+      "name": "Daniel Su\u00e1rez",
+      "team": "Spire Motorsports",
+      "make": "Chevrolet",
+      "points": 890.0,
+      "wins": 1,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 1.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 1.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "RISTENHOUSE",
+      "name": "Ricky Stenhouse Jr",
+      "team": "HYAK Motorsports",
+      "make": "Chevrolet",
+      "points": 523.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
       "code": "AUDILLON",
       "name": "Austin Dillon",
       "team": "Richard Childress Racing",
       "make": "Chevrolet",
-      "points": 588.0,
+      "points": 599.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "ZASMITH",
+      "name": "Zane Smith",
+      "team": "Front Row Motorsports",
+      "make": "Ford",
+      "points": 584.0,
+      "wins": 0,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "JONEMECHEK",
+      "name": "John H. Nemechek",
+      "team": "Legacy Motor Club",
+      "make": "Toyota",
+      "points": 511.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "TOGILLILAND",
+      "name": "Todd Gilliland",
+      "team": "Front Row Motorsports",
+      "make": "Ford",
+      "points": 653.0,
+      "wins": 0,
+      "stageWins": 1,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "NOGRAGSON",
+      "name": "Noah Gragson",
+      "team": "Front Row Motorsports",
+      "make": "Ford",
+      "points": 486.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "COCUSTER",
+      "name": "Cole Custer",
+      "team": "Haas Factory Team",
+      "make": "Chevrolet",
+      "points": 450.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "RIHERBST",
+      "name": "Riley Herbst",
+      "team": "23XI Racing",
+      "make": "Toyota",
+      "points": 495.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "TYDILLON",
+      "name": "Ty Dillon",
+      "team": "Kaulig Racing",
+      "make": "Chevrolet",
+      "points": 395.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "COZILISCH",
+      "name": "Connor Zilisch",
+      "team": "Trackhouse Racing",
+      "make": "Chevrolet",
+      "points": 410.0,
       "wins": 0,
       "stageWins": 0,
       "ladder": {
@@ -378,71 +573,11 @@
       "pTitle": 0.0
     },
     {
-      "code": "TYREDDICK",
-      "name": "Tyler Reddick",
-      "team": "23XI Racing",
-      "make": "Toyota",
-      "points": 1173.0,
-      "wins": 6,
-      "stageWins": 2,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "COZILISCH",
-      "name": "Connor Zilisch",
-      "team": "Trackhouse Racing",
-      "make": "Chevrolet",
-      "points": 392.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "RYPREECE",
-      "name": "Ryan Preece",
-      "team": "RFK Racing",
-      "make": "Ford",
-      "points": 859.0,
-      "wins": 1,
-      "stageWins": 2,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "JUHALEY",
-      "name": "JUHALEY",
-      "team": "",
-      "make": "",
-      "points": 0.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
       "code": "COWARE",
       "name": "Cody Ware",
       "team": "Rick Ware Racing",
       "make": "Chevrolet",
-      "points": 262.0,
+      "points": 264.0,
       "wins": 0,
       "stageWins": 0,
       "ladder": {
@@ -450,201 +585,6 @@
         "p_title": 0.0
       },
       "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "TOGILLILAND",
-      "name": "Todd Gilliland",
-      "team": "Front Row Motorsports",
-      "make": "Ford",
-      "points": 634.0,
-      "wins": 0,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "CHBUESCHER",
-      "name": "Chris Buescher",
-      "team": "RFK Racing",
-      "make": "Ford",
-      "points": 846.0,
-      "wins": 0,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "CAMEARS",
-      "name": "Casey Mears",
-      "team": "Beard Motorsports",
-      "make": "Chevrolet",
-      "points": 11.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "DASUAREZ",
-      "name": "Daniel Su\u00e1rez",
-      "team": "Spire Motorsports",
-      "make": "Chevrolet",
-      "points": 857.0,
-      "wins": 1,
-      "stageWins": 1,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "RIHERBST",
-      "name": "Riley Herbst",
-      "team": "23XI Racing",
-      "make": "Toyota",
-      "points": 491.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "COCUSTER",
-      "name": "Cole Custer",
-      "team": "Haas Factory Team",
-      "make": "Chevrolet",
-      "points": 442.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "RISTENHOUSE",
-      "name": "Ricky Stenhouse Jr",
-      "team": "HYAK Motorsports",
-      "make": "Chevrolet",
-      "points": 518.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "CHFINCHUM",
-      "name": "Chad Finchum",
-      "team": "Garage 66",
-      "make": "Ford",
-      "points": 0.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "MIMCDOWELL",
-      "name": "Michael McDowell",
-      "team": "Spire Motorsports",
-      "make": "Chevrolet",
-      "points": 657.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "SHGISBERGEN",
-      "name": "Shane Van Gisbergen",
-      "team": "Trackhouse Racing",
-      "make": "Chevrolet",
-      "points": 766.0,
-      "wins": 2,
-      "stageWins": 2,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "JJYELEY",
-      "name": "JJ Yeley",
-      "team": "NY Racing Team",
-      "make": "Chevrolet",
-      "points": 0.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "KYBUSCH",
-      "name": "Kyle Busch",
-      "team": "Richard Childress Racing",
-      "make": "Chevrolet",
-      "points": 217.0,
-      "wins": 0,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 0.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 0.0,
-      "pTitle": 0.0
-    },
-    {
-      "code": "CAHOCEVAR",
-      "name": "Carson Hocevar",
-      "team": "Spire Motorsports",
-      "make": "Chevrolet",
-      "points": 903.0,
-      "wins": 1,
-      "stageWins": 0,
-      "ladder": {
-        "p_make_playoffs": 1.0,
-        "p_title": 0.0
-      },
-      "pMakePlayoffs": 1.0,
       "pTitle": 0.0
     },
     {
@@ -653,6 +593,21 @@
       "team": "Legacy Motor Club",
       "make": "Toyota",
       "points": 9.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "CAMEARS",
+      "name": "Casey Mears",
+      "team": "Beard Motorsports",
+      "make": "Chevrolet",
+      "points": 12.0,
       "wins": 0,
       "stageWins": 0,
       "ladder": {
@@ -738,6 +693,21 @@
       "pTitle": 0.0
     },
     {
+      "code": "JJYELEY",
+      "name": "JJ Yeley",
+      "team": "NY Racing Team",
+      "make": "Chevrolet",
+      "points": 0.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
       "code": "JELOVE",
       "name": "Jesse Love",
       "team": "Richard Childress Racing",
@@ -755,6 +725,21 @@
     {
       "code": "TIHILL",
       "name": "Timmy Hill",
+      "team": "Garage 66",
+      "make": "Ford",
+      "points": 0.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "CHFINCHUM",
+      "name": "Chad Finchum",
       "team": "Garage 66",
       "make": "Ford",
       "points": 0.0,
@@ -862,6 +847,21 @@
       "name": "Gray Gaulding",
       "team": "Garage 66",
       "make": "Ford",
+      "points": 0.0,
+      "wins": 0,
+      "stageWins": 0,
+      "ladder": {
+        "p_make_playoffs": 0.0,
+        "p_title": 0.0
+      },
+      "pMakePlayoffs": 0.0,
+      "pTitle": 0.0
+    },
+    {
+      "code": "JUHALEY",
+      "name": "Justin Haley",
+      "team": "Spire Motorsports",
+      "make": "Chevrolet",
       "points": 0.0,
       "wins": 0,
       "stageWins": 0,

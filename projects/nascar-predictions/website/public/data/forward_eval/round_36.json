@@ -1,0 +1,63 @@
+{
+  "round": 36,
+  "venueName": "Homestead-Miami Speedway",
+  "trackType": "intermediate",
+  "race": {
+    "n": 40,
+    "mean_position_error": 9.2,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 7,
+    "within_5": 14,
+    "exact_matches": 1,
+    "spearman_correlation": 0.4519699812382739,
+    "ndcg_at_5": 0.7654097909123877
+  },
+  "racePostQuali": {
+    "n": 40,
+    "mean_position_error": 6.75,
+    "winner_hit": false,
+    "podium_hits": 1,
+    "within_3": 17,
+    "within_5": 24,
+    "exact_matches": 3,
+    "spearman_correlation": 0.6076923076923076,
+    "ndcg_at_5": 0.7811533795377801
+  },
+  "markets": {
+    "race": {
+      "win": {
+        "brier": 0.025258,
+        "logLoss": 0.114136
+      },
+      "podium": {
+        "brier": 0.069193,
+        "logLoss": 0.231732
+      }
+    }
+  },
+  "baselines": {
+    "lastRace": {
+      "n": 35,
+      "mean_position_error": 8.829,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 16,
+      "within_5": 19,
+      "exact_matches": 2,
+      "spearman_correlation": 0.2680672268907563,
+      "ndcg_at_5": 0.6480018037655855
+    },
+    "gridOrder": {
+      "n": 40,
+      "mean_position_error": 6.8,
+      "winner_hit": false,
+      "podium_hits": 1,
+      "within_3": 16,
+      "within_5": 23,
+      "exact_matches": 4,
+      "spearman_correlation": 0.6097560975609756,
+      "ndcg_at_5": 0.5996831048780477
+    }
+  }
+}
