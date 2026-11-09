@@ -1,3 +1,5 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,7 +8,8 @@ import { MagicCard } from "@/components/magicui/magic-card";
 import HowItWorksDiagram from "@/components/marketing/HowItWorksDiagram";
 import { getMotogpData } from "@/lib/motogpData";
 
-export const metadata: Metadata = {
+const pageHold = getPublicationHold();
+export const metadata: Metadata = pageHold ? { title: "MotoGP publication withheld", description: pageHold.message } : {
   title: "About the Model — RaceIQ MotoGP",
   description:
     "How RaceIQ MotoGP forecasts the premier class of motorcycle Grand Prix racing — a Saturday sprint and a Sunday Grand Prix each round, and the rider and manufacturer title fights.",
@@ -23,6 +26,8 @@ const NAV = [
 ];
 
 export default function AboutPage() {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   const data = getMotogpData();
 
   return (

@@ -1,3 +1,4 @@
+import { getPublicationHold } from "@/lib/publication";
 import type { MetadataRoute } from "next";
 
 import { getMotogpData } from "@/lib/motogpData";
@@ -21,6 +22,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   let lastUpdated = new Date();
   let totalRounds = 14;
   let driverCodes: string[] = [];
+  const hold = getPublicationHold();
+  if (hold) {
+    totalRounds = Math.max(...hold.routes.rounds, 0);
+    driverCodes = hold.routes.riders;
+  }
   try {
     const data = getMotogpData();
     if (data.generatedAt) lastUpdated = new Date(data.generatedAt);

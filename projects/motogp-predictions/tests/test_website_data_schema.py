@@ -11,9 +11,10 @@ from __future__ import annotations
 
 import json
 import os
+from typing import Literal
 
 import pytest
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 os.environ.setdefault("OMP_NUM_THREADS", "1")
 
@@ -21,7 +22,7 @@ from motogp_predictions import config, export, forward_eval
 
 
 @pytest.fixture(scope="module")
-def data_dir(tmp_path_factory):
+def data_dir(tmp_path_factory, verified_publication_prefix):
     out = tmp_path_factory.mktemp("motogpdata")
     export.write(out)
     forward_eval.write(out, config.SEASON)
@@ -37,6 +38,12 @@ def _load(path):
 # --------------------------------------------------------------------------- #
 class _Loose(BaseModel):
     model_config = ConfigDict(extra="ignore")
+
+
+class PublicationExport(_Loose):
+    schemaVersion: Literal[1]
+    snapshotSha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    artifacts: dict[str, str] = Field(min_length=1)
 
 
 class CalendarRound(_Loose):
@@ -288,3 +295,27 @@ def test_published_probabilities_sum_to_their_market(data_dir):
                 failures.append(f"{path.name}: {finding.message}")
     assert not failures, "incoherent published markets:\n" + "\n".join(failures)
     assert checked > 0, "no markets were checked — the glob or the payload shape changed"
+
+
+def test_hold_release_requires_a_complete_current_export(data_dir):
+    from motogp_predictions.publication import EXPORT_RECEIPT, STATUS_FILE
+
+    receipt = data_dir / EXPORT_RECEIPT
+    before_receipt = receipt.read_bytes()
+    PublicationExport.model_validate(json.loads(before_receipt))
+    hold = data_dir / STATUS_FILE
+    hold.write_text('{"status":"held","reason":"previous snapshot"}')
+    receipt.unlink()
+    with pytest.raises(ValueError, match="complete export"):
+        forward_eval.write(data_dir, config.SEASON)
+    assert hold.exists()
+    receipt.write_bytes(before_receipt)
+    main = data_dir / "motogp.json"
+    before_main = main.read_bytes()
+    main.write_text('{"stale":true}')
+    with pytest.raises(ValueError, match="complete export"):
+        forward_eval.write(data_dir, config.SEASON)
+    assert hold.exists()
+    main.write_bytes(before_main)
+    assert forward_eval.write(data_dir, config.SEASON) == config.COMPLETED_ROUNDS
+    assert not hold.exists()

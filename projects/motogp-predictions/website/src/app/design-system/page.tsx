@@ -1,3 +1,5 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 /**
  * /design-system — visual showcase of the design tokens + UI primitives.
  *
@@ -20,7 +22,8 @@ import {
 import { Stat } from "@/components/ui/Stat";
 import MagicUIGallery from "@/components/design-system/MagicUIGallery";
 
-export const metadata: Metadata = {
+const pageHold = getPublicationHold();
+export const metadata: Metadata = pageHold ? { title: "MotoGP publication withheld", description: pageHold.message } : {
   title: "Design System · RaceIQ MotoGP",
   description: "Internal showcase of design tokens, palette, typography, and UI primitives.",
 };
@@ -50,6 +53,8 @@ function TokenSwatch({ label, cssVar, value }: { label: string; cssVar: string; 
 }
 
 export default function DesignSystemPage() {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 space-y-8">
       {/* Hero */}

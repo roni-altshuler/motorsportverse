@@ -10,11 +10,13 @@ Two steps, in order:
    with one that has FEWER completed rounds (the freshness/regression guard that
    protects every series against a transient empty scrape wiping real data). Rider
    codes are assigned over the same season range the committed snapshots used, so a
-   rider keeps a stable code (the wrong-event guard is inherent: the API keys every
-   round by event UUID, so a round can't be served another event's classification).
+   rider keeps a stable code. Completed events join the full calendar by UUID;
+   publication independently checks round identities and supported coverage.
 
 2. **Re-export** the website JSON from whatever snapshot is now on disk
    (:mod:`motogp_predictions.export` + :mod:`motogp_predictions.forward_eval`).
+   A mismatched or unsupported sparse snapshot produces an explicit publication
+   hold, removing stale numerical outputs instead of reusing shifted forecasts.
 
 Because step 1 is fully guarded, running this offline simply re-exports the
 committed snapshot — the deterministic, reproducible path CI and local dev use.

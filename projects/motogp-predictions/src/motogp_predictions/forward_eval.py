@@ -417,6 +417,12 @@ def build_model_health(data_dir: Path, year: int, season_summary: dict) -> dict:
 def write(data_dir: Path, year: int) -> int:
     """Write ``forward_eval/*.json`` under ``data_dir`` and ``data_dir/model_health.json``.
     Returns the number of rounds scored."""
+    from .publication import STATUS_FILE, require_current_export, write_hold_if_needed
+
+    if write_hold_if_needed(data_dir) is not None:
+        return 0
+    if (data_dir / STATUS_FILE).exists():
+        require_current_export(data_dir)
     source = MotoGPDataSource()
     rounds = evaluate_season(source, year)
     fe_dir = data_dir / "forward_eval"
@@ -430,6 +436,12 @@ def write(data_dir: Path, year: int) -> int:
     (data_dir / "model_health.json").write_text(
         json.dumps(build_model_health(data_dir, year, season), indent=2) + "\n"
     )
+    if write_hold_if_needed(data_dir) is not None:
+        return 0
+    if (data_dir / STATUS_FILE).exists():
+        require_current_export(data_dir)
+    # A prior hold only clears after both export and evaluation can complete.
+    (data_dir / STATUS_FILE).unlink(missing_ok=True)
     return len(rounds)
 
 
@@ -440,6 +452,11 @@ def main() -> int:
     p.add_argument("--allow-empty", action="store_true", help="exit 0 even if no rounds scorable")
     args = p.parse_args()
     n = write(args.out, args.season)
+    from .publication import STATUS_FILE
+
+    if (args.out / STATUS_FILE).exists():
+        print("forward_eval: publication withheld; no numerical evaluation published.")
+        return 0
     if n == 0 and not args.allow_empty:
         print("forward_eval: no completed rounds to score", flush=True)
         return 1

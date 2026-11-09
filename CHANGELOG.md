@@ -11,6 +11,16 @@ Entries are grouped by the part of the monorepo they touch, because a change to
 
 ## [Unreleased]
 
+### MotoGP event identity publication hold — 2026-11-09
+
+- Match official events by their stable identifiers so a cancelled Grand Prix
+  cannot shift later results onto another venue's round.
+- Withhold current-season figures and generated numerical downloads while the
+  stored event identities or completed-round coverage are unsupported. Preserve
+  the source snapshot and the hashes of quarantined publications.
+- Keep existing links available with a truthful hold notice; require a complete,
+  source-bound export before evaluation can release a previous hold.
+
 ### Static motorsport backgrounds — 2026-10-12
 
 - Remove the hub canvas/ambient dial and decorative hero, card, button and diagram

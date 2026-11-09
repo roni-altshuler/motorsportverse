@@ -126,6 +126,7 @@ def _full_calendar(api: MotoGPApi, season_uuid: str) -> list[dict]:
         out.append(
             {
                 "round": i,
+                "eventId": ev.get("id"),
                 "name": ev.get("sponsored_name") or ev.get("name"),
                 "shortName": ev.get("short_name"),
                 "venue": circuit.get("name"),
@@ -147,6 +148,14 @@ def build_season(api: MotoGPApi, year: int, code_of) -> dict:
         raise SystemExit(f"premier category not found for {year}")
     events = api.events(season_uuid, finished_only=True)
     full_calendar = _full_calendar(api, season_uuid)
+    event_ids = [e.get("eventId") for e in full_calendar]
+    if any(not isinstance(eid, str) or not eid for eid in event_ids) or len(set(event_ids)) != len(event_ids):
+        raise ValueError("full calendar has missing or duplicate event UUIDs")
+    round_by_id = {eid: i for i, eid in enumerate(event_ids, start=1)}
+    finished_ids = [e.get("id") for e in events]
+    if (any(not isinstance(eid, str) or eid not in round_by_id for eid in finished_ids)
+            or len(set(finished_ids)) != len(finished_ids)):
+        raise ValueError("finished events do not uniquely match the full calendar UUIDs")
 
     calendar: list[dict] = []
     results: dict[str, dict] = {}
@@ -155,14 +164,20 @@ def build_season(api: MotoGPApi, year: int, code_of) -> dict:
     rider_meta: dict[str, dict] = {}
     manu_pts: dict[str, float] = {}
 
-    rnd = 0
-    for ev in events:
+    for ev in sorted(events, key=lambda e: round_by_id[e["id"]]):
+        rnd = round_by_id[ev["id"]]
+        expected = full_calendar[rnd - 1]
+        circuit = ev.get("circuit") or {}
+        identity = {"shortName": ev.get("short_name"), "venue": circuit.get("name"),
+                    "country": (ev.get("country") or {}).get("iso"),
+                    "date": ev.get("date_end") or ev.get("date_start")}
+        if any(not value or value != expected.get(key) for key, value in identity.items()):
+            raise ValueError(f"event UUID {ev['id']} has conflicting calendar metadata")
         sess = api.sessions(ev["id"], cat)
         picked = _pick_sessions(sess)
         race = _classify(api, picked.get("race"))
         if not race:
             continue  # not actually run/scored yet — keeps completed set honest
-        rnd += 1
         sprint = _classify(api, picked.get("sprint"))
         grid = _grid_from_quali(picked, api, code_of)
 
@@ -170,6 +185,7 @@ def build_season(api: MotoGPApi, year: int, code_of) -> dict:
         calendar.append(
             {
                 "round": rnd,
+                "eventId": ev["id"],
                 "name": ev.get("sponsored_name") or ev.get("name"),
                 "shortName": ev.get("short_name"),
                 "venue": circuit.get("name"),

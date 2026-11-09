@@ -1,3 +1,5 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 import type { Metadata } from "next";
 
 import DriverProfilePage from "@/components/driver/DriverProfilePage";
@@ -20,6 +22,8 @@ function loadData() {
 // Static export needs every dynamic segment enumerated up front. We prerender a
 // page for every driver on the season roster (the full standings list).
 export function generateStaticParams() {
+  const hold = getPublicationHold();
+  if (hold) return hold.routes.riders.map(code => ({ code }));
   const data = loadData();
   const codes = allDriverCodes(data);
   return codes.map((code) => ({ code }));
@@ -30,6 +34,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ code: string }>;
 }): Promise<Metadata> {
+  const hold = getPublicationHold();
+  if (hold) return { title: "MotoGP publication withheld", description: hold.message };
   const { code: rawCode } = await params;
   const code = rawCode.toUpperCase();
 
@@ -74,6 +80,8 @@ export default async function Page({
 }: {
   params: Promise<{ code: string }>;
 }) {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   const { code } = await params;
   return <DriverProfilePage code={code} />;
 }

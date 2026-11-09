@@ -93,7 +93,7 @@ jobs:
       - name: Validate generated outputs
         if: steps.check.outputs.should_run == 'true'
         working-directory: projects/motogp-predictions
-        run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py -q
+        run: PYTHONPATH=src python -m pytest tests/test_website_data_schema.py tests/test_publication_identity.py -q
 
       - name: Baseline-state annotation (warn while the model trails)
         # Model-vs-baseline is an EMPIRICAL state, not a crash: never fail the
@@ -105,6 +105,14 @@ jobs:
         run: |
           python - <<'EOF'
           import json
+          from pathlib import Path
+          hold = Path("website/public/data/publication_status.json")
+          if hold.exists():
+              status = json.loads(hold.read_text())
+              from motogp_predictions.publication import current_hold
+              assert status == current_hold() and status["status"] == "held"
+              print("::notice title=MotoGP publication withheld::" + status["message"])
+              raise SystemExit(0)
           pc = json.load(open("website/public/data/forward_eval/season.json"))["phaseComparison"]
           if not pc.get("beatsGridBaseline"):
               f = pc.get("feature", {})

@@ -2,6 +2,8 @@
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { getPublicationHold } from "../projects/motogp-predictions/website/src/lib/publication";
 import {
   assessCircuitGeometry,
   assessCircuitOutline,
@@ -51,6 +53,19 @@ export function auditCircuitGeometry(repoRoot = root) {
       repoRoot,
       `projects/${series}-predictions/website/public/data`,
     );
+    if (series === "motogp") {
+      const hold = getPublicationHold(dataDir);
+      if (hold) {
+        const snapshot = `projects/motogp-predictions/data/official_${hold.season}.json`;
+        if (hold.sourceSnapshot !== snapshot ||
+            createHash("sha256").update(readFileSync(resolve(repoRoot, snapshot))).digest("hex") !== hold.snapshotSha256)
+          throw new Error("MotoGP publication hold does not match its preserved source snapshot");
+        if (["motogp.json", "rounds", "probabilities", "forward_eval", "evidence.json", "model_health.json", "calibration_summary.json"]
+          .some(name => existsSync(resolve(dataDir, name))))
+          throw new Error("MotoGP publication hold coexists with numerical artifacts");
+        return { series, rounds: null, stored: 0, verified: 0, status: "publication-held", message: hold.message, entries: [] };
+      }
+    }
     const data = read<{ season: number; calendar: CalendarEntry[] }>(
       resolve(dataDir, `${filename}.json`),
     );
@@ -103,6 +118,10 @@ export function auditCircuitGeometry(repoRoot = root) {
   });
 }
 
+export function hasCompleteVerifiedGeometry(report: readonly { status: string; verified: number; rounds: number | null }[]): boolean {
+  return report.every(entry => entry.status === "audited" && entry.verified === entry.rounds);
+}
+
 if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
@@ -112,9 +131,7 @@ if (
   // Inventory completion is not approval. Callers can explicitly require coverage.
   if (
     process.argv.includes("--require-verified") &&
-    report.some(
-      (entry) => entry.status === "no-site" || entry.verified !== entry.rounds,
-    )
+    !hasCompleteVerifiedGeometry(report)
   )
     process.exitCode = 1;
 }
