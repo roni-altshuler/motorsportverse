@@ -5,6 +5,7 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { getPublicationHold } from "./publication";
 
 import type { CircuitGeometry, CircuitLibrary } from "@/types/circuit";
 import type {
@@ -22,6 +23,7 @@ import type {
 const DATA_DIR = join(process.cwd(), "public", "data");
 
 function readJson<T>(...segments: string[]): T | null {
+  if (getPublicationHold()) return null;
   const path = join(DATA_DIR, ...segments);
   if (!existsSync(path)) return null;
   try {
@@ -38,6 +40,7 @@ function pad2(n: number): string {
 let cache: MotogpData | null = null;
 
 export function getMotogpData(): MotogpData {
+  if (getPublicationHold()) throw new Error("MotoGP numerical publication is withheld");
   if (cache) return cache;
   cache = readJson<MotogpData>("motogp.json");
   if (!cache) throw new Error("motogp.json missing — run `python -m motogp_predictions.export` first");
@@ -84,6 +87,8 @@ export function getHistoricalBacktest(): HistoricalBacktest | null {
 
 // All calendar round numbers — for generateStaticParams on /race/[round].
 export function allRoundNumbers(): number[] {
+  const hold = getPublicationHold();
+  if (hold) return hold.routes.rounds;
   return getMotogpData().calendar.map((c) => c.round);
 }
 

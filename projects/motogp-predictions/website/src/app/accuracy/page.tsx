@@ -1,3 +1,5 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 import type { Metadata } from "next";
 
 import CalibrationPanel from "@/components/accuracy/CalibrationPanel";
@@ -21,7 +23,8 @@ import {
 import { EvidencePanel } from "@/components/ui/EvidencePanel";
 import { getEvidence } from "@/lib/evidence";
 
-export const metadata: Metadata = { title: "Accuracy — RaceIQ MotoGP" };
+const pageHold = getPublicationHold();
+export const metadata: Metadata = pageHold ? { title: "MotoGP publication withheld", description: pageHold.message } : { title: "Accuracy — RaceIQ MotoGP" };
 
 function pct(v: number | null | undefined): string {
   return v == null ? "—" : `${(v * 100).toFixed(0)}%`;
@@ -32,6 +35,8 @@ function fmt(v: number | null | undefined, digits = 2): string {
 }
 
 export default function AccuracyPage() {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   const data = getMotogpData();
   const season = getForwardEvalSeason();
   const rounds = getForwardEvalRounds();

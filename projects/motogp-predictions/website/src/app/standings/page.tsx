@@ -1,15 +1,20 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 import type { Metadata } from "next";
 
 import type { ProgressionSeries } from "@/components/charts/ProgressionChart";
 import StandingsPage from "@/components/StandingsPage";
 import { getMotogpData, getPointsProgression, teamColor } from "@/lib/motogpData";
 
-export const metadata: Metadata = { title: "Standings — RaceIQ MotoGP" };
+const pageHold = getPublicationHold();
+export const metadata: Metadata = pageHold ? { title: "MotoGP publication withheld", description: pageHold.message } : { title: "Standings — RaceIQ MotoGP" };
 
 const TOP_DRIVERS = 6;
 const TOP_TEAMS = 5;
 
 export default function Page() {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   const data = getMotogpData();
   const prog = getPointsProgression();
 

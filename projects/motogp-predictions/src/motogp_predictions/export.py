@@ -42,6 +42,7 @@ from motorsport_core import calibration, eval as core_eval, standings
 from . import config, model
 from .datasource import MotoGPDataSource
 from .model import RaceForecast, RoundForecast
+from .publication import STATUS_FILE, write_export_receipt, write_hold_if_needed
 
 DEFAULT_OUT = Path(__file__).resolve().parents[2] / "website" / "public" / "data"
 
@@ -645,6 +646,9 @@ def build_payload(
 
 
 def write(out_dir: Path) -> Path:
+    held = write_hold_if_needed(out_dir)
+    if held is not None:
+        return held
     out_dir.mkdir(parents=True, exist_ok=True)
     rounds_dir = out_dir / "rounds"
     probs_dir = out_dir / "probabilities"
@@ -687,6 +691,11 @@ def write(out_dir: Path) -> Path:
     path.write_text(json.dumps(payload, indent=2) + "\n")
 
     write_seasons_index(out_dir, current=year)
+    # Recheck loaded-state identity before recording successful rebuild bytes.
+    held = write_hold_if_needed(out_dir)
+    if held is not None:
+        return held
+    write_export_receipt(out_dir)
     return path
 
 
@@ -695,6 +704,9 @@ def main() -> int:
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = p.parse_args()
     path = write(args.out)
+    if path.name == STATUS_FILE:
+        print(f"Publication withheld: {path}")
+        return 0
     print(f"Wrote {path} and per-round files under {path.parent}/rounds and /probabilities")
     return 0
 

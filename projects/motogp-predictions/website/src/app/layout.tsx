@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
+
 import Footer from "@/components/Footer";
 import LiveContextBand from "@/components/race-weekend/LiveContextBand";
 import Navbar from "@/components/Navbar";
@@ -64,9 +67,11 @@ const APPLE_TOUCH_ICON = `${BASE_PATH}/icons/apple-touch-icon.png`;
 const ICON_192 = `${BASE_PATH}/icons/icon-192.png`;
 const ICON_512 = `${BASE_PATH}/icons/icon-512.png`;
 
+const publicationHold = getPublicationHold();
+
 export const metadata: Metadata = {
-  title: "MotoGP Predictions — RaceIQ MotoGP",
-  description:
+  title: publicationHold ? "MotoGP publication withheld — RaceIQ MotoGP" : "MotoGP Predictions — RaceIQ MotoGP",
+  description: publicationHold?.message ??
     "Sprint, Grand Prix, and championship forecasts for the premier class of motorcycle Grand Prix racing — rider and manufacturer title fights, updated every round. A MotorsportVerse project on motorsport-core.",
   applicationName: "RaceIQ MotoGP",
   manifest: MANIFEST_URL,
@@ -83,8 +88,8 @@ export const metadata: Metadata = {
     apple: [{ url: APPLE_TOUCH_ICON, sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "MotoGP Predictions — RaceIQ MotoGP",
-    description:
+    title: publicationHold ? "MotoGP publication withheld — RaceIQ MotoGP" : "MotoGP Predictions — RaceIQ MotoGP",
+    description: publicationHold?.message ??
       "Sprint, Grand Prix, and championship forecasts for MotoGP — a MotorsportVerse project.",
     type: "website",
   },
@@ -113,7 +118,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
-        <SeasonProvider>
+        {publicationHold ? <>
+          <header className="px-6 py-5 border-b border-[var(--hairline)]"><a href={BASE_PATH + "/"} className="wordmark">RaceIQ MotoGP</a></header>
+          <main id="main-content" tabIndex={-1} className="flex-1"><PublicationHoldNotice hold={publicationHold} /></main>
+        </> : <SeasonProvider>
           <SmoothScrollProvider>
             <Navbar />
             <LiveContextBand />
@@ -122,7 +130,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
             <Footer />
           </SmoothScrollProvider>
-        </SeasonProvider>
+        </SeasonProvider>}
       </body>
     </html>
   );

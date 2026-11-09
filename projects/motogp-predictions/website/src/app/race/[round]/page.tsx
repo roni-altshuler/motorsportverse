@@ -1,3 +1,5 @@
+import PublicationHoldNotice from "@/components/PublicationHoldNotice";
+import { getPublicationHold } from "@/lib/publication";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -79,6 +81,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ round: string }>;
 }): Promise<Metadata> {
+  const hold = getPublicationHold();
+  if (hold) return { title: "MotoGP publication withheld", description: hold.message };
   const { round: r } = await params;
   const round = getRound(Number(r));
   if (!round) return { title: "Round — RaceIQ MotoGP" };
@@ -89,6 +93,8 @@ export async function generateMetadata({
 }
 
 export default async function RacePage({ params }: { params: Promise<{ round: string }> }) {
+  const publicationHold = getPublicationHold();
+  if (publicationHold) return <PublicationHoldNotice hold={publicationHold} />;
   const { round: r } = await params;
   const roundNum = Number(r);
   const round = getRound(roundNum);

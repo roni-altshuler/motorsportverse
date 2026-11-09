@@ -44,7 +44,7 @@ def test_probabilities_are_well_formed(forecast):
 
 
 @pytest.fixture(scope="module")
-def exported(tmp_path_factory):
+def exported(tmp_path_factory, verified_publication_prefix):
     out = tmp_path_factory.mktemp("motogpdata")
     export.write(out)
     return out
@@ -98,7 +98,7 @@ def test_standings_are_ordered_and_consistent(exported):
         hist = row["pointsHistory"]
         assert hist == sorted(hist)
         if hist:
-            assert hist[-1] <= row["points"] + 1e-6
+            assert abs(hist[-1] - row["points"]) < 1e-6
 
     # Manufacturer points equal the sum of their riders' points (no bonus points).
     driver_sum_by_team: dict[str, float] = {}

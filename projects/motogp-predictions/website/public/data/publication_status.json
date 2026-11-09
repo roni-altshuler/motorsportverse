@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "sport": "MotoGP",
+  "season": 2026,
+  "status": "held",
+  "reasonCode": "snapshot-event-identity",
+  "message": "MotoGP forecasts and season figures are withheld while event identities and round coverage are verified.",
+  "issues": [
+    {
+      "code": "event-identity-mismatch",
+      "round": 18,
+      "scheduled": {
+        "name": "RED BULL GRAND PRIX OF AUSTRALIA",
+        "shortName": "AUS",
+        "venue": "Phillip Island",
+        "country": "AU",
+        "date": "2026-10-25"
+      },
+      "recorded": {
+        "name": "PETRONAS GRAND PRIX OF MALAYSIA ",
+        "shortName": "MAL",
+        "venue": "Petronas Sepang International Circuit",
+        "country": "MY",
+        "date": "2026-11-01"
+      },
+      "matchingScheduledRounds": [
+        19
+      ],
+      "message": "Round 18 is paired with a different scheduled event."
+    },
+    {
+      "code": "event-identity-mismatch",
+      "round": 19,
+      "scheduled": {
+        "name": "PETRONAS GRAND PRIX OF MALAYSIA ",
+        "shortName": "MAL",
+        "venue": "Petronas Sepang International Circuit",
+        "country": "MY",
+        "date": "2026-11-01"
+      },
+      "recorded": {
+        "name": "QATAR AIRWAYS GRAND PRIX OF QATAR ",
+        "shortName": "QAT",
+        "venue": "Lusail International Circuit",
+        "country": "QA",
+        "date": "2026-11-08"
+      },
+      "matchingScheduledRounds": [
+        20
+      ],
+      "message": "Round 19 is paired with a different scheduled event."
+    }
+  ],
+  "sourceSnapshot": "projects/motogp-predictions/data/official_2026.json",
+  "snapshotSha256": "d6002767a9208096c884814c22971eee4b462a05bf06288730141e10cd32633b",
+  "references": [
+    "https://www.motogp.com/en/calendar/2026",
+    "https://www.motogp.com/en/news/2026/10/25/farewell-phillip-island-from-motogp-ceo-carmelo-ezpeleta/1180981"
+  ],
+  "recovery": "Restore verified event-matched session inputs and supported completed-round coverage before publication resumes.",
+  "routes": {
+    "rounds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "riders": [
+      "ACO",
+      "MAM",
+      "FE2",
+      "OGU",
+      "MAR",
+      "BIN",
+      "MIR",
+      "GIA",
+      "BAG",
+      "MAL",
+      "MAA",
+      "ZAR",
+      "MOR",
+      "MOF",
+      "MIL",
+      "QUA",
+      "BAS",
+      "RIN",
+      "VIN",
+      "RAZ",
+      "PIR",
+      "BEZ",
+      "ALD",
+      "FER",
+      "SAV",
+      "FOL",
+      "CRU",
+      "LEC",
+      "ESP",
+      "NAK",
+      "CHA",
+      "ESA",
+      "DIX"
+    ]
+  }
+}

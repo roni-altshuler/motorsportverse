@@ -1,6 +1,8 @@
 """Playoff backtest: champion identification, field ground truth, checkpoints."""
 from __future__ import annotations
 
+import pytest
+
 from nascar_predictions import playoff_backtest as pb
 from nascar_predictions.datasource import NascarDataSource
 
@@ -12,10 +14,16 @@ def test_actual_champion_from_ground_truth(real_source):
     assert pb.actual_champion(real_source, 2020) == "CHELLIOTT"
 
 
-def test_actual_champion_none_for_incomplete_season(real_source):
-    # 2025's finale never published in the feed; 2026 is in progress.
-    assert pb.actual_champion(real_source, 2025) is None
-    assert pb.actual_champion(real_source, 2026) is None
+@pytest.mark.parametrize("has_prior_rounds", [False, True])
+def test_actual_champion_none_for_incomplete_season(real_source, monkeypatch, has_prior_rounds):
+    # Use a completed archive so this safety check survives the current finale.
+    # Its final standings still name a champion; incomplete coverage must win.
+    year = 2022
+    total = real_source.total_rounds(year)
+    assert pb.actual_champion(real_source, year) == "JOLOGANO"
+    incomplete = [r for r in real_source.completed_rounds(year) if r < total] if has_prior_rounds else []
+    monkeypatch.setattr(real_source, "completed_rounds", lambda _year: incomplete)
+    assert pb.actual_champion(real_source, year) is None
 
 
 def test_real_playoff_field_is_sixteen(real_source):
