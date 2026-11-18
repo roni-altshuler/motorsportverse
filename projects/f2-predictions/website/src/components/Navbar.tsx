@@ -189,7 +189,7 @@ export default function Navbar() {
         <div className="flex items-center h-14 gap-2 sm:gap-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="md:hidden inline-flex items-center justify-center w-9 h-9 -ml-1.5"
+            className="lg:hidden inline-flex items-center justify-center w-9 h-9 -ml-1.5"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5 text-[color:var(--ink)]" />
@@ -207,7 +207,7 @@ export default function Navbar() {
           </Link>
 
           {/* primary nav cluster (desktop) */}
-          <div className="hidden md:flex items-center gap-0 ml-4">
+          <div className="hidden lg:flex items-center gap-0 ml-4">
             {navLink("/", "Home")}
 
             {/* Races dropdown */}
@@ -351,7 +351,7 @@ export default function Navbar() {
                 background="var(--accent-f1-red)"
                 shimmerColor="rgba(255,255,255,0.9)"
                 borderRadius="9999px"
-                className="button-label h-9 !py-0 !px-4 text-[12px]"
+                className="button-label h-9 !py-0 !px-4 text-[12px] text-[color:var(--canvas)]"
               >
                 Next Race →
               </ShimmerButton>
@@ -418,7 +418,7 @@ export default function Navbar() {
                         background="var(--accent-f1-red)"
                         shimmerColor="rgba(255,255,255,0.9)"
                         borderRadius="9999px"
-                        className="w-full button-label h-10 !py-0 !px-4 text-[12px]"
+                        className="w-full button-label h-10 !py-0 !px-4 text-[12px] text-[color:var(--canvas)]"
                       >
                         Next Race → {nextRound.name}
                       </ShimmerButton>
