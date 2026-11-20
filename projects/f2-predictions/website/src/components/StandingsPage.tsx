@@ -194,7 +194,7 @@ function StandingsPageInner(baked: StandingsPageProps) {
       />
 
       {/* Tab navigation with sliding active underline */}
-      <div className="flex justify-center gap-2 mb-10 relative">
+      <div className="flex flex-wrap justify-center gap-2 mb-10 relative">
         {(
           [
             { key: "drivers" as Tab, label: "Drivers", href: "/standings?tab=drivers" },
@@ -202,7 +202,7 @@ function StandingsPageInner(baked: StandingsPageProps) {
             { key: "wdc" as Tab, label: "Who Can Still Win?", href: "/standings?tab=wdc" },
           ] as const
         ).map((tab) => (
-          <a
+          <Link
             key={tab.key}
             href={tab.href}
             className={`tab-button relative ${activeTab === tab.key ? "active" : ""}`}
@@ -215,7 +215,7 @@ function StandingsPageInner(baked: StandingsPageProps) {
                 style={{ background: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }}
               />
             )}
-          </a>
+          </Link>
         ))}
       </div>
 

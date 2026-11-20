@@ -73,6 +73,7 @@ export default function CalendarPage({
                 races={seasonRaces}
                 season={season}
                 label="Add full season to calendar"
+                className="h-auto min-h-9 max-w-full whitespace-normal py-2"
               />
             </div>
           ) : null;
